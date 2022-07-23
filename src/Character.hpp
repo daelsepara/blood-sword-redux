@@ -20,13 +20,13 @@ namespace BloodSword::Attribute
     class Base
     {
     public:
-        BloodSword::Attribute::Type Type = BloodSword::Attribute::Type::None;
+        Attribute::Type Type = Type::None;
 
         int Value = 0;
 
         int Modifier = 0;
 
-        Base(BloodSword::Attribute::Type type, int value, int modifier)
+        Base(Attribute::Type type, int value, int modifier)
         {
             this->Type = type;
 
@@ -54,18 +54,18 @@ namespace BloodSword::Character
 {
     enum class ControlType
     {
-        NONE = -1,
-        PLAYER,
+        None = -1,
+        Player,
         NPC
     };
 
     enum class Type
     {
-        NONE = -1,
-        WARRIOR,
-        TRICKSTER,
-        SAGE,
-        ENCHANTER
+        None = -1,
+        Warrior,
+        Trickster,
+        Sage,
+        Enchanter
     };
 
     enum class Status
@@ -78,31 +78,60 @@ namespace BloodSword::Character
     class Base
     {
     public:
-        BloodSword::Character::ControlType ControlType = ControlType::NONE;
+        ControlType ControlType = ControlType::None;
 
-        BloodSword::Character::Type Type = Type::NONE;
+        Character::Type Type = Character::Type::None;
 
-        std::vector<BloodSword::Attribute::Base> Attributes = {};
+        std::vector<Attribute::Base> Attributes = {};
 
-        std::vector<BloodSword::Character::Status> Status = {};
+        std::vector<Character::Status> Status = {};
+
+        std::vector<Skills::Type> Skills = {};
 
         std::string Name = "";
 
-        Base(const char *name, BloodSword::Character::Type type, std::vector<BloodSword::Attribute::Base> attributes)
+        int Moves = 100;
+
+        Base(const char *name, Character::Type type, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
         {
             this->Name = name;
 
             this->Type = type;
 
             this->Attributes = attributes;
+
+            this->Skills = skills;
+
+            this->Moves = moves;
         }
 
-        bool Has(BloodSword::Character::Status status)
+        bool Has(Character::Status status)
         {
             return std::find(this->Status.begin(), this->Status.end(), status) != this->Status.end();
         }
 
-        int Value(BloodSword::Attribute::Type attribute)
+        bool Has(Skills::Type skill)
+        {
+            return std::find(this->Skills.begin(), this->Skills.end(), skill) != this->Skills.end();
+        }
+
+        void Add(Character::Status status)
+        {
+            if (!Has(status))
+            {
+                this->Status.push_back(status);
+            }
+        }
+
+        void Add(Skills::Type skill)
+        {
+            if (!Has(skill))
+            {
+                this->Skills.push_back(skill);
+            }
+        }
+
+        int Value(Attribute::Type attribute)
         {
             auto result = 0;
 
@@ -119,7 +148,7 @@ namespace BloodSword::Character
             return result;
         }
 
-        int Modifier(BloodSword::Attribute::Type attribute)
+        int Modifier(Attribute::Type attribute)
         {
             auto result = 0;
 
@@ -136,7 +165,7 @@ namespace BloodSword::Character
             return result;
         }
 
-        void Set(BloodSword::Attribute::Type attribute, int value, int modifier)
+        void Set(Attribute::Type attribute, int value, int modifier)
         {
             for (auto i = 0; i < this->Attributes.size(); i++)
             {
@@ -158,9 +187,9 @@ namespace BloodSword::Party
     class Base
     {
     public:
-        std::vector<BloodSword::Character::Base> Members = {};
+        std::vector<Character::Base> Members = {};
 
-        Base(std::vector<BloodSword::Character::Base> members)
+        Base(std::vector<Character::Base> members)
         {
             Members = members;
         }
