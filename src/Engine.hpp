@@ -3,6 +3,7 @@
 
 #include "Character.hpp"
 #include "Random.hpp"
+#include "Map.hpp"
 
 namespace BloodSword::Engine
 {
