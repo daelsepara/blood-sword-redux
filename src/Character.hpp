@@ -26,11 +26,15 @@ namespace BloodSword::Attribute
 
         int Modifier = 0;
 
+        int Maximum = 0;
+
         Base(Attribute::Type type, int value, int modifier)
         {
             this->Type = type;
 
             this->Value = value;
+
+            this->Maximum = value;
 
             this->Modifier = modifier;
         }
@@ -165,6 +169,23 @@ namespace BloodSword::Character
             return result;
         }
 
+        int Maximum(Attribute::Type attribute)
+        {
+            auto result = 0;
+
+            for (auto i = 0; i < this->Attributes.size(); i++)
+            {
+                if (this->Attributes[i].Type == attribute)
+                {
+                    result = this->Attributes[i].Maximum;
+
+                    break;
+                }
+            }
+
+            return result;
+        }
+
         void Set(Attribute::Type attribute, int value, int modifier)
         {
             for (auto i = 0; i < this->Attributes.size(); i++)
@@ -174,6 +195,23 @@ namespace BloodSword::Character
                     this->Attributes[i].Value = value;
 
                     this->Attributes[i].Modifier = modifier;
+
+                    break;
+                }
+            }
+        }
+
+        void Set(Attribute::Type attribute, int value, int modifier, int maximum)
+        {
+            for (auto i = 0; i < this->Attributes.size(); i++)
+            {
+                if (this->Attributes[i].Type == attribute)
+                {
+                    this->Attributes[i].Value = value;
+
+                    this->Attributes[i].Modifier = modifier;
+
+                    this->Attributes[i].Maximum = maximum;
 
                     break;
                 }
