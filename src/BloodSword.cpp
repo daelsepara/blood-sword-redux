@@ -6,7 +6,7 @@ namespace BloodSword
     {
         auto Screen = Graphics::Base();
 
-        Engine::Initialize();
+        Engine::InitializeRNG();
 
         Graphics::Initialize(Screen, "Blood Sword");
 

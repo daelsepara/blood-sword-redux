@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "Asset.hpp"
+
 namespace BloodSword::Attribute
 {
     enum class Type
@@ -94,6 +96,8 @@ namespace BloodSword::Character
 
         std::string Name = "";
 
+        Asset::Type Asset = Asset::Type::NONE;
+
         int Moves = 100;
 
         Base(const char *name, Character::Type type, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
@@ -152,6 +156,19 @@ namespace BloodSword::Character
             return result;
         }
 
+        void Value(Attribute::Type attribute, int value)
+        {
+            for (auto i = 0; i < this->Attributes.size(); i++)
+            {
+                if (this->Attributes[i].Type == attribute)
+                {
+                    this->Attributes[i].Value = value;
+
+                    break;
+                }
+            }
+        }
+
         int Modifier(Attribute::Type attribute)
         {
             auto result = 0;
@@ -169,6 +186,19 @@ namespace BloodSword::Character
             return result;
         }
 
+        void Modifier(Attribute::Type attribute, int value)
+        {
+            for (auto i = 0; i < this->Attributes.size(); i++)
+            {
+                if (this->Attributes[i].Type == attribute)
+                {
+                    this->Attributes[i].Modifier = value;
+
+                    break;
+                }
+            }
+        }
+
         int Maximum(Attribute::Type attribute)
         {
             auto result = 0;
@@ -184,6 +214,19 @@ namespace BloodSword::Character
             }
 
             return result;
+        }
+
+        void Maximum(Attribute::Type attribute, int value)
+        {
+            for (auto i = 0; i < this->Attributes.size(); i++)
+            {
+                if (this->Attributes[i].Type == attribute)
+                {
+                    this->Attributes[i].Maximum = value;
+
+                    break;
+                }
+            }
         }
 
         void Set(Attribute::Type attribute, int value, int modifier)

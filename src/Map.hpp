@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "Asset.hpp"
+
 namespace BloodSword::Map
 {
     typedef std::pair<int, int> Point;
@@ -25,6 +27,8 @@ namespace BloodSword::Map
         Map::Object Type = Map::Object::None;
 
         Map::Object Occupant = Map::Object::None;
+
+        Asset::Type Asset = Asset::Type::NONE;
 
         int Lifetime = -1;
 
