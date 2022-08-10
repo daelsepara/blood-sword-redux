@@ -12,7 +12,7 @@ namespace BloodSword::Engine
     void InitializeRNG()
     {
         Random.UniformIntDistribution(1, 6);
-        
+
         Random.UniformDistribution(0, 1.0);
     }
 }

@@ -10,6 +10,10 @@ namespace BloodSword
 
         Graphics::Initialize(Screen, "Blood Sword");
 
+        Asset::Load("assets.json");
+
+        Asset::Unload();
+
         Graphics::Quit(Screen);
 
         return 0;
