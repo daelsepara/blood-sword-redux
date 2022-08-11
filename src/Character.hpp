@@ -6,42 +6,8 @@
 #include <vector>
 
 #include "Asset.hpp"
-
-namespace BloodSword::Attribute
-{
-    enum class Type
-    {
-        None = -1,
-        FightingProwess,
-        Awareness,
-        PsychicAbility,
-        Endurance,
-        Damage
-    };
-
-    class Base
-    {
-    public:
-        Attribute::Type Type = Type::None;
-
-        int Value = 0;
-
-        int Modifier = 0;
-
-        int Maximum = 0;
-
-        Base(Attribute::Type type, int value, int modifier)
-        {
-            this->Type = type;
-
-            this->Value = value;
-
-            this->Maximum = value;
-
-            this->Modifier = modifier;
-        }
-    };
-}
+#include "Attribute.hpp"
+#include "Item.hpp"
 
 namespace BloodSword::Skills
 {
@@ -84,21 +50,25 @@ namespace BloodSword::Character
     class Base
     {
     public:
-        ControlType ControlType = ControlType::None;
-
-        Character::Type Type = Character::Type::None;
-
         std::vector<Attribute::Base> Attributes = {};
 
         std::vector<Character::Status> Status = {};
 
         std::vector<Skills::Type> Skills = {};
 
+        std::vector<Item::Base> Items = {};
+
+        ControlType ControlType = ControlType::None;
+
+        Character::Type Type = Character::Type::None;
+
         std::string Name = "";
 
         Asset::Type Asset = Asset::Type::NONE;
 
         int Moves = 100;
+
+        int Rank = 0;
 
         Base(const char *name, Character::Type type, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
         {
@@ -259,6 +229,45 @@ namespace BloodSword::Character
                     break;
                 }
             }
+        }
+
+        // has item of specific type
+        bool Has(Item::Type item)
+        {
+            auto result = false;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].Type == item)
+                {
+                    result = true;
+
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        // has container with a sufficient amount of the specific item
+        bool Has(Item::Type container, Item::Type item, int quantity)
+        {
+            auto result = false;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].Type == container && this->Items[i].Has(Item::Property::Container) && this->Items[i].Has(item, quantity))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        bool Has(Item::Type container, Item::Type item)
+        {
+            return this->Has(container, item, 1);
         }
     };
 }
