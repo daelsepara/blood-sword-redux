@@ -83,22 +83,9 @@ namespace BloodSword::Character
             this->Moves = moves;
         }
 
-        bool Has(Character::Status status)
-        {
-            return std::find(this->Status.begin(), this->Status.end(), status) != this->Status.end();
-        }
-
         bool Has(Skills::Type skill)
         {
             return std::find(this->Skills.begin(), this->Skills.end(), skill) != this->Skills.end();
-        }
-
-        void Add(Character::Status status)
-        {
-            if (!this->Has(status))
-            {
-                this->Status.push_back(status);
-            }
         }
 
         void Add(Skills::Type skill)
@@ -106,6 +93,24 @@ namespace BloodSword::Character
             if (!this->Has(skill))
             {
                 this->Skills.push_back(skill);
+            }
+        }
+
+        bool Has(Character::Status status)
+        {
+            return std::find(this->Status.begin(), this->Status.end(), status) != this->Status.end();
+        }
+
+        bool Is(Character::Status status)
+        {
+            return this->Has(status);
+        }
+
+        void Add(Character::Status status)
+        {
+            if (!this->Has(status))
+            {
+                this->Status.push_back(status);
             }
         }
 
