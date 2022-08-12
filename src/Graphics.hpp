@@ -21,6 +21,7 @@ namespace BloodSword::Graphics
 
         // pixel dimensions
         int Width = 1280;
+
         int Height = 800;
 
         Base()
@@ -30,8 +31,9 @@ namespace BloodSword::Graphics
 
     void CreateWindow(Uint32 flags, const char *title, Base &graphics)
     {
-        // The window and renderer we'll be rendering to
+        // the window and renderer we'll be rendering to
         graphics.Window = NULL;
+        
         graphics.Renderer = NULL;
 
         if (SDL_Init(flags) < 0)
@@ -66,15 +68,56 @@ namespace BloodSword::Graphics
         }
     }
 
+    // initialize graphics subsystem
     void Initialize(Base &graphics, const char *title)
     {
         IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
         TTF_Init();
 
-        CreateWindow(SDL_INIT_VIDEO | SDL_INIT_AUDIO, title, graphics);
+        Graphics::CreateWindow(SDL_INIT_VIDEO | SDL_INIT_AUDIO, title, graphics);
     }
 
+    // render a portion of the image on bounded surface within the specified window
+    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset)
+    {
+        if (graphics.Renderer && image)
+        {
+            SDL_Rect src;
+            src.w = image->w;
+            src.h = std::min(image->h, bounds);
+            src.y = offset;
+            src.x = 0;
+
+            SDL_Rect dst;
+            dst.w = image->w;
+            dst.h = std::min(image->h, bounds);
+            dst.x = x;
+            dst.y = y;
+
+            auto texture = SDL_CreateTextureFromSurface(graphics.Renderer, image);
+
+            if (texture)
+            {
+                SDL_RenderCopy(graphics.Renderer, texture, &src, &dst);
+
+                SDL_DestroyTexture(texture);
+
+                texture = NULL;
+            }
+        }
+    }
+
+    // render image at location
+    void Render(Base &graphics, SDL_Surface *image, int x, int y)
+    {
+        if (image && graphics.Renderer)
+        {
+            Graphics::Render(graphics, image, x, y, image->h, 0);
+        }
+    }
+
+    // close graphics subsystem
     void Quit(Base &graphics)
     {
         if (graphics.Renderer)
