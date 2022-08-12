@@ -14,7 +14,8 @@ namespace BloodSword::Item
         Normal = 0,
         Weapon,
         Armour,
-        Container
+        Container,
+        Equipped
     };
 
     enum class Type

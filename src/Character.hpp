@@ -95,7 +95,7 @@ namespace BloodSword::Character
 
         void Add(Character::Status status)
         {
-            if (!Has(status))
+            if (!this->Has(status))
             {
                 this->Status.push_back(status);
             }
@@ -103,9 +103,25 @@ namespace BloodSword::Character
 
         void Add(Skills::Type skill)
         {
-            if (!Has(skill))
+            if (!this->Has(skill))
             {
                 this->Skills.push_back(skill);
+            }
+        }
+
+        void Remove(Character::Status status)
+        {
+            if (this->Has(status))
+            {
+                for (auto i = 0; i < this->Status.size(); i++)
+                {
+                    if (this->Status[i] == status)
+                    {
+                        this->Status.erase(this->Status.begin() + i);
+
+                        break;
+                    }
+                }
             }
         }
 
@@ -232,15 +248,15 @@ namespace BloodSword::Character
         }
 
         // has item of specific type
-        bool Has(Item::Type item)
+        int Find(Item::Type item)
         {
-            auto result = false;
+            auto result = -1;
 
             for (auto i = 0; i < this->Items.size(); i++)
             {
                 if (this->Items[i].Type == item)
                 {
-                    result = true;
+                    result = i;
 
                     break;
                 }
@@ -249,25 +265,87 @@ namespace BloodSword::Character
             return result;
         }
 
-        // has the container containing a sufficient amount of the item
-        bool Has(Item::Type container, Item::Type item, int quantity)
+        bool Has(Item::Type item)
         {
-            auto result = false;
+            auto result = this->Find(item);
+
+            return (result >= 0 && result < this->Items.size());
+        }
+
+        // has the container containing a sufficient amount of the item
+        int Find(Item::Type container, Item::Type item, int quantity)
+        {
+            auto result = -1;
 
             for (auto i = 0; i < this->Items.size(); i++)
             {
                 if (this->Items[i].Type == container && this->Items[i].Has(Item::Property::Container) && this->Items[i].Has(item, quantity))
                 {
-                    result = true;
+                    result = i;
+
+                    break;
                 }
             }
 
             return result;
         }
 
+        bool Has(Item::Type container, Item::Type item, int quantity)
+        {
+            auto result = this->Find(container, item, quantity);
+
+            return (result >= 0 && result < this->Items.size());
+        }
+
         bool Has(Item::Type container, Item::Type item)
         {
             return this->Has(container, item, 1);
+        }
+
+        // has item with specific property
+        int Find(Item::Type item, Item::Property property)
+        {
+            auto result = -1;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].Type == item && this->Items[i].Has(property))
+                {
+                    result = i;
+                }
+            }
+
+            return result;
+        }
+
+        bool Has(Item::Type item, Item::Property property)
+        {
+            auto result = this->Find(item, property);
+
+            return (result >= 0 && result < this->Items.size());
+        }
+
+        // has item with specific property
+        int Find(Item::Type item, Item::Property property, Attribute::Type attribute)
+        {
+            auto result = -1;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].Type == item && this->Items[i].Has(property) && this->Items[i].Has(attribute))
+                {
+                    result = i;
+                }
+            }
+
+            return result;
+        }
+
+        bool Has(Item::Type item, Item::Property property, Attribute::Type attribute)
+        {
+            auto result = this->Find(item, property, attribute);
+
+            return (result >= 0 && result < this->Items.size());
         }
     };
 }
