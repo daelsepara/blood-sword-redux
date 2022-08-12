@@ -36,4 +36,5 @@ namespace BloodSword::Attribute
         }
     };
 }
+
 #endif

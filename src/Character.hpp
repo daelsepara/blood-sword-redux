@@ -199,21 +199,6 @@ namespace BloodSword::Character
             }
         }
 
-        void Set(Attribute::Type attribute, int value, int modifier)
-        {
-            for (auto i = 0; i < this->Attributes.size(); i++)
-            {
-                if (this->Attributes[i].Type == attribute)
-                {
-                    this->Attributes[i].Value = value;
-
-                    this->Attributes[i].Modifier = modifier;
-
-                    break;
-                }
-            }
-        }
-
         void Set(Attribute::Type attribute, int value, int modifier, int maximum)
         {
             for (auto i = 0; i < this->Attributes.size(); i++)
@@ -225,6 +210,21 @@ namespace BloodSword::Character
                     this->Attributes[i].Modifier = modifier;
 
                     this->Attributes[i].Maximum = maximum;
+
+                    break;
+                }
+            }
+        }
+
+        void Set(Attribute::Type attribute, int value, int modifier)
+        {
+            for (auto i = 0; i < this->Attributes.size(); i++)
+            {
+                if (this->Attributes[i].Type == attribute)
+                {
+                    this->Attributes[i].Value = value;
+
+                    this->Attributes[i].Modifier = modifier;
 
                     break;
                 }
@@ -249,7 +249,7 @@ namespace BloodSword::Character
             return result;
         }
 
-        // has container with a sufficient amount of the specific item
+        // has the container containing a sufficient amount of the item
         bool Has(Item::Type container, Item::Type item, int quantity)
         {
             auto result = false;
@@ -285,4 +285,5 @@ namespace BloodSword::Party
         }
     };
 }
+
 #endif

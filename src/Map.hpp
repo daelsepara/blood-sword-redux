@@ -102,4 +102,5 @@ namespace BloodSword::Map
         int DrawY = 0;
     };
 }
+
 #endif

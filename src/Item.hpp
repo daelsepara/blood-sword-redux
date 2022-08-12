@@ -122,30 +122,30 @@ namespace BloodSword::Item
 
         bool Add(Item::Type item, int quantity)
         {
+            auto result = false;
+
             if (this->Is(Property::Container) && this->Contains == item && quantity >= 1)
             {
                 this->Quantity += quantity;
 
-                return true;
+                result = true;
             }
-            else
-            {
-                return false;
-            }
+
+            return result;
         }
 
         bool Remove(Item::Type item, int quantity)
         {
+            auto result = false;
+
             if (this->Has(item, quantity))
             {
                 this->Quantity -= quantity;
 
-                return true;
+                result = true;
             }
-            else
-            {
-                return false;
-            }
+
+            return result;
         }
 
         bool Remove(Item::Type item)

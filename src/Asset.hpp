@@ -31,9 +31,11 @@ namespace BloodSword::Asset
     };
 
     typedef std::pair<Asset::Type, SDL_Surface *> Surface;
+    
     typedef std::pair<Asset::Type, std::string> Location;
 
     std::vector<Asset::Location> Path = {};
+    
     std::vector<Asset::Surface> Graphics = {};
 
     Asset::Type GetType(const char *asset)
