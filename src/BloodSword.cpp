@@ -12,6 +12,8 @@ namespace BloodSword
 
         Asset::Load("assets.json");
 
+        Test::RenderPlayers(Screen);
+
         Asset::Unload();
 
         Graphics::Quit(Screen);

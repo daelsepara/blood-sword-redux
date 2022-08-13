@@ -104,7 +104,7 @@ namespace BloodSword::Asset
             {
                 for (auto i = 0; i < data["asset"].size(); i++)
                 {
-                    auto object = !data["asset"][i]["id"].is_null() ? Asset::GetType(data["asset"][i]["id"]) : Asset::Type::NONE;
+                    auto object = !data["asset"][i]["id"].is_null() ? Asset::GetType(std::string(data["asset"][i]["id"])) : Asset::Type::NONE;
 
                     auto path = !data["asset"][i]["path"].is_null() ? std::string(data["asset"][i]["path"]) : "";
 
@@ -125,10 +125,6 @@ namespace BloodSword::Asset
             ifs.close();
 
             result = !Path.empty() && !Graphics.empty() && (Graphics.size() == Path.size());
-        }
-        else
-        {
-            result = false;
         }
 
         return result;

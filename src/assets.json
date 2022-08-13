@@ -1,0 +1,20 @@
+{
+    "asset": [
+        {
+            "id": "WARRIOR",
+            "path": "images/players/master-of-arms.png"
+        },
+        {
+            "id": "ENCHANTER",
+            "path": "images/players/robe.png"
+        },
+        {
+            "id": "SAGE",
+            "path": "images/players/pikeman.png"
+        },
+        {
+            "id": "TRICKSTER",
+            "path": "images/players/hooded-assassin.png"
+        }
+    ]
+}

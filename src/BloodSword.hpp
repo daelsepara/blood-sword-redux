@@ -6,5 +6,6 @@
 #include "Asset.hpp"
 #include "Engine.hpp"
 #include "Graphics.hpp"
+#include "Test.hpp"
 
 #endif

@@ -11,6 +11,104 @@
 
 namespace BloodSword::Graphics
 {
+    Uint8 R(Uint32 c) { return (Uint8)((c & 0xFF0000) >> 16); }
+    Uint8 G(Uint32 c) { return (Uint8)((c & 0x00FF00) >> 8); }
+    Uint8 B(Uint32 c) { return (Uint8)(c & 0x0000FF); }
+    Uint8 A(Uint32 c) { return (Uint8)(c >> 24); }
+    Uint32 O(Uint32 c, Uint8 a) { return ((c & ((Uint32)0x00FFFFFF)) | ((Uint32)(a << 24))); }
+
+    class SceneElements
+    {
+    public:
+        SDL_Surface *Surface;
+
+        int X = 0;
+
+        int Y = 0;
+
+        int Bounds = 0;
+
+        int Offset = 0;
+
+        SceneElements(SDL_Surface *surface, int x, int y, int bounds, int offset)
+        {
+            if (surface)
+            {
+                Surface = surface;
+
+                X = x;
+
+                Y = y;
+
+                Bounds = bounds;
+
+                Offset = offset;
+            }
+        }
+
+        SceneElements(SDL_Surface *surface, int x, int y)
+        {
+            if (surface)
+            {
+                Surface = surface;
+
+                X = x;
+
+                Y = y;
+
+                Bounds = surface->h;
+
+                Offset = 0;
+            }
+        }
+    };
+
+    class Scene
+    {
+    public:
+        Uint32 Background = 0;
+
+        std::vector<Graphics::SceneElements> Elements = {};
+
+        void Set(Uint32 background)
+        {
+            this->Background = background;
+        }
+
+        void Set(std::vector<Graphics::SceneElements> elements)
+        {
+            this->Elements = elements;
+        }
+
+        Scene(std::vector<Graphics::SceneElements> elements, Uint32 background)
+        {
+            this->Set(elements);
+
+            this->Set(background);
+        }
+
+        Scene(Uint32 background)
+        {
+            this->Set(background);
+        }
+
+        Scene()
+        {
+        }
+
+        void Clear()
+        {
+            this->Set(0);
+
+            this->Elements.clear();
+        }
+
+        void Add(Graphics::SceneElements element)
+        {
+            this->Elements.push_back(element);
+        }
+    };
+
     class Base
     {
     public:
@@ -33,7 +131,7 @@ namespace BloodSword::Graphics
     {
         // the window and renderer we'll be rendering to
         graphics.Window = NULL;
-        
+
         graphics.Renderer = NULL;
 
         if (SDL_Init(flags) < 0)
@@ -71,11 +169,18 @@ namespace BloodSword::Graphics
     // initialize graphics subsystem
     void Initialize(Base &graphics, const char *title)
     {
+        Graphics::CreateWindow(SDL_INIT_VIDEO | SDL_INIT_AUDIO, title, graphics);
+
         IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
 
         TTF_Init();
+    }
 
-        Graphics::CreateWindow(SDL_INIT_VIDEO | SDL_INIT_AUDIO, title, graphics);
+    void FillWindow(Graphics::Base &graphics, Uint32 color)
+    {
+        SDL_SetRenderDrawColor(graphics.Renderer, R(color), G(color), B(color), A(color));
+
+        SDL_RenderClear(graphics.Renderer);
     }
 
     // render a portion of the image on bounded surface within the specified window
@@ -114,6 +219,21 @@ namespace BloodSword::Graphics
         if (image && graphics.Renderer)
         {
             Graphics::Render(graphics, image, x, y, image->h, 0);
+        }
+    }
+
+    void RenderScene(Base &graphics, Graphics::Scene &scene)
+    {
+        if (graphics.Renderer)
+        {
+            Graphics::FillWindow(graphics, scene.Background);
+
+            for (auto i = 0; i < scene.Elements.size(); i++)
+            {
+                auto element = scene.Elements.at(i);
+
+                Graphics::Render(graphics, element.Surface, element.X, element.Y, element.Bounds, element.Offset);
+            }
         }
     }
 
