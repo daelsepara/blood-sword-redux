@@ -236,6 +236,25 @@ namespace BloodSword::Graphics
         }
     }
 
+    SDL_Surface *CreateText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
+    {
+        SDL_Surface *surface = NULL;
+
+        if (font)
+        {
+            TTF_SetFontStyle(font, style);
+
+            surface = TTF_RenderText_Blended_Wrapped(font, text, textColor, wrap);
+        }
+
+        return surface;
+    }
+
+    SDL_Surface *CreateText(const char *text, TTF_Font *font, SDL_Color textColor, int style)
+    {
+        return Graphics::CreateText(text, font, textColor, style, 0);
+    }
+
     // close graphics subsystem
     void Quit(Base &graphics)
     {
