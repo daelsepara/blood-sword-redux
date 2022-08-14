@@ -6,54 +6,11 @@
 #include "Asset.hpp"
 #include "Engine.hpp"
 #include "Graphics.hpp"
+#include "Input.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test
 {
-    void WaitForNext(Graphics::Base &graphics, Graphics::Scene &scene)
-    {
-        SDL_Event result;
-
-        while (true)
-        {
-            Graphics::RenderScene(graphics, scene);
-
-            SDL_RenderPresent(graphics.Renderer);
-
-            SDL_PollEvent(&result);
-
-            if (result.type == SDL_QUIT)
-            {
-                break;
-            }
-            else if (result.type == SDL_WINDOWEVENT)
-            {
-                if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
-                {
-                    SDL_RenderPresent(graphics.Renderer);
-                }
-            }
-            else if (result.type == SDL_KEYDOWN)
-            {
-                if (result.key.keysym.sym == SDLK_KP_ENTER || result.key.keysym.sym == SDLK_RETURN || result.key.keysym.sym == SDLK_RETURN2)
-                {
-                    break;
-                }
-            }
-            else if (result.type == SDL_CONTROLLERBUTTONUP)
-            {
-                if (result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
-                {
-                    break;
-                }
-            }
-            else if (result.type == SDL_MOUSEBUTTONUP && result.button.button == SDL_BUTTON_LEFT)
-            {
-                break;
-            }
-        }
-    }
-
     void RenderPlayers(Graphics::Base &graphics)
     {
         if (graphics.Renderer)
@@ -72,7 +29,7 @@ namespace BloodSword::Test
 
             Graphics::Scene TestScene = Graphics::Scene(Players, 0);
 
-            Test::WaitForNext(graphics, TestScene);
+            Input::WaitForNext(graphics, TestScene);
         }
     }
 }

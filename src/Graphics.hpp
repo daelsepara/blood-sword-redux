@@ -2,6 +2,7 @@
 #define __GRAPHICS_HPP__
 
 #include <iostream>
+#include <vector>
 
 // Using SDL
 #include <SDL.h>
@@ -66,9 +67,9 @@ namespace BloodSword::Graphics
     class Scene
     {
     public:
-        Uint32 Background = 0;
-
         std::vector<Graphics::SceneElements> Elements = {};
+
+        Uint32 Background = 0;
 
         void Set(Uint32 background)
         {
@@ -78,6 +79,18 @@ namespace BloodSword::Graphics
         void Set(std::vector<Graphics::SceneElements> elements)
         {
             this->Elements = elements;
+        }
+
+        void Clear()
+        {
+            this->Set(0);
+
+            this->Elements.clear();
+        }
+
+        void Add(Graphics::SceneElements element)
+        {
+            this->Elements.push_back(element);
         }
 
         Scene(std::vector<Graphics::SceneElements> elements, Uint32 background)
@@ -94,18 +107,6 @@ namespace BloodSword::Graphics
 
         Scene()
         {
-        }
-
-        void Clear()
-        {
-            this->Set(0);
-
-            this->Elements.clear();
-        }
-
-        void Add(Graphics::SceneElements element)
-        {
-            this->Elements.push_back(element);
         }
     };
 
