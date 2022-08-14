@@ -5,7 +5,9 @@
 
 #include "Asset.hpp"
 #include "Engine.hpp"
+#include "Fonts.hpp"
 #include "Graphics.hpp"
+#include "Interface.hpp"
 #include "Test.hpp"
 
 namespace BloodSword

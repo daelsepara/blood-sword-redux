@@ -10,11 +10,15 @@ namespace BloodSword
 
         Graphics::Initialize(Screen, "Blood Sword");
 
+        Fonts::Load("bloodsword.json");
+
         Asset::Load("assets.json");
 
         Test::RenderPlayers(Screen);
 
         Asset::Unload();
+
+        Fonts::Free();
 
         Graphics::Quit(Screen);
 

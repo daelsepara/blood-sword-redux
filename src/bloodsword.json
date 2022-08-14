@@ -1,0 +1,8 @@
+{
+    "font-settings": {
+        "font": "fonts/bookman-old-style.ttf",
+        "caption": 22,
+        "normal": 24,
+        "fixed": 24
+    }
+}

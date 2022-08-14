@@ -173,8 +173,6 @@ namespace BloodSword::Graphics
         Graphics::CreateWindow(SDL_INIT_VIDEO | SDL_INIT_AUDIO, title, graphics);
 
         IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
-
-        TTF_Init();
     }
 
     void FillWindow(Graphics::Base &graphics, Uint32 color)
@@ -254,8 +252,6 @@ namespace BloodSword::Graphics
 
             graphics.Window = NULL;
         }
-
-        TTF_Quit();
 
         IMG_Quit();
 
