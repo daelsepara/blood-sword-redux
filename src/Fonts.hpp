@@ -1,6 +1,7 @@
 #ifndef __FONTS_HPP__
 #define __FONTS_HPP__
 
+#include <fstream>
 #include <SDL_ttf.h>
 #include "nlohmann/json.hpp"
 
