@@ -31,7 +31,11 @@ namespace BloodSword::Graphics
 
         int Offset = 0;
 
-        SceneElements(SDL_Surface *surface, int x, int y, int bounds, int offset)
+        int W = 0;
+
+        int H = 0;
+
+        void Initialize(SDL_Surface *surface, int x, int y, int bounds, int offset, int w, int h)
         {
             if (surface)
             {
@@ -44,6 +48,26 @@ namespace BloodSword::Graphics
                 Bounds = bounds;
 
                 Offset = offset;
+
+                W = w;
+
+                H = h;
+            }
+        }
+
+        SceneElements(SDL_Surface *surface, int x, int y, int bounds, int offset, int w, int h)
+        {
+            if (surface)
+            {
+                this->Initialize(surface, x, y, bounds, offset, w, h);
+            }
+        }
+
+        SceneElements(SDL_Surface *surface, int x, int y, int bounds, int offset)
+        {
+            if (surface)
+            {
+                this->Initialize(surface, x, y, bounds, offset, surface->w, bounds);
             }
         }
 
@@ -51,15 +75,7 @@ namespace BloodSword::Graphics
         {
             if (surface)
             {
-                Surface = surface;
-
-                X = x;
-
-                Y = y;
-
-                Bounds = surface->h;
-
-                Offset = 0;
+                this->Initialize(surface, x, y, surface->h, 0, surface->w, surface->h);
             }
         }
     };
@@ -182,8 +198,8 @@ namespace BloodSword::Graphics
         SDL_RenderClear(graphics.Renderer);
     }
 
-    // render a portion of the image on bounded surface within the specified window
-    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset)
+    // stretch image
+    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset, int w, int h)
     {
         if (graphics.Renderer && image)
         {
@@ -194,8 +210,8 @@ namespace BloodSword::Graphics
             src.x = 0;
 
             SDL_Rect dst;
-            dst.w = image->w;
-            dst.h = std::min(image->h, bounds);
+            dst.w = w;
+            dst.h = h;
             dst.x = x;
             dst.y = y;
 
@@ -209,6 +225,15 @@ namespace BloodSword::Graphics
 
                 texture = NULL;
             }
+        }
+    }
+
+    // render a portion of the image
+    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset)
+    {
+        if (graphics.Renderer && image)
+        {
+            Graphics::Render(graphics, image, x, y, std::min(image->h, bounds), offset, image->w, std::min(image->h, bounds));
         }
     }
 
@@ -231,7 +256,7 @@ namespace BloodSword::Graphics
             {
                 auto element = scene.Elements.at(i);
 
-                Graphics::Render(graphics, element.Surface, element.X, element.Y, element.Bounds, element.Offset);
+                Graphics::Render(graphics, element.Surface, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H);
             }
         }
     }

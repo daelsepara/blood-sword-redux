@@ -5,6 +5,7 @@
 
 #include "Asset.hpp"
 #include "Engine.hpp"
+#include "Fonts.hpp"
 #include "Graphics.hpp"
 #include "Input.hpp"
 
