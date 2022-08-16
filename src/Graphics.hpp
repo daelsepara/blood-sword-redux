@@ -191,14 +191,64 @@ namespace BloodSword::Graphics
         IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
     }
 
-    void FillWindow(Graphics::Base &graphics, Uint32 color)
+    SDL_Rect CreateRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
     {
-        SDL_SetRenderDrawColor(graphics.Renderer, R(color), G(color), B(color), A(color));
+        SDL_Rect rect;
 
-        SDL_RenderClear(graphics.Renderer);
+        rect.w = w;
+        rect.h = h;
+        rect.x = x;
+        rect.y = y;
+
+        if (graphics.Renderer)
+        {
+            SDL_SetRenderDrawColor(graphics.Renderer, R(color), G(color), B(color), A(color));
+        }
+
+        return rect;
     }
 
-    // stretch image
+    void DrawRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
+    {
+        if (graphics.Renderer)
+        {
+            auto rect = Graphics::CreateRect(graphics, w, h, x, y, color);
+
+            SDL_RenderDrawRect(graphics.Renderer, &rect);
+        }
+    }
+
+    void FillRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
+    {
+        if (graphics.Renderer)
+        {
+            auto rect = Graphics::CreateRect(graphics, w, h, x, y, color);
+
+            SDL_RenderFillRect(graphics.Renderer, &rect);
+        }
+    }
+
+    void ThickRect(Graphics::Base &graphics, int w, int h, int x, int y, int color, int pts)
+    {
+        auto space = 2 * pts;
+
+        for (auto size = pts; size >= 0; size--)
+        {
+            Graphics::DrawRect(graphics, w + 2 * (space - size), h + 2 * (space - size), x - space + size, y - space + size, color);
+        }
+    }
+
+    void FillWindow(Graphics::Base &graphics, Uint32 color)
+    {
+        if (graphics.Renderer)
+        {
+            SDL_SetRenderDrawColor(graphics.Renderer, R(color), G(color), B(color), A(color));
+
+            SDL_RenderClear(graphics.Renderer);
+        }
+    }
+
+    // base render function
     void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset, int w, int h)
     {
         if (graphics.Renderer && image)
