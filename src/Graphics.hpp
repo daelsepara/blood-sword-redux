@@ -10,6 +10,8 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
+#include "Controls.hpp"
+
 namespace BloodSword::Graphics
 {
     Uint8 R(Uint32 c) { return (Uint8)((c & 0xFF0000) >> 16); }
@@ -85,16 +87,23 @@ namespace BloodSword::Graphics
     public:
         std::vector<Graphics::SceneElements> Elements = {};
 
-        Uint32 Background = 0;
+        std::vector<Controls::Base> Controls = {};
 
-        void Set(Uint32 background)
-        {
-            this->Background = background;
-        }
+        Uint32 Background = 0;
 
         void Set(std::vector<Graphics::SceneElements> elements)
         {
             this->Elements = elements;
+        }
+
+        void Set(std::vector<Controls::Base> controls)
+        {
+            this->Controls = controls;
+        }
+
+        void Set(Uint32 background)
+        {
+            this->Background = background;
         }
 
         void Clear()
@@ -102,11 +111,27 @@ namespace BloodSword::Graphics
             this->Set(0);
 
             this->Elements.clear();
+
+            this->Controls.clear();
         }
 
         void Add(Graphics::SceneElements element)
         {
             this->Elements.push_back(element);
+        }
+
+        void Add(Controls::Base control)
+        {
+            this->Controls.push_back(control);
+        }
+
+        Scene(std::vector<Graphics::SceneElements> elements, std::vector<Controls::Base> controls, Uint32 background)
+        {
+            this->Set(elements);
+
+            this->Set(controls);
+
+            this->Set(background);
         }
 
         Scene(std::vector<Graphics::SceneElements> elements, Uint32 background)
@@ -308,6 +333,25 @@ namespace BloodSword::Graphics
 
                 Graphics::Render(graphics, element.Surface, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H);
             }
+
+            for (auto i = 0; i < scene.Controls.size(); i++)
+            {
+                auto control = scene.Controls.at(i);
+
+                Graphics::ThickRect(graphics, control.W, control.H, control.X, control.Y, control.Highlight, control.Pixels);
+
+                // TODO: Render control elements
+            }
+        }
+    }
+
+    void RenderScene(Base &graphics, Graphics::Scene &scene, Controls::User input)
+    {
+        if (graphics.Renderer)
+        {
+            Graphics::RenderScene(graphics, scene);
+
+            // TODO: Render current selection
         }
     }
 

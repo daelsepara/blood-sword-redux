@@ -5,8 +5,8 @@
 #include <vector>
 #include <SDL.h>
 
-#include "Graphics.hpp"
 #include "Controls.hpp"
+#include "Graphics.hpp"
 
 namespace BloodSword::Input
 {

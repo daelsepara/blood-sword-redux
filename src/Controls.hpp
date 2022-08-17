@@ -84,8 +84,56 @@ namespace BloodSword::Controls
         int W = 0;
         int H = 0;
 
+        int Pixels = 0;
+
         // color of border when hightlighted
         Uint32 Highlight;
+    };
+
+    // user input
+    class User
+    {
+    public:
+        int Selected = -1;
+
+        int Current = -1;
+
+        bool Up = false;
+
+        bool Down = false;
+
+        bool Hold = false;
+
+        User(int selected, int current, bool up, bool down, bool hold)
+        {
+            this->Selected = selected;
+
+            this->Current = current;
+
+            this->Up = up;
+
+            this->Down = down;
+
+            this->Hold = hold;
+        }
+
+        User(int selected, int current, bool up, bool down)
+        {
+            this->Selected = selected;
+
+            this->Current = current;
+
+            this->Up = up;
+
+            this->Down = down;
+        }
+
+        User(int selected, int current)
+        {
+            this->Selected = selected;
+
+            this->Current = current;
+        }
     };
 }
 
