@@ -333,15 +333,6 @@ namespace BloodSword::Graphics
 
                 Graphics::Render(graphics, element.Surface, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H);
             }
-
-            for (auto i = 0; i < scene.Controls.size(); i++)
-            {
-                auto control = scene.Controls.at(i);
-
-                Graphics::ThickRect(graphics, control.W, control.H, control.X, control.Y, control.Highlight, control.Pixels);
-
-                // TODO: Render control elements
-            }
         }
     }
 
@@ -351,7 +342,15 @@ namespace BloodSword::Graphics
         {
             Graphics::RenderScene(graphics, scene);
 
-            // TODO: Render current selection
+            for (auto i = 0; i < scene.Controls.size(); i++)
+            {
+                auto control = scene.Controls.at(i);
+
+                if (i == input.Current)
+                {
+                    Graphics::ThickRect(graphics, control.W, control.H, control.X, control.Y, control.Highlight, control.Pixels);
+                }
+            }
         }
     }
 
