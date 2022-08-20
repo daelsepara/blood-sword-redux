@@ -45,6 +45,10 @@ namespace BloodSword::Test
             text = NULL;
         }
     }
+
+    void Controls(Graphics::Base &graphics)
+    {
+    }
 }
 
 #endif
