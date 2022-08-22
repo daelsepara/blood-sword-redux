@@ -4,11 +4,9 @@ namespace BloodSword
 {
     int Main(int argc, char **argv)
     {
-        auto Screen = Graphics::Base();
-
         Engine::InitializeRNG();
 
-        Graphics::Initialize(Screen, "Blood Sword");
+        auto Screen = Graphics::Initialize("Blood Sword");
 
         Fonts::Load("bloodsword.json");
 

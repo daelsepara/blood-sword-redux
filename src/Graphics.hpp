@@ -216,6 +216,15 @@ namespace BloodSword::Graphics
         IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
     }
 
+    Graphics::Base Initialize(const char *title)
+    {
+        auto graphics = Graphics::Base();
+
+        Graphics::Initialize(graphics, title);
+
+        return graphics;
+    }
+
     SDL_Rect CreateRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
     {
         SDL_Rect rect;
