@@ -4,21 +4,21 @@ namespace BloodSword
 {
     int Main(int argc, char **argv)
     {
+        auto graphics = Graphics::Initialize("Blood Sword");
+
         Engine::InitializeRNG();
 
-        auto Screen = Graphics::Initialize("Blood Sword");
-
-        Fonts::Load("bloodsword.json");
+        Fonts::Load("font-settings.json");
 
         Asset::Load("assets.json");
 
-        Test::Render(Screen);
+        Test::Render(graphics);
 
         Asset::Unload();
 
         Fonts::Free();
 
-        Graphics::Quit(Screen);
+        Graphics::Quit(graphics);
 
         return 0;
     }
