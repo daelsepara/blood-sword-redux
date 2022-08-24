@@ -22,7 +22,7 @@ namespace BloodSword::Test
             auto s = 8;
 
             // sprites
-            std::vector<Graphics::SceneElements> Scene = {
+            std::vector<Graphics::SceneElements> sprites = {
                 {Graphics::SceneElements(Asset::Get(Asset::Type::WARRIOR), x, y)},
                 {Graphics::SceneElements(Asset::Get(Asset::Type::TRICKSTER), x + w + s, y)},
                 {Graphics::SceneElements(Asset::Get(Asset::Type::SAGE), x + 2 * (w + s), y)},
@@ -34,11 +34,11 @@ namespace BloodSword::Test
 
             auto text = Graphics::CreateText(Text.c_str(), Fonts::Normal, {96, 96, 96, 255}, TTF_STYLE_NORMAL, 8 * (w + s) - s);
 
-            Scene.push_back(Graphics::SceneElements(text, x + 4 * (w + s), y));
+            sprites.push_back(Graphics::SceneElements(text, x + 4 * (w + s), y));
 
-            Graphics::Scene TestScene = Graphics::Scene(Scene, 0);
+            Graphics::Scene scene = Graphics::Scene(sprites, 0);
 
-            Input::WaitForNext(graphics, TestScene);
+            Input::WaitForNext(graphics, scene);
 
             SDL_FreeSurface(text);
 
@@ -48,6 +48,30 @@ namespace BloodSword::Test
 
     void Controls(Graphics::Base &graphics)
     {
+        if (graphics.Renderer)
+        {
+            auto x = 128;
+            auto y = 64;
+            auto w = 64;
+            auto h = 64;
+            auto s = 16;
+
+            // sprites
+            std::vector<Graphics::SceneElements> sprites = {
+                {Graphics::SceneElements(Asset::Get(Asset::Type::WARRIOR), x, y)},
+                {Graphics::SceneElements(Asset::Get(Asset::Type::TRICKSTER), x + w + s, y)},
+                {Graphics::SceneElements(Asset::Get(Asset::Type::SAGE), x + 2 * (w + s), y)},
+                {Graphics::SceneElements(Asset::Get(Asset::Type::ENCHANTER), x + 3 * (w + s), y)},
+            };
+
+            std::vector<Controls::Base> controls = {
+                Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 0, x, y, w, h, 0xFF606060),
+                Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 1, x + w + s, y, w, h, 0xFF606060),
+                Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 2, x + 2 * (w + s), y, w, h, 0xFF606060),
+                Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 3, x + 3 * (w + s), y, w, h, 0xFF606060)};
+
+            auto input = Controls::User();
+        }
     }
 }
 

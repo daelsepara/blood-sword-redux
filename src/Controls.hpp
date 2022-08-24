@@ -88,6 +88,31 @@ namespace BloodSword::Controls
 
         // color of border when hightlighted
         Uint32 Highlight;
+
+        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
+        {
+            this->Type = type;
+
+            this->ID = id;
+
+            this->Left = left;
+
+            this->Right = right;
+
+            this->Up = up;
+
+            this->Down = down;
+
+            this->X = x;
+
+            this->Y = y;
+
+            this->W = w;
+
+            this->H = h;
+
+            this->Highlight = highlight;
+        }
     };
 
     // user input
@@ -133,6 +158,10 @@ namespace BloodSword::Controls
             this->Selected = selected;
 
             this->Current = current;
+        }
+
+        User()
+        {
         }
     };
 }
