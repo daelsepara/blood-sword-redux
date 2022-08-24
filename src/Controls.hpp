@@ -119,9 +119,9 @@ namespace BloodSword::Controls
     class User
     {
     public:
-        int Selected = -1;
-
         int Current = -1;
+
+        bool Selected = false;
 
         bool Up = false;
 
@@ -129,11 +129,13 @@ namespace BloodSword::Controls
 
         bool Hold = false;
 
-        User(int selected, int current, bool up, bool down, bool hold)
-        {
-            this->Selected = selected;
+        bool Quit = false;
 
+        User(int current, bool selected, bool up, bool down, bool hold)
+        {
             this->Current = current;
+
+            this->Selected = selected;
 
             this->Up = up;
 
@@ -142,22 +144,22 @@ namespace BloodSword::Controls
             this->Hold = hold;
         }
 
-        User(int selected, int current, bool up, bool down)
+        User(int current, bool selected, bool up, bool down)
         {
-            this->Selected = selected;
-
             this->Current = current;
+
+            this->Selected = selected;
 
             this->Up = up;
 
             this->Down = down;
         }
 
-        User(int selected, int current)
+        User(int current, bool selected)
         {
-            this->Selected = selected;
-
             this->Current = current;
+
+            this->Selected = selected;
         }
 
         User()

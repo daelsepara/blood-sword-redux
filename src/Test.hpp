@@ -36,7 +36,7 @@ namespace BloodSword::Test
 
             sprites.push_back(Graphics::SceneElements(text, x + 4 * (w + s), y));
 
-            Graphics::Scene scene = Graphics::Scene(sprites, 0);
+            auto scene = Graphics::Scene(sprites, 0);
 
             Input::WaitForNext(graphics, scene);
 
@@ -64,6 +64,7 @@ namespace BloodSword::Test
                 {Graphics::SceneElements(Asset::Get(Asset::Type::ENCHANTER), x + 3 * (w + s), y)},
             };
 
+            // controls
             std::vector<Controls::Base> controls = {
                 Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 0, x, y, w, h, 0xFF606060),
                 Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 1, x + w + s, y, w, h, 0xFF606060),
@@ -71,6 +72,8 @@ namespace BloodSword::Test
                 Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 3, x + 3 * (w + s), y, w, h, 0xFF606060)};
 
             auto input = Controls::User();
+
+            Graphics::Scene scene = Graphics::Scene(sprites, controls, 0);
         }
     }
 }

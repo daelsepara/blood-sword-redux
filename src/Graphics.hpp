@@ -134,6 +134,13 @@ namespace BloodSword::Graphics
             this->Set(background);
         }
 
+        Scene(std::vector<Graphics::SceneElements> elements, std::vector<Controls::Base> controls)
+        {
+            this->Set(elements);
+
+            this->Set(controls);
+        }
+
         Scene(std::vector<Graphics::SceneElements> elements, Uint32 background)
         {
             this->Set(elements);
