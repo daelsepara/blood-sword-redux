@@ -6,17 +6,11 @@ namespace BloodSword
     {
         auto graphics = Graphics::Initialize("Blood Sword");
 
-        Engine::InitializeRNG();
-
-        Fonts::Load("font-settings.json");
-
-        Asset::Load("assets.json");
+        BloodSword::Initialize();
 
         Test::Render(graphics);
 
-        Asset::Unload();
-
-        Fonts::Free();
+        BloodSword::Shutdown();
 
         Graphics::Quit(graphics);
 
