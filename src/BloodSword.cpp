@@ -8,7 +8,7 @@ namespace BloodSword
 
         BloodSword::Initialize();
 
-        Test::Render(graphics);
+        Test::Controls(graphics);
 
         BloodSword::Shutdown();
 

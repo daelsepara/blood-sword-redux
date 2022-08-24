@@ -84,7 +84,7 @@ namespace BloodSword::Controls
         int W = 0;
         int H = 0;
 
-        int Pixels = 0;
+        int Pixels = 2;
 
         // color of border when hightlighted
         Uint32 Highlight;
