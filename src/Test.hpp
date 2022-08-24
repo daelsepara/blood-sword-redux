@@ -30,12 +30,17 @@ namespace BloodSword::Test
 
             // text sprites
             auto text = Graphics::CreateText("Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, {96, 96, 96, 255}, TTF_STYLE_NORMAL, 8 * (w + s) - s);
-            auto bloodsword = Graphics::SceneElements(text, x + 4 * (w + s), y);
+            auto text_sprite = Graphics::SceneElements(text, x + 4 * (w + s), y);
 
             auto warrior_text = Graphics::CreateText("You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, {255, 255, 255, 255}, TTF_STYLE_NORMAL, 8 * (w + s) - s);
             auto trickster_text = Graphics::CreateText("Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, {255, 255, 255, 255}, TTF_STYLE_NORMAL, 8 * (w + s) - s);
             auto sage_text = Graphics::CreateText("Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, {255, 255, 255, 255}, TTF_STYLE_NORMAL, 8 * (w + s) - s);
             auto enchanter_text = Graphics::CreateText("Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, {255, 255, 255, 255}, TTF_STYLE_NORMAL, 8 * (w + s) - s);
+
+            auto warrior_sprite = Graphics::SceneElements(warrior_text, x + 4 * (w + s), y);
+            auto trickster_sprite = Graphics::SceneElements(trickster_text, x + 4 * (w + s), y);
+            auto sage_sprite = Graphics::SceneElements(sage_text, x + 4 * (w + s), y);
+            auto enchanter_sprite = Graphics::SceneElements(enchanter_text, x + 4 * (w + s), y);
 
             // controls
             std::vector<Controls::Base> controls = {
@@ -43,11 +48,6 @@ namespace BloodSword::Test
                 Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 1, x + w + s, y, w, h, 0xFF606060),
                 Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 2, x + 2 * (w + s), y, w, h, 0xFF606060),
                 Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 3, x + 3 * (w + s), y, w, h, 0xFF606060)};
-
-            auto warrior_control = Graphics::SceneElements(warrior_text, x + 4 * (w + s), y);
-            auto trickster_control = Graphics::SceneElements(trickster_text, x + 4 * (w + s), y);
-            auto sage_control = Graphics::SceneElements(sage_text, x + 4 * (w + s), y);
-            auto enchanter_control = Graphics::SceneElements(enchanter_text, x + 4 * (w + s), y);
 
             auto sprites = std::vector<Graphics::SceneElements>();
 
@@ -66,24 +66,24 @@ namespace BloodSword::Test
                     switch (input.Current)
                     {
                     case 0:
-                        sprites.push_back(warrior_control);
+                        sprites.push_back(warrior_sprite);
                         break;
                     case 1:
-                        sprites.push_back(trickster_control);
+                        sprites.push_back(trickster_sprite);
                         break;
                     case 2:
-                        sprites.push_back(sage_control);
+                        sprites.push_back(sage_sprite);
                         break;
                     case 3:
-                        sprites.push_back(enchanter_control);
+                        sprites.push_back(enchanter_sprite);
                         break;
                     default:
-                        sprites.push_back(bloodsword);
+                        sprites.push_back(text_sprite);
                     }
                 }
                 else
                 {
-                    sprites.push_back(bloodsword);
+                    sprites.push_back(text_sprite);
                 }
 
                 Graphics::Scene scene = Graphics::Scene(sprites, controls, 0);
