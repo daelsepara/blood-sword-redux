@@ -82,7 +82,10 @@ namespace BloodSword::Test
 
             Graphics::Scene scene = Graphics::Scene(sprites, controls, 0);
 
-            input = Input::WaitForInput(graphics, scene, input);
+            while(!input.Selected)
+            {
+                input = Input::WaitForInput(graphics, scene, input);
+            }
 
             SDL_FreeSurface(text);
 
