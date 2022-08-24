@@ -289,14 +289,14 @@ namespace BloodSword::Graphics
         }
     }
 
-    // base render function
-    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset, int w, int h)
+    // base render texture function
+    void Render(Base &graphics, SDL_Texture *texture, int textw, int texth, int x, int y, int bounds, int offset, int w, int h)
     {
-        if (graphics.Renderer && image)
+        if (graphics.Renderer && texture)
         {
             SDL_Rect src;
-            src.w = image->w;
-            src.h = std::min(image->h, bounds);
+            src.w = textw;
+            src.h = std::min(texth, bounds);
             src.y = offset;
             src.x = 0;
 
@@ -306,11 +306,20 @@ namespace BloodSword::Graphics
             dst.x = x;
             dst.y = y;
 
+            SDL_RenderCopy(graphics.Renderer, texture, &src, &dst);
+        }
+    }
+
+    // base render surface function
+    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset, int w, int h)
+    {
+        if (graphics.Renderer && image)
+        {
             auto texture = SDL_CreateTextureFromSurface(graphics.Renderer, image);
 
             if (texture)
             {
-                SDL_RenderCopy(graphics.Renderer, texture, &src, &dst);
+                Graphics::Render(graphics, texture, image->w, image->h, x, y, bounds, offset, w, h);
 
                 SDL_DestroyTexture(texture);
 
