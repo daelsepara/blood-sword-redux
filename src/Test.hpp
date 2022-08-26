@@ -92,17 +92,11 @@ namespace BloodSword::Test
                 input = Input::WaitForInput(graphics, scene, input);
             }
 
-            SDL_FreeSurface(enchanter_text);
-            SDL_FreeSurface(sage_text);
-            SDL_FreeSurface(trickster_text);
-            SDL_FreeSurface(warrior_text);
-            SDL_FreeSurface(text);
-
-            enchanter_text = NULL;
-            sage_text = NULL;
-            trickster_text = NULL;
-            warrior_text = NULL;
-            text = NULL;
+            Graphics::Free(&enchanter_text);
+            Graphics::Free(&sage_text);
+            Graphics::Free(&trickster_text);
+            Graphics::Free(&warrior_text);
+            Graphics::Free(&text);
         }
     }
 }

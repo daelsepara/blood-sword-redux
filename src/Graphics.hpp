@@ -289,6 +289,22 @@ namespace BloodSword::Graphics
         }
     }
 
+    // free surface
+    void Free(SDL_Surface **surface)
+    {
+        SDL_FreeSurface(*surface);
+
+        *surface = NULL;
+    }
+
+    // free texture
+    void Free(SDL_Texture **texture)
+    {
+        SDL_DestroyTexture(*texture);
+
+        *texture = NULL;
+    }
+
     // base render texture function
     void Render(Base &graphics, SDL_Texture *texture, int textw, int texth, int x, int y, int bounds, int offset, int w, int h)
     {
@@ -321,9 +337,7 @@ namespace BloodSword::Graphics
             {
                 Graphics::Render(graphics, texture, image->w, image->h, x, y, bounds, offset, w, h);
 
-                SDL_DestroyTexture(texture);
-
-                texture = NULL;
+                Graphics::Free(&texture);
             }
         }
     }
