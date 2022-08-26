@@ -203,9 +203,9 @@ namespace BloodSword::Graphics
 
             SDL_GetCurrentDisplayMode(0, &mode);
 
-            graphics.Width = (mode.w);
+            graphics.Width = mode.w;
 
-            graphics.Height = (mode.h);
+            graphics.Height = mode.h;
 
             SDL_CreateWindowAndRenderer(graphics.Width, graphics.Height, (SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC), &graphics.Window, &graphics.Renderer);
 
@@ -299,7 +299,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    // free texture
+    // free surface
     void Free(SDL_Surface **surface)
     {
         SDL_FreeSurface(*surface);
