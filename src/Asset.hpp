@@ -30,13 +30,13 @@ namespace BloodSword::Asset
         {Type::ENCHANTER, "ENCHANTER"},
     };
 
-    typedef std::pair<Asset::Type, SDL_Surface *> Surface;
-    
+    typedef std::pair<Asset::Type, SDL_Texture *> Texture;
+
     typedef std::pair<Asset::Type, std::string> Location;
 
     std::vector<Asset::Location> Path = {};
-    
-    std::vector<Asset::Surface> Graphics = {};
+
+    std::vector<Asset::Texture> Graphics = {};
 
     Asset::Type GetType(const char *asset)
     {
@@ -72,7 +72,7 @@ namespace BloodSword::Asset
             {
                 if (Asset::Graphics[i].second && Asset::Graphics[i].second)
                 {
-                    SDL_FreeSurface(Asset::Graphics[i].second);
+                    SDL_DestroyTexture(Asset::Graphics[i].second);
 
                     Asset::Graphics[i].second = NULL;
                 }
@@ -84,7 +84,7 @@ namespace BloodSword::Asset
         }
     }
 
-    bool Load(const char *assets)
+    bool Load(SDL_Renderer *renderer, const char *assets)
     {
         auto result = false;
 
@@ -114,9 +114,16 @@ namespace BloodSword::Asset
 
                         if (surface)
                         {
-                            Asset::Path.push_back(std::make_pair(object, path));
+                            auto texture = SDL_CreateTextureFromSurface(renderer, surface);
 
-                            Asset::Graphics.push_back(std::make_pair(object, surface));
+                            if (texture)
+                            {
+                                Asset::Path.push_back(std::make_pair(object, path));
+
+                                Asset::Graphics.push_back(std::make_pair(object, texture));
+                            }
+
+                            SDL_FreeSurface(surface);
                         }
                     }
                 }
@@ -130,9 +137,9 @@ namespace BloodSword::Asset
         return result;
     }
 
-    SDL_Surface *Get(Asset::Type asset, Uint8 alpha)
+    SDL_Texture *Get(Asset::Type asset, Uint8 alpha)
     {
-        SDL_Surface *surface = NULL;
+        SDL_Texture *texture = NULL;
 
         if (Asset::Graphics.size() > 0)
         {
@@ -140,41 +147,24 @@ namespace BloodSword::Asset
             {
                 if (Asset::Graphics[i].first == asset)
                 {
-                    surface = Asset::Graphics[i].second;
+                    texture = Asset::Graphics[i].second;
 
                     break;
                 }
             }
         }
 
-        if (surface)
+        if (texture)
         {
-            SDL_SetSurfaceColorMod(surface, alpha, alpha, alpha);
+            SDL_SetTextureColorMod(texture, alpha, alpha, alpha);
         }
 
-        return surface;
+        return texture;
     }
 
-    SDL_Surface *Get(Asset::Type asset)
+    SDL_Texture *Get(Asset::Type asset)
     {
         return Asset::Get(asset, 0xFF);
-    }
-
-    SDL_Surface *Copy(SDL_Surface *Surface)
-    {
-        return Surface ? SDL_ConvertSurface(Surface, Surface->format, 0) : NULL;
-    }
-
-    SDL_Surface *Copy(SDL_Surface *Surface, Uint8 alpha)
-    {
-        auto surface = Asset::Copy(Surface);
-
-        if (surface)
-        {
-            SDL_SetSurfaceColorMod(surface, alpha, alpha, alpha);
-        }
-
-        return surface;
     }
 }
 

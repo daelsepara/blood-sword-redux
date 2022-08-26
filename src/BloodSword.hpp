@@ -16,20 +16,22 @@ namespace BloodSword
     const int MajorVersion = 0;
     const int MinorVersion = 1;
 
-    void Initialize()
+    void Initialize(Graphics::Base &graphics)
     {
         Engine::InitializeRNG();
 
-        Asset::Load("assets.json");
+        Asset::Load(graphics.Renderer, "assets.json");
 
         Fonts::Load("font-settings.json");
     }
-    
-    void Shutdown()
+
+    void Shutdown(Graphics::Base &graphics)
     {
         Fonts::Free();
 
         Asset::Unload();
+
+        Graphics::Quit(graphics);
     }
 }
 

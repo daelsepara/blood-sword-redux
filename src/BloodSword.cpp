@@ -6,13 +6,11 @@ namespace BloodSword
     {
         auto graphics = Graphics::Initialize("Blood Sword");
 
-        BloodSword::Initialize();
+        BloodSword::Initialize(graphics);
 
         Test::Controls(graphics);
 
-        BloodSword::Shutdown();
-
-        Graphics::Quit(graphics);
+        BloodSword::Shutdown(graphics);
 
         return 0;
     }

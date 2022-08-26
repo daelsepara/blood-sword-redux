@@ -23,7 +23,7 @@ namespace BloodSword::Graphics
     class SceneElements
     {
     public:
-        SDL_Surface *Surface;
+        SDL_Texture *Texture;
 
         int X = 0;
 
@@ -37,11 +37,11 @@ namespace BloodSword::Graphics
 
         int H = 0;
 
-        void Initialize(SDL_Surface *surface, int x, int y, int bounds, int offset, int w, int h)
+        void Initialize(SDL_Texture *surface, int x, int y, int bounds, int offset, int w, int h)
         {
             if (surface)
             {
-                Surface = surface;
+                Texture = surface;
 
                 X = x;
 
@@ -57,27 +57,37 @@ namespace BloodSword::Graphics
             }
         }
 
-        SceneElements(SDL_Surface *surface, int x, int y, int bounds, int offset, int w, int h)
+        SceneElements(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
         {
-            if (surface)
+            if (texture)
             {
-                this->Initialize(surface, x, y, bounds, offset, w, h);
+                this->Initialize(texture, x, y, bounds, offset, w, h);
             }
         }
 
-        SceneElements(SDL_Surface *surface, int x, int y, int bounds, int offset)
+        SceneElements(SDL_Texture *texture, int x, int y, int bounds, int offset)
         {
-            if (surface)
+            if (texture)
             {
-                this->Initialize(surface, x, y, bounds, offset, surface->w, bounds);
+                auto texture_w = 0;
+                auto texture_h = 0;
+
+                SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
+
+                this->Initialize(texture, x, y, bounds, offset, texture_w, bounds);
             }
         }
 
-        SceneElements(SDL_Surface *surface, int x, int y)
+        SceneElements(SDL_Texture *texture, int x, int y)
         {
-            if (surface)
+            if (texture)
             {
-                this->Initialize(surface, x, y, surface->h, 0, surface->w, surface->h);
+                auto texture_w = 0;
+                auto texture_h = 0;
+
+                SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
+
+                this->Initialize(texture, x, y, texture_h, 0, texture_w, texture_h);
             }
         }
     };
@@ -289,7 +299,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    // free surface
+    // free texture
     void Free(SDL_Surface **surface)
     {
         SDL_FreeSurface(*surface);
@@ -306,13 +316,13 @@ namespace BloodSword::Graphics
     }
 
     // base render texture function
-    void Render(Base &graphics, SDL_Texture *texture, int textw, int texth, int x, int y, int bounds, int offset, int w, int h)
+    void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h)
     {
         if (graphics.Renderer && texture)
         {
             SDL_Rect src;
-            src.w = textw;
-            src.h = std::min(texth, bounds);
+            src.w = texture_w;
+            src.h = std::min(texture_h, bounds);
             src.y = offset;
             src.x = 0;
 
@@ -326,37 +336,45 @@ namespace BloodSword::Graphics
         }
     }
 
-    // base render surface function
-    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset, int w, int h)
+    void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
     {
-        if (graphics.Renderer && image)
+        if (graphics.Renderer && texture)
         {
-            auto texture = SDL_CreateTextureFromSurface(graphics.Renderer, image);
+            auto texture_w = 0;
 
-            if (texture)
-            {
-                Graphics::Render(graphics, texture, image->w, image->h, x, y, bounds, offset, w, h);
+            auto texture_h = 0;
 
-                Graphics::Free(&texture);
-            }
+            SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
+
+            Graphics::Render(graphics, texture, texture_w, texture_h, x, y, bounds, offset, w, h);
         }
     }
 
-    // render a portion of the image
-    void Render(Base &graphics, SDL_Surface *image, int x, int y, int bounds, int offset)
+    // render a portion of the texture
+    void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset)
     {
-        if (graphics.Renderer && image)
+        if (graphics.Renderer && texture)
         {
-            Graphics::Render(graphics, image, x, y, std::min(image->h, bounds), offset, image->w, std::min(image->h, bounds));
+            auto texture_w = 0;
+
+            auto texture_h = 0;
+
+            SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
+
+            Graphics::Render(graphics, texture, x, y, std::min(texture_h, bounds), offset, texture_w, std::min(texture_h, bounds));
         }
     }
 
-    // render image at location
-    void Render(Base &graphics, SDL_Surface *image, int x, int y)
+    // render texture at location
+    void Render(Base &graphics, SDL_Texture *texture, int x, int y)
     {
-        if (image && graphics.Renderer)
+        if (texture && graphics.Renderer)
         {
-            Graphics::Render(graphics, image, x, y, image->h, 0);
+            auto texture_h = 0;
+
+            SDL_QueryTexture(texture, NULL, NULL, NULL, &texture_h);
+
+            Graphics::Render(graphics, texture, x, y, texture_h, 0);
         }
     }
 
@@ -370,7 +388,7 @@ namespace BloodSword::Graphics
             {
                 auto element = scene.Elements.at(i);
 
-                Graphics::Render(graphics, element.Surface, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H);
+                Graphics::Render(graphics, element.Texture, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H);
             }
         }
     }
@@ -393,7 +411,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    SDL_Surface *CreateText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
+    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
     {
         SDL_Surface *surface = NULL;
 
@@ -407,9 +425,25 @@ namespace BloodSword::Graphics
         return surface;
     }
 
-    SDL_Surface *CreateText(const char *text, TTF_Font *font, SDL_Color textColor, int style)
+    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style)
     {
-        return Graphics::CreateText(text, font, textColor, style, 0);
+        return Graphics::CreateSurfaceText(text, font, textColor, style, 0);
+    }
+
+    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
+    {
+        SDL_Texture *texture = NULL;
+
+        auto surface = Graphics::CreateSurfaceText(text, font, textColor, style, wrap);
+
+        if (surface)
+        {
+            texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
+
+            Graphics::Free(&surface);
+        }
+
+        return texture;
     }
 
     // close graphics subsystem
