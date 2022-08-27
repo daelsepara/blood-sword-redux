@@ -10,18 +10,10 @@
 #include <SDL_image.h>
 
 #include "nlohmann/json.hpp"
+#include "AssetTypes.hpp"
 
 namespace BloodSword::Asset
 {
-    enum class Type
-    {
-        NONE = -1,
-        WARRIOR,
-        TRICKSTER,
-        SAGE,
-        ENCHANTER
-    };
-
     std::map<Asset::Type, const char *> TypeMapping = {
         {Type::NONE, "NONE"},
         {Type::WARRIOR, "WARRIOR"},

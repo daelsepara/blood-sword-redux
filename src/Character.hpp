@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include "Asset.hpp"
+#include "AssetTypes.hpp"
 #include "Attribute.hpp"
 #include "Item.hpp"
 
@@ -44,7 +44,8 @@ namespace BloodSword::Character
     {
         Defending,
         Fleeing,
-        Enthralled
+        Enthralled,
+        Away
     };
 
     class Base

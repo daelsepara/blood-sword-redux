@@ -4,22 +4,11 @@
 #include <vector>
 
 #include "Asset.hpp"
+#include "MapObjects.hpp"
 
 namespace BloodSword::Map
 {
     typedef std::pair<int, int> Point;
-
-    enum class Object
-    {
-        None = -1,
-        Player,
-        Enemy,
-        Passable,
-        EnemyPassable,
-        Obstacle,
-        TemporaryObstacle,
-        Exit
-    };
 
     class Tile
     {
@@ -100,6 +89,115 @@ namespace BloodSword::Map
         int DrawX = 0;
 
         int DrawY = 0;
+
+        void Initialize(int sizex, int sizey)
+        {
+            this->Width = sizex;
+
+            this->Height = sizey;
+
+            this->Tiles.clear();
+
+            this->Tiles.resize(sizey);
+
+            for (auto i = 0; i < sizey; i++)
+            {
+                this->Tiles[i] = std::vector<Map::Tile>(sizex);
+            }
+        }
+
+        Base()
+        {
+        }
+
+        Base(int sizex, int sizey)
+        {
+            Initialize(sizex, sizey);
+        }
+
+        void Put(int x, int y, Map::Object object, int id)
+        {
+            if (x >= 0 && x < Width && y >= 0 && y < Height)
+            {
+                this->Tiles[y][x].Occupant = object;
+
+                this->Tiles[y][x].Id = id + 1;
+            }
+        }
+
+        void Put(int x, int y, Map::Object type, Asset::Type asset)
+        {
+            if (x >= 0 && x < Width && y >= 0 && y < Height)
+            {
+                this->Tiles[y][x].Occupant = Map::Object::None;
+                this->Tiles[y][x].Type = type;
+                this->Tiles[y][x].Asset = asset;
+            }
+        }
+
+        // load from json file
+        bool Load(const char *filename)
+        {
+            auto LoadError = false;
+
+            std::ifstream file(filename);
+
+            if (file.good())
+            {
+                auto data = nlohmann::json::parse(file);
+
+                this->Width = !data["width"].is_null() ? (int)data["width"] : 0;
+
+                this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
+
+                auto LoadError = false;
+
+                if (this->Width > 0 && this->Height > 0)
+                {
+                    this->Initialize(this->Width, this->Height);
+
+                    if (!data["tiles"].is_null() && data["tiles"].is_array() && data["tiles"].size() == this->Height)
+                    {
+                        for (auto y = 0; y < this->Height; y++)
+                        {
+                            if (!data["tiles"][y].is_null() && data["tiles"][y].is_array() && data["tiles"][y].size() == this->Width)
+                            {
+                                for (auto x = 0; x < this->Width; x++)
+                                {
+                                    this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? static_cast<Map::Object>((int)data["tiles"][y][x]["type"]) : Map::Object::None;
+                                    this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? static_cast<Map::Object>((int)data["tiles"][y][x]["occupant"]) : Map::Object::None;
+                                    this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
+                                    this->Tiles[y][x].Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : 0;
+                                    this->Tiles[y][x].Lifetime = !data["tiles"][y][x]["lifetime"].is_null() ? (int)data["tiles"][y][x]["lifetime"] : -1;
+                                }
+                            }
+                            else
+                            {
+                                LoadError = true;
+
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        LoadError = true;
+                    }
+                }
+                else
+                {
+                    LoadError = true;
+                }
+
+                file.close();
+            }
+            else
+            {
+                LoadError = true;
+            }
+
+            return !LoadError;
+        }
     };
 }
 
