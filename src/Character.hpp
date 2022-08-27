@@ -9,19 +9,7 @@
 #include "Attribute.hpp"
 #include "CharacterTypes.hpp"
 #include "Item.hpp"
-
-namespace BloodSword::Skills
-{
-    enum class Type
-    {
-        None = -1,
-        Archery,
-        Dodging,
-        QuarterStaff,
-        Healing,
-        Spells
-    };
-}
+#include "Skills.hpp"
 
 namespace BloodSword::Character
 {
@@ -344,20 +332,6 @@ namespace BloodSword::Character
             auto result = this->Find(item, property, attribute);
 
             return (result >= 0 && result < this->Items.size());
-        }
-    };
-}
-
-namespace BloodSword::Party
-{
-    class Base
-    {
-    public:
-        std::vector<Character::Base> Members = {};
-
-        Base(std::vector<Character::Base> members)
-        {
-            Members = members;
         }
     };
 }

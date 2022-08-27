@@ -6,6 +6,7 @@
 #include "Character.hpp"
 #include "Item.hpp"
 #include "Map.hpp"
+#include "Party.hpp"
 
 namespace BloodSword::Engine
 {
