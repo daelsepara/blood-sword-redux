@@ -7,6 +7,7 @@
 
 #include "AssetTypes.hpp"
 #include "Attribute.hpp"
+#include "CharacterTypes.hpp"
 #include "Item.hpp"
 
 namespace BloodSword::Skills
@@ -29,15 +30,6 @@ namespace BloodSword::Character
         None = -1,
         Player,
         NPC
-    };
-
-    enum class Type
-    {
-        None = -1,
-        Warrior,
-        Trickster,
-        Sage,
-        Enchanter
     };
 
     enum class Status
