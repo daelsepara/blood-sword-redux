@@ -150,7 +150,7 @@ namespace BloodSword::Map
 
                 this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
 
-                auto LoadError = false;
+                LoadError = false;
 
                 if (this->Width > 0 && this->Height > 0)
                 {
