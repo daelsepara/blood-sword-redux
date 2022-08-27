@@ -1,12 +1,12 @@
 #ifndef __ENGINE_HPP__
 #define __ENGINE_HPP__
 
-#include "Random.hpp"
 #include "Attribute.hpp"
 #include "Character.hpp"
 #include "Item.hpp"
 #include "Map.hpp"
 #include "Party.hpp"
+#include "Random.hpp"
 
 namespace BloodSword::Engine
 {

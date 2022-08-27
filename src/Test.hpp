@@ -8,6 +8,7 @@
 #include "Fonts.hpp"
 #include "Graphics.hpp"
 #include "Input.hpp"
+#include "Map.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test
@@ -97,6 +98,14 @@ namespace BloodSword::Test
             Graphics::Free(&trickster_text);
             Graphics::Free(&warrior_text);
             Graphics::Free(&text);
+        }
+    }
+
+    void Map(Graphics::Base &graphics)
+    {
+        if (graphics.Renderer)
+        {
+            auto map = Map::Base();
         }
     }
 }
