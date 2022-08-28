@@ -164,10 +164,10 @@ namespace BloodSword::Map
                             {
                                 for (auto x = 0; x < this->Width; x++)
                                 {
-                                    this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? static_cast<Map::Object>((int)data["tiles"][y][x]["type"]) : Map::Object::None;
-                                    this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? static_cast<Map::Object>((int)data["tiles"][y][x]["occupant"]) : Map::Object::None;
-                                    this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
                                     this->Tiles[y][x].Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : 0;
+                                    this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::None;
+                                    this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::None;
+                                    this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
                                     this->Tiles[y][x].Lifetime = !data["tiles"][y][x]["lifetime"].is_null() ? (int)data["tiles"][y][x]["lifetime"] : -1;
                                 }
                             }
