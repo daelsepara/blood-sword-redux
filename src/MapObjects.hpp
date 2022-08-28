@@ -8,30 +8,30 @@ namespace BloodSword::Map
 {
     enum class Object
     {
-        None = -1,
-        Player,
-        Enemy,
-        Passable,
-        EnemyPassable,
-        Obstacle,
-        TemporaryObstacle,
-        Exit
+        NONE = -1,
+        PLAYER,
+        ENEMY,
+        PASSABLE,
+        ENEMY_PASSABLE,
+        OBSTACLE,
+        TEMPORARY_OBSTACLE,
+        EXIT
     };
 
     std::map<Map::Object, const char *> OjectMapping = {
-        {Object::None, "NONE"},
-        {Object::Player, "PLAYER"},
-        {Object::Enemy, "ENEMY"},
-        {Object::Passable, "PASSABLE"},
-        {Object::EnemyPassable, "ENEMY_PASSABLE"},
-        {Object::Obstacle, "OBSTACLE"},
-        {Object::TemporaryObstacle, "TEMPORARY_OBSTACLE"},
-        {Object::Exit, "EXIT"},
+        {Object::NONE, "NONE"},
+        {Object::PLAYER, "PLAYER"},
+        {Object::ENEMY, "ENEMY"},
+        {Object::PASSABLE, "PASSABLE"},
+        {Object::ENEMY_PASSABLE, "ENEMY_PASSABLE"},
+        {Object::OBSTACLE, "OBSTACLE"},
+        {Object::TEMPORARY_OBSTACLE, "TEMPORARY_OBSTACLE"},
+        {Object::EXIT, "EXIT"},
     };
 
     Map::Object GetObject(const char *object)
     {
-        auto result = Map::Object::None;
+        auto result = Map::Object::NONE;
 
         auto objects = Map::OjectMapping.begin();
 
