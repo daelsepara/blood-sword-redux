@@ -2,7 +2,6 @@
 #define __ASSET_HPP__
 
 #include <fstream>
-#include <map>
 #include <string>
 #include <vector>
 
@@ -14,14 +13,6 @@
 
 namespace BloodSword::Asset
 {
-    std::map<Asset::Type, const char *> TypeMapping = {
-        {Type::NONE, "NONE"},
-        {Type::WARRIOR, "WARRIOR"},
-        {Type::TRICKSTER, "TRICKSTER"},
-        {Type::SAGE, "SAGE"},
-        {Type::ENCHANTER, "ENCHANTER"},
-    };
-
     typedef std::pair<Asset::Type, SDL_Texture *> Texture;
 
     typedef std::pair<Asset::Type, std::string> Location;
@@ -29,32 +20,6 @@ namespace BloodSword::Asset
     std::vector<Asset::Location> Path = {};
 
     std::vector<Asset::Texture> Graphics = {};
-
-    Asset::Type GetType(const char *asset)
-    {
-        auto result = Asset::Type::NONE;
-
-        auto types = Asset::TypeMapping.begin();
-
-        while (types != Asset::TypeMapping.end())
-        {
-            if (std::strcmp(types->second, asset) == 0)
-            {
-                result = types->first;
-
-                break;
-            }
-
-            types++;
-        }
-
-        return result;
-    }
-
-    Asset::Type GetType(std::string asset)
-    {
-        return Asset::GetType(asset.c_str());
-    }
 
     void Unload()
     {
