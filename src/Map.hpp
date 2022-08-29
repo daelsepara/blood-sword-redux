@@ -19,9 +19,11 @@ namespace BloodSword::Map
 
         Asset::Type Asset = Asset::Type::NONE;
 
+        Asset::Type TemporaryAsset = Asset::Type::NONE;
+
         int Lifetime = -1;
 
-        int Id = 0;
+        int Id = -1;
 
         bool IsEnemy()
         {
@@ -38,14 +40,14 @@ namespace BloodSword::Map
             return (this->Type == Map::Object::EXIT);
         }
 
-        bool IsBlocked()
-        {
-            return (this->Type == Map::Object::OBSTACLE || (this->Occupant == Map::Object::TEMPORARY_OBSTACLE && this->Lifetime > 0));
-        }
-
         bool IsTemporarilyBlocked()
         {
             return (this->Occupant == Map::Object::TEMPORARY_OBSTACLE && this->Lifetime > 0);
+        }
+
+        bool IsBlocked()
+        {
+            return (this->Type == Map::Object::OBSTACLE || this->IsTemporarilyBlocked());
         }
 
         bool IsOccupied()
@@ -70,7 +72,12 @@ namespace BloodSword::Map
         // map tiles
         std::vector<std::vector<Map::Tile>> Tiles = {};
 
-        // dimensions (number of tiles)
+        // dimensions (size in number of tiles)
+        int Width = 0;
+
+        int Height = 0;
+
+        // viewable size (number of tiles)
         int SizeX = 0;
 
         int SizeY = 0;
@@ -80,15 +87,13 @@ namespace BloodSword::Map
 
         int MapY = 0;
 
-        // Dimensions (size in pixels)
-        int Width = 0;
-
-        int Height = 0;
-
         // offsets (pixels, drawing)
         int DrawX = 0;
 
         int DrawY = 0;
+
+        // size of each tile (pixels)
+        int TileSize = 0;
 
         void Initialize(int sizex, int sizey)
         {
@@ -121,7 +126,7 @@ namespace BloodSword::Map
             {
                 this->Tiles[y][x].Occupant = object;
 
-                this->Tiles[y][x].Id = id + 1;
+                this->Tiles[y][x].Id = id;
             }
         }
 
@@ -168,6 +173,7 @@ namespace BloodSword::Map
                                     this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::NONE;
                                     this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::NONE;
                                     this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
+                                    this->Tiles[y][x].TemporaryAsset = !data["tiles"][y][x]["temporary_asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["temporary_asset"])) : Asset::Type::NONE;
                                     this->Tiles[y][x].Lifetime = !data["tiles"][y][x]["lifetime"].is_null() ? (int)data["tiles"][y][x]["lifetime"] : -1;
                                 }
                             }

@@ -2,8 +2,22 @@
 #define __FONTS_HPP__
 
 #include <fstream>
+
+#include <SDL.h>
 #include <SDL_ttf.h>
+
 #include "nlohmann/json.hpp"
+
+namespace BloodSword::Color
+{
+    Uint32 Active = 0xFFFFFFFF;
+    Uint32 Inactive = 0xFF606060;
+    Uint32 Highlight = 0xFFFF0000;
+
+    SDL_Color cActive = {255, 255, 255, 255};
+    SDL_Color cInactive = {96, 96, 96, 255};
+    SDL_Color cHighlight = {255, 0, 0, 255};
+}
 
 namespace BloodSword::Fonts
 {
@@ -16,9 +30,9 @@ namespace BloodSword::Fonts
         TTF_Init();
 
         Caption = TTF_OpenFont(font_ttf, caption);
-        
+
         Normal = TTF_OpenFont(font_ttf, normal);
-        
+
         Fixed = TTF_OpenFont(font_ttf, fixed);
 
         TTF_SetFontKerning(Fixed, 0);

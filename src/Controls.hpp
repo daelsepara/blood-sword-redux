@@ -63,7 +63,8 @@ namespace BloodSword::Controls
         USE,
         DROP,
         TRANSFER,
-        TAKE
+        TAKE,
+        TEMPORARY_OBSTACLE
     };
 
     class Base
