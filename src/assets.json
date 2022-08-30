@@ -15,6 +15,22 @@
         {
             "id": "TRICKSTER",
             "path": "images/players/hooded-assassin.png"
+        },
+        {
+            "id": "UP",
+            "path": "images/map/up.png"
+        },
+        {
+            "id": "DOWN",
+            "path": "images/map/down.png"
+        },
+        {
+            "id": "LEFT",
+            "path": "images/map/left.png"
+        },
+        {
+            "id": "RIGHT",
+            "path": "images/map/right.png"
         }
     ]
 }

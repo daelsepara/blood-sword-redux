@@ -175,11 +175,6 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    if (Tile.Asset != Asset::Type::NONE)
-                    {
-                        Scene.Add(Graphics::SceneElements(Asset::Get(Tile.Asset), AssetX, AssetY));
-                    }
-
                     if (Tile.IsExit())
                     {
                         ControlType = Controls::Type::MAP_EXIT;
@@ -195,6 +190,11 @@ namespace BloodSword::Interface
                     else if (Tile.IsPassableToEnemy())
                     {
                         ControlColor = Color::Highlight;
+                    }
+
+                    if (Tile.Asset != Asset::Type::NONE)
+                    {
+                        Scene.Add(Graphics::SceneElements(Asset::Get(Tile.Asset), AssetX, AssetY));
                     }
                 }
 

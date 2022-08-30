@@ -12,7 +12,11 @@ namespace BloodSword::Asset
         WARRIOR,
         TRICKSTER,
         SAGE,
-        ENCHANTER
+        ENCHANTER,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT
     };
 
     std::map<Asset::Type, const char *> TypeMapping = {
@@ -20,7 +24,11 @@ namespace BloodSword::Asset
         {Type::WARRIOR, "WARRIOR"},
         {Type::TRICKSTER, "TRICKSTER"},
         {Type::SAGE, "SAGE"},
-        {Type::ENCHANTER, "ENCHANTER"}};
+        {Type::ENCHANTER, "ENCHANTER"},
+        {Type::UP, "UP"},
+        {Type::DOWN, "DOWN"},
+        {Type::LEFT, "LEFT"},
+        {Type::RIGHT, "RIGHT"}};
 
     Asset::Type GetType(const char *asset)
     {

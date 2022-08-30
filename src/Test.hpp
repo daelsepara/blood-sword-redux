@@ -29,6 +29,10 @@ namespace BloodSword::Test
             auto trickster = Graphics::SceneElements(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
             auto sage = Graphics::SceneElements(Asset::Get(Asset::Type::SAGE), x + 2 * ws, y);
             auto enchanter = Graphics::SceneElements(Asset::Get(Asset::Type::ENCHANTER), x + 3 * ws, y);
+            auto up = Graphics::SceneElements(Asset::Get(Asset::Type::UP), x, y + ws);
+            auto down = Graphics::SceneElements(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
+            auto left = Graphics::SceneElements(Asset::Get(Asset::Type::LEFT), x + 2 * ws, y + ws);
+            auto right = Graphics::SceneElements(Asset::Get(Asset::Type::RIGHT), x + 3 * ws, y + ws);
 
             // text sprites
             auto text = Graphics::CreateText(graphics, "Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::cInactive, TTF_STYLE_NORMAL, 8 * ws - s);
@@ -46,10 +50,14 @@ namespace BloodSword::Test
 
             // controls
             std::vector<Controls::Base> controls = {
-                Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 0, x, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 1, x + w + s, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 2, x + 2 * ws, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 3, x + 3 * ws, y, w, h, Color::Highlight)};
+                Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 4, x, y, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 5, x + w + s, y, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 6, x + 2 * ws, y, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 7, x + 3 * ws, y, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::MAP_UP, 4, 4, 5, 0, 4, x, y + ws, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::MAP_DOWN, 5, 4, 6, 1, 5, x + w + s, y + ws, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + 2 * ws, y + ws, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + 3 * ws, y + ws, w, h, Color::Highlight)};
 
             auto sprites = std::vector<Graphics::SceneElements>();
 
@@ -62,6 +70,10 @@ namespace BloodSword::Test
                 sprites.push_back(trickster);
                 sprites.push_back(sage);
                 sprites.push_back(enchanter);
+                sprites.push_back(up);
+                sprites.push_back(down);
+                sprites.push_back(left);
+                sprites.push_back(right);
 
                 if (input.Current >= 0 && input.Current < controls.size())
                 {
