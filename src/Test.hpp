@@ -8,6 +8,7 @@
 #include "Fonts.hpp"
 #include "Graphics.hpp"
 #include "Input.hpp"
+#include "Interface.hpp"
 #include "Map.hpp"
 
 // framework for testing game subsystems
@@ -100,7 +101,7 @@ namespace BloodSword::Test
                     sprites.push_back(text_sprite);
                 }
 
-                Graphics::Scene scene = Graphics::Scene(sprites, controls, 0);
+                auto scene = Graphics::Scene(sprites, controls, 0);
 
                 input = Input::WaitForInput(graphics, scene, input);
             }
@@ -118,6 +119,23 @@ namespace BloodSword::Test
         if (graphics.Renderer)
         {
             auto map = Map::Base();
+
+            map.Load("maps/test.json");
+
+            auto scene = Graphics::Scene();
+
+            auto party = Party::Base();
+
+            auto enemies = Party::Base();
+
+            Interface::AddMap(map, scene, party, enemies);
+
+            auto input = Controls::User();
+
+            while (!input.Selected)
+            {
+                input = Input::WaitForInput(graphics, scene, input);
+            }
         }
     }
 }

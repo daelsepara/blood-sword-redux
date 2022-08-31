@@ -16,7 +16,9 @@ namespace BloodSword::Asset
         UP,
         DOWN,
         LEFT,
-        RIGHT
+        RIGHT,
+        WALL,
+        IMPASSABLE
     };
 
     std::map<Asset::Type, const char *> TypeMapping = {
@@ -28,7 +30,9 @@ namespace BloodSword::Asset
         {Type::UP, "UP"},
         {Type::DOWN, "DOWN"},
         {Type::LEFT, "LEFT"},
-        {Type::RIGHT, "RIGHT"}};
+        {Type::RIGHT, "RIGHT"},
+        {Type::WALL, "WALL"},
+        {Type::IMPASSABLE, "IMPASSABLE"}};
 
     Asset::Type GetType(const char *asset)
     {

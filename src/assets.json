@@ -31,6 +31,14 @@
         {
             "id": "RIGHT",
             "path": "images/map/right.png"
+        },
+        {
+            "id": "WALL",
+            "path": "images/map/brick-wall.png"
+        },
+        {
+            "id": "IMPASSABLE",
+            "path": "images/map/hexes-gray.png"
         }
     ]
 }

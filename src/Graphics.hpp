@@ -405,7 +405,7 @@ namespace BloodSword::Graphics
 
                 if (i == input.Current)
                 {
-                    Graphics::ThickRect(graphics, control.W, control.H, control.X, control.Y, control.Highlight, control.Pixels);
+                    Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
                 }
             }
         }

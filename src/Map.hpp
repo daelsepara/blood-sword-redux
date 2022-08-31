@@ -78,9 +78,9 @@ namespace BloodSword::Map
         int Height = 0;
 
         // viewable size (number of tiles)
-        int SizeX = 0;
+        int SizeX = 8;
 
-        int SizeY = 0;
+        int SizeY = 8;
 
         // offsets (navigation)
         int MapX = 0;
@@ -88,12 +88,12 @@ namespace BloodSword::Map
         int MapY = 0;
 
         // offsets (pixels, drawing)
-        int DrawX = 0;
+        int DrawX = 128;
 
-        int DrawY = 0;
+        int DrawY = 128;
 
         // size of each tile (pixels)
-        int TileSize = 0;
+        int TileSize = 64;
 
         void Initialize(int sizex, int sizey)
         {
@@ -155,6 +155,8 @@ namespace BloodSword::Map
 
                 this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
 
+                this->TileSize = !data["tilesize"].is_null() ? (int)data["tilesize"] : 0;
+
                 LoadError = false;
 
                 if (this->Width > 0 && this->Height > 0)
@@ -169,7 +171,7 @@ namespace BloodSword::Map
                             {
                                 for (auto x = 0; x < this->Width; x++)
                                 {
-                                    this->Tiles[y][x].Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : 0;
+                                    this->Tiles[y][x].Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : -1;
                                     this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::NONE;
                                     this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::NONE;
                                     this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
