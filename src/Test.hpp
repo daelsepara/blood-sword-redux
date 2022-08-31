@@ -128,12 +128,14 @@ namespace BloodSword::Test
 
             auto enemies = Party::Base();
 
-            Interface::AddMap(map, scene, party, enemies);
-
             auto input = Controls::User();
 
             while (!input.Selected)
             {
+                auto scene = Graphics::Scene();
+                
+                Interface::AddMap(map, scene, party, enemies);
+
                 input = Input::WaitForInput(graphics, scene, input);
             }
         }

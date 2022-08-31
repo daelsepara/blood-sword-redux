@@ -199,6 +199,7 @@ namespace BloodSword::Interface
                     auto dn = CtrlY < Map.SizeY - 1 ? id + Map.SizeX + 2 : id;
 
                     auto MapX = Map.DrawX + Map.SizeX * Map.TileSize;
+
                     auto MapY = AssetY;
 
                     Scene.Add(Controls::Base(Controls::Type::MAP_RIGHT, id, lt, rt, up, dn, MapX, MapY, Map.TileSize, Map.TileSize, Color::Background));
