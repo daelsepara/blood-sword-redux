@@ -18,7 +18,7 @@ namespace BloodSword::Map
         EXIT
     };
 
-    std::map<Map::Object, const char *> OjectMapping = {
+    std::map<Map::Object, const char *> ObjectMapping = {
         {Object::NONE, "NONE"},
         {Object::PLAYER, "PLAYER"},
         {Object::ENEMY, "ENEMY"},
@@ -32,9 +32,9 @@ namespace BloodSword::Map
     {
         auto result = Map::Object::NONE;
 
-        auto objects = Map::OjectMapping.begin();
+        auto objects = Map::ObjectMapping.begin();
 
-        while (objects != Map::OjectMapping.end())
+        while (objects != Map::ObjectMapping.end())
         {
             if (std::strcmp(objects->second, object) == 0)
             {

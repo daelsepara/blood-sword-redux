@@ -47,9 +47,9 @@ namespace BloodSword::Engine
     {
         auto value = 0;
 
-        if (character.Has(item, Item::Property::Equipped))
+        if (character.Has(item, Item::Property::EQUIPPED))
         {
-            auto result = character.Find(item, Item::Property::Equipped, attribute);
+            auto result = character.Find(item, Item::Property::EQUIPPED, attribute);
 
             value += character.Items[result].Modifier(attribute);
         }

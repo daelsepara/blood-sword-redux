@@ -265,7 +265,7 @@ namespace BloodSword::Character
 
             for (auto i = 0; i < this->Items.size(); i++)
             {
-                if (this->Items[i].Type == container && this->Items[i].Has(Item::Property::Container) && this->Items[i].Has(item, quantity))
+                if (this->Items[i].Type == container && this->Items[i].Has(Item::Property::CONTAINER) && this->Items[i].Has(item, quantity))
                 {
                     result = i;
 

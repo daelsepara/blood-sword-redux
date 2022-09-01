@@ -11,35 +11,43 @@ namespace BloodSword::Item
 {
     enum class Property
     {
-        Normal = 0,
-        Weapon,
-        Armour,
-        Container,
-        Equipped
+        NORMAL = 0,
+        WEAPON,
+        ARMOUR,
+        CONTAINER,
+        EQUIPPED,
+        POISONED
     };
+
+    std::map<Item::Property, const char *> PropertyMapping = {
+        {Property::NORMAL, "NORMAL"},
+        {Property::WEAPON, "WEAPON"},
+        {Property::ARMOUR, "ARMOUR"},
+        {Property::CONTAINER, "CONTAINER"},
+        {Property::EQUIPPED, "EQUIPPED"},
+        {Property::POISONED, "POISONED"}};
 
     enum class Type
     {
-        None,
-        Sword,
-        Bow,
-        Arrow,
-        Quarterstaff,
-        Quiver,
-        Pouch,
-        Gold
+        NONE,
+        SWORD,
+        BOW,
+        ARROW,
+        QUARTERSTAFF,
+        QUIVER,
+        POUCH,
+        GOLD
     };
 
     std::map<Item::Type, const char *> TypeMapping = {
-        {Type::None, "None"},
-        {Type::Sword, "Sword"},
-        {Type::Bow, "Bow"},
-        {Type::Arrow, "Arrow"},
-        {Type::Quarterstaff, "Quarterstaff"},
-        {Type::Quiver, "Quiver"},
-        {Type::Pouch, "Pouch"},
-        {Type::Gold, "Gold"},
-    };
+        {Type::NONE, "NONE"},
+        {Type::SWORD, "SWORD"},
+        {Type::BOW, "BOW"},
+        {Type::ARROW, "ARROW"},
+        {Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Type::QUIVER, "QUIVER"},
+        {Type::POUCH, "POUCH"},
+        {Type::GOLD, "GOLD"}};
 
     class Base
     {
@@ -54,13 +62,13 @@ namespace BloodSword::Item
         std::vector<Item::Property> Properties = {};
 
         // kind of items that can be stored in this container  (e.g. Money, Arrow)
-        Item::Type Contains = Item::Type::None;
+        Item::Type Contains = Item::Type::NONE;
 
         // amount/number of the items above it currently contains
         int Quantity = 0;
 
         // item type
-        Item::Type Type = Item::Type::None;
+        Item::Type Type = Item::Type::NONE;
 
         // item name
         std::string Name = "";
@@ -86,7 +94,7 @@ namespace BloodSword::Item
 
         bool Has(Item::Type item, int quantity)
         {
-            return (this->Is(Property::Container) && this->Contains == item && this->Quantity >= quantity && quantity >= 1);
+            return (this->Is(Property::CONTAINER) && this->Contains == item && this->Quantity >= quantity && quantity >= 1);
         }
 
         bool Has(Attribute::Type attribute)
@@ -125,7 +133,7 @@ namespace BloodSword::Item
         {
             auto result = false;
 
-            if (this->Is(Property::Container) && this->Contains == item && quantity >= 1)
+            if (this->Is(Property::CONTAINER) && this->Contains == item && quantity >= 1)
             {
                 this->Quantity += quantity;
 

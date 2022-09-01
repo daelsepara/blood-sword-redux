@@ -39,6 +39,18 @@
         {
             "id": "IMPASSABLE",
             "path": "images/map/hexes-gray.png"
+        },
+        {
+            "id": "BRIDGE",
+            "path": "images/map/arch-bridge.png"
+        },
+        {
+            "id": "EMPTY SPACE",
+            "path": "images/map/blank-space.png"
+        },
+        {
+            "id": "WHITE SPACE",
+            "path": "images/map/white-space.png"
         }
     ]
 }
