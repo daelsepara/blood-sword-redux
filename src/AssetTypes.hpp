@@ -53,7 +53,15 @@ namespace BloodSword::Asset
         ROCKS,
         CHASM,
         BRIDGE,
-        TOWER
+        TOWER,
+        MOVE,
+        FIGHT,
+        SHOOT,
+        SHOOT_SHURIKEN,
+        DEFEND,
+        FLEE,
+        CALL_TO_MIND,
+        CAST
     };
 
     std::map<Asset::Type, const char *> TypeMapping = {
@@ -92,9 +100,24 @@ namespace BloodSword::Asset
         {Type::RIGHT, "RIGHT"},
         {Type::WALL, "WALL"},
         {Type::IMPASSABLE, "IMPASSABLE"},
-        {Type::WHITE_SPACE, "WHITE SPACE"},
         {Type::EMPTY_SPACE, "EMPTY SPACE"},
-        {Type::BRIDGE, "BRIDGE"}};
+        {Type::WHITE_SPACE, "WHITE SPACE"},
+        {Type::VERTICAL_SURFACE, "VERTICAL SURFACE"},
+        {Type::WINDOW, "WINDOW"},
+        {Type::DOOR, "DOOR"},
+        {Type::LEDGE, "LEDGE"},
+        {Type::ROCKS, "ROCKS"},
+        {Type::CHASM, "CHASM"},
+        {Type::BRIDGE, "BRIDGE"},
+        {Type::TOWER, "TOWER"},
+        {Type::MOVE, "MOVE"},
+        {Type::FIGHT, "FIGHT"},
+        {Type::SHOOT, "SHOOT"},
+        {Type::SHOOT_SHURIKEN, "SHOOT SHURIKEN"},
+        {Type::DEFEND, "DEFEND"},
+        {Type::FLEE, "FLEE"},
+        {Type::CALL_TO_MIND, "CALL TO MIND"},
+        {Type::CAST, "CAST"}};
 
     Asset::Type GetType(const char *asset)
     {

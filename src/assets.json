@@ -51,6 +51,102 @@
         {
             "id": "WHITE SPACE",
             "path": "images/map/white-space.png"
+        },
+        {
+            "id": "ASSASSIN",
+            "path": "images/enemies/ninja-head.png"
+        },
+        {
+            "id": "ADVENTURER",
+            "path": "images/enemies/swordman.png"
+        },
+        {
+            "id": "BARBARIAN",
+            "path": "images/enemies/barbarian.png"
+        },
+        {
+            "id": "BOWMAN",
+            "path": "images/enemies/bowman.png"
+        },
+        {
+            "id": "GARGOYLE",
+            "path": "images/enemies/gargoyle.png"
+        },
+        {
+            "id": "CORPSE",
+            "path": "images/enemies/shambling-zombie.png"
+        },
+        {
+            "id": "SKIAPYR",
+            "path": "images/enemies/pyromaniac.png"
+        },
+        {
+            "id": "DIRGE",
+            "path": "images/enemies/kenku-head.png"
+        },
+        {
+            "id": "DIRGE MAN",
+            "path": "images/enemies/kenku-head.png"
+        },
+        {
+            "id": "GUARD",
+            "path": "images/enemies/barbute.png"
+        },
+        {
+            "id": "RANGER",
+            "path": "images/enemies/hooded-figure.png"
+        },
+        {
+            "id": "SKRYMIR THE GIANT",
+            "path": "images/enemies/muscle-fat.png"
+        },
+        {
+            "id": "ICON THE UNGODLY",
+            "path": "images/enemies/cowled.png"
+        },
+        {
+            "id": "GIANT SPIDER",
+            "path": "images/enemies/spider-alt.png"
+        },
+        {
+            "id": "NIGHT ELF",
+            "path": "images/enemies/elf-helmet.png"
+        },
+        {
+            "id": "MAGUS VYL",
+            "path": "images/enemies/vampire-dracula.png"
+        },
+        {
+            "id": "MOVE",
+            "path": "images/actions/boot-prints.png"
+        },
+        {
+            "id": "FIGHT",
+            "path": "images/actions/crossed-swords.png"
+        },
+        {
+            "id": "SHOOT",
+            "path": "images/actions/arrow-scope.png"
+        },
+        {
+            "id": "SHOOT SHURIKEN",
+            "path": "images/actions/shuriken.png"
+        },
+        {
+            "id": "DEFEND",
+            "path": "images/actions/swords-emblem.png"
+        },
+        {
+            "id": "FLEE",
+            "path": "images/actions/run.png"
+        },
+        {
+            "id": "CALL TO MIND",
+            "path": "images/actions/wisdom.png"
+        },
+        {
+            "id": "CAST SPELL",
+            "path": "images/actions/bolt-spell-cast.png"
         }
     ]
 }
