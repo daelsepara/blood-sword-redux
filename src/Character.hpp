@@ -10,6 +10,7 @@
 #include "CharacterTypes.hpp"
 #include "Item.hpp"
 #include "Skills.hpp"
+#include "Spells.hpp"
 
 namespace BloodSword::Character
 {

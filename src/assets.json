@@ -147,6 +147,34 @@
         {
             "id": "CAST SPELL",
             "path": "images/actions/bolt-spell-cast.png"
+        },
+        {
+            "id": "DODGING",
+            "path": "images/skills/dodging.png"
+        },
+        {
+            "id": "ARCHERY",
+            "path": "images/skills/bow-arrow.png"
+        },
+        {
+            "id": "QUARTERSTAFF",
+            "path": "images/skills/bo.png"
+        },
+        {
+            "id": "HEALING",
+            "path": "images/skills/healing.png"
+        },
+        {
+            "id": "ESP",
+            "path": "images/skills/psychic-waves.png"
+        },
+        {
+            "id": "PARANORMAL SIGHT",
+            "path": "images/skills/semi-closed-eye.png"
+        },
+        {
+            "id": "SPELLS",
+            "path": "images/skills/spell-book.png"
         }
     ]
 }
