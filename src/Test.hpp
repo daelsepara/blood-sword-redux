@@ -26,28 +26,28 @@ namespace BloodSword::Test
             auto ws = w + s;
 
             // sprites
-            auto warrior = Graphics::SceneElements(Asset::Get(Asset::Type::WARRIOR), x, y);
-            auto trickster = Graphics::SceneElements(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
-            auto sage = Graphics::SceneElements(Asset::Get(Asset::Type::SAGE), x + 2 * ws, y);
-            auto enchanter = Graphics::SceneElements(Asset::Get(Asset::Type::ENCHANTER), x + 3 * ws, y);
-            auto up = Graphics::SceneElements(Asset::Get(Asset::Type::UP), x, y + ws);
-            auto down = Graphics::SceneElements(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
-            auto left = Graphics::SceneElements(Asset::Get(Asset::Type::LEFT), x + 2 * ws, y + ws);
-            auto right = Graphics::SceneElements(Asset::Get(Asset::Type::RIGHT), x + 3 * ws, y + ws);
+            auto warrior = Graphics::SceneElement(Asset::Get(Asset::Type::WARRIOR), x, y);
+            auto trickster = Graphics::SceneElement(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
+            auto sage = Graphics::SceneElement(Asset::Get(Asset::Type::SAGE), x + 2 * ws, y);
+            auto enchanter = Graphics::SceneElement(Asset::Get(Asset::Type::ENCHANTER), x + 3 * ws, y);
+            auto up = Graphics::SceneElement(Asset::Get(Asset::Type::UP), x, y + ws);
+            auto down = Graphics::SceneElement(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
+            auto left = Graphics::SceneElement(Asset::Get(Asset::Type::LEFT), x + 2 * ws, y + ws);
+            auto right = Graphics::SceneElement(Asset::Get(Asset::Type::RIGHT), x + 3 * ws, y + ws);
 
             // text sprites
             auto text = Graphics::CreateText(graphics, "Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::cInactive, TTF_STYLE_NORMAL, 8 * ws - s);
-            auto text_sprite = Graphics::SceneElements(text, x + 4 * ws, y);
+            auto text_sprite = Graphics::SceneElement(text, x + 4 * ws, y);
 
             auto warrior_text = Graphics::CreateText(graphics, "You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
             auto trickster_text = Graphics::CreateText(graphics, "Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
             auto sage_text = Graphics::CreateText(graphics, "Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
             auto enchanter_text = Graphics::CreateText(graphics, "Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
 
-            auto warrior_sprite = Graphics::SceneElements(warrior_text, x + 4 * ws, y);
-            auto trickster_sprite = Graphics::SceneElements(trickster_text, x + 4 * ws, y);
-            auto sage_sprite = Graphics::SceneElements(sage_text, x + 4 * ws, y);
-            auto enchanter_sprite = Graphics::SceneElements(enchanter_text, x + 4 * ws, y);
+            auto warrior_sprite = Graphics::SceneElement(warrior_text, x + 4 * ws, y);
+            auto trickster_sprite = Graphics::SceneElement(trickster_text, x + 4 * ws, y);
+            auto sage_sprite = Graphics::SceneElement(sage_text, x + 4 * ws, y);
+            auto enchanter_sprite = Graphics::SceneElement(enchanter_text, x + 4 * ws, y);
 
             // controls
             std::vector<Controls::Base> controls = {
@@ -60,7 +60,7 @@ namespace BloodSword::Test
                 Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + 2 * ws, y + ws, w, h, Color::Highlight),
                 Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + 3 * ws, y + ws, w, h, Color::Highlight)};
 
-            auto sprites = std::vector<Graphics::SceneElements>();
+            auto sprites = std::vector<Graphics::SceneElement>();
 
             auto input = Controls::User();
 

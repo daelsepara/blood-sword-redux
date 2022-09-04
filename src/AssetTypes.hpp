@@ -61,7 +61,14 @@ namespace BloodSword::Asset
         DEFEND,
         FLEE,
         CALL_TO_MIND,
-        CAST
+        CAST_SPELL,
+        DODGING,
+        ARCHERY,
+        QUARTERSTAFF,
+        HEALING,
+        ESP,
+        PARANORMAL_SIGHT,
+        SPELLS
     };
 
     std::map<Asset::Type, const char *> TypeMapping = {
@@ -117,7 +124,14 @@ namespace BloodSword::Asset
         {Type::DEFEND, "DEFEND"},
         {Type::FLEE, "FLEE"},
         {Type::CALL_TO_MIND, "CALL TO MIND"},
-        {Type::CAST, "CAST"}};
+        {Type::CAST_SPELL, "CAST SPELL"},
+        {Type::DODGING, "DODGING"},
+        {Type::ARCHERY, "ARCHERY"},
+        {Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Type::HEALING, "HEALING"},
+        {Type::ESP, "ESP"},
+        {Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
+        {Type::SPELLS, "SPELLS"}};
 
     Asset::Type GetType(const char *asset)
     {

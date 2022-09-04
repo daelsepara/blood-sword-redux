@@ -15,10 +15,12 @@ namespace BloodSword::Skills
         HEALING,
         SPELLS,
         ESP,
-        PARANORMAL_SIGHT
+        PARANORMAL_SIGHT,
+        LEVITATION,
+        EXORCISM
     };
 
-    std::map<Skills::Type, const char *> SkillsMapping = {
+    std::map<Skills::Type, const char *> TypeMapping = {
         {Skills::Type::NONE, "NONE"},
         {Skills::Type::ARCHERY, "ARCHERY"},
         {Skills::Type::DODGING, "DODGING"},
@@ -26,15 +28,17 @@ namespace BloodSword::Skills
         {Skills::Type::HEALING, "HEALING"},
         {Skills::Type::SPELLS, "SPELLS"},
         {Skills::Type::ESP, "ESP"},
-        {Skills::Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"}};
+        {Skills::Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
+        {Skills::Type::LEVITATION, "LEVITATION"},
+        {Skills::Type::EXORCISM, "EXORCISM"}};
 
     Skills::Type GetType(const char *skill)
     {
         auto result = Skills::Type::NONE;
 
-        auto skills = Skills::SkillsMapping.begin();
+        auto skills = Skills::TypeMapping.begin();
 
-        while (skills != Skills::SkillsMapping.end())
+        while (skills != Skills::TypeMapping.end())
         {
             if (std::strcmp(skills->second, skill) == 0)
             {

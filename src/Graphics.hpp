@@ -20,7 +20,7 @@ namespace BloodSword::Graphics
     Uint8 A(Uint32 c) { return (Uint8)(c >> 24); }
     Uint32 O(Uint32 c, Uint8 a) { return ((c & ((Uint32)0x00FFFFFF)) | ((Uint32)(a << 24))); }
 
-    class SceneElements
+    class SceneElement
     {
     public:
         SDL_Texture *Texture;
@@ -37,27 +37,44 @@ namespace BloodSword::Graphics
 
         int H = 0;
 
-        void Initialize(SDL_Texture *surface, int x, int y, int bounds, int offset, int w, int h)
+        Uint32 Background = 0;
+
+        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
         {
-            if (surface)
+            if (texture)
             {
-                Texture = surface;
+                this->Texture = texture;
 
-                X = x;
+                this->X = x;
 
-                Y = y;
+                this->Y = y;
 
-                Bounds = bounds;
+                this->Bounds = bounds;
 
-                Offset = offset;
+                this->Offset = offset;
 
-                W = w;
+                this->W = w;
 
-                H = h;
+                this->H = h;
+
+                this->Background = background;
             }
         }
 
-        SceneElements(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
+        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
+        {
+            this->Initialize(texture, x, y, bounds, offset, w, h, 0);
+        }
+
+        SceneElement(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
+        {
+            if (texture)
+            {
+                this->Initialize(texture, x, y, bounds, offset, w, h, background);
+            }
+        }
+
+        SceneElement(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
         {
             if (texture)
             {
@@ -65,11 +82,12 @@ namespace BloodSword::Graphics
             }
         }
 
-        SceneElements(SDL_Texture *texture, int x, int y, int bounds, int offset)
+        SceneElement(SDL_Texture *texture, int x, int y, int bounds, int offset)
         {
             if (texture)
             {
                 auto texture_w = 0;
+
                 auto texture_h = 0;
 
                 SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
@@ -78,11 +96,12 @@ namespace BloodSword::Graphics
             }
         }
 
-        SceneElements(SDL_Texture *texture, int x, int y)
+        SceneElement(SDL_Texture *texture, int x, int y)
         {
             if (texture)
             {
                 auto texture_w = 0;
+
                 auto texture_h = 0;
 
                 SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
@@ -95,13 +114,13 @@ namespace BloodSword::Graphics
     class Scene
     {
     public:
-        std::vector<Graphics::SceneElements> Elements = {};
+        std::vector<Graphics::SceneElement> Elements = {};
 
         std::vector<Controls::Base> Controls = {};
 
         Uint32 Background = 0;
 
-        void Set(std::vector<Graphics::SceneElements> elements)
+        void Set(std::vector<Graphics::SceneElement> elements)
         {
             this->Elements = elements;
         }
@@ -125,7 +144,7 @@ namespace BloodSword::Graphics
             this->Controls.clear();
         }
 
-        void Add(Graphics::SceneElements element)
+        void Add(Graphics::SceneElement element)
         {
             this->Elements.push_back(element);
         }
@@ -135,7 +154,7 @@ namespace BloodSword::Graphics
             this->Controls.push_back(control);
         }
 
-        Scene(std::vector<Graphics::SceneElements> elements, std::vector<Controls::Base> controls, Uint32 background)
+        Scene(std::vector<Graphics::SceneElement> elements, std::vector<Controls::Base> controls, Uint32 background)
         {
             this->Set(elements);
 
@@ -144,14 +163,14 @@ namespace BloodSword::Graphics
             this->Set(background);
         }
 
-        Scene(std::vector<Graphics::SceneElements> elements, std::vector<Controls::Base> controls)
+        Scene(std::vector<Graphics::SceneElement> elements, std::vector<Controls::Base> controls)
         {
             this->Set(elements);
 
             this->Set(controls);
         }
 
-        Scene(std::vector<Graphics::SceneElements> elements, Uint32 background)
+        Scene(std::vector<Graphics::SceneElement> elements, Uint32 background)
         {
             this->Set(elements);
 
@@ -316,7 +335,7 @@ namespace BloodSword::Graphics
     }
 
     // base render texture function
-    void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h)
+    void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
     {
         if (graphics.Renderer && texture)
         {
@@ -332,11 +351,18 @@ namespace BloodSword::Graphics
             dst.x = x;
             dst.y = y;
 
+            if (background != 0)
+            {
+                SDL_SetRenderDrawColor(graphics.Renderer, R(background), G(background), B(background), A(background));
+
+                SDL_RenderFillRect(graphics.Renderer, &dst);
+            }
+
             SDL_RenderCopy(graphics.Renderer, texture, &src, &dst);
         }
     }
 
-    void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
+    void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
     {
         if (graphics.Renderer && texture)
         {
@@ -346,12 +372,12 @@ namespace BloodSword::Graphics
 
             SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
 
-            Graphics::Render(graphics, texture, texture_w, texture_h, x, y, bounds, offset, w, h);
+            Graphics::Render(graphics, texture, texture_w, texture_h, x, y, bounds, offset, w, h, background);
         }
     }
 
     // render a portion of the texture
-    void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset)
+    void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background)
     {
         if (graphics.Renderer && texture)
         {
@@ -361,12 +387,12 @@ namespace BloodSword::Graphics
 
             SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
 
-            Graphics::Render(graphics, texture, x, y, std::min(texture_h, bounds), offset, texture_w, std::min(texture_h, bounds));
+            Graphics::Render(graphics, texture, x, y, std::min(texture_h, bounds), offset, texture_w, std::min(texture_h, bounds), background);
         }
     }
 
     // render texture at location
-    void Render(Base &graphics, SDL_Texture *texture, int x, int y)
+    void Render(Base &graphics, SDL_Texture *texture, int x, int y, Uint32 background)
     {
         if (texture && graphics.Renderer)
         {
@@ -374,7 +400,7 @@ namespace BloodSword::Graphics
 
             SDL_QueryTexture(texture, NULL, NULL, NULL, &texture_h);
 
-            Graphics::Render(graphics, texture, x, y, texture_h, 0);
+            Graphics::Render(graphics, texture, x, y, texture_h, 0, background);
         }
     }
 
@@ -388,7 +414,7 @@ namespace BloodSword::Graphics
             {
                 auto element = scene.Elements.at(i);
 
-                Graphics::Render(graphics, element.Texture, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H);
+                Graphics::Render(graphics, element.Texture, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H, element.Background);
             }
         }
     }

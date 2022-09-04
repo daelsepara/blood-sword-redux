@@ -19,6 +19,21 @@ namespace BloodSword::Color
     SDL_Color cInactive = {96, 96, 96, 255};
     SDL_Color cHighlight = {255, 0, 0, 255};
     SDL_Color cBackground = {0, 0, 0, 255};
+
+    SDL_Color Set(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
+    {
+        return {r, g, b, a};
+    }
+
+    SDL_Color Set(Uint8 r, Uint8 g, Uint8 b)
+    {
+        return Color::Set(r, g, b, 255);
+    }
+
+    Uint32 Set(SDL_Color color)
+    {
+        return (color.a >> 24 | color.r >> 16 | color.g >> 8 | color.b);
+    }
 }
 
 namespace BloodSword::Fonts

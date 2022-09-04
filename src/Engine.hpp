@@ -7,6 +7,7 @@
 #include "Map.hpp"
 #include "Party.hpp"
 #include "Random.hpp"
+#include "Spells.hpp"
 
 namespace BloodSword::Engine
 {

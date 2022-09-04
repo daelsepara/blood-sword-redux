@@ -32,13 +32,17 @@ namespace BloodSword::Character
     class Base
     {
     public:
-        std::vector<Attribute::Base> Attributes = {};
+        std::map<Character::Status, int> StatusDuration = {};
 
         std::vector<Character::Status> Status = {};
+
+        std::vector<Attribute::Base> Attributes = {};
 
         std::vector<Skills::Type> Skills = {};
 
         std::vector<Item::Base> Items = {};
+
+        std::vector<Spells::Base> Spells = {};
 
         ControlType ControlType = ControlType::None;
 
@@ -80,7 +84,11 @@ namespace BloodSword::Character
 
         bool Has(Character::Status status)
         {
-            return std::find(this->Status.begin(), this->Status.end(), status) != this->Status.end();
+            auto hasStatus = std::find(this->Status.begin(), this->Status.end(), status) != this->Status.end();
+
+            auto isActive = this->StatusDuration.count(status) > 0 && this->StatusDuration[status] != 0;
+
+            return hasStatus && isActive;
         }
 
         bool Is(Character::Status status)
@@ -88,12 +96,19 @@ namespace BloodSword::Character
             return this->Has(status);
         }
 
-        void Add(Character::Status status)
+        void Add(Character::Status status, int duration)
         {
             if (!this->Has(status))
             {
                 this->Status.push_back(status);
+
+                this->StatusDuration[status] = duration;
             }
+        }
+
+        void Add(Character::Status status)
+        {
+            this->Add(status, -1);
         }
 
         void Remove(Character::Status status)
@@ -108,6 +123,11 @@ namespace BloodSword::Character
 
                         break;
                     }
+                }
+
+                if (this->StatusDuration.count(status) > 0)
+                {
+                    this->StatusDuration.erase(status);
                 }
             }
         }
