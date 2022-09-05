@@ -175,6 +175,10 @@
         {
             "id": "SPELLS",
             "path": "images/skills/spell-book.png"
+        },
+        {
+            "id": "EXIT",
+            "path": "images/system/exit-door.png"
         }
     ]
 }

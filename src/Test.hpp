@@ -130,13 +130,28 @@ namespace BloodSword::Test
 
             auto input = Controls::User();
 
-            while (!input.Selected)
+            while (true)
             {
                 auto scene = Graphics::Scene();
-                
-                Interface::AddMap(map, scene, party, enemies);
+
+                Interface::AddMap(map, scene, party, enemies, 1);
+
+                auto qid = scene.Controls.size();
+
+                auto qy = map.DrawY + map.SizeY * map.TileSize;
+
+                auto qx = map.DrawX;
+
+                scene.Add(Graphics::SceneElement(Asset::Get(Asset::Type::EXIT), qx, qy));
+
+                scene.Add(Controls::Base(Controls::Type::EXIT, qid, qid, qid, qid - map.SizeX, qid, qx, qy, map.TileSize, map.TileSize, Color::Active));
 
                 input = Input::WaitForInput(graphics, scene, input);
+
+                if (input.Selected && input.Current >= 0 && input.Current < scene.Controls.size() && scene.Controls[input.Current].Type == Controls::Type::EXIT && !input.Hold)
+                {
+                    break;
+                }
             }
         }
     }

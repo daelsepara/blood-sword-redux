@@ -68,7 +68,8 @@ namespace BloodSword::Asset
         HEALING,
         ESP,
         PARANORMAL_SIGHT,
-        SPELLS
+        SPELLS,
+        EXIT
     };
 
     std::map<Asset::Type, const char *> TypeMapping = {
@@ -131,7 +132,8 @@ namespace BloodSword::Asset
         {Type::HEALING, "HEALING"},
         {Type::ESP, "ESP"},
         {Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
-        {Type::SPELLS, "SPELLS"}};
+        {Type::SPELLS, "SPELLS"},
+        {Type::EXIT, "EXIT"}};
 
     Asset::Type GetType(const char *asset)
     {

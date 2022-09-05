@@ -113,6 +113,11 @@ namespace BloodSword::Input
 
         SDL_PollEvent(&result);
 
+        if (!input.Hold)
+        {
+            input.Selected = false;
+        }
+
         if (result.type == SDL_QUIT)
         {
             input.Quit = true;
@@ -327,13 +332,6 @@ namespace BloodSword::Input
                 input.Up = true;
 
                 input.Down = false;
-            }
-        }
-        else if (input.Hold)
-        {
-            if (input.Current >= 0 && input.Current < scene.Controls.size() && (scene.Controls[input.Current].Type == Controls::Type::SCROLL_UP || scene.Controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
-            {
-                SDL_Delay(50);
             }
         }
 
