@@ -35,28 +35,28 @@ namespace BloodSword::Spells
     };
 
     std::map<Spells::Type, const char *> TypeMapping = {
-        {Spells::Type::NONE, "NONE"},
-        {Spells::Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
-        {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
-        {Spells::Type::WHITE_FIRE, "WHITE FIRE"},
-        {Spells::Type::SWORDTHRUST, "SWORDTHRUST"},
-        {Spells::Type::EYE_OF_THE_TIGER, "EYE OF THE TIGER"},
-        {Spells::Type::IMMEDIATE_DELIVERANCE, "IMMEDIATE DELIVERANCE"},
-        {Spells::Type::MISTS_OF_DEATH, "MISTS OF DEATH"},
-        {Spells::Type::THE_VAMPIRE_SPELL, "THE VAMPIRE SPELL"},
-        {Spells::Type::PILLAR_OF_SALT, "PILLAR OF SALT"},
-        {Spells::Type::SHEET_LIGHTNING, "SHEET LIGHTNING"},
-        {Spells::Type::GHASTLY_TOUCH, "GHASTLY TOUCH"},
-        {Spells::Type::NEMESIS_BOLT, "NEMESIS BOLT"},
-        {Spells::Type::SERVILE_ENTHRALMENT, "SERVILE ENTHRALMENT"},
-        {Spells::Type::SUMMON_FALTYN, "SUMMON FALTYN"},
-        {Spells::Type::PREDICTION, "PREDICTION"},
-        {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
+        {Type::NONE, "NONE"},
+        {Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
+        {Type::NIGHTHOWL, "NIGHTHOWL"},
+        {Type::WHITE_FIRE, "WHITE FIRE"},
+        {Type::SWORDTHRUST, "SWORDTHRUST"},
+        {Type::EYE_OF_THE_TIGER, "EYE OF THE TIGER"},
+        {Type::IMMEDIATE_DELIVERANCE, "IMMEDIATE DELIVERANCE"},
+        {Type::MISTS_OF_DEATH, "MISTS OF DEATH"},
+        {Type::THE_VAMPIRE_SPELL, "THE VAMPIRE SPELL"},
+        {Type::PILLAR_OF_SALT, "PILLAR OF SALT"},
+        {Type::SHEET_LIGHTNING, "SHEET LIGHTNING"},
+        {Type::GHASTLY_TOUCH, "GHASTLY TOUCH"},
+        {Type::NEMESIS_BOLT, "NEMESIS BOLT"},
+        {Type::SERVILE_ENTHRALMENT, "SERVILE ENTHRALMENT"},
+        {Type::SUMMON_FALTYN, "SUMMON FALTYN"},
+        {Type::PREDICTION, "PREDICTION"},
+        {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
     std::map<Spells::Class, const char *> ClassMapping = {
-        {Spells::Class::NONE, "NONE"},
-        {Spells::Class::BLASTING, "BLASTING"},
-        {Spells::Class::PSYCHIC, "PSYCHIC"}};
+        {Class::NONE, "NONE"},
+        {Class::BLASTING, "BLASTING"},
+        {Class::PSYCHIC, "PSYCHIC"}};
 
     Spells::Type GetType(const char *spell)
     {

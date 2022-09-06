@@ -69,7 +69,23 @@ namespace BloodSword::Asset
         ESP,
         PARANORMAL_SIGHT,
         SPELLS,
-        EXIT
+        EXIT,
+        VOLCANO_SPRAY,
+        NIGHTHOWL,
+        WHITE_FIRE,
+        SWORDTHRUST,
+        EYE_OF_THE_TIGER,
+        IMMEDIATE_DELIVERANCE,
+        MISTS_OF_DEATH,
+        THE_VAMPIRE_SPELL,
+        PILLAR_OF_SALT,
+        SHEET_LIGHTNING,
+        GHASTLY_TOUCH,
+        NEMESIS_BOLT,
+        SERVILE_ENTHRALMENT,
+        SUMMON_FALTYN,
+        PREDICTION,
+        DETECT_ENCHANTMENT
     };
 
     std::map<Asset::Type, const char *> TypeMapping = {
@@ -133,7 +149,23 @@ namespace BloodSword::Asset
         {Type::ESP, "ESP"},
         {Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
         {Type::SPELLS, "SPELLS"},
-        {Type::EXIT, "EXIT"}};
+        {Type::EXIT, "EXIT"},
+        {Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
+        {Type::NIGHTHOWL, "NIGHTHOWL"},
+        {Type::WHITE_FIRE, "WHITE FIRE"},
+        {Type::SWORDTHRUST, "SWORDTHRUST"},
+        {Type::EYE_OF_THE_TIGER, "EYE OF THE TIGER"},
+        {Type::IMMEDIATE_DELIVERANCE, "IMMEDIATE DELIVERANCE"},
+        {Type::MISTS_OF_DEATH, "MISTS OF DEATH"},
+        {Type::THE_VAMPIRE_SPELL, "THE VAMPIRE SPELL"},
+        {Type::PILLAR_OF_SALT, "PILLAR OF SALT"},
+        {Type::SHEET_LIGHTNING, "SHEET LIGHTNING"},
+        {Type::GHASTLY_TOUCH, "GHASTLY TOUCH"},
+        {Type::NEMESIS_BOLT, "NEMESIS BOLT"},
+        {Type::SERVILE_ENTHRALMENT, "SERVILE ENTHRALMENT"},
+        {Type::SUMMON_FALTYN, "SUMMON FALTYN"},
+        {Type::PREDICTION, "PREDICTION"},
+        {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
     Asset::Type GetType(const char *asset)
     {

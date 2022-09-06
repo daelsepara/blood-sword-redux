@@ -179,6 +179,70 @@
         {
             "id": "EXIT",
             "path": "images/system/exit-door.png"
+        },
+        {
+            "id": "THE VAMPIRE SPELL",
+            "path": "images/spells/vampire-cape.png"
+        },
+        {
+            "id": "EYE OF THE TIGER",
+            "path": "images/spells/beast-eye.png"
+        },
+        {
+            "id": "GHASTLY TOUCH",
+            "path": "images/spells/evil-hand.png"
+        },
+        {
+            "id": "IMMEDIATE DELIVERANCE",
+            "path": "images/spells/teleport.png"
+        },
+        {
+            "id": "NIGHTHOWL",
+            "path": "images/spells/wolf-howl.png"
+        },
+        {
+            "id": "MISTS OF DEATH",
+            "path": "images/spells/poison-gas.png"
+        },
+        {
+            "id": "NEMESIS BOLT",
+            "path": "images/spells/arcing-bolt.png"
+        },
+        {
+            "id": "SERVILE ENTHRALMENT",
+            "path": "images/spells/slavery-whip.png"
+        },
+        {
+            "id": "SHEET LIGHTNING",
+            "path": "images/spells/chain-lightning.png"
+        },
+        {
+            "id": "SWORDTHRUST",
+            "path": "images/spells/sword-wound.png"
+        },
+        {
+            "id": "VOLCANO SPRAY",
+            "path": "images/spells/lava.png"
+        },
+        {
+            "id": "WHITE FIRE",
+            "path": "images/spells/fire.png"
+        },
+        {
+            "id": "PILLAR OF SALT",
+            "path": "images/spells/crystal-growth.png"
+        },
+        {
+            "id": "SUMMON FALTYN",
+            "path": "images/spells/fairy.png"
+        },
+        {
+            "id": "PREDICTION",
+            "path": "images/spells/crystal-ball.png"
+        },
+        {
+            "id": "DETECT ENCHANTMENT",
+            "path": "images/spells/gaze.png"
         }
     ]
 }
