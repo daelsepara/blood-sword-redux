@@ -154,11 +154,7 @@ namespace BloodSword::Test
                     {
                         Graphics::Free(&map_object);
 
-                        auto mapy = scene.Controls[input.Current].MapY;
-
-                        auto mapx = scene.Controls[input.Current].MapX;
-
-                        auto tile = &map.Tiles[mapy][mapx];
+                        auto tile = &map.Tiles[scene.Controls[input.Current].MapY][scene.Controls[input.Current].MapX];
 
                         auto object_text = tile->IsOccupied() ? tile->Occupant : tile->Type;
 
