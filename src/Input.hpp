@@ -113,10 +113,7 @@ namespace BloodSword::Input
 
         SDL_PollEvent(&result);
 
-        if (!input.Hold)
-        {
-            input.Selected = false;
-        }
+        input.Selected = false;
 
         if (result.type == SDL_QUIT)
         {

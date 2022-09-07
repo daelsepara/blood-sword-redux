@@ -88,9 +88,9 @@ namespace BloodSword::Map
         int MapY = 0;
 
         // offsets (pixels, drawing)
-        int DrawX = 128;
+        int DrawX = 64;
 
-        int DrawY = 128;
+        int DrawY = 64;
 
         // size of each tile (pixels)
         int TileSize = 64;

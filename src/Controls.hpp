@@ -73,24 +73,23 @@ namespace BloodSword::Controls
         Controls::Type Type = Controls::Type::ANY;
 
         int ID = -1;
-
         int Left = -1;
         int Right = -1;
         int Up = -1;
         int Down = -1;
-
         int X = 0;
         int Y = 0;
-
         int W = 0;
         int H = 0;
-
         int Pixels = 2;
+        bool IsMap = false;
+        int MapX = -1;
+        int MapY = -1;
 
         // color of border when hightlighted
         Uint32 Highlight;
 
-        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
+        void _Initialize(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
         {
             this->Type = type;
 
@@ -113,6 +112,22 @@ namespace BloodSword::Controls
             this->H = h;
 
             this->Highlight = highlight;
+        }
+
+        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight, int mapx, int mapy)
+        {
+            this->_Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
+
+            this->IsMap = true;
+
+            this->MapX = mapx;
+
+            this->MapY = mapy;
+        }
+
+        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
+        {
+            this->_Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
         }
     };
 

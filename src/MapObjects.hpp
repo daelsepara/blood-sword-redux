@@ -23,9 +23,9 @@ namespace BloodSword::Map
         {Object::PLAYER, "PLAYER"},
         {Object::ENEMY, "ENEMY"},
         {Object::PASSABLE, "PASSABLE"},
-        {Object::ENEMY_PASSABLE, "ENEMY_PASSABLE"},
+        {Object::ENEMY_PASSABLE, "ENEMY PASSABLE"},
         {Object::OBSTACLE, "OBSTACLE"},
-        {Object::TEMPORARY_OBSTACLE, "TEMPORARY_OBSTACLE"},
+        {Object::TEMPORARY_OBSTACLE, "TEMPORARY OBSTACLE"},
         {Object::EXIT, "EXIT"}};
 
     Map::Object GetObject(const char *object)

@@ -329,7 +329,10 @@ namespace BloodSword::Graphics
     // free texture
     void Free(SDL_Texture **texture)
     {
-        SDL_DestroyTexture(*texture);
+        if (*texture)
+        {
+            SDL_DestroyTexture(*texture);
+        }
 
         *texture = NULL;
     }

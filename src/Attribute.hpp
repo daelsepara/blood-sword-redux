@@ -40,16 +40,16 @@ namespace BloodSword::Attribute
     };
 
     std::map<Attribute::Type, const char *> AttributeMapping = {
-        {Attribute::Type::None, "NONE"},
-        {Attribute::Type::FightingProwess, "FIGHTING_PROWESS"},
-        {Attribute::Type::Awareness, "AWARENESS"},
-        {Attribute::Type::PsychicAbility, "PSYCHIC_ABILITY"},
-        {Attribute::Type::Endurance, "ENDURANCE"},
-        {Attribute::Type::Damage, "DAMAGE"}};
+        {Type::None, "NONE"},
+        {Type::FightingProwess, "FIGHTING_PROWESS"},
+        {Type::Awareness, "AWARENESS"},
+        {Type::PsychicAbility, "PSYCHIC_ABILITY"},
+        {Type::Endurance, "ENDURANCE"},
+        {Type::Damage, "DAMAGE"}};
 
     Attribute::Type GetType(const char *attribute)
     {
-        auto result = Attribute::Type::None;
+        auto result = Type::None;
 
         auto attributes = Attribute::AttributeMapping.begin();
 

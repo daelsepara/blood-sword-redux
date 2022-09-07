@@ -48,7 +48,6 @@ namespace BloodSword::Interface
                 {
                     CtrlLt = NumControls - 1;
                 }
-                
 
                 if (CtrlX < Map.SizeX - 1)
                 {
@@ -158,7 +157,7 @@ namespace BloodSword::Interface
                     }
                 }
 
-                Scene.Add(Controls::Base(ControlType, NumControls, CtrlLt, CtrlRt, CtrlUp, CtrlDn, AssetX, AssetY, Map.TileSize, Map.TileSize, ControlColor));
+                Scene.Add(Controls::Base(ControlType, NumControls, CtrlLt, CtrlRt, CtrlUp, CtrlDn, AssetX, AssetY, Map.TileSize, Map.TileSize, ControlColor, x, y));
 
                 NumControls++;
             }

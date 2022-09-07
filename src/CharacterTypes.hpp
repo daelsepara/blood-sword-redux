@@ -16,15 +16,15 @@ namespace BloodSword::Character
     };
 
     std::map<Character::Type, const char *> CharacterMapping = {
-        {Character::Type::None, "NONE"},
-        {Character::Type::Warrior, "WARRIOR"},
-        {Character::Type::Trickster, "TRICKSTER"},
-        {Character::Type::Sage, "SAGE"},
-        {Character::Type::Enchanter, "ENCHANTER"}};
+        {Type::None, "NONE"},
+        {Type::Warrior, "WARRIOR"},
+        {Type::Trickster, "TRICKSTER"},
+        {Type::Sage, "SAGE"},
+        {Type::Enchanter, "ENCHANTER"}};
 
     Character::Type GetType(const char *character)
     {
-        auto result = Character::Type::None;
+        auto result = Type::None;
 
         auto characters = Character::CharacterMapping.begin();
 

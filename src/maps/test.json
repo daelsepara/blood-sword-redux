@@ -80,7 +80,7 @@
             },
             {
                 "id": -1,
-                "type": "ENEMY_PASSABLE",
+                "type": "ENEMY PASSABLE",
                 "occupant": "NONE",
                 "asset": "IMPASSABLE",
                 "temporary_asset": "NONE",
@@ -88,73 +88,7 @@
             },
             {
                 "id": -1,
-                "type": "ENEMY_PASSABLE",
-                "occupant": "NONE",
-                "asset": "IMPASSABLE",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            },
-            {
-                "id": -1,
-                "type": "PASSABLE",
-                "occupant": "NONE",
-                "asset": "EMPTY SPACE",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            },
-            {
-                "id": -1,
-                "type": "PASSABLE",
-                "occupant": "NONE",
-                "asset": "EMPTY SPACE",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            },
-            {
-                "id": -1,
-                "type": "PASSABLE",
-                "occupant": "NONE",
-                "asset": "WHITE SPACE",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            },
-            {
-                "id": -1,
-                "type": "PASSABLE",
-                "occupant": "NONE",
-                "asset": "WHITE SPACE",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            },
-            {
-                "id": -1,
-                "type": "OBSTACLE",
-                "occupant": "NONE",
-                "asset": "WALL",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            }
-        ],
-        [
-            {
-                "id": -1,
-                "type": "OBSTACLE",
-                "occupant": "NONE",
-                "asset": "WALL",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            },
-            {
-                "id": -1,
-                "type": "ENEMY_PASSABLE",
-                "occupant": "NONE",
-                "asset": "IMPASSABLE",
-                "temporary_asset": "NONE",
-                "lifetime": -1
-            },
-            {
-                "id": -1,
-                "type": "ENEMY_PASSABLE",
+                "type": "ENEMY PASSABLE",
                 "occupant": "NONE",
                 "asset": "IMPASSABLE",
                 "temporary_asset": "NONE",
@@ -212,8 +146,74 @@
             },
             {
                 "id": -1,
+                "type": "ENEMY PASSABLE",
+                "occupant": "NONE",
+                "asset": "IMPASSABLE",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            },
+            {
+                "id": -1,
+                "type": "ENEMY PASSABLE",
+                "occupant": "NONE",
+                "asset": "IMPASSABLE",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            },
+            {
+                "id": -1,
                 "type": "PASSABLE",
-                "occupant": "TEMPORARY_OBSTACLE",
+                "occupant": "NONE",
+                "asset": "EMPTY SPACE",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            },
+            {
+                "id": -1,
+                "type": "PASSABLE",
+                "occupant": "NONE",
+                "asset": "EMPTY SPACE",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            },
+            {
+                "id": -1,
+                "type": "PASSABLE",
+                "occupant": "NONE",
+                "asset": "WHITE SPACE",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            },
+            {
+                "id": -1,
+                "type": "PASSABLE",
+                "occupant": "NONE",
+                "asset": "WHITE SPACE",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            },
+            {
+                "id": -1,
+                "type": "OBSTACLE",
+                "occupant": "NONE",
+                "asset": "WALL",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            }
+        ],
+        [
+            {
+                "id": -1,
+                "type": "OBSTACLE",
+                "occupant": "NONE",
+                "asset": "WALL",
+                "temporary_asset": "NONE",
+                "lifetime": -1
+            },
+            {
+                "id": -1,
+                "type": "PASSABLE",
+                "occupant": "TEMPORARY OBSTACLE",
                 "asset": "NONE",
                 "temporary_asset": "BRIDGE",
                 "lifetime": 100

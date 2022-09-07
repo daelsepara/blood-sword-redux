@@ -130,6 +130,8 @@ namespace BloodSword::Test
 
             auto input = Controls::User();
 
+            SDL_Texture *map_object = NULL;
+
             while (true)
             {
                 auto scene = Graphics::Scene();
@@ -146,6 +148,26 @@ namespace BloodSword::Test
 
                 scene.Add(Controls::Base(Controls::Type::EXIT, qid, qid, qid, qid - map.SizeX, qid, qx, qy, map.TileSize, map.TileSize, Color::Active));
 
+                if (input.Current >= 0 && input.Current < scene.Controls.size())
+                {
+                    if (scene.Controls[input.Current].IsMap)
+                    {
+                        Graphics::Free(&map_object);
+
+                        auto mapy = scene.Controls[input.Current].MapY;
+
+                        auto mapx = scene.Controls[input.Current].MapX;
+
+                        auto tile = &map.Tiles[mapy][mapx];
+
+                        auto object_text = tile->IsOccupied() ? tile->Occupant : tile->Type;
+
+                        map_object = Graphics::CreateText(graphics, Map::ObjectMapping[object_text], Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * map.TileSize);
+
+                        scene.Add(Graphics::SceneElement(map_object, map.DrawX + (2 * map.SizeX + 1) * map.TileSize / 2, map.DrawY));
+                    }
+                }
+
                 input = Input::WaitForInput(graphics, scene, input);
 
                 if (input.Selected && input.Current >= 0 && input.Current < scene.Controls.size() && scene.Controls[input.Current].Type == Controls::Type::EXIT && !input.Hold)
@@ -153,6 +175,8 @@ namespace BloodSword::Test
                     break;
                 }
             }
+
+            Graphics::Free(&map_object);
         }
     }
 }
