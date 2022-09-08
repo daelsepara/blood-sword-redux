@@ -9,11 +9,11 @@ namespace BloodSword::Attribute
     enum class Type
     {
         None = -1,
-        FightingProwess,
-        Awareness,
-        PsychicAbility,
-        Endurance,
-        Damage
+        FIGHTING_PROWESS,
+        AWARENESS,
+        PSYCHIC_ABILITY,
+        ENDURANCE,
+        DAMAGE
     };
 
     class Base
@@ -33,19 +33,19 @@ namespace BloodSword::Attribute
 
             this->Value = value;
 
-            this->Maximum = value;
-
             this->Modifier = modifier;
+
+            this->Maximum = value;
         }
     };
 
     std::map<Attribute::Type, const char *> AttributeMapping = {
         {Type::None, "NONE"},
-        {Type::FightingProwess, "FIGHTING_PROWESS"},
-        {Type::Awareness, "AWARENESS"},
-        {Type::PsychicAbility, "PSYCHIC_ABILITY"},
-        {Type::Endurance, "ENDURANCE"},
-        {Type::Damage, "DAMAGE"}};
+        {Type::FIGHTING_PROWESS, "FIGHTING_PROWESS"},
+        {Type::AWARENESS, "AWARENESS"},
+        {Type::PSYCHIC_ABILITY, "PSYCHIC_ABILITY"},
+        {Type::ENDURANCE, "ENDURANCE"},
+        {Type::DAMAGE, "DAMAGE"}};
 
     Attribute::Type GetType(const char *attribute)
     {

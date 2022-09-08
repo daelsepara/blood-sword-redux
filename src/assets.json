@@ -173,6 +173,14 @@
             "path": "images/skills/semi-closed-eye.png"
         },
         {
+            "id": "EXORCISM",
+            "path": "images/skills/ankh.png"
+        },
+        {
+            "id": "LEVITATION",
+            "path": "images/skills/up-card.png"
+        },
+        {
             "id": "SPELLS",
             "path": "images/skills/spell-book.png"
         },

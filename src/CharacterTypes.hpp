@@ -6,46 +6,46 @@
 
 namespace BloodSword::Character
 {
-    enum class Type
+    enum class Class
     {
-        None = -1,
-        Warrior,
-        Trickster,
-        Sage,
-        Enchanter
+        NONE = -1,
+        WARRIOR,
+        TRICKSTER,
+        SAGE,
+        ENCHANTER
     };
 
-    std::map<Character::Type, const char *> CharacterMapping = {
-        {Type::None, "NONE"},
-        {Type::Warrior, "WARRIOR"},
-        {Type::Trickster, "TRICKSTER"},
-        {Type::Sage, "SAGE"},
-        {Type::Enchanter, "ENCHANTER"}};
+    std::map<Character::Class, const char *> ClassMapping = {
+        {Class::NONE, "NONE"},
+        {Class::WARRIOR, "WARRIOR"},
+        {Class::TRICKSTER, "TRICKSTER"},
+        {Class::SAGE, "SAGE"},
+        {Class::ENCHANTER, "ENCHANTER"}};
 
-    Character::Type GetType(const char *character)
+    Character::Class GetClass(const char *character)
     {
-        auto result = Type::None;
+        auto result = Class::NONE;
 
-        auto characters = Character::CharacterMapping.begin();
+        auto characterClass = Character::ClassMapping.begin();
 
-        while (characters != Character::CharacterMapping.end())
+        while (characterClass != Character::ClassMapping.end())
         {
-            if (std::strcmp(characters->second, character) == 0)
+            if (std::strcmp(characterClass->second, character) == 0)
             {
-                result = characters->first;
+                result = characterClass->first;
 
                 break;
             }
 
-            characters++;
+            characterClass++;
         }
 
         return result;
     }
 
-    Character::Type GetType(std::string character)
+    Character::Class GetClass(std::string character)
     {
-        return Character::GetType(character.c_str());
+        return Character::GetClass(character.c_str());
     }
 }
 

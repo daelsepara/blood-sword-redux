@@ -16,17 +16,17 @@ namespace BloodSword::Character
 {
     enum class ControlType
     {
-        None = -1,
-        Player,
+        NONE = -1,
+        PLAYER,
         NPC
     };
 
     enum class Status
     {
-        Defending,
-        Fleeing,
-        Enthralled,
-        Away
+        DEFENDING,
+        FLEEING,
+        ENTHRALLED,
+        AWAY
     };
 
     class Base
@@ -44,19 +44,21 @@ namespace BloodSword::Character
 
         std::vector<Spells::Base> Spells = {};
 
-        ControlType ControlType = ControlType::None;
+        ControlType ControlType = ControlType::NONE;
 
-        Character::Type Type = Character::Type::None;
+        Character::Class Type = Character::Class::NONE;
 
         std::string Name = "";
 
         Asset::Type Asset = Asset::Type::NONE;
 
+        int Experience = 0;
+
         int Moves = 100;
 
         int Rank = 0;
 
-        Base(const char *name, Character::Type type, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
+        void _Intitialize(const char *name, Character::Class type, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
         {
             this->Name = name;
 
@@ -67,6 +69,31 @@ namespace BloodSword::Character
             this->Skills = skills;
 
             this->Moves = moves;
+        }
+
+        Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
+        {
+            this->_Intitialize(name, characterClass, attributes, skills, moves);
+        }
+
+        Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills)
+        {
+            this->_Intitialize(name, characterClass, attributes, skills, 100);
+        }
+
+        Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes)
+        {
+            this->_Intitialize(name, characterClass, attributes, {}, 100);
+        }
+
+        Base(const char *name, Character::Class characterClass)
+        {
+            this->_Intitialize(name, characterClass, {}, {}, 100);
+        }
+
+        Base(Character::Class characterClass)
+        {
+            this->_Intitialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
         }
 
         bool Has(Skills::Type skill)

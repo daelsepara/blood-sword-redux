@@ -69,22 +69,22 @@ namespace BloodSword::Interface
                     case Map::Object::PLAYER:
                         if (Tile.Id >= 0 && Tile.Id < Party.Members.size())
                         {
-                            if (Party.Members[Tile.Id].Value(Attribute::Type::Endurance) > 0)
+                            if (Party.Members[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
                                 Scene.Add(Graphics::SceneElement(Asset::Get(Party.Members[Tile.Id].Asset), AssetX, AssetY));
 
                                 switch (Party.Members[Tile.Id].Type)
                                 {
-                                case Character::Type::Warrior:
+                                case Character::Class::WARRIOR:
                                     ControlType = Controls::Type::WARRIOR;
                                     break;
-                                case Character::Type::Trickster:
+                                case Character::Class::TRICKSTER:
                                     ControlType = Controls::Type::TRICKSTER;
                                     break;
-                                case Character::Type::Sage:
+                                case Character::Class::SAGE:
                                     ControlType = Controls::Type::SAGE;
                                     break;
-                                case Character::Type::Enchanter:
+                                case Character::Class::ENCHANTER:
                                     ControlType = Controls::Type::ENCHANTER;
                                     break;
                                 default:
@@ -98,7 +98,7 @@ namespace BloodSword::Interface
                     case Map::Object::ENEMY:
                         if (Tile.Id >= 0 && Tile.Id < Enemies.Members.size())
                         {
-                            if (Enemies.Members[Tile.Id].Value(Attribute::Type::Endurance) > 0)
+                            if (Enemies.Members[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
                                 Scene.Add(Graphics::SceneElement(Asset::Get(Enemies.Members[Tile.Id].Asset), AssetX, AssetY));
 
