@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 
+#include "Templates.hpp"
+
 namespace BloodSword::Spells
 {
     enum class Type
@@ -58,56 +60,24 @@ namespace BloodSword::Spells
         {Class::BLASTING, "BLASTING"},
         {Class::PSYCHIC, "PSYCHIC"}};
 
-    Spells::Type GetType(const char *spell)
+    Spells::Type Map(const char *spell)
     {
-        auto result = Spells::Type::NONE;
-
-        auto spells = Spells::TypeMapping.begin();
-
-        while (spells != Spells::TypeMapping.end())
-        {
-            if (std::strcmp(spells->second, spell) == 0)
-            {
-                result = spells->first;
-
-                break;
-            }
-
-            spells++;
-        }
-
-        return result;
+        return BloodSword::Find(Spells::TypeMapping, spell);
     }
 
-    Spells::Type GetType(std::string spell)
+    Spells::Type Map(std::string spell)
     {
-        return Spells::GetType(spell.c_str());
+        return Spells::Map(spell.c_str());
     }
 
-    Spells::Class GetClass(const char *spellClass)
+    Spells::Class MapClass(const char *spellClass)
     {
-        auto result = Spells::Class::NONE;
-
-        auto spellClasses = Spells::ClassMapping.begin();
-
-        while (spellClasses != Spells::ClassMapping.end())
-        {
-            if (std::strcmp(spellClasses->second, spellClass) == 0)
-            {
-                result = spellClasses->first;
-
-                break;
-            }
-
-            spellClasses++;
-        }
-
-        return result;
+        return BloodSword::Find(Spells::ClassMapping, spellClass);
     }
 
-    Spells::Class GetClass(std::string spell)
+    Spells::Class MapClass(std::string spell)
     {
-        return Spells::GetClass(spell.c_str());
+        return Spells::MapClass(spell.c_str());
     }
 
     class Base

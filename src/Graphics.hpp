@@ -39,7 +39,11 @@ namespace BloodSword::Graphics
 
         Uint32 Background = 0;
 
-        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
+        Uint32 Border = 0;
+
+        int BorderSize = 0;
+
+        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
         {
             if (texture)
             {
@@ -58,19 +62,39 @@ namespace BloodSword::Graphics
                 this->H = h;
 
                 this->Background = background;
+
+                this->Border = border;
+
+                this->BorderSize = borderSize;
             }
         }
 
         void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
         {
-            this->Initialize(texture, x, y, bounds, offset, w, h, 0);
+            this->Initialize(texture, x, y, bounds, offset, w, h, 0, 0, 0);
+        }
+
+        SceneElement(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
+        {
+            if (texture)
+            {
+                this->Initialize(texture, x, y, bounds, offset, w, h, background, border, borderSize);
+            }
+        }
+
+        SceneElement(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 border, int borderSize)
+        {
+            if (texture)
+            {
+                this->Initialize(texture, x, y, bounds, offset, w, h, 0, border, borderSize);
+            }
         }
 
         SceneElement(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
         {
             if (texture)
             {
-                this->Initialize(texture, x, y, bounds, offset, w, h, background);
+                this->Initialize(texture, x, y, bounds, offset, w, h, background, 0, 0);
             }
         }
 
@@ -365,6 +389,19 @@ namespace BloodSword::Graphics
         }
     }
 
+    void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
+    {
+        if (graphics.Renderer && texture)
+        {
+            Graphics::Render(graphics, texture, texture_w, texture_h, x, y, bounds, offset, w, h, background);
+
+            if (border != 0)
+            {
+                Graphics::ThickRect(graphics, w, h, x, y, border, borderSize);
+            }
+        }
+    }
+
     void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
     {
         if (graphics.Renderer && texture)
@@ -397,7 +434,7 @@ namespace BloodSword::Graphics
     // render texture at location
     void Render(Base &graphics, SDL_Texture *texture, int x, int y, Uint32 background)
     {
-        if (texture && graphics.Renderer)
+        if (graphics.Renderer && texture)
         {
             auto texture_h = 0;
 
@@ -407,7 +444,15 @@ namespace BloodSword::Graphics
         }
     }
 
-    void RenderScene(Base &graphics, Graphics::Scene &scene)
+    void Render(Base &graphics, SDL_Texture *texture, int x, int y)
+    {
+        if (graphics.Renderer && texture)
+        {
+            Graphics::Render(graphics, texture, x, y, 0);
+        }
+    }
+
+    void Render(Base &graphics, Graphics::Scene &scene)
     {
         if (graphics.Renderer)
         {
@@ -417,16 +462,16 @@ namespace BloodSword::Graphics
             {
                 auto element = scene.Elements.at(i);
 
-                Graphics::Render(graphics, element.Texture, element.X, element.Y, element.Bounds, element.Offset, element.W, element.H, element.Background);
+                Graphics::Render(graphics, element.Texture, element.W, element.H, element.X, element.Y, element.Bounds, element.Offset, element.W, std::min(element.Bounds, element.H), element.Background, element.Border, element.BorderSize);
             }
         }
     }
 
-    void RenderScene(Base &graphics, Graphics::Scene &scene, Controls::User input)
+    void Render(Base &graphics, Graphics::Scene &scene, Controls::User input)
     {
         if (graphics.Renderer)
         {
-            Graphics::RenderScene(graphics, scene);
+            Graphics::Render(graphics, scene);
 
             for (auto i = 0; i < scene.Controls.size(); i++)
             {

@@ -59,7 +59,7 @@ namespace BloodSword::Input
 
         while (true)
         {
-            Graphics::RenderScene(graphics, scene);
+            Graphics::Render(graphics, scene);
 
             SDL_RenderPresent(graphics.Renderer);
 
@@ -107,7 +107,7 @@ namespace BloodSword::Input
 
         auto sensitivity = 32000;
 
-        Graphics::RenderScene(graphics, scene, input);
+        Graphics::Render(graphics, scene, input);
 
         SDL_RenderPresent(graphics.Renderer);
 

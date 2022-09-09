@@ -7,34 +7,17 @@
 
 #include "AssetTypes.hpp"
 #include "Attribute.hpp"
-#include "CharacterTypes.hpp"
+#include "CharacterClasses.hpp"
 #include "Item.hpp"
 #include "Skills.hpp"
 #include "Spells.hpp"
 
 namespace BloodSword::Character
 {
-    enum class ControlType
-    {
-        NONE = -1,
-        PLAYER,
-        NPC
-    };
-
-    enum class Status
-    {
-        DEFENDING,
-        FLEEING,
-        ENTHRALLED,
-        AWAY
-    };
-
     class Base
     {
     public:
-        std::map<Character::Status, int> StatusDuration = {};
-
-        std::vector<Character::Status> Status = {};
+        std::map<Character::Status, int> Status = {};
 
         std::vector<Attribute::Base> Attributes = {};
 
@@ -46,7 +29,7 @@ namespace BloodSword::Character
 
         ControlType ControlType = ControlType::NONE;
 
-        Character::Class Type = Character::Class::NONE;
+        Character::Class Class = Character::Class::NONE;
 
         std::string Name = "";
 
@@ -58,11 +41,13 @@ namespace BloodSword::Character
 
         int Rank = 0;
 
-        void _Intitialize(const char *name, Character::Class type, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
+        int ItemLimit = 6;
+
+        void _Intitialize(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
         {
             this->Name = name;
 
-            this->Type = type;
+            this->Class = characterClass;
 
             this->Attributes = attributes;
 
@@ -91,6 +76,13 @@ namespace BloodSword::Character
             this->_Intitialize(name, characterClass, {}, {}, 100);
         }
 
+        Base(Character::Class characterClass, int rank)
+        {
+            this->_Intitialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
+
+            this->Rank = rank;
+        }
+
         Base(Character::Class characterClass)
         {
             this->_Intitialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
@@ -111,9 +103,9 @@ namespace BloodSword::Character
 
         bool Has(Character::Status status)
         {
-            auto hasStatus = std::find(this->Status.begin(), this->Status.end(), status) != this->Status.end();
+            auto hasStatus = this->Status.find(status) != this->Status.end();
 
-            auto isActive = this->StatusDuration.count(status) > 0 && this->StatusDuration[status] != 0;
+            auto isActive = this->Status[status] != 0;
 
             return hasStatus && isActive;
         }
@@ -125,12 +117,7 @@ namespace BloodSword::Character
 
         void Add(Character::Status status, int duration)
         {
-            if (!this->Has(status))
-            {
-                this->Status.push_back(status);
-
-                this->StatusDuration[status] = duration;
-            }
+            this->Status[status] = duration;
         }
 
         void Add(Character::Status status)
@@ -142,20 +129,7 @@ namespace BloodSword::Character
         {
             if (this->Has(status))
             {
-                for (auto i = 0; i < this->Status.size(); i++)
-                {
-                    if (this->Status[i] == status)
-                    {
-                        this->Status.erase(this->Status.begin() + i);
-
-                        break;
-                    }
-                }
-
-                if (this->StatusDuration.count(status) > 0)
-                {
-                    this->StatusDuration.erase(status);
-                }
+                this->Status.erase(status);
             }
         }
 
@@ -306,7 +280,7 @@ namespace BloodSword::Character
             return (result >= 0 && result < this->Items.size());
         }
 
-        // has the container containing a sufficient amount of the item
+        // has a container with a sufficient amount of the item
         int Find(Item::Type container, Item::Type item, int quantity)
         {
             auto result = -1;
@@ -336,7 +310,7 @@ namespace BloodSword::Character
             return this->Has(container, item, 1);
         }
 
-        // has item with specific property
+        // has type of item with specific property
         int Find(Item::Type item, Item::Property property)
         {
             auto result = -1;
@@ -359,7 +333,7 @@ namespace BloodSword::Character
             return (result >= 0 && result < this->Items.size());
         }
 
-        // has item with specific property
+        // has type of item with specific property and attribute
         int Find(Item::Type item, Item::Property property, Attribute::Type attribute)
         {
             auto result = -1;
@@ -378,6 +352,31 @@ namespace BloodSword::Character
         bool Has(Item::Type item, Item::Property property, Attribute::Type attribute)
         {
             auto result = this->Find(item, property, attribute);
+
+            return (result >= 0 && result < this->Items.size());
+        }
+
+        // has any item with specific property
+        int Find(Item::Property property)
+        {
+            auto result = -1;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].Has(property))
+                {
+                    result = i;
+
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        bool Has(Item::Property property)
+        {
+            auto result = this->Find(property);
 
             return (result >= 0 && result < this->Items.size());
         }

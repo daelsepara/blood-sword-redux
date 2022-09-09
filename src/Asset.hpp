@@ -3,36 +3,28 @@
 
 #include <fstream>
 #include <string>
-#include <vector>
+#include <map>
 
 #include <SDL.h>
 #include <SDL_image.h>
 
 #include "nlohmann/json.hpp"
+
 #include "AssetTypes.hpp"
 
 namespace BloodSword::Asset
 {
-    typedef std::pair<Asset::Type, SDL_Texture *> Texture;
+    std::map<Asset::Type, std::string> Path = {};
 
-    typedef std::pair<Asset::Type, std::string> Location;
-
-    std::vector<Asset::Location> Path = {};
-
-    std::vector<Asset::Texture> Graphics = {};
+    std::map<Asset::Type, SDL_Texture *> Graphics = {};
 
     void Unload()
     {
         if (Asset::Graphics.size() > 0)
         {
-            for (auto i = 0; i < Asset::Graphics.size(); i++)
+            for (auto it = Asset::Graphics.begin(); it != Asset::Graphics.end(); it++)
             {
-                if (Asset::Graphics[i].second && Asset::Graphics[i].second)
-                {
-                    SDL_DestroyTexture(Asset::Graphics[i].second);
-
-                    Asset::Graphics[i].second = NULL;
-                }
+                SDL_DestroyTexture(it->second);
             }
 
             Asset::Graphics.clear();
@@ -61,7 +53,7 @@ namespace BloodSword::Asset
             {
                 for (auto i = 0; i < data["asset"].size(); i++)
                 {
-                    auto object = !data["asset"][i]["id"].is_null() ? Asset::GetType(std::string(data["asset"][i]["id"])) : Asset::Type::NONE;
+                    auto object = !data["asset"][i]["id"].is_null() ? Asset::Map(std::string(data["asset"][i]["id"])) : Asset::Type::NONE;
 
                     auto path = !data["asset"][i]["path"].is_null() ? std::string(data["asset"][i]["path"]) : "";
 
@@ -75,9 +67,9 @@ namespace BloodSword::Asset
 
                             if (texture)
                             {
-                                Asset::Path.push_back(std::make_pair(object, path));
+                                Asset::Path[object] = path;
 
-                                Asset::Graphics.push_back(std::make_pair(object, texture));
+                                Asset::Graphics[object] = texture;
                             }
 
                             SDL_FreeSurface(surface);
@@ -98,17 +90,9 @@ namespace BloodSword::Asset
     {
         SDL_Texture *texture = NULL;
 
-        if (Asset::Graphics.size() > 0)
+        if (Asset::Graphics.find(asset) != Asset::Graphics.end())
         {
-            for (auto i = 0; i < Graphics.size(); i++)
-            {
-                if (Asset::Graphics[i].first == asset)
-                {
-                    texture = Asset::Graphics[i].second;
-
-                    break;
-                }
-            }
+            texture = Asset::Graphics[asset];
         }
 
         if (texture)

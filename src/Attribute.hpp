@@ -4,22 +4,25 @@
 #include <map>
 #include <string>
 
+#include "Templates.hpp"
+
 namespace BloodSword::Attribute
 {
     enum class Type
     {
-        None = -1,
+        NONE = -1,
         FIGHTING_PROWESS,
         AWARENESS,
         PSYCHIC_ABILITY,
         ENDURANCE,
-        DAMAGE
+        DAMAGE,
+        ARMOUR
     };
 
     class Base
     {
     public:
-        Attribute::Type Type = Type::None;
+        Attribute::Type Type = Type::NONE;
 
         int Value = 0;
 
@@ -39,38 +42,23 @@ namespace BloodSword::Attribute
         }
     };
 
-    std::map<Attribute::Type, const char *> AttributeMapping = {
-        {Type::None, "NONE"},
-        {Type::FIGHTING_PROWESS, "FIGHTING_PROWESS"},
+    std::map<Attribute::Type, const char *> TypeMapping = {
+        {Type::NONE, "NONE"},
+        {Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
         {Type::AWARENESS, "AWARENESS"},
-        {Type::PSYCHIC_ABILITY, "PSYCHIC_ABILITY"},
+        {Type::PSYCHIC_ABILITY, "PSYCHIC ABILITY"},
         {Type::ENDURANCE, "ENDURANCE"},
-        {Type::DAMAGE, "DAMAGE"}};
+        {Type::DAMAGE, "DAMAGE"},
+        {Type::ARMOUR, "ARMOUR"}};
 
-    Attribute::Type GetType(const char *attribute)
+    Attribute::Type Map(const char *attribute)
     {
-        auto result = Type::None;
-
-        auto attributes = Attribute::AttributeMapping.begin();
-
-        while (attributes != Attribute::AttributeMapping.end())
-        {
-            if (std::strcmp(attributes->second, attribute) == 0)
-            {
-                result = attributes->first;
-
-                break;
-            }
-
-            attributes++;
-        }
-
-        return result;
+        return BloodSword::Find(Attribute::TypeMapping, attribute);
     }
 
-    Attribute::Type GetType(std::string attribute)
+    Attribute::Type Map(std::string attribute)
     {
-        return Attribute::GetType(attribute.c_str());
+        return Attribute::Map(attribute.c_str());
     }
 }
 

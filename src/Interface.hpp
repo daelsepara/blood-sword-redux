@@ -73,7 +73,7 @@ namespace BloodSword::Interface
                             {
                                 Scene.Add(Graphics::SceneElement(Asset::Get(Party.Members[Tile.Id].Asset), AssetX, AssetY));
 
-                                switch (Party.Members[Tile.Id].Type)
+                                switch (Party.Members[Tile.Id].Class)
                                 {
                                 case Character::Class::WARRIOR:
                                     ControlType = Controls::Type::WARRIOR;

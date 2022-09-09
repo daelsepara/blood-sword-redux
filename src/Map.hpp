@@ -125,7 +125,6 @@ namespace BloodSword::Map
             if (x >= 0 && x < Width && y >= 0 && y < Height)
             {
                 this->Tiles[y][x].Occupant = object;
-
                 this->Tiles[y][x].Id = id;
             }
         }
@@ -172,10 +171,10 @@ namespace BloodSword::Map
                                 for (auto x = 0; x < this->Width; x++)
                                 {
                                     this->Tiles[y][x].Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : -1;
-                                    this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::NONE;
-                                    this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::GetObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::NONE;
-                                    this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
-                                    this->Tiles[y][x].TemporaryAsset = !data["tiles"][y][x]["temporary_asset"].is_null() ? Asset::GetType(std::string(data["tiles"][y][x]["temporary_asset"])) : Asset::Type::NONE;
+                                    this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::NONE;
+                                    this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::NONE;
+                                    this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
+                                    this->Tiles[y][x].TemporaryAsset = !data["tiles"][y][x]["temporary_asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["temporary_asset"])) : Asset::Type::NONE;
                                     this->Tiles[y][x].Lifetime = !data["tiles"][y][x]["lifetime"].is_null() ? (int)data["tiles"][y][x]["lifetime"] : -1;
                                 }
                             }

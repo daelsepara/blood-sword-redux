@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 
+#include "Templates.hpp"
+
 namespace BloodSword::Map
 {
     enum class Object
@@ -28,30 +30,14 @@ namespace BloodSword::Map
         {Object::TEMPORARY_OBSTACLE, "TEMPORARY OBSTACLE"},
         {Object::EXIT, "EXIT"}};
 
-    Map::Object GetObject(const char *object)
+    Map::Object MapObject(const char *object)
     {
-        auto result = Map::Object::NONE;
-
-        auto objects = Map::ObjectMapping.begin();
-
-        while (objects != Map::ObjectMapping.end())
-        {
-            if (std::strcmp(objects->second, object) == 0)
-            {
-                result = objects->first;
-
-                break;
-            }
-
-            objects++;
-        }
-
-        return result;
+        return BloodSword::Find(Map::ObjectMapping, object);
     }
 
-    Map::Object GetObject(std::string object)
+    Map::Object MapObject(std::string object)
     {
-        return Map::GetObject(object.c_str());
+        return Map::MapObject(object.c_str());
     }
 }
 

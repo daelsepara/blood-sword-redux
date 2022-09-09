@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 
+#include "Templates.hpp"
+
 namespace BloodSword::Asset
 {
     enum class Type
@@ -171,30 +173,14 @@ namespace BloodSword::Asset
         {Type::PREDICTION, "PREDICTION"},
         {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
-    Asset::Type GetType(const char *asset)
+    Asset::Type Map(const char *asset)
     {
-        auto result = Asset::Type::NONE;
-
-        auto types = Asset::TypeMapping.begin();
-
-        while (types != Asset::TypeMapping.end())
-        {
-            if (std::strcmp(types->second, asset) == 0)
-            {
-                result = types->first;
-
-                break;
-            }
-
-            types++;
-        }
-
-        return result;
+        return BloodSword::Find(Asset::TypeMapping, asset);
     }
 
-    Asset::Type GetType(std::string asset)
+    Asset::Type Map(std::string asset)
     {
-        return Asset::GetType(asset.c_str());
+        return Asset::Map(asset.c_str());
     }
 }
 

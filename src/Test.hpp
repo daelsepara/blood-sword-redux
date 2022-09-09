@@ -130,7 +130,7 @@ namespace BloodSword::Test
 
             auto input = Controls::User();
 
-            SDL_Texture *map_object = NULL;
+            SDL_Texture *texture = NULL;
 
             while (true)
             {
@@ -138,29 +138,29 @@ namespace BloodSword::Test
 
                 Interface::AddMap(map, scene, party, enemies, 1);
 
-                auto qid = scene.Controls.size();
+                auto id = (int)scene.Controls.size();
 
-                auto qy = map.DrawY + map.SizeY * map.TileSize;
+                auto y = map.DrawY + map.SizeY * map.TileSize;
 
-                auto qx = map.DrawX;
+                auto x = map.DrawX;
 
-                scene.Add(Graphics::SceneElement(Asset::Get(Asset::Type::EXIT), qx, qy));
+                scene.Add(Graphics::SceneElement(Asset::Get(Asset::Type::EXIT), x, y));
 
-                scene.Add(Controls::Base(Controls::Type::EXIT, qid, qid, qid, qid - map.SizeX, qid, qx, qy, map.TileSize, map.TileSize, Color::Active));
+                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
 
                 if (input.Current >= 0 && input.Current < scene.Controls.size())
                 {
                     if (scene.Controls[input.Current].IsMap)
                     {
-                        Graphics::Free(&map_object);
+                        Graphics::Free(&texture);
 
                         auto tile = &map.Tiles[scene.Controls[input.Current].MapY][scene.Controls[input.Current].MapX];
 
-                        auto object_text = tile->IsOccupied() ? tile->Occupant : tile->Type;
+                        auto object = tile->IsOccupied() ? tile->Occupant : tile->Type;
 
-                        map_object = Graphics::CreateText(graphics, Map::ObjectMapping[object_text], Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * map.TileSize);
+                        texture = Graphics::CreateText(graphics, Map::ObjectMapping[object], Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * map.TileSize);
 
-                        scene.Add(Graphics::SceneElement(map_object, map.DrawX + (2 * map.SizeX + 1) * map.TileSize / 2, map.DrawY));
+                        scene.Add(Graphics::SceneElement(texture, map.DrawX + (2 * map.SizeX + 1) * map.TileSize / 2, map.DrawY));
                     }
                 }
 
@@ -172,7 +172,7 @@ namespace BloodSword::Test
                 }
             }
 
-            Graphics::Free(&map_object);
+            Graphics::Free(&texture);
         }
     }
 }
