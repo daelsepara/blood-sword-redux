@@ -1,7 +1,6 @@
 #ifndef __CHARACTER_TYPES_HPP__
 #define __CHARACTER_TYPES_HPP__
 
-#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -15,7 +14,7 @@ namespace BloodSword::Character
         NPC
     };
 
-    std::unordered_map<Character::ControlType, const char *> ControlTypeMapping = {
+    Mapping<Character::ControlType> ControlTypeMapping = {
         {ControlType::NONE, "NONE"},
         {ControlType::PLAYER, "PLAYER"},
         {ControlType::NPC, "NPC"}};
@@ -42,7 +41,7 @@ namespace BloodSword::Character
         IN_COMBAT
     };
 
-    std::unordered_map<Character::Status, const char *> StatusMapping = {
+    Mapping<Character::Status> StatusMapping = {
         {Status::NONE, "NONE"},
         {Status::DEFENDING, "DEFENDING"},
         {Status::DEFENDED, "DEFENDED"},
@@ -71,7 +70,7 @@ namespace BloodSword::Character
         ENCHANTER
     };
 
-    std::unordered_map<Character::Class, const char *> ClassMapping = {
+    Mapping<Character::Class> ClassMapping = {
         {Class::NONE, "NONE"},
         {Class::WARRIOR, "WARRIOR"},
         {Class::TRICKSTER, "TRICKSTER"},

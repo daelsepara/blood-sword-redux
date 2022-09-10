@@ -11,13 +11,14 @@
 #include "Item.hpp"
 #include "Skills.hpp"
 #include "Spells.hpp"
+#include "Templates.hpp"
 
 namespace BloodSword::Character
 {
     class Base
     {
     public:
-        std::map<Character::Status, int> Status = {};
+        IntMapping<Character::Status> Status = {};
 
         std::vector<Attribute::Base> Attributes = {};
 

@@ -4,6 +4,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "Templates.hpp"
+
 namespace BloodSword::Book
 {
     enum class Number
@@ -18,7 +20,7 @@ namespace BloodSword::Book
 
     typedef std::pair<Book::Number, int> Destination;
 
-    std::unordered_map<Book::Number, const char *> Title = {
+    Mapping<Book::Number> Title = {
         {Book::Number::None, "Blood Sword"},
         {Book::Number::Book1, "The Battlepits of Krarth"},
         {Book::Number::Book2, "The Kingdom of Wyrd"},

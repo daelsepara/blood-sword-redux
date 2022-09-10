@@ -397,6 +397,28 @@ namespace BloodSword::Generate
         }
     }
 
+    void Assets(Character::Base &character)
+    {
+        // set starting items
+        switch (character.Class)
+        {
+        case Character::Class::WARRIOR:
+            character.Asset = Asset::Type::WARRIOR;
+            break;
+        case Character::Class::TRICKSTER:
+            character.Asset = Asset::Type::TRICKSTER;
+            break;
+        case Character::Class::SAGE:
+            character.Asset = Asset::Type::SAGE;
+            break;
+        case Character::Class::ENCHANTER:
+            character.Asset = Asset::Type::ENCHANTER;
+            break;
+        default:
+            break;
+        }
+    }
+
     Character::Base Character(Character::Class characterClass, int rank)
     {
         auto character = Character::Base(characterClass, rank);
@@ -410,6 +432,8 @@ namespace BloodSword::Generate
         Generate::Items(character);
 
         Generate::Money(character);
+
+        Generate::Assets(character);
 
         return character;
     }

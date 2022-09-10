@@ -1,7 +1,6 @@
 #ifndef __SKILLS_HPP__
 #define __SKILLS_HPP__
 
-#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -22,7 +21,7 @@ namespace BloodSword::Skills
         SPELLS
     };
 
-    std::unordered_map<Skills::Type, const char *> TypeMapping = {
+    Mapping<Skills::Type> TypeMapping = {
         {Type::NONE, "NONE"},
         {Type::ARCHERY, "ARCHERY"},
         {Type::DODGING, "DODGING"},

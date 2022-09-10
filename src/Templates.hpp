@@ -7,7 +7,13 @@
 namespace BloodSword
 {
     template <typename T>
-    T Find(std::unordered_map<T, const char *> &unordered_map, const char *key)
+    using Mapping = std::unordered_map<T, const char *>;
+
+    template <typename T>
+    using IntMapping = std::unordered_map<T, int>;
+
+    template <typename T>
+    T Find(Mapping<T> &unordered_map, const char *key)
     {
         auto result = T::NONE;
 

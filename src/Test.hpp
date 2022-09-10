@@ -6,6 +6,7 @@
 #include "Asset.hpp"
 #include "Engine.hpp"
 #include "Fonts.hpp"
+#include "Generator.hpp"
 #include "Graphics.hpp"
 #include "Input.hpp"
 #include "Interface.hpp"
@@ -124,7 +125,12 @@ namespace BloodSword::Test
 
             auto scene = Graphics::Scene();
 
-            auto party = Party::Base();
+            auto party = Party::Base({
+                Generate::Character(Character::Class::WARRIOR, 8),
+                Generate::Character(Character::Class::TRICKSTER, 8),
+                Generate::Character(Character::Class::SAGE, 8),
+                Generate::Character(Character::Class::ENCHANTER, 8)
+            });
 
             auto enemies = Party::Base();
 

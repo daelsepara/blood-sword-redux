@@ -14,22 +14,22 @@
 
 namespace BloodSword::Asset
 {
-    std::unordered_map<Asset::Type, std::string> Path = {};
+    AssetMapping<std::string> Locations = {};
 
-    std::unordered_map<Asset::Type, SDL_Texture *> Graphics = {};
+    AssetMapping<SDL_Texture *> Textures = {};
 
     void Unload()
     {
-        if (Asset::Graphics.size() > 0)
+        if (Asset::Textures.size() > 0)
         {
-            for (auto it = Asset::Graphics.begin(); it != Asset::Graphics.end(); it++)
+            for (auto it = Asset::Textures.begin(); it != Asset::Textures.end(); it++)
             {
                 SDL_DestroyTexture(it->second);
             }
 
-            Asset::Graphics.clear();
+            Asset::Textures.clear();
 
-            Asset::Path.clear();
+            Asset::Locations.clear();
         }
     }
 
@@ -39,9 +39,9 @@ namespace BloodSword::Asset
 
         Asset::Unload();
 
-        Asset::Path.clear();
+        Asset::Locations.clear();
 
-        Asset::Graphics.clear();
+        Asset::Textures.clear();
 
         std::ifstream ifs(assets);
 
@@ -67,9 +67,9 @@ namespace BloodSword::Asset
 
                             if (texture)
                             {
-                                Asset::Path[object] = path;
+                                Asset::Locations[object] = path;
 
-                                Asset::Graphics[object] = texture;
+                                Asset::Textures[object] = texture;
                             }
 
                             SDL_FreeSurface(surface);
@@ -80,7 +80,7 @@ namespace BloodSword::Asset
 
             ifs.close();
 
-            result = !Path.empty() && !Graphics.empty() && (Graphics.size() == Path.size());
+            result = (!Locations.empty() && !Textures.empty() && (Textures.size() == Locations.size()));
         }
 
         return result;
@@ -90,9 +90,9 @@ namespace BloodSword::Asset
     {
         SDL_Texture *texture = NULL;
 
-        if (Asset::Graphics.find(asset) != Asset::Graphics.end())
+        if (Asset::Textures.find(asset) != Asset::Textures.end())
         {
-            texture = Asset::Graphics[asset];
+            texture = Asset::Textures[asset];
         }
 
         if (texture)

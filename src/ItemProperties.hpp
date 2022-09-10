@@ -19,7 +19,7 @@ namespace BloodSword::Item
         POISONED
     };
 
-    std::unordered_map<Item::Property, const char *> PropertyMapping = {
+    Mapping<Item::Property> PropertyMapping = {
         {Property::NONE, "NONE"},
         {Property::NORMAL, "NORMAL"},
         {Property::WEAPON, "WEAPON"},

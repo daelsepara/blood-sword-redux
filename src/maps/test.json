@@ -285,33 +285,33 @@
                 "lifetime": -1
             },
             {
-                "id": -1,
+                "id": 0,
                 "type": "PASSABLE",
-                "occupant": "NONE",
+                "occupant": "PLAYER",
                 "asset": "NONE",
                 "temporary_asset": "NONE",
                 "lifetime": -1
             },
             {
-                "id": -1,
+                "id": 1,
                 "type": "PASSABLE",
-                "occupant": "NONE",
+                "occupant": "PLAYER",
                 "asset": "NONE",
                 "temporary_asset": "NONE",
                 "lifetime": -1
             },
             {
-                "id": -1,
+                "id": 2,
                 "type": "PASSABLE",
-                "occupant": "NONE",
+                "occupant": "PLAYER",
                 "asset": "NONE",
                 "temporary_asset": "NONE",
                 "lifetime": -1
             },
             {
-                "id": -1,
+                "id": 3,
                 "type": "PASSABLE",
-                "occupant": "NONE",
+                "occupant": "PLAYER",
                 "asset": "NONE",
                 "temporary_asset": "NONE",
                 "lifetime": -1
