@@ -1,7 +1,7 @@
 #ifndef __ATTRIBUTE_HPP__
 #define __ATTRIBUTE_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -42,7 +42,7 @@ namespace BloodSword::Attribute
         }
     };
 
-    std::map<Attribute::Type, const char *> TypeMapping = {
+    std::unordered_map<Attribute::Type, const char *> TypeMapping = {
         {Type::NONE, "NONE"},
         {Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
         {Type::AWARENESS, "AWARENESS"},

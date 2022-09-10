@@ -1,7 +1,7 @@
 #ifndef __SPELLS_HPP__
 #define __SPELLS_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -36,7 +36,7 @@ namespace BloodSword::Spells
         PSYCHIC
     };
 
-    std::map<Spells::Type, const char *> TypeMapping = {
+    std::unordered_map<Spells::Type, const char *> TypeMapping = {
         {Type::NONE, "NONE"},
         {Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
         {Type::NIGHTHOWL, "NIGHTHOWL"},
@@ -55,7 +55,7 @@ namespace BloodSword::Spells
         {Type::PREDICTION, "PREDICTION"},
         {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
-    std::map<Spells::Class, const char *> ClassMapping = {
+    std::unordered_map<Spells::Class, const char *> ClassMapping = {
         {Class::NONE, "NONE"},
         {Class::BLASTING, "BLASTING"},
         {Class::PSYCHIC, "PSYCHIC"}};

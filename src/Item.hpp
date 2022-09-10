@@ -1,7 +1,7 @@
 #ifndef __ITEM_HPP__
 #define __ITEM_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 #include <vector>
 
@@ -15,7 +15,7 @@ namespace BloodSword::Item
     {
     public:
         // attributes and modifiers
-        std::map<Attribute::Type, int> Attributes = {};
+        std::unordered_map<Attribute::Type, int> Attributes = {};
 
         // item properties
         std::vector<Item::Property> Properties = {};
@@ -32,7 +32,7 @@ namespace BloodSword::Item
         // item name
         std::string Name = "";
 
-        void Initialize(const char *name, Item::Type type, std::map<Attribute::Type, int> attributes, std::vector<Item::Property> properties, Item::Type contains, int quantity)
+        void Initialize(const char *name, Item::Type type, std::unordered_map<Attribute::Type, int> attributes, std::vector<Item::Property> properties, Item::Type contains, int quantity)
         {
             this->Name = name;
 
@@ -47,7 +47,7 @@ namespace BloodSword::Item
             this->Quantity = quantity;
         }
 
-        Base(const char *name, Item::Type type, std::map<Attribute::Type, int> attributes, std::vector<Item::Property> properties, Item::Type contains, int quantity)
+        Base(const char *name, Item::Type type, std::unordered_map<Attribute::Type, int> attributes, std::vector<Item::Property> properties, Item::Type contains, int quantity)
         {
             this->Initialize(name, type, attributes, properties, contains, quantity);
         }
@@ -57,7 +57,7 @@ namespace BloodSword::Item
             this->Initialize(name, type, {}, properties, contains, quantity);
         }
 
-        Base(const char *name, Item::Type type, std::map<Attribute::Type, int> attributes, std::vector<Item::Property> properties)
+        Base(const char *name, Item::Type type, std::unordered_map<Attribute::Type, int> attributes, std::vector<Item::Property> properties)
         {
             this->Initialize(name, type, attributes, properties, Item::Type::NONE, 1);
         }

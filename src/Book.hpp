@@ -1,7 +1,7 @@
 #ifndef __BOOK_HPP__
 #define __BOOK_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <vector>
 
 namespace BloodSword::Book
@@ -18,7 +18,7 @@ namespace BloodSword::Book
 
     typedef std::pair<Book::Number, int> Destination;
 
-    std::map<Book::Number, const char *> Title = {
+    std::unordered_map<Book::Number, const char *> Title = {
         {Book::Number::None, "Blood Sword"},
         {Book::Number::Book1, "The Battlepits of Krarth"},
         {Book::Number::Book2, "The Kingdom of Wyrd"},
@@ -26,7 +26,7 @@ namespace BloodSword::Book
         {Book::Number::Book4, "Doomwalk"},
         {Book::Number::Book5, "The Walls of Spyte"}};
 
-    std::map<Book::Number, std::vector<int>> Ranks = {
+    std::unordered_map<Book::Number, std::vector<int>> Ranks = {
         {Book::Number::None, {1, 1, 1, 1}},
         {Book::Number::Book1, {8, 4, 3, 2}},
         {Book::Number::Book2, {12, 6, 4, 3}},
