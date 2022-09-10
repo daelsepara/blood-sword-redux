@@ -1,19 +1,19 @@
 #ifndef __TEMPLATES_HPP__
 #define __TEMPLATES_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 namespace BloodSword
 {
     template <typename T>
-    T Find(std::map<T, const char *> &map, const char *key)
+    T Find(std::unordered_map<T, const char *> &unordered_map, const char *key)
     {
         auto result = T::NONE;
 
-        auto keys = map.begin();
+        auto keys = unordered_map.begin();
 
-        while (keys != map.end())
+        while (keys != unordered_map.end())
         {
             if (std::strcmp(keys->second, key) == 0)
             {

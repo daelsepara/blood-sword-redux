@@ -1,7 +1,7 @@
 #ifndef __ASSET_TYPES_HPP__
 #define __ASSET_TYPES_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -92,7 +92,7 @@ namespace BloodSword::Asset
         DETECT_ENCHANTMENT
     };
 
-    std::map<Asset::Type, const char *> TypeMapping = {
+    std::unordered_map<Asset::Type, const char *> TypeMapping = {
         {Type::NONE, "NONE"},
         {Type::WARRIOR, "WARRIOR"},
         {Type::TRICKSTER, "TRICKSTER"},

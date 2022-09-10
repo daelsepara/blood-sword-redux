@@ -1,7 +1,7 @@
 #ifndef __ITEM_TYPES_HPP__
 #define __ITEM_TYPES_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -24,7 +24,7 @@ namespace BloodSword::Item
         SILVER_ARMOUR
     };
 
-    std::map<Item::Type, const char *> TypeMapping = {
+    std::unordered_map<Item::Type, const char *> TypeMapping = {
         {Type::NONE, "NONE"},
         {Type::SWORD, "SWORD"},
         {Type::BOW, "BOW"},

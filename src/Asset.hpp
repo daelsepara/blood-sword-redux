@@ -3,7 +3,7 @@
 
 #include <fstream>
 #include <string>
-#include <map>
+#include <unordered_map>
 
 #include <SDL.h>
 #include <SDL_image.h>
@@ -14,9 +14,9 @@
 
 namespace BloodSword::Asset
 {
-    std::map<Asset::Type, std::string> Path = {};
+    std::unordered_map<Asset::Type, std::string> Path = {};
 
-    std::map<Asset::Type, SDL_Texture *> Graphics = {};
+    std::unordered_map<Asset::Type, SDL_Texture *> Graphics = {};
 
     void Unload()
     {

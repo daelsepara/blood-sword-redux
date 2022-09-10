@@ -1,7 +1,7 @@
 #ifndef __MAP_OBJECTS_HPP__
 #define __MAP_OBJECTS_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -20,7 +20,7 @@ namespace BloodSword::Map
         EXIT
     };
 
-    std::map<Map::Object, const char *> ObjectMapping = {
+    std::unordered_map<Map::Object, const char *> ObjectMapping = {
         {Object::NONE, "NONE"},
         {Object::PLAYER, "PLAYER"},
         {Object::ENEMY, "ENEMY"},

@@ -1,7 +1,7 @@
 #ifndef __ITEM_PROPERTIES_HPP__
 #define __ITEM_PROPERTIES_HPP__
 
-#include <map>
+#include <unordered_map>
 #include <string>
 
 #include "Templates.hpp"
@@ -19,7 +19,7 @@ namespace BloodSword::Item
         POISONED
     };
 
-    std::map<Item::Property, const char *> PropertyMapping = {
+    std::unordered_map<Item::Property, const char *> PropertyMapping = {
         {Property::NONE, "NONE"},
         {Property::NORMAL, "NORMAL"},
         {Property::WEAPON, "WEAPON"},
