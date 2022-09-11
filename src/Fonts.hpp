@@ -8,33 +8,7 @@
 
 #include "nlohmann/json.hpp"
 
-namespace BloodSword::Color
-{
-    Uint32 Active = 0xFFFFFFFF;
-    Uint32 Inactive = 0xFF606060;
-    Uint32 Highlight = 0xFFFF0000;
-    Uint32 Background = 0xFF000000;
-
-    SDL_Color cActive = {255, 255, 255, 255};
-    SDL_Color cInactive = {96, 96, 96, 255};
-    SDL_Color cHighlight = {255, 0, 0, 255};
-    SDL_Color cBackground = {0, 0, 0, 255};
-
-    SDL_Color Set(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
-    {
-        return {r, g, b, a};
-    }
-
-    SDL_Color Set(Uint8 r, Uint8 g, Uint8 b)
-    {
-        return Color::Set(r, g, b, 255);
-    }
-
-    Uint32 Set(SDL_Color color)
-    {
-        return (color.a >> 24 | color.r >> 16 | color.g >> 8 | color.b);
-    }
-}
+#include "Color.hpp"
 
 namespace BloodSword::Fonts
 {

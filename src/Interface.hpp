@@ -8,7 +8,7 @@
 
 namespace BloodSword::Interface
 {
-    void AddMap(Map::Base &Map, Graphics::Scene &Scene, Party::Base &Party, Party::Base &Enemies, int BottomControls)
+    void Add(Map::Base &Map, Scene::Base &Scene, Party::Base &Party, Party::Base &Enemies, int BottomControls)
     {
         auto NumControls = Scene.Controls.size();
 
@@ -71,7 +71,7 @@ namespace BloodSword::Interface
                         {
                             if (Party.Members[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Graphics::SceneElement(Asset::Get(Party.Members[Tile.Id].Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Party.Members[Tile.Id].Asset), AssetX, AssetY));
 
                                 switch (Party.Members[Tile.Id].Class)
                                 {
@@ -100,7 +100,7 @@ namespace BloodSword::Interface
                         {
                             if (Enemies.Members[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Graphics::SceneElement(Asset::Get(Enemies.Members[Tile.Id].Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Enemies.Members[Tile.Id].Asset), AssetX, AssetY));
 
                                 ControlType = Controls::Type::ENEMY;
 
@@ -113,7 +113,7 @@ namespace BloodSword::Interface
                         {
                             if (Tile.TemporaryAsset != Asset::Type::NONE)
                             {
-                                Scene.Add(Graphics::SceneElement(Asset::Get(Tile.TemporaryAsset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Tile.TemporaryAsset), AssetX, AssetY));
 
                                 ControlType = Controls::Type::TEMPORARY_OBSTACLE;
 
@@ -124,7 +124,7 @@ namespace BloodSword::Interface
                         {
                             if (Tile.Asset != Asset::Type::NONE)
                             {
-                                Scene.Add(Graphics::SceneElement(Asset::Get(Tile.Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Tile.Asset), AssetX, AssetY));
                             }
                         }
                         break;
@@ -148,12 +148,12 @@ namespace BloodSword::Interface
                     }
                     else if (Tile.IsPassableToEnemy())
                     {
-                        ControlColor = Color::Highlight;
+                        ControlColor = Color::Inactive;
                     }
 
                     if (Tile.Asset != Asset::Type::NONE)
                     {
-                        Scene.Add(Graphics::SceneElement(Asset::Get(Tile.Asset), AssetX, AssetY));
+                        Scene.Add(Scene::Element(Asset::Get(Tile.Asset), AssetX, AssetY));
                     }
                 }
 

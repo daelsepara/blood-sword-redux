@@ -27,28 +27,28 @@ namespace BloodSword::Test
             auto ws = w + s;
 
             // sprites
-            auto warrior = Graphics::SceneElement(Asset::Get(Asset::Type::WARRIOR), x, y);
-            auto trickster = Graphics::SceneElement(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
-            auto sage = Graphics::SceneElement(Asset::Get(Asset::Type::SAGE), x + 2 * ws, y);
-            auto enchanter = Graphics::SceneElement(Asset::Get(Asset::Type::ENCHANTER), x + 3 * ws, y);
-            auto up = Graphics::SceneElement(Asset::Get(Asset::Type::UP), x, y + ws);
-            auto down = Graphics::SceneElement(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
-            auto left = Graphics::SceneElement(Asset::Get(Asset::Type::LEFT), x + 2 * ws, y + ws);
-            auto right = Graphics::SceneElement(Asset::Get(Asset::Type::RIGHT), x + 3 * ws, y + ws);
+            auto warrior = Scene::Element(Asset::Get(Asset::Type::WARRIOR), x, y);
+            auto trickster = Scene::Element(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
+            auto sage = Scene::Element(Asset::Get(Asset::Type::SAGE), x + 2 * ws, y);
+            auto enchanter = Scene::Element(Asset::Get(Asset::Type::ENCHANTER), x + 3 * ws, y);
+            auto up = Scene::Element(Asset::Get(Asset::Type::UP), x, y + ws);
+            auto down = Scene::Element(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
+            auto left = Scene::Element(Asset::Get(Asset::Type::LEFT), x + 2 * ws, y + ws);
+            auto right = Scene::Element(Asset::Get(Asset::Type::RIGHT), x + 3 * ws, y + ws);
 
             // text sprites
-            auto text = Graphics::CreateText(graphics, "Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::cInactive, TTF_STYLE_NORMAL, 8 * ws - s);
-            auto text_sprite = Graphics::SceneElement(text, x + 4 * ws, y);
+            auto text = Graphics::CreateText(graphics, "Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+            auto text_sprite = Scene::Element(text, x + 4 * ws, y);
 
-            auto warrior_text = Graphics::CreateText(graphics, "You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
-            auto trickster_text = Graphics::CreateText(graphics, "Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
-            auto sage_text = Graphics::CreateText(graphics, "Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
-            auto enchanter_text = Graphics::CreateText(graphics, "Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * ws - s);
+            auto warrior_text = Graphics::CreateText(graphics, "You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+            auto trickster_text = Graphics::CreateText(graphics, "Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+            auto sage_text = Graphics::CreateText(graphics, "Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+            auto enchanter_text = Graphics::CreateText(graphics, "Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
 
-            auto warrior_sprite = Graphics::SceneElement(warrior_text, x + 4 * ws, y);
-            auto trickster_sprite = Graphics::SceneElement(trickster_text, x + 4 * ws, y);
-            auto sage_sprite = Graphics::SceneElement(sage_text, x + 4 * ws, y);
-            auto enchanter_sprite = Graphics::SceneElement(enchanter_text, x + 4 * ws, y);
+            auto warrior_sprite = Scene::Element(warrior_text, x + 4 * ws, y);
+            auto trickster_sprite = Scene::Element(trickster_text, x + 4 * ws, y);
+            auto sage_sprite = Scene::Element(sage_text, x + 4 * ws, y);
+            auto enchanter_sprite = Scene::Element(enchanter_text, x + 4 * ws, y);
 
             // controls
             std::vector<Controls::Base> controls = {
@@ -61,7 +61,7 @@ namespace BloodSword::Test
                 Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + 2 * ws, y + ws, w, h, Color::Highlight),
                 Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + 3 * ws, y + ws, w, h, Color::Highlight)};
 
-            auto sprites = std::vector<Graphics::SceneElement>();
+            auto sprites = std::vector<Scene::Element>();
 
             auto input = Controls::User();
 
@@ -102,7 +102,7 @@ namespace BloodSword::Test
                     sprites.push_back(text_sprite);
                 }
 
-                auto scene = Graphics::Scene(sprites, controls, 0);
+                auto scene = Scene::Base(sprites, controls, 0);
 
                 input = Input::WaitForInput(graphics, scene, input);
             }
@@ -123,26 +123,36 @@ namespace BloodSword::Test
 
             map.Load("maps/test.json");
 
-            auto scene = Graphics::Scene();
+            auto scene = Scene::Base();
 
-            auto party = Party::Base({
-                Generate::Character(Character::Class::WARRIOR, 8),
-                Generate::Character(Character::Class::TRICKSTER, 8),
-                Generate::Character(Character::Class::SAGE, 8),
-                Generate::Character(Character::Class::ENCHANTER, 8)
-            });
+            auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8),
+                                      Generate::Character(Character::Class::TRICKSTER, 8),
+                                      Generate::Character(Character::Class::SAGE, 8),
+                                      Generate::Character(Character::Class::ENCHANTER, 8)});
 
             auto enemies = Party::Base();
 
             auto input = Controls::User();
 
-            SDL_Texture *texture = NULL;
+            auto textures = Graphics::CreateText(
+                graphics,
+                {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
+                 Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize)});
 
             while (true)
             {
-                auto scene = Graphics::Scene();
+                auto scene = Scene::Base();
 
-                Interface::AddMap(map, scene, party, enemies, 1);
+                Interface::Add(map, scene, party, enemies, 1);
 
                 auto id = (int)scene.Controls.size();
 
@@ -150,7 +160,7 @@ namespace BloodSword::Test
 
                 auto x = map.DrawX;
 
-                scene.Add(Graphics::SceneElement(Asset::Get(Asset::Type::EXIT), x, y));
+                scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
                 scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
 
@@ -158,15 +168,47 @@ namespace BloodSword::Test
                 {
                     if (scene.Controls[input.Current].IsMap)
                     {
-                        Graphics::Free(&texture);
-
                         auto tile = &map.Tiles[scene.Controls[input.Current].MapY][scene.Controls[input.Current].MapX];
 
-                        auto object = tile->IsOccupied() ? tile->Occupant : tile->Type;
+                        auto object = -1;
 
-                        texture = Graphics::CreateText(graphics, Map::ObjectMapping[object], Fonts::Normal, Color::cActive, TTF_STYLE_NORMAL, 8 * map.TileSize);
+                        auto background = Color::Inactive;
 
-                        scene.Add(Graphics::SceneElement(texture, map.DrawX + (2 * map.SizeX + 1) * map.TileSize / 2, map.DrawY));
+                        auto border = Color::Active;
+
+                        if ((tile->IsOccupied() && tile->Occupant == Map::Object::PLAYER))
+                        {
+                            object = (int)party.Members[tile->Id].Class + 7;
+                        }
+                        else if (tile->IsPassable())
+                        {
+                            object = (int)tile->Type;
+                        }
+                        else if (tile->IsOccupied())
+                        {
+                            object = (int)tile->Occupant;
+
+                            background = Color::Active;
+
+                            border = Color::Inactive;
+                        }
+                        else
+                        {
+                            object = (int)tile->Type;
+
+                            border = Color::Highlight;
+
+                            background = Color::Highlight;
+                        }
+
+                        if (object >= 0 && object < textures.size())
+                        {
+                            auto element = Scene::Element(textures[object], map.DrawX + (2 * map.SizeX + 1) * map.TileSize / 2 + 10, map.DrawY + 10);
+
+                            element.Set(background, border, 4);
+
+                            scene.Add(element);
+                        }
                     }
                 }
 
@@ -178,7 +220,7 @@ namespace BloodSword::Test
                 }
             }
 
-            Graphics::Free(&texture);
+            Graphics::Free(textures);
         }
     }
 }

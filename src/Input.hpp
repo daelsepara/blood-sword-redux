@@ -53,7 +53,7 @@ namespace BloodSword::Input
         return numGamepads;
     }
 
-    void WaitForNext(Graphics::Base &graphics, Graphics::Scene &scene)
+    void WaitForNext(Graphics::Base &graphics, Scene::Base &scene)
     {
         SDL_Event result;
 
@@ -101,7 +101,7 @@ namespace BloodSword::Input
         }
     }
 
-    Controls::User WaitForInput(Graphics::Base &graphics, Graphics::Scene &scene, Controls::User input)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input)
     {
         SDL_Event result;
 
