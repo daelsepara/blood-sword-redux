@@ -29,37 +29,37 @@ namespace BloodSword::Test
             // sprites
             auto warrior = Scene::Element(Asset::Get(Asset::Type::WARRIOR), x, y);
             auto trickster = Scene::Element(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
-            auto sage = Scene::Element(Asset::Get(Asset::Type::SAGE), x + 2 * ws, y);
-            auto enchanter = Scene::Element(Asset::Get(Asset::Type::ENCHANTER), x + 3 * ws, y);
+            auto sage = Scene::Element(Asset::Get(Asset::Type::SAGE), x + ws * 2, y);
+            auto enchanter = Scene::Element(Asset::Get(Asset::Type::ENCHANTER), x + ws * 3, y);
             auto up = Scene::Element(Asset::Get(Asset::Type::UP), x, y + ws);
             auto down = Scene::Element(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
-            auto left = Scene::Element(Asset::Get(Asset::Type::LEFT), x + 2 * ws, y + ws);
-            auto right = Scene::Element(Asset::Get(Asset::Type::RIGHT), x + 3 * ws, y + ws);
+            auto left = Scene::Element(Asset::Get(Asset::Type::LEFT), x + ws * 2, y + ws);
+            auto right = Scene::Element(Asset::Get(Asset::Type::RIGHT), x + ws * 3, y + ws);
 
             // text sprites
             auto text = Graphics::CreateText(graphics, "Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto text_sprite = Scene::Element(text, x + 4 * ws, y);
+            auto text_sprite = Scene::Element(text, x + ws * 4, y);
 
             auto warrior_text = Graphics::CreateText(graphics, "You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
             auto trickster_text = Graphics::CreateText(graphics, "Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
             auto sage_text = Graphics::CreateText(graphics, "Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
             auto enchanter_text = Graphics::CreateText(graphics, "Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
 
-            auto warrior_sprite = Scene::Element(warrior_text, x + 4 * ws, y);
-            auto trickster_sprite = Scene::Element(trickster_text, x + 4 * ws, y);
-            auto sage_sprite = Scene::Element(sage_text, x + 4 * ws, y);
-            auto enchanter_sprite = Scene::Element(enchanter_text, x + 4 * ws, y);
+            auto warrior_sprite = Scene::Element(warrior_text, x + ws * 4, y);
+            auto trickster_sprite = Scene::Element(trickster_text, x + ws * 4, y);
+            auto sage_sprite = Scene::Element(sage_text, x + ws * 4, y);
+            auto enchanter_sprite = Scene::Element(enchanter_text, x + ws * 4, y);
 
             // controls
             std::vector<Controls::Base> controls = {
                 Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 4, x, y, w, h, Color::Highlight),
                 Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 5, x + w + s, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 6, x + 2 * ws, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 7, x + 3 * ws, y, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 6, x + ws * 2, y, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 7, x + ws * 3, y, w, h, Color::Highlight),
                 Controls::Base(Controls::Type::MAP_UP, 4, 4, 5, 0, 4, x, y + ws, w, h, Color::Highlight),
                 Controls::Base(Controls::Type::MAP_DOWN, 5, 4, 6, 1, 5, x + w + s, y + ws, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + 2 * ws, y + ws, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + 3 * ws, y + ws, w, h, Color::Highlight)};
+                Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + ws * 2, y + ws, w, h, Color::Highlight),
+                Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + ws * 3, y + ws, w, h, Color::Highlight)};
 
             auto sprites = std::vector<Scene::Element>();
 
@@ -136,17 +136,17 @@ namespace BloodSword::Test
 
             auto textures = Graphics::CreateText(
                 graphics,
-                {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize),
-                 Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * map.TileSize)});
+                {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5)});
 
             while (true)
             {
@@ -203,9 +203,9 @@ namespace BloodSword::Test
 
                         if (object >= 0 && object < textures.size())
                         {
-                            auto element = Scene::Element(textures[object], map.DrawX + (2 * map.SizeX + 1) * map.TileSize / 2 + 10, map.DrawY + 10);
+                            scene.Add(Scene::Element(map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + 10, map.DrawY + 10, map.TileSize * 5, map.TileSize, background, border, 4));
 
-                            element.Set(background, border, 4);
+                            auto element = Scene::Element(textures[object], map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + 10, map.DrawY + 10);
 
                             scene.Add(element);
                         }

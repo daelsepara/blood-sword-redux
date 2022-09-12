@@ -44,38 +44,35 @@ namespace BloodSword::Scene
 
         void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
         {
-            if (texture)
-            {
-                this->Set(background, border, borderSize);
+            this->Set(background, border, borderSize);
 
-                this->Texture = texture;
+            this->Texture = texture;
 
-                this->Bounds = bounds;
+            this->Bounds = bounds;
 
-                this->Offset = offset;
+            this->Offset = offset;
 
-                this->X = x;
+            this->X = x;
 
-                this->Y = y;
+            this->Y = y;
 
-                this->W = w;
+            this->W = w;
 
-                this->H = h;
-            }
+            this->H = h;
         }
 
         void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background, Uint32 border, int borderSize)
         {
+            auto w = 0;
+
+            auto h = 0;
+
             if (texture)
             {
-                auto w = 0;
-
-                auto h = 0;
-
                 SDL_QueryTexture(texture, NULL, NULL, &w, &h);
-
-                this->Initialize(texture, x, y, bounds, offset, w, h, background, border, borderSize);
             }
+
+            this->Initialize(texture, x, y, bounds, offset, w, h, background, border, borderSize);
         }
 
         void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset)
@@ -85,18 +82,12 @@ namespace BloodSword::Scene
 
         Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background, Uint32 border, int borderSize)
         {
-            if (texture)
-            {
-                this->Initialize(texture, x, y, bounds, offset, background, border, borderSize);
-            }
+            this->Initialize(texture, x, y, bounds, offset, background, border, borderSize);
         }
 
         Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 border, int borderSize)
         {
-            if (texture)
-            {
-                this->Initialize(texture, x, y, bounds, offset, 0, border, borderSize);
-            }
+            this->Initialize(texture, x, y, bounds, offset, 0, border, borderSize);
         }
 
         Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background)
@@ -117,14 +108,24 @@ namespace BloodSword::Scene
 
         Element(SDL_Texture *texture, int x, int y)
         {
+            auto texture_h = 0;
+
             if (texture)
             {
-                auto texture_h = 0;
-
                 SDL_QueryTexture(texture, NULL, NULL, NULL, &texture_h);
-
-                this->Initialize(texture, x, y, texture_h, 0);
             }
+
+            this->Initialize(texture, x, y, texture_h, 0);
+        }
+
+        Element(int x, int y, int w, int h, Uint32 background, Uint32 border, int borderSize)
+        {
+            this->Initialize(NULL, x, y, h, 0, w, h, background, border, borderSize);
+        }
+
+        Element(int x, int y, int w, int h, Uint32 background)
+        {
+            this->Initialize(NULL, x, y, h, 0, w, h, background, 0, 0);
         }
     };
 

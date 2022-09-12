@@ -182,7 +182,7 @@ namespace BloodSword::Graphics
     // base render texture function
     void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
     {
-        if (graphics.Renderer && texture)
+        if (graphics.Renderer)
         {
             SDL_Rect src;
             src.w = texture_w;
@@ -203,13 +203,16 @@ namespace BloodSword::Graphics
                 SDL_RenderFillRect(graphics.Renderer, &dst);
             }
 
-            SDL_RenderCopy(graphics.Renderer, texture, &src, &dst);
+            if (texture)
+            {
+                SDL_RenderCopy(graphics.Renderer, texture, &src, &dst);
+            }
         }
     }
 
     void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
     {
-        if (graphics.Renderer && texture)
+        if (graphics.Renderer)
         {
             Graphics::Render(graphics, texture, texture_w, texture_h, x, y, bounds, offset, w, h, background);
 
