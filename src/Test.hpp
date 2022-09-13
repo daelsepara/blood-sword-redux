@@ -134,47 +134,52 @@ namespace BloodSword::Test
 
             auto input = Controls::User();
 
+            auto textw = map.TileSize * 7;
+
+            auto objectw = map.TileSize * 5;
+
             auto textures = Graphics::CreateText(
                 graphics,
-                {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5)});
+                {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw)});
 
-            auto character_backgrounds = Graphics::CreateText(
+            auto backgrounds = Graphics::CreateText(
                 graphics,
-                {Graphics::RichText("Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
-                 Graphics::RichText("Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5)});
+                {Graphics::RichText("Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
 
             auto pad = 10;
-            auto background_text = 0;
+            auto background = 0;
             auto prev_background = -1;
             auto change = false;
-            auto text_offset = 0;
-            auto backgroundy = map.DrawY + pad;
-            auto backgroundw = map.TileSize * 5;
-            auto backgroundh = map.TileSize * 5;
-            auto textx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
+            auto offset = 0;
+            auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
             auto objecty = map.DrawY + map.TileSize * 7 - pad;
+            auto backgroundx = objectx;
+            auto backgroundy = map.DrawY + pad;
+            auto backgroundw = textw;
+            auto backgroundh = map.TileSize * 5;
             auto texturew = 0;
             auto textureh = 0;
-            auto scrollx = textx + backgroundw + pad * 2;
+            auto scrollx = objectx + backgroundw + pad * 2;
             auto scrolly = map.DrawY + backgroundh - map.TileSize + pad * 2;
             auto scrollSpeed = 20;
-            auto scrollUp = false;
-            auto scrollDown = false;
+            auto scroll_up = false;
+            auto scroll_down = false;
 
-            SDL_QueryTexture(character_backgrounds[background_text], NULL, NULL, &texturew, &textureh);
+            SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
 
             while (true)
             {
@@ -188,36 +193,36 @@ namespace BloodSword::Test
 
                 scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
-                auto up = text_offset > 0;
-                auto down = backgroundh < textureh && text_offset < (textureh - backgroundh);
+                auto arrow_up = offset > 0;
+                auto arrow_down = backgroundh < textureh && offset < (textureh - backgroundh);
 
-                if (up)
+                if (arrow_up)
                 {
                     scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), scrollx, map.DrawY));
                 }
 
-                if (down)
+                if (arrow_down)
                 {
                     scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), scrollx, scrolly));
                 }
 
-                if (up || down)
+                if (arrow_up || arrow_down)
                 {
                     scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
                 }
 
-                if (up && down)
+                if (arrow_up && arrow_down)
                 {
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 2, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Active));
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id, id + 2, id + 1, id + 2, scrollx, scrolly, map.TileSize, map.TileSize, Color::Active));
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 2, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id, id + 2, id + 1, id + 2, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
                 }
-                else if (up)
+                else if (arrow_up)
                 {
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 1, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Active));
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 1, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
                 }
-                else if (down)
+                else if (arrow_down)
                 {
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id, id + 1, id + 1, id + 1, scrollx, scrolly, map.TileSize, map.TileSize, Color::Active));
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id, id + 1, id + 1, id + 1, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
                 }
                 else
                 {
@@ -258,29 +263,29 @@ namespace BloodSword::Test
 
                         if (object >= 0 && object < textures.size())
                         {
-                            scene.Add(Scene::Element(textx, objecty, backgroundw, map.TileSize, background, border, 4));
-                            scene.Add(Scene::Element(textures[object], textx, objecty));
+                            scene.Add(Scene::Element(objectx, objecty, objectw, map.TileSize, background, border, 4));
+                            scene.Add(Scene::Element(textures[object], objectx, objecty));
                         }
                     }
                 }
 
-                if (background_text >= 0 && background_text < character_backgrounds.size())
+                if (background >= 0 && background < backgrounds.size())
                 {
-                    scene.Add(Scene::Element(textx, backgroundy, backgroundw, backgroundh, Color::Inactive, Color::Active, 4));
-                    scene.Add(Scene::Element(character_backgrounds[background_text], textx, backgroundy, backgroundh, text_offset));
+                    scene.Add(Scene::Element(backgroundx, backgroundy, backgroundw, backgroundh, Color::Inactive, Color::Active, 4));
+                    scene.Add(Scene::Element(backgrounds[background], backgroundx, backgroundy, backgroundh, offset));
                 }
 
-                if (scrollUp)
+                if (scroll_up)
                 {
                     input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
 
-                    scrollUp = false;
+                    scroll_up = false;
                 }
-                else if (scrollDown)
+                else if (scroll_down)
                 {
                     input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
 
-                    scrollDown = false;
+                    scroll_down = false;
                 }
 
                 input = Input::WaitForInput(graphics, scene, input);
@@ -293,33 +298,33 @@ namespace BloodSword::Test
                     }
                     else if (input.Type == Controls::Type::WARRIOR)
                     {
-                        prev_background = background_text;
+                        prev_background = background;
 
-                        background_text = 1;
+                        background = 1;
 
                         change = true;
                     }
                     else if (input.Type == Controls::Type::TRICKSTER)
                     {
-                        prev_background = background_text;
+                        prev_background = background;
 
-                        background_text = 2;
+                        background = 2;
 
                         change = true;
                     }
                     else if (input.Type == Controls::Type::SAGE)
                     {
-                        prev_background = background_text;
+                        prev_background = background;
 
-                        background_text = 3;
+                        background = 3;
 
                         change = true;
                     }
                     else if (input.Type == Controls::Type::ENCHANTER)
                     {
-                        prev_background = background_text;
+                        prev_background = background;
 
-                        background_text = 4;
+                        background = 4;
 
                         change = true;
                     }
@@ -327,46 +332,46 @@ namespace BloodSword::Test
                     {
                         if (backgroundh < textureh)
                         {
-                            text_offset -= scrollSpeed;
+                            offset -= scrollSpeed;
 
-                            if (text_offset <= 0)
+                            if (offset < 0)
                             {
-                                text_offset = 0;
+                                offset = 0;
                             }
 
-                            scrollUp = true;
+                            scroll_up = true;
                         }
                     }
                     else if (input.Type == Controls::Type::SCROLL_DOWN)
                     {
                         if (backgroundh < textureh)
                         {
-                            text_offset += scrollSpeed;
+                            offset += scrollSpeed;
 
-                            if (text_offset > (textureh - backgroundh))
+                            if (offset > (textureh - backgroundh))
                             {
-                                text_offset = textureh - backgroundh;
+                                offset = textureh - backgroundh;
                             }
 
-                            scrollDown = true;
+                            scroll_down = true;
                         }
                     }
                     else
                     {
-                        prev_background = background_text;
+                        prev_background = background;
 
-                        background_text = 0;
+                        background = 0;
 
                         change = true;
                     }
 
-                    if (background_text != prev_background && background_text >= 0 && background_text < character_backgrounds.size())
+                    if (background != prev_background && background >= 0 && background < backgrounds.size())
                     {
                         if (change)
                         {
-                            SDL_QueryTexture(character_backgrounds[background_text], NULL, NULL, &texturew, &textureh);
+                            SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
 
-                            text_offset = 0;
+                            offset = 0;
 
                             change = false;
                         }
@@ -374,7 +379,7 @@ namespace BloodSword::Test
                 }
             }
 
-            Graphics::Free(character_backgrounds);
+            Graphics::Free(backgrounds);
 
             Graphics::Free(textures);
         }
