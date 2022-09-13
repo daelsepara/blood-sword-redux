@@ -318,6 +318,8 @@ namespace BloodSword::Input
         {
             input.Current = -1;
 
+            input.Selected = false;
+
             if (result.wheel.y < 0 || result.wheel.x < 0)
             {
                 input.Up = false;
@@ -330,6 +332,15 @@ namespace BloodSword::Input
 
                 input.Down = false;
             }
+        }
+
+        if (input.Current >= 0 && input.Current < scene.Controls.size())
+        {
+            input.Type = scene.Controls[input.Current].Type;
+        }
+        else
+        {
+            input.Type = Controls::Type::NONE;
         }
 
         return input;

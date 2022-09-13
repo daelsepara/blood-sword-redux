@@ -148,6 +148,34 @@ namespace BloodSword::Test
                  Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
                  Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5)});
 
+            auto character_backgrounds = Graphics::CreateText(
+                graphics,
+                {Graphics::RichText("Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5),
+                 Graphics::RichText("Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, map.TileSize * 5)});
+
+            auto pad = 10;
+            auto background_text = 0;
+            auto prev_background = -1;
+            auto change = false;
+            auto text_offset = 0;
+            auto backgroundy = map.DrawY + pad;
+            auto backgroundw = map.TileSize * 5;
+            auto backgroundh = map.TileSize * 5;
+            auto textx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
+            auto objecty = map.DrawY + map.TileSize * 7 - pad;
+            auto texturew = 0;
+            auto textureh = 0;
+            auto scrollx = textx + backgroundw + pad * 2;
+            auto scrolly = map.DrawY + backgroundh - map.TileSize + pad * 2;
+            auto scrollSpeed = 20;
+            auto scrollUp = false;
+            auto scrollDown = false;
+
+            SDL_QueryTexture(character_backgrounds[background_text], NULL, NULL, &texturew, &textureh);
+
             while (true)
             {
                 auto scene = Scene::Base();
@@ -155,70 +183,198 @@ namespace BloodSword::Test
                 Interface::Add(map, scene, party, enemies, 1);
 
                 auto id = (int)scene.Controls.size();
-
-                auto y = map.DrawY + map.SizeY * map.TileSize;
-
                 auto x = map.DrawX;
+                auto y = map.DrawY + map.SizeY * map.TileSize;
 
                 scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
-                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
+                auto up = text_offset > 0;
+                auto down = backgroundh < textureh && text_offset < (textureh - backgroundh);
+
+                if (up)
+                {
+                    scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), scrollx, map.DrawY));
+                }
+
+                if (down)
+                {
+                    scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), scrollx, scrolly));
+                }
+
+                if (up || down)
+                {
+                    scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
+                }
+
+                if (up && down)
+                {
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 2, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Active));
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id, id + 2, id + 1, id + 2, scrollx, scrolly, map.TileSize, map.TileSize, Color::Active));
+                }
+                else if (up)
+                {
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 1, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Active));
+                }
+                else if (down)
+                {
+                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id, id + 1, id + 1, id + 1, scrollx, scrolly, map.TileSize, map.TileSize, Color::Active));
+                }
+                else
+                {
+                    scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
+                }
 
                 if (input.Current >= 0 && input.Current < scene.Controls.size())
                 {
-                    if (scene.Controls[input.Current].IsMap)
-                    {
-                        auto tile = &map.Tiles[scene.Controls[input.Current].MapY][scene.Controls[input.Current].MapX];
+                    auto &control = scene.Controls[input.Current];
 
+                    if (control.IsMap)
+                    {
+                        auto &tile = map.Tiles[control.MapY][control.MapX];
+                        auto background = Color::Inactive;
+                        auto border = Color::Active;
                         auto object = -1;
 
-                        auto background = Color::Inactive;
-
-                        auto border = Color::Active;
-
-                        if ((tile->IsOccupied() && tile->Occupant == Map::Object::PLAYER))
+                        if ((tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER))
                         {
-                            object = (int)party.Members[tile->Id].Class + 7;
+                            object = (int)party.Members[tile.Id].Class + 7;
                         }
-                        else if (tile->IsPassable())
+                        else if (tile.IsPassable())
                         {
-                            object = (int)tile->Type;
+                            object = (int)tile.Type;
                         }
-                        else if (tile->IsOccupied())
+                        else if (tile.IsOccupied())
                         {
-                            object = (int)tile->Occupant;
-
+                            object = (int)tile.Occupant;
                             background = Color::Active;
-
                             border = Color::Inactive;
                         }
                         else
                         {
-                            object = (int)tile->Type;
-
+                            object = (int)tile.Type;
                             border = Color::Highlight;
-
                             background = Color::Highlight;
                         }
 
                         if (object >= 0 && object < textures.size())
                         {
-                            scene.Add(Scene::Element(map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + 10, map.DrawY + 10, map.TileSize * 5, map.TileSize, background, border, 4));
-
-                            auto element = Scene::Element(textures[object], map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + 10, map.DrawY + 10);
-
-                            scene.Add(element);
+                            scene.Add(Scene::Element(textx, objecty, backgroundw, map.TileSize, background, border, 4));
+                            scene.Add(Scene::Element(textures[object], textx, objecty));
                         }
                     }
                 }
 
+                if (background_text >= 0 && background_text < character_backgrounds.size())
+                {
+                    scene.Add(Scene::Element(textx, backgroundy, backgroundw, backgroundh, Color::Inactive, Color::Active, 4));
+                    scene.Add(Scene::Element(character_backgrounds[background_text], textx, backgroundy, backgroundh, text_offset));
+                }
+
+                if (scrollUp)
+                {
+                    input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
+
+                    scrollUp = false;
+                }
+                else if (scrollDown)
+                {
+                    input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
+
+                    scrollDown = false;
+                }
+
                 input = Input::WaitForInput(graphics, scene, input);
 
-                if (input.Selected && input.Current >= 0 && input.Current < scene.Controls.size() && scene.Controls[input.Current].Type == Controls::Type::EXIT && !input.Hold)
+                if (input.Selected && input.Type != Controls::Type::NONE)
                 {
-                    break;
+                    if (input.Type == Controls::Type::EXIT && !input.Hold)
+                    {
+                        break;
+                    }
+                    else if (input.Type == Controls::Type::WARRIOR)
+                    {
+                        prev_background = background_text;
+
+                        background_text = 1;
+
+                        change = true;
+                    }
+                    else if (input.Type == Controls::Type::TRICKSTER)
+                    {
+                        prev_background = background_text;
+
+                        background_text = 2;
+
+                        change = true;
+                    }
+                    else if (input.Type == Controls::Type::SAGE)
+                    {
+                        prev_background = background_text;
+
+                        background_text = 3;
+
+                        change = true;
+                    }
+                    else if (input.Type == Controls::Type::ENCHANTER)
+                    {
+                        prev_background = background_text;
+
+                        background_text = 4;
+
+                        change = true;
+                    }
+                    else if (input.Type == Controls::Type::SCROLL_UP)
+                    {
+                        if (backgroundh < textureh)
+                        {
+                            text_offset -= scrollSpeed;
+
+                            if (text_offset <= 0)
+                            {
+                                text_offset = 0;
+                            }
+
+                            scrollUp = true;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::SCROLL_DOWN)
+                    {
+                        if (backgroundh < textureh)
+                        {
+                            text_offset += scrollSpeed;
+
+                            if (text_offset > (textureh - backgroundh))
+                            {
+                                text_offset = textureh - backgroundh;
+                            }
+
+                            scrollDown = true;
+                        }
+                    }
+                    else
+                    {
+                        prev_background = background_text;
+
+                        background_text = 0;
+
+                        change = true;
+                    }
+
+                    if (background_text != prev_background && background_text >= 0 && background_text < character_backgrounds.size())
+                    {
+                        if (change)
+                        {
+                            SDL_QueryTexture(character_backgrounds[background_text], NULL, NULL, &texturew, &textureh);
+
+                            text_offset = 0;
+
+                            change = false;
+                        }
+                    }
                 }
             }
+
+            Graphics::Free(character_backgrounds);
 
             Graphics::Free(textures);
         }

@@ -1,6 +1,8 @@
 #ifndef __CONTROLS_HPP__
 #define __CONTROLS_HPP__
 
+#include <vector>
+
 #include <SDL.h>
 
 namespace BloodSword::Controls
@@ -135,6 +137,8 @@ namespace BloodSword::Controls
     class User
     {
     public:
+        Controls::Type Type = Controls::Type::NONE;
+
         int Current = -1;
 
         bool Selected = false;
@@ -147,8 +151,10 @@ namespace BloodSword::Controls
 
         bool Quit = false;
 
-        User(int current, bool selected, bool up, bool down, bool hold)
+        User(Controls::Type type, int current, bool selected, bool up, bool down, bool hold)
         {
+            this->Type = type;
+
             this->Current = current;
 
             this->Selected = selected;
@@ -182,6 +188,23 @@ namespace BloodSword::Controls
         {
         }
     };
+
+    int Find(std::vector<Controls::Base> &controls, Controls::Type control)
+    {
+        auto result = -1;
+
+        for (auto i = 0; i < controls.size(); i++)
+        {
+            if (controls[i].Type == control)
+            {
+                result = controls[i].ID;
+
+                break;
+            }
+        }
+
+        return result;
+    }
 }
 
 #endif
