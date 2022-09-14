@@ -115,6 +115,10 @@ namespace BloodSword::Input
 
         input.Selected = false;
 
+        input.Up = false;
+
+        input.Down = false;
+
         if (result.type == SDL_QUIT)
         {
             input.Quit = true;
@@ -136,14 +140,10 @@ namespace BloodSword::Input
             {
                 input.Up = true;
 
-                input.Down = false;
-
                 input.Current = -1;
             }
             else if (result.key.keysym.sym == SDLK_PAGEDOWN)
             {
-                input.Up = false;
-
                 input.Down = true;
 
                 input.Current = -1;
@@ -322,19 +322,15 @@ namespace BloodSword::Input
 
             if (result.wheel.y < 0 || result.wheel.x < 0)
             {
-                input.Up = false;
-
                 input.Down = true;
             }
             else
             {
                 input.Up = true;
-
-                input.Down = false;
             }
         }
 
-        if (input.Current >= 0 && input.Current < scene.Controls.size())
+        if (input.Current >= 0 && input.Current < scene.Controls.size() && !input.Up && !input.Down)
         {
             input.Type = scene.Controls[input.Current].Type;
         }

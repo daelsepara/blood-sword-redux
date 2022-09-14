@@ -290,9 +290,9 @@ namespace BloodSword::Test
 
                 input = Input::WaitForInput(graphics, scene, input);
 
-                if (input.Selected && input.Type != Controls::Type::NONE)
+                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
                 {
-                    if (input.Type == Controls::Type::EXIT && !input.Hold)
+                    if (input.Type == Controls::Type::EXIT)
                     {
                         break;
                     }
@@ -328,7 +328,7 @@ namespace BloodSword::Test
 
                         change = true;
                     }
-                    else if (input.Type == Controls::Type::SCROLL_UP)
+                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                     {
                         if (backgroundh < textureh)
                         {
@@ -342,7 +342,7 @@ namespace BloodSword::Test
                             scroll_up = true;
                         }
                     }
-                    else if (input.Type == Controls::Type::SCROLL_DOWN)
+                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                     {
                         if (backgroundh < textureh)
                         {
