@@ -388,7 +388,7 @@ namespace BloodSword::Character
 
             for (auto i = 0; i < this->Items.size(); i++)
             {
-                if (this->Items[i].Has(Item::Property::EQUIPPED) && this->Items[i].Has(attribute))
+                if (this->Items[i].Is(Item::Property::EQUIPPED) && this->Items[i].Has(attribute))
                 {
                     modifiers += this->Items[i].Attributes[attribute];
                 }
