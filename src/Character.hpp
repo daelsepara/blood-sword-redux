@@ -44,7 +44,7 @@ namespace BloodSword::Character
 
         int ItemLimit = 6;
 
-        void _Intitialize(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
+        void Initialize(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
         {
             this->Name = name;
 
@@ -59,34 +59,34 @@ namespace BloodSword::Character
 
         Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
         {
-            this->_Intitialize(name, characterClass, attributes, skills, moves);
+            this->Initialize(name, characterClass, attributes, skills, moves);
         }
 
         Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills)
         {
-            this->_Intitialize(name, characterClass, attributes, skills, 100);
+            this->Initialize(name, characterClass, attributes, skills, 100);
         }
 
         Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes)
         {
-            this->_Intitialize(name, characterClass, attributes, {}, 100);
+            this->Initialize(name, characterClass, attributes, {}, 100);
         }
 
         Base(const char *name, Character::Class characterClass)
         {
-            this->_Intitialize(name, characterClass, {}, {}, 100);
+            this->Initialize(name, characterClass, {}, {}, 100);
         }
 
         Base(Character::Class characterClass, int rank)
         {
-            this->_Intitialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
+            this->Initialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
 
             this->Rank = rank;
         }
 
         Base(Character::Class characterClass)
         {
-            this->_Intitialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
+            this->Initialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
         }
 
         bool Has(Skills::Type skill)
@@ -289,6 +289,23 @@ namespace BloodSword::Character
             for (auto i = 0; i < this->Items.size(); i++)
             {
                 if (this->Items[i].Type == container && this->Items[i].Has(Item::Property::CONTAINER) && this->Items[i].Has(item, quantity))
+                {
+                    result = i;
+
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        int Find(Item::Type container, Item::Type item)
+        {
+            auto result = -1;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].Type == container && this->Items[i].Has(Item::Property::CONTAINER) && this->Items[i].Contains == item)
                 {
                     result = i;
 
