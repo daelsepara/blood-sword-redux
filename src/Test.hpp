@@ -158,10 +158,10 @@ namespace BloodSword::Test
                  Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
 
             std::vector<SDL_Texture *> stats = {
-                Interface::Attributes(graphics, party.Members[0], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party.Members[1], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party.Members[2], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party.Members[3], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw)};
+                Interface::Attributes(graphics, party.Members[0], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party.Members[1], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party.Members[2], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party.Members[3], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw)};
 
             auto pad = 10;
             auto background = 0;
@@ -246,8 +246,8 @@ namespace BloodSword::Test
                         if ((tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER))
                         {
                             // stats
-                            scene.Add(Scene::Element(objectx + objectw + 2 * pad, objecty, map.TileSize * 3, map.TileSize * 3, Color::Background, Color::Active, 4));
-                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + 2 * pad, objecty));
+                            scene.Add(Scene::Element(objectx + objectw + pad * 3, objecty, map.TileSize * 3, map.TileSize * 3, Color::Background, Color::Active, 4));
+                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty));
                             // character class
                             object = (int)party.Members[tile.Id].Class + 7;
                         }

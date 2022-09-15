@@ -18,36 +18,36 @@ namespace BloodSword::Fonts
     {
         TTF_Init();
 
-        Caption = TTF_OpenFont(font_ttf, caption);
+        Fonts::Caption = TTF_OpenFont(font_ttf, caption);
 
-        Normal = TTF_OpenFont(font_ttf, normal);
+        Fonts::Normal = TTF_OpenFont(font_ttf, normal);
 
-        Fixed = TTF_OpenFont(font_ttf, fixed);
+        Fonts::Fixed = TTF_OpenFont(font_ttf, fixed);
 
-        TTF_SetFontKerning(Fixed, 0);
+        TTF_SetFontKerning(Fonts::Fixed, 0);
     }
 
     void Free()
     {
-        if (Caption)
+        if (Fonts::Caption)
         {
-            TTF_CloseFont(Caption);
+            TTF_CloseFont(Fonts::Caption);
 
-            Caption = NULL;
+            Fonts::Caption = NULL;
         }
 
-        if (Normal)
+        if (Fonts::Normal)
         {
-            TTF_CloseFont(Normal);
+            TTF_CloseFont(Fonts::Normal);
 
-            Normal = NULL;
+            Fonts::Normal = NULL;
         }
 
-        if (Fixed)
+        if (Fonts::Fixed)
         {
-            TTF_CloseFont(Fixed);
+            TTF_CloseFont(Fonts::Fixed);
 
-            Fixed = NULL;
+            Fonts::Fixed = NULL;
         }
 
         TTF_Quit();
