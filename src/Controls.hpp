@@ -2,7 +2,6 @@
 #define __CONTROLS_HPP__
 
 #include <vector>
-
 #include <SDL.h>
 
 namespace BloodSword::Controls

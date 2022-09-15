@@ -1,8 +1,8 @@
 #ifndef __ITEM_PROPERTIES_HPP__
 #define __ITEM_PROPERTIES_HPP__
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 #include "Templates.hpp"
 

@@ -3,7 +3,6 @@
 
 #include <iostream>
 #include <vector>
-#include <SDL.h>
 
 #include "Controls.hpp"
 #include "Graphics.hpp"

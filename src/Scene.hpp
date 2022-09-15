@@ -2,8 +2,6 @@
 #define __SCENE_HPP__
 
 #include <vector>
-
-// Using SDL
 #include <SDL.h>
 
 #include "Controls.hpp"

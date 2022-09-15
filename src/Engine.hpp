@@ -36,17 +36,17 @@ namespace BloodSword::Engine
         return std::min(0, sum);
     }
 
-    int Score_(Character::Base &character, Attribute::Type attribute)
+    int Score(Character::Base &character, Attribute::Type attribute)
     {
         return character.Value(attribute);
     }
 
-    int Modified_(Character::Base &character, Attribute::Type attribute)
+    int Total(Character::Base &character, Attribute::Type attribute)
     {
-        return (Engine::Score_(character, attribute) + character.Modifier(attribute));
+        return (Engine::Score(character, attribute) + character.Modifier(attribute));
     }
 
-    int Item_(Character::Base &character, Attribute::Type attribute, Item::Type item)
+    int Item(Character::Base &character, Attribute::Type attribute, Item::Type item)
     {
         auto value = 0;
 
@@ -62,17 +62,22 @@ namespace BloodSword::Engine
 
     int Score(Character::Base &character, Attribute::Type attribute, Item::Type item)
     {
-        return std::min(0, Engine::Score_(character, attribute) + Engine::Item_(character, attribute, item));
+        return std::min(0, Engine::Score(character, attribute) + Engine::Item(character, attribute, item));
+    }
+
+    int Modifiers(Character::Base &character, Attribute::Type attribute)
+    {
+        return character.Modifier(attribute) + character.Modifiers(attribute);
     }
 
     int Modified(Character::Base &character, Attribute::Type attribute, Item::Type item)
     {
-        return std::min(0, Engine::Modified_(character, attribute) + Engine::Item_(character, attribute, item));
+        return std::min(0, Engine::Total(character, attribute) + Engine::Item(character, attribute, item));
     }
 
     int Modified(Character::Base &character, Attribute::Type attribute)
     {
-        return std::min(0, Engine::Modified_(character, attribute));
+        return std::min(0, Engine::Total(character, attribute));
     }
 }
 

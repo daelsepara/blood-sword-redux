@@ -1,8 +1,8 @@
 #ifndef __TEMPLATES_HPP__
 #define __TEMPLATES_HPP__
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 
 namespace BloodSword
 {

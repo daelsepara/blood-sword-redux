@@ -2,7 +2,6 @@
 #define __BLOODSWORD_HPP__
 
 #include "nlohmann/json.hpp"
-
 #include "Asset.hpp"
 #include "Engine.hpp"
 #include "Fonts.hpp"

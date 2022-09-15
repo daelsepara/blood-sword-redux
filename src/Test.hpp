@@ -1,8 +1,6 @@
 #ifndef __TEST_HPP__
 #define __TEST_HPP__
 
-#include <SDL.h>
-
 #include "Asset.hpp"
 #include "Engine.hpp"
 #include "Fonts.hpp"
@@ -10,7 +8,6 @@
 #include "Graphics.hpp"
 #include "Input.hpp"
 #include "Interface.hpp"
-#include "Map.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test
@@ -107,11 +104,11 @@ namespace BloodSword::Test
                 input = Input::WaitForInput(graphics, scene, input);
             }
 
-            Graphics::Free(&enchanter_text);
-            Graphics::Free(&sage_text);
-            Graphics::Free(&trickster_text);
-            Graphics::Free(&warrior_text);
-            Graphics::Free(&text);
+            BloodSword::Free(&enchanter_text);
+            BloodSword::Free(&sage_text);
+            BloodSword::Free(&trickster_text);
+            BloodSword::Free(&warrior_text);
+            BloodSword::Free(&text);
         }
     }
 
@@ -154,11 +151,17 @@ namespace BloodSword::Test
 
             auto backgrounds = Graphics::CreateText(
                 graphics,
-                {Graphics::RichText("Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
+                {Graphics::RichText("THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
+
+            std::vector<SDL_Texture *> stats = {
+                Interface::Attributes(graphics, party.Members[0], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party.Members[1], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party.Members[2], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party.Members[3], Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw)};
 
             auto pad = 10;
             auto background = 0;
@@ -242,6 +245,10 @@ namespace BloodSword::Test
 
                         if ((tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER))
                         {
+                            // stats
+                            scene.Add(Scene::Element(objectx + objectw + 2 * pad, objecty, map.TileSize * 3, map.TileSize * 3, Color::Background, Color::Active, 4));
+                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + 2 * pad, objecty));
+                            // character class
                             object = (int)party.Members[tile.Id].Class + 7;
                         }
                         else if (tile.IsPassable())
@@ -379,9 +386,9 @@ namespace BloodSword::Test
                 }
             }
 
-            Graphics::Free(backgrounds);
-
-            Graphics::Free(textures);
+            BloodSword::Free(stats);
+            BloodSword::Free(backgrounds);
+            BloodSword::Free(textures);
         }
     }
 }

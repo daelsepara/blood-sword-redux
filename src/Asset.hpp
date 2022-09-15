@@ -5,12 +5,9 @@
 #include <string>
 #include <unordered_map>
 
-#include <SDL.h>
-#include <SDL_image.h>
-
 #include "nlohmann/json.hpp"
-
 #include "AssetTypes.hpp"
+#include "Primitives.hpp"
 
 namespace BloodSword::Asset
 {
@@ -24,7 +21,7 @@ namespace BloodSword::Asset
         {
             for (auto it = Asset::Textures.begin(); it != Asset::Textures.end(); it++)
             {
-                SDL_DestroyTexture(it->second);
+                BloodSword::Free(&it->second);
             }
 
             Asset::Textures.clear();
@@ -59,7 +56,7 @@ namespace BloodSword::Asset
 
                     if (!path.empty() && object != Asset::Type::NONE)
                     {
-                        auto surface = IMG_Load(path.c_str());
+                        auto surface = BloodSword::Load(path.c_str());
 
                         if (surface)
                         {
@@ -72,7 +69,7 @@ namespace BloodSword::Asset
                                 Asset::Textures[object] = texture;
                             }
 
-                            SDL_FreeSurface(surface);
+                            BloodSword::Free(&surface);
                         }
                     }
                 }
@@ -106,6 +103,35 @@ namespace BloodSword::Asset
     SDL_Texture *Get(Asset::Type asset)
     {
         return Asset::Get(asset, 0xFF);
+    }
+
+    SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset, Uint8 alpha)
+    {
+        SDL_Texture *texture = NULL;
+
+        if (Asset::Locations.find(asset) != Asset::Locations.end())
+        {
+            auto surface = BloodSword::Load(Asset::Locations[asset].c_str());
+
+            if (surface)
+            {
+                texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+                BloodSword::Free(&surface);
+            }
+        }
+
+        if (texture)
+        {
+            SDL_SetTextureColorMod(texture, alpha, alpha, alpha);
+        }
+
+        return texture;
+    }
+
+    SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset)
+    {
+        return Asset::Copy(renderer, asset, 0xFF);
     }
 }
 

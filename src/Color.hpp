@@ -2,7 +2,6 @@
 #define __COLOR_HPP__
 
 #include <fstream>
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 

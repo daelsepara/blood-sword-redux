@@ -2,12 +2,10 @@
 #define __FONTS_HPP__
 
 #include <fstream>
-
 #include <SDL.h>
 #include <SDL_ttf.h>
 
 #include "nlohmann/json.hpp"
-
 #include "Color.hpp"
 
 namespace BloodSword::Fonts

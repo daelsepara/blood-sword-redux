@@ -1,8 +1,8 @@
 #ifndef __ITEM_HPP__
 #define __ITEM_HPP__
 
-#include <unordered_map>
 #include <string>
+#include <unordered_map>
 #include <vector>
 
 #include "Attribute.hpp"
@@ -111,6 +111,18 @@ namespace BloodSword::Item
             auto modifier = 0;
 
             if (this->Has(attribute))
+            {
+                modifier = this->Attributes[attribute];
+            }
+
+            return modifier;
+        }
+
+        int Modifier(Attribute::Type attribute, Item::Property property)
+        {
+            auto modifier = 0;
+
+            if (this->Has(attribute) && this->Has(property))
             {
                 modifier = this->Attributes[attribute];
             }

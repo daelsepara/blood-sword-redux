@@ -4,12 +4,7 @@
 #include <iostream>
 #include <vector>
 
-// Using SDL
-#include <SDL.h>
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
-
+#include "Primitives.hpp"
 #include "Color.hpp"
 #include "Controls.hpp"
 #include "RichText.hpp"
@@ -71,6 +66,18 @@ namespace BloodSword::Graphics
             {
                 SDL_SetWindowTitle(graphics.Window, title);
             }
+        }
+    }
+
+    void SetWindowIcon(Base &graphics, const char *icon)
+    {
+        auto surface = BloodSword::Load(icon);
+
+        if (graphics.Window && surface)
+        {
+            SDL_SetWindowIcon(graphics.Window, surface);
+
+            BloodSword::Free(&surface);
         }
     }
 
@@ -145,37 +152,6 @@ namespace BloodSword::Graphics
             SDL_SetRenderDrawColor(graphics.Renderer, Color::R(color), Color::G(color), Color::B(color), Color::A(color));
 
             SDL_RenderClear(graphics.Renderer);
-        }
-    }
-
-    // free surface
-    void Free(SDL_Surface **surface)
-    {
-        SDL_FreeSurface(*surface);
-
-        *surface = NULL;
-    }
-
-    // free texture
-    void Free(SDL_Texture **texture)
-    {
-        if (*texture)
-        {
-            SDL_DestroyTexture(*texture);
-        }
-
-        *texture = NULL;
-    }
-
-    // free textures
-    void Free(std::vector<SDL_Texture *> &textures)
-    {
-        if (!textures.empty())
-        {
-            for (auto i = 0; i < textures.size(); i++)
-            {
-                Graphics::Free(&textures[i]);
-            }
         }
     }
 
@@ -335,7 +311,7 @@ namespace BloodSword::Graphics
         {
             texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
 
-            Graphics::Free(&surface);
+            BloodSword::Free(&surface);
         }
 
         return texture;

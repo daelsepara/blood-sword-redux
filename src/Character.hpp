@@ -381,6 +381,21 @@ namespace BloodSword::Character
 
             return (result >= 0 && result < this->Items.size());
         }
+
+        int Modifiers(Attribute::Type attribute)
+        {
+            auto modifiers = 0;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].Has(Item::Property::EQUIPPED) && this->Items[i].Has(attribute))
+                {
+                    modifiers += this->Items[i].Attributes[attribute];
+                }
+            }
+
+            return modifiers;
+        }
     };
 }
 

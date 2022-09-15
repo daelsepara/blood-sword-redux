@@ -163,6 +163,109 @@ namespace BloodSword::Interface
             }
         }
     }
+
+    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap)
+    {
+        SDL_Texture *texture = NULL;
+
+        std::string labels = "FPR\nAWR\nPSY\nEND\nDMG\nARM";
+
+        std::string stats = "";
+
+        auto labelsw = 0;
+
+        TTF_SizeUTF8(font, "ABCDE", &labelsw, NULL);
+
+        auto surfaceLabels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelColor), style, labelsw);
+
+        for (auto i = 0; i < 6; i++)
+        {
+            auto attribute = static_cast<Attribute::Type>(i);
+
+            auto value = character.Value(attribute);
+
+            auto modifier = character.Modifier(attribute) + character.Modifiers(attribute);
+
+            if (attribute == Attribute::Type::ENDURANCE)
+            {
+                stats += std::to_string(value + modifier);
+            }
+            else if (attribute == Attribute::Type::ARMOUR)
+            {
+                stats += std::to_string(modifier);
+            }
+            else
+            {
+                stats += std::to_string(value) + "D";
+
+                if (modifier >= 0)
+                {
+                    stats += "+";
+                }
+
+                stats += std::to_string(modifier);
+            }
+
+            if (i < 5)
+            {
+                stats += "\n";
+            }
+        }
+
+        auto surfaceStats = Graphics::CreateSurfaceText(stats.c_str(), font, Color::S(statsColor), style, labelsw * 3);
+
+        if (surfaceLabels && surfaceStats)
+        {
+            SDL_Surface *surface = NULL;
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+            surface = SDL_CreateRGBSurface(0, (surfaceLabels->w + surfaceStats->w), std::max(surfaceLabels->h, surfaceStats->h), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+#else
+            surface = SDL_CreateRGBSurface(0, (surfaceLabels->w + surfaceStats->w), std::max(surfaceLabels->h, surfaceStats->h), 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+#endif
+
+            if (surface)
+            {
+                SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
+
+                SDL_Rect labelsRect, statsRect;
+
+                labelsRect.w = surface->w;
+                labelsRect.h = surface->h;
+                labelsRect.x = 0;
+                labelsRect.y = 0;
+
+                statsRect.w = surface->w;
+                statsRect.h = surface->h;
+                statsRect.x = surfaceLabels->w + 8;
+                statsRect.y = 0;
+
+                auto convertedSurfaceLabels = SDL_ConvertSurface(surfaceLabels, surface->format, 0);
+                auto convertedSurfaceStats = SDL_ConvertSurface(surfaceStats, surface->format, 0);
+
+                SDL_SetSurfaceAlphaMod(convertedSurfaceLabels, SDL_ALPHA_OPAQUE);
+                SDL_SetSurfaceAlphaMod(convertedSurfaceStats, SDL_ALPHA_OPAQUE);
+
+                if (convertedSurfaceLabels && convertedSurfaceStats)
+                {
+                    SDL_BlitSurface(convertedSurfaceLabels, NULL, surface, &labelsRect);
+                    SDL_BlitSurface(convertedSurfaceStats, NULL, surface, &statsRect);
+
+                    BloodSword::Free(&convertedSurfaceLabels);
+                    BloodSword::Free(&convertedSurfaceStats);
+
+                    texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
+                }
+
+                BloodSword::Free(&surface);
+            }
+
+            BloodSword::Free(&surfaceStats);
+            BloodSword::Free(&surfaceLabels);
+        }
+
+        return texture;
+    }
 }
 
 #endif

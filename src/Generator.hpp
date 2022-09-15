@@ -125,7 +125,7 @@ namespace BloodSword::Generate
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 48, 0));
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 1));
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
         }
     }
@@ -185,7 +185,7 @@ namespace BloodSword::Generate
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 40, 0));
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 1));
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
     }
@@ -242,7 +242,7 @@ namespace BloodSword::Generate
         }
         else if (enchanter.Rank == 8)
         {
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 40, 0));
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 2));
