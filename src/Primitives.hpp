@@ -10,6 +10,26 @@
 
 namespace BloodSword
 {
+    // cartesian coordinates
+    class Point
+    {
+    public:
+        int X;
+
+        int Y;
+
+        Point(int x, int y)
+        {
+            this->X = x;
+
+            this->Y = y;
+        }
+
+        Point()
+        {
+        }
+    };
+
     SDL_Surface *Load(const char *image)
     {
         auto surface = IMG_Load(image);
@@ -49,9 +69,9 @@ namespace BloodSword
     {
         if (!textures.empty())
         {
-            for (auto i = 0; i < textures.size(); i++)
+            for (auto &texture : textures)
             {
-                Free(&textures[i]);
+                Free(&texture);
             }
         }
     }

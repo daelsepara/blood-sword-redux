@@ -2,6 +2,7 @@
 #define __ATTRIBUTE_HPP__
 
 #include <string>
+#include <vector>
 
 #include "Templates.hpp"
 
@@ -17,6 +18,14 @@ namespace BloodSword::Attribute
         DAMAGE,
         ARMOUR
     };
+
+    std::vector<Attribute::Type> All = {
+        Type::FIGHTING_PROWESS,
+        Type::AWARENESS,
+        Type::PSYCHIC_ABILITY,
+        Type::ENDURANCE,
+        Type::DAMAGE,
+        Type::ARMOUR};
 
     class Base
     {

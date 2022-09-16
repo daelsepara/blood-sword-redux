@@ -13,6 +13,10 @@ namespace BloodSword::Scene
     public:
         SDL_Texture *Texture;
 
+        Uint32 Background = 0;
+
+        Uint32 Border = 0;
+
         int X = 0;
 
         int Y = 0;
@@ -25,25 +29,10 @@ namespace BloodSword::Scene
 
         int H = 0;
 
-        Uint32 Background = 0;
-
-        Uint32 Border = 0;
-
         int BorderSize = 0;
 
-        void Set(Uint32 background, Uint32 border, int borderSize)
+        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
         {
-            this->Background = background;
-
-            this->Border = border;
-
-            this->BorderSize = borderSize;
-        }
-
-        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
-        {
-            this->Set(background, border, borderSize);
-
             this->Texture = texture;
 
             this->Bounds = bounds;
@@ -59,7 +48,7 @@ namespace BloodSword::Scene
             this->H = h;
         }
 
-        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background, Uint32 border, int borderSize)
+        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset)
         {
             auto w = 0;
 
@@ -70,38 +59,27 @@ namespace BloodSword::Scene
                 SDL_QueryTexture(texture, NULL, NULL, &w, &h);
             }
 
-            this->Initialize(texture, x, y, bounds, offset, w, h, background, border, borderSize);
+            this->Initialize(texture, x, y, bounds, offset, w, h);
         }
 
-        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset)
+        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background, Uint32 border, int borderSize) : Background(background), Border(border), BorderSize(borderSize)
         {
-            this->Initialize(texture, x, y, bounds, offset, 0, 0, 0);
+            this->Initialize(texture, x, y, bounds, offset);
         }
 
-        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background, Uint32 border, int borderSize)
+        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 border, int borderSize) : Border(border), BorderSize(borderSize)
         {
-            this->Initialize(texture, x, y, bounds, offset, background, border, borderSize);
+            this->Initialize(texture, x, y, bounds, offset);
         }
 
-        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 border, int borderSize)
+        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background) : Background(background)
         {
-            this->Initialize(texture, x, y, bounds, offset, 0, border, borderSize);
-        }
-
-        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background)
-        {
-            if (texture)
-            {
-                this->Initialize(texture, x, y, bounds, offset, background, 0, 0);
-            }
+            this->Initialize(texture, x, y, bounds, offset);
         }
 
         Element(SDL_Texture *texture, int x, int y, int bounds, int offset)
         {
-            if (texture)
-            {
-                this->Initialize(texture, x, y, bounds, offset);
-            }
+            this->Initialize(texture, x, y, bounds, offset);
         }
 
         Element(SDL_Texture *texture, int x, int y)
@@ -116,14 +94,14 @@ namespace BloodSword::Scene
             this->Initialize(texture, x, y, texture_h, 0);
         }
 
-        Element(int x, int y, int w, int h, Uint32 background, Uint32 border, int borderSize)
+        Element(int x, int y, int w, int h, Uint32 background, Uint32 border, int borderSize) : Background(background), Border(border), BorderSize(borderSize)
         {
-            this->Initialize(NULL, x, y, h, 0, w, h, background, border, borderSize);
+            this->Initialize(NULL, x, y, h, 0, w, h);
         }
 
-        Element(int x, int y, int w, int h, Uint32 background)
+        Element(int x, int y, int w, int h, Uint32 background) : Background(background)
         {
-            this->Initialize(NULL, x, y, h, 0, w, h, background, 0, 0);
+            this->Initialize(NULL, x, y, h, 0, w, h);
         }
     };
 
@@ -136,24 +114,9 @@ namespace BloodSword::Scene
 
         Uint32 Background = 0;
 
-        void Set(std::vector<Scene::Element> elements)
-        {
-            this->Elements = elements;
-        }
-
-        void Set(std::vector<Controls::Base> controls)
-        {
-            this->Controls = controls;
-        }
-
-        void Set(Uint32 background)
-        {
-            this->Background = background;
-        }
-
         void Clear()
         {
-            this->Set(0);
+            this->Background = 0;
 
             this->Elements.clear();
 
@@ -170,32 +133,20 @@ namespace BloodSword::Scene
             this->Controls.push_back(control);
         }
 
-        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls, Uint32 background)
+        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls, Uint32 background) : Elements(elements), Controls(controls), Background(background)
         {
-            this->Set(elements);
-
-            this->Set(controls);
-
-            this->Set(background);
         }
 
-        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls)
+        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls) : Elements(elements), Controls(controls)
         {
-            this->Set(elements);
-
-            this->Set(controls);
         }
 
-        Base(std::vector<Scene::Element> elements, Uint32 background)
+        Base(std::vector<Scene::Element> elements, Uint32 background) : Elements(elements), Background(background)
         {
-            this->Set(elements);
-
-            this->Set(background);
         }
 
-        Base(Uint32 background)
+        Base(Uint32 background) : Background(background)
         {
-            this->Set(background);
         }
 
         Base()

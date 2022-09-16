@@ -90,7 +90,7 @@ namespace BloodSword::Controls
         // color of border when hightlighted
         Uint32 Highlight;
 
-        void _Initialize(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
+        void Initialize(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
         {
             this->Type = type;
 
@@ -115,20 +115,14 @@ namespace BloodSword::Controls
             this->Highlight = highlight;
         }
 
-        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight, int mapx, int mapy)
+        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight, int mapx, int mapy) : IsMap(true), MapX(mapx), MapY(mapy)
         {
-            this->_Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
-
-            this->IsMap = true;
-
-            this->MapX = mapx;
-
-            this->MapY = mapy;
+            this->Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
         }
 
         Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
         {
-            this->_Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
+            this->Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
         }
     };
 
@@ -150,37 +144,16 @@ namespace BloodSword::Controls
 
         bool Quit = false;
 
-        User(Controls::Type type, int current, bool selected, bool up, bool down, bool hold)
+        User(Controls::Type type, int current, bool selected, bool up, bool down, bool hold) : Type(type), Current(current), Selected(selected), Up(up), Down(down), Hold(hold)
         {
-            this->Type = type;
-
-            this->Current = current;
-
-            this->Selected = selected;
-
-            this->Up = up;
-
-            this->Down = down;
-
-            this->Hold = hold;
         }
 
-        User(int current, bool selected, bool up, bool down)
+        User(int current, bool selected, bool up, bool down) : Current(current), Selected(selected), Up(up), Down(down)
         {
-            this->Current = current;
-
-            this->Selected = selected;
-
-            this->Up = up;
-
-            this->Down = down;
         }
 
-        User(int current, bool selected)
+        User(int current, bool selected) : Current(current), Selected(selected)
         {
-            this->Current = current;
-
-            this->Selected = selected;
         }
 
         User()
@@ -188,15 +161,15 @@ namespace BloodSword::Controls
         }
     };
 
-    int Find(std::vector<Controls::Base> &controls, Controls::Type control)
+    int Find(std::vector<Controls::Base> &controls, Controls::Type type)
     {
         auto result = -1;
 
-        for (auto i = 0; i < controls.size(); i++)
+        for (auto &control : controls)
         {
-            if (controls[i].Type == control)
+            if (control.Type == type)
             {
-                result = controls[i].ID;
+                result = control.ID;
 
                 break;
             }

@@ -15,13 +15,29 @@ namespace BloodSword::Asset
 
     AssetMapping<SDL_Texture *> Textures = {};
 
+    SDL_Texture *Create(SDL_Renderer *renderer, const char *path)
+    {
+        SDL_Texture *texture = NULL;
+
+        auto surface = BloodSword::Load(path);
+
+        if (surface)
+        {
+            texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+            BloodSword::Free(&surface);
+        }
+
+        return texture;
+    }
+
     void Unload()
     {
         if (Asset::Textures.size() > 0)
         {
-            for (auto it = Asset::Textures.begin(); it != Asset::Textures.end(); it++)
+            for (auto &texture : Asset::Textures)
             {
-                BloodSword::Free(&it->second);
+                BloodSword::Free(&texture.second);
             }
 
             Asset::Textures.clear();
@@ -56,20 +72,13 @@ namespace BloodSword::Asset
 
                     if (!path.empty() && object != Asset::Type::NONE)
                     {
-                        auto surface = BloodSword::Load(path.c_str());
+                        auto texture = Asset::Create(renderer, path.c_str());
 
-                        if (surface)
+                        if (texture)
                         {
-                            auto texture = SDL_CreateTextureFromSurface(renderer, surface);
+                            Asset::Locations[object] = path;
 
-                            if (texture)
-                            {
-                                Asset::Locations[object] = path;
-
-                                Asset::Textures[object] = texture;
-                            }
-
-                            BloodSword::Free(&surface);
+                            Asset::Textures[object] = texture;
                         }
                     }
                 }
@@ -111,14 +120,7 @@ namespace BloodSword::Asset
 
         if (Asset::Locations.find(asset) != Asset::Locations.end())
         {
-            auto surface = BloodSword::Load(Asset::Locations[asset].c_str());
-
-            if (surface)
-            {
-                texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-                BloodSword::Free(&surface);
-            }
+            texture = Asset::Create(renderer, Asset::Locations[asset].c_str());
         }
 
         if (texture)

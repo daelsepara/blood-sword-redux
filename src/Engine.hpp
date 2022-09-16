@@ -54,7 +54,10 @@ namespace BloodSword::Engine
         {
             auto result = character.Find(item, Item::Property::EQUIPPED, attribute);
 
-            value += character.Items[result].Modifier(attribute);
+            if (result != character.Items.end())
+            {
+                value += (*result).Attributes.at(attribute);
+            }
         }
 
         return value;

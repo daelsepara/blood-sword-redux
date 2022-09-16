@@ -8,8 +8,6 @@
 
 namespace BloodSword::Map
 {
-    typedef std::pair<int, int> Point;
-
     class Tile
     {
     public:
@@ -70,7 +68,7 @@ namespace BloodSword::Map
     {
     public:
         // map tiles
-        std::vector<std::vector<Map::Tile>> Tiles = {};
+        Array<Map::Tile> Tiles = {};
 
         // dimensions (size in number of tiles)
         int Width = 0;
@@ -111,13 +109,13 @@ namespace BloodSword::Map
             }
         }
 
-        Base()
-        {
-        }
-
         Base(int sizex, int sizey)
         {
             Initialize(sizex, sizey);
+        }
+
+        Base()
+        {
         }
 
         void Put(int x, int y, Map::Object object, int id)

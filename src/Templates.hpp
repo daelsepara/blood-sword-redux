@@ -7,6 +7,12 @@
 namespace BloodSword
 {
     template <typename T>
+    using Smart = std::shared_ptr<T>;
+
+    template <typename T>
+    using Array = std::vector<std::vector<T>>;
+
+    template <typename T>
     using Mapping = std::unordered_map<T, const char *>;
 
     template <typename T>
@@ -17,21 +23,36 @@ namespace BloodSword
     {
         auto result = T::NONE;
 
-        auto keys = unordered_map.begin();
-
-        while (keys != unordered_map.end())
+        for (auto &keys : unordered_map)
         {
-            if (std::strcmp(keys->second, key) == 0)
+            if (std::strcmp(keys.second, key) == 0)
             {
-                result = keys->first;
+                result = keys.first;
 
                 break;
             }
-
-            keys++;
         }
 
         return result;
+    }
+
+    template <typename T, typename R = typename std::vector<T>::const_iterator>
+    R Find(std::vector<T> vector, T key)
+    {
+        return std::find(vector.begin(), vector.end(), key);
+    }
+
+    template <typename T, typename R = typename std::vector<T>::const_iterator>
+    R Find(std::vector<T> &vector, T &key, bool F(T &, T &))
+    {
+        return std::find_if(vector.begin(), vector.end(), [&](T &f)
+                            { return F(key, f); });
+    }
+
+    template <typename T>
+    bool Found(std::vector<T> vector, T key)
+    {
+        return BloodSword::Find(vector, key) != vector.end();
     }
 }
 

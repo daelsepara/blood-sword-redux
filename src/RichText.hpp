@@ -10,7 +10,7 @@ namespace BloodSword::Graphics
     class RichText
     {
     public:
-        std::string Text = "";
+        std::string Text;
 
         TTF_Font *Font = NULL;
 
@@ -20,17 +20,8 @@ namespace BloodSword::Graphics
 
         int Wrap = 0;
 
-        RichText(std::string text, TTF_Font *font, SDL_Color color, int style, int wrap)
+        RichText(std::string text, TTF_Font *font, SDL_Color color, int style, int wrap) : Text(text), Font(font), Color(color), Style(style), Wrap(wrap)
         {
-            this->Text = text;
-
-            this->Font = font;
-
-            this->Color = color;
-
-            this->Style = style;
-
-            this->Wrap = wrap;
         }
     };
 }

@@ -8,6 +8,8 @@
 #include "Graphics.hpp"
 #include "Input.hpp"
 #include "Interface.hpp"
+#include "Move.hpp"
+#include "Animation.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test
@@ -246,8 +248,11 @@ namespace BloodSword::Test
                         if ((tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER))
                         {
                             // stats
-                            scene.Add(Scene::Element(objectx + objectw + pad * 3, objecty, map.TileSize * 3, map.TileSize * 3, Color::Background, Color::Active, 4));
-                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty));
+                            auto bounds = 0;
+
+                            SDL_QueryTexture(stats[tile.Id], NULL, NULL, NULL, &bounds);
+
+                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, bounds, 0, Color::Background, Color::Active, 4));
                             // character class
                             object = (int)party.Members[tile.Id].Class + 7;
                         }

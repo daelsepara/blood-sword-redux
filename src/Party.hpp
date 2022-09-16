@@ -16,9 +16,8 @@ namespace BloodSword::Party
         {
         }
 
-        Base(std::vector<Character::Base> members)
+        Base(std::vector<Character::Base> members) : Members(members)
         {
-            Members = members;
         }
     };
 }

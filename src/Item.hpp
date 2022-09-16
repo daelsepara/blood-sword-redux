@@ -30,7 +30,7 @@ namespace BloodSword::Item
         int Quantity = 0;
 
         // item name
-        std::string Name = "";
+        std::string Name;
 
         void Initialize(const char *name, Item::Type type, IntMapping<Attribute::Type> attributes, std::vector<Item::Property> properties, Item::Type contains, int quantity)
         {
@@ -69,7 +69,7 @@ namespace BloodSword::Item
 
         bool Has(Item::Property property)
         {
-            return std::find(this->Properties.begin(), this->Properties.end(), property) != this->Properties.end();
+            return BloodSword::Found(this->Properties, property);
         }
 
         bool Is(Item::Property property)
@@ -155,14 +155,11 @@ namespace BloodSword::Item
 
             if (result)
             {
-                for (auto i = 0; i < this->Properties.size(); i++)
-                {
-                    if (this->Properties[i] == property)
-                    {
-                        this->Properties.erase(this->Properties.begin() + i);
+                auto found = BloodSword::Find(this->Properties, property);
 
-                        break;
-                    }
+                if (found != this->Properties.end())
+                {
+                    this->Properties.erase(found);
                 }
             }
 

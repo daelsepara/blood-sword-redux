@@ -255,10 +255,8 @@ namespace BloodSword::Graphics
         {
             Graphics::FillWindow(graphics, scene.Background);
 
-            for (auto i = 0; i < scene.Elements.size(); i++)
+            for (auto &element : scene.Elements)
             {
-                auto element = scene.Elements.at(i);
-
                 Graphics::Render(graphics, element.Texture, element.W, element.H, element.X, element.Y, element.Bounds, element.Offset, element.W, std::min(element.Bounds, element.H), element.Background, element.Border, element.BorderSize);
             }
         }
@@ -270,11 +268,9 @@ namespace BloodSword::Graphics
         {
             Graphics::Render(graphics, scene);
 
-            for (auto i = 0; i < scene.Controls.size(); i++)
+            for (auto &control : scene.Controls)
             {
-                auto control = scene.Controls.at(i);
-
-                if (i == input.Current)
+                if (control.ID == input.Current)
                 {
                     Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
                 }
@@ -321,9 +317,9 @@ namespace BloodSword::Graphics
     {
         std::vector<SDL_Texture *> textures = {};
 
-        for (auto it = collection.begin(); it != collection.end(); it++)
+        for (auto &text : collection)
         {
-            auto texture = Graphics::CreateText(graphics, it->Text.c_str(), it->Font, it->Color, it->Style, it->Wrap);
+            auto texture = Graphics::CreateText(graphics, text.Text.c_str(), text.Font, text.Color, text.Style, text.Wrap);
 
             if (texture)
             {

@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "Map.hpp"
+#include "Templates.hpp"
 
 // A C++ version of A* pathfinding algorithm from https://dotnetcoretutorials.com/2020/07/25/a-search-pathfinding-algorithm-in-c/
 // Most of the comments from the original version are preserved and/or have minor modifications.
@@ -13,32 +14,12 @@
 // This version uses smart pointers
 namespace BloodSword::Move
 {
-    // Cartesian coordinates (see Path class below)
-    class Point
-    {
-    public:
-        int X;
-
-        int Y;
-
-        Point(int x, int y)
-        {
-            this->X = x;
-
-            this->Y = y;
-        }
-
-        Point()
-        {
-        }
-    };
-
     // Path found by A* algorithm
     class Path
     {
     public:
         // List of coordinates of the path
-        std::vector<Move::Point> Points;
+        std::vector<Point> Points;
 
         Path()
         {
@@ -57,9 +38,9 @@ namespace BloodSword::Move
 
         int Distance = 0;
 
-        std::shared_ptr<Move::Node> Parent = nullptr;
+        Smart<Move::Node> Parent = nullptr;
 
-        Node(int x, int y, int cost, std::shared_ptr<Move::Node> &parent)
+        Node(int x, int y, int cost, Smart<Move::Node> &parent)
         {
             this->X = x;
 
@@ -91,13 +72,15 @@ namespace BloodSword::Move
         // So how many nodes left and right, up and down, ignoring obstacles, to get there.
         //
         // Computes the 2D Manhattan Distance
-        void SetDistance(std::shared_ptr<Move::Node> &node)
+        void SetDistance(Smart<Move::Node> &node)
         {
             this->Distance = std::abs(node->X - X) + std::abs(node->Y - Y);
         }
     };
 
-    bool IsPassable(Map::Base &map, std::shared_ptr<Move::Node> &target, int X, int Y, bool IsEnemy, bool Unrestricted)
+    typedef std::vector<Smart<Move::Node>> Moves;
+
+    bool IsPassable(Map::Base &map, Smart<Move::Node> &target, int X, int Y, bool IsEnemy, bool Unrestricted)
     {
         auto result = false;
 
@@ -124,25 +107,25 @@ namespace BloodSword::Move
     }
 
     // Get all traversible nodes from current node
-    std::vector<std::shared_ptr<Move::Node>> Nodes(Map::Base &map, std::shared_ptr<Move::Node> &current, std::shared_ptr<Move::Node> &target, bool IsEnemy, bool Unrestricted)
+    Moves Nodes(Map::Base &map, Smart<Move::Node> &current, Smart<Move::Node> &target, bool IsEnemy, bool Unrestricted)
     {
         // Define neighbors (X, Y): Up, Down, Left, Right
         std::vector<std::pair<int, int>> neighbors = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
 
-        auto traversable = std::vector<std::shared_ptr<Move::Node>>();
+        auto traversable = Moves();
 
         if (map.Width > 0 && map.Height > 0)
         {
             auto index = 0;
 
-            for (auto i = 0; i < neighbors.size(); i++)
+            for (auto &neighbor : neighbors)
             {
                 // Check if within map boundaries and if passable and/or leads to destination
-                if (Move::IsPassable(map, target, current->X + neighbors[i].first, current->Y + neighbors[i].second, IsEnemy, Unrestricted))
+                if (Move::IsPassable(map, target, current->X + neighbor.first, current->Y + neighbor.second, IsEnemy, Unrestricted))
                 {
-                    auto X = current->X + neighbors[i].first;
+                    auto X = current->X + neighbor.first;
 
-                    auto Y = current->Y + neighbors[i].second;
+                    auto Y = current->Y + neighbor.second;
 
                     auto Cost = current->Cost + 1;
 
@@ -158,41 +141,32 @@ namespace BloodSword::Move
         return traversable;
     }
 
-    // Get index of node from a list
-    int Index(std::vector<std::shared_ptr<Move::Node>> &nodes, std::shared_ptr<Move::Node> &node)
+    bool Compare(Smart<Move::Node> &a, Smart<Move::Node> &b)
     {
-        auto index = -1;
+        return a->X == b->X && a->Y == b->Y;
+    }
 
-        for (auto i = 0; i < nodes.size(); i++)
-        {
-            if (nodes[i]->X == node->X && nodes[i]->Y == node->Y)
-            {
-                index = i;
-
-                break;
-            }
-        }
-
-        return index;
+    // Get index of node from a list
+    Moves::const_iterator Find(Moves &nodes, Smart<Move::Node> &node)
+    {
+        return BloodSword::Find(nodes, node, Compare);
     }
 
     // Remove node from list
-    void Remove(std::vector<std::shared_ptr<Move::Node>> &nodes, std::shared_ptr<Move::Node> &node)
+    void Remove(Moves &nodes, Smart<Move::Node> &node)
     {
-        auto index = Move::Index(nodes, node);
+        auto found = Move::Find(nodes, node);
 
-        if (index >= 0 && index < nodes.size())
+        if (found != nodes.end())
         {
-            nodes.erase(nodes.begin() + index);
+            nodes.erase(found);
         }
     }
 
     // Check if node is on the list
-    bool Any(std::vector<std::shared_ptr<Move::Node>> &nodes, std::shared_ptr<Move::Node> &node)
+    bool Is(Moves &nodes, Smart<Move::Node> &node)
     {
-        auto index = Move::Index(nodes, node);
-
-        return (index >= 0 && index < nodes.size());
+        return Move::Find(nodes, node) != nodes.end();
     }
 
     // Find path from src to dst using the A* algorithm
@@ -213,19 +187,19 @@ namespace BloodSword::Move
             start->SetDistance(end);
 
             // List of nodes to be checked
-            auto active = std::vector<std::shared_ptr<Move::Node>>();
+            auto active = Moves();
 
             // List of nodes already visited
-            auto visited = std::vector<std::shared_ptr<Move::Node>>();
+            auto visited = Moves();
 
             active.push_back(start);
 
             auto IsEnemy = map.Tiles[srcY][srcX].IsEnemy();
 
-            while (active.size() > 0)
+            while (!active.empty())
             {
                 // Sort based on CostDistance
-                std::sort(active.begin(), active.end(), [](std::shared_ptr<Move::Node> &src, std::shared_ptr<Move::Node> &dst)
+                std::sort(active.begin(), active.end(), [](Smart<Move::Node> &src, Smart<Move::Node> &dst)
                           { return src->CostDistance() < dst->CostDistance(); });
 
                 auto check = active.front();
@@ -238,7 +212,7 @@ namespace BloodSword::Move
 
                     while (node)
                     {
-                        path.Points.push_back(Move::Point(node->X, node->Y));
+                        path.Points.push_back(Point(node->X, node->Y));
 
                         node = node->Parent;
                     }
@@ -255,20 +229,18 @@ namespace BloodSword::Move
 
                 auto nodes = Move::Nodes(map, check, end, IsEnemy, Unrestricted);
 
-                for (auto i = 0; i < nodes.size(); i++)
+                for (auto &node : nodes)
                 {
-                    auto node = nodes[i];
-
                     // We have already visited this node so we don't need to do so again!
-                    if (Move::Any(visited, node))
+                    if (Move::Is(visited, node))
                     {
                         continue;
                     }
 
                     // It's already in the active list, but that's OK, maybe this new node has a better value (e.g. We might zigzag earlier but this is now straighter).
-                    if (Move::Any(active, node))
+                    if (Move::Is(active, node))
                     {
-                        auto existing = active[Move::Index(active, node)];
+                        auto existing = *Move::Find(active, node);
 
                         if (existing->CostDistance() > node->CostDistance())
                         {

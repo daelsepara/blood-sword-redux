@@ -170,17 +170,25 @@ namespace BloodSword::Interface
 
         std::string labels = "FPR\nAWR\nPSY\nEND\nDMG\nARM";
 
-        std::string stats = "";
+        std::string stats;
 
         auto labelsw = 0;
 
-        TTF_SizeUTF8(font, "ABCDE", &labelsw, NULL);
+        auto statsw = 0;
+
+        // estimate maximum line width
+        TTF_SizeUTF8(font, "DMGG", &labelsw, NULL);
+
+        TTF_SizeUTF8(font, "99D+D99", &statsw, NULL);
 
         auto surfaceLabels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelColor), style, labelsw);
 
-        for (auto i = 0; i < 6; i++)
+        for (auto &attribute : Attribute::All)
         {
-            auto attribute = static_cast<Attribute::Type>(i);
+            if (stats.length() > 0)
+            {
+                stats += '\n';
+            }
 
             auto value = character.Value(attribute);
 
@@ -194,25 +202,41 @@ namespace BloodSword::Interface
             {
                 stats += std::to_string(modifier);
             }
-            else
+            else if (attribute == Attribute::Type::DAMAGE)
             {
                 stats += std::to_string(value) + "D";
 
-                if (modifier >= 0)
+                if (modifier != 0)
                 {
-                    stats += "+";
+                    if (modifier > 0)
+                    {
+                        stats += "+";
+                    }
+
+                    stats += std::to_string(modifier);
                 }
-
-                stats += std::to_string(modifier);
             }
-
-            if (i < 5)
+            else
             {
-                stats += "\n";
+                stats += std::to_string(value);
+
+                if (modifier != 0)
+                {
+                    stats += "(";
+
+                    if (modifier > 0)
+                    {
+                        stats += "+";
+                    }
+
+                    stats += std::to_string(modifier);
+
+                    stats += ")";
+                }
             }
         }
 
-        auto surfaceStats = Graphics::CreateSurfaceText(stats.c_str(), font, Color::S(statsColor), style, labelsw * 3);
+        auto surfaceStats = Graphics::CreateSurfaceText(stats.c_str(), font, Color::S(statsColor), style, statsw);
 
         if (surfaceLabels && surfaceStats)
         {
@@ -235,27 +259,30 @@ namespace BloodSword::Interface
                 labelsRect.x = 0;
                 labelsRect.y = 0;
 
+                auto convertedSurfaceLabels = SDL_ConvertSurface(surfaceLabels, surface->format, 0);
+
+                if (convertedSurfaceLabels)
+                {
+                    SDL_SetSurfaceAlphaMod(convertedSurfaceLabels, SDL_ALPHA_OPAQUE);
+                    SDL_BlitSurface(convertedSurfaceLabels, NULL, surface, &labelsRect);
+                    BloodSword::Free(&convertedSurfaceLabels);
+                }
+
                 statsRect.w = surface->w;
                 statsRect.h = surface->h;
                 statsRect.x = surfaceLabels->w + 8;
                 statsRect.y = 0;
 
-                auto convertedSurfaceLabels = SDL_ConvertSurface(surfaceLabels, surface->format, 0);
                 auto convertedSurfaceStats = SDL_ConvertSurface(surfaceStats, surface->format, 0);
 
-                SDL_SetSurfaceAlphaMod(convertedSurfaceLabels, SDL_ALPHA_OPAQUE);
-                SDL_SetSurfaceAlphaMod(convertedSurfaceStats, SDL_ALPHA_OPAQUE);
-
-                if (convertedSurfaceLabels && convertedSurfaceStats)
+                if (convertedSurfaceStats)
                 {
-                    SDL_BlitSurface(convertedSurfaceLabels, NULL, surface, &labelsRect);
+                    SDL_SetSurfaceAlphaMod(convertedSurfaceStats, SDL_ALPHA_OPAQUE);
                     SDL_BlitSurface(convertedSurfaceStats, NULL, surface, &statsRect);
-
-                    BloodSword::Free(&convertedSurfaceLabels);
                     BloodSword::Free(&convertedSurfaceStats);
-
-                    texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
                 }
+
+                texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
 
                 BloodSword::Free(&surface);
             }

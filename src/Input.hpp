@@ -284,11 +284,11 @@ namespace BloodSword::Input
 
             input.Current = -1;
 
-            for (auto i = 0; i < scene.Controls.size(); i++)
+            for (auto &control : scene.Controls)
             {
-                if (result.motion.x >= scene.Controls[i].X && result.motion.x <= scene.Controls[i].X + scene.Controls[i].W - 1 && result.motion.y >= scene.Controls[i].Y && result.motion.y <= scene.Controls[i].Y + scene.Controls[i].H - 1)
+                if (result.motion.x >= control.X && result.motion.x <= control.X + control.W - 1 && result.motion.y >= control.Y && result.motion.y <= control.Y + control.H - 1)
                 {
-                    input.Current = scene.Controls[i].ID;
+                    input.Current = control.ID;
                 }
             }
         }
