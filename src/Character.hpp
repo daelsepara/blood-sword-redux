@@ -15,18 +15,23 @@
 
 namespace BloodSword::Character
 {
+    typedef std::vector<Skills::Type> Abilities;
+    typedef std::vector<Attribute::Base> Characteristics;
+    typedef std::vector<Item::Base> Inventory;
+    typedef std::vector<Spells::Base> Grimoire;
+
     class Base
     {
     public:
         IntMapping<Character::Status> Status = {};
 
-        std::vector<Attribute::Base> Attributes = {};
+        Characteristics Attributes = {};
 
-        std::vector<Skills::Type> Skills = {};
+        Abilities Skills = {};
 
-        std::vector<Item::Base> Items = {};
+        Inventory Items = {};
 
-        std::vector<Spells::Base> Spells = {};
+        Grimoire Spells = {};
 
         ControlType ControlType = ControlType::NONE;
 
@@ -44,49 +49,39 @@ namespace BloodSword::Character
 
         int ItemLimit = 6;
 
-        void Initialize(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
+        Base(const char *name,
+             Character::Class characterClass,
+             Characteristics attributes,
+             Abilities skills,
+             int moves) : Attributes(attributes),
+                          Skills(skills),
+                          Class(characterClass),
+                          Name(name),
+                          Moves(moves) {}
+
+        Base(const char *name,
+             Character::Class characterClass,
+             Characteristics attributes,
+             Abilities skills) : Base(name,
+                                      characterClass,
+                                      attributes,
+                                      skills,
+                                      100) {}
+
+        Base(const char *name,
+             Character::Class characterClass,
+             Characteristics attributes) : Base(name, characterClass, attributes, {}, 100) {}
+
+        Base(const char *name,
+             Character::Class characterClass) : Base(name, characterClass, {}, {}, 100) {}
+
+        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100)
         {
-            this->Name = name;
-
-            this->Class = characterClass;
-
-            this->Attributes = attributes;
-
-            this->Skills = skills;
-
-            this->Moves = moves;
-        }
-
-        Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills, int moves)
-        {
-            this->Initialize(name, characterClass, attributes, skills, moves);
-        }
-
-        Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes, std::vector<Skills::Type> skills)
-        {
-            this->Initialize(name, characterClass, attributes, skills, 100);
-        }
-
-        Base(const char *name, Character::Class characterClass, std::vector<Attribute::Base> attributes)
-        {
-            this->Initialize(name, characterClass, attributes, {}, 100);
-        }
-
-        Base(const char *name, Character::Class characterClass)
-        {
-            this->Initialize(name, characterClass, {}, {}, 100);
-        }
-
-        Base(Character::Class characterClass, int rank)
-        {
-            this->Initialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
-
             this->Rank = rank;
         }
 
-        Base(Character::Class characterClass)
+        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100)
         {
-            this->Initialize(Character::ClassMapping[characterClass], characterClass, {}, {}, 100);
         }
 
         bool Has(Skills::Type skill)
@@ -134,15 +129,20 @@ namespace BloodSword::Character
             }
         }
 
-        int Value(Attribute::Type type)
+        bool Is(Characteristics::iterator attribute)
         {
-            auto result = 0;
+            return attribute != this->Attributes.end();
+        }
 
-            for (auto &attribute : this->Attributes)
+        Characteristics::iterator Attribute(Attribute::Type type)
+        {
+            auto result = this->Attributes.end();
+
+            for (auto attribute = this->Attributes.begin(); attribute != this->Attributes.end(); attribute++)
             {
-                if (attribute.Type == type)
+                if ((*attribute).Type == type)
                 {
-                    result = attribute.Value;
+                    result = attribute;
 
                     break;
                 }
@@ -151,113 +151,85 @@ namespace BloodSword::Character
             return result;
         }
 
+        int Value(Attribute::Type type)
+        {
+            auto attribute = this->Attribute(type);
+
+            return this->Is(attribute) ? (*attribute).Value : 0;
+        }
+
         void Value(Attribute::Type type, int value)
         {
-            for (auto &attribute : this->Attributes)
-            {
-                if (attribute.Type == type)
-                {
-                    attribute.Value = value;
+            auto attribute = this->Attribute(type);
 
-                    break;
-                }
+            if (this->Is(attribute))
+            {
+                (*attribute).Value = value;
             }
         }
 
         int Modifier(Attribute::Type type)
         {
-            auto result = 0;
+            auto attribute = this->Attribute(type);
 
-            for (auto &attribute : this->Attributes)
-            {
-                if (attribute.Type == type)
-                {
-                    result = attribute.Modifier;
-
-                    break;
-                }
-            }
-
-            return result;
+            return this->Is(attribute) ? (*attribute).Modifier : 0;
         }
 
-        void Modifier(Attribute::Type type, int value)
+        void Modifier(Attribute::Type type, int modifier)
         {
-            for (auto &attribute : this->Attributes)
-            {
-                if (attribute.Type == type)
-                {
-                    attribute.Modifier = value;
+            auto attribute = this->Attribute(type);
 
-                    break;
-                }
+            if (this->Is(attribute))
+            {
+                (*attribute).Modifier = modifier;
             }
         }
 
         int Maximum(Attribute::Type type)
         {
-            auto result = 0;
+            auto attribute = this->Attribute(type);
 
-            for (auto &attribute : this->Attributes)
-            {
-                if (attribute.Type == type)
-                {
-                    result = attribute.Maximum;
-
-                    break;
-                }
-            }
-
-            return result;
+            return this->Is(attribute) ? (*attribute).Maximum : 0;
         }
 
-        void Maximum(Attribute::Type type, int value)
+        void Maximum(Attribute::Type type, int maximum)
         {
-            for (auto &attribute : this->Attributes)
-            {
-                if (attribute.Type == type)
-                {
-                    attribute.Maximum = value;
+            auto attribute = this->Attribute(type);
 
-                    break;
-                }
+            if (this->Is(attribute))
+            {
+                (*attribute).Maximum = maximum;
             }
         }
 
         void Set(Attribute::Type type, int value, int modifier, int maximum)
         {
-            for (auto &attribute : this->Attributes)
+            auto attribute = this->Attribute(type);
+
+            if (this->Is(attribute))
             {
-                if (attribute.Type == type)
-                {
-                    attribute.Value = value;
+                (*attribute).Value = value;
 
-                    attribute.Modifier = modifier;
+                (*attribute).Modifier = modifier;
 
-                    attribute.Maximum = maximum;
-
-                    break;
-                }
+                (*attribute).Maximum = maximum;
             }
         }
 
         void Set(Attribute::Type type, int value, int modifier)
         {
-            for (auto &attribute : this->Attributes)
+            auto attribute = this->Attribute(type);
+
+            if (this->Is(attribute))
             {
-                if (attribute.Type == type)
-                {
-                    attribute.Value = value;
+                (*attribute).Value = value;
 
-                    attribute.Modifier = modifier;
-
-                    break;
-                }
+                (*attribute).Modifier = modifier;
             }
         }
 
         // has item of specific type
-        std::vector<Item::Base>::const_iterator Find(Item::Type type)
+        Inventory::const_iterator Find(Item::Type type)
         {
             auto result = this->Items.end();
 
@@ -265,7 +237,9 @@ namespace BloodSword::Character
             {
                 if ((*item).Type == type)
                 {
-                    return item;
+                    result = item;
+
+                    break;
                 }
             }
 
@@ -274,13 +248,11 @@ namespace BloodSword::Character
 
         bool Has(Item::Type item)
         {
-            auto result = this->Find(item);
-
-            return result != this->Items.end();
+            return this->Find(item) != this->Items.end();
         }
 
         // has a container with a sufficient amount of the item
-        std::vector<Item::Base>::const_iterator Find(Item::Type container, Item::Type type, int quantity)
+        Inventory::const_iterator Find(Item::Type container, Item::Type type, int quantity)
         {
             auto result = this->Items.end();
 
@@ -297,7 +269,7 @@ namespace BloodSword::Character
             return result;
         }
 
-        std::vector<Item::Base>::const_iterator Find(Item::Type container, Item::Type type)
+        Inventory::const_iterator Find(Item::Type container, Item::Type type)
         {
             auto result = this->Items.end();
 
@@ -316,9 +288,7 @@ namespace BloodSword::Character
 
         bool Has(Item::Type container, Item::Type item, int quantity)
         {
-            auto result = this->Find(container, item, quantity);
-
-            return result != this->Items.end();
+            return this->Find(container, item, quantity) != this->Items.end();
         }
 
         bool Has(Item::Type container, Item::Type item)
@@ -327,7 +297,7 @@ namespace BloodSword::Character
         }
 
         // has type of item with specific property
-        std::vector<Item::Base>::const_iterator Find(Item::Type type, Item::Property property)
+        Inventory::const_iterator Find(Item::Type type, Item::Property property)
         {
             auto result = this->Items.end();
 
@@ -336,6 +306,8 @@ namespace BloodSword::Character
                 if ((*item).Type == type && (*item).Has(property))
                 {
                     result = item;
+
+                    break;
                 }
             }
 
@@ -344,13 +316,11 @@ namespace BloodSword::Character
 
         bool Has(Item::Type item, Item::Property property)
         {
-            auto result = this->Find(item, property);
-
-            return result != this->Items.end();
+            return this->Find(item, property) != this->Items.end();
         }
 
         // has type of item with specific property and attribute
-        std::vector<Item::Base>::const_iterator Find(Item::Type type, Item::Property property, Attribute::Type attribute)
+        Inventory::const_iterator Find(Item::Type type, Item::Property property, Attribute::Type attribute)
         {
             auto result = this->Items.end();
 
@@ -369,13 +339,11 @@ namespace BloodSword::Character
 
         bool Has(Item::Type item, Item::Property property, Attribute::Type attribute)
         {
-            auto result = this->Find(item, property, attribute);
-
-            return result != this->Items.end();
+            return this->Find(item, property, attribute) != this->Items.end();
         }
 
         // has any item with specific property
-        std::vector<Item::Base>::const_iterator Find(Item::Property property)
+        Inventory::const_iterator Find(Item::Property property)
         {
             auto result = this->Items.end();
 
@@ -394,9 +362,7 @@ namespace BloodSword::Character
 
         bool Has(Item::Property property)
         {
-            auto result = this->Find(property);
-
-            return result != this->Items.end();
+            return this->Find(property) != this->Items.end();
         }
 
         int Modifiers(Attribute::Type attribute)

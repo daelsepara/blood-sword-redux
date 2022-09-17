@@ -81,6 +81,7 @@ namespace BloodSword::Spells
 
     class Base
     {
+    public:
         Spells::Type Type = Type::NONE;
 
         Spells::Class Class = Class::NONE;
@@ -95,32 +96,23 @@ namespace BloodSword::Spells
 
         int Duration = -1;
 
-        void Initialize(Spells::Type type, Spells::Class spellClass, bool isCombat, bool ranged, int complexity, int duration)
-        {
-            this->Type = type;
+        Base(Spells::Type type,
+             Spells::Class spellClass,
+             bool isCombat,
+             bool ranged,
+             int complexity,
+             int duration) : Type(type),
+                             Class(spellClass),
+                             IsCombat(isCombat),
+                             Ranged(ranged),
+                             Complexity(complexity),
+                             Duration(duration) { this->CurrentComplexity = complexity; }
 
-            this->Class = spellClass;
-
-            this->IsCombat = isCombat;
-
-            this->Ranged = ranged;
-
-            this->Complexity = complexity;
-
-            this->CurrentComplexity = complexity;
-
-            this->Duration = duration;
-        }
-
-        Base(Spells::Type type, Spells::Class spellClass, bool isCombat, bool ranged, int complexity, int duration)
-        {
-            this->Initialize(type, spellClass, isCombat, ranged, complexity, duration);
-        }
-
-        Base(Spells::Type type, Spells::Class spellClass, bool isCombat, bool ranged, int complexity)
-        {
-            this->Initialize(type, spellClass, isCombat, ranged, complexity, -1);
-        }
+        Base(Spells::Type type,
+             Spells::Class spellClass,
+             bool isCombat,
+             bool ranged,
+             int complexity) : Base(type, spellClass, isCombat, ranged, complexity, -1) {}
     };
 }
 

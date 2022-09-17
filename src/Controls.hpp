@@ -73,16 +73,25 @@ namespace BloodSword::Controls
     public:
         Controls::Type Type = Controls::Type::ANY;
 
+        // ID and links to other controls
         int ID = -1;
         int Left = -1;
         int Right = -1;
         int Up = -1;
         int Down = -1;
+
+        // location
         int X = 0;
         int Y = 0;
+
+        // pixel dimensions
         int W = 0;
         int H = 0;
+
+        // border size
         int Pixels = 2;
+
+        // control is on the map
         bool IsMap = false;
         int MapX = -1;
         int MapY = -1;
@@ -90,39 +99,26 @@ namespace BloodSword::Controls
         // color of border when hightlighted
         Uint32 Highlight;
 
-        void Initialize(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
+        Base(Controls::Type type,
+             int id, int left, int right, int up, int down,
+             int x, int y, int w, int h,
+             int highlight) : Type(type),
+                              ID(id), Left(left), Right(right), Up(up), Down(down),
+                              X(x), Y(y), W(w), H(h),
+                              Highlight(highlight)
         {
-            this->Type = type;
-
-            this->ID = id;
-
-            this->Left = left;
-
-            this->Right = right;
-
-            this->Up = up;
-
-            this->Down = down;
-
-            this->X = x;
-
-            this->Y = y;
-
-            this->W = w;
-
-            this->H = h;
-
-            this->Highlight = highlight;
         }
 
-        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight, int mapx, int mapy) : IsMap(true), MapX(mapx), MapY(mapy)
+        Base(Controls::Type type,
+             int id, int left, int right, int up, int down,
+             int x, int y, int w, int h, int highlight,
+             int mapx, int mapy) : Base(type, id, left, right, up, down, x, y, w, h, highlight)
         {
-            this->Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
-        }
+            this->IsMap = true;
 
-        Base(Controls::Type type, int id, int left, int right, int up, int down, int x, int y, int w, int h, int highlight)
-        {
-            this->Initialize(type, id, left, right, up, down, x, y, w, h, highlight);
+            this->MapX = mapx;
+
+            this->MapY = mapy;
         }
     };
 
@@ -144,21 +140,26 @@ namespace BloodSword::Controls
 
         bool Quit = false;
 
-        User(Controls::Type type, int current, bool selected, bool up, bool down, bool hold) : Type(type), Current(current), Selected(selected), Up(up), Down(down), Hold(hold)
-        {
-        }
+        User(Controls::Type type,
+             int current,
+             bool selected,
+             bool up,
+             bool down,
+             bool hold) : Type(type),
+                          Current(current),
+                          Selected(selected),
+                          Up(up),
+                          Down(down),
+                          Hold(hold) {}
 
-        User(int current, bool selected, bool up, bool down) : Current(current), Selected(selected), Up(up), Down(down)
-        {
-        }
+        User(int current,
+             bool selected,
+             bool up,
+             bool down) : Current(current), Selected(selected), Up(up), Down(down) {}
 
-        User(int current, bool selected) : Current(current), Selected(selected)
-        {
-        }
+        User(int current, bool selected) : Current(current), Selected(selected) {}
 
-        User()
-        {
-        }
+        User() {}
     };
 
     int Find(std::vector<Controls::Base> &controls, Controls::Type type)

@@ -168,9 +168,9 @@ namespace BloodSword::Interface
     {
         SDL_Texture *texture = NULL;
 
-        std::string labels = "FPR\nAWR\nPSY\nEND\nDMG\nARM";
+        std::string labels = "RNK\nFPR\nAWR\nPSY\nEND\nDMG\nARM";
 
-        std::string stats;
+        std::string stats = std::to_string(character.Rank);
 
         auto labelsw = 0;
 

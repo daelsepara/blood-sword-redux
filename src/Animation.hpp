@@ -48,20 +48,18 @@ namespace BloodSword::Animate
 
         int TimeStamp = 0;
 
-        int Frame = -1;
+        int Frame = 0;
 
-        int Move = -1;
+        int Move = 0;
 
         int Speed = 0;
 
-        void Initialize(std::vector<Animate::Frame> frames, std::vector<Animate::Type> mode, std::vector<Point> path, int speed, bool loop)
+        Base(std::vector<Animate::Frame> frames,
+             std::vector<Animate::Type> mode,
+             std::vector<Point> path,
+             int speed,
+             bool loop) : Frames(frames), Path(path), Mode(mode), Loop(loop), Speed(speed)
         {
-            this->Frames = frames;
-
-            this->Mode = mode;
-
-            this->Path = path;
-
             if (!this->Frames.empty())
             {
                 this->Frame = 0;
@@ -71,36 +69,19 @@ namespace BloodSword::Animate
             {
                 this->Current = path[0];
             }
-
-            this->Speed = speed;
-
-            this->Loop = loop;
         }
 
-        Base(std::vector<Animate::Frame> frames, std::vector<Animate::Type> mode, std::vector<Point> path, int speed, bool loop) : Frames(frames)
-        {
-            this->Initialize(frames, mode, path, speed, loop);
-        }
+        Base(std::vector<Animate::Frame> frames,
+             std::vector<Point> path,
+             int speed) : Base(frames, {Type::MOVE}, path, speed, false) {}
 
-        Base(std::vector<Animate::Frame> frames, std::vector<Point> path, int speed)
-        {
-            this->Initialize(frames, {Type::MOVE}, path, speed, false);
-        }
+        Base(SDL_Texture *texture,
+             std::vector<Point> path,
+             int speed) : Base({Animate::Frame(texture)}, {Type::MOVE}, path, speed, false) {}
 
-        Base(SDL_Texture *texture, std::vector<Point> path, int speed)
-        {
-            this->Initialize({Animate::Frame(texture)}, {Type::MOVE}, path, speed, false);
-        }
+        Base(std::vector<Animate::Frame> frames, bool loop) : Base(frames, {Type::FRAME}, {}, 0, loop) {}
 
-        Base(std::vector<Animate::Frame> frames, bool loop)
-        {
-            this->Initialize(frames, {Type::FRAME}, {}, 0, loop);
-        }
-
-        Base(std::vector<Animate::Frame> frames)
-        {
-            this->Initialize(frames, {Type::FRAME}, {}, 0, false);
-        }
+        Base(std::vector<Animate::Frame> frames) : Base(frames, {Type::FRAME}, {}, 0, false) {}
 
         bool Is(std::vector<Animate::Type> types)
         {
@@ -143,23 +124,30 @@ namespace BloodSword::Animate
     {
         auto done = false;
 
-        if ((timestamp - animation.TimeStamp) > animation.Speed)
+        if (!animation.Frames.empty() && animation.Frame >= 0 && animation.Frame < animation.Frames.size())
         {
-            if (animation.Frame < animation.Frames.size() - 1)
+            if ((timestamp - animation.TimeStamp) > animation.Speed)
             {
-                animation.Frame++;
-            }
-            else if (!animation.Loop)
-            {
-                done = true;
-            }
-            else
-            {
-                animation.Frame = 0;
-            }
+                if (animation.Frame < animation.Frames.size() - 1)
+                {
+                    animation.Frame++;
+                }
+                else if (!animation.Loop)
+                {
+                    done = true;
+                }
+                else
+                {
+                    animation.Frame = 0;
+                }
 
-            // update timestamp
-            animation.TimeStamp = timestamp;
+                // update timestamp
+                animation.TimeStamp = timestamp;
+            }
+        }
+        else
+        {
+            done = true;
         }
 
         return done;
@@ -174,38 +162,45 @@ namespace BloodSword::Animate
 
         auto done = false;
 
-        if ((timestamp - animation.TimeStamp) > animation.Speed)
+        if (!animation.Path.empty() && animation.Move >= 0 && animation.Move < animation.Path.size())
         {
-            if (animation.Move < animation.Path.size() - 1)
+            if ((timestamp - animation.TimeStamp) > animation.Speed)
             {
-                auto DeltaX = animation.Current.X - animation.Path[animation.Move + 1].X;
-
-                auto DeltaY = animation.Current.Y - animation.Path[animation.Move + 1].Y;
-
-                // check if we have reached our destination
-                if (DeltaX == 0 && DeltaY == 0)
+                if (animation.Move < animation.Path.size() - 1)
                 {
-                    animation.Move++;
+                    auto DeltaX = animation.Current.X - animation.Path[animation.Move + 1].X;
+
+                    auto DeltaY = animation.Current.Y - animation.Path[animation.Move + 1].Y;
+
+                    // check if we have reached our destination
+                    if (DeltaX == 0 && DeltaY == 0)
+                    {
+                        animation.Move++;
+                    }
+                    else
+                    {
+                        if (DeltaX != 0)
+                        {
+                            animation.Current.X -= Sign(DeltaX);
+                        }
+                        else if (DeltaY != 0)
+                        {
+                            animation.Current.Y -= Sign(DeltaY);
+                        }
+                    }
                 }
                 else
                 {
-                    if (DeltaX != 0)
-                    {
-                        animation.Current.X -= Sign(DeltaX);
-                    }
-                    else if (DeltaY != 0)
-                    {
-                        animation.Current.Y -= Sign(DeltaY);
-                    }
+                    done = true;
                 }
-            }
-            else
-            {
-                done = true;
-            }
 
-            // update timestamp
-            animation.TimeStamp = timestamp;
+                // update timestamp
+                animation.TimeStamp = timestamp;
+            }
+        }
+        else
+        {
+            done = true;
         }
 
         return done;

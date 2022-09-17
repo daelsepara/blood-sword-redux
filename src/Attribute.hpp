@@ -48,6 +48,10 @@ namespace BloodSword::Attribute
 
             this->Maximum = value;
         }
+
+        Base()
+        {
+        }
     };
 
     Mapping<Attribute::Type> TypeMapping = {

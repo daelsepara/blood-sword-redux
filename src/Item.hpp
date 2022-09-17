@@ -32,39 +32,37 @@ namespace BloodSword::Item
         // item name
         std::string Name;
 
-        void Initialize(const char *name, Item::Type type, IntMapping<Attribute::Type> attributes, std::vector<Item::Property> properties, Item::Type contains, int quantity)
+        Base(const char *name,
+             Item::Type type,
+             IntMapping<Attribute::Type> attributes,
+             std::vector<Item::Property> properties,
+             Item::Type contains,
+             int quantity) : Attributes(attributes),
+                             Properties(properties),
+                             Type(type),
+                             Contains(contains),
+                             Quantity(quantity),
+                             Name(name) {}
+
+        Base(const char *name,
+             Item::Type type,
+             std::vector<Item::Property> properties,
+             Item::Type contains,
+             int quantity) : Base(name, type, {}, properties, contains, quantity) {}
+
+        Base(const char *name,
+             Item::Type type,
+             IntMapping<Attribute::Type> attributes,
+             std::vector<Item::Property> properties) : Base(name,
+                                                            type,
+                                                            attributes,
+                                                            properties,
+                                                            Item::Type::NONE, 1) {}
+
+        Base(const char *name,
+             Item::Type type,
+             std::vector<Item::Property> properties) : Base(name, type, {}, properties, Item::Type::NONE, 1)
         {
-            this->Name = name;
-
-            this->Type = type;
-
-            this->Attributes = attributes;
-
-            this->Properties = properties;
-
-            this->Contains = contains;
-
-            this->Quantity = quantity;
-        }
-
-        Base(const char *name, Item::Type type, IntMapping<Attribute::Type> attributes, std::vector<Item::Property> properties, Item::Type contains, int quantity)
-        {
-            this->Initialize(name, type, attributes, properties, contains, quantity);
-        }
-
-        Base(const char *name, Item::Type type, std::vector<Item::Property> properties, Item::Type contains, int quantity)
-        {
-            this->Initialize(name, type, {}, properties, contains, quantity);
-        }
-
-        Base(const char *name, Item::Type type, IntMapping<Attribute::Type> attributes, std::vector<Item::Property> properties)
-        {
-            this->Initialize(name, type, attributes, properties, Item::Type::NONE, 1);
-        }
-
-        Base(const char *name, Item::Type type, std::vector<Item::Property> properties)
-        {
-            this->Initialize(name, type, {}, properties, Item::Type::NONE, 1);
         }
 
         bool Has(Item::Property property)

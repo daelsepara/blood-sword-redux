@@ -92,7 +92,7 @@ namespace BloodSword::Asset
         return result;
     }
 
-    SDL_Texture *Get(Asset::Type asset, Uint8 alpha)
+    SDL_Texture *Get(Asset::Type asset)
     {
         SDL_Texture *texture = NULL;
 
@@ -101,27 +101,12 @@ namespace BloodSword::Asset
             texture = Asset::Textures[asset];
         }
 
-        if (texture)
-        {
-            SDL_SetTextureColorMod(texture, alpha, alpha, alpha);
-        }
-
         return texture;
     }
 
-    SDL_Texture *Get(Asset::Type asset)
+    SDL_Texture *Get(Asset::Type asset, Uint8 alpha)
     {
-        return Asset::Get(asset, 0xFF);
-    }
-
-    SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset, Uint8 alpha)
-    {
-        SDL_Texture *texture = NULL;
-
-        if (Asset::Locations.find(asset) != Asset::Locations.end())
-        {
-            texture = Asset::Create(renderer, Asset::Locations[asset].c_str());
-        }
+        auto texture = Asset::Get(asset);
 
         if (texture)
         {
@@ -133,7 +118,26 @@ namespace BloodSword::Asset
 
     SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset)
     {
-        return Asset::Copy(renderer, asset, 0xFF);
+        SDL_Texture *texture = NULL;
+
+        if (Asset::Locations.find(asset) != Asset::Locations.end())
+        {
+            texture = Asset::Create(renderer, Asset::Locations[asset].c_str());
+        }
+
+        return texture;
+    }
+
+    SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset, Uint8 alpha)
+    {
+        auto texture = Asset::Copy(renderer, asset);
+
+        if (texture)
+        {
+            SDL_SetTextureColorMod(texture, alpha, alpha, alpha);
+        }
+
+        return texture;
     }
 }
 

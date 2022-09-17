@@ -31,78 +31,68 @@ namespace BloodSword::Scene
 
         int BorderSize = 0;
 
-        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h)
+        Element(SDL_Texture *texture,
+                int x, int y,
+                int bounds, int offset,
+                int w, int h,
+                Uint32 background,
+                Uint32 border,
+                int borderSize) : Texture(texture),
+                                  Background(background), Border(border),
+                                  X(x), Y(y),
+                                  Bounds(bounds), Offset(offset),
+                                  W(w), H(h),
+                                  BorderSize(borderSize) {}
+
+        Element(SDL_Texture *texture,
+                int x, int y,
+                int bounds, int offset,
+                Uint32 background,
+                Uint32 border,
+                int borderSize) : Texture(texture),
+                                  Background(background), Border(border),
+                                  X(x), Y(y),
+                                  Bounds(bounds), Offset(offset),
+                                  BorderSize(borderSize)
         {
-            this->Texture = texture;
-
-            this->Bounds = bounds;
-
-            this->Offset = offset;
-
-            this->X = x;
-
-            this->Y = y;
-
-            this->W = w;
-
-            this->H = h;
+            if (this->Texture)
+            {
+                SDL_QueryTexture(this->Texture, NULL, NULL, &this->W, &this->H);
+            }
         }
 
-        void Initialize(SDL_Texture *texture, int x, int y, int bounds, int offset)
+        Element(SDL_Texture *texture,
+                int x, int y,
+                int bounds, int offset,
+                Uint32 border,
+                int borderSize) : Element(texture, x, y, bounds, offset, 0, border, borderSize) {}
+
+        Element(SDL_Texture *texture,
+                int x, int y,
+                int bounds, int offset,
+                Uint32 background) : Element(texture, x, y, bounds, offset, background, 0, 0) {}
+
+        Element(SDL_Texture *texture,
+                int x, int y,
+                int bounds, int offset) : Element(texture, x, y, bounds, offset, 0, 0, 0) {}
+
+        Element(SDL_Texture *texture, int x, int y) : Texture(texture), X(x), Y(y), Offset(0)
         {
-            auto w = 0;
-
-            auto h = 0;
-
-            if (texture)
+            if (this->Texture)
             {
-                SDL_QueryTexture(texture, NULL, NULL, &w, &h);
+                SDL_QueryTexture(this->Texture, NULL, NULL, &this->W, &this->H);
             }
 
-            this->Initialize(texture, x, y, bounds, offset, w, h);
+            this->Bounds = this->H;
         }
 
-        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background, Uint32 border, int borderSize) : Background(background), Border(border), BorderSize(borderSize)
-        {
-            this->Initialize(texture, x, y, bounds, offset);
-        }
+        Element(int x, int y, int w, int h,
+                Uint32 background,
+                Uint32 border,
+                int borderSize) : Element(NULL, x, y, h, 0, w, h, background, border, borderSize) {}
 
-        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 border, int borderSize) : Border(border), BorderSize(borderSize)
-        {
-            this->Initialize(texture, x, y, bounds, offset);
-        }
-
-        Element(SDL_Texture *texture, int x, int y, int bounds, int offset, Uint32 background) : Background(background)
-        {
-            this->Initialize(texture, x, y, bounds, offset);
-        }
-
-        Element(SDL_Texture *texture, int x, int y, int bounds, int offset)
-        {
-            this->Initialize(texture, x, y, bounds, offset);
-        }
-
-        Element(SDL_Texture *texture, int x, int y)
-        {
-            auto texture_h = 0;
-
-            if (texture)
-            {
-                SDL_QueryTexture(texture, NULL, NULL, NULL, &texture_h);
-            }
-
-            this->Initialize(texture, x, y, texture_h, 0);
-        }
-
-        Element(int x, int y, int w, int h, Uint32 background, Uint32 border, int borderSize) : Background(background), Border(border), BorderSize(borderSize)
-        {
-            this->Initialize(NULL, x, y, h, 0, w, h);
-        }
-
-        Element(int x, int y, int w, int h, Uint32 background) : Background(background)
-        {
-            this->Initialize(NULL, x, y, h, 0, w, h);
-        }
+        Element(int x, int y, int w, int h,
+                Uint32 background) : Element(NULL, x, y, h, 0, w, h, background, 0, 0) {}
     };
 
     class Base
