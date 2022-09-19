@@ -397,6 +397,13 @@ namespace BloodSword::Test
             BloodSword::Free(textures);
         }
     }
+
+    void Animation(Graphics::Base &graphics)
+    {
+        auto map = Map::Base();
+        
+        map.Initialize(15, 10);
+    }
 }
 
 #endif
