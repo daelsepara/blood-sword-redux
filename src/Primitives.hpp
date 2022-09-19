@@ -30,6 +30,16 @@ namespace BloodSword
         }
     };
 
+    bool operator==(Point p1, Point p2)
+    {
+        return p1.X == p2.X && p1.Y == p2.Y;
+    }
+
+    bool operator!=(Point p1, Point p2)
+    {
+        return !(p1 == p2);
+    }
+
     SDL_Surface *Load(const char *image)
     {
         auto surface = IMG_Load(image);

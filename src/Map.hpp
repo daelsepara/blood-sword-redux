@@ -5,9 +5,12 @@
 
 #include "Asset.hpp"
 #include "MapObjects.hpp"
+#include "Random.hpp"
 
 namespace BloodSword::Map
 {
+    const std::vector<Point> Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
+
     class Tile
     {
     public:
@@ -202,6 +205,144 @@ namespace BloodSword::Map
             }
 
             return !LoadError;
+        }
+
+        // maze generation
+        bool IsValid(Point &coords)
+        {
+            return coords.X >= 0 && coords.Y >= 0 && coords.X < this->Width && coords.Y < this->Height;
+        }
+
+        std::vector<Point> Neighbors(Point &coords)
+        {
+            std::vector<Point> neighbors = {};
+
+            for (int i = 0; i < Map::Directions.size(); i++)
+            {
+                int new_x = coords.X + Map::Directions[i].X * 2;
+                int new_y = coords.Y + Map::Directions[i].Y * 2;
+
+                auto neighbor = Point(new_x, new_y);
+
+                if (this->IsValid(neighbor))
+                {
+                    neighbors.push_back(neighbor);
+                }
+            }
+
+            return neighbors;
+        }
+
+        bool Unvisited(Point &coords)
+        {
+            auto neighbords = this->Neighbors(coords);
+
+            auto result = false;
+
+            for (int i = 0; i < neighbords.size(); i++)
+            {
+                if (this->Tiles[neighbords[i].Y][neighbords[i].X].Type == Map::Object::NONE)
+                {
+                    result = true;
+
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        Point RandomUnvisited(Random::Base &random, Point &coords)
+        {
+            std::vector<Point> unvisited_neighbors = {};
+
+            auto neighbors = this->Neighbors(coords);
+
+            for (int i = 0; i < neighbors.size(); i++)
+            {
+                if (this->Tiles[neighbors[i].Y][neighbors[i].X].Type == Map::Object::NONE)
+                {
+                    unvisited_neighbors.push_back(neighbors[i]);
+                }
+            }
+
+            int index = random.NextInt() % unvisited_neighbors.size();
+
+            return unvisited_neighbors[index];
+        }
+
+        void Remove(Point p1, Point p2)
+        {
+            auto tile = Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
+            this->Tiles[tile.Y][tile.X].Type = Map::Object::PASSABLE;
+            this->Tiles[tile.Y][tile.X].Asset = Asset::Type::NONE;
+        }
+
+        void Remove(std::vector<Point> &list, Point &coords)
+        {
+            for (int i = 0; i < list.size(); i++)
+            {
+                if (list[i] == coords)
+                {
+                    list.erase(list.begin() + i);
+                }
+            }
+        }
+
+        void Generate()
+        {
+            auto random = Random::Base();
+
+            std::vector<Point> unvisited = {};
+            std::vector<Point> visited = {};
+
+            // initialize
+            for (auto y = 0; y < this->Height; y++)
+            {
+                for (auto x = 0; x < this->Width; x++)
+                {
+                    if (y % 2 == 0 || x % 2 == 0)
+                    {
+                        this->Tiles[y][x].Asset = Asset::Type::WALL;
+                        this->Tiles[y][x].Type = Map::Object::OBSTACLE;
+                    }
+                    else
+                    {
+                        this->Tiles[y][x].Type = Map::Object::NONE;
+                        unvisited.push_back(Point(x, y));
+                    }
+                }
+            }
+
+            // Generate
+            Point current = unvisited.back();
+
+            unvisited.pop_back();
+            visited.push_back(current);
+
+            this->Tiles[current.Y][current.X].Type = Map::Object::PASSABLE;
+            this->Tiles[current.Y][current.X].Asset = Asset::Type::NONE;
+
+            while (unvisited.size() != 0)
+            {
+                if (this->Unvisited(current))
+                {
+                    auto neighbor = this->RandomUnvisited(random, current);
+                    this->Remove(current, neighbor);
+
+                    current = neighbor;
+                    this->Remove(unvisited, current);
+
+                    visited.push_back(current);
+                    this->Tiles[current.Y][current.X].Type = Map::Object::PASSABLE;
+                    this->Tiles[current.Y][current.X].Asset = Asset::Type::NONE;
+                }
+                else if (visited.size() != 0)
+                {
+                    current = visited.back();
+                    visited.pop_back();
+                }
+            }
         }
     };
 }

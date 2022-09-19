@@ -401,8 +401,33 @@ namespace BloodSword::Test
     void Animation(Graphics::Base &graphics)
     {
         auto map = Map::Base();
-        
-        map.Initialize(15, 10);
+
+        map.Initialize(15, 9);
+
+        map.SizeX = 15;
+
+        map.SizeY = 9;
+
+        map.Generate();
+
+        auto start = Point(1, map.Height - 1);
+        auto finish = Point(map.Width - 1, 1);
+
+        map.Tiles[start.Y][start.X].Type = Map::Object::PASSABLE;
+        map.Tiles[start.Y][start.X].Occupant = Map::Object::PLAYER;
+        map.Tiles[start.Y][start.X].Id = 0;
+        map.Tiles[finish.Y][finish.X].Type = Map::Object::PASSABLE;
+        map.Tiles[finish.Y][finish.X].Asset = Asset::Type::RIGHT;
+
+        auto scene = Scene::Base();
+
+        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8)});
+
+        auto enemies = Party::Base();
+
+        Interface::Add(map, scene, party, enemies, 0);
+
+        Input::WaitForNext(graphics, scene);
     }
 }
 
