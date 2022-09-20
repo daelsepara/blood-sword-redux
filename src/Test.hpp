@@ -402,22 +402,15 @@ namespace BloodSword::Test
     {
         auto map = Map::Base();
 
-        map.Initialize(15, 9);
+        map.Generate(17, 9);
 
-        map.SizeX = 15;
+        map.Viewable(17, 9);
 
-        map.SizeY = 9;
+        map.Put(1, map.Height - 1, Map::Object::PASSABLE, Asset::Type::NONE);
 
-        map.Generate();
+        map.Put(1, map.Height - 1, Map::Object::PLAYER, 0);
 
-        auto start = Point(1, map.Height - 1);
-        auto finish = Point(map.Width - 1, 1);
-
-        map.Tiles[start.Y][start.X].Type = Map::Object::PASSABLE;
-        map.Tiles[start.Y][start.X].Occupant = Map::Object::PLAYER;
-        map.Tiles[start.Y][start.X].Id = 0;
-        map.Tiles[finish.Y][finish.X].Type = Map::Object::PASSABLE;
-        map.Tiles[finish.Y][finish.X].Asset = Asset::Type::RIGHT;
+        map.Put(map.Width - 1, 1, Map::Object::PASSABLE, Asset::Type::RIGHT);
 
         auto scene = Scene::Base();
 

@@ -96,20 +96,27 @@ namespace BloodSword::Map
         // size of each tile (pixels)
         int TileSize = 64;
 
-        void Initialize(int sizex, int sizey)
+        void Initialize(int width, int height)
         {
-            this->Width = sizex;
+            this->Width = width;
 
-            this->Height = sizey;
+            this->Height = height;
 
             this->Tiles.clear();
 
-            this->Tiles.resize(sizey);
+            this->Tiles.resize(height);
 
-            for (auto i = 0; i < sizey; i++)
+            for (auto i = 0; i < height; i++)
             {
-                this->Tiles[i] = std::vector<Map::Tile>(sizex);
+                this->Tiles[i] = std::vector<Map::Tile>(width);
             }
+        }
+
+        void Viewable(int sizex, int sizey)
+        {
+            this->SizeX = sizex;
+
+            this->SizeY = sizey;
         }
 
         Base(int sizex, int sizey)
@@ -121,9 +128,19 @@ namespace BloodSword::Map
         {
         }
 
+        bool IsValid(Point coords)
+        {
+            return coords.X >= 0 && coords.Y >= 0 && coords.X < this->Width && coords.Y < this->Height;
+        }
+
+        bool IsValid(int x, int y)
+        {
+            return this->IsValid(Point(x, y));
+        }
+
         void Put(int x, int y, Map::Object object, int id)
         {
-            if (x >= 0 && x < Width && y >= 0 && y < Height)
+            if (this->IsValid(x, y))
             {
                 this->Tiles[y][x].Occupant = object;
                 this->Tiles[y][x].Id = id;
@@ -132,9 +149,8 @@ namespace BloodSword::Map
 
         void Put(int x, int y, Map::Object type, Asset::Type asset)
         {
-            if (x >= 0 && x < Width && y >= 0 && y < Height)
+            if (this->IsValid(x, y))
             {
-                this->Tiles[y][x].Occupant = Map::Object::NONE;
                 this->Tiles[y][x].Type = type;
                 this->Tiles[y][x].Asset = asset;
             }
@@ -208,21 +224,16 @@ namespace BloodSword::Map
         }
 
         // maze generation
-        bool IsValid(Point &coords)
-        {
-            return coords.X >= 0 && coords.Y >= 0 && coords.X < this->Width && coords.Y < this->Height;
-        }
-
         std::vector<Point> Neighbors(Point &coords)
         {
             std::vector<Point> neighbors = {};
 
             for (int i = 0; i < Map::Directions.size(); i++)
             {
-                int new_x = coords.X + Map::Directions[i].X * 2;
-                int new_y = coords.Y + Map::Directions[i].Y * 2;
+                int x = coords.X + Map::Directions[i].X * 2;
+                int y = coords.Y + Map::Directions[i].Y * 2;
 
-                auto neighbor = Point(new_x, new_y);
+                auto neighbor = Point(x, y);
 
                 if (this->IsValid(neighbor))
                 {
@@ -254,7 +265,7 @@ namespace BloodSword::Map
 
         Point RandomUnvisited(Random::Base &random, Point &coords)
         {
-            std::vector<Point> unvisited_neighbors = {};
+            std::vector<Point> unvisited = {};
 
             auto neighbors = this->Neighbors(coords);
 
@@ -262,20 +273,18 @@ namespace BloodSword::Map
             {
                 if (this->Tiles[neighbors[i].Y][neighbors[i].X].Type == Map::Object::NONE)
                 {
-                    unvisited_neighbors.push_back(neighbors[i]);
+                    unvisited.push_back(neighbors[i]);
                 }
             }
 
-            int index = random.NextInt() % unvisited_neighbors.size();
-
-            return unvisited_neighbors[index];
+            return unvisited[random.NextInt() % unvisited.size()];
         }
 
         void Remove(Point p1, Point p2)
         {
             auto tile = Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
-            this->Tiles[tile.Y][tile.X].Type = Map::Object::PASSABLE;
-            this->Tiles[tile.Y][tile.X].Asset = Asset::Type::NONE;
+
+            this->Put(tile.X, tile.Y, Map::Object::PASSABLE, Asset::Type::NONE);
         }
 
         void Remove(std::vector<Point> &list, Point &coords)
@@ -289,12 +298,15 @@ namespace BloodSword::Map
             }
         }
 
-        void Generate()
+        void Generate(int width, int height)
         {
+            std::vector<Point> unvisited = {};
+
+            std::vector<Point> visited = {};
+
             auto random = Random::Base();
 
-            std::vector<Point> unvisited = {};
-            std::vector<Point> visited = {};
+            this->Initialize(width, height);
 
             // initialize
             for (auto y = 0; y < this->Height; y++)
@@ -303,43 +315,44 @@ namespace BloodSword::Map
                 {
                     if (y % 2 == 0 || x % 2 == 0)
                     {
-                        this->Tiles[y][x].Asset = Asset::Type::WALL;
-                        this->Tiles[y][x].Type = Map::Object::OBSTACLE;
+                        this->Put(x, y, Map::Object::OBSTACLE, Asset::Type::WALL);
                     }
                     else
                     {
-                        this->Tiles[y][x].Type = Map::Object::NONE;
+                        this->Put(x, y, Map::Object::NONE, Asset::Type::NONE);
+
                         unvisited.push_back(Point(x, y));
                     }
                 }
             }
 
-            // Generate
+            // generate
             Point current = unvisited.back();
 
             unvisited.pop_back();
+
             visited.push_back(current);
 
-            this->Tiles[current.Y][current.X].Type = Map::Object::PASSABLE;
-            this->Tiles[current.Y][current.X].Asset = Asset::Type::NONE;
+            this->Put(current.X, current.Y, Map::Object::PASSABLE, Asset::Type::NONE);
 
             while (unvisited.size() != 0)
             {
                 if (this->Unvisited(current))
                 {
                     auto neighbor = this->RandomUnvisited(random, current);
+
                     this->Remove(current, neighbor);
+                    this->Remove(unvisited, neighbor);
+                    this->Put(neighbor.X, neighbor.Y, Map::Object::PASSABLE, Asset::Type::NONE);
+
+                    visited.push_back(neighbor);
 
                     current = neighbor;
-                    this->Remove(unvisited, current);
-
-                    visited.push_back(current);
-                    this->Tiles[current.Y][current.X].Type = Map::Object::PASSABLE;
-                    this->Tiles[current.Y][current.X].Asset = Asset::Type::NONE;
                 }
                 else if (visited.size() != 0)
                 {
                     current = visited.back();
+
                     visited.pop_back();
                 }
             }
