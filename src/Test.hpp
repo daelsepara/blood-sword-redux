@@ -412,15 +412,62 @@ namespace BloodSword::Test
 
         map.Put(map.Width - 1, 1, Map::Object::PASSABLE, Asset::Type::RIGHT);
 
-        auto scene = Scene::Base();
-
         auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8)});
 
         auto enemies = Party::Base();
 
-        Interface::Add(map, scene, party, enemies, 0);
+        auto input = Controls::User();
 
-        Input::WaitForNext(graphics, scene);
+        // initialize animation frames and type
+        auto animation = Animate::Base(
+            {Animate::Frame(Asset::Get(Asset::Type::WARRIOR))},
+            {Animate::Type::MOVE},
+            {},
+            50,
+            false);
+
+        while (true)
+        {
+            auto scene = Scene::Base();
+
+            Interface::Add(map, scene, party, enemies, 3);
+
+            auto id = scene.Controls.size();
+
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
+
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
+
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize));
+
+            scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.SizeX, id, map.DrawX, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+
+            scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.SizeX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+
+            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+
+            input = Input::WaitForInput(graphics, scene, input);
+
+            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            {
+                if (input.Type == Controls::Type::EXIT)
+                {
+                    break;
+                }
+                else if (input.Type == Controls::Type::BACK)
+                {
+                    map.Generate(17, 9);
+
+                    map.Viewable(17, 9);
+
+                    map.Put(1, map.Height - 1, Map::Object::PASSABLE, Asset::Type::NONE);
+
+                    map.Put(1, map.Height - 1, Map::Object::PLAYER, 0);
+
+                    map.Put(map.Width - 1, 1, Map::Object::PASSABLE, Asset::Type::RIGHT);
+                }
+            }
+        }
     }
 }
 

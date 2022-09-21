@@ -223,6 +223,52 @@ namespace BloodSword::Map
             return !LoadError;
         }
 
+        // find object
+        Point Find(Map::Object object)
+        {
+            auto point = Point(-1, -1);
+
+            for (auto y = 0; y < this->Height; y++)
+            {
+                for (auto x = 0; x < this->Width; x++)
+                {
+                    if (this->Tiles[y][x].Type == object)
+                    {
+                        point.X = x;
+
+                        point.Y = y;
+
+                        break;
+                    }
+                }
+            }
+
+            return point;
+        }
+
+        // find occupant
+        Point Find(Map::Object occupant, int id)
+        {
+            auto point = Point(-1, -1);
+
+            for (auto y = 0; y < this->Height; y++)
+            {
+                for (auto x = 0; x < this->Width; x++)
+                {
+                    if (this->Tiles[y][x].Occupant == occupant && this->Tiles[y][x].Id == id)
+                    {
+                        point.X = x;
+
+                        point.Y = y;
+
+                        break;
+                    }
+                }
+            }
+
+            return point;
+        }
+
         // maze generation
         std::vector<Point> Neighbors(Point &coords)
         {

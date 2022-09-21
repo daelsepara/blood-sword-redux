@@ -83,6 +83,34 @@ namespace BloodSword::Animate
 
         Base(std::vector<Animate::Frame> frames) : Base(frames, {Type::FRAME}, {}, 0, false) {}
 
+        Base() {}
+
+        void Set(std::vector<Animate::Frame> frames, bool loop)
+        {
+            this->Frames = frames;
+
+            this->Loop = loop;
+
+            this->Frame = 0;
+        }
+
+        void Set(std::vector<Point> path)
+        {
+            this->Path = path;
+
+            this->Move = 0;
+        }
+
+        void Set(std::vector<Animate::Type> modes)
+        {
+            this->Mode = modes;
+        }
+
+        void Set(int speed)
+        {
+            this->Speed = speed;
+        }
+
         bool Is(std::vector<Animate::Type> types)
         {
             auto result = true;
