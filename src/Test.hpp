@@ -400,33 +400,11 @@ namespace BloodSword::Test
 
     void Animation(Graphics::Base &graphics)
     {
-        auto map = Map::Base();
-
-        map.Generate(17, 9);
-
-        map.Viewable(17, 9);
-
-        map.Put(1, map.Height - 1, Map::Object::PASSABLE, Asset::Type::NONE);
-
-        map.Put(1, map.Height - 1, Map::Object::PLAYER, 0);
-
-        map.Put(map.Width - 1, 1, Map::Object::PASSABLE, Asset::Type::RIGHT);
-
         auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8)});
 
         auto enemies = Party::Base();
 
-        auto input = Controls::User();
-
-        // initialize animation frames and type
-        auto animation = Animate::Base(
-            {Animate::Frame(Asset::Get(Asset::Type::WARRIOR))},
-            {Animate::Type::MOVE},
-            {},
-            50,
-            false);
-
-        while (true)
+        auto RegenerateScene = [&](Map::Base &map)
         {
             auto scene = Scene::Base();
 
@@ -446,25 +424,123 @@ namespace BloodSword::Test
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
 
-            input = Input::WaitForInput(graphics, scene, input);
+            return scene;
+        };
 
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+        auto map = Map::Base();
+
+        map.Generate(17, 9);
+
+        map.Viewable(17, 9);
+
+        map.Put(1, map.Height - 1, Map::Object::PASSABLE, Asset::Type::NONE);
+
+        map.Put(1, map.Height - 1, Map::Object::PLAYER, 0);
+
+        map.Put(map.Width - 1, 1, Map::Object::PASSABLE, Asset::Type::RIGHT);
+
+        auto input = Controls::User();
+
+        // initialize animation frames and type
+        auto animation = Animate::Base(
+            {Animate::Frame(Asset::Get(Asset::Type::WARRIOR))},
+            {Animate::Type::MOVE},
+            {},
+            25,
+            false);
+
+        animation.Scale = Point(map.TileSize, map.TileSize);
+
+        auto IsAnimating = false;
+
+        auto base = RegenerateScene(map);
+
+        auto scene = base;
+
+        while (true)
+        {
+            if (!IsAnimating)
             {
-                if (input.Type == Controls::Type::EXIT)
+                input = Input::WaitForInput(graphics, scene, input);
+
+                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                 {
-                    break;
+                    if (input.Type == Controls::Type::EXIT)
+                    {
+                        break;
+                    }
+                    else if (input.Type == Controls::Type::MOVE && !IsAnimating)
+                    {
+                        // find a path to the exit
+                        auto path = Move::FindPath(map, 1, map.Height - 1, map.Width - 1, 1);
+
+                        // move sprite
+                        if (path.Points.size() > 0)
+                        {
+                            map.Put(1, map.Height - 1, Map::Object::NONE, -1);
+
+                            map.Put(map.Width - 1, 1, Map::Object::NONE, -1);
+
+                            base = RegenerateScene(map);
+
+                            scene = base;
+
+                            animation.Set(map.DrawX, map.DrawY, 1, map.Height - 1);
+
+                            animation.Path = path.Points;
+
+                            animation.Reset();
+
+                            IsAnimating = true;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::BACK && !IsAnimating)
+                    {
+                        map.Generate(17, 9);
+
+                        map.Viewable(17, 9);
+
+                        map.Put(1, map.Height - 1, Map::Object::PASSABLE, Asset::Type::NONE);
+
+                        map.Put(1, map.Height - 1, Map::Object::PLAYER, 0);
+
+                        map.Put(map.Width - 1, 1, Map::Object::PASSABLE, Asset::Type::RIGHT);
+
+                        base = RegenerateScene(map);
+
+                        scene = base;
+                    }
                 }
-                else if (input.Type == Controls::Type::BACK)
+            }
+            else
+            {
+                scene = base;
+
+                IsAnimating = !Animate::Step(scene, animation);
+
+                Graphics::RenderNow(graphics, scene);
+
+                if (!IsAnimating)
                 {
-                    map.Generate(17, 9);
+                    if (animation.Is(Animate::Type::MOVE))
+                    {
+                        // put object in the correct location on the map
+                        auto final = animation.Path[animation.Path.size() - 1];
 
-                    map.Viewable(17, 9);
+                        map.Put(final.X, final.Y, Map::Object::PLAYER, 0);
+                    }
 
-                    map.Put(1, map.Height - 1, Map::Object::PASSABLE, Asset::Type::NONE);
+                    SDL_PumpEvents();
 
-                    map.Put(1, map.Height - 1, Map::Object::PLAYER, 0);
+                    SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
 
-                    map.Put(map.Width - 1, 1, Map::Object::PASSABLE, Asset::Type::RIGHT);
+                    input.Current = -1;
+
+                    input.Selected = false;
+
+                    base = RegenerateScene(map);
+
+                    scene = base;
                 }
             }
         }

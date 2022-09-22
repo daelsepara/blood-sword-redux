@@ -38,15 +38,23 @@ namespace BloodSword::Animate
     public:
         std::vector<Animate::Frame> Frames = {};
 
+        std::vector<Animate::Type> Mode = {};
+
         std::vector<Point> Path = {};
 
-        std::vector<Animate::Type> Mode = {};
+        Point Origin = Point(0, 0);
 
         Point Current = Point();
 
+        Point Scale = Point(1, 1);
+
+        Point Offset = Point(0, 0);
+
+        Point Delta = Point(8, 8);
+
         bool Loop = false;
 
-        int TimeStamp = 0;
+        Uint32 TimeStamp = 0;
 
         int Frame = 0;
 
@@ -58,7 +66,7 @@ namespace BloodSword::Animate
              std::vector<Animate::Type> mode,
              std::vector<Point> path,
              int speed,
-             bool loop) : Frames(frames), Path(path), Mode(mode), Loop(loop), Speed(speed)
+             bool loop) : Frames(frames), Mode(mode), Path(path), Loop(loop), Speed(speed)
         {
             if (!this->Frames.empty())
             {
@@ -111,6 +119,28 @@ namespace BloodSword::Animate
             this->Speed = speed;
         }
 
+        void Set(Point point)
+        {
+            this->Current = point;
+        }
+
+        void Set(int x, int y)
+        {
+            this->Set(Point(x, y));
+        }
+
+        void Set(Point origin, Point current)
+        {
+            this->Origin = origin;
+
+            this->Current = current;
+        }
+
+        void Set(int originx, int originy, int x, int y)
+        {
+            this->Set(Point(originx, originy), Point(x, y));
+        }
+
         bool Is(std::vector<Animate::Type> types)
         {
             auto result = true;
@@ -144,33 +174,34 @@ namespace BloodSword::Animate
             if (!this->Path.empty())
             {
                 this->Current = this->Path[0];
+
+                this->Offset = Point(0, 0);
             }
         }
     };
 
-    bool Show(Scene::Base &scene, Animate::Base &animation, int timestamp)
+    bool Show(Scene::Base &scene, Animate::Base &animation, bool delay = true)
     {
         auto done = false;
 
         if (!animation.Frames.empty() && animation.Frame >= 0 && animation.Frame < animation.Frames.size())
         {
-            if ((timestamp - animation.TimeStamp) > animation.Speed)
+            if (delay)
             {
-                if (animation.Frame < animation.Frames.size() - 1)
-                {
-                    animation.Frame++;
-                }
-                else if (!animation.Loop)
-                {
-                    done = true;
-                }
-                else
-                {
-                    animation.Frame = 0;
-                }
+                SDL_Delay(animation.Speed);
+            }
 
-                // update timestamp
-                animation.TimeStamp = timestamp;
+            if (animation.Frame < animation.Frames.size() - 1)
+            {
+                animation.Frame++;
+            }
+            else if (!animation.Loop)
+            {
+                done = true;
+            }
+            else
+            {
+                animation.Frame = 0;
             }
         }
         else
@@ -181,49 +212,40 @@ namespace BloodSword::Animate
         return done;
     }
 
-    bool Move(Scene::Base &scene, Animate::Base &animation, int timestamp)
+    bool Move(Scene::Base &scene, Animate::Base &animation, bool delay = true)
     {
         auto Sign = [&](int Value)
         {
-            return Value >= 0 ? 1 : -1;
+            return Value != 0 ? (Value > 0 ? 1 : -1) : 0;
         };
 
         auto done = false;
 
-        if (!animation.Path.empty() && animation.Move >= 0 && animation.Move < animation.Path.size())
+        if (!animation.Path.empty() && animation.Move >= 0 && animation.Move < animation.Path.size() - 1)
         {
-            if ((timestamp - animation.TimeStamp) > animation.Speed)
+            if (delay)
             {
-                if (animation.Move < animation.Path.size() - 1)
-                {
-                    auto DeltaX = animation.Current.X - animation.Path[animation.Move + 1].X;
+                SDL_Delay(animation.Speed);
+            }
 
-                    auto DeltaY = animation.Current.Y - animation.Path[animation.Move + 1].Y;
+            auto DeltaX = (animation.Current.X - animation.Path[animation.Move + 1].X) * animation.Scale.X + animation.Offset.X;
 
-                    // check if we have reached our destination
-                    if (DeltaX == 0 && DeltaY == 0)
-                    {
-                        animation.Move++;
-                    }
-                    else
-                    {
-                        if (DeltaX != 0)
-                        {
-                            animation.Current.X -= Sign(DeltaX);
-                        }
-                        else if (DeltaY != 0)
-                        {
-                            animation.Current.Y -= Sign(DeltaY);
-                        }
-                    }
-                }
-                else
-                {
-                    done = true;
-                }
+            auto DeltaY = (animation.Current.Y - animation.Path[animation.Move + 1].Y) * animation.Scale.Y + animation.Offset.Y;
 
-                // update timestamp
-                animation.TimeStamp = timestamp;
+            // check if we have reached our destination
+            if (DeltaX == 0 && DeltaY == 0)
+            {
+                animation.Current = animation.Path[animation.Move + 1];
+
+                animation.Offset = Point(0, 0);
+
+                animation.Move++;
+            }
+            else
+            {
+                animation.Offset.X -= Sign(DeltaX) * animation.Delta.X;
+
+                animation.Offset.Y -= Sign(DeltaY) * animation.Delta.Y;
             }
         }
         else
@@ -236,34 +258,47 @@ namespace BloodSword::Animate
 
     bool Step(Scene::Base &scene, Animate::Base &animation)
     {
-        auto now = SDL_GetTicks();
-
         auto done = false;
+
+        auto move = animation.Move;
+
+        auto frame = animation.Frame;
 
         if (animation.TimeStamp != 0)
         {
             if (animation.Is({Type::MOVE, Type::FRAME}))
             {
-                done = Animate::Move(scene, animation, now) && Animate::Show(scene, animation, now);
+                SDL_Delay(animation.Speed);
+
+                done = Animate::Move(scene, animation, false) && Animate::Show(scene, animation, false);
             }
             else if (animation.Is(Type::MOVE))
             {
-                done = Animate::Move(scene, animation, now);
+                done = Animate::Move(scene, animation);
             }
             else if (animation.Is(Type::FRAME))
             {
-                done = Animate::Show(scene, animation, now);
+                done = Animate::Show(scene, animation);
+            }
+
+            if (animation.Frame >= 0 && animation.Frame < animation.Frames.size())
+            {
+                auto x = animation.Origin.X + animation.Current.X * animation.Scale.X + animation.Offset.X;
+                auto y = animation.Origin.Y + animation.Current.Y * animation.Scale.Y + animation.Offset.Y;
+
+                // add sprite to scene
+                scene.Add(Scene::Element(animation.Frames[animation.Frame].Texture, x, y));
+            }
+
+            if (move != animation.Move || frame != animation.Frame)
+            {
+                // update timestamp
+                animation.TimeStamp = SDL_GetTicks();
             }
         }
         else
         {
-            animation.TimeStamp = now;
-        }
-
-        if (animation.Frame >= 0 && animation.Frame < animation.Frames.size())
-        {
-            // add sprite to scene
-            scene.Add(Scene::Element(animation.Frames[animation.Frame].Texture, animation.Current.X, animation.Current.Y));
+            animation.TimeStamp = SDL_GetTicks();
         }
 
         return done;

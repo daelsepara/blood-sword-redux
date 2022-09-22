@@ -278,6 +278,16 @@ namespace BloodSword::Graphics
         }
     }
 
+    void RenderNow(Base &graphics, Scene::Base &scene)
+    {
+        if (graphics.Renderer)
+        {
+            Graphics::Render(graphics, scene);
+
+            SDL_RenderPresent(graphics.Renderer);
+        }
+    }
+
     SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
     {
         SDL_Surface *surface = NULL;

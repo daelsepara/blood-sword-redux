@@ -40,9 +40,13 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Stats](/screenshots/stats.png)
 
+**Pathfinding**
+
+![Pathfinding](/screenshots/pathfinding.gif)
+
 # Copyright Information
 ```
-           Originally publicshed 1987 by Knight Books
+            Originally published 1987 by Knight Books
      This Edition published 2014 by Fabled Lands Publishing
                  an imprint of Fabled Lands LLP
 
