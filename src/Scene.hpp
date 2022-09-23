@@ -126,29 +126,19 @@ namespace BloodSword::Scene
             this->Controls.push_back(control);
         }
 
-        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls, Uint32 background) : Elements(elements), Controls(controls), Background(background)
-        {
-        }
+        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}
 
-        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls) : Elements(elements), Controls(controls)
-        {
-        }
+        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls) : Elements(elements), Controls(controls) {}
 
-        Base(std::vector<Scene::Element> elements, Uint32 background) : Elements(elements), Background(background)
-        {
-        }
+        Base(std::vector<Scene::Element> elements, Uint32 background) : Elements(elements), Background(background) {}
 
-        Base(Uint32 background) : Background(background)
-        {
-        }
+        Base(Uint32 background) : Background(background) {}
 
         Base(SDL_Texture *texture, int x, int y) : Elements(std::vector<Scene::Element>({Scene::Element(texture, x, y)})) {}
 
         Base(SDL_Texture *texture, Point &point) : Base(texture, point.X, point.Y) {}
 
-        Base()
-        {
-        }
+        Base() {}
     };
 }
 
