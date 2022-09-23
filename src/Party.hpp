@@ -12,13 +12,11 @@ namespace BloodSword::Party
     public:
         std::vector<Character::Base> Members = {};
 
-        Base()
-        {
-        }
+        Base() {}
 
-        Base(std::vector<Character::Base> members) : Members(members)
-        {
-        }
+        Base(std::vector<Character::Base> members) : Members(members) {}
+
+        Base(Character::Base character) : Members(std::vector<Character::Base>({character})) {}
     };
 }
 

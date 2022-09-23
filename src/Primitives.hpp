@@ -27,9 +27,7 @@ namespace BloodSword
             this->Y = y;
         }
 
-        Point()
-        {
-        }
+        Point() {}
 
         Point &operator*=(const Point &p)
         {

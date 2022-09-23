@@ -20,9 +20,7 @@ namespace BloodSword::Graphics
 
         int Wrap = 0;
 
-        RichText(std::string text, TTF_Font *font, SDL_Color color, int style, int wrap) : Text(text), Font(font), Color(color), Style(style), Wrap(wrap)
-        {
-        }
+        RichText(std::string text, TTF_Font *font, SDL_Color color, int style, int wrap) : Text(text), Font(font), Color(color), Style(style), Wrap(wrap) {}
     };
 }
 

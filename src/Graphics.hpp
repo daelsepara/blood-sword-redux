@@ -30,9 +30,7 @@ namespace BloodSword::Graphics
 
         int Height = 800;
 
-        Base()
-        {
-        }
+        Base() {}
     };
 
     void CreateWindow(Uint32 flags, const char *title, Base &graphics)

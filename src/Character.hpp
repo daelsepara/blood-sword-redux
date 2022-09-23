@@ -80,9 +80,7 @@ namespace BloodSword::Character
             this->Rank = rank;
         }
 
-        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100)
-        {
-        }
+        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100) {}
 
         bool Has(Skills::Type skill)
         {

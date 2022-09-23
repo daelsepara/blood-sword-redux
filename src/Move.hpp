@@ -21,9 +21,7 @@ namespace BloodSword::Move
         // List of coordinates of the path
         std::vector<Point> Points;
 
-        Path()
-        {
-        }
+        Path() {}
     };
 
     // Class representing a node in the graph
@@ -58,9 +56,7 @@ namespace BloodSword::Move
             this->Y = y;
         }
 
-        Node()
-        {
-        }
+        Node() {}
 
         // Total cost to traverse this node
         int CostDistance()

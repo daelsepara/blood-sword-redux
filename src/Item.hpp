@@ -61,9 +61,7 @@ namespace BloodSword::Item
 
         Base(const char *name,
              Item::Type type,
-             std::vector<Item::Property> properties) : Base(name, type, {}, properties, Item::Type::NONE, 1)
-        {
-        }
+             std::vector<Item::Property> properties) : Base(name, type, {}, properties, Item::Type::NONE, 1) {}
 
         bool Has(Item::Property property)
         {

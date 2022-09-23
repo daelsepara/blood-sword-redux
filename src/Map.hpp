@@ -124,9 +124,7 @@ namespace BloodSword::Map
             Initialize(sizex, sizey);
         }
 
-        Base()
-        {
-        }
+        Base() {}
 
         bool IsValid(Point coords)
         {
