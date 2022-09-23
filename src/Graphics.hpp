@@ -370,6 +370,16 @@ namespace BloodSword::Graphics
     void Estimate(TTF_Font *font, const char *text, int *width, int *height)
     {
         TTF_SizeUTF8(font, text, width, height);
+
+        if (width)
+        {
+            *width += 8;
+        }
+
+        if (height)
+        {
+            *height += 8;
+        }
     }
 
     SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
@@ -380,7 +390,7 @@ namespace BloodSword::Graphics
         {
             TTF_SetFontStyle(font, style);
 
-            surface = TTF_RenderText_Blended_Wrapped(font, text, textColor, wrap);
+            surface = TTF_RenderUTF8_Blended_Wrapped(font, text, textColor, wrap);
         }
 
         return surface;
