@@ -105,9 +105,7 @@ namespace BloodSword::Controls
              int highlight) : Type(type),
                               ID(id), Left(left), Right(right), Up(up), Down(down),
                               X(x), Y(y), W(w), H(h),
-                              Highlight(highlight)
-        {
-        }
+                              Highlight(highlight) {}
 
         Base(Controls::Type type,
              int id, int left, int right, int up, int down,

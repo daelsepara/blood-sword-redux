@@ -20,12 +20,7 @@ namespace BloodSword
 
         int Y;
 
-        Point(int x, int y)
-        {
-            this->X = x;
-
-            this->Y = y;
-        }
+        Point(int x, int y) : X(x), Y(y) {}
 
         Point() {}
 

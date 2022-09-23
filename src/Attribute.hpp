@@ -38,20 +38,9 @@ namespace BloodSword::Attribute
 
         int Maximum = 0;
 
-        Base(Attribute::Type type, int value, int modifier)
-        {
-            this->Type = type;
+        Base(Attribute::Type type, int value, int modifier) : Type(type), Value(value), Modifier(modifier), Maximum(value) {}
 
-            this->Value = value;
-
-            this->Modifier = modifier;
-
-            this->Maximum = value;
-        }
-
-        Base()
-        {
-        }
+        Base() {}
     };
 
     Mapping<Attribute::Type> TypeMapping = {

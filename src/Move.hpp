@@ -38,23 +38,9 @@ namespace BloodSword::Move
 
         Smart<Move::Node> Parent = nullptr;
 
-        Node(int x, int y, int cost, Smart<Move::Node> &parent)
-        {
-            this->X = x;
+        Node(int x, int y, int cost, Smart<Move::Node> &parent) : X(x), Y(y), Cost(cost), Parent(parent) {}
 
-            this->Y = y;
-
-            this->Cost = cost;
-
-            this->Parent = parent;
-        }
-
-        Node(int x, int y)
-        {
-            this->X = x;
-
-            this->Y = y;
-        }
+        Node(int x, int y) : X(x), Y(y) {}
 
         Node() {}
 

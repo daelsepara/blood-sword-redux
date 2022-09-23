@@ -106,7 +106,8 @@ namespace BloodSword::Spells
                              IsCombat(isCombat),
                              Ranged(ranged),
                              Complexity(complexity),
-                             Duration(duration) { this->CurrentComplexity = complexity; }
+                             CurrentComplexity(complexity),
+                             Duration(duration) {}
 
         Base(Spells::Type type,
              Spells::Class spellClass,

@@ -8,21 +8,16 @@ namespace Random
 {
 	class Base
 	{
-	public:
+	private:
 		std::mt19937_64 generator;
 		std::normal_distribution<double> normalDistribution;
 		std::uniform_real_distribution<double> uniformDistribution;
 		std::uniform_int_distribution<int> uniformIntDistribution;
 
-		Base()
-		{
-			generator = std::mt19937_64(std::chrono::system_clock::now().time_since_epoch().count());
-		}
+	public:
+		Base() : generator(std::mt19937_64(std::chrono::system_clock::now().time_since_epoch().count())) {}
 
-		Base(int seed)
-		{
-			generator = std::mt19937_64(seed);
-		}
+		Base(int seed) : generator(std::mt19937_64(seed)) {}
 
 		void UniformDistribution(double a, double b)
 		{
