@@ -507,7 +507,9 @@ namespace BloodSword::Test
                         // find a path to the exit
                         auto path = Move::FindPath(map, start, end);
 
-                        if (Move::Count(map, path, false) > 0)
+                        auto validMoves = Move::Count(map, path, false);
+
+                        if (validMoves > 0)
                         {
                             Interface::Clip(graphics, map);
 
@@ -520,7 +522,12 @@ namespace BloodSword::Test
                             // setup animation
                             movement.Set(draw, start);
 
-                            movement.Path = path.Points;
+                            auto first = path.Points.begin();
+
+                            // add destination to the count
+                            auto moves = std::min(validMoves + 1, (*party.Members.begin()).Moves);
+
+                            movement.Path = std::vector<Point>(first, first + moves);
 
                             movement.Reset();
 

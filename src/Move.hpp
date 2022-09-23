@@ -284,17 +284,17 @@ namespace BloodSword::Move
     {
         auto count = 0;
 
-        if (path.Points.size() > 2)
+        if (path.Points.size() > 1)
         {
             // skip source and destination
-            for (auto current = ++path.Points.begin(); current != --path.Points.end(); current++)
+            for (auto current = path.Points.begin(); current != --path.Points.end(); current++)
             {
                 auto next = std::next(current);
 
                 auto target = std::make_shared<Move::Node>(next->X, next->Y);
 
                 // check if move to next location is possible
-                if (!Move::IsPassable(map, target, *current, IsEnemy, false))
+                if (!Move::IsPassable(map, target, *current, IsEnemy, false) && current != path.Points.begin())
                 {
                     break;
                 }
