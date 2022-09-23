@@ -60,6 +60,8 @@ namespace BloodSword::Input
         {
             Graphics::Render(graphics, scene);
 
+            Graphics::DisplayVersion(graphics);
+
             SDL_RenderPresent(graphics.Renderer);
 
             SDL_PollEvent(&result);
@@ -100,13 +102,17 @@ namespace BloodSword::Input
         }
     }
 
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input)
     {
         SDL_Event result;
 
         auto sensitivity = 32000;
 
         Graphics::Render(graphics, scene, input);
+
+        Graphics::Overlay(graphics, overlay);
+
+        Graphics::DisplayVersion(graphics);
 
         SDL_RenderPresent(graphics.Renderer);
 
@@ -339,6 +345,20 @@ namespace BloodSword::Input
         }
 
         return input;
+    }
+
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input)
+    {
+        auto overlay = Scene::Base();
+
+        return WaitForInput(graphics, scene, overlay, input);
+    }
+
+    void Flush()
+    {
+        SDL_PumpEvents();
+
+        SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
     }
 }
 

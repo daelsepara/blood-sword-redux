@@ -25,6 +25,11 @@ namespace BloodSword::Asset
         {
             texture = SDL_CreateTextureFromSurface(renderer, surface);
 
+            if (texture)
+            {
+                SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+            }
+
             BloodSword::Free(&surface);
         }
 

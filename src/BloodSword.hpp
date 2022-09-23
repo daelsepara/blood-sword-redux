@@ -11,10 +11,6 @@
 
 namespace BloodSword
 {
-    const char *Version = "0.0.1";
-    const int MajorVersion = 0;
-    const int MinorVersion = 1;
-
     void Initialize(Graphics::Base &graphics)
     {
         Engine::InitializeRNG();
@@ -22,6 +18,8 @@ namespace BloodSword
         Asset::Load(graphics.Renderer, "assets.json");
 
         Fonts::Load("font-settings.json");
+
+        Graphics::InitializeVersionOverlay(graphics);
     }
 
     void Shutdown(Graphics::Base &graphics)

@@ -9,9 +9,14 @@
 #include "Controls.hpp"
 #include "RichText.hpp"
 #include "Scene.hpp"
+#include "Animation.hpp"
 
 namespace BloodSword::Graphics
 {
+    SDL_Texture *VersionOverlay = NULL;
+
+    Point VersionCoordinates = Point(0, 0);
+
     class Base
     {
     public:
@@ -155,6 +160,22 @@ namespace BloodSword::Graphics
         }
     }
 
+    // respond to window resizing/in focus/out of focus events
+    void Refresh(Graphics::Base &graphics)
+    {
+        SDL_Event result;
+
+        SDL_PollEvent(&result);
+
+        if (result.type == SDL_WINDOWEVENT)
+        {
+            if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
+            {
+                SDL_RenderPresent(graphics.Renderer);
+            }
+        }
+    }
+
     // base render texture function
     void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
     {
@@ -186,6 +207,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render texture, background and borders
     void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
     {
         if (graphics.Renderer)
@@ -199,6 +221,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // stretch a portion of the texture
     void Render(Base &graphics, SDL_Texture *texture, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
     {
         if (graphics.Renderer && texture)
@@ -224,7 +247,7 @@ namespace BloodSword::Graphics
 
             SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
 
-            Graphics::Render(graphics, texture, x, y, std::min(texture_h, bounds), offset, texture_w, std::min(texture_h, bounds), background);
+            Graphics::Render(graphics, texture, texture_w, texture_h, x, y, std::min(texture_h, bounds), offset, texture_w, std::min(texture_h, bounds), background);
         }
     }
 
@@ -249,16 +272,37 @@ namespace BloodSword::Graphics
         }
     }
 
+    void Render(Base &graphics, SDL_Texture *texture, Point location)
+    {
+        Graphics::Render(graphics, texture, location.X, location.Y);
+    }
+
+    void Overlay(Base &graphics, Scene::Base &scene)
+    {
+        if (graphics.Renderer)
+        {
+            for (auto &element : scene.Elements)
+            {
+                Graphics::Render(graphics, element.Texture, element.W, element.H, element.X, element.Y, element.Bounds, element.Offset, element.W, std::min(element.Bounds, element.H), element.Background, element.Border, element.BorderSize);
+            }
+        }
+    }
+
     void Render(Base &graphics, Scene::Base &scene)
     {
         if (graphics.Renderer)
         {
             Graphics::FillWindow(graphics, scene.Background);
 
-            for (auto &element : scene.Elements)
-            {
-                Graphics::Render(graphics, element.Texture, element.W, element.H, element.X, element.Y, element.Bounds, element.Offset, element.W, std::min(element.Bounds, element.H), element.Background, element.Border, element.BorderSize);
-            }
+            Graphics::Overlay(graphics, scene);
+        }
+    }
+
+    void DisplayVersion(Base &graphics)
+    {
+        if (VersionOverlay)
+        {
+            Graphics::Render(graphics, VersionOverlay, VersionCoordinates.X, VersionCoordinates.Y);
         }
     }
 
@@ -286,6 +330,46 @@ namespace BloodSword::Graphics
 
             SDL_RenderPresent(graphics.Renderer);
         }
+    }
+
+    void RenderNow(Base &graphics, Scene::Base &background, Scene::Base &foreground)
+    {
+        if (graphics.Renderer)
+        {
+            Graphics::Render(graphics, background);
+
+            Graphics::Overlay(graphics, foreground);
+
+            SDL_RenderPresent(graphics.Renderer);
+        }
+    }
+
+    bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool delay = true)
+    {
+        auto foreground = Scene::Base();
+
+        auto done = Animations::Step(foreground, animations, delay);
+
+        Graphics::RenderNow(graphics, background, foreground);
+
+        return done;
+    }
+
+    bool Animate(Base &graphics, Scene::Base &background, Animation::Base &animation, bool delay = true)
+    {
+        auto animations = Animations::Base(animation);
+
+        auto done = Graphics::Animate(graphics, background, animations, delay);
+
+        animation = *(animations.List.begin());
+
+        return done;
+    }
+
+    // estimate texture dimensions of string
+    void Estimate(TTF_Font *font, const char *text, int *width, int *height)
+    {
+        TTF_SizeUTF8(font, text, width, height);
     }
 
     SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
@@ -340,9 +424,31 @@ namespace BloodSword::Graphics
         return textures;
     }
 
+    void InitializeVersionOverlay(Graphics::Base &graphics)
+    {
+        auto estimate = 0;
+
+        Graphics::Estimate(Fonts::Caption, VersionString, &estimate, NULL);
+
+        VersionOverlay = Graphics::CreateText(graphics, VersionString, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
+
+        if (VersionOverlay)
+        {
+            auto w = 0;
+
+            auto h = 0;
+
+            SDL_QueryTexture(VersionOverlay, NULL, NULL, &w, &h);
+
+            VersionCoordinates = Point(graphics.Width - w, graphics.Height - h);
+        }
+    }
+
     // close graphics subsystem
     void Quit(Base &graphics)
     {
+        Free(&VersionOverlay);
+
         if (graphics.Renderer)
         {
             SDL_DestroyRenderer(graphics.Renderer);

@@ -5,6 +5,7 @@
 #include <SDL.h>
 
 #include "Controls.hpp"
+#include "Primitives.hpp"
 
 namespace BloodSword::Scene
 {
@@ -86,6 +87,8 @@ namespace BloodSword::Scene
             this->Bounds = this->H;
         }
 
+        Element(SDL_Texture *texture, Point &point) : Element(texture, point.X, point.Y) {}
+
         Element(int x, int y, int w, int h,
                 Uint32 background,
                 Uint32 border,
@@ -138,6 +141,10 @@ namespace BloodSword::Scene
         Base(Uint32 background) : Background(background)
         {
         }
+
+        Base(SDL_Texture *texture, int x, int y) : Elements(std::vector<Scene::Element>({Scene::Element(texture, x, y)})) {}
+
+        Base(SDL_Texture *texture, Point &point) : Base(texture, point.X, point.Y) {}
 
         Base()
         {

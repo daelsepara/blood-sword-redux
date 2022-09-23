@@ -177,9 +177,9 @@ namespace BloodSword::Interface
         auto statsw = 0;
 
         // estimate maximum line width
-        TTF_SizeUTF8(font, "DMGG", &labelsw, NULL);
+        Graphics::Estimate(font, "DMGG", &labelsw, NULL);
 
-        TTF_SizeUTF8(font, "99D+D99", &statsw, NULL);
+        Graphics::Estimate(font, "99D+D99", &statsw, NULL);
 
         auto surfaceLabels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelColor), style, labelsw);
 
@@ -292,6 +292,34 @@ namespace BloodSword::Interface
         }
 
         return texture;
+    }
+
+    // clip rendering outside of map area
+    void Clip(Graphics::Base &graphics, Map::Base &map)
+    {
+        if (graphics.Renderer)
+        {
+            SDL_Rect view;
+
+            view.w = map.Width * map.TileSize;
+
+            view.h = map.Height * map.TileSize;
+
+            view.x = map.DrawX;
+
+            view.y = map.DrawY;
+
+            SDL_RenderSetClipRect(graphics.Renderer, &view);
+        }
+    }
+
+    // reset clipping area
+    void Clip(Graphics::Base &graphics)
+    {
+        if (graphics.Renderer)
+        {
+            SDL_RenderSetClipRect(graphics.Renderer, NULL);
+        }
     }
 }
 

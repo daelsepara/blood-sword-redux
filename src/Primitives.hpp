@@ -8,6 +8,8 @@
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
 
+#include "Version.hpp"
+
 namespace BloodSword
 {
     // cartesian coordinates
@@ -28,17 +30,59 @@ namespace BloodSword
         Point()
         {
         }
+
+        Point &operator*=(const Point &p)
+        {
+            this->X *= p.X;
+
+            this->Y *= p.Y;
+
+            return *this;
+        }
+
+        Point &operator+=(const Point &p)
+        {
+            this->X += p.X;
+
+            this->Y += p.Y;
+
+            return *this;
+        }
+
+        Point &operator-=(const Point &p)
+        {
+            this->X -= p.X;
+
+            this->Y -= p.Y;
+
+            return *this;
+        }
+
+        bool operator==(const Point &p)
+        {
+            return this->X == p.X && this->Y == p.Y;
+        }
+
+        bool operator!=(const Point &p)
+        {
+            return !(*this == p);
+        }
+
+        Point operator+(const Point &p)
+        {
+            return Point(this->X + p.X, this->Y + p.Y);
+        }
+
+        Point operator-(const Point &p)
+        {
+            return Point(this->X - p.X, this->Y - p.Y);
+        }
+
+        Point operator*(const Point &p)
+        {
+            return Point(this->X * p.X, this->Y * p.Y);
+        }
     };
-
-    bool operator==(Point p1, Point p2)
-    {
-        return p1.X == p2.X && p1.Y == p2.Y;
-    }
-
-    bool operator!=(Point p1, Point p2)
-    {
-        return !(p1 == p2);
-    }
 
     SDL_Surface *Load(const char *image)
     {

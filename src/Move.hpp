@@ -90,13 +90,15 @@ namespace BloodSword::Move
 
             auto NotOccupied = !Tile.IsOccupied();
 
-            auto IsDestination = (Y == target->Y && X == target->X);
+            auto IsValid = (Unrestricted || NotOccupied);
 
-            auto IsPassable = Tile.IsPassable() && (Unrestricted || NotOccupied);
+            auto IsDestination = (Y == target->Y && X == target->X) && IsValid;
 
-            auto IsPassableToEnemy = IsEnemy && Tile.IsPassableToEnemy() && (Unrestricted || NotOccupied);
+            auto IsPassable = Tile.IsPassable() && IsValid;
 
-            auto IsExit = !IsEnemy && Tile.IsExit() && NotOccupied;
+            auto IsPassableToEnemy = IsEnemy && Tile.IsPassableToEnemy() && IsValid;
+
+            auto IsExit = !IsEnemy && Tile.IsExit() && IsValid;
 
             auto IsTarget = IsEnemy && Tile.IsPlayer();
 
@@ -104,6 +106,11 @@ namespace BloodSword::Move
         }
 
         return result;
+    }
+
+    bool IsPassable(Map::Base &map, Smart<Move::Node> &target, Point &current, bool IsEnemy, bool Unrestricted)
+    {
+        return Move::IsPassable(map, target, current.X, current.Y, IsEnemy, Unrestricted);
     }
 
     // Get all traversible nodes from current node
@@ -264,6 +271,43 @@ namespace BloodSword::Move
     Move::Path FindPath(Map::Base &map, int srcX, int srcY, int dstX, int dstY)
     {
         return Move::FindPath(map, srcX, srcY, dstX, dstY, false);
+    }
+
+    Move::Path FindPath(Map::Base &map, Point &src, Point &dst, bool unrestricted)
+    {
+        return Move::FindPath(map, src.X, src.Y, dst.X, dst.Y, unrestricted);
+    }
+
+    Move::Path FindPath(Map::Base &map, Point &src, Point &dst)
+    {
+        return Move::FindPath(map, src.X, src.Y, dst.X, dst.Y);
+    }
+
+    // return the number of valid moves that can be made in the path
+    int Count(Map::Base &map, Move::Path &path, bool IsEnemy)
+    {
+        auto count = 0;
+
+        if (path.Points.size() > 2)
+        {
+            // skip source and destination
+            for (auto current = ++path.Points.begin(); current != --path.Points.end(); current++)
+            {
+                auto next = std::next(current);
+
+                auto target = std::make_shared<Move::Node>(next->X, next->Y);
+
+                // check if move to next location is possible
+                if (!Move::IsPassable(map, target, *current, IsEnemy, false))
+                {
+                    break;
+                }
+
+                count++;
+            }
+        }
+
+        return count;
     }
 }
 #endif

@@ -156,6 +156,16 @@ namespace BloodSword::Map
             }
         }
 
+        void Put(Point location, Map::Object object, int id)
+        {
+            this->Put(location.X, location.Y, object, id);
+        }
+
+        void Put(Point location, Map::Object type, Asset::Type asset)
+        {
+            this->Put(location.X, location.Y, type, asset);
+        }
+
         // load from json file
         bool Load(const char *filename)
         {

@@ -5,16 +5,16 @@
 #include "Scene.hpp"
 #include "Templates.hpp"
 
-namespace BloodSword::Animate
+namespace BloodSword::Animation
 {
     class Frame
     {
     public:
         SDL_Texture *Texture = NULL;
 
-        int Duration = 0;
+        Uint32 Duration = 0;
 
-        Frame(SDL_Texture *texture, int duration) : Texture(texture), Duration(duration)
+        Frame(SDL_Texture *texture, Uint32 duration) : Texture(texture), Duration(duration)
         {
         }
 
@@ -36,9 +36,9 @@ namespace BloodSword::Animate
     class Base
     {
     public:
-        std::vector<Animate::Frame> Frames = {};
+        std::vector<Animation::Frame> Frames = {};
 
-        std::vector<Animate::Type> Mode = {};
+        std::vector<Animation::Type> Mode = {};
 
         std::vector<Point> Path = {};
 
@@ -50,7 +50,9 @@ namespace BloodSword::Animate
 
         Point Offset = Point(0, 0);
 
-        Point Delta = Point(8, 8);
+        Point Delta = Point(1, 1);
+
+        int Cycles = 1;
 
         bool Loop = false;
 
@@ -62,11 +64,14 @@ namespace BloodSword::Animate
 
         int Speed = 0;
 
-        Base(std::vector<Animate::Frame> frames,
-             std::vector<Animate::Type> mode,
+        int Cycle = 0;
+
+        Base(std::vector<Animation::Frame> frames,
+             std::vector<Animation::Type> mode,
              std::vector<Point> path,
+             int cycles,
              int speed,
-             bool loop) : Frames(frames), Mode(mode), Path(path), Loop(loop), Speed(speed)
+             bool loop) : Frames(frames), Mode(mode), Path(path), Cycles(cycles), Loop(loop), Speed(speed)
         {
             if (!this->Frames.empty())
             {
@@ -79,21 +84,23 @@ namespace BloodSword::Animate
             }
         }
 
-        Base(std::vector<Animate::Frame> frames,
+        Base(std::vector<Animation::Frame> frames,
              std::vector<Point> path,
-             int speed) : Base(frames, {Type::MOVE}, path, speed, false) {}
+             int speed) : Base(frames, {Type::MOVE}, path, 1, speed, false) {}
 
         Base(SDL_Texture *texture,
              std::vector<Point> path,
-             int speed) : Base({Animate::Frame(texture)}, {Type::MOVE}, path, speed, false) {}
+             int speed) : Base({Animation::Frame(texture)}, {Type::MOVE}, path, 1, speed, false) {}
 
-        Base(std::vector<Animate::Frame> frames, bool loop) : Base(frames, {Type::FRAME}, {}, 0, loop) {}
+        Base(std::vector<Animation::Frame> frames, int cycles, bool loop) : Base(frames, {Type::FRAME}, {}, cycles, 0, loop) {}
 
-        Base(std::vector<Animate::Frame> frames) : Base(frames, {Type::FRAME}, {}, 0, false) {}
+        Base(std::vector<Animation::Frame> frames, bool loop) : Base(frames, 1, loop) {}
+
+        Base(std::vector<Animation::Frame> frames) : Base(frames, {Type::FRAME}, {}, 1, 0, false) {}
 
         Base() {}
 
-        void Set(std::vector<Animate::Frame> frames, bool loop)
+        void Set(std::vector<Animation::Frame> frames, bool loop)
         {
             this->Frames = frames;
 
@@ -109,7 +116,7 @@ namespace BloodSword::Animate
             this->Move = 0;
         }
 
-        void Set(std::vector<Animate::Type> modes)
+        void Set(std::vector<Animation::Type> modes)
         {
             this->Mode = modes;
         }
@@ -141,7 +148,7 @@ namespace BloodSword::Animate
             this->Set(Point(originx, originy), Point(x, y));
         }
 
-        bool Is(std::vector<Animate::Type> types)
+        bool Is(std::vector<Animation::Type> types)
         {
             auto result = true;
 
@@ -153,12 +160,12 @@ namespace BloodSword::Animate
             return result;
         }
 
-        bool Is(Animate::Type type)
+        bool Is(Animation::Type type)
         {
-            return this->Is(std::vector<Animate::Type>{type});
+            return this->Is(std::vector<Animation::Type>{type});
         }
 
-        void Add(Animate::Frame frame)
+        void Add(Animation::Frame frame)
         {
             this->Frames.push_back(frame);
         }
@@ -171,6 +178,8 @@ namespace BloodSword::Animate
 
             this->Move = 0;
 
+            this->Cycle = 0;
+
             if (!this->Path.empty())
             {
                 this->Current = this->Path[0];
@@ -178,48 +187,62 @@ namespace BloodSword::Animate
                 this->Offset = Point(0, 0);
             }
         }
+
+        bool IsScaled()
+        {
+            return this->Scale != Point(1, 1);
+        }
     };
 
-    bool Show(Scene::Base &scene, Animate::Base &animation, bool delay = true)
+    bool Show(Scene::Base &scene, Animation::Base &animation, bool delay = true)
     {
-        auto done = false;
+        auto done = true;
 
         if (!animation.Frames.empty() && animation.Frame >= 0 && animation.Frame < animation.Frames.size())
         {
+            done = false;
+
             if (delay)
             {
-                SDL_Delay(animation.Speed);
+                SDL_Delay(animation.Frames[animation.Frame].Duration);
             }
 
             if (animation.Frame < animation.Frames.size() - 1)
             {
                 animation.Frame++;
             }
-            else if (!animation.Loop)
-            {
-                done = true;
-            }
-            else
+            else if (animation.Loop)
             {
                 animation.Frame = 0;
             }
-        }
-        else
-        {
-            done = true;
+            else if (animation.Cycle < animation.Cycles)
+            {
+                animation.Frame = 0;
+
+                animation.Cycle++;
+            }
+            else
+            {
+                done = true;
+            }
         }
 
         return done;
     }
 
-    bool Move(Scene::Base &scene, Animate::Base &animation, bool delay = true)
+    bool Move(Scene::Base &scene, Animation::Base &animation, bool delay = true)
     {
         auto Sign = [&](int Value)
         {
             return Value != 0 ? (Value > 0 ? 1 : -1) : 0;
         };
 
-        auto done = false;
+        auto Direction = [&](Point &point)
+        {
+            return Point(Sign(point.X), Sign(point.Y));
+        };
+
+        auto done = true;
 
         if (!animation.Path.empty() && animation.Move >= 0 && animation.Move < animation.Path.size() - 1)
         {
@@ -228,12 +251,10 @@ namespace BloodSword::Animate
                 SDL_Delay(animation.Speed);
             }
 
-            auto DeltaX = (animation.Current.X - animation.Path[animation.Move + 1].X) * animation.Scale.X + animation.Offset.X;
-
-            auto DeltaY = (animation.Current.Y - animation.Path[animation.Move + 1].Y) * animation.Scale.Y + animation.Offset.Y;
+            auto delta = (animation.Current - animation.Path[animation.Move + 1]) * animation.Scale + animation.Offset;
 
             // check if we have reached our destination
-            if (DeltaX == 0 && DeltaY == 0)
+            if (delta == Point(0, 0))
             {
                 animation.Current = animation.Path[animation.Move + 1];
 
@@ -243,20 +264,16 @@ namespace BloodSword::Animate
             }
             else
             {
-                animation.Offset.X -= Sign(DeltaX) * animation.Delta.X;
-
-                animation.Offset.Y -= Sign(DeltaY) * animation.Delta.Y;
+                animation.Offset -= Direction(delta) * animation.Delta;
             }
-        }
-        else
-        {
-            done = true;
+
+            done = false;
         }
 
         return done;
     }
 
-    bool Step(Scene::Base &scene, Animate::Base &animation)
+    bool Step(Scene::Base &scene, Animation::Base &animation, bool delay = true)
     {
         auto done = false;
 
@@ -268,26 +285,31 @@ namespace BloodSword::Animate
         {
             if (animation.Is({Type::MOVE, Type::FRAME}))
             {
-                SDL_Delay(animation.Speed);
+                if (delay)
+                {
+                    SDL_Delay(animation.Speed);
+                }
 
-                done = Animate::Move(scene, animation, false) && Animate::Show(scene, animation, false);
+                Animation::Show(scene, animation, false);
+
+                // stop when move is completed
+                done = Animation::Move(scene, animation, false);
             }
             else if (animation.Is(Type::MOVE))
             {
-                done = Animate::Move(scene, animation);
+                done = Animation::Move(scene, animation, delay);
             }
             else if (animation.Is(Type::FRAME))
             {
-                done = Animate::Show(scene, animation);
+                done = Animation::Show(scene, animation, delay);
             }
 
             if (animation.Frame >= 0 && animation.Frame < animation.Frames.size())
             {
-                auto x = animation.Origin.X + animation.Current.X * animation.Scale.X + animation.Offset.X;
-                auto y = animation.Origin.Y + animation.Current.Y * animation.Scale.Y + animation.Offset.Y;
+                auto location = animation.Origin + animation.Current * animation.Scale + animation.Offset;
 
                 // add sprite to scene
-                scene.Add(Scene::Element(animation.Frames[animation.Frame].Texture, x, y));
+                scene.Add(Scene::Element(animation.Frames[animation.Frame].Texture, location));
             }
 
             if (move != animation.Move || frame != animation.Frame)
@@ -305,4 +327,93 @@ namespace BloodSword::Animate
     }
 }
 
+namespace BloodSword::Animations
+{
+    class Base
+    {
+    public:
+        std::vector<Animation::Base> List = {};
+
+        Uint32 Delay = 0;
+
+        void Set(std::vector<Animation::Base> list)
+        {
+            this->List = list;
+        }
+
+        void Set(Uint32 delay)
+        {
+            this->Delay = delay;
+        }
+
+        Base(std::vector<Animation::Base> list, Uint32 delay) : List(list), Delay(delay) {}
+
+        Base(std::vector<Animation::Base> list) : List(list) {}
+
+        Base(Animation::Base animation) : List(std::vector<Animation::Base>{animation}) {}
+
+        Base() {}
+
+        void Clear()
+        {
+            this->List.clear();
+
+            this->Delay = 0;
+        }
+
+        void Add(Animation::Base &animation)
+        {
+            this->List.push_back(animation);
+        }
+    };
+
+    bool Step(Scene::Base &scene, Animations::Base &animations, bool delay = true)
+    {
+        auto done = true;
+
+        if (!animations.List.empty())
+        {
+            auto movement = true;
+
+            auto frame = true;
+
+            auto moves = 0;
+
+            auto frames = 0;
+
+            if (delay && animations.List.size() != 1)
+            {
+                SDL_Delay(animations.Delay);
+            }
+
+            for (auto &animation : animations.List)
+            {
+                if (animation.Is(Animation::Type::MOVE))
+                {
+                    moves++;
+
+                    movement &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay));
+                }
+                else
+                {
+                    frames++;
+
+                    frame &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay));
+                }
+            }
+
+            // movement takes precendence
+            if (moves >= frames)
+            {
+                done = movement;
+            }
+            else
+            {
+                done = frame;
+            }
+        }
+
+        return done;
+    }
+}
 #endif
