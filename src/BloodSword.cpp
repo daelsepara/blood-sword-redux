@@ -12,9 +12,9 @@ namespace BloodSword
         {
             Test::Animation(graphics);
         }
-        catch (std::exception& e)
+        catch (std::exception &e)
         {
-            std::cerr << "Exception: " << e.what() << std::endl;
+            std::cerr << std::endl << "BLOODSWORD (" << VersionString << ") EXCEPTION: " << e.what() << std::endl << std::endl;
         }
 
         BloodSword::Shutdown(graphics);

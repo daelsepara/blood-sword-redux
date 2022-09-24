@@ -19,6 +19,11 @@ namespace BloodSword::Party
 
         Base(Character::Base character) : Members(std::vector<Character::Base>({character})) {}
 
+        void Add(Character::Base &character)
+        {
+            this->Members.push_back(character);
+        }
+
         int Count()
         {
             return (int)(this->Members.size());
@@ -34,20 +39,17 @@ namespace BloodSword::Party
             return this->Members[index];
         }
 
-        int Find(Character::Class characterClass)
+        std::vector<Character::Base>::const_iterator Find(Character::Class characterClass)
         {
-            auto found = -1;
+            auto found = this->Members.end();
 
-            if (this->Count() > 0)
+            for (auto character = this->Members.begin(); character != this->Members.end(); character++)
             {
-                for (auto i = 0; i < this->Count(); i++)
+                if ((*character).Class == characterClass)
                 {
-                    if ((*this)[i].Class == characterClass)
-                    {
-                        found = i;
+                    found = character;
 
-                        break;
-                    }
+                    break;
                 }
             }
 
@@ -56,9 +58,7 @@ namespace BloodSword::Party
 
         bool Has(Character::Class characterClass)
         {
-            auto found = this->Find(characterClass);
-
-            return found >= 0 && found < this->Count();
+            return this->Find(characterClass) != this->Members.end();
         }
 
         Character::Base &operator[](Character::Class characterClass)
@@ -68,7 +68,7 @@ namespace BloodSword::Party
                 throw std::invalid_argument("Character not in party!");
             }
 
-            return (*this)[this->Find(characterClass)];
+            return (*this)[this->Find(characterClass) - this->Members.begin()];
         }
     };
 }
