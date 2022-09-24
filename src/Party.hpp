@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <vector>
 
+#include "Book.hpp"
 #include "Character.hpp"
 
 namespace BloodSword::Party
@@ -12,6 +13,8 @@ namespace BloodSword::Party
     {
     public:
         std::vector<Character::Base> Members = {};
+
+        Book::Destination Location = {Book::Number::None, -1};
 
         Base() {}
 
