@@ -408,8 +408,22 @@ namespace BloodSword::Test
         auto enemies = Party::Base();
 
         auto map = Map::Base();
-        map.Generate(17, 9);
-        map.Viewable(17, 9);
+        
+        auto mazex = (graphics.Width / map.TileSize) - 2;
+        auto mazey = (graphics.Height / map.TileSize) - 3;
+
+        if ((mazex & 1) == 0)
+        {
+            mazex--;
+        }
+
+        if ((mazey & 1) == 0)
+        {
+            mazey--;
+        }
+
+        map.Generate(mazex, mazey);
+        map.Viewable(mazex, mazey);
 
         auto start = Point(1, map.Height - 1);
         auto end = Point(map.Width - 1, 1);
@@ -543,9 +557,9 @@ namespace BloodSword::Test
                     }
                     else if (input.Type == Controls::Type::BACK && done)
                     {
-                        map.Generate(17, 9);
+                        map.Generate(mazex, mazey);
 
-                        map.Viewable(17, 9);
+                        map.Viewable(mazex, mazey);
 
                         ResetObjects(map);
 
