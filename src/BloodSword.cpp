@@ -14,7 +14,7 @@ namespace BloodSword
         }
         catch (std::exception &e)
         {
-            std::cerr << std::endl << "BLOODSWORD (" << VersionString << ") EXCEPTION: " << e.what() << std::endl << std::endl;
+            std::cerr << std::endl << "BLOODSWORD (" << Version() << ") EXCEPTION: " << e.what() << std::endl << std::endl;
         }
 
         BloodSword::Shutdown(graphics);

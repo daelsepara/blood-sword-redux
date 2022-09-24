@@ -151,32 +151,36 @@ namespace BloodSword::Map
             return this->IsValid(Point(x, y));
         }
 
-        void Put(int x, int y, Map::Object object, int id)
-        {
-            if (this->IsValid(x, y))
-            {
-                (*this)(x, y).Occupant = object;
-                (*this)(x, y).Id = id;
-            }
-        }
-
-        void Put(int x, int y, Map::Object type, Asset::Type asset)
-        {
-            if (this->IsValid(x, y))
-            {
-                (*this)(x, y).Type = type;
-                (*this)(x, y).Asset = asset;
-            }
-        }
-
         void Put(Point location, Map::Object object, int id)
         {
-            this->Put(location.X, location.Y, object, id);
+            if (this->IsValid(location))
+            {
+                auto &tile = (*this)[location];
+
+                tile.Occupant = object;
+                tile.Id = id;
+            }
         }
 
         void Put(Point location, Map::Object type, Asset::Type asset)
         {
-            this->Put(location.X, location.Y, type, asset);
+            if (this->IsValid(location))
+            {
+                auto &tile = (*this)[location];
+
+                tile.Type = type;
+                tile.Asset = asset;
+            }
+        }
+
+        void Put(int x, int y, Map::Object object, int id)
+        {
+            this->Put(Point(x, y), object, id);
+        }
+
+        void Put(int x, int y, Map::Object type, Asset::Type asset)
+        {
+            this->Put(Point(x, y), type, asset);
         }
 
         // load from json file
@@ -208,12 +212,16 @@ namespace BloodSword::Map
                             {
                                 for (auto x = 0; x < this->Width; x++)
                                 {
-                                    (*this)(x, y).Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : -1;
-                                    (*this)(x, y).Type = !data["tiles"][y][x]["type"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::NONE;
-                                    (*this)(x, y).Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::NONE;
-                                    (*this)(x, y).Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
-                                    (*this)(x, y).TemporaryAsset = !data["tiles"][y][x]["temporary_asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["temporary_asset"])) : Asset::Type::NONE;
-                                    (*this)(x, y).Lifetime = !data["tiles"][y][x]["lifetime"].is_null() ? (int)data["tiles"][y][x]["lifetime"] : -1;
+                                    auto &map = (*this)(x, y);
+
+                                    auto &tile = data["tiles"][y][x];
+
+                                    map.Id = !tile["id"].is_null() ? (int)tile["id"] : -1;
+                                    map.Type = !tile["type"].is_null() ? Map::MapObject(std::string(tile["type"])) : Map::Object::NONE;
+                                    map.Occupant = !tile["occupant"].is_null() ? Map::MapObject(std::string(tile["occupant"])) : Map::Object::NONE;
+                                    map.Asset = !tile["asset"].is_null() ? Asset::Map(std::string(tile["asset"])) : Asset::Type::NONE;
+                                    map.TemporaryAsset = !tile["temporary_asset"].is_null() ? Asset::Map(std::string(tile["temporary_asset"])) : Asset::Type::NONE;
+                                    map.Lifetime = !tile["lifetime"].is_null() ? (int)tile["lifetime"] : -1;
                                 }
                             }
                             else
@@ -253,11 +261,13 @@ namespace BloodSword::Map
             {
                 for (auto x = 0; x < this->Width; x++)
                 {
-                    if ((*this)(x, y).Type == object)
-                    {
-                        point.X = x;
+                    auto test = Point(x, y);
 
-                        point.Y = y;
+                    auto &tile = (*this)[test];
+
+                    if (tile.Type == object)
+                    {
+                        point = test;
 
                         break;
                     }
@@ -276,11 +286,13 @@ namespace BloodSword::Map
             {
                 for (auto x = 0; x < this->Width; x++)
                 {
-                    if ((*this)(x, y).Occupant == occupant && (*this)(x, y).Id == id)
-                    {
-                        point.X = x;
+                    auto test = Point(x, y);
 
-                        point.Y = y;
+                    auto &tile = (*this)[test];
+
+                    if (tile.Occupant == occupant && tile.Id == id)
+                    {
+                        point = test;
 
                         break;
                     }

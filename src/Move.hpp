@@ -71,19 +71,29 @@ namespace BloodSword::Move
         return Point(node->X + p.X, node->Y + p.Y);
     }
 
-    bool IsPassable(Map::Base &map, Smart<Move::Node> &target, int X, int Y, bool IsEnemy, bool Unrestricted)
+    bool Is(Smart<Move::Node> &a, Point &b)
+    {
+        return a->X == b.X && a->Y == b.Y;
+    }
+
+    bool Compare(Smart<Move::Node> &a, Smart<Move::Node> &b)
+    {
+        return a->X == b->X && a->Y == b->Y;
+    }
+
+    bool IsPassable(Map::Base &map, Smart<Move::Node> &target, Point &location, bool IsEnemy, bool Unrestricted)
     {
         auto result = false;
 
-        if (map.IsValid(X, Y))
+        if (map.IsValid(location))
         {
-            Map::Tile &Tile = map(X, Y);
+            Map::Tile &Tile = map[location];
 
             auto NotOccupied = !Tile.IsOccupied();
 
             auto IsValid = (Unrestricted || NotOccupied);
 
-            auto IsDestination = (Y == target->Y && X == target->X) && IsValid;
+            auto IsDestination = Move::Is(target, location) && IsValid;
 
             auto IsPassable = Tile.IsPassable() && IsValid;
 
@@ -97,11 +107,6 @@ namespace BloodSword::Move
         }
 
         return result;
-    }
-
-    bool IsPassable(Map::Base &map, Smart<Move::Node> &target, Point &current, bool IsEnemy, bool Unrestricted)
-    {
-        return Move::IsPassable(map, target, current.X, current.Y, IsEnemy, Unrestricted);
     }
 
     // Get all traversible nodes from current node
@@ -128,11 +133,6 @@ namespace BloodSword::Move
         return traversable;
     }
 
-    bool Compare(Smart<Move::Node> &a, Smart<Move::Node> &b)
-    {
-        return a->X == b->X && a->Y == b->Y;
-    }
-
     // Get index of node from a list
     Moves::const_iterator Find(Moves &nodes, Smart<Move::Node> &node)
     {
@@ -151,23 +151,23 @@ namespace BloodSword::Move
     }
 
     // Check if node is on the list
-    bool Is(Moves &nodes, Smart<Move::Node> &node)
+    bool In(Moves &nodes, Smart<Move::Node> &node)
     {
         return Move::Find(nodes, node) != nodes.end();
     }
 
     // Find path from src to dst using the A* algorithm
-    Move::Path FindPath(Map::Base &map, int srcX, int srcY, int dstX, int dstY, bool Unrestricted)
+    Move::Path FindPath(Map::Base &map, Point src, Point dst, bool Unrestricted = false)
     {
         auto path = Move::Path();
 
-        auto Valid = map.IsValid(srcX, srcY) && map.IsValid(dstX, dstY);
+        auto Valid = map.IsValid(src) && map.IsValid(dst);
 
         if (map.Width > 0 && map.Height > 0 && Valid)
         {
-            auto start = std::make_shared<Move::Node>(srcX, srcY);
+            auto start = std::make_shared<Move::Node>(src);
 
-            auto end = std::make_shared<Move::Node>(dstX, dstY);
+            auto end = std::make_shared<Move::Node>(dst);
 
             start->SetDistance(end);
 
@@ -179,7 +179,7 @@ namespace BloodSword::Move
 
             active.push_back(start);
 
-            auto IsEnemy = map(srcX, srcY).IsEnemy();
+            auto IsEnemy = map[src].IsEnemy();
 
             while (!active.empty())
             {
@@ -217,13 +217,13 @@ namespace BloodSword::Move
                 for (auto &node : nodes)
                 {
                     // We have already visited this node so we don't need to do so again!
-                    if (Move::Is(visited, node))
+                    if (Move::In(visited, node))
                     {
                         continue;
                     }
 
                     // It's already in the active list, but that's OK, maybe this new node has a better value (e.g. We might zigzag earlier but this is now straighter).
-                    if (Move::Is(active, node))
+                    if (Move::In(active, node))
                     {
                         auto existing = *Move::Find(active, node);
 
@@ -246,19 +246,9 @@ namespace BloodSword::Move
         return path;
     }
 
-    Move::Path FindPath(Map::Base &map, int srcX, int srcY, int dstX, int dstY)
+    Move::Path FindPath(Map::Base &map, int srcX, int srcY, int dstX, int dstY, bool Unrestricted = false)
     {
-        return Move::FindPath(map, srcX, srcY, dstX, dstY, false);
-    }
-
-    Move::Path FindPath(Map::Base &map, Point &src, Point &dst, bool unrestricted)
-    {
-        return Move::FindPath(map, src.X, src.Y, dst.X, dst.Y, unrestricted);
-    }
-
-    Move::Path FindPath(Map::Base &map, Point &src, Point &dst)
-    {
-        return Move::FindPath(map, src.X, src.Y, dst.X, dst.Y);
+        return Move::FindPath(map, Point(srcX, srcY), Point(dstX, dstY), Unrestricted);
     }
 
     // return the number of valid moves that can be made in the path

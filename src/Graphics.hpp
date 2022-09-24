@@ -369,14 +369,16 @@ namespace BloodSword::Graphics
     {
         TTF_SizeUTF8(font, text, width, height);
 
+        auto pad = 8;
+
         if (width)
         {
-            *width += 8;
+            *width += pad;
         }
 
         if (height)
         {
-            *height += 8;
+            *height += pad;
         }
     }
 
@@ -436,9 +438,9 @@ namespace BloodSword::Graphics
     {
         auto estimate = 0;
 
-        Graphics::Estimate(Fonts::Caption, VersionString, &estimate, NULL);
+        Graphics::Estimate(Fonts::Caption, Version().c_str(), &estimate, NULL);
 
-        VersionOverlay = Graphics::CreateText(graphics, VersionString, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
+        VersionOverlay = Graphics::CreateText(graphics, Version().c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
 
         if (VersionOverlay)
         {
