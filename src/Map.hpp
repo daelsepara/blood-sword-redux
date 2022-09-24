@@ -176,9 +176,7 @@ namespace BloodSword::Map
                 auto data = nlohmann::json::parse(file);
 
                 this->Width = !data["width"].is_null() ? (int)data["width"] : 0;
-
                 this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
-
                 this->TileSize = !data["tilesize"].is_null() ? (int)data["tilesize"] : 0;
 
                 LoadError = false;

@@ -67,13 +67,13 @@ namespace BloodSword::Interface
                     switch (Tile.Occupant)
                     {
                     case Map::Object::PLAYER:
-                        if (Tile.Id >= 0 && Tile.Id < Party.Members.size())
+                        if (Tile.Id >= 0 && Tile.Id < Party.Count())
                         {
-                            if (Party.Members[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
+                            if (Party[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Party.Members[Tile.Id].Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Party[Tile.Id].Asset), AssetX, AssetY));
 
-                                switch (Party.Members[Tile.Id].Class)
+                                switch (Party[Tile.Id].Class)
                                 {
                                 case Character::Class::WARRIOR:
                                     ControlType = Controls::Type::WARRIOR;
@@ -96,11 +96,11 @@ namespace BloodSword::Interface
                         }
                         break;
                     case Map::Object::ENEMY:
-                        if (Tile.Id >= 0 && Tile.Id < Enemies.Members.size())
+                        if (Tile.Id >= 0 && Tile.Id < Enemies.Count())
                         {
-                            if (Enemies.Members[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
+                            if (Enemies[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Enemies.Members[Tile.Id].Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Enemies[Tile.Id].Asset), AssetX, AssetY));
 
                                 ControlType = Controls::Type::ENEMY;
 

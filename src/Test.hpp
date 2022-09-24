@@ -162,10 +162,10 @@ namespace BloodSword::Test
                  Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
 
             std::vector<SDL_Texture *> stats = {
-                Interface::Attributes(graphics, party.Members[0], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party.Members[1], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party.Members[2], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party.Members[3], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw)};
+                Interface::Attributes(graphics, party[0], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party[1], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party[2], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
+                Interface::Attributes(graphics, party[3], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw)};
 
             auto background = 0;
             auto prev_background = -1;
@@ -254,8 +254,9 @@ namespace BloodSword::Test
                             SDL_QueryTexture(stats[tile.Id], NULL, NULL, NULL, &bounds);
 
                             scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, bounds, 0, Color::Background, Color::Active, 4));
+
                             // character class
-                            object = (int)party.Members[tile.Id].Class + 7;
+                            object = (int)party[tile.Id].Class + 7;
                         }
                         else if (tile.IsPassable())
                         {
@@ -400,20 +401,18 @@ namespace BloodSword::Test
 
     void Animation(Graphics::Base &graphics)
     {
-        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8)});
+        auto Class = Character::Class::TRICKSTER;
+
+        auto party = Party::Base(Generate::Character(Class, 8));
 
         auto enemies = Party::Base();
 
         auto map = Map::Base();
-
         map.Generate(17, 9);
-
         map.Viewable(17, 9);
 
         auto start = Point(1, map.Height - 1);
-
         auto end = Point(map.Width - 1, 1);
-
         auto draw = Point(map.DrawX, map.DrawY);
 
         auto RegenerateScene = [&](Map::Base &map)
@@ -425,15 +424,10 @@ namespace BloodSword::Test
             auto id = scene.Controls.size();
 
             scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
-
             scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
-
             scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize));
-
             scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.SizeX, id, map.DrawX, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-
             scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.SizeX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-
             scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
 
             return scene;
@@ -455,7 +449,7 @@ namespace BloodSword::Test
 
         // set frame, type, and delay
         auto movement = Animation::Base(
-            {Animation::Frame(Asset::Get(Asset::Type::WARRIOR))},
+            {Animation::Frame(Asset::Get(party[Class].Asset))},
             {Animation::Type::MOVE},
             {},
             1,
@@ -525,7 +519,7 @@ namespace BloodSword::Test
                             auto first = path.Points.begin();
 
                             // add destination to the count
-                            auto moves = std::min(validMoves + 1, (*party.Members.begin()).Moves);
+                            auto moves = std::min(validMoves + 1, party[Class].Moves);
 
                             movement.Path = std::vector<Point>(first, first + moves);
 

@@ -8,7 +8,14 @@ namespace BloodSword
 
         BloodSword::Initialize(graphics);
 
-        Test::Animation(graphics);
+        try
+        {
+            Test::Animation(graphics);
+        }
+        catch (std::exception& e)
+        {
+            std::cerr << "Exception: " << e.what() << std::endl;
+        }
 
         BloodSword::Shutdown(graphics);
 
