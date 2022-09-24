@@ -5,10 +5,10 @@
 
 #include "Asset.hpp"
 #include "MapObjects.hpp"
-#include "Random.hpp"
 
 namespace BloodSword::Map
 {
+    // Define neighbors (X, Y): Up, Down, Left, Right
     const std::vector<Point> Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
 
     class Tile
@@ -126,6 +126,21 @@ namespace BloodSword::Map
 
         Base() {}
 
+        Map::Tile &operator()(int x, int y)
+        {
+            return this->Tiles[y][x];
+        }
+
+        Map::Tile &operator()(const Point &point)
+        {
+            return (*this)(point.X, point.Y);
+        }
+
+        Map::Tile &operator[](const Point &point)
+        {
+            return (*this)(point);
+        }
+
         bool IsValid(Point coords)
         {
             return coords.X >= 0 && coords.Y >= 0 && coords.X < this->Width && coords.Y < this->Height;
@@ -140,8 +155,8 @@ namespace BloodSword::Map
         {
             if (this->IsValid(x, y))
             {
-                this->Tiles[y][x].Occupant = object;
-                this->Tiles[y][x].Id = id;
+                (*this)(x, y).Occupant = object;
+                (*this)(x, y).Id = id;
             }
         }
 
@@ -149,8 +164,8 @@ namespace BloodSword::Map
         {
             if (this->IsValid(x, y))
             {
-                this->Tiles[y][x].Type = type;
-                this->Tiles[y][x].Asset = asset;
+                (*this)(x, y).Type = type;
+                (*this)(x, y).Asset = asset;
             }
         }
 
@@ -193,12 +208,12 @@ namespace BloodSword::Map
                             {
                                 for (auto x = 0; x < this->Width; x++)
                                 {
-                                    this->Tiles[y][x].Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : -1;
-                                    this->Tiles[y][x].Type = !data["tiles"][y][x]["type"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::NONE;
-                                    this->Tiles[y][x].Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::NONE;
-                                    this->Tiles[y][x].Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
-                                    this->Tiles[y][x].TemporaryAsset = !data["tiles"][y][x]["temporary_asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["temporary_asset"])) : Asset::Type::NONE;
-                                    this->Tiles[y][x].Lifetime = !data["tiles"][y][x]["lifetime"].is_null() ? (int)data["tiles"][y][x]["lifetime"] : -1;
+                                    (*this)(x, y).Id = !data["tiles"][y][x]["id"].is_null() ? (int)data["tiles"][y][x]["id"] : -1;
+                                    (*this)(x, y).Type = !data["tiles"][y][x]["type"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["type"])) : Map::Object::NONE;
+                                    (*this)(x, y).Occupant = !data["tiles"][y][x]["occupant"].is_null() ? Map::MapObject(std::string(data["tiles"][y][x]["occupant"])) : Map::Object::NONE;
+                                    (*this)(x, y).Asset = !data["tiles"][y][x]["asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["asset"])) : Asset::Type::NONE;
+                                    (*this)(x, y).TemporaryAsset = !data["tiles"][y][x]["temporary_asset"].is_null() ? Asset::Map(std::string(data["tiles"][y][x]["temporary_asset"])) : Asset::Type::NONE;
+                                    (*this)(x, y).Lifetime = !data["tiles"][y][x]["lifetime"].is_null() ? (int)data["tiles"][y][x]["lifetime"] : -1;
                                 }
                             }
                             else
@@ -238,7 +253,7 @@ namespace BloodSword::Map
             {
                 for (auto x = 0; x < this->Width; x++)
                 {
-                    if (this->Tiles[y][x].Type == object)
+                    if ((*this)(x, y).Type == object)
                     {
                         point.X = x;
 
@@ -261,7 +276,7 @@ namespace BloodSword::Map
             {
                 for (auto x = 0; x < this->Width; x++)
                 {
-                    if (this->Tiles[y][x].Occupant == occupant && this->Tiles[y][x].Id == id)
+                    if ((*this)(x, y).Occupant == occupant && (*this)(x, y).Id == id)
                     {
                         point.X = x;
 
@@ -273,141 +288,6 @@ namespace BloodSword::Map
             }
 
             return point;
-        }
-
-        // maze generation
-        std::vector<Point> Neighbors(Point &coords)
-        {
-            std::vector<Point> neighbors = {};
-
-            for (int i = 0; i < Map::Directions.size(); i++)
-            {
-                int x = coords.X + Map::Directions[i].X * 2;
-                int y = coords.Y + Map::Directions[i].Y * 2;
-
-                auto neighbor = Point(x, y);
-
-                if (this->IsValid(neighbor))
-                {
-                    neighbors.push_back(neighbor);
-                }
-            }
-
-            return neighbors;
-        }
-
-        bool Unvisited(Point &coords)
-        {
-            auto neighbords = this->Neighbors(coords);
-
-            auto result = false;
-
-            for (int i = 0; i < neighbords.size(); i++)
-            {
-                if (this->Tiles[neighbords[i].Y][neighbords[i].X].Type == Map::Object::NONE)
-                {
-                    result = true;
-
-                    break;
-                }
-            }
-
-            return result;
-        }
-
-        Point RandomUnvisited(Random::Base &random, Point &coords)
-        {
-            std::vector<Point> unvisited = {};
-
-            auto neighbors = this->Neighbors(coords);
-
-            for (int i = 0; i < neighbors.size(); i++)
-            {
-                if (this->Tiles[neighbors[i].Y][neighbors[i].X].Type == Map::Object::NONE)
-                {
-                    unvisited.push_back(neighbors[i]);
-                }
-            }
-
-            return unvisited[random.NextInt() % unvisited.size()];
-        }
-
-        void Remove(Point p1, Point p2)
-        {
-            auto tile = Point((p1.X + p2.X) / 2, (p1.Y + p2.Y) / 2);
-
-            this->Put(tile.X, tile.Y, Map::Object::PASSABLE, Asset::Type::NONE);
-        }
-
-        void Remove(std::vector<Point> &list, Point &coords)
-        {
-            for (int i = 0; i < list.size(); i++)
-            {
-                if (list[i] == coords)
-                {
-                    list.erase(list.begin() + i);
-                }
-            }
-        }
-
-        void Generate(int width, int height)
-        {
-            std::vector<Point> unvisited = {};
-
-            std::vector<Point> visited = {};
-
-            auto random = Random::Base();
-
-            this->Initialize(width, height);
-
-            // initialize
-            for (auto y = 0; y < this->Height; y++)
-            {
-                for (auto x = 0; x < this->Width; x++)
-                {
-                    if (y % 2 == 0 || x % 2 == 0)
-                    {
-                        this->Put(x, y, Map::Object::OBSTACLE, Asset::Type::WALL);
-                    }
-                    else
-                    {
-                        this->Put(x, y, Map::Object::NONE, Asset::Type::NONE);
-
-                        unvisited.push_back(Point(x, y));
-                    }
-                }
-            }
-
-            // generate
-            Point current = unvisited.back();
-
-            unvisited.pop_back();
-
-            visited.push_back(current);
-
-            this->Put(current.X, current.Y, Map::Object::PASSABLE, Asset::Type::NONE);
-
-            while (unvisited.size() != 0)
-            {
-                if (this->Unvisited(current))
-                {
-                    auto neighbor = this->RandomUnvisited(random, current);
-
-                    this->Remove(current, neighbor);
-                    this->Remove(unvisited, neighbor);
-                    this->Put(neighbor.X, neighbor.Y, Map::Object::PASSABLE, Asset::Type::NONE);
-
-                    visited.push_back(neighbor);
-
-                    current = neighbor;
-                }
-                else if (visited.size() != 0)
-                {
-                    current = visited.back();
-
-                    visited.pop_back();
-                }
-            }
         }
     };
 }

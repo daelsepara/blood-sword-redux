@@ -40,7 +40,11 @@ namespace BloodSword::Move
 
         Node(int x, int y, int cost, Smart<Move::Node> &parent) : X(x), Y(y), Cost(cost), Parent(parent) {}
 
+        Node(Point point, int cost, Smart<Move::Node> &parent) : Node(point.X, point.Y, cost, parent) {}
+
         Node(int x, int y) : X(x), Y(y) {}
+
+        Node(Point point) : X(point.X), Y(point.Y) {}
 
         Node() {}
 
@@ -62,13 +66,18 @@ namespace BloodSword::Move
 
     typedef std::vector<Smart<Move::Node>> Moves;
 
+    Point operator+(const Smart<Node> &node, const Point &p)
+    {
+        return Point(node->X + p.X, node->Y + p.Y);
+    }
+
     bool IsPassable(Map::Base &map, Smart<Move::Node> &target, int X, int Y, bool IsEnemy, bool Unrestricted)
     {
         auto result = false;
 
-        if (X >= 0 && X < map.Width && Y >= 0 && Y < map.Height)
+        if (map.IsValid(X, Y))
         {
-            Map::Tile &Tile = map.Tiles[Y][X];
+            Map::Tile &Tile = map(X, Y);
 
             auto NotOccupied = !Tile.IsOccupied();
 
@@ -98,31 +107,20 @@ namespace BloodSword::Move
     // Get all traversible nodes from current node
     Moves Nodes(Map::Base &map, Smart<Move::Node> &current, Smart<Move::Node> &target, bool IsEnemy, bool Unrestricted)
     {
-        // Define neighbors (X, Y): Up, Down, Left, Right
-        std::vector<std::pair<int, int>> neighbors = {{0, -1}, {0, 1}, {-1, 0}, {1, 0}};
-
         auto traversable = Moves();
 
         if (map.Width > 0 && map.Height > 0)
         {
-            auto index = 0;
-
-            for (auto &neighbor : neighbors)
+            for (auto &neighbor : Map::Directions)
             {
+                auto next = current + neighbor;
+
                 // Check if within map boundaries and if passable and/or leads to destination
-                if (Move::IsPassable(map, target, current->X + neighbor.first, current->Y + neighbor.second, IsEnemy, Unrestricted))
+                if (Move::IsPassable(map, target, next, IsEnemy, Unrestricted))
                 {
-                    auto X = current->X + neighbor.first;
+                    traversable.push_back(std::make_shared<Move::Node>(next, current->Cost + 1, current));
 
-                    auto Y = current->Y + neighbor.second;
-
-                    auto Cost = current->Cost + 1;
-
-                    traversable.push_back(std::make_shared<Move::Node>(X, Y, Cost, current));
-
-                    traversable[index]->SetDistance(target);
-
-                    index++;
+                    traversable.back()->SetDistance(target);
                 }
             }
         }
@@ -138,7 +136,7 @@ namespace BloodSword::Move
     // Get index of node from a list
     Moves::const_iterator Find(Moves &nodes, Smart<Move::Node> &node)
     {
-        return BloodSword::Find(nodes, node, Compare);
+        return BloodSword::Find(nodes, node, Move::Compare);
     }
 
     // Remove node from list
@@ -163,11 +161,9 @@ namespace BloodSword::Move
     {
         auto path = Move::Path();
 
-        auto ValidX = srcX >= 0 && srcX < map.Width && dstX >= 0 && dstX < map.Width;
+        auto Valid = map.IsValid(srcX, srcY) && map.IsValid(dstX, dstY);
 
-        auto ValidY = srcY >= 0 && srcY < map.Height && dstY >= 0 && dstY < map.Height;
-
-        if (map.Width > 0 && map.Height > 0 && ValidX && ValidY)
+        if (map.Width > 0 && map.Height > 0 && Valid)
         {
             auto start = std::make_shared<Move::Node>(srcX, srcY);
 
@@ -183,7 +179,7 @@ namespace BloodSword::Move
 
             active.push_back(start);
 
-            auto IsEnemy = map.Tiles[srcY][srcX].IsEnemy();
+            auto IsEnemy = map(srcX, srcY).IsEnemy();
 
             while (!active.empty())
             {
@@ -193,7 +189,7 @@ namespace BloodSword::Move
 
                 auto check = active.front();
 
-                if (check->X == end->X && check->Y == end->Y)
+                if (Move::Compare(check, end))
                 {
                     // We found the destination and we can be sure (because of the sort order above)
                     // that it's the most low cost option.
@@ -277,7 +273,7 @@ namespace BloodSword::Move
             {
                 auto next = std::next(current);
 
-                auto target = std::make_shared<Move::Node>(next->X, next->Y);
+                auto target = std::make_shared<Move::Node>(*next);
 
                 // check if move to next location is possible
                 if (!Move::IsPassable(map, target, *current, IsEnemy, false) && current != path.Points.begin())

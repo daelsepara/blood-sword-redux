@@ -4,6 +4,8 @@
 #include <vector>
 #include <SDL.h>
 
+#include "Primitives.hpp"
+
 namespace BloodSword::Controls
 {
     enum class Type
@@ -92,9 +94,9 @@ namespace BloodSword::Controls
         int Pixels = 2;
 
         // control is on the map
-        bool IsMap = false;
-        int MapX = -1;
-        int MapY = -1;
+        bool OnMap = false;
+
+        Point Map = Point(-1, -1);
 
         // color of border when hightlighted
         Uint32 Highlight;
@@ -112,12 +114,18 @@ namespace BloodSword::Controls
              int x, int y, int w, int h, int highlight,
              int mapx, int mapy) : Base(type, id, left, right, up, down, x, y, w, h, highlight)
         {
-            this->IsMap = true;
+            this->OnMap = true;
 
-            this->MapX = mapx;
-
-            this->MapY = mapy;
+            this->Map = Point(mapx, mapy);
         }
+
+        Base(Controls::Type type,
+             int id, int left, int right, int up, int down,
+             Point p, int w, int h, int highlight,
+             Point map) : Base(type,
+                               id, left, right, up, down,
+                               p.X, p.Y, w, h, highlight,
+                               map.X, map.Y) {}
     };
 
     // user input

@@ -14,13 +14,11 @@ namespace BloodSword::Interface
 
         for (auto y = Map.MapY; y < Map.MapY + Map.SizeY; y++)
         {
-            auto CtrlY = (y - Map.MapY);
-
-            auto AssetY = Map.DrawY + CtrlY * Map.TileSize;
+            auto CtrlY = y - Map.MapY;
 
             for (auto x = Map.MapX; x < Map.MapX + Map.SizeX; x++)
             {
-                auto CtrlX = (x - Map.MapX);
+                auto CtrlX = x - Map.MapX;
 
                 auto CtrlUp = NumControls;
                 auto CtrlDn = NumControls;
@@ -54,9 +52,11 @@ namespace BloodSword::Interface
                     CtrlRt = NumControls + 1;
                 }
 
-                Map::Tile &Tile = Map.Tiles[y][x];
+                auto Location = Point(x, y);
 
-                auto AssetX = Map.DrawX + (x - Map.MapX) * Map.TileSize;
+                Map::Tile &Tile = Map[Location];
+
+                auto Screen = Point(Map.DrawX, Map.DrawY) + Point(CtrlX, CtrlY) * Map.TileSize;
 
                 auto ControlType = Controls::Type::MAP_NONE;
 
@@ -71,7 +71,7 @@ namespace BloodSword::Interface
                         {
                             if (Party[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Party[Tile.Id].Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Party[Tile.Id].Asset), Screen));
 
                                 switch (Party[Tile.Id].Class)
                                 {
@@ -100,7 +100,7 @@ namespace BloodSword::Interface
                         {
                             if (Enemies[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Enemies[Tile.Id].Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Enemies[Tile.Id].Asset), Screen));
 
                                 ControlType = Controls::Type::ENEMY;
 
@@ -113,7 +113,7 @@ namespace BloodSword::Interface
                         {
                             if (Tile.TemporaryAsset != Asset::Type::NONE)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Tile.TemporaryAsset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Tile.TemporaryAsset), Screen));
 
                                 ControlType = Controls::Type::TEMPORARY_OBSTACLE;
 
@@ -124,7 +124,7 @@ namespace BloodSword::Interface
                         {
                             if (Tile.Asset != Asset::Type::NONE)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Tile.Asset), AssetX, AssetY));
+                                Scene.Add(Scene::Element(Asset::Get(Tile.Asset), Screen));
                             }
                         }
                         break;
@@ -153,11 +153,11 @@ namespace BloodSword::Interface
 
                     if (Tile.Asset != Asset::Type::NONE)
                     {
-                        Scene.Add(Scene::Element(Asset::Get(Tile.Asset), AssetX, AssetY));
+                        Scene.Add(Scene::Element(Asset::Get(Tile.Asset), Screen));
                     }
                 }
 
-                Scene.Add(Controls::Base(ControlType, NumControls, CtrlLt, CtrlRt, CtrlUp, CtrlDn, AssetX, AssetY, Map.TileSize, Map.TileSize, ControlColor, x, y));
+                Scene.Add(Controls::Base(ControlType, NumControls, CtrlLt, CtrlRt, CtrlUp, CtrlDn, Screen, Map.TileSize, Map.TileSize, ControlColor, Location));
 
                 NumControls++;
             }

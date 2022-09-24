@@ -9,6 +9,7 @@
 #include "Input.hpp"
 #include "Interface.hpp"
 #include "Move.hpp"
+#include "Maze.hpp"
 #include "Animation.hpp"
 
 // framework for testing game subsystems
@@ -239,14 +240,14 @@ namespace BloodSword::Test
                 {
                     auto &control = scene.Controls[input.Current];
 
-                    if (control.IsMap)
+                    if (control.OnMap)
                     {
-                        auto &tile = map.Tiles[control.MapY][control.MapX];
+                        auto &tile = map[control.Map];
                         auto background = Color::Inactive;
                         auto border = Color::Active;
                         auto object = -1;
 
-                        if ((tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER))
+                        if (tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER)
                         {
                             // stats
                             auto bounds = 0;
@@ -408,22 +409,22 @@ namespace BloodSword::Test
         auto enemies = Party::Base();
 
         auto map = Map::Base();
-        
-        auto mazex = (graphics.Width / map.TileSize) - 2;
-        auto mazey = (graphics.Height / map.TileSize) - 3;
 
-        if ((mazex & 1) == 0)
+        auto mazew = (graphics.Width / map.TileSize) - 2;
+        auto mazeh = (graphics.Height / map.TileSize) - 3;
+
+        if ((mazew & 1) == 0)
         {
-            mazex--;
+            mazew--;
         }
 
-        if ((mazey & 1) == 0)
+        if ((mazeh & 1) == 0)
         {
-            mazey--;
+            mazeh--;
         }
 
-        map.Generate(mazex, mazey);
-        map.Viewable(mazex, mazey);
+        Maze::Generate(map, mazew, mazeh);
+        map.Viewable(mazew, mazeh);
 
         auto start = Point(1, map.Height - 1);
         auto end = Point(map.Width - 1, 1);
@@ -487,15 +488,15 @@ namespace BloodSword::Test
 
         auto fps = 0.0;
 
-        SDL_Texture *fpsDisplay = NULL;
+        SDL_Texture *fpsTexture = NULL;
 
         while (true)
         {
             if (done)
             {
-                if (fpsDisplay)
+                if (fpsTexture)
                 {
-                    auto overlay = Scene::Base(fpsDisplay, map.DrawX, map.TileSize / 2);
+                    auto overlay = Scene::Base(fpsTexture, map.DrawX, map.TileSize / 2);
 
                     input = Input::WaitForInput(graphics, background, overlay, input);
                 }
@@ -546,8 +547,6 @@ namespace BloodSword::Test
 
                             done = false;
 
-                            Free(&fpsDisplay);
-
                             frameStart = SDL_GetTicks();
 
                             frames = 0;
@@ -557,9 +556,9 @@ namespace BloodSword::Test
                     }
                     else if (input.Type == Controls::Type::BACK && done)
                     {
-                        map.Generate(mazex, mazey);
+                        Maze::Generate(map, mazew, mazeh);
 
-                        map.Viewable(mazex, mazey);
+                        map.Viewable(mazew, mazeh);
 
                         ResetObjects(map);
 
@@ -582,7 +581,7 @@ namespace BloodSword::Test
 
                     if (msec > 0)
                     {
-                        Free(&fpsDisplay);
+                        Free(&fpsTexture);
 
                         fps = frames * 1000.0 / (double)msec;
 
@@ -592,7 +591,7 @@ namespace BloodSword::Test
 
                         Graphics::Estimate(Fonts::Normal, fpsString.c_str(), &fpsWidth, NULL);
 
-                        fpsDisplay = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, fpsWidth);
+                        fpsTexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, fpsWidth);
                     }
 
                     for (auto &animation : animations.List)
@@ -616,7 +615,7 @@ namespace BloodSword::Test
             }
         }
 
-        Free(&fpsDisplay);
+        Free(&fpsTexture);
     }
 }
 
