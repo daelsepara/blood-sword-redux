@@ -69,10 +69,11 @@ namespace BloodSword::Map
 
     class Base
     {
-    public:
+    private:
         // map tiles
         Array<Map::Tile> Tiles = {};
 
+    public:
         // dimensions (size in number of tiles)
         int Width = 0;
 

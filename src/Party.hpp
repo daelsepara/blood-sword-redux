@@ -11,9 +11,10 @@ namespace BloodSword::Party
 {
     class Base
     {
-    public:
+    private:
         std::vector<Character::Base> Members = {};
 
+    public:
         Book::Destination Location = {Book::Number::None, -1};
 
         Base() {}
