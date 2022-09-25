@@ -8,6 +8,7 @@
 
 namespace BloodSword::Interface
 {
+    // add map to the scene
     void Add(Map::Base &Map, Scene::Base &Scene, Party::Base &Party, Party::Base &Enemies, int BottomControls)
     {
         auto NumControls = Scene.Controls.size();
@@ -164,6 +165,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // create character attributes text box
     SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap)
     {
         SDL_Texture *texture = NULL;
@@ -319,6 +321,64 @@ namespace BloodSword::Interface
         if (graphics.Renderer)
         {
             SDL_RenderSetClipRect(graphics.Renderer, NULL);
+        }
+    }
+
+    // add menu to the scene
+    void Add(std::vector<SDL_Texture *> &choices, Scene::Base &scene, int x, int y, int w, int h, int start, int last, int limit, Uint32 border, Uint32 highlight, bool others = false)
+    {
+        if (!choices.empty())
+        {
+            auto id_start = (int)scene.Controls.size();
+            auto end = last - start;
+            auto options = (int)choices.size();
+            auto more = options - last > 0;
+            auto scroll = id_start + (options < limit ? options : limit);
+            auto pixels = 2;
+            auto pad = pixels * 6;
+            auto offset = pixels * 2;
+            auto adjust = pixels * 4;
+
+            for (auto i = 0; i < end; i++)
+            {
+                auto index = start + i;
+                auto id = id_start + i;
+                auto rt = (options > limit && (start > 0 || more)) ? (i == end - 1 && options > limit && more ? (start > 0 ? scroll + 1 : scroll) : scroll) : id;
+                auto up = (i > 0 ? id - 1 : id);
+                auto dn = (i < end - 1 || options > limit || others) ? id + 1 : id;
+
+                scene.Add(Scene::Element(choices[index], x, y + i * (h + pad)));
+                scene.Add(Scene::Element(x, y + i * (h + pad), w, h, 0, border, pixels));
+                scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, y + i * (h + pad) - offset, w + adjust, h + adjust, highlight));
+            }
+
+            if (options > limit)
+            {
+                if (start > 0)
+                {
+                    scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), x + w + pad, y));
+                    scene.Add(Controls::Base(
+                        Controls::Type::SCROLL_UP,
+                        scroll, id_start, scroll, scroll, (others || more ? scroll + 1 : scroll),
+                        x + w + pad - offset, y - offset,
+                        64 + adjust, 64 + adjust,
+                        highlight));
+                }
+
+                if (more)
+                {
+                    scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), x + w + pad, y + (limit - 1) * (h + pad) + (h - 64)));
+                    scene.Add(Controls::Base(
+                        Controls::Type::SCROLL_DOWN,
+                        start > 0 ? scroll + 1 : scroll,
+                        end - 1, start > 0 ? scroll + 1 : scroll,
+                        (start > 0 ? scroll : id_start),
+                        (others ? (start > 0 ? scroll + 2 : scroll + 1) : (start > 0 ? scroll + 1 : scroll)),
+                        x + w + pad - offset, y + (limit - 1) * (h + pad) - offset + (h - 64),
+                        64 + adjust, 64 + adjust,
+                        highlight));
+                }
+            }
         }
     }
 }

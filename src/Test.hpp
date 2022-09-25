@@ -403,13 +403,10 @@ namespace BloodSword::Test
     void Animation(Graphics::Base &graphics)
     {
         auto Class = Character::Class::TRICKSTER;
-
         auto party = Party::Base(Generate::Character(Class, 8));
-
         auto enemies = Party::Base();
 
         auto map = Map::Base();
-
         auto mazew = (graphics.Width / map.TileSize) - 2;
         auto mazeh = (graphics.Height / map.TileSize) - 3;
 
@@ -426,8 +423,11 @@ namespace BloodSword::Test
         Maze::Generate(map, mazew, mazeh);
         map.Viewable(mazew, mazeh);
 
+        auto random = Random::Base();
+
         auto start = Point(1, map.Height - 1);
-        auto end = Point(map.Width - 1, 1);
+        auto exit = (random.NextInt() % (mazeh / 2)) * 2 + 1;
+        auto end = Point(map.Width - 1, exit);
         auto draw = Point(map.DrawX, map.DrawY);
 
         auto RegenerateScene = [&](Map::Base &map)
@@ -453,6 +453,10 @@ namespace BloodSword::Test
             map.Put(start, Map::Object::PASSABLE, Asset::Type::NONE);
 
             map.Put(start, Map::Object::PLAYER, 0);
+
+            exit = (random.NextInt() % (mazeh / 2)) * 2 + 1;
+
+            end = Point(map.Width - 1, exit);
 
             map.Put(end, Map::Object::PASSABLE, Asset::Type::RIGHT);
         };
@@ -616,6 +620,138 @@ namespace BloodSword::Test
         }
 
         Free(&fpsTexture);
+    }
+
+    void Menu(Graphics::Base &graphics)
+    {
+        auto width = 640;
+
+        auto height = 128;
+
+        auto title = Graphics::CreateText(graphics, "Blood Sword Test Suite", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_UNDERLINE, width);
+
+        auto menu = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("00 MENU TEST\n\nDemonstrates the font engine, menu rendering and list box scrolling", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("03 ANIMATION TEST\n\n\nDemonstrates A* path-finding and animation engine", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("EXIT\n\n\nExits the program", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+
+        auto start = 0;
+        auto limit = 3;
+        auto last = start + limit;
+        auto options = (int)menu.size();
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto scene = Scene::Base();
+
+            scene.Add(Scene::Element(title, 60, 28));
+
+            Interface::Add(menu, scene, 64, 64, width, height, start, last, limit, Color::Inactive, Color::Highlight, false);
+
+            if (input.Up)
+            {
+                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
+
+                input.Up = false;
+            }
+            else if (input.Down)
+            {
+                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
+
+                input.Down = false;
+            }
+
+            input = Input::WaitForInput(graphics, scene, input);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::CHOICE)
+                {
+                    auto choices = Controls::Find(scene.Controls, Controls::Type::CHOICE);
+
+                    auto choice = start + (input.Current - choices);
+
+                    switch (choice)
+                    {
+                    case 1:
+                        Test::Controls(graphics);
+                        break;
+                    case 2:
+                        Test::Map(graphics);
+                        break;
+                    case 3:
+                        Test::Animation(graphics);
+                        break;
+                    case 4:
+                        done = true;
+                        break;
+                    default:
+                        // do nothing - menu test
+                        break;
+                    }
+
+                    input.Current = -1;
+
+                    start = 0;
+
+                    last = start + limit;
+                }
+                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (start > 0)
+                    {
+                        start -= 1;
+
+                        if (start < 0)
+                        {
+                            start = 0;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (options - last > 0)
+                    {
+                        if (start < options - limit)
+                        {
+                            start += 1;
+                        }
+
+                        if (start > options - limit)
+                        {
+                            start = options - limit;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Down = true;
+                    }
+                }
+            }
+        }
+
+        Free(menu);
     }
 }
 
