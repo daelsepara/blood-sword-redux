@@ -6,6 +6,7 @@
 
 namespace BloodSword::Maze
 {
+    // generate list of valid nearby locations
     std::vector<Point> Neighbors(Map::Base &map, Point &coords)
     {
         std::vector<Point> neighbors = {};
@@ -23,6 +24,7 @@ namespace BloodSword::Maze
         return neighbors;
     }
 
+    // check if location has not been visited yet
     bool Unvisited(Map::Base &map, Point &coords)
     {
         auto neighbors = Maze::Neighbors(map, coords);
@@ -42,6 +44,7 @@ namespace BloodSword::Maze
         return result;
     }
 
+    // get a random nearby location that has not been visited yet
     Point RandomUnvisited(Random::Base &random, Map::Base &map, Point &coords)
     {
         std::vector<Point> unvisited = {};
@@ -59,6 +62,7 @@ namespace BloodSword::Maze
         return unvisited[random.NextInt() % unvisited.size()];
     }
 
+    // remove object between the two points, make it traversable
     void Remove(Map::Base &map, Point p1, Point p2)
     {
         auto tile = (p1 + p2) / 2;
@@ -66,6 +70,7 @@ namespace BloodSword::Maze
         map.Put(tile, Map::Object::PASSABLE, Asset::Type::NONE);
     }
 
+    // remove location from the list
     void Remove(std::vector<Point> &list, Point &coords)
     {
         for (auto point = list.begin(); point != list.end(); point++)
@@ -81,15 +86,17 @@ namespace BloodSword::Maze
 
     void Generate(Map::Base &map, int width, int height)
     {
+        // locations not yet visited
         std::vector<Point> unvisited = {};
 
+        // locations already visited
         std::vector<Point> visited = {};
 
         auto random = Random::Base();
 
         map.Initialize(width, height);
 
-        // initialize
+        // initialize map
         for (auto y = 0; y < map.Height; y++)
         {
             for (auto x = 0; x < map.Width; x++)
@@ -107,7 +114,7 @@ namespace BloodSword::Maze
             }
         }
 
-        // generate
+        // current location
         Point current = unvisited.back();
 
         unvisited.pop_back();
@@ -116,10 +123,12 @@ namespace BloodSword::Maze
 
         map.Put(current, Map::Object::PASSABLE, Asset::Type::NONE);
 
+        // generate maze
         while (unvisited.size() != 0)
         {
             if (Maze::Unvisited(map, current))
             {
+                // random nearby location
                 auto neighbor = Maze::RandomUnvisited(random, map, current);
 
                 Maze::Remove(map, current, neighbor);
