@@ -29,6 +29,7 @@ namespace BloodSword::Character
         return Character::MapControlType(controlType.c_str());
     }
 
+    // character status types
     enum class Status
     {
         NONE,
@@ -38,7 +39,8 @@ namespace BloodSword::Character
         ENTHRALLED,
         AWAY,
         PARALYZED,
-        IN_COMBAT
+        KNOCKED_OUT,
+        IN_BATTLE
     };
 
     Mapping<Character::Status> StatusMapping = {
@@ -49,7 +51,8 @@ namespace BloodSword::Character
         {Status::ENTHRALLED, "ENTHRALLED"},
         {Status::AWAY, "AWAY"},
         {Status::PARALYZED, "PARALYZED"},
-        {Status::IN_COMBAT, "IN COMBAT"}};
+        {Status::KNOCKED_OUT, "KNOCKED OUT"},
+        {Status::IN_BATTLE, "IN BATTLE"}};
 
     Character::Status MapStatus(const char *status)
     {
@@ -61,6 +64,7 @@ namespace BloodSword::Character
         return Character::MapStatus(status.c_str());
     }
 
+    // character classes (player and NPC)
     enum class Class
     {
         NONE = -1,

@@ -64,6 +64,7 @@ namespace BloodSword::Move
         }
     };
 
+    // list of nodes
     typedef std::vector<Smart<Move::Node>> Moves;
 
     Point operator+(const Smart<Node> &node, const Point &p)
@@ -71,16 +72,19 @@ namespace BloodSword::Move
         return Point(node->X + p.X, node->Y + p.Y);
     }
 
+    // is the node equal to the point?
     bool Is(Smart<Move::Node> &a, Point &b)
     {
         return a->X == b.X && a->Y == b.Y;
     }
 
+    // compare equality between two nodes
     bool Compare(Smart<Move::Node> &a, Smart<Move::Node> &b)
     {
         return a->X == b->X && a->Y == b->Y;
     }
 
+    // check if location is traversable or if it is the target destination
     bool IsPassable(Map::Base &map, Smart<Move::Node> &target, Point &location, bool IsEnemy, bool Unrestricted)
     {
         auto result = false;
@@ -246,6 +250,7 @@ namespace BloodSword::Move
         return path;
     }
 
+    // find a path from src X, Y to dst X, Y
     Move::Path FindPath(Map::Base &map, int srcX, int srcY, int dstX, int dstY, bool Unrestricted = false)
     {
         return Move::FindPath(map, Point(srcX, srcY), Point(dstX, dstY), Unrestricted);

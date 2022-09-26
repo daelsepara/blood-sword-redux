@@ -7,29 +7,41 @@
 #include "Controls.hpp"
 #include "Primitives.hpp"
 
+// classes and functions to define objects that will be rendered on screen
 namespace BloodSword::Scene
 {
+    // scene element base class
     class Element
     {
     public:
+        // texture associated with the element
         SDL_Texture *Texture;
 
+        // background color, 0 if none
         Uint32 Background = 0;
 
+        // border color, 0 if none
         Uint32 Border = 0;
 
+        // x location on screen
         int X = 0;
 
+        // y location on screen
         int Y = 0;
 
+        // size of texture portion to be rendered. Used with Offset.
         int Bounds = 0;
 
+        // starting point in texture to be rendered. Used with Bounds.
         int Offset = 0;
 
+        // width of the element
         int W = 0;
 
+        // height of the element
         int H = 0;
 
+        // thickness of the border in pixels
         int BorderSize = 0;
 
         Element(SDL_Texture *texture,
@@ -98,15 +110,20 @@ namespace BloodSword::Scene
                 Uint32 background) : Element(NULL, x, y, h, 0, w, h, background, 0, 0) {}
     };
 
+    // Scene base clas
     class Base
     {
     public:
+        // objects to be rendered on screen
         std::vector<Scene::Element> Elements = {};
 
+        // locations and dimensions of controls hitboxes associated with the scene lement
         std::vector<Controls::Base> Controls = {};
 
+        // background color of the entire screen. set before rendering each element
         Uint32 Background = 0;
 
+        // clear the scene
         void Clear()
         {
             this->Background = 0;
@@ -116,11 +133,13 @@ namespace BloodSword::Scene
             this->Controls.clear();
         }
 
+        // add element to the scene
         void Add(Scene::Element element)
         {
             this->Elements.push_back(element);
         }
 
+        // add a control hitbox
         void Add(Controls::Base control)
         {
             this->Controls.push_back(control);

@@ -11,56 +11,71 @@ namespace BloodSword::Map
     // Define neighbors (X, Y): Up, Down, Left, Right
     const std::vector<Point> Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
 
+    // a single map tile
     class Tile
     {
     public:
+        // tile type classification
         Map::Object Type = Map::Object::NONE;
 
+        // the tile's current occupant
         Map::Object Occupant = Map::Object::NONE;
 
+        // asset type of tile
         Asset::Type Asset = Asset::Type::NONE;
 
+        // asset type of the temporary occupant
         Asset::Type TemporaryAsset = Asset::Type::NONE;
 
+        // lifetime of the temporary occupant, -1 if none
         int Lifetime = -1;
 
+        // Id of the current occupant, -1 if none
         int Id = -1;
 
+        // tile is occupied by an enemy
         bool IsEnemy()
         {
             return this->Occupant == Map::Object::ENEMY;
         }
 
+        // tile is occupied by a player
         bool IsPlayer()
         {
             return this->Occupant == Map::Object::PLAYER;
         }
 
+        // tile is an exit point, e.g. stairs, door
         bool IsExit()
         {
             return (this->Type == Map::Object::EXIT);
         }
 
+        // tile is temporarily blocked
         bool IsTemporarilyBlocked()
         {
             return (this->Occupant == Map::Object::TEMPORARY_OBSTACLE && this->Lifetime > 0);
         }
 
+        // tile is blocked
         bool IsBlocked()
         {
             return (this->Type == Map::Object::OBSTACLE || this->IsTemporarilyBlocked());
         }
 
+        // tile is occupied
         bool IsOccupied()
         {
             return this->Occupant != Map::Object::NONE;
         }
 
+        // tile is not occupied and is traversable
         bool IsPassable()
         {
             return this->Occupant == Map::Object::NONE && this->Type == Map::Object::PASSABLE;
         }
 
+        // tile is traversable by an enemy
         bool IsPassableToEnemy()
         {
             return this->Occupant == Map::Object::NONE && (this->Type == Map::Object::PASSABLE || this->Type == Map::Object::ENEMY_PASSABLE);
@@ -74,29 +89,34 @@ namespace BloodSword::Map
         Array<Map::Tile> Tiles = {};
 
     public:
-        // dimensions (size in number of tiles)
+        // width (size in number of tiles)
         int Width = 0;
 
+        // height (size in number of tiles)
         int Height = 0;
 
-        // viewable size (number of tiles)
+        // viewable width (number of tiles)
         int SizeX = 8;
 
+        // viewable height (number of tiles)
         int SizeY = 8;
 
-        // offsets (navigation)
-        int MapX = 0;
+        // x offset (navigation)
+        int X = 0;
 
-        int MapY = 0;
+        // y offset (navigation)
+        int Y = 0;
 
-        // offsets (pixels, drawing)
+        // x offset (pixels, drawing)
         int DrawX = 64;
 
+        // y offset (pixels, drawing)
         int DrawY = 64;
 
         // size of each tile (pixels)
         int TileSize = 64;
 
+        // initialize the map
         void Initialize(int width, int height)
         {
             this->Width = width;
@@ -113,6 +133,7 @@ namespace BloodSword::Map
             }
         }
 
+        // set viewable region
         void Viewable(int sizex, int sizey)
         {
             this->SizeX = sizex;
@@ -120,38 +141,46 @@ namespace BloodSword::Map
             this->SizeY = sizey;
         }
 
+        // initialize the map
         Base(int sizex, int sizey)
         {
             Initialize(sizex, sizey);
         }
 
+        // an empty map
         Base() {}
 
+        // access location on the map
         Map::Tile &operator()(int x, int y)
         {
             return this->Tiles[y][x];
         }
 
+        // access location on the map
         Map::Tile &operator()(const Point &point)
         {
             return (*this)(point.X, point.Y);
         }
 
+        // access location on the map
         Map::Tile &operator[](const Point &point)
         {
             return (*this)(point);
         }
 
+        // check if a location is within map boundaries
         bool IsValid(Point coords)
         {
             return coords.X >= 0 && coords.Y >= 0 && coords.X < this->Width && coords.Y < this->Height;
         }
 
+        // check if a location is within map boundaries
         bool IsValid(int x, int y)
         {
             return this->IsValid(Point(x, y));
         }
 
+        // let an object occupy a location on the map
         void Put(Point location, Map::Object object, int id)
         {
             if (this->IsValid(location))
@@ -163,6 +192,7 @@ namespace BloodSword::Map
             }
         }
 
+        // set the location type and asset
         void Put(Point location, Map::Object type, Asset::Type asset)
         {
             if (this->IsValid(location))
@@ -174,17 +204,19 @@ namespace BloodSword::Map
             }
         }
 
+        // let an object occupy a location on the map
         void Put(int x, int y, Map::Object object, int id)
         {
             this->Put(Point(x, y), object, id);
         }
 
+        // set the location type and asset
         void Put(int x, int y, Map::Object type, Asset::Type asset)
         {
             this->Put(Point(x, y), type, asset);
         }
 
-        // load from json file
+        // load map from json file
         bool Load(const char *filename)
         {
             auto LoadError = false;
@@ -301,6 +333,21 @@ namespace BloodSword::Map
             }
 
             return point;
+        }
+
+        // computes the manhattan distance between two points on the map
+        int Distance(Point src, Point dst)
+        {
+            auto dist = -1;
+
+            if (this->IsValid(src) && this->IsValid(dst))
+            {
+                auto path = dst - src;
+
+                dist = std::abs(path.X) + std::abs(path.Y);
+            }
+
+            return dist;
         }
     };
 }

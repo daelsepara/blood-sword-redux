@@ -7,6 +7,7 @@
 
 namespace BloodSword::Skills
 {
+    // skill type
     enum class Type
     {
         NONE = -1,

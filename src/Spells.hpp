@@ -7,6 +7,7 @@
 
 namespace BloodSword::Spells
 {
+    // spell type
     enum class Type
     {
         NONE = -1,
@@ -28,6 +29,7 @@ namespace BloodSword::Spells
         DETECT_ENCHANTMENT
     };
 
+    // spell class (blasting or psychic)
     enum class Class
     {
         NONE,
@@ -79,31 +81,39 @@ namespace BloodSword::Spells
         return Spells::MapClass(spell.c_str());
     }
 
+    // spell base class
     class Base
     {
     public:
+        // spell type
         Spells::Type Type = Type::NONE;
 
+        // spell class
         Spells::Class Class = Class::NONE;
 
-        bool IsCombat = true;
+        // spell is only usable in battle
+        bool IsBattle = true;
 
+        // spell can be cast on range
         bool Ranged = false;
 
+        // spell complexity level
         int Complexity = 0;
 
+        // current complexity level
         int CurrentComplexity = 0;
 
+        // spell overall duration, -1 if infinite
         int Duration = -1;
 
         Base(Spells::Type type,
              Spells::Class spellClass,
-             bool isCombat,
+             bool isBattle,
              bool ranged,
              int complexity,
              int duration) : Type(type),
                              Class(spellClass),
-                             IsCombat(isCombat),
+                             IsBattle(isBattle),
                              Ranged(ranged),
                              Complexity(complexity),
                              CurrentComplexity(complexity),
@@ -111,9 +121,9 @@ namespace BloodSword::Spells
 
         Base(Spells::Type type,
              Spells::Class spellClass,
-             bool isCombat,
+             bool isBattle,
              bool ranged,
-             int complexity) : Base(type, spellClass, isCombat, ranged, complexity, -1) {}
+             int complexity) : Base(type, spellClass, isBattle, ranged, complexity, -1) {}
     };
 }
 

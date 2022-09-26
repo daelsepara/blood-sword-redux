@@ -7,8 +7,10 @@
 #include "Controls.hpp"
 #include "Graphics.hpp"
 
+// functions for handling user input
 namespace BloodSword::Input
 {
+    // initialize any connected gamepads
     int InitializeGamePads()
     {
         if (SDL_WasInit(SDL_INIT_GAMECONTROLLER) != 1)
@@ -52,6 +54,7 @@ namespace BloodSword::Input
         return numGamepads;
     }
 
+    // wait for button (gamepad/mouse) click or the return key
     void WaitForNext(Graphics::Base &graphics, Scene::Base &scene)
     {
         SDL_Event result;
@@ -102,6 +105,7 @@ namespace BloodSword::Input
         }
     }
 
+    // render scene and overlays then wait for user input
     Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input)
     {
         SDL_Event result;
@@ -347,6 +351,7 @@ namespace BloodSword::Input
         return input;
     }
 
+    // render scene then wait for user input
     Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input)
     {
         auto overlay = Scene::Base();
@@ -354,6 +359,7 @@ namespace BloodSword::Input
         return WaitForInput(graphics, scene, overlay, input);
     }
 
+    // flush all events
     void Flush()
     {
         SDL_PumpEvents();

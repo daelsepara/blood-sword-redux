@@ -11,10 +11,13 @@
 
 namespace BloodSword::Asset
 {
+    // mapping of assets to their relative location
     AssetMapping<std::string> Locations = {};
 
+    // mapping of asset types their respective loaded texture
     AssetMapping<SDL_Texture *> Textures = {};
 
+    // create texture from a file
     SDL_Texture *Create(SDL_Renderer *renderer, const char *path)
     {
         SDL_Texture *texture = NULL;
@@ -36,6 +39,7 @@ namespace BloodSword::Asset
         return texture;
     }
 
+    // unload all assets
     void Unload()
     {
         if (Asset::Textures.size() > 0)
@@ -51,6 +55,7 @@ namespace BloodSword::Asset
         }
     }
 
+    // load all assets
     bool Load(SDL_Renderer *renderer, const char *assets)
     {
         auto result = false;
@@ -97,6 +102,7 @@ namespace BloodSword::Asset
         return result;
     }
 
+    // get texture associated with the asset type
     SDL_Texture *Get(Asset::Type asset)
     {
         SDL_Texture *texture = NULL;
@@ -109,6 +115,7 @@ namespace BloodSword::Asset
         return texture;
     }
 
+    // get texture associated with the asset type and modulate the color
     SDL_Texture *Get(Asset::Type asset, Uint8 alpha)
     {
         auto texture = Asset::Get(asset);
@@ -121,6 +128,7 @@ namespace BloodSword::Asset
         return texture;
     }
 
+    // create a copy of the asset. must be de-allocated manually
     SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset)
     {
         SDL_Texture *texture = NULL;
@@ -133,6 +141,8 @@ namespace BloodSword::Asset
         return texture;
     }
 
+    // copy the texture associated with the asset and modulate the color. must be
+    // de-allocated manually
     SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset, Uint8 alpha)
     {
         auto texture = Asset::Copy(renderer, asset);

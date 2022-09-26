@@ -11,28 +11,35 @@
 #include "Scene.hpp"
 #include "Animation.hpp"
 
+// classes and functions for the graphics rendering engine
 namespace BloodSword::Graphics
 {
+    // version string texture overlay
     SDL_Texture *VersionOverlay = NULL;
 
+    // location where version string texture is rendered
     Point VersionCoordinates = Point(0, 0);
 
+    // base class of the graphics system
     class Base
     {
     public:
-        // window and renderer
+        // window
         SDL_Window *Window = NULL;
 
+        // renderer
         SDL_Renderer *Renderer = NULL;
 
-        // pixel dimensions
+        // screen dimension (width)
         int Width = 1280;
 
+        // screen dimension (height)
         int Height = 800;
 
         Base() {}
     };
 
+    // initialize graphics system
     void CreateWindow(Uint32 flags, const char *title, Base &graphics)
     {
         // the window and renderer we'll be rendering to
@@ -72,6 +79,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // set window/screen icon
     void SetWindowIcon(Base &graphics, const char *icon)
     {
         auto surface = BloodSword::Load(icon);
@@ -92,6 +100,7 @@ namespace BloodSword::Graphics
         IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
     }
 
+    // initialize graphics system and set window/screen title
     Graphics::Base Initialize(const char *title)
     {
         auto graphics = Graphics::Base();
@@ -101,6 +110,7 @@ namespace BloodSword::Graphics
         return graphics;
     }
 
+    // define an rectangle and prepare color
     SDL_Rect CreateRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
     {
         SDL_Rect rect;
@@ -118,6 +128,7 @@ namespace BloodSword::Graphics
         return rect;
     }
 
+    // draw rectangle outline on screen
     void DrawRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
     {
         if (graphics.Renderer)
@@ -128,6 +139,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // draw a filled rectangle on screen
     void FillRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
     {
         if (graphics.Renderer)
@@ -138,6 +150,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // draw a rectangle with thich borders on screen
     void ThickRect(Graphics::Base &graphics, int w, int h, int x, int y, int color, int pts)
     {
         auto space = 2 * pts;
@@ -148,6 +161,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // fill entire screen with specified color
     void FillWindow(Graphics::Base &graphics, Uint32 color)
     {
         if (graphics.Renderer)
@@ -262,19 +276,19 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render texture at location
     void Render(Base &graphics, SDL_Texture *texture, int x, int y)
     {
-        if (graphics.Renderer && texture)
-        {
-            Graphics::Render(graphics, texture, x, y, 0);
-        }
+        Graphics::Render(graphics, texture, x, y, 0);
     }
 
+    // render texture at location
     void Render(Base &graphics, SDL_Texture *texture, Point location)
     {
         Graphics::Render(graphics, texture, location.X, location.Y);
     }
 
+    // render overlay on screen
     void Overlay(Base &graphics, Scene::Base &scene)
     {
         if (graphics.Renderer)
@@ -286,6 +300,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scene (set backgroud color)
     void Render(Base &graphics, Scene::Base &scene)
     {
         if (graphics.Renderer)
@@ -296,6 +311,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render version string on screen
     void DisplayVersion(Base &graphics)
     {
         if (VersionOverlay)
@@ -304,6 +320,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scene and highlight the control currently in focus (if any)
     void Render(Base &graphics, Scene::Base &scene, Controls::User input)
     {
         if (graphics.Renderer)
@@ -320,6 +337,8 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scene now without waiting for user input
+    // used in animation
     void RenderNow(Base &graphics, Scene::Base &scene)
     {
         if (graphics.Renderer)
@@ -330,6 +349,8 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scene (background scene + foreground scene on top) now without waiting for user input
+    // used in animation
     void RenderNow(Base &graphics, Scene::Base &background, Scene::Base &foreground)
     {
         if (graphics.Renderer)
@@ -342,6 +363,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // process through all animations
     bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool delay = true)
     {
         auto foreground = Scene::Base();
@@ -353,6 +375,7 @@ namespace BloodSword::Graphics
         return done;
     }
 
+    // process a single animation
     bool Animate(Base &graphics, Scene::Base &background, Animation::Base &animation, bool delay = true)
     {
         auto animations = Animations::Base(animation);
@@ -364,7 +387,7 @@ namespace BloodSword::Graphics
         return done;
     }
 
-    // estimate texture dimensions of string
+    // estimate texture dimensions of a string
     void Estimate(TTF_Font *font, const char *text, int *width, int *height)
     {
         TTF_SizeUTF8(font, text, width, height);
@@ -382,6 +405,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // create a SDL_Surface representation of a string
     SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
     {
         SDL_Surface *surface = NULL;
@@ -396,11 +420,13 @@ namespace BloodSword::Graphics
         return surface;
     }
 
+    // create a SDL_Surface representation of a string (without line wrapping)
     SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style)
     {
         return Graphics::CreateSurfaceText(text, font, textColor, style, 0);
     }
 
+    // create a texture representation of a string
     SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
     {
         SDL_Texture *texture = NULL;
@@ -417,6 +443,7 @@ namespace BloodSword::Graphics
         return texture;
     }
 
+    // create a list of texture representation of a collection of strings
     std::vector<SDL_Texture *> CreateText(Graphics::Base &graphics, std::vector<Graphics::RichText> collection)
     {
         std::vector<SDL_Texture *> textures = {};
@@ -434,6 +461,7 @@ namespace BloodSword::Graphics
         return textures;
     }
 
+    // create version string overlay texture
     void InitializeVersionOverlay(Graphics::Base &graphics)
     {
         auto estimate = 0;
@@ -454,7 +482,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    // close graphics subsystem
+    // close graphics system
     void Quit(Base &graphics)
     {
         Free(&VersionOverlay);

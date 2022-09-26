@@ -7,6 +7,7 @@
 
 namespace BloodSword::Item
 {
+    // item type
     enum class Type
     {
         NONE,

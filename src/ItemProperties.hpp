@@ -8,6 +8,7 @@
 
 namespace BloodSword::Item
 {
+    // item property
     enum class Property
     {
         NONE = -1,

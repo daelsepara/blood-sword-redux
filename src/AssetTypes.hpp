@@ -7,6 +7,7 @@
 
 namespace BloodSword::Asset
 {
+    // asset type
     enum class Type
     {
         NONE = -1,

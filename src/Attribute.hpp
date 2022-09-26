@@ -8,6 +8,7 @@
 
 namespace BloodSword::Attribute
 {
+    // attribute type
     enum class Type
     {
         NONE = -1,
@@ -27,15 +28,20 @@ namespace BloodSword::Attribute
         Type::DAMAGE,
         Type::ARMOUR};
 
+    // attribute case class
     class Base
     {
     public:
+        // attribute type
         Attribute::Type Type = Type::NONE;
 
+        // base value
         int Value = 0;
 
+        // modifier
         int Modifier = 0;
 
+        // maximum value
         int Maximum = 0;
 
         Base(Attribute::Type type, int value, int modifier) : Type(type), Value(value), Modifier(modifier), Maximum(value) {}

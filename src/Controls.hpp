@@ -73,29 +73,43 @@ namespace BloodSword::Controls
     class Base
     {
     public:
+        // type of control. used in distinguishing selected control in user input
         Controls::Type Type = Controls::Type::ANY;
 
-        // ID and links to other controls
+        // ID
         int ID = -1;
+
+        // ID of control to the left of this control, equal to ID if none
         int Left = -1;
+
+        // ID of control to the right of this control, equal to ID if none
         int Right = -1;
+
+        // ID of control above this control, equal to ID if none
         int Up = -1;
+
+        // ID of control below this control, equal to ID if none
         int Down = -1;
 
-        // location
+        // X location on the screen (part of this control's hitbox definition)
         int X = 0;
+
+        // Y location on the screen (part of this control's hitbox definition)
         int Y = 0;
 
-        // pixel dimensions
+        // width of this control's hitbox
         int W = 0;
+
+        // height of this control's hitbox
         int H = 0;
 
-        // border size
+        // border size (when highligted)
         int Pixels = 2;
 
         // control is on the map
         bool OnMap = false;
 
+        // location on the map
         Point Map = Point(-1, -1);
 
         // color of border when hightlighted
@@ -128,22 +142,31 @@ namespace BloodSword::Controls
                                map.X, map.Y) {}
     };
 
-    // user input
+    // user input base class
     class User
     {
     public:
+        // type of the control currently in focus
         Controls::Type Type = Controls::Type::NONE;
 
+        // ID of the control currently in focus, -1 if none
         int Current = -1;
 
+        // the control has been explicitly selected
+        // i.e. through a mouse button click, pressing a button on the gamepad,
+        // or via the RETURN key (on the keyboard)
         bool Selected = false;
 
+        // a scroll up event
         bool Up = false;
 
+        // a scroll down event
         bool Down = false;
 
+        // control is currently being held down (e.g. mouse left button held over the control, etc.)
         bool Hold = false;
 
+        // quit/exit/terminate event
         bool Quit = false;
 
         User(Controls::Type type,
@@ -168,6 +191,7 @@ namespace BloodSword::Controls
         User() {}
     };
 
+    // find if control is present in the list
     int Find(std::vector<Controls::Base> &controls, Controls::Type type)
     {
         auto result = -1;

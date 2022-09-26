@@ -4,6 +4,7 @@
 #include "Map.hpp"
 #include "Random.hpp"
 
+// classes and functions for generating a maze on the map
 namespace BloodSword::Maze
 {
     // generate list of valid nearby locations

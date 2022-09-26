@@ -5,65 +5,80 @@
 #include "Scene.hpp"
 #include "Templates.hpp"
 
+// functions and classes for animating objects on screen
 namespace BloodSword::Animation
 {
+    // animation frame
     class Frame
     {
     public:
+        // texture associated with this frame
         SDL_Texture *Texture = NULL;
 
+        // duration before switching to the next frame
         Uint32 Duration = 0;
 
-        Frame(SDL_Texture *texture, Uint32 duration) : Texture(texture), Duration(duration)
-        {
-        }
+        Frame(SDL_Texture *texture, Uint32 duration) : Texture(texture), Duration(duration) {}
 
-        Frame(SDL_Texture *texture) : Texture(texture)
-        {
-        }
+        Frame(SDL_Texture *texture) : Texture(texture) {}
 
-        Frame()
-        {
-        }
+        Frame() {}
     };
 
+    // animation type: MOVE (movement), FRAME (cycle through a sequence of frames)
     enum class Type
     {
         MOVE,
         FRAME
     };
 
+    // animation base class
     class Base
     {
     public:
+        // frame (texture) to render
         std::vector<Animation::Frame> Frames = {};
 
+        // type of animation(s)
         std::vector<Animation::Type> Mode = {};
 
+        // path on-screen (if MOVE type)
         std::vector<Point> Path = {};
 
+        // origin of graphics cooordinate system, other locations are relative to this
         Point Origin = Point(0, 0);
 
+        // current location (if MOVE type)
         Point Current = Point();
 
+        // movement scaling (X, Y): (1, 1) if on screen, (DX, DY) if on the map 
         Point Scale = Point(1, 1);
 
+        // Offset from Current (location), used in MOVE type animation
         Point Offset = Point(0, 0);
 
+        // Number of pixels (X, Y) to move from one location to another
         Point Delta = Point(1, 1);
 
+        // number of cycles Frames is to be shown
         int Cycles = 1;
 
+        // loop through the Frames
         bool Loop = false;
 
+        // Timestamp of current update (MOVE, FRAME, both)
         Uint32 TimeStamp = 0;
 
+        // frame currently being rendered
         int Frame = 0;
 
+        // Current step (move number) in the path
         int Move = 0;
 
+        // Delay (ms) before continuing movement to next location (used on MOVE type)
         int Speed = 0;
 
+        // current frames cycle
         int Cycle = 0;
 
         Base(std::vector<Animation::Frame> frames,
@@ -100,6 +115,7 @@ namespace BloodSword::Animation
 
         Base() {}
 
+        // set animation frames and whether they are looping
         void Set(std::vector<Animation::Frame> frames, bool loop)
         {
             this->Frames = frames;
@@ -109,6 +125,7 @@ namespace BloodSword::Animation
             this->Frame = 0;
         }
 
+        // set path of the object
         void Set(std::vector<Point> path)
         {
             this->Path = path;
@@ -116,26 +133,31 @@ namespace BloodSword::Animation
             this->Move = 0;
         }
 
+        // set animation types
         void Set(std::vector<Animation::Type> modes)
         {
             this->Mode = modes;
         }
 
+        // set delay, lower speed = faster animation
         void Set(int speed)
         {
             this->Speed = speed;
         }
 
+        // set current location
         void Set(Point point)
         {
             this->Current = point;
         }
 
+        // set current location
         void Set(int x, int y)
         {
             this->Set(Point(x, y));
         }
 
+        // set graphics system origin and current location
         void Set(Point origin, Point current)
         {
             this->Origin = origin;
@@ -143,11 +165,13 @@ namespace BloodSword::Animation
             this->Current = current;
         }
 
+        // set graphics system origin and current location
         void Set(int originx, int originy, int x, int y)
         {
             this->Set(Point(originx, originy), Point(x, y));
         }
 
+        // check if animation is of type(s)
         bool Is(std::vector<Animation::Type> types)
         {
             auto result = true;
@@ -160,16 +184,19 @@ namespace BloodSword::Animation
             return result;
         }
 
+        // check if animation is of type
         bool Is(Animation::Type type)
         {
             return this->Is(std::vector<Animation::Type>{type});
         }
 
+        // add a frame to animation
         void Add(Animation::Frame frame)
         {
             this->Frames.push_back(frame);
         }
 
+        // reset animation
         void Reset()
         {
             this->TimeStamp = 0;
@@ -188,12 +215,14 @@ namespace BloodSword::Animation
             }
         }
 
+        // check if motion is scaled
         bool IsScaled()
         {
             return this->Scale != Point(1, 1);
         }
     };
 
+    // show a frame of the animation on screen and cycle (if possible)
     bool Show(Scene::Base &scene, Animation::Base &animation, bool delay = true)
     {
         auto done = true;
@@ -230,6 +259,7 @@ namespace BloodSword::Animation
         return done;
     }
 
+    // move the object towards destination and render it on screen
     bool Move(Scene::Base &scene, Animation::Base &animation, bool delay = true)
     {
         auto Sign = [&](int Value)
@@ -273,6 +303,7 @@ namespace BloodSword::Animation
         return done;
     }
 
+    // update the animation on screen (MOVE, FRAME, both)
     bool Step(Scene::Base &scene, Animation::Base &animation, bool delay = true)
     {
         auto done = false;
@@ -329,18 +360,23 @@ namespace BloodSword::Animation
 
 namespace BloodSword::Animations
 {
+    // collection of objects to animate on screen
     class Base
     {
     public:
+        // objects to animate
         std::vector<Animation::Base> List = {};
 
+        // global delay (speed)
         Uint32 Delay = 0;
 
+        // set objects to animate
         void Set(std::vector<Animation::Base> list)
         {
             this->List = list;
         }
 
+        // set global delay
         void Set(Uint32 delay)
         {
             this->Delay = delay;
@@ -354,6 +390,7 @@ namespace BloodSword::Animations
 
         Base() {}
 
+        // clear all animations
         void Clear()
         {
             this->List.clear();
@@ -361,12 +398,14 @@ namespace BloodSword::Animations
             this->Delay = 0;
         }
 
+        // add animation to queue
         void Add(Animation::Base &animation)
         {
             this->List.push_back(animation);
         }
     };
 
+    // process all animations in the list
     bool Step(Scene::Base &scene, Animations::Base &animations, bool delay = true)
     {
         auto done = true;

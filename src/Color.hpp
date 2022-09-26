@@ -5,6 +5,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
+// functions and classes for handling SDL colors
 namespace BloodSword::Color
 {
     Uint8 R(Uint32 c) { return (Uint8)((c & 0xFF0000) >> 16); }
@@ -43,5 +44,4 @@ namespace BloodSword::Color
         return Color::U(color.r, color.g, color.b, color.a);
     }
 }
-
 #endif

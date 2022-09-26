@@ -11,10 +11,12 @@
 #include "Move.hpp"
 #include "Maze.hpp"
 #include "Animation.hpp"
+#include "Engine.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test
 {
+    // user input test
     void Controls(Graphics::Base &graphics)
     {
         if (graphics.Renderer)
@@ -115,6 +117,7 @@ namespace BloodSword::Test
         }
     }
 
+    // map rendering test
     void Map(Graphics::Base &graphics)
     {
         if (graphics.Renderer)
@@ -194,7 +197,7 @@ namespace BloodSword::Test
 
                 Interface::Add(map, scene, party, enemies, 1);
 
-                auto id = (int)scene.Controls.size();
+                auto id = (int)(scene.Controls.size());
                 auto x = map.DrawX;
                 auto y = map.DrawY + map.SizeY * map.TileSize;
 
@@ -400,6 +403,7 @@ namespace BloodSword::Test
         }
     }
 
+    // animation test
     void Animation(Graphics::Base &graphics)
     {
         auto Class = Character::Class::TRICKSTER;
@@ -436,7 +440,7 @@ namespace BloodSword::Test
 
             Interface::Add(map, scene, party, enemies, 3);
 
-            auto id = scene.Controls.size();
+            auto id = (int)(scene.Controls.size());
 
             scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
             scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
@@ -622,6 +626,20 @@ namespace BloodSword::Test
         Free(&fpsTexture);
     }
 
+    // battle order
+    void Queue(Graphics::Base &graphics)
+    {
+        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8),
+                                  Generate::Character(Character::Class::TRICKSTER, 8),
+                                  Generate::Character(Character::Class::SAGE, 8),
+                                  Generate::Character(Character::Class::ENCHANTER, 8)});
+
+        auto enemies = Party::Base();
+
+        // generate a queue based on AWARENESS score
+        Engine::Build(party, enemies, Attribute::Type::AWARENESS);
+    }
+
     void Menu(Graphics::Base &graphics)
     {
         auto width = 640;
@@ -635,13 +653,16 @@ namespace BloodSword::Test
             {Graphics::RichText("00 MENU TEST\n\nDemonstrates the font engine, menu rendering and list box scrolling", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("03 ANIMATION TEST\n\n\nDemonstrates A* path-finding and animation engine", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("EXIT\n\n\nExits the program", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("03 ANIMATION TEST\n\n\nDemonstrates A* path-finding and animation engine", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         auto start = 0;
         auto limit = 3;
         auto last = start + limit;
-        auto options = (int)menu.size();
+        auto options = (int)(menu.size());
+        auto xadjust = 60;
+        auto origin = 64;
+        auto pad = 16;
+        auto dim = 64;
 
         auto input = Controls::User();
 
@@ -651,9 +672,17 @@ namespace BloodSword::Test
         {
             auto scene = Scene::Base();
 
-            scene.Add(Scene::Element(title, 60, 28));
+            scene.Add(Scene::Element(title, xadjust, 28));
 
-            Interface::Add(menu, scene, 64, 64, width, height, start, last, limit, Color::Inactive, Color::Highlight, false);
+            Interface::Add(menu, scene, origin, origin, width, height, start, last, limit, Color::Inactive, Color::Highlight, true);
+
+            auto &lastControl = scene.Controls.back();
+            auto id = lastControl.ID + 1;
+            auto first = Controls::Find(scene.Controls, Controls::Type::CHOICE);
+            auto bottomy = scene.Controls[first + limit - 1].Y + height + pad;
+
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, xadjust, bottomy, dim, dim, Color::Highlight));
 
             if (input.Up)
             {
@@ -672,7 +701,11 @@ namespace BloodSword::Test
 
             if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
             {
-                if (input.Type == Controls::Type::CHOICE)
+                if (input.Type == Controls::Type::EXIT)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::CHOICE)
                 {
                     auto choices = Controls::Find(scene.Controls, Controls::Type::CHOICE);
 
@@ -688,9 +721,6 @@ namespace BloodSword::Test
                         break;
                     case 3:
                         Test::Animation(graphics);
-                        break;
-                    case 4:
-                        done = true;
                         break;
                     default:
                         // do nothing - menu test

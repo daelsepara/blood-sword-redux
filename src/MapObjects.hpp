@@ -7,6 +7,7 @@
 
 namespace BloodSword::Map
 {
+    // the tile's (or its occupant) type
     enum class Object
     {
         NONE = -1,

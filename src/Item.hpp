@@ -11,6 +11,7 @@
 
 namespace BloodSword::Item
 {
+    // item base class
     class Base
     {
     public:
@@ -63,31 +64,37 @@ namespace BloodSword::Item
              Item::Type type,
              std::vector<Item::Property> properties) : Base(name, type, {}, properties, Item::Type::NONE, 1) {}
 
+        // check if item has this property
         bool Has(Item::Property property)
         {
             return BloodSword::Found(this->Properties, property);
         }
 
+        // check if item has this property
         bool Is(Item::Property property)
         {
             return this->Has(property);
         }
 
-        bool Has(Item::Type item, int quantity)
+        // this item contains a type of item and of sufficient quanity
+        bool Has(Item::Type type, int quantity)
         {
-            return (this->Is(Property::CONTAINER) && this->Contains == item && this->Quantity >= quantity && quantity >= 1);
+            return (this->Is(Property::CONTAINER) && this->Contains == type && this->Quantity >= quantity && quantity >= 1);
         }
 
+        // check if item has this attribute
         bool Has(Attribute::Type attribute)
         {
             return this->Attributes.find(attribute) != this->Attributes.end();
         }
 
+        // check if this item contains this type of object
         bool Has(Item::Type item)
         {
             return this->Has(item, 1);
         }
 
+        // add item (of quanity) to this container
         bool Add(Item::Type item, int quantity)
         {
             auto result = false;
@@ -102,6 +109,7 @@ namespace BloodSword::Item
             return result;
         }
 
+        // return attribute-modifier value of this item, if any
         int Modifier(Attribute::Type attribute)
         {
             auto modifier = 0;
@@ -114,6 +122,7 @@ namespace BloodSword::Item
             return modifier;
         }
 
+        // return attribute-modifier value of this item (with specific property), if any
         int Modifier(Attribute::Type attribute, Item::Property property)
         {
             auto modifier = 0;
@@ -126,11 +135,12 @@ namespace BloodSword::Item
             return modifier;
         }
 
-        bool Remove(Item::Type item, int quantity)
+        // remove a quantity of the item from this container
+        bool Remove(Item::Type type, int quantity)
         {
             auto result = false;
 
-            if (this->Has(item, quantity))
+            if (this->Has(type, quantity))
             {
                 this->Quantity -= quantity;
 
@@ -140,11 +150,13 @@ namespace BloodSword::Item
             return result;
         }
 
-        bool Remove(Item::Type item)
+        // remove one unit of this item
+        bool Remove(Item::Type type)
         {
-            return this->Remove(item, 1);
+            return this->Remove(type, 1);
         }
 
+        // remove item property, e.g. remove 'EQUIPPED' property
         bool Remove(Item::Property property)
         {
             auto result = this->Has(property);
@@ -162,6 +174,8 @@ namespace BloodSword::Item
             return result;
         }
 
+        // remove item property, e.g. remove 'FIGHTING PROWESS' attribute, i.e. it will no longer modify
+        // the bearer's FIGHTING PROWESS attribute
         bool Remove(Attribute::Type attribute)
         {
             auto result = this->Has(attribute);

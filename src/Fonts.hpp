@@ -8,12 +8,14 @@
 #include "nlohmann/json.hpp"
 #include "Color.hpp"
 
+// classes and functions for handling fonts
 namespace BloodSword::Fonts
 {
     TTF_Font *Caption = NULL;
     TTF_Font *Normal = NULL;
     TTF_Font *Fixed = NULL;
 
+    // set up font types
     void Initialize(const char *font_ttf, int caption, int normal, int fixed)
     {
         TTF_Init();
@@ -27,6 +29,7 @@ namespace BloodSword::Fonts
         TTF_SetFontKerning(Fonts::Fixed, 0);
     }
 
+    // cleanup fonts used
     void Free()
     {
         if (Fonts::Caption)
@@ -53,6 +56,7 @@ namespace BloodSword::Fonts
         TTF_Quit();
     }
 
+    // load font definitions from settings file
     bool Load(const char *settings)
     {
         auto result = false;

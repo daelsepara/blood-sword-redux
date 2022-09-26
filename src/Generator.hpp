@@ -8,8 +8,10 @@
 #include "Character.hpp"
 #include "Skills.hpp"
 
+// functions for generating characters
 namespace BloodSword::Generate
 {
+    // warriors's attributes based on rank
     void WarriorAttributes(Character::Base &warrior)
     {
         if (warrior.Rank <= 2)
@@ -70,6 +72,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // trickster's attributes based on rank
     void TricksterAttributes(Character::Base &trickster)
     {
         if (trickster.Rank <= 2)
@@ -130,6 +133,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // sage's attributes based on rank
     void SageAttributes(Character::Base &sage)
     {
         if (sage.Rank <= 2)
@@ -190,6 +194,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // enchanter's attributes based on rank
     void EnchanterAttributes(Character::Base &enchanter)
     {
         if (enchanter.Rank <= 2)
@@ -250,6 +255,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // set character-specific skills
     void Skills(Character::Base &character)
     {
         character.Skills.clear();
@@ -279,17 +285,7 @@ namespace BloodSword::Generate
         }
     }
 
-    void Clear(Character::Base &character)
-    {
-        // clear attributes and skills
-        character.Attributes.clear();
-        character.Skills.clear();
-        character.Status.clear();
-        character.Spells.clear();
-        character.Status.clear();
-        character.Items.clear();
-    }
-
+    // set character attributes based on class
     void Attributes(Character::Base &character)
     {
         // set starting attributes scores
@@ -312,6 +308,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // set character rank based on experience points
     void Rank(Character::Base &character)
     {
         // set rank based on experience points and enforce bounds
@@ -320,6 +317,7 @@ namespace BloodSword::Generate
         character.Rank = std::max(1, character.Rank);
     }
 
+    // set character experience points based on rank
     void Experience(Character::Base &character)
     {
         // enforce rank bounds and set starting experience points
@@ -328,6 +326,7 @@ namespace BloodSword::Generate
         character.Experience = (character.Rank - 1) * 250;
     }
 
+    // warrior's starting items
     void WarriorItems(Character::Base &warrior)
     {
         if (warrior.Rank <= 8)
@@ -337,6 +336,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // trickster's starting items
     void TricksterItems(Character::Base &trickster)
     {
         if (trickster.Rank <= 8)
@@ -348,6 +348,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // sage's starting items
     void SageItems(Character::Base &sage)
     {
         if (sage.Rank <= 8)
@@ -359,13 +360,7 @@ namespace BloodSword::Generate
         }
     }
 
-    void Money(Character::Base &character)
-    {
-        character.Rank = std::min(20, character.Rank);
-        character.Rank = std::max(1, character.Rank);
-        character.Items.push_back(Item::Base("MONEY POUCH", Item::Type::POUCH, {Item::Property::CONTAINER}, Item::Type::GOLD, character.Rank * 5));
-    }
-
+    // enchanter's starting items
     void EnchanterItems(Character::Base &enchanter)
     {
         if (enchanter.Rank <= 8)
@@ -375,9 +370,9 @@ namespace BloodSword::Generate
         }
     }
 
+    // set starting items
     void Items(Character::Base &character)
     {
-        // set starting items
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
@@ -397,9 +392,17 @@ namespace BloodSword::Generate
         }
     }
 
+    // set starting gold
+    void Money(Character::Base &character)
+    {
+        character.Rank = std::min(20, character.Rank);
+        character.Rank = std::max(1, character.Rank);
+        character.Items.push_back(Item::Base("MONEY POUCH", Item::Type::POUCH, {Item::Property::CONTAINER}, Item::Type::GOLD, character.Rank * 5));
+    }
+
+    // set character asset
     void Assets(Character::Base &character)
     {
-        // set starting items
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
@@ -419,9 +422,22 @@ namespace BloodSword::Generate
         }
     }
 
-    Character::Base Character(Character::Class characterClass, int rank)
+    // clear character definition
+    void Clear(Character::Base &character)
     {
-        auto character = Character::Base(characterClass, rank);
+        // clear attributes and skills
+        character.Attributes.clear();
+        character.Skills.clear();
+        character.Status.clear();
+        character.Spells.clear();
+        character.Status.clear();
+        character.Items.clear();
+    }
+
+    // generate character based on class and rank
+    Character::Base Character(Character::Class characterClass, int rank, Character::ControlType control = Character::ControlType::PLAYER)
+    {
+        auto character = Character::Base(characterClass, rank, control);
 
         Generate::Experience(character);
 

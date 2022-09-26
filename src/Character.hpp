@@ -75,6 +75,13 @@ namespace BloodSword::Character
         Base(const char *name,
              Character::Class characterClass) : Base(name, characterClass, {}, {}, 100) {}
 
+        Base(Character::Class characterClass, int rank, Character::ControlType control) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100)
+        {
+            this->Rank = rank;
+
+            this->ControlType = control;
+        }
+
         Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100)
         {
             this->Rank = rank;
@@ -340,14 +347,21 @@ namespace BloodSword::Character
             return this->Find(item, property, attribute) != this->Items.end();
         }
 
-        // has any item with specific property
-        Inventory::const_iterator Find(Item::Property property)
+        // has any item with all the properties
+        Inventory::const_iterator Find(std::vector<Item::Property> properties)
         {
             auto result = this->Items.end();
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Has(property))
+                auto has = true;
+
+                for (auto property : properties)
+                {
+                    has &= (*item).Has(property);
+                }
+
+                if (has)
                 {
                     result = item;
 
@@ -356,6 +370,12 @@ namespace BloodSword::Character
             }
 
             return result;
+        }
+
+        // has any item with specific property
+        Inventory::const_iterator Find(Item::Property property)
+        {
+            return this->Find(std::vector<Item::Property>{property});
         }
 
         bool Has(Item::Property property)
@@ -376,6 +396,13 @@ namespace BloodSword::Character
             }
 
             return modifiers;
+        }
+
+        bool IsArmed()
+        {
+            auto weapon = this->Find({Item::Property::WEAPON, Item::Property::EQUIPPED});
+
+            return weapon != this->Items.end() && (*weapon).Type != Item::Type::BOW;
         }
     };
 }

@@ -2,6 +2,7 @@
 
 namespace BloodSword
 {
+    // main loop
     int Main(int argc, char **argv)
     {
         auto graphics = Graphics::Initialize("Blood Sword");

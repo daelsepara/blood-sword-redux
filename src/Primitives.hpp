@@ -92,6 +92,7 @@ namespace BloodSword
         }
     };
 
+    // load an image as an SDL surface
     SDL_Surface *Load(const char *image)
     {
         auto surface = IMG_Load(image);

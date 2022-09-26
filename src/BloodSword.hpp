@@ -11,6 +11,7 @@
 
 namespace BloodSword
 {
+    // initialize all subsytems
     void Initialize(Graphics::Base &graphics)
     {
         Engine::InitializeRNG();
@@ -22,6 +23,7 @@ namespace BloodSword
         Graphics::InitializeVersionOverlay(graphics);
     }
 
+    // shutdown all subsystems
     void Shutdown(Graphics::Base &graphics)
     {
         Fonts::Free();

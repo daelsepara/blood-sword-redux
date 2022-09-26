@@ -13,13 +13,13 @@ namespace BloodSword::Interface
     {
         auto NumControls = Scene.Controls.size();
 
-        for (auto y = Map.MapY; y < Map.MapY + Map.SizeY; y++)
+        for (auto y = Map.Y; y < Map.Y + Map.SizeY; y++)
         {
-            auto CtrlY = y - Map.MapY;
+            auto CtrlY = y - Map.Y;
 
-            for (auto x = Map.MapX; x < Map.MapX + Map.SizeX; x++)
+            for (auto x = Map.X; x < Map.X + Map.SizeX; x++)
             {
-                auto CtrlX = x - Map.MapX;
+                auto CtrlX = x - Map.X;
 
                 auto CtrlUp = NumControls;
                 auto CtrlDn = NumControls;
@@ -329,53 +329,63 @@ namespace BloodSword::Interface
     {
         if (!choices.empty())
         {
-            auto id_start = (int)scene.Controls.size();
+            auto startid = (int)(scene.Controls.size());
             auto end = last - start;
-            auto options = (int)choices.size();
+            auto options = (int)(choices.size());
             auto more = options - last > 0;
-            auto scroll = id_start + (options < limit ? options : limit);
+            auto scroll = startid + (options < limit ? options : limit);
             auto pixels = 2;
-            auto pad = pixels * 6;
             auto offset = pixels * 2;
             auto adjust = pixels * 4;
+            auto pad = pixels * 6;
+            auto bars = options > limit;
+            auto scrollup = bars && start > 0;
+            auto scrolldn = bars && more;
+            auto dim = 64;
+            auto dimadjust = dim + adjust;
+            auto yadjust = (limit - 1) * (h + pad) + (h - dim);
+            auto wadjust = w + adjust;
+            auto xoffset = x + wadjust;
+            auto yoffset = y - offset;
+            auto xpad = x + w + pad;
 
-            for (auto i = 0; i < end; i++)
+            for (auto item = 0; item < end; item++)
             {
-                auto index = start + i;
-                auto id = id_start + i;
-                auto rt = (options > limit && (start > 0 || more)) ? (i == end - 1 && options > limit && more ? (start > 0 ? scroll + 1 : scroll) : scroll) : id;
-                auto up = (i > 0 ? id - 1 : id);
-                auto dn = (i < end - 1 || options > limit || others) ? id + 1 : id;
+                auto id = startid + item;
+                auto rt = scrollup || scrolldn ? (item == end - 1 && scrolldn ? (scrollup ? scroll + 1 : scroll) : scroll) : id;
+                auto up = (item > 0 ? id - 1 : id);
+                auto dn = item < end - 1 ? id + 1 : (others ? (scrollup || scrolldn ? (scrollup && scrolldn ? scroll + 2 : scroll + 1) : id + 1) : (scrollup && scrolldn ? scroll + 2 : (scrolldn ? scroll : id)));
+                auto itemy = y + item * (h + pad);
 
-                scene.Add(Scene::Element(choices[index], x, y + i * (h + pad)));
-                scene.Add(Scene::Element(x, y + i * (h + pad), w, h, 0, border, pixels));
-                scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, y + i * (h + pad) - offset, w + adjust, h + adjust, highlight));
+                scene.Add(Scene::Element(choices[start + item], x, itemy));
+                scene.Add(Scene::Element(x, itemy, w, h, 0, border, pixels));
+                scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, itemy - offset, wadjust, h + adjust, highlight));
             }
 
             if (options > limit)
             {
-                if (start > 0)
+                if (scrollup)
                 {
-                    scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), x + w + pad, y));
+                    scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), xpad, y));
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_UP,
-                        scroll, id_start, scroll, scroll, (others || more ? scroll + 1 : scroll),
-                        x + w + pad - offset, y - offset,
-                        64 + adjust, 64 + adjust,
+                        scroll, startid, scroll, scroll, (more ? scroll + 1 : startid),
+                        xoffset, yoffset,
+                        dimadjust, dimadjust,
                         highlight));
                 }
 
-                if (more)
+                if (scrolldn)
                 {
-                    scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), x + w + pad, y + (limit - 1) * (h + pad) + (h - 64)));
+                    scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), xpad, y + yadjust));
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_DOWN,
                         start > 0 ? scroll + 1 : scroll,
                         end - 1, start > 0 ? scroll + 1 : scroll,
-                        (start > 0 ? scroll : id_start),
-                        (others ? (start > 0 ? scroll + 2 : scroll + 1) : (start > 0 ? scroll + 1 : scroll)),
-                        x + w + pad - offset, y + (limit - 1) * (h + pad) - offset + (h - 64),
-                        64 + adjust, 64 + adjust,
+                        (start > 0 ? scroll : startid),
+                        (others ? (scrollup ? scroll + 2 : scroll + 1) : (scrollup ? scroll + 1 : scroll)),
+                        xoffset, yoffset + yadjust,
+                        dimadjust, dimadjust,
                         highlight));
                 }
             }

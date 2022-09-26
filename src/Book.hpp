@@ -8,6 +8,7 @@
 
 namespace BloodSword::Book
 {
+    // book number
     enum class Number
     {
         None = 0,
@@ -18,6 +19,7 @@ namespace BloodSword::Book
         Book5
     };
 
+    // book location specifier: book and section number pair
     typedef std::pair<Book::Number, int> Destination;
 
     Mapping<Book::Number> Title = {

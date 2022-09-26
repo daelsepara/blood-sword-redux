@@ -12,9 +12,11 @@ namespace BloodSword::Party
     class Base
     {
     private:
+        // members in the party
         std::vector<Character::Base> Members = {};
 
     public:
+        // current book and section number
         Book::Destination Location = {Book::Number::None, -1};
 
         Base() {}
@@ -23,16 +25,19 @@ namespace BloodSword::Party
 
         Base(Character::Base character) : Members(std::vector<Character::Base>({character})) {}
 
+        // add character to party
         void Add(Character::Base &character)
         {
             this->Members.push_back(character);
         }
 
+        // number of characters in the party
         int Count()
         {
             return (int)(this->Members.size());
         }
 
+        // access party member by index
         Character::Base &operator[](int index)
         {
             if (index < 0 || index > this->Count() - 1)
@@ -43,6 +48,7 @@ namespace BloodSword::Party
             return this->Members[index];
         }
 
+        // check if a specific character class is present in party
         std::vector<Character::Base>::const_iterator Find(Character::Class characterClass)
         {
             auto found = this->Members.end();
@@ -60,11 +66,13 @@ namespace BloodSword::Party
             return found;
         }
 
+        // check if party has a member of a specific character class
         bool Has(Character::Class characterClass)
         {
             return this->Find(characterClass) != this->Members.end();
         }
 
+        // access party by character class
         Character::Base &operator[](Character::Class characterClass)
         {
             if (!this->Has(characterClass))
