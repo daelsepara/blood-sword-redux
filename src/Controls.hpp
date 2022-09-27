@@ -25,6 +25,7 @@ namespace BloodSword::Controls
         MAP_RIGHT,
         MAP_EXIT,
         BACK,
+        RESET,
         CONFIRM,
         ROLL,
         PLAYER,

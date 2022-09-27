@@ -629,15 +629,171 @@ namespace BloodSword::Test
     // battle order
     void Queue(Graphics::Base &graphics)
     {
-        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8),
-                                  Generate::Character(Character::Class::TRICKSTER, 8),
-                                  Generate::Character(Character::Class::SAGE, 8),
-                                  Generate::Character(Character::Class::ENCHANTER, 8)});
+        auto dim = 8;
 
-        auto enemies = Party::Base();
+        auto map = Map::Base(dim, dim);
+
+        // generate map
+        for (auto y = 0; y < dim; y++)
+        {
+            for (auto x = 0; x < dim; x++)
+            {
+                map.Put(x, y, Map::Object::PASSABLE, Asset::Type::NONE);
+            }
+        }
+
+        for (auto i = 0; i < dim; i++)
+        {
+            map.Put(i, 0, Map::Object::OBSTACLE, Asset::Type::WALL);
+            map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
+            map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
+            map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
+        }
+
+        // create party
+        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
+                                  Generate::Character(Character::Class::TRICKSTER, 2),
+                                  Generate::Character(Character::Class::SAGE, 2),
+                                  Generate::Character(Character::Class::ENCHANTER, 2)});
+
+        // starting locations
+        map.Put(1, 1, Map::Object::PLAYER, 0);
+        map.Put(map.Width - 2, 1, Map::Object::PLAYER, 1);
+        map.Put(1, map.Height - 2, Map::Object::PLAYER, 2);
+        map.Put(map.Width - 2, map.Height - 2, Map::Object::PLAYER, 3);
+
+        auto captionw = 320;
+
+        // initialize captions
+        auto characters = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
+
+        auto captions = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("Move character", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("Reset starting locations", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("Back to test suite", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
 
         // generate a queue based on AWARENESS score
-        Engine::Build(party, enemies, Attribute::Type::AWARENESS);
+        auto order = Engine::Build(party, Attribute::Type::AWARENESS);
+
+        auto character = 0;
+
+        auto blinking = false;
+
+        auto input = Controls::User();
+
+        auto animating = false;
+
+        auto move = false;
+
+        auto done = false;
+
+        auto src = Point();
+
+        while (!done)
+        {
+            auto scene = Scene::Base();
+
+            auto overlay = Scene::Base();
+
+            Interface::Add(map, scene, party, 3);
+
+            auto id = scene.Controls.size();
+
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize));
+            scene.Add(Controls::Base(Controls::Type::MOVE, id, id, id + 1, id - map.SizeX, id, map.DrawX, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::RESET, id + 1, id, id + 2, id - map.SizeX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+
+            if (input.Current >= 0 && input.Current < scene.Controls.size())
+            {
+                auto &control = scene.Controls[input.Current];
+
+                if (control.OnMap)
+                {
+                    if (order[character].Type == Character::ControlType::PLAYER)
+                    {
+                        src = map.Find(Map::Object::PLAYER, order[character].ID);
+
+                        if (map.IsValid(src))
+                        {
+                            auto dst = control.Map;
+
+                            auto path = Move::FindPath(map, src, dst);
+
+                            auto valid = Move::Count(map, path, false);
+
+                            if (valid > 0)
+                            {
+                                auto first = path.Points.begin();
+
+                                auto moves = std::min(valid + 1, party[order[character].ID].Moves);
+
+                                auto trajectory = std::vector<Point>(first, first + moves);
+
+                                for (auto i = 1; i < path.Points.size() - 1; i++)
+                                {
+                                    auto &point = path.Points[i];
+
+                                    auto x = map.DrawX + point.X * map.TileSize;
+
+                                    auto y = map.DrawY + point.Y * map.TileSize;
+
+                                    overlay.Add(Scene::Element(x, y, map.TileSize, map.TileSize, Color::Inactive));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (animating)
+            {
+                // TODO: process animation
+                animating = false;
+            }
+            else
+            {
+                if (blinking)
+                {
+                    // blink cursor
+                }
+
+                blinking = !blinking;
+
+                if (move)
+                {
+                    // draw path to destination
+                }
+
+                input = Input::WaitForInput(graphics, scene, overlay, input);
+
+                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                {
+                    if (input.Type == Controls::Type::EXIT)
+                    {
+                        done = true;
+                    }
+                }
+            }
+
+            // TODO: move to next character in queue
+            if (character > order.size())
+            {
+                character = 0;
+            }
+        }
+
+        Free(captions);
+
+        Free(characters);
     }
 
     void Menu(Graphics::Base &graphics)
@@ -653,10 +809,11 @@ namespace BloodSword::Test
             {Graphics::RichText("00 MENU TEST\n\nDemonstrates the font engine, menu rendering and list box scrolling", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("03 ANIMATION TEST\n\n\nDemonstrates A* path-finding and animation engine", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("03 ANIMATION TEST\n\n\nDemonstrates A* path-finding and animation engine", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("04 BATTLE ORDER\n\n\nDemonstrates party battle orders", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         auto start = 0;
-        auto limit = 3;
+        auto limit = 4;
         auto last = start + limit;
         auto options = (int)(menu.size());
         auto xadjust = 60;
@@ -721,6 +878,9 @@ namespace BloodSword::Test
                         break;
                     case 3:
                         Test::Animation(graphics);
+                        break;
+                    case 4:
+                        Test::Queue(graphics);
                         break;
                     default:
                         // do nothing - menu test

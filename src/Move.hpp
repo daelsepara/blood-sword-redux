@@ -93,7 +93,7 @@ namespace BloodSword::Move
         {
             Map::Tile &Tile = map[location];
 
-            auto NotOccupied = !Tile.IsOccupied() && !Tile.IsTemporarilyBlocked();
+            auto NotOccupied = !Tile.IsOccupied() && !Tile.IsBlocked();
 
             auto IsValid = (Unrestricted || NotOccupied);
 

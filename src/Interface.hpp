@@ -165,6 +165,13 @@ namespace BloodSword::Interface
         }
     }
 
+    void Add(Map::Base &Map, Scene::Base &Scene, Party::Base &Party, int BottomControls)
+    {
+        auto Enemies = Party::Base();
+
+        Interface::Add(Map, Scene, Party, Enemies, BottomControls);
+    }
+
     // create character attributes text box
     SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap)
     {
