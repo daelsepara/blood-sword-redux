@@ -65,7 +65,7 @@ namespace BloodSword::Graphics
 
             if (graphics.Renderer)
             {
-                SDL_SetRenderDrawBlendMode(graphics.Renderer, SDL_BLENDMODE_NONE);
+                SDL_SetRenderDrawBlendMode(graphics.Renderer, SDL_BLENDMODE_BLEND);
             }
 
             if (!graphics.Window || !graphics.Renderer)

@@ -76,6 +76,11 @@ namespace BloodSword
             return Point(this->X * p.X, this->Y * p.Y);
         }
 
+        Point operator+(int p)
+        {
+            return Point(this->X + p, this->Y + p);
+        }
+
         Point operator*(int p)
         {
             return Point(this->X * p, this->Y * p);

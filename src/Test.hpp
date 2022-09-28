@@ -662,6 +662,8 @@ namespace BloodSword::Test
         map.Put(1, map.Height - 2, Map::Object::PLAYER, 2);
         map.Put(map.Width - 2, map.Height - 2, Map::Object::PLAYER, 3);
 
+        auto draw = Point(map.DrawX, map.DrawY);
+
         auto captionw = 320;
 
         // initialize captions
@@ -678,6 +680,52 @@ namespace BloodSword::Test
              Graphics::RichText("Reset starting locations", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
              Graphics::RichText("Back to test suite", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
 
+        auto RegenerateScene = [&](Map::Base &map)
+        {
+            auto scene = Scene::Base();
+
+            Interface::Add(map, scene, party, 3);
+
+            auto id = scene.Controls.size();
+
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize));
+            scene.Add(Controls::Base(Controls::Type::MOVE, id, id, id + 1, id - map.SizeX, id, map.DrawX, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::RESET, id + 1, id, id + 2, id - map.SizeX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+
+            return scene;
+        };
+
+        auto SetupAnimation = [&](Character::Base &character)
+        {
+            // set frame, type, and delay
+            return Animation::Base(
+                {Animation::Frame(Asset::Get(character.Asset))},
+                {Animation::Type::MOVE},
+                {},
+                1,
+                16,
+                false);
+        };
+
+        auto Blink = [&](Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
+        {
+            // blink cursor
+            if (order[character].Type == Character::ControlType::PLAYER)
+            {
+                auto blink = map.Find(Map::Object::PLAYER, order[character].ID);
+
+                if (map.IsValid(blink))
+                {
+                    auto screen = (draw + blink * map.TileSize) + 4;
+
+                    overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::O(Color::Active, 0x50), 2));
+                }
+            }
+        };
+
         // generate a queue based on AWARENESS score
         auto order = Engine::Build(party, Attribute::Type::AWARENESS);
 
@@ -693,34 +741,34 @@ namespace BloodSword::Test
 
         auto done = false;
 
-        auto src = Point();
+        auto scene = RegenerateScene(map);
+
+        auto movement = Animation::Base();
+
+        if (order[character].Type == Character::ControlType::PLAYER)
+        {
+            movement = SetupAnimation(party[order[character].ID]);
+
+            // scale movement scale to map dimensions
+            movement.Scale = Point(map.TileSize, map.TileSize);
+
+            movement.Delta = Point(8, 8);
+        }
 
         while (!done)
         {
-            auto scene = Scene::Base();
-
             auto overlay = Scene::Base();
 
-            Interface::Add(map, scene, party, 3);
-
-            auto id = scene.Controls.size();
-
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Controls::Base(Controls::Type::MOVE, id, id, id + 1, id - map.SizeX, id, map.DrawX, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-            scene.Add(Controls::Base(Controls::Type::RESET, id + 1, id, id + 2, id - map.SizeX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-
-            if (input.Current >= 0 && input.Current < scene.Controls.size())
+            if (!animating && input.Current >= 0 && input.Current < scene.Controls.size())
             {
                 auto &control = scene.Controls[input.Current];
 
                 if (control.OnMap)
                 {
-                    if (order[character].Type == Character::ControlType::PLAYER)
+                    // draw path to destination
+                    if (move && order[character].Type == Character::ControlType::PLAYER)
                     {
-                        src = map.Find(Map::Object::PLAYER, order[character].ID);
+                        auto src = map.Find(Map::Object::PLAYER, order[character].ID);
 
                         if (map.IsValid(src))
                         {
@@ -738,7 +786,7 @@ namespace BloodSword::Test
 
                                 auto trajectory = std::vector<Point>(first, first + moves);
 
-                                for (auto i = 1; i < path.Points.size() - 1; i++)
+                                for (auto i = 0; i < path.Points.size() - 1; i++)
                                 {
                                     auto &point = path.Points[i];
 
@@ -746,7 +794,14 @@ namespace BloodSword::Test
 
                                     auto y = map.DrawY + point.Y * map.TileSize;
 
-                                    overlay.Add(Scene::Element(x, y, map.TileSize, map.TileSize, Color::Inactive));
+                                    if (i == 0)
+                                    {
+                                        overlay.Add(Scene::Element(x + 4, y + 4, map.TileSize - 8, map.TileSize - 8, 0, Color::O(Color::Inactive, 0x50), 2));
+                                    }
+                                    else
+                                    {
+                                        overlay.Add(Scene::Element(x, y, map.TileSize, map.TileSize, Color::O(Color::Inactive, 0x50)));
+                                    }
                                 }
                             }
                         }
@@ -756,28 +811,108 @@ namespace BloodSword::Test
 
             if (animating)
             {
-                // TODO: process animation
-                animating = false;
+                animating = !Graphics::Animate(graphics, scene, movement);
+
+                Graphics::Refresh(graphics);
+
+                if (!animating)
+                {
+                    if (order[character].Type == Character::ControlType::PLAYER)
+                    {
+                        map.Put(movement.Current, Map::Object::PLAYER, order[character].ID);
+                    }
+
+                    Input::Flush();
+
+                    input.Current = -1;
+
+                    input.Selected = false;
+
+                    scene = RegenerateScene(map);
+
+                    if (character < order.size() - 1)
+                    {
+                        character++;
+                    }
+                    else
+                    {
+                        character = 0;
+                    }
+                }
             }
             else
             {
-                if (blinking)
+                if (!move)
                 {
-                    // blink cursor
-                }
+                    if (blinking)
+                    {
+                        // blink cursor
+                        Blink(map, order, character, overlay);
+                    }
 
-                blinking = !blinking;
-
-                if (move)
-                {
-                    // draw path to destination
+                    blinking = !blinking;
                 }
 
                 input = Input::WaitForInput(graphics, scene, overlay, input);
 
                 if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                 {
-                    if (input.Type == Controls::Type::EXIT)
+                    if (input.Type == Controls::Type::MOVE)
+                    {
+                        // toggles between move/hover mode
+                        move = !move;
+                    }
+                    else if (input.Type == Controls::Type::DESTINATION)
+                    {
+                        // setup animation
+                        if (move)
+                        {
+                            if (input.Current >= 0 && input.Current < scene.Controls.size())
+                            {
+                                auto &control = scene.Controls[input.Current];
+
+                                if (control.OnMap && map.IsValid(control.Map) && order[character].Type == Character::ControlType::PLAYER)
+                                {
+                                    auto &end = control.Map;
+
+                                    auto start = map.Find(Map::Object::PLAYER, order[character].ID);
+
+                                    // find a path to the exit
+                                    auto path = Move::FindPath(map, start, end);
+
+                                    auto validMoves = Move::Count(map, path, false);
+
+                                    if (validMoves > 0)
+                                    {
+                                        map.Put(start, Map::Object::NONE, -1);
+
+                                        map.Put(end, Map::Object::NONE, -1);
+
+                                        scene = RegenerateScene(map);
+
+                                        // setup animation
+                                        movement.Set(draw, start);
+
+                                        auto first = path.Points.begin();
+
+                                        // add destination to the count
+                                        auto moves = std::min(validMoves + 1, party[order[character].ID].Moves);
+
+                                        movement.Frames = {Animation::Frame(Asset::Get(party[order[character].ID].Asset))};
+
+                                        movement.Path = std::vector<Point>(first, first + moves);
+
+                                        movement.Reset();
+
+                                        animating = true;
+                                    }
+                                }
+                            }
+
+                            move = !move;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::EXIT)
                     {
                         done = true;
                     }
