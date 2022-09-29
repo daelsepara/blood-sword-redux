@@ -84,6 +84,33 @@ namespace BloodSword::Move
         return a->X == b->X && a->Y == b->Y;
     }
 
+    // check if location is traversible
+    bool IsPassable(Map::Base &map, Point &location, bool IsEnemy, bool Unrestricted)
+    {
+        auto result = false;
+
+        if (map.IsValid(location))
+        {
+            Map::Tile &Tile = map[location];
+
+            auto NotOccupied = !Tile.IsOccupied() && !Tile.IsBlocked();
+
+            auto IsValid = (Unrestricted || NotOccupied);
+
+            auto IsPassable = Tile.IsPassable() && IsValid;
+
+            auto IsPassableToEnemy = IsEnemy && Tile.IsPassableToEnemy() && IsValid;
+
+            auto IsExit = !IsEnemy && Tile.IsExit() && IsValid;
+
+            auto IsTarget = IsEnemy && Tile.IsPlayer();
+
+            result = (IsPassable || IsPassableToEnemy || IsExit || IsTarget);
+        }
+
+        return result;
+    }
+
     // check if location is traversable or if it is the target destination
     bool IsPassable(Map::Base &map, Smart<Move::Node> &target, Point &location, bool IsEnemy, bool Unrestricted)
     {
@@ -99,15 +126,9 @@ namespace BloodSword::Move
 
             auto IsDestination = Move::Is(target, location) && IsValid;
 
-            auto IsPassable = Tile.IsPassable() && IsValid;
+            auto IsPassable = Move::IsPassable(map, location, IsEnemy, Unrestricted);
 
-            auto IsPassableToEnemy = IsEnemy && Tile.IsPassableToEnemy() && IsValid;
-
-            auto IsExit = !IsEnemy && Tile.IsExit() && IsValid;
-
-            auto IsTarget = IsEnemy && Tile.IsPlayer();
-
-            result = (IsPassable || IsDestination || IsPassableToEnemy || IsExit || IsTarget);
+            result = (IsPassable || IsDestination);
         }
 
         return result;
@@ -281,6 +302,28 @@ namespace BloodSword::Move
         }
 
         return count;
+    }
+
+    // check if src is not blocked
+    bool Available(Map::Base &map, Point src)
+    {
+        auto traversable = std::vector<Point>();
+
+        if (map.Width > 0 && map.Height > 0)
+        {
+            for (auto &neighbor : Map::Directions)
+            {
+                auto next = src + neighbor;
+
+                // Check if within map boundaries and if passable
+                if (Move::IsPassable(map, next, false, false))
+                {
+                    traversable.push_back(next);
+                }
+            }
+        }
+
+        return !traversable.empty();
     }
 }
 #endif

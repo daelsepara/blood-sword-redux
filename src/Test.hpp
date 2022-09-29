@@ -165,11 +165,7 @@ namespace BloodSword::Test
                  Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
                  Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
 
-            std::vector<SDL_Texture *> stats = {
-                Interface::Attributes(graphics, party[0], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party[1], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party[2], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw),
-                Interface::Attributes(graphics, party[3], Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw)};
+            auto stats = Interface::Attributes(graphics, party, Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw);
 
             auto background = 0;
             auto prev_background = -1;
@@ -656,11 +652,14 @@ namespace BloodSword::Test
                                   Generate::Character(Character::Class::SAGE, 2),
                                   Generate::Character(Character::Class::ENCHANTER, 2)});
 
-        // starting locations
-        map.Put(1, 1, Map::Object::PLAYER, 0);
-        map.Put(map.Width - 2, 1, Map::Object::PLAYER, 1);
-        map.Put(1, map.Height - 2, Map::Object::PLAYER, 2);
-        map.Put(map.Width - 2, map.Height - 2, Map::Object::PLAYER, 3);
+        std::vector<Point> origins = {
+            Point(1, 1),
+            Point(map.Width - 2, 1),
+            Point(1, map.Height - 2),
+            Point(map.Width - 2, map.Height - 2),
+        };
+
+        auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
 
         auto draw = Point(map.DrawX, map.DrawY);
 
@@ -698,6 +697,21 @@ namespace BloodSword::Test
             return scene;
         };
 
+        auto ResetLocations = [&](Map::Base &map, Party::Base &party, std::vector<Point> origins)
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                auto location = map.Find(Map::Object::PLAYER, i);
+
+                if (!location.IsNone())
+                {
+                    map.Put(location, Map::Object::NONE, -1);
+                }
+
+                map.Put(origins[i], Map::Object::PLAYER, i);
+            }
+        };
+
         auto SetupAnimation = [&](Character::Base &character)
         {
             // set frame, type, and delay
@@ -710,10 +724,15 @@ namespace BloodSword::Test
                 false);
         };
 
+        auto IsPlayer = [&](Engine::Queue &queue, int character)
+        {
+            return queue[character].Type == Character::ControlType::PLAYER;
+        };
+
         auto Blink = [&](Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
         {
             // blink cursor
-            if (order[character].Type == Character::ControlType::PLAYER)
+            if (IsPlayer(order, character))
             {
                 auto blink = map.Find(Map::Object::PLAYER, order[character].ID);
 
@@ -725,6 +744,9 @@ namespace BloodSword::Test
                 }
             }
         };
+
+        // set starting locations
+        ResetLocations(map, party, origins);
 
         // generate a queue based on AWARENESS score
         auto order = Engine::Build(party, Attribute::Type::AWARENESS);
@@ -745,7 +767,7 @@ namespace BloodSword::Test
 
         auto movement = Animation::Base();
 
-        if (order[character].Type == Character::ControlType::PLAYER)
+        if (IsPlayer(order, character))
         {
             movement = SetupAnimation(party[order[character].ID]);
 
@@ -755,9 +777,34 @@ namespace BloodSword::Test
             movement.Delta = Point(8, 8);
         }
 
+        auto pad = 10;
+        auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
+        auto objecty = map.DrawY + pad;
+
         while (!done)
         {
             auto overlay = Scene::Base();
+
+            if (!animating)
+            {
+                if (IsPlayer(order, character))
+                {
+                    auto src = map.Find(Map::Object::PLAYER, order[character].ID);
+
+                    if (!src.IsNone())
+                    {
+                        if (!Move::Available(map, src))
+                        {
+                            character++;
+
+                            if (character >= order.size())
+                            {
+                                character = 0;
+                            }
+                        }
+                    }
+                }
+            }
 
             if (!animating && input.Current >= 0 && input.Current < scene.Controls.size())
             {
@@ -766,7 +813,7 @@ namespace BloodSword::Test
                 if (control.OnMap)
                 {
                     // draw path to destination
-                    if (move && order[character].Type == Character::ControlType::PLAYER)
+                    if (move && IsPlayer(order, character))
                     {
                         auto src = map.Find(Map::Object::PLAYER, order[character].ID);
 
@@ -806,6 +853,21 @@ namespace BloodSword::Test
                             }
                         }
                     }
+                    else
+                    {
+                        if (map[control.Map].Occupant == Map::Object::PLAYER)
+                        {
+                            if (map[control.Map].Id >= 0 && map[control.Map].Id < party.Count())
+                            {
+                                // stats
+                                auto bounds = 0;
+
+                                SDL_QueryTexture(stats[map[control.Map].Id], NULL, NULL, NULL, &bounds);
+
+                                overlay.Add(Scene::Element(stats[map[control.Map].Id], objectx, objecty, bounds, 0, Color::Background, Color::Active, 4));
+                            }
+                        }
+                    }
                 }
             }
 
@@ -817,7 +879,7 @@ namespace BloodSword::Test
 
                 if (!animating)
                 {
-                    if (order[character].Type == Character::ControlType::PLAYER)
+                    if (IsPlayer(order, character))
                     {
                         map.Put(movement.Current, Map::Object::PLAYER, order[character].ID);
                     }
@@ -871,7 +933,7 @@ namespace BloodSword::Test
                             {
                                 auto &control = scene.Controls[input.Current];
 
-                                if (control.OnMap && map.IsValid(control.Map) && order[character].Type == Character::ControlType::PLAYER)
+                                if (control.OnMap && map.IsValid(control.Map) && IsPlayer(order, character))
                                 {
                                     auto &end = control.Map;
 
@@ -912,6 +974,13 @@ namespace BloodSword::Test
                             move = !move;
                         }
                     }
+                    else if (input.Type == Controls::Type::RESET)
+                    {
+                        // reset starting locations
+                        ResetLocations(map, party, origins);
+
+                        scene = RegenerateScene(map);
+                    }
                     else if (input.Type == Controls::Type::EXIT)
                     {
                         done = true;
@@ -925,6 +994,8 @@ namespace BloodSword::Test
                 character = 0;
             }
         }
+
+        Free(stats);
 
         Free(captions);
 

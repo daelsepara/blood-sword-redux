@@ -173,13 +173,29 @@ namespace BloodSword::Interface
     }
 
     // create character attributes text box
-    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap)
+    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap, bool addClass = false)
     {
         SDL_Texture *texture = NULL;
 
-        std::string labels = "RNK\nFPR\nAWR\nPSY\nEND\nDMG\nARM";
+        std::string labels;
+        std::string stats;
 
-        std::string stats = std::to_string(character.Rank);
+        if (character.ControlType == Character::ControlType::PLAYER)
+        {
+            if (addClass)
+            {
+                labels = '\n';
+                stats = '\n';                
+            }
+
+            labels += "RNK\nFPR\nAWR\nPSY\nEND\nDMG\nARM";
+
+            stats += std::to_string(character.Rank);
+        }
+        else if (character.ControlType == Character::ControlType::NPC)
+        {
+            labels = "FPR\nAWR\nPSY\nEND\nDMG\nARM";
+        }
 
         auto labelsw = 0;
 
@@ -291,6 +307,31 @@ namespace BloodSword::Interface
                     BloodSword::Free(&convertedSurfaceStats);
                 }
 
+                // add character class if player character
+                if (character.ControlType == Character::ControlType::PLAYER && addClass)
+                {
+                    auto surfaceClass = Graphics::CreateSurfaceText(Character::ClassMapping[character.Class], font, Color::S(labelColor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
+
+                    if (surfaceClass)
+                    {
+                        labelsRect.w = surface->w;
+                        labelsRect.h = surface->h;
+                        labelsRect.x = 0;
+                        labelsRect.y = 0;
+
+                        auto convertedSurfaceClass = SDL_ConvertSurface(surfaceClass, surface->format, 0);
+
+                        if (convertedSurfaceClass)
+                        {
+                            SDL_SetSurfaceAlphaMod(convertedSurfaceClass, SDL_ALPHA_OPAQUE);
+                            SDL_BlitSurface(convertedSurfaceClass, NULL, surface, &labelsRect);
+                            BloodSword::Free(&convertedSurfaceClass);
+                        }
+
+                        BloodSword::Free(&surfaceClass);
+                    }
+                }
+
                 texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
 
                 BloodSword::Free(&surface);
@@ -301,6 +342,25 @@ namespace BloodSword::Interface
         }
 
         return texture;
+    }
+
+    std::vector<SDL_Texture *> Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap, bool addClass = false)
+    {
+        std::vector<SDL_Texture *> textures = {};
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto &character = party[i];
+
+            auto texture = Interface::Attributes(graphics, character, font, labelColor, statsColor, style, wrap, addClass);
+
+            if (texture)
+            {
+                textures.push_back(texture);
+            }
+        }
+
+        return textures;
     }
 
     // clip rendering outside of map area

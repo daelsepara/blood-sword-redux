@@ -95,6 +95,12 @@ namespace BloodSword
         {
             return Point(this->X / p, this->Y / p);
         }
+
+        // check if point is a valid map coordinate
+        bool IsNone()
+        {
+            return *this == Point(-1, -1);
+        }
     };
 
     // load an image as an SDL surface
