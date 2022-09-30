@@ -66,7 +66,7 @@ namespace BloodSword::Map
         // tile is occupied
         bool IsOccupied()
         {
-            return this->Occupant != Map::Object::NONE;
+            return this->Occupant != Map::Object::NONE || this->IsTemporarilyBlocked();
         }
 
         // tile is not occupied and is traversable

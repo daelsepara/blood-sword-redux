@@ -82,8 +82,22 @@ namespace BloodSword::Scene
 
         Element(SDL_Texture *texture,
                 int x, int y,
-                int bounds, int offset,
-                Uint32 background) : Element(texture, x, y, bounds, offset, background, 0, 0) {}
+                Uint32 background,
+                Uint32 border,
+                int borderSize) : Texture(texture),
+                                  Background(background),
+                                  Border(border),
+                                  X(x), Y(y),
+                                  Offset(0),
+                                  BorderSize(borderSize)
+        {
+            if (texture)
+            {
+                SDL_QueryTexture(texture, NULL, NULL, &this->W, &this->H);
+
+                this->Bounds = this->H;
+            }
+        }
 
         Element(SDL_Texture *texture,
                 int x, int y,
@@ -99,12 +113,17 @@ namespace BloodSword::Scene
             this->Bounds = this->H;
         }
 
-        Element(SDL_Texture *texture, Point &point) : Element(texture, point.X, point.Y) {}
+        Element(SDL_Texture *texture, Point point) : Element(texture, point.X, point.Y) {}
 
         Element(int x, int y, int w, int h,
                 Uint32 background,
                 Uint32 border,
                 int borderSize) : Element(NULL, x, y, h, 0, w, h, background, border, borderSize) {}
+
+        Element(Point point, int w, int h,
+                Uint32 background,
+                Uint32 border,
+                int borderSize) : Element(point.X, point.Y, w, h, background, border, borderSize) {}
 
         Element(int x, int y, int w, int h,
                 Uint32 background) : Element(NULL, x, y, h, 0, w, h, background, 0, 0) {}
@@ -155,7 +174,7 @@ namespace BloodSword::Scene
 
         Base(SDL_Texture *texture, int x, int y) : Elements(std::vector<Scene::Element>({Scene::Element(texture, x, y)})) {}
 
-        Base(SDL_Texture *texture, Point &point) : Base(texture, point.X, point.Y) {}
+        Base(SDL_Texture *texture, Point point) : Base(texture, point.X, point.Y) {}
 
         Base() {}
     };

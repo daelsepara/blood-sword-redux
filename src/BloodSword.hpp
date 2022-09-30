@@ -21,11 +21,15 @@ namespace BloodSword
         Fonts::Load("font-settings.json");
 
         Graphics::InitializeVersionOverlay(graphics);
+
+        Interface::Initialize(graphics);
     }
 
     // shutdown all subsystems
     void Shutdown(Graphics::Base &graphics)
     {
+        Interface::Shutdown();
+
         Fonts::Free();
 
         Asset::Unload();

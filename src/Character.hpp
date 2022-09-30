@@ -53,11 +53,14 @@ namespace BloodSword::Character
              Character::Class characterClass,
              Characteristics attributes,
              Abilities skills,
-             int moves) : Attributes(attributes),
-                          Skills(skills),
-                          Class(characterClass),
-                          Name(name),
-                          Moves(moves) {}
+             int moves,
+             int rank) : Attributes(attributes),
+                         Skills(skills),
+                         ControlType(ControlType::PLAYER),
+                         Class(characterClass),
+                         Name(name),
+                         Moves(moves),
+                         Rank(rank) {}
 
         Base(const char *name,
              Character::Class characterClass,
@@ -66,28 +69,29 @@ namespace BloodSword::Character
                                       characterClass,
                                       attributes,
                                       skills,
-                                      100) {}
+                                      100,
+                                      1) {}
 
         Base(const char *name,
              Character::Class characterClass,
-             Characteristics attributes) : Base(name, characterClass, attributes, {}, 100) {}
+             Characteristics attributes) : Base(name, characterClass, attributes, {}, 100, 2) {}
 
         Base(const char *name,
-             Character::Class characterClass) : Base(name, characterClass, {}, {}, 100) {}
+             Character::Class characterClass) : Base(name, characterClass, {}, {}, 100, 2) {}
 
-        Base(Character::Class characterClass, int rank, Character::ControlType control) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100)
-        {
-            this->Rank = rank;
+        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100, 2) {}
 
-            this->ControlType = control;
-        }
+        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100, 2) {}
 
-        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100)
-        {
-            this->Rank = rank;
-        }
-
-        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100) {}
+        Base(const char *name,
+             Characteristics attributes,
+             Character::ControlType control,
+             Abilities skills,
+             int moves) : Attributes(attributes),
+                          Skills(skills),
+                          ControlType(control),
+                          Name(name),
+                          Moves(moves) {}
 
         bool Has(Skills::Type skill)
         {

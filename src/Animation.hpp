@@ -51,7 +51,7 @@ namespace BloodSword::Animation
         // current location (if MOVE type)
         Point Current = Point();
 
-        // movement scaling (X, Y): (1, 1) if on screen, (DX, DY) if on the map 
+        // movement scaling (X, Y): (1, 1) if on screen, (DX, DY) if on the map
         Point Scale = Point(1, 1);
 
         // Offset from Current (location), used in MOVE type animation
@@ -304,7 +304,7 @@ namespace BloodSword::Animation
     }
 
     // update the animation on screen (MOVE, FRAME, both)
-    bool Step(Scene::Base &scene, Animation::Base &animation, bool delay = true)
+    bool Step(Scene::Base &scene, Animation::Base &animation, bool delay = true, bool trail = false)
     {
         auto done = false;
 
@@ -337,9 +337,20 @@ namespace BloodSword::Animation
 
             if (animation.Frame >= 0 && animation.Frame < animation.Frames.size())
             {
-                auto location = animation.Origin + animation.Current * animation.Scale + animation.Offset;
+                // add trail to movement
+                if (trail && animation.Is(Type::MOVE))
+                {
+                    for (auto i = animation.Move + 1; i < animation.Path.size() - 1; i++)
+                    {
+                        auto trails = animation.Origin + animation.Path[i] * animation.Scale;
+
+                        scene.Add(Scene::Element(trails, 64, 64, Color::O(Color::Inactive, 0x50), 0, 0));
+                    }
+                }
 
                 // add sprite to scene
+                auto location = animation.Origin + animation.Current * animation.Scale + animation.Offset;
+
                 scene.Add(Scene::Element(animation.Frames[animation.Frame].Texture, location));
             }
 
@@ -406,7 +417,7 @@ namespace BloodSword::Animations
     };
 
     // process all animations in the list
-    bool Step(Scene::Base &scene, Animations::Base &animations, bool delay = true)
+    bool Step(Scene::Base &scene, Animations::Base &animations, bool delay = true, bool trail = false)
     {
         auto done = true;
 
@@ -431,13 +442,13 @@ namespace BloodSword::Animations
                 {
                     moves++;
 
-                    movement &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay));
+                    movement &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay), trail);
                 }
                 else
                 {
                     frames++;
 
-                    frame &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay));
+                    frame &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay), trail);
                 }
             }
 

@@ -70,6 +70,8 @@ namespace BloodSword::Generate
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 1));
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
+
+        warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // trickster's attributes based on rank
@@ -131,6 +133,8 @@ namespace BloodSword::Generate
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
         }
+
+        trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // sage's attributes based on rank
@@ -192,6 +196,8 @@ namespace BloodSword::Generate
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
+
+        sage.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // enchanter's attributes based on rank
@@ -253,6 +259,8 @@ namespace BloodSword::Generate
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 2));
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
+
+        enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // set character-specific skills
@@ -435,9 +443,9 @@ namespace BloodSword::Generate
     }
 
     // generate character based on class and rank
-    Character::Base Character(Character::Class characterClass, int rank, Character::ControlType control = Character::ControlType::PLAYER)
+    Character::Base Character(Character::Class characterClass, int rank)
     {
-        auto character = Character::Base(characterClass, rank, control);
+        auto character = Character::Base(characterClass, rank);
 
         Generate::Experience(character);
 
@@ -452,6 +460,34 @@ namespace BloodSword::Generate
         Generate::Assets(character);
 
         return character;
+    }
+
+    // generate NPC
+    Character::Base NPC(const char *name, Character::Abilities skills, Character::Characteristics attributes, int moves, Asset::Type asset)
+    {
+        auto character = Character::Base(
+            name,
+            attributes,
+            Character::ControlType::NPC,
+            skills,
+            moves);
+
+        character.Asset = asset;
+
+        return character;
+    }
+
+    // generate NPC
+    Character::Base NPC(const char *name, Character::Abilities skills, int fpr, int psy, int awr, int end, int arm, int dmgV, int dmgM, int moves, Asset::Type asset)
+    {
+        auto FPR = Attribute::Base(Attribute::Type::FIGHTING_PROWESS, fpr, 0);
+        auto PSY = Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, psy, 0);
+        auto AWR = Attribute::Base(Attribute::Type::AWARENESS, awr, 0);
+        auto END = Attribute::Base(Attribute::Type::ENDURANCE, end, 0);
+        auto ARM = Attribute::Base(Attribute::Type::ARMOUR, 0, arm);
+        auto DMG = Attribute::Base(Attribute::Type::DAMAGE, dmgV, dmgM);
+
+        return Generate::NPC(name, skills, {FPR, PSY, AWR, END, ARM, DMG}, moves, asset);
     }
 }
 

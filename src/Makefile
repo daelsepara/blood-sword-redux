@@ -18,6 +18,9 @@ all: clean blood-sword
 blood-sword:
 	$(CC) -Wall $(BLOODWORD) $(LINKER_FLAGS) $(INCLUDES) -o $(BLOODWORD_OUTPUT)
 
+cga:
+	$(CC) -Wall $(BLOODWORD) $(LINKER_FLAGS) $(INCLUDES) -o $(BLOODWORD_OUTPUT) -DCGA
+
 debug:
 	$(CC) -Wall $(BLOODWORD) $(LINKER_FLAGS) $(INCLUDES) -o $(BLOODWORD_OUTPUT) -DDEBUG
 

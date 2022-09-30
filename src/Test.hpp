@@ -41,15 +41,13 @@ namespace BloodSword::Test
             // text sprites
             auto text = Graphics::CreateText(graphics, "THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
             auto text_sprite = Scene::Element(text, x + ws * 4, y);
-
             auto warrior_text = Graphics::CreateText(graphics, "WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto trickster_text = Graphics::CreateText(graphics, "TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto sage_text = Graphics::CreateText(graphics, "SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto enchanter_text = Graphics::CreateText(graphics, "ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-
             auto warrior_sprite = Scene::Element(warrior_text, x + ws * 4, y);
+            auto trickster_text = Graphics::CreateText(graphics, "TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
             auto trickster_sprite = Scene::Element(trickster_text, x + ws * 4, y);
+            auto sage_text = Graphics::CreateText(graphics, "SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
             auto sage_sprite = Scene::Element(sage_text, x + ws * 4, y);
+            auto enchanter_text = Graphics::CreateText(graphics, "ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
             auto enchanter_sprite = Scene::Element(enchanter_text, x + ws * 4, y);
 
             // controls
@@ -79,7 +77,7 @@ namespace BloodSword::Test
                 sprites.push_back(left);
                 sprites.push_back(right);
 
-                if (input.Current >= 0 && input.Current < controls.size())
+                if (Input::IsValid(controls, input))
                 {
                     switch (input.Current)
                     {
@@ -148,7 +146,7 @@ namespace BloodSword::Test
                 {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
                  Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
                  Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
+                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL, objectw),
                  Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
                  Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, objectw),
                  Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
@@ -235,25 +233,21 @@ namespace BloodSword::Test
                     scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
                 }
 
-                if (input.Current >= 0 && input.Current < scene.Controls.size())
+                if (Input::IsValid(scene, input))
                 {
                     auto &control = scene.Controls[input.Current];
 
                     if (control.OnMap)
                     {
                         auto &tile = map[control.Map];
-                        auto background = Color::Inactive;
+                        auto background = Color::Highlight;
                         auto border = Color::Active;
                         auto object = -1;
 
                         if (tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER)
                         {
                             // stats
-                            auto bounds = 0;
-
-                            SDL_QueryTexture(stats[tile.Id], NULL, NULL, NULL, &bounds);
-
-                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, bounds, 0, Color::Background, Color::Active, 4));
+                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, Color::Background, Color::Active, 4));
 
                             // character class
                             object = (int)party[tile.Id].Class + 7;
@@ -261,6 +255,14 @@ namespace BloodSword::Test
                         else if (tile.IsPassable())
                         {
                             object = (int)tile.Type;
+                            background = Color::Background;
+                            border = Color::Active;
+                        }
+                        else if (tile.IsPassableToEnemy())
+                        {
+                            object = (int)tile.Type;
+                            background = Color::Background;
+                            border = Color::Inactive;
                         }
                         else if (tile.IsOccupied())
                         {
@@ -285,7 +287,7 @@ namespace BloodSword::Test
 
                 if (background >= 0 && background < backgrounds.size())
                 {
-                    scene.Add(Scene::Element(backgroundx, backgroundy, backgroundw, backgroundh, Color::Inactive, Color::Active, 4));
+                    scene.Add(Scene::Element(backgroundx, backgroundy, backgroundw, backgroundh, Color::Highlight, Color::Active, 4));
                     scene.Add(Scene::Element(backgrounds[background], backgroundx, backgroundy, backgroundh, offset));
                 }
 
@@ -572,7 +574,7 @@ namespace BloodSword::Test
             }
             else
             {
-                done = Graphics::Animate(graphics, background, animations);
+                done = Graphics::Animate(graphics, background, animations, true, true);
 
                 Graphics::Refresh(graphics);
 
@@ -625,25 +627,33 @@ namespace BloodSword::Test
     // battle order
     void Queue(Graphics::Base &graphics)
     {
-        auto dim = 8;
+        auto xdim = 14;
 
-        auto map = Map::Base(dim, dim);
+        auto ydim = 9;
+
+        auto map = Map::Base(xdim, ydim);
+
+        map.Viewable(xdim, ydim);
 
         // generate map
-        for (auto y = 0; y < dim; y++)
+        for (auto y = 0; y < ydim; y++)
         {
-            for (auto x = 0; x < dim; x++)
+            for (auto x = 0; x < xdim; x++)
             {
                 map.Put(x, y, Map::Object::PASSABLE, Asset::Type::NONE);
             }
         }
 
-        for (auto i = 0; i < dim; i++)
+        for (auto i = 0; i < ydim; i++)
+        {
+            map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
+            map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
+        }
+
+        for (auto i = 0; i < xdim; i++)
         {
             map.Put(i, 0, Map::Object::OBSTACLE, Asset::Type::WALL);
             map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
-            map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
-            map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
         }
 
         // create party
@@ -652,6 +662,11 @@ namespace BloodSword::Test
                                   Generate::Character(Character::Class::SAGE, 2),
                                   Generate::Character(Character::Class::ENCHANTER, 2)});
 
+        auto enemies = Party::Base(
+            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 100, Asset::Type::BARBARIAN),
+             Generate::NPC("ASSASSIN", {}, 7, 6, 7, 5, 0, 1, 0, 100, Asset::Type::ASSASSIN),
+             Generate::NPC("CORPSE", {}, 5, 4, 2, 4, 0, 1, 1, 3, Asset::Type::CORPSE)});
+
         std::vector<Point> origins = {
             Point(1, 1),
             Point(map.Width - 2, 1),
@@ -659,7 +674,16 @@ namespace BloodSword::Test
             Point(map.Width - 2, map.Height - 2),
         };
 
+        auto center = Point(xdim, ydim) / 2;
+
+        std::vector<Point> spawn = {
+            center,
+            center + 1,
+            center - 1};
+
         auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
+
+        auto enemyStats = Interface::Attributes(graphics, enemies, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
 
         auto draw = Point(map.DrawX, map.DrawY);
 
@@ -683,7 +707,7 @@ namespace BloodSword::Test
         {
             auto scene = Scene::Base();
 
-            Interface::Add(map, scene, party, 3);
+            Interface::Add(map, scene, party, enemies, 3);
 
             auto id = scene.Controls.size();
 
@@ -710,29 +734,43 @@ namespace BloodSword::Test
 
                 map.Put(origins[i], Map::Object::PLAYER, i);
             }
+
+            for (auto i = 0; i < enemies.Count(); i++)
+            {
+                auto enemyLocation = map.Find(Map::Object::ENEMY, i);
+
+                if (!enemyLocation.IsNone())
+                {
+                    map.Put(enemyLocation, Map::Object::NONE, -1);
+                }
+
+                map.Put(spawn[i], Map::Object::ENEMY, i);
+            }
         };
 
-        auto SetupAnimation = [&](Character::Base &character)
+        auto SetupAnimation = [&](Character::Base &character, std::vector<Point> points)
         {
             // set frame, type, and delay
-            return Animation::Base(
+            auto animation = Animation::Base(
                 {Animation::Frame(Asset::Get(character.Asset))},
                 {Animation::Type::MOVE},
-                {},
+                points,
                 1,
                 16,
                 false);
-        };
 
-        auto IsPlayer = [&](Engine::Queue &queue, int character)
-        {
-            return queue[character].Type == Character::ControlType::PLAYER;
+            // scale movement scale to map dimensions
+            animation.Scale = Point(map.TileSize, map.TileSize);
+
+            animation.Delta = Point(8, 8);
+
+            return animation;
         };
 
         auto Blink = [&](Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
         {
             // blink cursor
-            if (IsPlayer(order, character))
+            if (Engine::IsPlayer(order, character))
             {
                 auto blink = map.Find(Map::Object::PLAYER, order[character].ID);
 
@@ -749,13 +787,15 @@ namespace BloodSword::Test
         ResetLocations(map, party, origins);
 
         // generate a queue based on AWARENESS score
-        auto order = Engine::Build(party, Attribute::Type::AWARENESS);
+        auto order = Engine::Build(party, enemies, Attribute::Type::AWARENESS);
 
         auto character = 0;
 
         auto blinking = false;
 
         auto input = Controls::User();
+
+        auto previous = Controls::User();
 
         auto animating = false;
 
@@ -767,53 +807,125 @@ namespace BloodSword::Test
 
         auto movement = Animation::Base();
 
-        if (IsPlayer(order, character))
+        if (Engine::IsPlayer(order, character))
         {
-            movement = SetupAnimation(party[order[character].ID]);
-
-            // scale movement scale to map dimensions
-            movement.Scale = Point(map.TileSize, map.TileSize);
-
-            movement.Delta = Point(8, 8);
+            movement = SetupAnimation(party[order[character].ID], {});
+        }
+        else
+        {
+            movement = SetupAnimation(enemies[order[character].ID], {});
         }
 
         auto pad = 10;
         auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
         auto objecty = map.DrawY + pad;
+        auto popup = false;
+        auto popupid = 0;
 
         while (!done)
         {
             auto overlay = Scene::Base();
 
+            // check if this character can move
             if (!animating)
             {
-                if (IsPlayer(order, character))
+                auto src = map.Find(Engine::IsPlayer(order, character) ? Map::Object::PLAYER : Map::Object::ENEMY, order[character].ID);
+
+                if (!src.IsNone())
                 {
-                    auto src = map.Find(Map::Object::PLAYER, order[character].ID);
-
-                    if (!src.IsNone())
+                    if (!Move::Available(map, src))
                     {
-                        if (!Move::Available(map, src))
+                        Engine::Next(order, character);
+                    }
+                    else
+                    {
+                        // if enemy, move to nearest target
+                        if (!Engine::IsPlayer(order, character))
                         {
-                            character++;
+                            auto targets = Engine::Build(map, party, src);
 
-                            if (character >= order.size())
+                            if (targets.size() > 0)
                             {
-                                character = 0;
+                                auto hasValidTarget = false;
+
+                                for (auto &target : targets)
+                                {
+                                    auto end = map.Find(Map::Object::PLAYER, target.ID);
+
+                                    if (!end.IsNone())
+                                    {
+                                        // find a path to the exit
+                                        auto path = Move::FindPath(map, src, end, true);
+
+                                        auto valid = Move::Count(map, path, false);
+
+                                        if (valid > 0)
+                                        {
+                                            map.Put(src, Map::Object::NONE, -1);
+
+                                            scene = RegenerateScene(map);
+
+                                            // move next to target
+                                            auto first = path.Points.begin();
+
+                                            auto moves = std::min(valid, enemies[order[character].ID].Moves);
+
+                                            // setup animation
+                                            movement = SetupAnimation(enemies[order[character].ID], std::vector<Point>(first, first + moves));
+
+                                            movement.Set(draw, src);
+
+                                            movement.Reset();
+
+                                            animating = true;
+
+                                            hasValidTarget = true;
+
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (!hasValidTarget)
+                                {
+                                    Engine::Next(order, character);
+                                }
+                            }
+                            else
+                            {
+                                Engine::Next(order, character);
                             }
                         }
                     }
                 }
+                else
+                {
+                    Engine::Next(order, character);
+                }
             }
 
-            if (!animating && input.Current >= 0 && input.Current < scene.Controls.size())
+            if (popup)
+            {
+                if (popupid >= 0 && popupid < party.Count())
+                {
+                    overlay = Interface::Skills(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4);
+                }
+                else
+                {
+                    popup = false;
+
+                    input = previous;
+                }
+            }
+
+            if (!animating && !popup && Input::IsValid(scene, input))
             {
                 auto &control = scene.Controls[input.Current];
 
                 if (control.OnMap)
                 {
                     // draw path to destination
-                    if (move && IsPlayer(order, character))
+                    if (move && Engine::IsPlayer(order, character))
                     {
                         auto src = map.Find(Map::Object::PLAYER, order[character].ID);
 
@@ -853,20 +965,54 @@ namespace BloodSword::Test
                             }
                         }
                     }
+
+                    if (map[control.Map].Occupant == Map::Object::PLAYER)
+                    {
+                        if (map[control.Map].Id >= 0 && map[control.Map].Id < party.Count())
+                        {
+                            // stats
+                            overlay.Add(Scene::Element(stats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
+                        }
+                    }
+                    else if (map[control.Map].Occupant == Map::Object::ENEMY)
+                    {
+                        if (map[control.Map].Id >= 0 && map[control.Map].Id < enemies.Count())
+                        {
+                            // enemy stats
+                            overlay.Add(Scene::Element(enemyStats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
+                        }
+                    }
+                }
+                else
+                {
+                    auto moveid = Controls::Find(scene.Controls, Controls::Type::MOVE);
+
+                    auto caption = control.ID - moveid;
+
+                    if (caption >= 0 && caption < captions.size())
+                    {
+                        auto control = moveid + caption;
+
+                        overlay.Add(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + 8));
+                    }
+                }
+            }
+            else if (popup && Input::IsValid(overlay, input))
+            {
+                // skill popup captions
+                auto &control = overlay.Controls[input.Current];
+
+                if (control.Type != Controls::Type::BACK && popupid >= 0 && popupid < party.Count())
+                {
+                    auto skill = party[popupid].Skills[control.ID];
+
+                    if (Skills::IsStorySkill(skill))
+                    {
+                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[skill], control.X, control.Y + control.H + pad));
+                    }
                     else
                     {
-                        if (map[control.Map].Occupant == Map::Object::PLAYER)
-                        {
-                            if (map[control.Map].Id >= 0 && map[control.Map].Id < party.Count())
-                            {
-                                // stats
-                                auto bounds = 0;
-
-                                SDL_QueryTexture(stats[map[control.Map].Id], NULL, NULL, NULL, &bounds);
-
-                                overlay.Add(Scene::Element(stats[map[control.Map].Id], objectx, objecty, bounds, 0, Color::Background, Color::Active, 4));
-                            }
-                        }
+                        overlay.Add(Scene::Element(Interface::SkillCaptionsInActive[skill], control.X, control.Y + control.H + pad));
                     }
                 }
             }
@@ -879,9 +1025,13 @@ namespace BloodSword::Test
 
                 if (!animating)
                 {
-                    if (IsPlayer(order, character))
+                    if (Engine::IsPlayer(order, character))
                     {
                         map.Put(movement.Current, Map::Object::PLAYER, order[character].ID);
+                    }
+                    else
+                    {
+                        map.Put(movement.Current, Map::Object::ENEMY, order[character].ID);
                     }
 
                     Input::Flush();
@@ -892,108 +1042,137 @@ namespace BloodSword::Test
 
                     scene = RegenerateScene(map);
 
-                    if (character < order.size() - 1)
-                    {
-                        character++;
-                    }
-                    else
-                    {
-                        character = 0;
-                    }
+                    Engine::Next(order, character);
                 }
             }
             else
             {
-                if (!move)
+                if (!popup && Engine::IsPlayer(order, character))
                 {
-                    if (blinking)
+                    if (!move)
                     {
-                        // blink cursor
-                        Blink(map, order, character, overlay);
-                    }
+                        if (blinking)
+                        {
+                            // blink cursor
+                            Blink(map, order, character, overlay);
+                        }
 
-                    blinking = !blinking;
+                        blinking = !blinking;
+
+                        input.Blink = false;
+                    }
+                    else
+                    {
+                        input.Blink = !input.Blink;
+                    }
                 }
 
-                input = Input::WaitForInput(graphics, scene, overlay, input);
+                input = Input::WaitForInput(graphics, scene, overlay, input, popup);
 
-                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                if (!popup)
                 {
-                    if (input.Type == Controls::Type::MOVE)
+                    if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                     {
-                        // toggles between move/hover mode
-                        move = !move;
-                    }
-                    else if (input.Type == Controls::Type::DESTINATION)
-                    {
-                        // setup animation
-                        if (move)
+                        if (input.Type == Controls::Type::MOVE)
                         {
-                            if (input.Current >= 0 && input.Current < scene.Controls.size())
-                            {
-                                auto &control = scene.Controls[input.Current];
-
-                                if (control.OnMap && map.IsValid(control.Map) && IsPlayer(order, character))
-                                {
-                                    auto &end = control.Map;
-
-                                    auto start = map.Find(Map::Object::PLAYER, order[character].ID);
-
-                                    // find a path to the exit
-                                    auto path = Move::FindPath(map, start, end);
-
-                                    auto validMoves = Move::Count(map, path, false);
-
-                                    if (validMoves > 0)
-                                    {
-                                        map.Put(start, Map::Object::NONE, -1);
-
-                                        map.Put(end, Map::Object::NONE, -1);
-
-                                        scene = RegenerateScene(map);
-
-                                        // setup animation
-                                        movement.Set(draw, start);
-
-                                        auto first = path.Points.begin();
-
-                                        // add destination to the count
-                                        auto moves = std::min(validMoves + 1, party[order[character].ID].Moves);
-
-                                        movement.Frames = {Animation::Frame(Asset::Get(party[order[character].ID].Asset))};
-
-                                        movement.Path = std::vector<Point>(first, first + moves);
-
-                                        movement.Reset();
-
-                                        animating = true;
-                                    }
-                                }
-                            }
-
+                            // toggles between move/hover mode
                             move = !move;
                         }
-                    }
-                    else if (input.Type == Controls::Type::RESET)
-                    {
-                        // reset starting locations
-                        ResetLocations(map, party, origins);
+                        else if (input.Type == Controls::Type::DESTINATION)
+                        {
+                            // setup animation
+                            if (move)
+                            {
+                                if (Input::IsValid(scene, input))
+                                {
+                                    auto &control = scene.Controls[input.Current];
 
-                        scene = RegenerateScene(map);
+                                    if (control.OnMap && map.IsValid(control.Map) && Engine::IsPlayer(order, character))
+                                    {
+                                        auto &end = control.Map;
+
+                                        auto start = map.Find(Map::Object::PLAYER, order[character].ID);
+
+                                        // find a path to the exit
+                                        auto path = Move::FindPath(map, start, end);
+
+                                        auto valid = Move::Count(map, path, false);
+
+                                        if (valid > 0)
+                                        {
+                                            map.Put(start, Map::Object::NONE, -1);
+
+                                            map.Put(end, Map::Object::NONE, -1);
+
+                                            scene = RegenerateScene(map);
+
+                                            auto first = path.Points.begin();
+
+                                            // add destination to the count
+                                            auto moves = std::min(valid + 1, party[order[character].ID].Moves);
+
+                                            // setup animation
+                                            movement = SetupAnimation(party[order[character].ID], std::vector<Point>(first, first + moves));
+
+                                            movement.Set(draw, start);
+
+                                            movement.Reset();
+
+                                            animating = true;
+                                        }
+                                    }
+                                }
+
+                                move = !move;
+                            }
+                        }
+                        else if (input.Type == Controls::Type::RESET)
+                        {
+                            // reset starting locations
+                            ResetLocations(map, party, origins);
+
+                            scene = RegenerateScene(map);
+
+                            character = 0;
+                        }
+                        else if (Input::IsPlayer(input))
+                        {
+                            if (Input::IsValid(scene, input))
+                            {
+                                previous = input;
+
+                                popup = true;
+
+                                if (scene.Controls[input.Current].OnMap)
+                                {
+                                    popupid = map[scene.Controls[input.Current].Map].Id;
+                                }
+
+                                input.Current = -1;
+                            }
+                        }
+                        else if (input.Type == Controls::Type::EXIT)
+                        {
+                            done = true;
+                        }
                     }
-                    else if (input.Type == Controls::Type::EXIT)
+                }
+                else
+                {
+                    if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                     {
-                        done = true;
+                        if (input.Type == Controls::Type::BACK)
+                        {
+                            popup = false;
+
+                            input = previous;
+                        }
                     }
                 }
             }
-
-            // TODO: move to next character in queue
-            if (character > order.size())
-            {
-                character = 0;
-            }
         }
+
+        Free(enemyStats);
 
         Free(stats);
 
@@ -1016,7 +1195,7 @@ namespace BloodSword::Test
              Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("03 ANIMATION TEST\n\n\nDemonstrates A* path-finding and animation engine", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("04 BATTLE ORDER\n\n\nDemonstrates party battle orders", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("04 BATTLE ORDER\n\n\nDemonstrates battle order/action/turn sequence", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         auto start = 0;
         auto limit = 4;

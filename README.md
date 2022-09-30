@@ -44,6 +44,10 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Pathfinding](/screenshots/pathfinding.gif)
 
+**Battle Order**
+
+![Battle Order](/screenshots/battle-order.gif)
+
 # Copyright Information
 ```
             Originally published 1987 by Knight Books

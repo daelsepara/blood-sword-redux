@@ -129,7 +129,7 @@ namespace BloodSword::Engine
 
             if (alive && !paralyzed && !away && battle)
             {
-                queue.push_back(ScoreElement(party[i].ControlType, i, knockedout ? 1 : Engine::Score(other[i], attribute)));
+                queue.push_back(ScoreElement(other[i].ControlType, i, knockedout ? 1 : Engine::Score(other[i], attribute)));
             }
         }
 
@@ -164,6 +164,34 @@ namespace BloodSword::Engine
         }
 
         return found;
+    }
+
+    // check if current character (in the queue) is player-controlled
+    bool IsPlayer(Engine::Queue &queue, int &character)
+    {
+        return queue[character].Type == Character::ControlType::PLAYER;
+    }
+
+    // move to next item in queue
+    void Next(Engine::Queue &queue, int &item)
+    {
+        item++;
+
+        if (item >= queue.size())
+        {
+            item = 0;
+        }
+    }
+
+    // move to previous item in queue
+    void Previous(Engine::Queue &queue, int &item)
+    {
+        item--;
+
+        if (item < 0)
+        {
+            item = queue.size() - 1;
+        }
     }
 
     // move character to end of the queue

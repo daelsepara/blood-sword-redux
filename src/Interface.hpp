@@ -8,6 +8,65 @@
 
 namespace BloodSword::Interface
 {
+    Skills::Mapped<SDL_Texture *> SkillsTexturesInActive = {};
+    Skills::Mapped<SDL_Texture *> SkillCaptionsActive = {};
+    Skills::Mapped<SDL_Texture *> SkillCaptionsInActive = {};
+    Skills::Mapped<Controls::Type> SkillControls = {
+        {Skills::Type::ARCHERY, Controls::Type::ARCHERY},
+        {Skills::Type::DODGING, Controls::Type::DODGING},
+        {Skills::Type::QUARTERSTAFF, Controls::Type::QUARTERSTAFF},
+        {Skills::Type::HEALING, Controls::Type::HEAL},
+        {Skills::Type::ESP, Controls::Type::ESP},
+        {Skills::Type::PARANORMAL_SIGHT, Controls::Type::PARANORMAL_SIGHT},
+        {Skills::Type::LEVITATION, Controls::Type::LEVITATION},
+        {Skills::Type::EXORCISM, Controls::Type::EXORCISM},
+        {Skills::Type::SPELLS, Controls::Type::SPELLS}};
+
+    SDL_Texture *NoSkills = NULL;
+
+    void Initialize(Graphics::Base &graphics)
+    {
+        for (auto &skill : Skills::TypeMapping)
+        {
+            auto estimate = 0;
+
+            Graphics::Estimate(Fonts::Caption, skill.second, &estimate, NULL);
+
+            auto active = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
+            auto inactive = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, estimate);
+
+            SkillCaptionsActive[skill.first] = active;
+            SkillCaptionsInActive[skill.first] = inactive;
+            SkillsTexturesInActive[skill.first] = Asset::Copy(graphics.Renderer, Skills::SkillAssets[skill.first], 0x60);
+        }
+
+        auto noskills = 0;
+
+        Graphics::Estimate(Fonts::Caption, "No special skills", &noskills, NULL);
+
+        NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, noskills);
+    }
+
+    void Shutdown()
+    {
+        for (auto &skill : SkillCaptionsActive)
+        {
+            Free(&skill.second);
+        }
+
+        for (auto &skill : SkillCaptionsInActive)
+        {
+            Free(&skill.second);
+        }
+
+        for (auto &skill : SkillsTexturesInActive)
+        {
+            Free(&skill.second);
+        }
+
+        Free(&NoSkills);
+    }
+
     // add map to the scene
     void Add(Map::Base &Map, Scene::Base &Scene, Party::Base &Party, Party::Base &Enemies, int BottomControls)
     {
@@ -173,7 +232,7 @@ namespace BloodSword::Interface
     }
 
     // create character attributes text box
-    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap, bool addClass = false)
+    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap, bool addName = false)
     {
         SDL_Texture *texture = NULL;
 
@@ -182,10 +241,9 @@ namespace BloodSword::Interface
 
         if (character.ControlType == Character::ControlType::PLAYER)
         {
-            if (addClass)
+            if (addName)
             {
                 labels = '\n';
-                stats = '\n';                
             }
 
             labels += "RNK\nFPR\nAWR\nPSY\nEND\nDMG\nARM";
@@ -194,7 +252,12 @@ namespace BloodSword::Interface
         }
         else if (character.ControlType == Character::ControlType::NPC)
         {
-            labels = "FPR\nAWR\nPSY\nEND\nDMG\nARM";
+            if (addName)
+            {
+                labels = '\n';
+            }
+
+            labels += "FPR\nAWR\nPSY\nEND\nDMG\nARM";
         }
 
         auto labelsw = 0;
@@ -261,16 +324,35 @@ namespace BloodSword::Interface
             }
         }
 
+        if (addName)
+        {
+            stats = '\n' + stats;
+        }
+
         auto surfaceStats = Graphics::CreateSurfaceText(stats.c_str(), font, Color::S(statsColor), style, statsw);
 
         if (surfaceLabels && surfaceStats)
         {
             SDL_Surface *surface = NULL;
 
+            auto surfaceWidth = surfaceLabels->w + surfaceStats->w;
+
+            if (addName)
+            {
+                auto namewidth = 0;
+
+                Graphics::Estimate(font, "DMGG", &namewidth, NULL);
+
+                if (namewidth > surfaceWidth)
+                {
+                    surfaceWidth = namewidth;
+                }
+            }
+
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-            surface = SDL_CreateRGBSurface(0, (surfaceLabels->w + surfaceStats->w), std::max(surfaceLabels->h, surfaceStats->h), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+            surface = SDL_CreateRGBSurface(0, surfaceWidth, std::max(surfaceLabels->h, surfaceStats->h), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
 #else
-            surface = SDL_CreateRGBSurface(0, (surfaceLabels->w + surfaceStats->w), std::max(surfaceLabels->h, surfaceStats->h), 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+            surface = SDL_CreateRGBSurface(0, surfaceWidth, std::max(surfaceLabels->h, surfaceStats->h), 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 #endif
 
             if (surface)
@@ -308,27 +390,27 @@ namespace BloodSword::Interface
                 }
 
                 // add character class if player character
-                if (character.ControlType == Character::ControlType::PLAYER && addClass)
+                if (addName)
                 {
-                    auto surfaceClass = Graphics::CreateSurfaceText(Character::ClassMapping[character.Class], font, Color::S(labelColor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
+                    auto surfaceName = Graphics::CreateSurfaceText(character.Name.c_str(), font, Color::S(labelColor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
 
-                    if (surfaceClass)
+                    if (surfaceName)
                     {
                         labelsRect.w = surface->w;
                         labelsRect.h = surface->h;
                         labelsRect.x = 0;
                         labelsRect.y = 0;
 
-                        auto convertedSurfaceClass = SDL_ConvertSurface(surfaceClass, surface->format, 0);
+                        auto convertedSurfaceName = SDL_ConvertSurface(surfaceName, surface->format, 0);
 
-                        if (convertedSurfaceClass)
+                        if (convertedSurfaceName)
                         {
-                            SDL_SetSurfaceAlphaMod(convertedSurfaceClass, SDL_ALPHA_OPAQUE);
-                            SDL_BlitSurface(convertedSurfaceClass, NULL, surface, &labelsRect);
-                            BloodSword::Free(&convertedSurfaceClass);
+                            SDL_SetSurfaceAlphaMod(convertedSurfaceName, SDL_ALPHA_OPAQUE);
+                            SDL_BlitSurface(convertedSurfaceName, NULL, surface, &labelsRect);
+                            BloodSword::Free(&convertedSurfaceName);
                         }
 
-                        BloodSword::Free(&surfaceClass);
+                        BloodSword::Free(&surfaceName);
                     }
                 }
 
@@ -391,7 +473,7 @@ namespace BloodSword::Interface
         }
     }
 
-    // add menu to the scene
+    // add vertical text menu to the scene
     void Add(std::vector<SDL_Texture *> &choices, Scene::Base &scene, int x, int y, int w, int h, int start, int last, int limit, Uint32 border, Uint32 highlight, bool others = false)
     {
         if (!choices.empty())
@@ -457,6 +539,78 @@ namespace BloodSword::Interface
                 }
             }
         }
+    }
+
+    // skills overlay menu
+    Scene::Base Skills(Point origin, int w, int h, Character::Base &character, Uint32 background, Uint32 border, int borderSize, bool inbattle = false)
+    {
+        auto overlay = Scene::Base();
+
+        auto popupw = (std::max((int)(character.Skills.size()), 2) + 2) * 64;
+
+        auto popuph = 160;
+
+        auto screen = origin + Point(w - popupw, h - popuph) / 2;
+
+        overlay.Add(Scene::Element(screen, popupw, popuph, background, border, borderSize));
+
+        auto pad = 8;
+
+        if (character.Skills.size() > 0)
+        {
+            for (auto i = 0; i < character.Skills.size(); i++)
+            {
+                SDL_Texture *texture = NULL;
+
+                if (inbattle)
+                {
+                    if (Skills::IsBattleSkill(character.Skills[i]))
+                    {
+                        texture = Asset::Get(Skills::SkillAssets[character.Skills[i]]);
+                    }
+                    else
+                    {
+                        texture = SkillsTexturesInActive[character.Skills[i]];
+                    }
+                }
+                else
+                {
+                    if (Skills::IsStorySkill(character.Skills[i]))
+                    {
+                        texture = Asset::Get(Skills::SkillAssets[character.Skills[i]]);
+                    }
+                    else
+                    {
+                        texture = SkillsTexturesInActive[character.Skills[i]];
+                    }
+                }
+
+                if (texture)
+                {
+                    auto texturew = 0;
+                    auto textureh = 0;
+
+                    SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+
+                    auto lt = i > 0 ? i - 1 : i;
+                    auto rt = i < character.Skills.size() ? i + 1 : i;
+
+                    overlay.Add(Controls::Base(Interface::SkillControls[character.Skills[0]], i, lt, rt, i, i, screen.X + i * texturew + pad * 2, screen.Y + pad * 2 + 32, 64, 64, Color::Highlight));
+                    overlay.Add(Scene::Element(texture, screen.X + i * texturew + pad * 2, screen.Y + pad * 2 + 32));
+                }
+            }
+        }
+        else
+        {
+            overlay.Add(Scene::Element(NoSkills, screen + Point(pad * 2, pad)));
+        }
+
+        auto id = (int)(character.Skills.size());
+
+        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * 64 + pad * 2, screen.Y + pad * 2 + 32));
+        overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, id, id, screen.X + id * 64 + pad * 2, screen.Y + pad * 2 + 32, 64, 64, Color::Highlight));
+
+        return overlay;
     }
 }
 

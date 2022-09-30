@@ -155,7 +155,7 @@ namespace BloodSword::Graphics
     {
         auto space = 2 * pts;
 
-        for (auto size = pts; size >= 0; size--)
+        for (auto size = pts * 2 - 1; size >= 0; size--)
         {
             Graphics::DrawRect(graphics, w + 2 * (space - size), h + 2 * (space - size), x - space + size, y - space + size, color);
         }
@@ -331,7 +331,31 @@ namespace BloodSword::Graphics
             {
                 if (control.ID == input.Current)
                 {
-                    Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
+                    if (!input.Blink || !control.OnMap)
+                    {
+                        Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
+                    }
+                }
+            }
+        }
+    }
+
+    void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input)
+    {
+        if (graphics.Renderer)
+        {
+            Graphics::Render(graphics, background);
+
+            Graphics::Overlay(graphics, dialog);
+
+            for (auto &control : dialog.Controls)
+            {
+                if (control.ID == input.Current)
+                {
+                    if (!input.Blink || !control.OnMap)
+                    {
+                        Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
+                    }
                 }
             }
         }
@@ -364,11 +388,11 @@ namespace BloodSword::Graphics
     }
 
     // process through all animations
-    bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool delay = true)
+    bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool delay = true, bool trail = false)
     {
         auto foreground = Scene::Base();
 
-        auto done = Animations::Step(foreground, animations, delay);
+        auto done = Animations::Step(foreground, animations, delay, trail);
 
         Graphics::RenderNow(graphics, background, foreground);
 
@@ -376,11 +400,11 @@ namespace BloodSword::Graphics
     }
 
     // process a single animation
-    bool Animate(Base &graphics, Scene::Base &background, Animation::Base &animation, bool delay = true)
+    bool Animate(Base &graphics, Scene::Base &background, Animation::Base &animation, bool delay = true, bool trail = false)
     {
         auto animations = Animations::Base(animation);
 
-        auto done = Graphics::Animate(graphics, background, animations, delay);
+        auto done = Graphics::Animate(graphics, background, animations, delay, trail);
 
         animation = *(animations.List.begin());
 

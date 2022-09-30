@@ -106,15 +106,22 @@ namespace BloodSword::Input
     }
 
     // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool isDialog = false)
     {
         SDL_Event result;
 
         auto sensitivity = 32000;
 
-        Graphics::Render(graphics, scene, input);
+        if (!isDialog)
+        {
+            Graphics::Render(graphics, scene, input);
 
-        Graphics::Overlay(graphics, overlay);
+            Graphics::Overlay(graphics, overlay);
+        }
+        else
+        {
+            Graphics::Dialog(graphics, scene, overlay, input);
+        }
 
         Graphics::DisplayVersion(graphics);
 
@@ -127,6 +134,8 @@ namespace BloodSword::Input
         input.Up = false;
 
         input.Down = false;
+
+        auto &controls = !isDialog ? scene.Controls : overlay.Controls;
 
         if (result.type == SDL_QUIT)
         {
@@ -159,40 +168,40 @@ namespace BloodSword::Input
             }
             else if (input.Current < 0)
             {
-                input.Current = scene.Controls[0].ID;
+                input.Current = controls[0].ID;
             }
             else if (result.key.keysym.sym == SDLK_TAB || result.key.keysym.sym == SDLK_KP_TAB || result.key.keysym.sym == SDL_SCANCODE_KP_TAB)
             {
                 if (input.Current < 0)
                 {
-                    input.Current = scene.Controls[0].ID;
+                    input.Current = controls[0].ID;
                 }
-                else if (input.Current == scene.Controls.size() - 1)
+                else if (input.Current == controls.size() - 1)
                 {
-                    input.Current = scene.Controls[0].ID;
+                    input.Current = controls[0].ID;
                 }
-                else if (input.Current >= 0 && input.Current < scene.Controls.size() - 1)
+                else if (input.Current >= 0 && input.Current < controls.size() - 1)
                 {
-                    input.Current = scene.Controls[input.Current + 1].ID;
+                    input.Current = controls[input.Current + 1].ID;
                 }
             }
-            else if (input.Current >= 0 && input.Current < scene.Controls.size())
+            else if (input.Current >= 0 && input.Current < controls.size())
             {
                 if (result.key.keysym.sym == SDLK_LEFT)
                 {
-                    input.Current = scene.Controls[input.Current].Left;
+                    input.Current = controls[input.Current].Left;
                 }
                 else if (result.key.keysym.sym == SDLK_RIGHT)
                 {
-                    input.Current = scene.Controls[input.Current].Right;
+                    input.Current = controls[input.Current].Right;
                 }
                 else if (result.key.keysym.sym == SDLK_UP)
                 {
-                    input.Current = scene.Controls[input.Current].Up;
+                    input.Current = controls[input.Current].Up;
                 }
                 else if (result.key.keysym.sym == SDLK_DOWN)
                 {
-                    input.Current = scene.Controls[input.Current].Down;
+                    input.Current = controls[input.Current].Down;
                 }
                 else if (result.key.keysym.sym == SDLK_KP_ENTER || result.key.keysym.sym == SDLK_RETURN || result.key.keysym.sym == SDLK_RETURN2)
                 {
@@ -206,20 +215,20 @@ namespace BloodSword::Input
             {
                 if (input.Current < 0)
                 {
-                    input.Current = scene.Controls[0].ID;
+                    input.Current = controls[0].ID;
                 }
                 else if (result.caxis.value < -sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < scene.Controls.size())
+                    if (input.Current >= 0 && input.Current < controls.size())
                     {
-                        input.Current = scene.Controls[input.Current].Left;
+                        input.Current = controls[input.Current].Left;
                     }
                 }
                 else if (result.caxis.value > sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < scene.Controls.size())
+                    if (input.Current >= 0 && input.Current < controls.size())
                     {
-                        input.Current = scene.Controls[input.Current].Right;
+                        input.Current = controls[input.Current].Right;
                     }
                 }
             }
@@ -227,20 +236,20 @@ namespace BloodSword::Input
             {
                 if (input.Current < 0)
                 {
-                    input.Current = scene.Controls[0].ID;
+                    input.Current = controls[0].ID;
                 }
                 else if (result.caxis.value < -sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < scene.Controls.size())
+                    if (input.Current >= 0 && input.Current < controls.size())
                     {
-                        input.Current = scene.Controls[input.Current].Up;
+                        input.Current = controls[input.Current].Up;
                     }
                 }
                 else if (result.caxis.value > sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < scene.Controls.size())
+                    if (input.Current >= 0 && input.Current < controls.size())
                     {
-                        input.Current = scene.Controls[input.Current].Down;
+                        input.Current = controls[input.Current].Down;
                     }
                 }
             }
@@ -249,7 +258,7 @@ namespace BloodSword::Input
         {
             input.Hold = true;
 
-            if (input.Current >= 0 && input.Current < scene.Controls.size() && (scene.Controls[input.Current].Type == Controls::Type::SCROLL_UP || scene.Controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
+            if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
                 input.Selected = true;
             }
@@ -262,25 +271,25 @@ namespace BloodSword::Input
 
             if (input.Current < 0)
             {
-                input.Current = scene.Controls[0].ID;
+                input.Current = controls[0].ID;
             }
-            else if (input.Current >= 0 && input.Current < scene.Controls.size())
+            else if (input.Current >= 0 && input.Current < controls.size())
             {
                 if (result.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
                 {
-                    input.Current = scene.Controls[input.Current].Left;
+                    input.Current = controls[input.Current].Left;
                 }
                 else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_RIGHT)
                 {
-                    input.Current = scene.Controls[input.Current].Right;
+                    input.Current = controls[input.Current].Right;
                 }
                 else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_UP)
                 {
-                    input.Current = scene.Controls[input.Current].Up;
+                    input.Current = controls[input.Current].Up;
                 }
                 else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_DOWN)
                 {
-                    input.Current = scene.Controls[input.Current].Down;
+                    input.Current = controls[input.Current].Down;
                 }
                 else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
                 {
@@ -294,7 +303,7 @@ namespace BloodSword::Input
 
             input.Current = -1;
 
-            for (auto &control : scene.Controls)
+            for (auto &control : controls)
             {
                 if (result.motion.x >= control.X && result.motion.x <= control.X + control.W - 1 && result.motion.y >= control.Y && result.motion.y <= control.Y + control.H - 1)
                 {
@@ -306,7 +315,7 @@ namespace BloodSword::Input
         {
             input.Hold = true;
 
-            if (input.Current >= 0 && input.Current < scene.Controls.size() && (scene.Controls[input.Current].Type == Controls::Type::SCROLL_UP || scene.Controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
+            if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
                 input.Selected = true;
             }
@@ -317,7 +326,7 @@ namespace BloodSword::Input
             {
                 input.Hold = false;
 
-                if (input.Current >= 0 && input.Current < scene.Controls.size())
+                if (input.Current >= 0 && input.Current < controls.size())
                 {
                     input.Selected = true;
                 }
@@ -339,9 +348,9 @@ namespace BloodSword::Input
             }
         }
 
-        if (input.Current >= 0 && input.Current < scene.Controls.size() && !input.Up && !input.Down)
+        if (input.Current >= 0 && input.Current < controls.size() && !input.Up && !input.Down)
         {
-            input.Type = scene.Controls[input.Current].Type;
+            input.Type = controls[input.Current].Type;
         }
         else
         {
@@ -352,11 +361,28 @@ namespace BloodSword::Input
     }
 
     // render scene then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input, bool isDialog = false)
     {
         auto overlay = Scene::Base();
 
-        return WaitForInput(graphics, scene, overlay, input);
+        return WaitForInput(graphics, scene, overlay, input, isDialog);
+    }
+
+    // check if user input is valid
+    bool IsValid(std::vector<Controls::Base> &controls, Controls::User &input)
+    {
+        return (input.Current >= 0 && input.Current < controls.size());
+    }
+
+    // check if user input is valid
+    bool IsValid(Scene::Base &scene, Controls::User &input)
+    {
+        return Input::IsValid(scene.Controls, input);
+    }
+
+    bool IsPlayer(Controls::User &input)
+    {
+        return (input.Type == Controls::Type::WARRIOR || input.Type == Controls::Type::TRICKSTER || input.Type == Controls::Type::SAGE || input.Type == Controls::Type::ENCHANTER);
     }
 
     // flush all events

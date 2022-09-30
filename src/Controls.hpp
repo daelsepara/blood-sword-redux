@@ -52,6 +52,7 @@ namespace BloodSword::Controls
         ESP,
         PARANORMAL_SIGHT,
         LEVITATION,
+        SPELLS,
         TEST,
         CHOICE,
         CONTINUE,
@@ -169,6 +170,9 @@ namespace BloodSword::Controls
 
         // quit/exit/terminate event
         bool Quit = false;
+
+        // blink curser
+        bool Blink = false;
 
         User(Controls::Type type,
              int current,
