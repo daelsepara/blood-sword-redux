@@ -3,6 +3,7 @@
 
 #include "nlohmann/json.hpp"
 #include "Asset.hpp"
+#include "Palette.hpp"
 #include "Engine.hpp"
 #include "Fonts.hpp"
 #include "Graphics.hpp"
@@ -16,23 +17,19 @@ namespace BloodSword
     {
         Engine::InitializeRNG();
 
-        Asset::Load(graphics.Renderer, "assets.json");
+        Fonts::Load("settings/font-settings.json");
 
-        Fonts::Load("font-settings.json");
+        Palette::Switch(0);
 
-        Graphics::InitializeVersionOverlay(graphics);
-
-        Interface::Initialize(graphics);
+        Interface::LoadTextures(graphics);
     }
 
     // shutdown all subsystems
     void Shutdown(Graphics::Base &graphics)
     {
-        Interface::Shutdown();
-
         Fonts::Free();
 
-        Asset::Unload();
+        Interface::UnloadTextures();
 
         Graphics::Quit(graphics);
     }

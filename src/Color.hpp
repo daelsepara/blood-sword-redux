@@ -14,17 +14,10 @@ namespace BloodSword::Color
     Uint8 A(Uint32 c) { return (Uint8)(c >> 24); }
     Uint32 O(Uint32 c, Uint8 a) { return ((c & ((Uint32)0x00FFFFFF)) | ((Uint32)(a << 24))); }
 
-#if defined(CGA)
-    Uint32 Active = 0xFFFFFFFF;
-    Uint32 Inactive = 0xFF56FFFF;
-    Uint32 Highlight = 0xFFFE02A2;
-    Uint32 Background = 0xFF000000;
-#else
     Uint32 Active = 0xFFFFFFFF;
     Uint32 Inactive = 0xFF606060;
     Uint32 Highlight = 0xFFFF0000;
     Uint32 Background = 0xFF000000;
-#endif
 
     SDL_Color S(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {

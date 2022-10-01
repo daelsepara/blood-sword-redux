@@ -6,7 +6,6 @@
 #include <SDL_ttf.h>
 
 #include "nlohmann/json.hpp"
-#include "Color.hpp"
 
 // classes and functions for handling fonts
 namespace BloodSword::Fonts

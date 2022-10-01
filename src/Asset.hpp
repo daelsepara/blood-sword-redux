@@ -7,6 +7,7 @@
 
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"
+#include "Color.hpp"
 #include "Primitives.hpp"
 
 namespace BloodSword::Asset
@@ -31,6 +32,8 @@ namespace BloodSword::Asset
             if (texture)
             {
                 SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
+                SDL_SetTextureColorMod(texture, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
             }
 
             BloodSword::Free(&surface);
@@ -143,13 +146,13 @@ namespace BloodSword::Asset
 
     // copy the texture associated with the asset and modulate the color. must be
     // de-allocated manually
-    SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset, Uint8 alpha)
+    SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset, Uint32 color)
     {
         auto texture = Asset::Copy(renderer, asset);
 
         if (texture)
         {
-            SDL_SetTextureColorMod(texture, alpha, alpha, alpha);
+            SDL_SetTextureColorMod(texture, Color::R(color), Color::G(color), Color::B(color));
         }
 
         return texture;

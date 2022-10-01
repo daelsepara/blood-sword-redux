@@ -4,12 +4,10 @@
 #include <iostream>
 #include <vector>
 
-#include "Primitives.hpp"
 #include "Color.hpp"
+#include "Animation.hpp"
 #include "Controls.hpp"
 #include "RichText.hpp"
-#include "Scene.hpp"
-#include "Animation.hpp"
 
 // classes and functions for the graphics rendering engine
 namespace BloodSword::Graphics
@@ -19,6 +17,9 @@ namespace BloodSword::Graphics
 
     // location where version string texture is rendered
     Point VersionCoordinates = Point(0, 0);
+
+    // horizontal scan lines toggle
+    bool ScanLinesEnabled = true;
 
     // base class of the graphics system
     class Base
@@ -172,6 +173,33 @@ namespace BloodSword::Graphics
         }
     }
 
+    // add scan lines to display
+    void Scanlines(Base &graphics)
+    {
+        if (ScanLinesEnabled)
+        {
+            SDL_Rect scanline;
+
+            scanline.w = graphics.Width;
+            scanline.h = 1;
+            scanline.x = 0;
+
+            SDL_SetRenderDrawColor(graphics.Renderer, 0, 0, 0, 0x40);
+
+            for (auto i = 0; i < graphics.Height; i += 2)
+            {
+                scanline.y = i + 1;
+                SDL_RenderFillRect(graphics.Renderer, &scanline);
+            }
+        }
+    }
+
+    // toggle horizontal scan lines
+    void ToggleScanLines()
+    {
+        Graphics::ScanLinesEnabled = !Graphics::ScanLinesEnabled;
+    }
+
     // respond to window resizing/in focus/out of focus events
     void Refresh(Graphics::Base &graphics)
     {
@@ -183,6 +211,8 @@ namespace BloodSword::Graphics
         {
             if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
             {
+                Graphics::Scanlines(graphics);
+
                 SDL_RenderPresent(graphics.Renderer);
             }
         }
@@ -340,6 +370,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // handle controls on pop-up dialog instead of the background
     void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input)
     {
         if (graphics.Renderer)
@@ -369,6 +400,10 @@ namespace BloodSword::Graphics
         {
             Graphics::Render(graphics, scene);
 
+            Graphics::DisplayVersion(graphics);
+
+            Graphics::Scanlines(graphics);
+
             SDL_RenderPresent(graphics.Renderer);
         }
     }
@@ -383,12 +418,16 @@ namespace BloodSword::Graphics
 
             Graphics::Overlay(graphics, foreground);
 
+            Graphics::DisplayVersion(graphics);
+
+            Graphics::Scanlines(graphics);
+
             SDL_RenderPresent(graphics.Renderer);
         }
     }
 
     // process through all animations
-    bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool delay = true, bool trail = false)
+    bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool trail = false, bool delay = true)
     {
         auto foreground = Scene::Base();
 
@@ -400,7 +439,7 @@ namespace BloodSword::Graphics
     }
 
     // process a single animation
-    bool Animate(Base &graphics, Scene::Base &background, Animation::Base &animation, bool delay = true, bool trail = false)
+    bool Animate(Base &graphics, Scene::Base &background, Animation::Base &animation, bool trail = false, bool delay = true)
     {
         auto animations = Animations::Base(animation);
 
@@ -486,7 +525,7 @@ namespace BloodSword::Graphics
     }
 
     // create version string overlay texture
-    void InitializeVersionOverlay(Graphics::Base &graphics)
+    void InitializeTextures(Graphics::Base &graphics)
     {
         auto estimate = 0;
 
@@ -506,10 +545,16 @@ namespace BloodSword::Graphics
         }
     }
 
+    // free all textures allocated by this module
+    void FreeTextures()
+    {
+        Free(&VersionOverlay);
+    }
+
     // close graphics system
     void Quit(Base &graphics)
     {
-        Free(&VersionOverlay);
+        Graphics::FreeTextures();
 
         if (graphics.Renderer)
         {

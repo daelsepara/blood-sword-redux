@@ -408,6 +408,11 @@ namespace BloodSword::Character
 
             return weapon != this->Items.end() && (*weapon).Type != Item::Type::BOW;
         }
+
+        bool IsPlayer()
+        {
+            return this->ControlType == Character::ControlType::PLAYER;
+        }
     };
 }
 

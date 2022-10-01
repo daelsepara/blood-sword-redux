@@ -1,17 +1,8 @@
 #ifndef __TEST_HPP__
 #define __TEST_HPP__
 
-#include "Asset.hpp"
-#include "Engine.hpp"
-#include "Fonts.hpp"
-#include "Generator.hpp"
-#include "Graphics.hpp"
 #include "Input.hpp"
 #include "Interface.hpp"
-#include "Move.hpp"
-#include "Maze.hpp"
-#include "Animation.hpp"
-#include "Engine.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test
@@ -187,9 +178,7 @@ namespace BloodSword::Test
 
             while (true)
             {
-                auto scene = Scene::Base();
-
-                Interface::Add(map, scene, party, enemies, 1);
+                auto scene = Interface::Map(map, party, enemies, 1);
 
                 auto id = (int)(scene.Controls.size());
                 auto x = map.DrawX;
@@ -262,7 +251,7 @@ namespace BloodSword::Test
                         {
                             object = (int)tile.Type;
                             background = Color::Background;
-                            border = Color::Inactive;
+                            border = Color::Highlight;
                         }
                         else if (tile.IsOccupied())
                         {
@@ -273,8 +262,8 @@ namespace BloodSword::Test
                         else
                         {
                             object = (int)tile.Type;
-                            border = Color::Highlight;
                             background = Color::Highlight;
+                            border = Color::Inactive;
                         }
 
                         if (object >= 0 && object < textures.size())
@@ -434,9 +423,7 @@ namespace BloodSword::Test
 
         auto RegenerateScene = [&](Map::Base &map)
         {
-            auto scene = Scene::Base();
-
-            Interface::Add(map, scene, party, enemies, 3);
+            auto scene = Interface::Map(map, party, enemies, 3);
 
             auto id = (int)(scene.Controls.size());
 
@@ -469,18 +456,7 @@ namespace BloodSword::Test
         auto animations = Animations::Base();
 
         // set frame, type, and delay
-        auto movement = Animation::Base(
-            {Animation::Frame(Asset::Get(party[Class].Asset))},
-            {Animation::Type::MOVE},
-            {},
-            1,
-            16,
-            false);
-
-        // scale movement scale to map dimensions
-        movement.Scale = Point(map.TileSize, map.TileSize);
-
-        movement.Delta = Point(8, 8);
+        auto movement = Interface::Movement(map, party[Class], {}, start);
 
         ResetObjects(map);
 
@@ -488,21 +464,21 @@ namespace BloodSword::Test
 
         auto done = true;
 
-        Uint32 frameStart = 0;
+        Uint32 framestart = 0;
 
         auto frames = 0;
 
         auto fps = 0.0;
 
-        SDL_Texture *fpsTexture = NULL;
+        SDL_Texture *ftptexture = NULL;
 
         while (true)
         {
             if (done)
             {
-                if (fpsTexture)
+                if (ftptexture)
                 {
-                    auto overlay = Scene::Base(fpsTexture, map.DrawX, map.TileSize / 2);
+                    auto overlay = Scene::Base(ftptexture, map.DrawX, map.TileSize / 2);
 
                     input = Input::WaitForInput(graphics, background, overlay, input);
                 }
@@ -522,29 +498,22 @@ namespace BloodSword::Test
                         // find a path to the exit
                         auto path = Move::FindPath(map, start, end);
 
-                        auto validMoves = Move::Count(map, path, false);
+                        auto valid = Move::Count(map, path, false);
 
-                        if (validMoves > 0)
+                        if (valid > 0)
                         {
-                            Interface::Clip(graphics, map);
-
                             map.Put(start, Map::Object::NONE, -1);
-
-                            map.Put(end, Map::Object::NONE, -1);
 
                             background = RegenerateScene(map);
 
-                            // setup animation
-                            movement.Set(draw, start);
-
-                            auto first = path.Points.begin();
+                            Interface::Clip(graphics, map);
 
                             // add destination to the count
-                            auto moves = std::min(validMoves + 1, party[Class].Moves);
+                            auto first = path.Points.begin();
 
-                            movement.Path = std::vector<Point>(first, first + moves);
+                            auto moves = std::min(valid + 1, party[Class].Moves);
 
-                            movement.Reset();
+                            movement = Interface::Movement(map, party[Class], std::vector<Point>(first, first + moves), start);
 
                             // add to list
                             animations.Clear();
@@ -553,7 +522,7 @@ namespace BloodSword::Test
 
                             done = false;
 
-                            frameStart = SDL_GetTicks();
+                            framestart = SDL_GetTicks();
 
                             frames = 0;
 
@@ -574,7 +543,7 @@ namespace BloodSword::Test
             }
             else
             {
-                done = Graphics::Animate(graphics, background, animations, true, true);
+                done = Graphics::Animate(graphics, background, animations, true);
 
                 Graphics::Refresh(graphics);
 
@@ -583,21 +552,21 @@ namespace BloodSword::Test
                 if (done)
                 {
                     // compute FPS
-                    auto msec = SDL_GetTicks() - frameStart;
+                    auto msec = SDL_GetTicks() - framestart;
 
                     if (msec > 0)
                     {
-                        Free(&fpsTexture);
+                        Free(&ftptexture);
 
                         fps = frames * 1000.0 / (double)msec;
 
                         std::string fpsString = "FPS: " + std::to_string(fps) + "/sec";
 
-                        auto fpsWidth = 0;
+                        auto fpswidth = 0;
 
-                        Graphics::Estimate(Fonts::Normal, fpsString.c_str(), &fpsWidth, NULL);
+                        Graphics::Estimate(Fonts::Normal, fpsString.c_str(), &fpswidth, NULL);
 
-                        fpsTexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, fpsWidth);
+                        ftptexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, fpswidth);
                     }
 
                     for (auto &animation : animations.List)
@@ -621,7 +590,7 @@ namespace BloodSword::Test
             }
         }
 
-        Free(&fpsTexture);
+        Free(&ftptexture);
     }
 
     // battle order
@@ -705,9 +674,7 @@ namespace BloodSword::Test
 
         auto RegenerateScene = [&](Map::Base &map)
         {
-            auto scene = Scene::Base();
-
-            Interface::Add(map, scene, party, enemies, 3);
+            auto scene = Interface::Map(map, party, enemies, 3);
 
             auto id = scene.Controls.size();
 
@@ -737,34 +704,15 @@ namespace BloodSword::Test
 
             for (auto i = 0; i < enemies.Count(); i++)
             {
-                auto enemyLocation = map.Find(Map::Object::ENEMY, i);
+                auto enemy = map.Find(Map::Object::ENEMY, i);
 
-                if (!enemyLocation.IsNone())
+                if (!enemy.IsNone())
                 {
-                    map.Put(enemyLocation, Map::Object::NONE, -1);
+                    map.Put(enemy, Map::Object::NONE, -1);
                 }
 
                 map.Put(spawn[i], Map::Object::ENEMY, i);
             }
-        };
-
-        auto SetupAnimation = [&](Character::Base &character, std::vector<Point> points)
-        {
-            // set frame, type, and delay
-            auto animation = Animation::Base(
-                {Animation::Frame(Asset::Get(character.Asset))},
-                {Animation::Type::MOVE},
-                points,
-                1,
-                16,
-                false);
-
-            // scale movement scale to map dimensions
-            animation.Scale = Point(map.TileSize, map.TileSize);
-
-            animation.Delta = Point(8, 8);
-
-            return animation;
         };
 
         auto Blink = [&](Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
@@ -778,7 +726,7 @@ namespace BloodSword::Test
                 {
                     auto screen = (draw + blink * map.TileSize) + 4;
 
-                    overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::O(Color::Active, 0x50), 2));
+                    overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::Active, 2));
                 }
             }
         };
@@ -809,11 +757,11 @@ namespace BloodSword::Test
 
         if (Engine::IsPlayer(order, character))
         {
-            movement = SetupAnimation(party[order[character].ID], {});
+            movement = Interface::Movement(map, party[order[character].ID], {}, origins[order[character].ID]);
         }
         else
         {
-            movement = SetupAnimation(enemies[order[character].ID], {});
+            movement = Interface::Movement(map, enemies[order[character].ID], {}, spawn[order[character].ID]);
         }
 
         auto pad = 10;
@@ -846,7 +794,7 @@ namespace BloodSword::Test
 
                             if (targets.size() > 0)
                             {
-                                auto hasValidTarget = false;
+                                auto validtarget = false;
 
                                 for (auto &target : targets)
                                 {
@@ -854,39 +802,20 @@ namespace BloodSword::Test
 
                                     if (!end.IsNone())
                                     {
-                                        // find a path to the exit
-                                        auto path = Move::FindPath(map, src, end, true);
+                                        validtarget = Interface::Move(map, enemies[order[character].ID], movement, src, end);
 
-                                        auto valid = Move::Count(map, path, false);
-
-                                        if (valid > 0)
+                                        if (validtarget)
                                         {
-                                            map.Put(src, Map::Object::NONE, -1);
-
                                             scene = RegenerateScene(map);
 
-                                            // move next to target
-                                            auto first = path.Points.begin();
-
-                                            auto moves = std::min(valid, enemies[order[character].ID].Moves);
-
-                                            // setup animation
-                                            movement = SetupAnimation(enemies[order[character].ID], std::vector<Point>(first, first + moves));
-
-                                            movement.Set(draw, src);
-
-                                            movement.Reset();
-
                                             animating = true;
-
-                                            hasValidTarget = true;
 
                                             break;
                                         }
                                     }
                                 }
 
-                                if (!hasValidTarget)
+                                if (!validtarget)
                                 {
                                     Engine::Next(order, character);
                                 }
@@ -929,41 +858,9 @@ namespace BloodSword::Test
                     {
                         auto src = map.Find(Map::Object::PLAYER, order[character].ID);
 
-                        if (map.IsValid(src))
-                        {
-                            auto dst = control.Map;
+                        auto dst = control.Map;
 
-                            auto path = Move::FindPath(map, src, dst);
-
-                            auto valid = Move::Count(map, path, false);
-
-                            if (valid > 0)
-                            {
-                                auto first = path.Points.begin();
-
-                                auto moves = std::min(valid + 1, party[order[character].ID].Moves);
-
-                                auto trajectory = std::vector<Point>(first, first + moves);
-
-                                for (auto i = 0; i < path.Points.size() - 1; i++)
-                                {
-                                    auto &point = path.Points[i];
-
-                                    auto x = map.DrawX + point.X * map.TileSize;
-
-                                    auto y = map.DrawY + point.Y * map.TileSize;
-
-                                    if (i == 0)
-                                    {
-                                        overlay.Add(Scene::Element(x + 4, y + 4, map.TileSize - 8, map.TileSize - 8, 0, Color::O(Color::Inactive, 0x50), 2));
-                                    }
-                                    else
-                                    {
-                                        overlay.Add(Scene::Element(x, y, map.TileSize, map.TileSize, Color::O(Color::Inactive, 0x50)));
-                                    }
-                                }
-                            }
-                        }
+                        overlay = Interface::Path(map, party[order[character].ID], src, dst);
                     }
 
                     if (map[control.Map].Occupant == Map::Object::PLAYER)
@@ -1089,36 +986,15 @@ namespace BloodSword::Test
 
                                     if (control.OnMap && map.IsValid(control.Map) && Engine::IsPlayer(order, character))
                                     {
-                                        auto &end = control.Map;
-
                                         auto start = map.Find(Map::Object::PLAYER, order[character].ID);
+                                        auto end = control.Map;
 
-                                        // find a path to the exit
-                                        auto path = Move::FindPath(map, start, end);
+                                        // find a path to the destination
+                                        animating = Interface::Move(map, party[order[character].ID], movement, start, end);
 
-                                        auto valid = Move::Count(map, path, false);
-
-                                        if (valid > 0)
+                                        if (animating)
                                         {
-                                            map.Put(start, Map::Object::NONE, -1);
-
-                                            map.Put(end, Map::Object::NONE, -1);
-
                                             scene = RegenerateScene(map);
-
-                                            auto first = path.Points.begin();
-
-                                            // add destination to the count
-                                            auto moves = std::min(valid + 1, party[order[character].ID].Moves);
-
-                                            // setup animation
-                                            movement = SetupAnimation(party[order[character].ID], std::vector<Point>(first, first + moves));
-
-                                            movement.Set(draw, start);
-
-                                            movement.Reset();
-
-                                            animating = true;
                                         }
                                     }
                                 }
@@ -1181,21 +1057,35 @@ namespace BloodSword::Test
         Free(characters);
     }
 
-    void Menu(Graphics::Base &graphics)
+    void Palette(Graphics::Base &graphics)
     {
+        Interface::ReloadTextures(graphics, 0, false);
+
+        std::vector<Graphics::RichText> collection = {};
+
+        Uint32 fixed = 0xFFFFFFFF;
+
+        Uint32 highlight = 0xFFFF0000;
+
         auto width = 640;
 
         auto height = 128;
 
-        auto title = Graphics::CreateText(graphics, "Blood Sword Test Suite", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_UNDERLINE, width);
+        for (auto name : Palette::Names)
+        {
+            collection.push_back(Graphics::RichText(name, Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width));
+        }
 
-        auto menu = Graphics::CreateText(
-            graphics,
-            {Graphics::RichText("00 MENU TEST\n\nDemonstrates the font engine, menu rendering and list box scrolling", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("03 ANIMATION TEST\n\n\nDemonstrates A* path-finding and animation engine", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("04 BATTLE ORDER\n\n\nDemonstrates battle order/action/turn sequence", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+        std::vector<Graphics::RichText> colors = {
+            Graphics::RichText("ACTIVE", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width),
+            Graphics::RichText("INACTIVE", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width),
+            Graphics::RichText("HIGHLIGHT", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width),
+            Graphics::RichText("BACKGROUND", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width)};
+
+        auto title = Graphics::CreateText(graphics, "Palette Test", Fonts::Fixed, Color::S(fixed), TTF_STYLE_UNDERLINE, width);
+
+        auto menu = Graphics::CreateText(graphics, collection);
+        auto labels = Graphics::CreateText(graphics, colors);
 
         auto start = 0;
         auto limit = 4;
@@ -1210,13 +1100,189 @@ namespace BloodSword::Test
 
         auto done = false;
 
+        auto palette = Palette::Current;
+
+        auto boxx = origin + width + dim + pad / 2;
+
         while (!done)
         {
-            auto scene = Scene::Base();
+            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, fixed, highlight, true);
 
             scene.Add(Scene::Element(title, xadjust, 28));
 
-            Interface::Add(menu, scene, origin, origin, width, height, start, last, limit, Color::Inactive, Color::Highlight, true);
+            auto &lastControl = scene.Controls.back();
+            auto id = lastControl.ID + 1;
+            auto first = Controls::Find(scene.Controls, Controls::Type::CHOICE);
+            auto bottomy = scene.Controls[first + limit - 1].Y + height + pad;
+
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, xadjust, bottomy, dim, dim, highlight));
+
+            if (Input::IsValid(scene, input) && input.Type == Controls::Type::CHOICE)
+            {
+                auto choices = Controls::Find(scene.Controls, Controls::Type::CHOICE);
+
+                auto color = start + (input.Current - choices);
+
+                if (color >= 0 && color < Palette::List.size())
+                {
+                    palette = color;
+                }
+            }
+
+            // add colors
+            scene.Add(Scene::Element(boxx + pad, origin, 192, 128, Palette::List[palette][0], Palette::List[palette][0], 2));
+            scene.Add(Scene::Element(boxx + pad * 2 + 192, origin, 192, 128, Palette::List[palette][1], Palette::List[palette][1], 2));
+            scene.Add(Scene::Element(boxx + pad, origin + 192, 192, 128, Palette::List[palette][2], Palette::List[palette][2], 2));
+            scene.Add(Scene::Element(boxx + pad * 2 + 192, origin + 192, 192, 128, Palette::List[palette][3], fixed, 2));
+            scene.Add(Scene::Element(labels[0], Point(boxx + pad, origin + 128)));
+            scene.Add(Scene::Element(labels[1], Point(boxx + pad * 2 + 192, origin + 128)));
+            scene.Add(Scene::Element(labels[2], Point(boxx + pad, origin + 320)));
+            scene.Add(Scene::Element(labels[3], Point(boxx + pad * 2 + 192, origin + 320)));
+            scene.Add(Scene::Element(menu[palette], boxx + pad, origin + 384));
+
+            if (input.Up)
+            {
+                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
+
+                input.Up = false;
+            }
+            else if (input.Down)
+            {
+                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
+
+                input.Down = false;
+            }
+
+            input = Input::WaitForInput(graphics, scene, input);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::EXIT)
+                {
+                    palette = Palette::Current;
+
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::CHOICE)
+                {
+                    auto choices = Controls::Find(scene.Controls, Controls::Type::CHOICE);
+
+                    auto choice = start + (input.Current - choices);
+
+                    palette = choice;
+
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (start > 0)
+                    {
+                        start -= 1;
+
+                        if (start < 0)
+                        {
+                            start = 0;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (options - last > 0)
+                    {
+                        if (start < options - limit)
+                        {
+                            start += 1;
+                        }
+
+                        if (start > options - limit)
+                        {
+                            start = options - limit;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Down = true;
+                    }
+                }
+            }
+        }
+
+        Free(labels);
+
+        Free(menu);
+
+        Free(&title);
+
+        Interface::ReloadTextures(graphics, palette);
+    }
+
+    void Menu(Graphics::Base &graphics)
+    {
+        auto width = 640;
+
+        auto height = 128;
+
+        auto RegenerateTitle = [&]()
+        {
+            return Graphics::CreateText(graphics, "Blood Sword Test Suite", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_UNDERLINE, width);
+        };
+
+        auto RegenerateMenu = [&]()
+        {
+            auto menu = Graphics::CreateText(
+                graphics,
+                {Graphics::RichText("00 MENU TEST\n\nDemonstrates the font engine, menu rendering and list box scrolling", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("03 ANIMATION TEST\n\nDemonstrates A* path-finding and animation engine and window clipping", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("04 BATTLE ORDER\n\nDemonstrates battle order/action/turn sequence and pop-up windows", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("05 PALETTTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+            return menu;
+        };
+
+        auto title = RegenerateTitle();
+        auto menu = RegenerateMenu();
+
+        auto FreeTextures = [&]()
+        {
+            Free(menu);
+
+            Free(&title);
+        };
+
+        auto start = 0;
+        auto limit = 4;
+        auto last = start + limit;
+        auto options = (int)(menu.size());
+        auto xadjust = 60;
+        auto origin = 64;
+        auto pad = 16;
+        auto dim = 64;
+        auto input = Controls::User();
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, Color::Inactive, Color::Highlight, true);
+
+            scene.Add(Scene::Element(title, xadjust, 28));
 
             auto &lastControl = scene.Controls.back();
             auto id = lastControl.ID + 1;
@@ -1266,6 +1332,15 @@ namespace BloodSword::Test
                         break;
                     case 4:
                         Test::Queue(graphics);
+                        break;
+                    case 5:
+                        Test::Palette(graphics);
+                        FreeTextures();
+                        title = RegenerateTitle();
+                        menu = RegenerateMenu();
+                        break;
+                    case 6:
+                        Graphics::ToggleScanLines();
                         break;
                     default:
                         // do nothing - menu test
@@ -1326,7 +1401,7 @@ namespace BloodSword::Test
             }
         }
 
-        Free(menu);
+        FreeTextures();
     }
 }
 

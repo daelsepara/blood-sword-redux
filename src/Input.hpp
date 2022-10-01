@@ -65,6 +65,8 @@ namespace BloodSword::Input
 
             Graphics::DisplayVersion(graphics);
 
+            Graphics::Scanlines(graphics);
+
             SDL_RenderPresent(graphics.Renderer);
 
             SDL_PollEvent(&result);
@@ -77,6 +79,8 @@ namespace BloodSword::Input
             {
                 if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
                 {
+                    Graphics::Scanlines(graphics);
+
                     SDL_RenderPresent(graphics.Renderer);
                 }
             }
@@ -117,6 +121,8 @@ namespace BloodSword::Input
             Graphics::Render(graphics, scene, input);
 
             Graphics::Overlay(graphics, overlay);
+
+            Graphics::Scanlines(graphics);
         }
         else
         {
@@ -124,6 +130,8 @@ namespace BloodSword::Input
         }
 
         Graphics::DisplayVersion(graphics);
+
+        Graphics::Scanlines(graphics);
 
         SDL_RenderPresent(graphics.Renderer);
 
@@ -145,6 +153,8 @@ namespace BloodSword::Input
         {
             if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
             {
+                Graphics::Scanlines(graphics);
+
                 SDL_RenderPresent(graphics.Renderer);
             }
         }
@@ -347,6 +357,22 @@ namespace BloodSword::Input
                 input.Up = true;
             }
         }
+        else if (input.Hold)
+        {
+            if (input.Current >= 0 && input.Hold < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
+            {
+                if (controls[input.Current].Type == Controls::Type::SCROLL_UP)
+                {
+                    input.Up = true;
+                }
+                else if (controls[input.Current].Type == Controls::Type::SCROLL_DOWN)
+                {
+                    input.Down = true;
+                }
+
+                SDL_Delay(100);
+            }
+        }
 
         if (input.Current >= 0 && input.Current < controls.size() && !input.Up && !input.Down)
         {
@@ -361,11 +387,11 @@ namespace BloodSword::Input
     }
 
     // render scene then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input, bool isDialog = false)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input)
     {
         auto overlay = Scene::Base();
 
-        return WaitForInput(graphics, scene, overlay, input, isDialog);
+        return WaitForInput(graphics, scene, overlay, input, false);
     }
 
     // check if user input is valid

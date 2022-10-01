@@ -1,10 +1,12 @@
 #ifndef __INTERFACE_HPP__
 #define __INTERFACE_HPP__
 
-#include "Fonts.hpp"
+#include "Animation.hpp"
+#include "Engine.hpp"
 #include "Graphics.hpp"
-#include "Map.hpp"
-#include "Party.hpp"
+#include "Maze.hpp"
+#include "Move.hpp"
+#include "Palette.hpp"
 
 namespace BloodSword::Interface
 {
@@ -24,7 +26,8 @@ namespace BloodSword::Interface
 
     SDL_Texture *NoSkills = NULL;
 
-    void Initialize(Graphics::Base &graphics)
+    // create textures
+    void InitializeTextures(Graphics::Base &graphics)
     {
         for (auto &skill : Skills::TypeMapping)
         {
@@ -37,7 +40,7 @@ namespace BloodSword::Interface
 
             SkillCaptionsActive[skill.first] = active;
             SkillCaptionsInActive[skill.first] = inactive;
-            SkillsTexturesInActive[skill.first] = Asset::Copy(graphics.Renderer, Skills::SkillAssets[skill.first], 0x60);
+            SkillsTexturesInActive[skill.first] = Asset::Copy(graphics.Renderer, Skills::SkillAssets[skill.first], Color::Inactive);
         }
 
         auto noskills = 0;
@@ -47,7 +50,8 @@ namespace BloodSword::Interface
         NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, noskills);
     }
 
-    void Shutdown()
+    // unload all textures allocated by this module
+    void FreeTextures()
     {
         for (auto &skill : SkillCaptionsActive)
         {
@@ -64,127 +68,163 @@ namespace BloodSword::Interface
             Free(&skill.second);
         }
 
+        SkillCaptionsActive.clear();
+        SkillCaptionsInActive.clear();
+        SkillsTexturesInActive.clear();
+
         Free(&NoSkills);
     }
 
-    // add map to the scene
-    void Add(Map::Base &Map, Scene::Base &Scene, Party::Base &Party, Party::Base &Enemies, int BottomControls)
+    // unload all textures and assets
+    void UnloadTextures()
     {
-        auto NumControls = Scene.Controls.size();
+        Interface::FreeTextures();
 
-        for (auto y = Map.Y; y < Map.Y + Map.SizeY; y++)
+        Graphics::FreeTextures();
+
+        Asset::Unload();
+    }
+
+    // load all textures
+    void LoadTextures(Graphics::Base &graphics)
+    {
+        Asset::Load(graphics.Renderer, "settings/assets.json");
+
+        Graphics::InitializeTextures(graphics);
+
+        Interface::InitializeTextures(graphics);
+    }
+
+    // switch texture and reload all textures
+    void ReloadTextures(Graphics::Base &graphics, int palette = 0, bool override = true)
+    {
+        Interface::UnloadTextures();
+
+        Palette::Switch(palette, override);
+
+        Interface::LoadTextures(graphics);
+    }
+
+    // add map to the scene
+    Scene::Base Map(Map::Base &map, Party::Base &party, Party::Base &enemies, int bottom)
+    {
+        auto scene = Scene::Base();
+
+        auto numcontrols = 0;
+
+        for (auto y = map.Y; y < map.Y + map.SizeY; y++)
         {
-            auto CtrlY = y - Map.Y;
+            auto ctrly = y - map.Y;
 
-            for (auto x = Map.X; x < Map.X + Map.SizeX; x++)
+            for (auto x = map.X; x < map.X + map.SizeX; x++)
             {
-                auto CtrlX = x - Map.X;
+                auto ctrlx = x - map.X;
 
-                auto CtrlUp = NumControls;
-                auto CtrlDn = NumControls;
-                auto CtrlLt = NumControls;
-                auto CtrlRt = NumControls;
+                auto up = numcontrols;
+                auto dn = numcontrols;
+                auto lt = numcontrols;
+                auto rt = numcontrols;
 
-                if (CtrlY > 0)
+                if (ctrly > 0)
                 {
-                    CtrlUp = NumControls - Map.SizeX;
+                    up = numcontrols - map.SizeX;
                 }
 
-                if (CtrlY < Map.SizeY - 1)
+                if (ctrly < map.SizeY - 1)
                 {
-                    CtrlDn = NumControls + Map.SizeX;
+                    dn = numcontrols + map.SizeX;
                 }
                 else
                 {
-                    if (CtrlX < BottomControls)
+                    if (ctrlx < bottom)
                     {
-                        CtrlDn = NumControls + Map.SizeX;
+                        dn = numcontrols + map.SizeX;
                     }
                 }
 
-                if (CtrlX > 0)
+                if (ctrlx > 0)
                 {
-                    CtrlLt = NumControls - 1;
+                    lt = numcontrols - 1;
                 }
 
-                if (CtrlX < Map.SizeX - 1)
+                if (ctrlx < map.SizeX - 1)
                 {
-                    CtrlRt = NumControls + 1;
+                    rt = numcontrols + 1;
                 }
 
-                auto Location = Point(x, y);
+                auto location = Point(x, y);
 
-                Map::Tile &Tile = Map[Location];
+                auto &tile = map[location];
 
-                auto Screen = Point(Map.DrawX, Map.DrawY) + Point(CtrlX, CtrlY) * Map.TileSize;
+                auto screen = Point(map.DrawX, map.DrawY) + Point(ctrlx, ctrly) * map.TileSize;
 
-                auto ControlType = Controls::Type::MAP_NONE;
+                auto type = Controls::Type::MAP_NONE;
 
-                auto ControlColor = Color::Inactive;
+                auto color = Color::Inactive;
 
-                if (Tile.IsOccupied())
+                if (tile.IsOccupied())
                 {
-                    switch (Tile.Occupant)
+                    switch (tile.Occupant)
                     {
                     case Map::Object::PLAYER:
-                        if (Tile.Id >= 0 && Tile.Id < Party.Count())
+                        if (tile.Id >= 0 && tile.Id < party.Count())
                         {
-                            if (Party[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
+                            if (party[tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Party[Tile.Id].Asset), Screen));
+                                scene.Add(Scene::Element(Asset::Get(party[tile.Id].Asset), screen));
 
-                                switch (Party[Tile.Id].Class)
+                                switch (party[tile.Id].Class)
                                 {
                                 case Character::Class::WARRIOR:
-                                    ControlType = Controls::Type::WARRIOR;
+                                    type = Controls::Type::WARRIOR;
                                     break;
                                 case Character::Class::TRICKSTER:
-                                    ControlType = Controls::Type::TRICKSTER;
+                                    type = Controls::Type::TRICKSTER;
                                     break;
                                 case Character::Class::SAGE:
-                                    ControlType = Controls::Type::SAGE;
+                                    type = Controls::Type::SAGE;
                                     break;
                                 case Character::Class::ENCHANTER:
-                                    ControlType = Controls::Type::ENCHANTER;
+                                    type = Controls::Type::ENCHANTER;
                                     break;
                                 default:
                                     break;
                                 }
 
-                                ControlColor = Color::Highlight;
+                                color = Color::Highlight;
                             }
                         }
                         break;
                     case Map::Object::ENEMY:
-                        if (Tile.Id >= 0 && Tile.Id < Enemies.Count())
+                        if (tile.Id >= 0 && tile.Id < enemies.Count())
                         {
-                            if (Enemies[Tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
+                            if (enemies[tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Enemies[Tile.Id].Asset), Screen));
+                                scene.Add(Scene::Element(Asset::Get(enemies[tile.Id].Asset), screen));
 
-                                ControlType = Controls::Type::ENEMY;
+                                type = Controls::Type::ENEMY;
 
-                                ControlColor = Color::Highlight;
+                                color = Color::Highlight;
                             }
                         }
                         break;
                     case Map::Object::TEMPORARY_OBSTACLE:
-                        if (Tile.Lifetime > 0)
+                        if (tile.Lifetime > 0)
                         {
-                            if (Tile.TemporaryAsset != Asset::Type::NONE)
+                            if (tile.TemporaryAsset != Asset::Type::NONE)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Tile.TemporaryAsset), Screen));
+                                scene.Add(Scene::Element(Asset::Get(tile.TemporaryAsset), screen));
 
-                                ControlType = Controls::Type::TEMPORARY_OBSTACLE;
+                                type = Controls::Type::TEMPORARY_OBSTACLE;
 
-                                ControlColor = Color::Highlight;
+                                color = Color::Highlight;
                             }
                         }
                         else
                         {
-                            if (Tile.Asset != Asset::Type::NONE)
+                            if (tile.Asset != Asset::Type::NONE)
                             {
-                                Scene.Add(Scene::Element(Asset::Get(Tile.Asset), Screen));
+                                scene.Add(Scene::Element(Asset::Get(tile.Asset), screen));
                             }
                         }
                         break;
@@ -194,45 +234,47 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    if (Tile.IsExit())
+                    if (tile.IsExit())
                     {
-                        ControlType = Controls::Type::MAP_EXIT;
+                        type = Controls::Type::MAP_EXIT;
 
-                        ControlColor = Color::Highlight;
+                        color = Color::Highlight;
                     }
-                    else if (Tile.IsPassable())
+                    else if (tile.IsPassable())
                     {
-                        ControlType = Controls::Type::DESTINATION;
+                        type = Controls::Type::DESTINATION;
 
-                        ControlColor = Color::Highlight;
+                        color = Color::Highlight;
                     }
-                    else if (Tile.IsPassableToEnemy())
+                    else if (tile.IsPassableToEnemy())
                     {
-                        ControlColor = Color::Inactive;
+                        color = Color::Inactive;
                     }
 
-                    if (Tile.Asset != Asset::Type::NONE)
+                    if (tile.Asset != Asset::Type::NONE)
                     {
-                        Scene.Add(Scene::Element(Asset::Get(Tile.Asset), Screen));
+                        scene.Add(Scene::Element(Asset::Get(tile.Asset), screen));
                     }
                 }
 
-                Scene.Add(Controls::Base(ControlType, NumControls, CtrlLt, CtrlRt, CtrlUp, CtrlDn, Screen, Map.TileSize, Map.TileSize, ControlColor, Location));
+                scene.Add(Controls::Base(type, numcontrols, lt, rt, up, dn, screen, map.TileSize, map.TileSize, color, location));
 
-                NumControls++;
+                numcontrols++;
             }
         }
+
+        return scene;
     }
 
-    void Add(Map::Base &Map, Scene::Base &Scene, Party::Base &Party, int BottomControls)
+    Scene::Base Map(Map::Base &map, Party::Base &party, int bottom)
     {
-        auto Enemies = Party::Base();
+        auto enemies = Party::Base();
 
-        Interface::Add(Map, Scene, Party, Enemies, BottomControls);
+        return Interface::Map(map, party, enemies, bottom);
     }
 
     // create character attributes text box
-    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap, bool addName = false)
+    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false)
     {
         SDL_Texture *texture = NULL;
 
@@ -241,7 +283,7 @@ namespace BloodSword::Interface
 
         if (character.ControlType == Character::ControlType::PLAYER)
         {
-            if (addName)
+            if (addname)
             {
                 labels = '\n';
             }
@@ -252,7 +294,7 @@ namespace BloodSword::Interface
         }
         else if (character.ControlType == Character::ControlType::NPC)
         {
-            if (addName)
+            if (addname)
             {
                 labels = '\n';
             }
@@ -269,7 +311,7 @@ namespace BloodSword::Interface
 
         Graphics::Estimate(font, "99D+D99", &statsw, NULL);
 
-        auto surfaceLabels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelColor), style, labelsw);
+        auto surfacelabels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelcolor), style, labelsw);
 
         for (auto &attribute : Attribute::All)
         {
@@ -324,93 +366,93 @@ namespace BloodSword::Interface
             }
         }
 
-        if (addName)
+        if (addname)
         {
             stats = '\n' + stats;
         }
 
-        auto surfaceStats = Graphics::CreateSurfaceText(stats.c_str(), font, Color::S(statsColor), style, statsw);
+        auto surfacestats = Graphics::CreateSurfaceText(stats.c_str(), font, Color::S(statscolor), style, statsw);
 
-        if (surfaceLabels && surfaceStats)
+        if (surfacelabels && surfacestats)
         {
             SDL_Surface *surface = NULL;
 
-            auto surfaceWidth = surfaceLabels->w + surfaceStats->w;
+            auto surfacewidth = surfacelabels->w + surfacestats->w;
 
-            if (addName)
+            if (addname)
             {
                 auto namewidth = 0;
 
                 Graphics::Estimate(font, "DMGG", &namewidth, NULL);
 
-                if (namewidth > surfaceWidth)
+                if (namewidth > surfacewidth)
                 {
-                    surfaceWidth = namewidth;
+                    surfacewidth = namewidth;
                 }
             }
 
 #if SDL_BYTEORDER == SDL_BIG_ENDIAN
-            surface = SDL_CreateRGBSurface(0, surfaceWidth, std::max(surfaceLabels->h, surfaceStats->h), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+            surface = SDL_CreateRGBSurface(0, surfacewidth, std::max(surfacelabels->h, surfacestats->h), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
 #else
-            surface = SDL_CreateRGBSurface(0, surfaceWidth, std::max(surfaceLabels->h, surfaceStats->h), 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+            surface = SDL_CreateRGBSurface(0, surfacewidth, std::max(surfacelabels->h, surfacestats->h), 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 #endif
 
             if (surface)
             {
                 SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
 
-                SDL_Rect labelsRect, statsRect;
+                SDL_Rect labelsrect, statsrect;
 
-                labelsRect.w = surface->w;
-                labelsRect.h = surface->h;
-                labelsRect.x = 0;
-                labelsRect.y = 0;
+                labelsrect.w = surface->w;
+                labelsrect.h = surface->h;
+                labelsrect.x = 0;
+                labelsrect.y = 0;
 
-                auto convertedSurfaceLabels = SDL_ConvertSurface(surfaceLabels, surface->format, 0);
+                auto convertedlabels = SDL_ConvertSurface(surfacelabels, surface->format, 0);
 
-                if (convertedSurfaceLabels)
+                if (convertedlabels)
                 {
-                    SDL_SetSurfaceAlphaMod(convertedSurfaceLabels, SDL_ALPHA_OPAQUE);
-                    SDL_BlitSurface(convertedSurfaceLabels, NULL, surface, &labelsRect);
-                    BloodSword::Free(&convertedSurfaceLabels);
+                    SDL_SetSurfaceAlphaMod(convertedlabels, SDL_ALPHA_OPAQUE);
+                    SDL_BlitSurface(convertedlabels, NULL, surface, &labelsrect);
+                    BloodSword::Free(&convertedlabels);
                 }
 
-                statsRect.w = surface->w;
-                statsRect.h = surface->h;
-                statsRect.x = surfaceLabels->w + 8;
-                statsRect.y = 0;
+                statsrect.w = surface->w;
+                statsrect.h = surface->h;
+                statsrect.x = surfacelabels->w + 8;
+                statsrect.y = 0;
 
-                auto convertedSurfaceStats = SDL_ConvertSurface(surfaceStats, surface->format, 0);
+                auto convertedstats = SDL_ConvertSurface(surfacestats, surface->format, 0);
 
-                if (convertedSurfaceStats)
+                if (convertedstats)
                 {
-                    SDL_SetSurfaceAlphaMod(convertedSurfaceStats, SDL_ALPHA_OPAQUE);
-                    SDL_BlitSurface(convertedSurfaceStats, NULL, surface, &statsRect);
-                    BloodSword::Free(&convertedSurfaceStats);
+                    SDL_SetSurfaceAlphaMod(convertedstats, SDL_ALPHA_OPAQUE);
+                    SDL_BlitSurface(convertedstats, NULL, surface, &statsrect);
+                    BloodSword::Free(&convertedstats);
                 }
 
                 // add character class if player character
-                if (addName)
+                if (addname)
                 {
-                    auto surfaceName = Graphics::CreateSurfaceText(character.Name.c_str(), font, Color::S(labelColor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
+                    auto surfacename = Graphics::CreateSurfaceText(character.Name.c_str(), font, Color::S(labelcolor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
 
-                    if (surfaceName)
+                    if (surfacename)
                     {
-                        labelsRect.w = surface->w;
-                        labelsRect.h = surface->h;
-                        labelsRect.x = 0;
-                        labelsRect.y = 0;
+                        labelsrect.w = surface->w;
+                        labelsrect.h = surface->h;
+                        labelsrect.x = 0;
+                        labelsrect.y = 0;
 
-                        auto convertedSurfaceName = SDL_ConvertSurface(surfaceName, surface->format, 0);
+                        auto convertedname = SDL_ConvertSurface(surfacename, surface->format, 0);
 
-                        if (convertedSurfaceName)
+                        if (convertedname)
                         {
-                            SDL_SetSurfaceAlphaMod(convertedSurfaceName, SDL_ALPHA_OPAQUE);
-                            SDL_BlitSurface(convertedSurfaceName, NULL, surface, &labelsRect);
-                            BloodSword::Free(&convertedSurfaceName);
+                            SDL_SetSurfaceAlphaMod(convertedname, SDL_ALPHA_OPAQUE);
+                            SDL_BlitSurface(convertedname, NULL, surface, &labelsrect);
+                            BloodSword::Free(&convertedname);
                         }
 
-                        BloodSword::Free(&surfaceName);
+                        BloodSword::Free(&surfacename);
                     }
                 }
 
@@ -419,14 +461,14 @@ namespace BloodSword::Interface
                 BloodSword::Free(&surface);
             }
 
-            BloodSword::Free(&surfaceStats);
-            BloodSword::Free(&surfaceLabels);
+            BloodSword::Free(&surfacestats);
+            BloodSword::Free(&surfacelabels);
         }
 
         return texture;
     }
 
-    std::vector<SDL_Texture *> Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelColor, Uint32 statsColor, int style, int wrap, bool addClass = false)
+    std::vector<SDL_Texture *> Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false)
     {
         std::vector<SDL_Texture *> textures = {};
 
@@ -434,7 +476,7 @@ namespace BloodSword::Interface
         {
             auto &character = party[i];
 
-            auto texture = Interface::Attributes(graphics, character, font, labelColor, statsColor, style, wrap, addClass);
+            auto texture = Interface::Attributes(graphics, character, font, labelcolor, statscolor, style, wrap, addname);
 
             if (texture)
             {
@@ -474,8 +516,10 @@ namespace BloodSword::Interface
     }
 
     // add vertical text menu to the scene
-    void Add(std::vector<SDL_Texture *> &choices, Scene::Base &scene, int x, int y, int w, int h, int start, int last, int limit, Uint32 border, Uint32 highlight, bool others = false)
+    Scene::Base Menu(std::vector<SDL_Texture *> &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 border, Uint32 highlight, bool others = false)
     {
+        auto scene = Scene::Base();
+
         if (!choices.empty())
         {
             auto startid = (int)(scene.Controls.size());
@@ -539,10 +583,12 @@ namespace BloodSword::Interface
                 }
             }
         }
+
+        return scene;
     }
 
     // skills overlay menu
-    Scene::Base Skills(Point origin, int w, int h, Character::Base &character, Uint32 background, Uint32 border, int borderSize, bool inbattle = false)
+    Scene::Base Skills(Point origin, int w, int h, Character::Base &character, Uint32 background, Uint32 border, int bordersize, bool inbattle = false)
     {
         auto overlay = Scene::Base();
 
@@ -552,7 +598,7 @@ namespace BloodSword::Interface
 
         auto screen = origin + Point(w - popupw, h - popuph) / 2;
 
-        overlay.Add(Scene::Element(screen, popupw, popuph, background, border, borderSize));
+        overlay.Add(Scene::Element(screen, popupw, popuph, background, border, bordersize));
 
         auto pad = 8;
 
@@ -609,6 +655,102 @@ namespace BloodSword::Interface
 
         overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * 64 + pad * 2, screen.Y + pad * 2 + 32));
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, id, id, screen.X + id * 64 + pad * 2, screen.Y + pad * 2 + 32, 64, 64, Color::Highlight));
+
+        return overlay;
+    }
+
+    Animation::Base Movement(Map::Base &map, Character::Base &character, std::vector<Point> path, Point start)
+    {
+        auto movement = Animation::Base(
+            {Animation::Frame(Asset::Get(character.Asset))},
+            {Animation::Type::MOVE},
+            path,
+            1,
+            16,
+            false);
+
+        // scale movement scale to map dimensions
+        movement.Scale = Point(map.TileSize, map.TileSize);
+
+        movement.Delta = Point(8, 8);
+
+        movement.Set(Point(map.DrawX, map.DrawY), start);
+
+        movement.Reset();
+
+        return movement;
+    }
+
+    // setup movement animation
+    bool Move(Map::Base &map, Character::Base &character, Animation::Base &movement, Point &start, Point &end)
+    {
+        auto moving = false;
+
+        // find a path to the destination
+        auto path = Move::FindPath(map, start, end);
+
+        auto valid = Move::Count(map, path, false);
+
+        if (valid > 0)
+        {
+            map.Put(start, Map::Object::NONE, -1);
+
+            if (character.IsPlayer())
+            {
+                map.Put(end, Map::Object::NONE, -1);
+            }
+
+            auto first = path.Points.begin();
+
+            // add destination to the count
+            auto moves = std::min(valid + (character.IsPlayer() ? 1 : 0), character.Moves);
+
+            // setup animation
+            movement = Interface::Movement(map, character, std::vector<Point>(first, first + moves), start);
+
+            moving = true;
+        }
+
+        return moving;
+    }
+
+    Scene::Base Path(Map::Base &map, Character::Base &character, Point &src, Point &dst)
+    {
+        auto overlay = Scene::Base();
+
+        if (map.IsValid(src))
+        {
+            auto path = Move::FindPath(map, src, dst);
+
+            auto valid = Move::Count(map, path, false);
+
+            if (valid > 0)
+            {
+                auto first = path.Points.begin();
+
+                auto moves = std::min(valid + 1, character.Moves);
+
+                auto trajectory = std::vector<Point>(first, first + moves);
+
+                for (auto i = 0; i < path.Points.size() - 1; i++)
+                {
+                    auto &point = path.Points[i];
+
+                    auto x = map.DrawX + point.X * map.TileSize;
+
+                    auto y = map.DrawY + point.Y * map.TileSize;
+
+                    if (i == 0)
+                    {
+                        overlay.Add(Scene::Element(x + 4, y + 4, map.TileSize - 8, map.TileSize - 8, 0, Color::Inactive, 2));
+                    }
+                    else
+                    {
+                        overlay.Add(Scene::Element(x, y, map.TileSize, map.TileSize, Color::Inactive));
+                    }
+                }
+            }
+        }
 
         return overlay;
     }

@@ -304,7 +304,7 @@ namespace BloodSword::Animation
     }
 
     // update the animation on screen (MOVE, FRAME, both)
-    bool Step(Scene::Base &scene, Animation::Base &animation, bool delay = true, bool trail = false)
+    bool Step(Scene::Base &scene, Animation::Base &animation, bool trail = false, bool delay = true)
     {
         auto done = false;
 
@@ -344,14 +344,26 @@ namespace BloodSword::Animation
                     {
                         auto trails = animation.Origin + animation.Path[i] * animation.Scale;
 
-                        scene.Add(Scene::Element(trails, 64, 64, Color::O(Color::Inactive, 0x50), 0, 0));
+                        scene.Add(Scene::Element(trails, 64, 64, Color::Inactive, 0, 0));
                     }
                 }
 
                 // add sprite to scene
                 auto location = animation.Origin + animation.Current * animation.Scale + animation.Offset;
 
+                if (trail)
+                {
+                    auto dst = animation.Origin + animation.Path.back() * animation.Scale;
+
+                    scene.Add(Scene::Element(dst + 4, 58, 58, 0, Color::Inactive, 2));
+                }
+
                 scene.Add(Scene::Element(animation.Frames[animation.Frame].Texture, location));
+
+                if (trail)
+                {
+                    scene.Add(Scene::Element(location + 4, 58, 58, 0, Color::Inactive, 2));
+                }
             }
 
             if (move != animation.Move || frame != animation.Frame)
@@ -417,7 +429,7 @@ namespace BloodSword::Animations
     };
 
     // process all animations in the list
-    bool Step(Scene::Base &scene, Animations::Base &animations, bool delay = true, bool trail = false)
+    bool Step(Scene::Base &scene, Animations::Base &animations, bool trail = false, bool delay = true)
     {
         auto done = true;
 
@@ -442,13 +454,13 @@ namespace BloodSword::Animations
                 {
                     moves++;
 
-                    movement &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay), trail);
+                    movement &= Animation::Step(scene, animation, trail, false || (animations.List.size() == 1 && delay));
                 }
                 else
                 {
                     frames++;
 
-                    frame &= Animation::Step(scene, animation, false || (animations.List.size() == 1 && delay), trail);
+                    frame &= Animation::Step(scene, animation, trail, false || (animations.List.size() == 1 && delay));
                 }
             }
 
