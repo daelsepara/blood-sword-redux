@@ -120,7 +120,7 @@ namespace BloodSword::Move
         {
             auto &tile = map[location];
 
-            auto IsDestination = Move::Is(target, location) & !tile.IsOccupied();
+            auto IsDestination = Move::Is(target, location) && !tile.IsOccupied();
 
             auto IsPassable = Move::IsPassable(map, location, IsEnemy, Unrestricted);
 
