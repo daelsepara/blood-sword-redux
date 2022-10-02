@@ -118,7 +118,9 @@ namespace BloodSword::Move
 
         if (map.IsValid(location))
         {
-            auto IsDestination = Move::Is(target, location);
+            auto &tile = map[location];
+
+            auto IsDestination = Move::Is(target, location) & !tile.IsOccupied();
 
             auto IsPassable = Move::IsPassable(map, location, IsEnemy, Unrestricted);
 
