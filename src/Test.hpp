@@ -148,11 +148,11 @@ namespace BloodSword::Test
 
             auto backgrounds = Graphics::CreateText(
                 graphics,
-                {Graphics::RichText("THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
+                {Graphics::RichText("THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+                 Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
 
             auto stats = Interface::Attributes(graphics, party, Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw);
 
@@ -790,7 +790,7 @@ namespace BloodSword::Test
                         // if enemy, move to nearest target
                         if (!Engine::IsPlayer(order, character))
                         {
-                            auto targets = Engine::Build(map, party, src);
+                            auto targets = Engine::Targets(map, party, src);
 
                             if (targets.size() > 0)
                             {
@@ -1135,11 +1135,11 @@ namespace BloodSword::Test
             scene.Add(Scene::Element(boxx + pad * 2 + 192, origin, 192, 128, Palette::List[palette][1], Palette::List[palette][1], 2));
             scene.Add(Scene::Element(boxx + pad, origin + 192, 192, 128, Palette::List[palette][2], Palette::List[palette][2], 2));
             scene.Add(Scene::Element(boxx + pad * 2 + 192, origin + 192, 192, 128, Palette::List[palette][3], fixed, 2));
-            scene.Add(Scene::Element(labels[0], Point(boxx + pad, origin + 128)));
-            scene.Add(Scene::Element(labels[1], Point(boxx + pad * 2 + 192, origin + 128)));
-            scene.Add(Scene::Element(labels[2], Point(boxx + pad, origin + 320)));
-            scene.Add(Scene::Element(labels[3], Point(boxx + pad * 2 + 192, origin + 320)));
-            scene.Add(Scene::Element(menu[palette], boxx + pad, origin + 384));
+            scene.Add(Scene::Element(labels[0], Point(boxx + pad, origin + 136)));
+            scene.Add(Scene::Element(labels[1], Point(boxx + pad * 2 + 192, origin + 136)));
+            scene.Add(Scene::Element(labels[2], Point(boxx + pad, origin + 328)));
+            scene.Add(Scene::Element(labels[3], Point(boxx + pad * 2 + 192, origin + 328)));
+            scene.Add(Scene::Element(menu[palette], boxx + pad, origin + 392));
 
             if (input.Up)
             {
@@ -1251,7 +1251,7 @@ namespace BloodSword::Test
                  Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("03 ANIMATION TEST\n\nDemonstrates A* path-finding and animation engine and window clipping", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("04 BATTLE ORDER\n\nDemonstrates battle order/action/turn sequence and pop-up windows", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("05 PALETTTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("05 PALETTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
             return menu;
         };
@@ -1334,6 +1334,7 @@ namespace BloodSword::Test
                         Test::Queue(graphics);
                         break;
                     case 5:
+                        // reset textures and menu
                         Test::Palette(graphics);
                         FreeTextures();
                         title = RegenerateTitle();
@@ -1346,12 +1347,6 @@ namespace BloodSword::Test
                         // do nothing - menu test
                         break;
                     }
-
-                    input.Current = -1;
-
-                    start = 0;
-
-                    last = start + limit;
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {

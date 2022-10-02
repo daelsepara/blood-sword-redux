@@ -95,13 +95,13 @@ namespace BloodSword::Move
 
             auto NotOccupied = !Tile.IsOccupied() && !Tile.IsBlocked();
 
-            auto IsValid = (Unrestricted || NotOccupied);
+            auto IsValid = NotOccupied || Unrestricted;
 
             auto IsPassable = Tile.IsPassable() && IsValid;
 
             auto IsPassableToEnemy = IsEnemy && Tile.IsPassableToEnemy() && IsValid;
 
-            auto IsExit = !IsEnemy && Tile.IsExit() && IsValid;
+            auto IsExit = !IsEnemy && Tile.IsExit() && NotOccupied;
 
             auto IsTarget = IsEnemy && Tile.IsPlayer();
 
@@ -118,13 +118,7 @@ namespace BloodSword::Move
 
         if (map.IsValid(location))
         {
-            Map::Tile &Tile = map[location];
-
-            auto NotOccupied = !Tile.IsOccupied() && !Tile.IsBlocked();
-
-            auto IsValid = (Unrestricted || NotOccupied);
-
-            auto IsDestination = Move::Is(target, location) && IsValid;
+            auto IsDestination = Move::Is(target, location);
 
             auto IsPassable = Move::IsPassable(map, location, IsEnemy, Unrestricted);
 

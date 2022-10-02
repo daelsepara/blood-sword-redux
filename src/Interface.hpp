@@ -5,7 +5,6 @@
 #include "Engine.hpp"
 #include "Graphics.hpp"
 #include "Maze.hpp"
-#include "Move.hpp"
 #include "Palette.hpp"
 
 namespace BloodSword::Interface
@@ -434,7 +433,7 @@ namespace BloodSword::Interface
                 // add character class if player character
                 if (addname)
                 {
-                    auto surfacename = Graphics::CreateSurfaceText(character.Name.c_str(), font, Color::S(labelcolor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
+                    auto surfacename = Graphics::CreateSurfaceText(character.Name.c_str(), font, Color::S(statscolor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
 
                     if (surfacename)
                     {

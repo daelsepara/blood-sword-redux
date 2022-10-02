@@ -40,7 +40,9 @@ namespace BloodSword::Character
         AWAY,
         PARALYZED,
         KNOCKED_OUT,
-        IN_BATTLE
+        IN_BATTLE,
+        MOVE,
+        SHOOT
     };
 
     Mapping<Character::Status> StatusMapping = {
@@ -52,7 +54,9 @@ namespace BloodSword::Character
         {Status::AWAY, "AWAY"},
         {Status::PARALYZED, "PARALYZED"},
         {Status::KNOCKED_OUT, "KNOCKED OUT"},
-        {Status::IN_BATTLE, "IN BATTLE"}};
+        {Status::IN_BATTLE, "IN BATTLE"},
+        {Status::MOVE, "MOVE"},
+        {Status::SHOOT, "SHOOT"}};
 
     Character::Status MapStatus(const char *status)
     {

@@ -6,6 +6,7 @@
 #include "Character.hpp"
 #include "Item.hpp"
 #include "Map.hpp"
+#include "Move.hpp"
 #include "Party.hpp"
 #include "Random.hpp"
 #include "Spells.hpp"
@@ -138,7 +139,7 @@ namespace BloodSword::Engine
         return queue;
     }
 
-    // Build queue of characters sorted according to attribute score
+    // build queue of characters sorted according to attribute score
     Engine::Queue Build(Party::Base &party, Attribute::Type attribute, bool inbattle = false, bool descending = true)
     {
         auto empty = Party::Base();
@@ -164,6 +165,21 @@ namespace BloodSword::Engine
         }
 
         return found;
+    }
+
+    // return the position of the character in the queue (-1 if character not in queue)
+    int Order(Engine::Queue &queue, Character::ControlType &control, int id)
+    {
+        auto distance = -1;
+
+        auto found = Engine::Find(queue, control, id);
+
+        if (found != queue.end())
+        {
+            distance = found - queue.begin();
+        }
+
+        return distance;
     }
 
     // check if current character (in the queue) is player-controlled
@@ -205,6 +221,17 @@ namespace BloodSword::Engine
         }
     }
 
+    // move item to end of the queue
+    void MoveToEnd(Engine::Queue &queue, int id)
+    {
+        if (id >= 0 && id < queue.size() - 1)
+        {
+            auto search = queue.begin() + id;
+
+            std::rotate(search, std::next(search), queue.end());
+        }
+    }
+
     // build distance queue
     Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
     {
@@ -236,6 +263,51 @@ namespace BloodSword::Engine
                 if (distance >= 0 && map.IsValid(location))
                 {
                     queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+                }
+            }
+        }
+
+        Engine::Sort(queue, descending);
+
+        return queue;
+    }
+
+    // build queue based on path to target (alternative to the distance-based (between src and dst) approach
+    Engine::Queue Targets(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
+    {
+        Engine::Queue queue = {};
+
+        if (map.IsValid(src))
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE) > 0;
+                auto away = party[i].Is(Character::Status::AWAY);
+                auto battle = (inbattle && party[i].Is(Character::Status::IN_BATTLE)) || !inbattle;
+
+                if (alive && !away && battle)
+                {
+                    auto distance = -1;
+
+                    Point location;
+
+                    if (party[i].ControlType == Character::ControlType::PLAYER)
+                    {
+                        location = map.Find(Map::Object::PLAYER, i);
+                    }
+                    else if (party[i].ControlType == Character::ControlType::NPC)
+                    {
+                        location = map.Find(Map::Object::ENEMY, i);
+                    }
+
+                    auto path = Move::FindPath(map, src, location, map[src].IsEnemy());
+
+                    distance = Move::Count(map, path, map[src].IsEnemy());
+
+                    if (distance > 0 && map.IsValid(location))
+                    {
+                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+                    }
                 }
             }
         }
