@@ -4,74 +4,11 @@
 #include <vector>
 #include <SDL.h>
 
+#include "ControlTypes.hpp"
 #include "Primitives.hpp"
 
 namespace BloodSword::Controls
 {
-    enum class Type
-    {
-        NONE = -1,
-        ANY = 0,
-        WARRIOR,
-        TRICKSTER,
-        SAGE,
-        ENCHANTER,
-        SCROLL_UP,
-        SCROLL_DOWN,
-        MAP_NONE,
-        MAP_UP,
-        MAP_DOWN,
-        MAP_LEFT,
-        MAP_RIGHT,
-        MAP_EXIT,
-        BACK,
-        RESET,
-        CONFIRM,
-        ROLL,
-        PLAYER,
-        ENEMY,
-        DESTINATION,
-        ABILITY,
-        ITEMS,
-        CALL_TO_MIND,
-        FORGET,
-        FLEE,
-        MOVE,
-        HEAL,
-        PLUS,
-        MINUS,
-        ATTACK,
-        DEFEND,
-        SHOOT,
-        CAST,
-        DAMAGE,
-        ARCHERY,
-        DODGING,
-        QUARTERSTAFF,
-        EXORCISM,
-        ESP,
-        PARANORMAL_SIGHT,
-        LEVITATION,
-        SPELLS,
-        TEST,
-        CHOICE,
-        CONTINUE,
-        MAP,
-        ENCYCLOPEDIA,
-        NEW,
-        LOAD,
-        SAVE,
-        EXIT,
-        GAME,
-        PARTY,
-        INFO,
-        USE,
-        DROP,
-        TRANSFER,
-        TAKE,
-        TEMPORARY_OBSTACLE
-    };
-
     class Base
     {
     public:

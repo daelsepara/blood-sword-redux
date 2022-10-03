@@ -4,6 +4,7 @@
 #include <string>
 
 #include "Templates.hpp"
+#include "AssetTypes.hpp"
 
 namespace BloodSword::Spells
 {
@@ -28,6 +29,9 @@ namespace BloodSword::Spells
         PREDICTION,
         DETECT_ENCHANTMENT
     };
+
+    template <typename T>
+    using Mapped = std::unordered_map<Spells::Type, T>;
 
     // spell class (blasting or psychic)
     enum class Class
@@ -56,10 +60,34 @@ namespace BloodSword::Spells
         {Type::PREDICTION, "PREDICTION"},
         {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
+    std::unordered_map<Spells::Type, Asset::Type> Assets = {
+        {Type::VOLCANO_SPRAY, Asset::Type::VOLCANO_SPRAY},
+        {Type::NIGHTHOWL, Asset::Type::NIGHTHOWL},
+        {Type::WHITE_FIRE, Asset::Type::WHITE_FIRE},
+        {Type::SWORDTHRUST, Asset::Type::SWORDTHRUST},
+        {Type::EYE_OF_THE_TIGER, Asset::Type::EYE_OF_THE_TIGER},
+        {Type::IMMEDIATE_DELIVERANCE, Asset::Type::IMMEDIATE_DELIVERANCE},
+        {Type::MISTS_OF_DEATH, Asset::Type::MISTS_OF_DEATH},
+        {Type::THE_VAMPIRE_SPELL, Asset::Type::THE_VAMPIRE_SPELL},
+        {Type::PILLAR_OF_SALT, Asset::Type::PILLAR_OF_SALT},
+        {Type::SHEET_LIGHTNING, Asset::Type::SHEET_LIGHTNING},
+        {Type::GHASTLY_TOUCH, Asset::Type::GHASTLY_TOUCH},
+        {Type::NEMESIS_BOLT, Asset::Type::NEMESIS_BOLT},
+        {Type::SERVILE_ENTHRALMENT, Asset::Type::SERVILE_ENTHRALMENT},
+        {Type::SUMMON_FALTYN, Asset::Type::SUMMON_FALTYN},
+        {Type::PREDICTION, Asset::Type::PREDICTION},
+        {Type::DETECT_ENCHANTMENT, Asset::Type::DETECT_ENCHANTMENT}};
+
     Mapping<Spells::Class> ClassMapping = {
         {Class::NONE, "NONE"},
         {Class::BLASTING, "BLASTING"},
         {Class::PSYCHIC, "PSYCHIC"}};
+
+    // spells that do not need to be called to mind
+    std::vector<Spells::Type> Basic = {
+        Type::SUMMON_FALTYN,
+        Type::PREDICTION,
+        Type::DETECT_ENCHANTMENT};
 
     Spells::Type Map(const char *spell)
     {
@@ -79,6 +107,23 @@ namespace BloodSword::Spells
     Spells::Class MapClass(std::string spell)
     {
         return Spells::MapClass(spell.c_str());
+    }
+
+    bool In(std::vector<Spells::Type> &list, Spells::Type spell)
+    {
+        auto found = false;
+
+        for (auto search = list.begin(); search != list.end(); search++)
+        {
+            if (*search == spell)
+            {
+                found = true;
+
+                break;
+            }
+        }
+
+        return found;
     }
 
     // spell base class
@@ -124,6 +169,11 @@ namespace BloodSword::Spells
              bool isBattle,
              bool ranged,
              int complexity) : Base(type, spellClass, isBattle, ranged, complexity, -1) {}
+
+        bool IsBasic()
+        {
+            return Spells::In(Spells::Basic, this->Type);
+        }
     };
 }
 

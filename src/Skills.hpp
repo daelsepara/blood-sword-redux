@@ -22,7 +22,9 @@ namespace BloodSword::Skills
         PARANORMAL_SIGHT,
         LEVITATION,
         EXORCISM,
-        SPELLS
+        SPELLS,
+        CALL_TO_MIND,
+        CAST_SPELL
     };
 
     template <typename T>
@@ -38,7 +40,9 @@ namespace BloodSword::Skills
         {Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
         {Type::LEVITATION, "LEVITATION"},
         {Type::EXORCISM, "EXORCISM"},
-        {Type::SPELLS, "SPELLS"}};
+        {Type::SPELLS, "SPELLS"},
+        {Type::CALL_TO_MIND, "CALL TO MIND"},
+        {Type::CAST_SPELL, "CAST SPELL"}};
 
     std::vector<Skills::Type> BattleSkills = {
         Type::ARCHERY,
@@ -54,7 +58,7 @@ namespace BloodSword::Skills
         Type::LEVITATION,
         Type::EXORCISM};
 
-    std::unordered_map<Skills::Type, Asset::Type> SkillAssets = {
+    std::unordered_map<Skills::Type, Asset::Type> Assets = {
         {Type::NONE, Asset::Type::NONE},
         {Type::ARCHERY, Asset::Type::ARCHERY},
         {Type::DODGING, Asset::Type::DODGING},

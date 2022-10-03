@@ -19,6 +19,7 @@ namespace BloodSword::Character
     typedef std::vector<Attribute::Base> Characteristics;
     typedef std::vector<Item::Base> Inventory;
     typedef std::vector<Spells::Base> Grimoire;
+    typedef std::vector<Spells::Type> Memorized;
 
     class Base
     {
@@ -32,6 +33,8 @@ namespace BloodSword::Character
         Inventory Items = {};
 
         Grimoire Spells = {};
+
+        Memorized CalledToMind = {};
 
         ControlType ControlType = ControlType::NONE;
 
@@ -412,6 +415,23 @@ namespace BloodSword::Character
         bool IsPlayer()
         {
             return this->ControlType == Character::ControlType::PLAYER;
+        }
+
+        bool HasCalledToMind(Spells::Type spell)
+        {
+            auto memorized = false;
+
+            for (auto called = this->CalledToMind.begin(); called != this->CalledToMind.end(); called++)
+            {
+                if (*called == spell)
+                {
+                    memorized = true;
+
+                    break;
+                }
+            }
+            
+            return memorized;
         }
     };
 }

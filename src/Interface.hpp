@@ -9,9 +9,9 @@
 
 namespace BloodSword::Interface
 {
-    Skills::Mapped<SDL_Texture *> SkillsTexturesInActive = {};
+    Skills::Mapped<SDL_Texture *> SkillsTexturesInactive = {};
     Skills::Mapped<SDL_Texture *> SkillCaptionsActive = {};
-    Skills::Mapped<SDL_Texture *> SkillCaptionsInActive = {};
+    Skills::Mapped<SDL_Texture *> SkillCaptionsInactive = {};
     Skills::Mapped<Controls::Type> SkillControls = {
         {Skills::Type::ARCHERY, Controls::Type::ARCHERY},
         {Skills::Type::DODGING, Controls::Type::DODGING},
@@ -23,30 +23,64 @@ namespace BloodSword::Interface
         {Skills::Type::EXORCISM, Controls::Type::EXORCISM},
         {Skills::Type::SPELLS, Controls::Type::SPELLS}};
 
+    Spells::Mapped<SDL_Texture *> SpellsTexturesInactive = {};
+    Spells::Mapped<SDL_Texture *> SpellCaptionsActive = {};
+    Spells::Mapped<SDL_Texture *> SpellCaptionsInactive = {};
+    Spells::Mapped<Controls::Type> SpellControls = {
+        {Spells::Type::VOLCANO_SPRAY, Controls::Type::VOLCANO_SPRAY},
+        {Spells::Type::NIGHTHOWL, Controls::Type::NIGHTHOWL},
+        {Spells::Type::WHITE_FIRE, Controls::Type::WHITE_FIRE},
+        {Spells::Type::SWORDTHRUST, Controls::Type::SWORDTHRUST},
+        {Spells::Type::EYE_OF_THE_TIGER, Controls::Type::EYE_OF_THE_TIGER},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, Controls::Type::IMMEDIATE_DELIVERANCE},
+        {Spells::Type::MISTS_OF_DEATH, Controls::Type::MISTS_OF_DEATH},
+        {Spells::Type::THE_VAMPIRE_SPELL, Controls::Type::THE_VAMPIRE_SPELL},
+        {Spells::Type::PILLAR_OF_SALT, Controls::Type::PILLAR_OF_SALT},
+        {Spells::Type::SHEET_LIGHTNING, Controls::Type::SHEET_LIGHTNING},
+        {Spells::Type::GHASTLY_TOUCH, Controls::Type::GHASTLY_TOUCH},
+        {Spells::Type::NEMESIS_BOLT, Controls::Type::NEMESIS_BOLT},
+        {Spells::Type::SERVILE_ENTHRALMENT, Controls::Type::SERVILE_ENTHRALMENT},
+        {Spells::Type::SUMMON_FALTYN, Controls::Type::SUMMON_FALTYN},
+        {Spells::Type::PREDICTION, Controls::Type::PREDICTION},
+        {Spells::Type::DETECT_ENCHANTMENT, Controls::Type::DETECT_ENCHANTMENT}};
+
     SDL_Texture *NoSkills = NULL;
+    SDL_Texture *NoSpells = NULL;
 
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
     {
+        auto estimate = 0;
+
         for (auto &skill : Skills::TypeMapping)
         {
-            auto estimate = 0;
-
             Graphics::Estimate(Fonts::Caption, skill.second, &estimate, NULL);
 
             auto active = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
             auto inactive = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, estimate);
 
             SkillCaptionsActive[skill.first] = active;
-            SkillCaptionsInActive[skill.first] = inactive;
-            SkillsTexturesInActive[skill.first] = Asset::Copy(graphics.Renderer, Skills::SkillAssets[skill.first], Color::Inactive);
+            SkillCaptionsInactive[skill.first] = inactive;
+            SkillsTexturesInactive[skill.first] = Asset::Copy(graphics.Renderer, Skills::Assets[skill.first], Color::Inactive);
         }
 
-        auto noskills = 0;
+        for (auto &spell : Spells::TypeMapping)
+        {
+            Graphics::Estimate(Fonts::Caption, spell.second, &estimate, NULL);
 
-        Graphics::Estimate(Fonts::Caption, "No special skills", &noskills, NULL);
+            auto active = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
+            auto inactive = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, estimate);
 
-        NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, noskills);
+            SpellCaptionsActive[spell.first] = active;
+            SpellCaptionsInactive[spell.first] = inactive;
+            SpellsTexturesInactive[spell.first] = Asset::Copy(graphics.Renderer, Spells::Assets[spell.first], Color::Inactive);
+        }
+
+        Graphics::Estimate(Fonts::Caption, "No special skills", &estimate, NULL);
+        NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
+
+        Graphics::Estimate(Fonts::Caption, "No spells", &estimate, NULL);
+        NoSpells = Graphics::CreateText(graphics, "No spells", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
     }
 
     // unload all textures allocated by this module
@@ -57,21 +91,22 @@ namespace BloodSword::Interface
             Free(&skill.second);
         }
 
-        for (auto &skill : SkillCaptionsInActive)
+        for (auto &skill : SkillCaptionsInactive)
         {
             Free(&skill.second);
         }
 
-        for (auto &skill : SkillsTexturesInActive)
+        for (auto &skill : SkillsTexturesInactive)
         {
             Free(&skill.second);
         }
 
         SkillCaptionsActive.clear();
-        SkillCaptionsInActive.clear();
-        SkillsTexturesInActive.clear();
+        SkillCaptionsInactive.clear();
+        SkillsTexturesInactive.clear();
 
         Free(&NoSkills);
+        Free(&NoSpells);
     }
 
     // unload all textures and assets
@@ -599,7 +634,7 @@ namespace BloodSword::Interface
 
         overlay.Add(Scene::Element(screen, popupw, popuph, background, border, bordersize));
 
-        auto pad = 8;
+        auto pad = 16;
 
         if (character.Skills.size() > 0)
         {
@@ -611,22 +646,22 @@ namespace BloodSword::Interface
                 {
                     if (Skills::IsBattleSkill(character.Skills[i]))
                     {
-                        texture = Asset::Get(Skills::SkillAssets[character.Skills[i]]);
+                        texture = Asset::Get(Skills::Assets[character.Skills[i]]);
                     }
                     else
                     {
-                        texture = SkillsTexturesInActive[character.Skills[i]];
+                        texture = SkillsTexturesInactive[character.Skills[i]];
                     }
                 }
                 else
                 {
                     if (Skills::IsStorySkill(character.Skills[i]))
                     {
-                        texture = Asset::Get(Skills::SkillAssets[character.Skills[i]]);
+                        texture = Asset::Get(Skills::Assets[character.Skills[i]]);
                     }
                     else
                     {
-                        texture = SkillsTexturesInActive[character.Skills[i]];
+                        texture = SkillsTexturesInactive[character.Skills[i]];
                     }
                 }
 
@@ -640,20 +675,108 @@ namespace BloodSword::Interface
                     auto lt = i > 0 ? i - 1 : i;
                     auto rt = i < character.Skills.size() ? i + 1 : i;
 
-                    overlay.Add(Controls::Base(Interface::SkillControls[character.Skills[0]], i, lt, rt, i, i, screen.X + i * texturew + pad * 2, screen.Y + pad * 2 + 32, 64, 64, Color::Highlight));
-                    overlay.Add(Scene::Element(texture, screen.X + i * texturew + pad * 2, screen.Y + pad * 2 + 32));
+                    overlay.Add(Controls::Base(Interface::SkillControls[character.Skills[i]], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+                    overlay.Add(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
                 }
             }
         }
         else
         {
-            overlay.Add(Scene::Element(NoSkills, screen + Point(pad * 2, pad)));
+            overlay.Add(Scene::Element(NoSkills, screen + Point(pad, pad / 2)));
         }
 
         auto id = (int)(character.Skills.size());
 
-        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * 64 + pad * 2, screen.Y + pad * 2 + 32));
-        overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, id, id, screen.X + id * 64 + pad * 2, screen.Y + pad * 2 + 32, 64, 64, Color::Highlight));
+        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * 64 + pad, screen.Y + pad + 32));
+
+        overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * 64 + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+
+        return overlay;
+    }
+
+    // spells overlay menu
+    Scene::Base Spells(Point origin, int w, int h, Character::Base &character, Uint32 background, Uint32 border, int bordersize, bool inbattle = false)
+    {
+        auto spells = (int)(character.Spells.size());
+
+        auto overlay = Scene::Base();
+
+        auto rows = std::max(spells / 6, 1);
+
+        auto popupw = 608;
+
+        auto popuph = (rows + 1) * (96) + 64;
+
+        auto screen = origin + Point(w - popupw, h - popuph) / 2;
+
+        overlay.Add(Scene::Element(screen, popupw, popuph, background, border, bordersize));
+
+        auto pad = 16;
+
+        auto row = 0;
+
+        auto col = 0;
+
+        if (spells > 0)
+        {
+            for (auto i = 0; i < character.Spells.size(); i++)
+            {
+                auto &spell = character.Spells[i];
+
+                SDL_Texture *texture = NULL;
+
+                if (spell.IsBasic() || character.HasCalledToMind(character.Spells[i].Type))
+                {
+                    texture = Asset::Get(Spells::Assets[character.Spells[i].Type]);
+                }
+                else
+                {
+                    texture = SpellsTexturesInactive[character.Spells[i].Type];
+                }
+
+                if (texture)
+                {
+                    auto texturew = 0;
+                    auto textureh = 0;
+
+                    SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+
+                    auto lt = col > 0 ? i - 1 : i;
+                    auto rt = col < 5 ? i + 1 : i;
+                    auto up = i - 6 >= 0 ? i - 6 : i;
+                    auto dn = i + 6 < (spells + 1) ? i + 6 : i;
+
+                    auto x = screen.X + col * texturew + pad;
+                    auto y = screen.Y + row * (textureh + 32) + pad + 32;
+
+                    overlay.Add(Controls::Base(Interface::SpellControls[character.Spells[i].Type], i, lt, rt, up, dn, x, y, 64, 64, Color::Highlight));
+                    overlay.Add(Scene::Element(texture, x, y));
+                }
+
+                if (col < 5)
+                {
+                    col++;
+                }
+                else
+                {
+                    col = 0;
+
+                    row++;
+                }
+            }
+        }
+        else
+        {
+            overlay.Add(Scene::Element(NoSpells, screen + Point(pad, pad / 2)));
+        }
+
+        auto id = (int)(character.Spells.size());
+
+        auto x = screen.X + col * 64 + pad;
+        auto y = screen.Y + row * 96 + pad + 32;
+
+        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), x, y));
+        overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, col < 6 ? id - 6 : id, id, x, y, 64, 64, Color::Highlight));
 
         return overlay;
     }

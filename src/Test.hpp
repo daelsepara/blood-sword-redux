@@ -767,7 +767,8 @@ namespace BloodSword::Test
         auto pad = 10;
         auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
         auto objecty = map.DrawY + pad;
-        auto popup = false;
+        auto skill = false;
+        auto spell = false;
         auto popupid = 0;
 
         while (!done)
@@ -833,7 +834,7 @@ namespace BloodSword::Test
                 }
             }
 
-            if (popup)
+            if (skill)
             {
                 if (popupid >= 0 && popupid < party.Count())
                 {
@@ -841,13 +842,28 @@ namespace BloodSword::Test
                 }
                 else
                 {
-                    popup = false;
+                    skill = false;
+
+                    input = previous;
+                }
+            }
+            else if (spell)
+            {
+                if (popupid >= 0 && popupid < party.Count())
+                {
+                    overlay = Interface::Spells(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4);
+                }
+                else
+                {
+                    spell = false;
+
+                    skill = true;
 
                     input = previous;
                 }
             }
 
-            if (!animating && !popup && Input::IsValid(scene, input))
+            if (!animating && !skill && !spell && Input::IsValid(scene, input))
             {
                 auto &control = scene.Controls[input.Current];
 
@@ -894,7 +910,7 @@ namespace BloodSword::Test
                     }
                 }
             }
-            else if (popup && Input::IsValid(overlay, input))
+            else if (skill && Input::IsValid(overlay, input))
             {
                 // skill popup captions
                 auto &control = overlay.Controls[input.Current];
@@ -909,7 +925,32 @@ namespace BloodSword::Test
                     }
                     else
                     {
-                        overlay.Add(Scene::Element(Interface::SkillCaptionsInActive[skill], control.X, control.Y + control.H + pad));
+                        overlay.Add(Scene::Element(Interface::SkillCaptionsInactive[skill], control.X, control.Y + control.H + pad));
+                    }
+                }
+            }
+            else if (spell && Input::IsValid(overlay, input))
+            {
+                // spell popup captions
+                auto &control = overlay.Controls[input.Current];
+
+                if (control.Type != Controls::Type::BACK && popupid >= 0 && popupid < party.Count())
+                {
+                    auto &spell = party[popupid].Spells[control.ID];
+
+                    auto &popup = overlay.Elements[0];
+
+                    if (spell.IsBasic() || party[popupid].HasCalledToMind(spell.Type))
+                    {
+                        overlay.Add(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                        overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
+                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                    }
+                    else
+                    {
+                        overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
+                        overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
                     }
                 }
             }
@@ -944,7 +985,7 @@ namespace BloodSword::Test
             }
             else
             {
-                if (!popup && Engine::IsPlayer(order, character))
+                if (!skill && !spell && Engine::IsPlayer(order, character))
                 {
                     if (!move)
                     {
@@ -964,9 +1005,9 @@ namespace BloodSword::Test
                     }
                 }
 
-                input = Input::WaitForInput(graphics, scene, overlay, input, popup);
+                input = Input::WaitForInput(graphics, scene, overlay, input, skill || spell);
 
-                if (!popup)
+                if (!skill && !spell)
                 {
                     if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                     {
@@ -1011,21 +1052,18 @@ namespace BloodSword::Test
 
                             character = 0;
                         }
-                        else if (Input::IsPlayer(input))
+                        else if (Input::IsPlayer(input) && Input::IsValid(scene, input) && map[scene.Controls[input.Current].Map].Id == order[character].ID)
                         {
-                            if (Input::IsValid(scene, input))
+                            previous = input;
+
+                            skill = true;
+
+                            if (scene.Controls[input.Current].OnMap)
                             {
-                                previous = input;
-
-                                popup = true;
-
-                                if (scene.Controls[input.Current].OnMap)
-                                {
-                                    popupid = map[scene.Controls[input.Current].Map].Id;
-                                }
-
-                                input.Current = -1;
+                                popupid = map[scene.Controls[input.Current].Map].Id;
                             }
+
+                            input.Current = -1;
                         }
                         else if (input.Type == Controls::Type::EXIT)
                         {
@@ -1033,15 +1071,37 @@ namespace BloodSword::Test
                         }
                     }
                 }
-                else
+                else if (skill)
                 {
                     if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                     {
                         if (input.Type == Controls::Type::BACK)
                         {
-                            popup = false;
+                            skill = false;
+
+                            spell = false;
 
                             input = previous;
+                        }
+                        else if (input.Type == Controls::Type::SPELLS && party[popupid].Spells.size() > 0)
+                        {
+                            skill = false;
+
+                            spell = true;
+                        }
+                    }
+                }
+                else if (spell)
+                {
+                    if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                    {
+                        if (input.Type == Controls::Type::BACK)
+                        {
+                            spell = false;
+
+                            skill = true;
+
+                            input.Current = -1;
                         }
                     }
                 }

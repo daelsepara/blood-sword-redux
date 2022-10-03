@@ -293,6 +293,41 @@ namespace BloodSword::Generate
         }
     }
 
+
+    void EnchanterSpells(Character::Base &character)
+    {
+        character.Spells.clear();
+        character.Spells.push_back(Spells::Base(Spells::Type::VOLCANO_SPRAY, Spells::Class::BLASTING, true, true, 1));
+        character.Spells.push_back(Spells::Base(Spells::Type::NIGHTHOWL, Spells::Class::PSYCHIC, true, true, 1, 5));
+        character.Spells.push_back(Spells::Base(Spells::Type::WHITE_FIRE, Spells::Class::BLASTING, true, true, 1));
+        character.Spells.push_back(Spells::Base(Spells::Type::SWORDTHRUST, Spells::Class::BLASTING, true, true, 2));
+        character.Spells.push_back(Spells::Base(Spells::Type::EYE_OF_THE_TIGER, Spells::Class::PSYCHIC, true, true, 2, 5));
+        character.Spells.push_back(Spells::Base(Spells::Type::IMMEDIATE_DELIVERANCE, Spells::Class::PSYCHIC, true, true, 2));
+        character.Spells.push_back(Spells::Base(Spells::Type::MISTS_OF_DEATH, Spells::Class::PSYCHIC, true, true, 3));
+        character.Spells.push_back(Spells::Base(Spells::Type::THE_VAMPIRE_SPELL, Spells::Class::PSYCHIC, true, true, 3));
+        character.Spells.push_back(Spells::Base(Spells::Type::PILLAR_OF_SALT, Spells::Class::PSYCHIC, true, true, 3, 5));
+        character.Spells.push_back(Spells::Base(Spells::Type::SHEET_LIGHTNING, Spells::Class::BLASTING, true, true, 4));
+        character.Spells.push_back(Spells::Base(Spells::Type::GHASTLY_TOUCH, Spells::Class::PSYCHIC, true, false, 4));
+        character.Spells.push_back(Spells::Base(Spells::Type::NEMESIS_BOLT, Spells::Class::BLASTING, true, true, 5));
+        character.Spells.push_back(Spells::Base(Spells::Type::SERVILE_ENTHRALMENT, Spells::Class::PSYCHIC, true, true, 5));
+        character.Spells.push_back(Spells::Base(Spells::Type::SUMMON_FALTYN, Spells::Class::PSYCHIC, false, false, 1));
+        character.Spells.push_back(Spells::Base(Spells::Type::PREDICTION, Spells::Class::PSYCHIC, false, false, 1));
+        character.Spells.push_back(Spells::Base(Spells::Type::DETECT_ENCHANTMENT, Spells::Class::PSYCHIC, false, false, 1));
+    }
+
+    // set character spells
+    void Spells(Character::Base &character)
+    {
+        switch (character.Class)
+        {
+        case Character::Class::ENCHANTER:
+            Generate::EnchanterSpells(character);
+            break;
+        default:
+            break;
+        }
+    }
+
     // set character attributes based on class
     void Attributes(Character::Base &character)
     {
@@ -452,6 +487,8 @@ namespace BloodSword::Generate
         Generate::Attributes(character);
 
         Generate::Skills(character);
+        
+        Generate::Spells(character);
 
         Generate::Items(character);
 
