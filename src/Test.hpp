@@ -953,7 +953,7 @@ namespace BloodSword::Test
                             overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
                             overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
                         }
-                        else
+                        else if (!party[popupid].HasCalledToMind(spell.Type))
                         {
                             overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
                             overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
@@ -972,6 +972,10 @@ namespace BloodSword::Test
                             overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
                             overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
                             overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                        }
+                        else
+                        {
+                            overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
                         }
                     }
                 }
