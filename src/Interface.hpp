@@ -725,7 +725,7 @@ namespace BloodSword::Interface
 
                 SDL_Texture *texture = NULL;
 
-                if (spell.IsBasic() || character.HasCalledToMind(character.Spells[i].Type))
+                if ((!inbattle && spell.IsBasic()) || character.HasCalledToMind(character.Spells[i].Type))
                 {
                     texture = Asset::Get(Spells::Assets[character.Spells[i].Type]);
                 }

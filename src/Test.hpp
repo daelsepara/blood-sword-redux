@@ -770,6 +770,7 @@ namespace BloodSword::Test
         auto skill = false;
         auto spell = false;
         auto popupid = 0;
+        auto inbattle = true;
 
         while (!done)
         {
@@ -838,7 +839,7 @@ namespace BloodSword::Test
             {
                 if (popupid >= 0 && popupid < party.Count())
                 {
-                    overlay = Interface::Skills(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4);
+                    overlay = Interface::Skills(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4, inbattle);
                 }
                 else
                 {
@@ -851,7 +852,7 @@ namespace BloodSword::Test
             {
                 if (popupid >= 0 && popupid < party.Count())
                 {
-                    overlay = Interface::Spells(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4);
+                    overlay = Interface::Spells(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4, inbattle);
                 }
                 else
                 {
@@ -919,7 +920,7 @@ namespace BloodSword::Test
                 {
                     auto skill = party[popupid].Skills[control.ID];
 
-                    if (Skills::IsStorySkill(skill))
+                    if ((inbattle && Skills::IsBattleSkill(skill)) || (!inbattle && Skills::IsStorySkill(skill)))
                     {
                         overlay.Add(Scene::Element(Interface::SkillCaptionsActive[skill], control.X, control.Y + control.H + pad));
                     }
@@ -940,17 +941,38 @@ namespace BloodSword::Test
 
                     auto &popup = overlay.Elements[0];
 
-                    if (spell.IsBasic() || party[popupid].HasCalledToMind(spell.Type))
+                    if (!inbattle)
                     {
-                        overlay.Add(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
-                        overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
-                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                        if (spell.IsBasic() || party[popupid].HasCalledToMind(spell.Type))
+                        {
+                            overlay.Add(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                        }
+
+                        if (spell.IsBasic() || (party[popupid].HasCalledToMind(spell.Type) && !spell.IsBattle))
+                        {
+                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                        }
+                        else
+                        {
+                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                        }
                     }
                     else
                     {
-                        overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
-                        overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
-                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                        if (party[popupid].HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
+                        {
+                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.Add(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                        }
+                        else if (!spell.IsBasic() && spell.IsBattle)
+                        {
+                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                        }
                     }
                 }
             }
