@@ -316,6 +316,23 @@ namespace BloodSword::Engine
 
         return queue;
     }
+
+    bool IsSpell(Controls::Type type)
+    {
+        auto isspell = false;
+
+        for (auto spell = Controls::Spells.begin(); spell != Controls::Spells.end(); spell++)
+        {
+            if (*spell == type)
+            {
+                isspell = true;
+
+                break;
+            }
+        }
+
+        return isspell;
+    }
 }
 
 #endif

@@ -43,6 +43,23 @@ namespace BloodSword::Interface
         {Spells::Type::SUMMON_FALTYN, Controls::Type::SUMMON_FALTYN},
         {Spells::Type::PREDICTION, Controls::Type::PREDICTION},
         {Spells::Type::DETECT_ENCHANTMENT, Controls::Type::DETECT_ENCHANTMENT}};
+    Controls::Mapped<Spells::Type> ControlSpellMapping = {
+        {Controls::Type::VOLCANO_SPRAY, Spells::Type::VOLCANO_SPRAY},
+        {Controls::Type::NIGHTHOWL, Spells::Type::NIGHTHOWL},
+        {Controls::Type::WHITE_FIRE, Spells::Type::WHITE_FIRE},
+        {Controls::Type::SWORDTHRUST, Spells::Type::SWORDTHRUST},
+        {Controls::Type::EYE_OF_THE_TIGER, Spells::Type::EYE_OF_THE_TIGER},
+        {Controls::Type::IMMEDIATE_DELIVERANCE, Spells::Type::IMMEDIATE_DELIVERANCE},
+        {Controls::Type::MISTS_OF_DEATH, Spells::Type::MISTS_OF_DEATH},
+        {Controls::Type::THE_VAMPIRE_SPELL, Spells::Type::THE_VAMPIRE_SPELL},
+        {Controls::Type::PILLAR_OF_SALT, Spells::Type::PILLAR_OF_SALT},
+        {Controls::Type::SHEET_LIGHTNING, Spells::Type::SHEET_LIGHTNING},
+        {Controls::Type::GHASTLY_TOUCH, Spells::Type::GHASTLY_TOUCH},
+        {Controls::Type::NEMESIS_BOLT, Spells::Type::NEMESIS_BOLT},
+        {Controls::Type::SERVILE_ENTHRALMENT, Spells::Type::SERVILE_ENTHRALMENT},
+        {Controls::Type::SUMMON_FALTYN, Spells::Type::SUMMON_FALTYN},
+        {Controls::Type::PREDICTION, Spells::Type::PREDICTION},
+        {Controls::Type::DETECT_ENCHANTMENT, Spells::Type::DETECT_ENCHANTMENT}};
 
     SDL_Texture *NoSkills = NULL;
     SDL_Texture *NoSpells = NULL;

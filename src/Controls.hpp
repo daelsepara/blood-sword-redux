@@ -1,6 +1,7 @@
 #ifndef __CONTROLS_HPP__
 #define __CONTROLS_HPP__
 
+#include <unordered_map>
 #include <vector>
 #include <SDL.h>
 
@@ -9,6 +10,9 @@
 
 namespace BloodSword::Controls
 {
+    template <typename T>
+    using Mapped = std::unordered_map<Controls::Type, T>;
+
     class Base
     {
     public:

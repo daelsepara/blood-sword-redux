@@ -1,6 +1,8 @@
 #ifndef __CONTROL_TYPES_HPP__
 #define __CONTROL_TYPES_HPP__
 
+#include <vector>
+
 namespace BloodSword::Controls
 {
     enum class Type
@@ -83,5 +85,23 @@ namespace BloodSword::Controls
         DETECT_ENCHANTMENT
     };
 
+    std::vector<Controls::Type> Spells = {
+        Type::VOLCANO_SPRAY,
+        Type::NIGHTHOWL,
+        Type::WHITE_FIRE,
+        Type::SWORDTHRUST,
+        Type::EYE_OF_THE_TIGER,
+        Type::IMMEDIATE_DELIVERANCE,
+        Type::MISTS_OF_DEATH,
+        Type::THE_VAMPIRE_SPELL,
+        Type::PILLAR_OF_SALT,
+        Type::SHEET_LIGHTNING,
+        Type::GHASTLY_TOUCH,
+        Type::NEMESIS_BOLT,
+        Type::SERVILE_ENTHRALMENT,
+        Type::SUMMON_FALTYN,
+        Type::PREDICTION,
+        Type::DETECT_ENCHANTMENT
+    };
 }
 #endif

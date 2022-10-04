@@ -650,7 +650,14 @@ namespace BloodSword::Test
             center + 1,
             center - 1};
 
-        auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
+        auto RegenerateStats = [&](Map::Base &map, Party::Base &party)
+        {
+            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
+
+            return stats;
+        };
+
+        auto stats = RegenerateStats(map, party);
 
         auto enemyStats = Interface::Attributes(graphics, enemies, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
 
@@ -658,20 +665,27 @@ namespace BloodSword::Test
 
         auto captionw = 320;
 
-        // initialize captions
-        auto characters = Graphics::CreateText(
-            graphics,
-            {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
+        // initialize character info boxes
+        auto RegenerateCharacters = [&]()
+        {
+            auto characters = Graphics::CreateText(
+                graphics,
+                {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+                 Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+                 Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+                 Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
 
+            return characters;
+        };
+
+        // initialize captions
         auto captions = Graphics::CreateText(
             graphics,
             {Graphics::RichText("Move character", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
              Graphics::RichText("Reset starting locations", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
              Graphics::RichText("Back to test suite", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
 
+        // regenerate map
         auto RegenerateScene = [&](Map::Base &map)
         {
             auto scene = Interface::Map(map, party, enemies, 3);
@@ -688,6 +702,7 @@ namespace BloodSword::Test
             return scene;
         };
 
+        // reset stating locations
         auto ResetLocations = [&](Map::Base &map, Party::Base &party, std::vector<Point> origins)
         {
             for (auto i = 0; i < party.Count(); i++)
@@ -730,6 +745,9 @@ namespace BloodSword::Test
                 }
             }
         };
+
+        // regenerate character info boxes
+        auto characters = RegenerateCharacters();
 
         // set starting locations
         ResetLocations(map, party, origins);
@@ -1128,6 +1146,59 @@ namespace BloodSword::Test
                             skill = true;
 
                             input.Current = -1;
+                        }
+                        else if (Engine::IsSpell(input.Type))
+                        {
+                            if (Interface::ControlSpellMapping.count(input.Type) > 0)
+                            {
+                                auto &type = Interface::ControlSpellMapping[input.Type];
+                                auto &caster = party[popupid];
+                                auto search = caster.Find(type);
+
+                                if (search != caster.Spells.end())
+                                {
+                                    auto &spellbook = *search;
+
+                                    auto battlecast = inbattle && !spellbook.IsBasic() && spellbook.IsBattle;
+                                    auto storycast = !inbattle && !spellbook.IsBasic() && !spellbook.IsBattle;
+                                    auto basiccast = !inbattle && spellbook.IsBasic();
+
+                                    if (battlecast || storycast || basiccast)
+                                    {
+                                        if (caster.HasCalledToMind(spellbook.Type) || spellbook.IsBasic())
+                                        {
+                                            // cast
+                                            spell = false;
+
+                                            skill = false;
+
+                                            if (!spellbook.IsBasic())
+                                            {
+                                                caster.Forget(spellbook.Type);
+
+                                                Free(characters);
+
+                                                stats = RegenerateStats(map, party);
+                                            }
+
+                                            Engine::Next(order, character);
+                                        }
+                                        else if (!spellbook.IsBasic())
+                                        {
+                                            // call to mind
+                                            spell = false;
+
+                                            skill = false;
+
+                                            caster.CallToMind(spellbook.Type);
+
+                                            stats = RegenerateStats(map, party);
+
+                                            Engine::Next(order, character);
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
                 }

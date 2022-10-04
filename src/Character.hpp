@@ -8,6 +8,7 @@
 #include "AssetTypes.hpp"
 #include "Attribute.hpp"
 #include "CharacterClasses.hpp"
+#include "ControlTypes.hpp"
 #include "Item.hpp"
 #include "Skills.hpp"
 #include "Spells.hpp"
@@ -402,9 +403,15 @@ namespace BloodSword::Character
                 }
             }
 
+            if (attribute == Attribute::Type::PSYCHIC_ABILITY)
+            {
+                modifiers -= this->CalledToMind.size();
+            }
+
             return modifiers;
         }
 
+        // is the character armed?
         bool IsArmed()
         {
             auto weapon = this->Find({Item::Property::WEAPON, Item::Property::EQUIPPED});
@@ -412,11 +419,52 @@ namespace BloodSword::Character
             return weapon != this->Items.end() && (*weapon).Type != Item::Type::BOW;
         }
 
+        // is the character a player character?
         bool IsPlayer()
         {
             return this->ControlType == Character::ControlType::PLAYER;
         }
 
+        // recall the spell that was called to mind
+        Memorized::iterator Recall(Spells::Type)
+        {
+            auto found = this->CalledToMind.end();
+
+            for (auto search = this->CalledToMind.begin(); search != this->CalledToMind.end(); search++)
+            {
+                found = search;
+
+                break;
+            }
+
+            return found;
+        }
+
+        // search for spell in grimoire
+        Grimoire::iterator Find(Spells::Type spell)
+        {
+            auto found = this->Spells.end();
+
+            for (auto search = this->Spells.begin(); search != this->Spells.end(); search++)
+            {
+                if ((*search).Type == spell)
+                {
+                    found = search;
+
+                    break;
+                }
+            }
+
+            return found;
+        }
+
+        // check if character knows this spell
+        bool Has(Spells::Type spell)
+        {
+            return this->Find(spell) != this->Spells.end();
+        }
+
+        // check if spell was called to mind
         bool HasCalledToMind(Spells::Type spell)
         {
             auto memorized = false;
@@ -430,8 +478,31 @@ namespace BloodSword::Character
                     break;
                 }
             }
-            
+
             return memorized;
+        }
+
+        // call a spell to mind
+        void CallToMind(Spells::Type spell)
+        {
+            if (this->Has(spell) && !this->HasCalledToMind(spell))
+            {
+                this->CalledToMind.push_back(spell);
+            }
+        }
+
+        // forget a spell that was called to mind
+        void Forget(Spells::Type spell)
+        {
+            if (this->Has(spell) && this->HasCalledToMind(spell))
+            {
+                auto recall = this->Recall(spell);
+
+                if (recall != this->CalledToMind.end())
+                {
+                    this->CalledToMind.erase(recall);
+                }
+            }
         }
     };
 }
