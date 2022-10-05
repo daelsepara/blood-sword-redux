@@ -61,6 +61,12 @@ namespace BloodSword::Interface
         {Controls::Type::PREDICTION, Spells::Type::PREDICTION},
         {Controls::Type::DETECT_ENCHANTMENT, Spells::Type::DETECT_ENCHANTMENT}};
 
+    Character::Mapped<Controls::Type> CharacterControls = {
+        {Character::Class::WARRIOR, Controls::Type::WARRIOR},
+        {Character::Class::TRICKSTER, Controls::Type::TRICKSTER},
+        {Character::Class::SAGE, Controls::Type::SAGE},
+        {Character::Class::ENCHANTER, Controls::Type::ENCHANTER}};
+
     SDL_Texture *NoSkills = NULL;
     SDL_Texture *NoSpells = NULL;
 
@@ -794,6 +800,49 @@ namespace BloodSword::Interface
 
         overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), x, y));
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, col < 6 ? id - 6 : id, id, x, y, 64, 64, Color::Highlight));
+
+        return overlay;
+    }
+
+    // choose character from a party
+    Scene::Base Party(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int bordersize)
+    {
+        auto overlay = Scene::Base();
+
+        auto pad = 16;
+
+        auto popupw = (party.Count() + 1) * 64 + pad * 2;
+
+        auto popuph = 128 + pad * 2;
+
+        auto screen = origin + Point(w - popupw, h - popuph) / 2;
+
+        overlay.Add(Scene::Element(screen, popupw, popuph, background, border, bordersize));
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto texture = Asset::Get(party[i].Asset);
+
+            if (texture)
+            {
+                auto texturew = 0;
+                auto textureh = 0;
+
+                SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+
+                auto lt = i > 0 ? i - 1 : i;
+                auto rt = i < party.Count() ? i + 1 : i;
+
+                overlay.Add(Controls::Base(Interface::CharacterControls[party[i].Class], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+                overlay.Add(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
+            }
+        }
+
+        auto id = party.Count();
+
+        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + party.Count() * 64 + pad, screen.Y + pad + 32));
+
+        overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * 64 + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
 
         return overlay;
     }

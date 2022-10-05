@@ -22,6 +22,9 @@ namespace BloodSword::Character
     typedef std::vector<Spells::Base> Grimoire;
     typedef std::vector<Spells::Type> Memorized;
 
+    template <typename T>
+    using Mapped = std::unordered_map<Character::Class, T>;
+
     class Base
     {
     public:
@@ -110,6 +113,7 @@ namespace BloodSword::Character
             }
         }
 
+        // does a character have this status?
         bool Has(Character::Status status)
         {
             auto hasStatus = this->Status.find(status) != this->Status.end();
@@ -124,21 +128,33 @@ namespace BloodSword::Character
             return this->Has(status);
         }
 
+        // add status (and duration, -1 if permanent)
         void Add(Character::Status status, int duration)
         {
             this->Status[status] = duration;
         }
 
+        // add status
         void Add(Character::Status status)
         {
             this->Add(status, -1);
         }
 
+        // remove status
         void Remove(Character::Status status)
         {
             if (this->Has(status))
             {
                 this->Status.erase(status);
+            }
+        }
+
+        // cooldown status
+        void Cooldown(Character::Status status)
+        {
+            if (this->Has(status) && this->Status[status] > 0)
+            {
+                this->Status[status]--;
             }
         }
 
@@ -391,6 +407,7 @@ namespace BloodSword::Character
             return this->Find(property) != this->Items.end();
         }
 
+        // modifiers from items and spells called to mind (if PSYCHIC AWARENESS)
         int Modifiers(Attribute::Type attribute)
         {
             auto modifiers = 0;

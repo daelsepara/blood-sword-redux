@@ -10,384 +10,378 @@ namespace BloodSword::Test
     // user input test
     void Controls(Graphics::Base &graphics)
     {
-        if (graphics.Renderer)
+        auto x = 128;
+        auto y = 64;
+        auto w = 64;
+        auto h = 64;
+        auto s = 16;
+        auto ws = w + s;
+
+        // sprites
+        auto warrior = Scene::Element(Asset::Get(Asset::Type::WARRIOR), x, y);
+        auto trickster = Scene::Element(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
+        auto sage = Scene::Element(Asset::Get(Asset::Type::SAGE), x + ws * 2, y);
+        auto enchanter = Scene::Element(Asset::Get(Asset::Type::ENCHANTER), x + ws * 3, y);
+        auto up = Scene::Element(Asset::Get(Asset::Type::UP), x, y + ws);
+        auto down = Scene::Element(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
+        auto left = Scene::Element(Asset::Get(Asset::Type::LEFT), x + ws * 2, y + ws);
+        auto right = Scene::Element(Asset::Get(Asset::Type::RIGHT), x + ws * 3, y + ws);
+
+        // text sprites
+        auto text = Graphics::CreateText(graphics, "THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+        auto text_sprite = Scene::Element(text, x + ws * 4, y);
+        auto warrior_text = Graphics::CreateText(graphics, "WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+        auto warrior_sprite = Scene::Element(warrior_text, x + ws * 4, y);
+        auto trickster_text = Graphics::CreateText(graphics, "TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+        auto trickster_sprite = Scene::Element(trickster_text, x + ws * 4, y);
+        auto sage_text = Graphics::CreateText(graphics, "SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+        auto sage_sprite = Scene::Element(sage_text, x + ws * 4, y);
+        auto enchanter_text = Graphics::CreateText(graphics, "ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
+        auto enchanter_sprite = Scene::Element(enchanter_text, x + ws * 4, y);
+
+        // controls
+        std::vector<Controls::Base> controls = {
+            Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 4, x, y, w, h, Color::Highlight),
+            Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 5, x + w + s, y, w, h, Color::Highlight),
+            Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 6, x + ws * 2, y, w, h, Color::Highlight),
+            Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 7, x + ws * 3, y, w, h, Color::Highlight),
+            Controls::Base(Controls::Type::MAP_UP, 4, 4, 5, 0, 4, x, y + ws, w, h, Color::Highlight),
+            Controls::Base(Controls::Type::MAP_DOWN, 5, 4, 6, 1, 5, x + w + s, y + ws, w, h, Color::Highlight),
+            Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + ws * 2, y + ws, w, h, Color::Highlight),
+            Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + ws * 3, y + ws, w, h, Color::Highlight)};
+
+        auto sprites = std::vector<Scene::Element>();
+
+        auto input = Controls::User();
+
+        while (!input.Selected)
         {
-            auto x = 128;
-            auto y = 64;
-            auto w = 64;
-            auto h = 64;
-            auto s = 16;
-            auto ws = w + s;
+            sprites.clear();
+            sprites.push_back(warrior);
+            sprites.push_back(trickster);
+            sprites.push_back(sage);
+            sprites.push_back(enchanter);
+            sprites.push_back(up);
+            sprites.push_back(down);
+            sprites.push_back(left);
+            sprites.push_back(right);
 
-            // sprites
-            auto warrior = Scene::Element(Asset::Get(Asset::Type::WARRIOR), x, y);
-            auto trickster = Scene::Element(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
-            auto sage = Scene::Element(Asset::Get(Asset::Type::SAGE), x + ws * 2, y);
-            auto enchanter = Scene::Element(Asset::Get(Asset::Type::ENCHANTER), x + ws * 3, y);
-            auto up = Scene::Element(Asset::Get(Asset::Type::UP), x, y + ws);
-            auto down = Scene::Element(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
-            auto left = Scene::Element(Asset::Get(Asset::Type::LEFT), x + ws * 2, y + ws);
-            auto right = Scene::Element(Asset::Get(Asset::Type::RIGHT), x + ws * 3, y + ws);
-
-            // text sprites
-            auto text = Graphics::CreateText(graphics, "THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto text_sprite = Scene::Element(text, x + ws * 4, y);
-            auto warrior_text = Graphics::CreateText(graphics, "WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto warrior_sprite = Scene::Element(warrior_text, x + ws * 4, y);
-            auto trickster_text = Graphics::CreateText(graphics, "TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto trickster_sprite = Scene::Element(trickster_text, x + ws * 4, y);
-            auto sage_text = Graphics::CreateText(graphics, "SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto sage_sprite = Scene::Element(sage_text, x + ws * 4, y);
-            auto enchanter_text = Graphics::CreateText(graphics, "ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
-            auto enchanter_sprite = Scene::Element(enchanter_text, x + ws * 4, y);
-
-            // controls
-            std::vector<Controls::Base> controls = {
-                Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 4, x, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 5, x + w + s, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 6, x + ws * 2, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::ENCHANTER, 3, 2, 3, 3, 7, x + ws * 3, y, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::MAP_UP, 4, 4, 5, 0, 4, x, y + ws, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::MAP_DOWN, 5, 4, 6, 1, 5, x + w + s, y + ws, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + ws * 2, y + ws, w, h, Color::Highlight),
-                Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + ws * 3, y + ws, w, h, Color::Highlight)};
-
-            auto sprites = std::vector<Scene::Element>();
-
-            auto input = Controls::User();
-
-            while (!input.Selected)
+            if (Input::IsValid(controls, input))
             {
-                sprites.clear();
-                sprites.push_back(warrior);
-                sprites.push_back(trickster);
-                sprites.push_back(sage);
-                sprites.push_back(enchanter);
-                sprites.push_back(up);
-                sprites.push_back(down);
-                sprites.push_back(left);
-                sprites.push_back(right);
-
-                if (Input::IsValid(controls, input))
+                switch (input.Current)
                 {
-                    switch (input.Current)
-                    {
-                    case 0:
-                        sprites.push_back(warrior_sprite);
-                        break;
-                    case 1:
-                        sprites.push_back(trickster_sprite);
-                        break;
-                    case 2:
-                        sprites.push_back(sage_sprite);
-                        break;
-                    case 3:
-                        sprites.push_back(enchanter_sprite);
-                        break;
-                    default:
-                        sprites.push_back(text_sprite);
-                    }
-                }
-                else
-                {
+                case 0:
+                    sprites.push_back(warrior_sprite);
+                    break;
+                case 1:
+                    sprites.push_back(trickster_sprite);
+                    break;
+                case 2:
+                    sprites.push_back(sage_sprite);
+                    break;
+                case 3:
+                    sprites.push_back(enchanter_sprite);
+                    break;
+                default:
                     sprites.push_back(text_sprite);
                 }
-
-                auto scene = Scene::Base(sprites, controls, 0);
-
-                input = Input::WaitForInput(graphics, scene, input);
+            }
+            else
+            {
+                sprites.push_back(text_sprite);
             }
 
-            BloodSword::Free(&enchanter_text);
-            BloodSword::Free(&sage_text);
-            BloodSword::Free(&trickster_text);
-            BloodSword::Free(&warrior_text);
-            BloodSword::Free(&text);
+            auto scene = Scene::Base(sprites, controls, 0);
+
+            input = Input::WaitForInput(graphics, scene, input);
         }
+
+        BloodSword::Free(&enchanter_text);
+        BloodSword::Free(&sage_text);
+        BloodSword::Free(&trickster_text);
+        BloodSword::Free(&warrior_text);
+        BloodSword::Free(&text);
     }
 
     // map rendering test
     void Map(Graphics::Base &graphics)
     {
-        if (graphics.Renderer)
+        auto map = Map::Base();
+
+        map.Load("maps/test.json");
+
+        auto scene = Scene::Base();
+
+        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8),
+                                  Generate::Character(Character::Class::TRICKSTER, 8),
+                                  Generate::Character(Character::Class::SAGE, 8),
+                                  Generate::Character(Character::Class::ENCHANTER, 8)});
+
+        auto enemies = Party::Base();
+
+        auto input = Controls::User();
+
+        auto pad = 10;
+
+        auto textw = map.TileSize * 8 + 3 * pad;
+
+        auto objectw = map.TileSize * 5;
+
+        auto textures = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
+             Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw)});
+
+        auto backgrounds = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+             Graphics::RichText("WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+             Graphics::RichText("TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+             Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
+             Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
+
+        auto stats = Interface::Attributes(graphics, party, Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw);
+
+        auto background = 0;
+        auto prev_background = -1;
+        auto change = false;
+        auto offset = 0;
+        auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
+        auto objecty = map.DrawY + map.TileSize * 7 - pad;
+        auto backgroundx = objectx;
+        auto backgroundy = map.DrawY + pad;
+        auto backgroundw = textw;
+        auto backgroundh = map.TileSize * 5;
+        auto texturew = 0;
+        auto textureh = 0;
+        auto scrollx = objectx + backgroundw + pad * 2;
+        auto scrolly = map.DrawY + backgroundh - map.TileSize + pad * 2;
+        auto scrollSpeed = 20;
+        auto scroll_up = false;
+        auto scroll_down = false;
+
+        SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
+
+        while (true)
         {
-            auto map = Map::Base();
+            auto scene = Interface::Map(map, party, enemies, 1);
 
-            map.Load("maps/test.json");
+            auto id = (int)(scene.Controls.size());
+            auto x = map.DrawX;
+            auto y = map.DrawY + map.SizeY * map.TileSize;
 
-            auto scene = Scene::Base();
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
-            auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 8),
-                                      Generate::Character(Character::Class::TRICKSTER, 8),
-                                      Generate::Character(Character::Class::SAGE, 8),
-                                      Generate::Character(Character::Class::ENCHANTER, 8)});
+            auto arrow_up = offset > 0;
+            auto arrow_down = backgroundh < textureh && offset < (textureh - backgroundh);
 
-            auto enemies = Party::Base();
-
-            auto input = Controls::User();
-
-            auto pad = 10;
-
-            auto textw = map.TileSize * 8 + 3 * pad;
-
-            auto objectw = map.TileSize * 5;
-
-            auto textures = Graphics::CreateText(
-                graphics,
-                {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-                 Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw)});
-
-            auto backgrounds = Graphics::CreateText(
-                graphics,
-                {Graphics::RichText("THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-                 Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
-
-            auto stats = Interface::Attributes(graphics, party, Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw);
-
-            auto background = 0;
-            auto prev_background = -1;
-            auto change = false;
-            auto offset = 0;
-            auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
-            auto objecty = map.DrawY + map.TileSize * 7 - pad;
-            auto backgroundx = objectx;
-            auto backgroundy = map.DrawY + pad;
-            auto backgroundw = textw;
-            auto backgroundh = map.TileSize * 5;
-            auto texturew = 0;
-            auto textureh = 0;
-            auto scrollx = objectx + backgroundw + pad * 2;
-            auto scrolly = map.DrawY + backgroundh - map.TileSize + pad * 2;
-            auto scrollSpeed = 20;
-            auto scroll_up = false;
-            auto scroll_down = false;
-
-            SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
-
-            while (true)
+            if (arrow_up)
             {
-                auto scene = Interface::Map(map, party, enemies, 1);
+                scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), scrollx, map.DrawY));
+            }
 
-                auto id = (int)(scene.Controls.size());
-                auto x = map.DrawX;
-                auto y = map.DrawY + map.SizeY * map.TileSize;
+            if (arrow_down)
+            {
+                scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), scrollx, scrolly));
+            }
 
-                scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
+            if (arrow_up || arrow_down)
+            {
+                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
+            }
 
-                auto arrow_up = offset > 0;
-                auto arrow_down = backgroundh < textureh && offset < (textureh - backgroundh);
+            if (arrow_up && arrow_down)
+            {
+                scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 2, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
+                scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id, id + 2, id + 1, id + 2, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
+            }
+            else if (arrow_up)
+            {
+                scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 1, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
+            }
+            else if (arrow_down)
+            {
+                scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id, id + 1, id + 1, id + 1, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
+            }
+            else
+            {
+                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
+            }
 
-                if (arrow_up)
+            if (Input::IsValid(scene, input))
+            {
+                auto &control = scene.Controls[input.Current];
+
+                if (control.OnMap)
                 {
-                    scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), scrollx, map.DrawY));
-                }
+                    auto &tile = map[control.Map];
+                    auto background = Color::Highlight;
+                    auto border = Color::Active;
+                    auto object = -1;
 
-                if (arrow_down)
-                {
-                    scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), scrollx, scrolly));
-                }
-
-                if (arrow_up || arrow_down)
-                {
-                    scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
-                }
-
-                if (arrow_up && arrow_down)
-                {
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 2, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id, id + 2, id + 1, id + 2, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
-                }
-                else if (arrow_up)
-                {
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 1, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
-                }
-                else if (arrow_down)
-                {
-                    scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id, id + 1, id + 1, id + 1, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
-                }
-                else
-                {
-                    scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
-                }
-
-                if (Input::IsValid(scene, input))
-                {
-                    auto &control = scene.Controls[input.Current];
-
-                    if (control.OnMap)
+                    if (tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER)
                     {
-                        auto &tile = map[control.Map];
-                        auto background = Color::Highlight;
-                        auto border = Color::Active;
-                        auto object = -1;
+                        // stats
+                        scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, Color::Background, Color::Active, 4));
 
-                        if (tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER)
-                        {
-                            // stats
-                            scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, Color::Background, Color::Active, 4));
-
-                            // character class
-                            object = (int)party[tile.Id].Class + 7;
-                        }
-                        else if (tile.IsPassable())
-                        {
-                            object = (int)tile.Type;
-                            background = Color::Background;
-                            border = Color::Active;
-                        }
-                        else if (tile.IsPassableToEnemy())
-                        {
-                            object = (int)tile.Type;
-                            background = Color::Background;
-                            border = Color::Highlight;
-                        }
-                        else if (tile.IsOccupied())
-                        {
-                            object = (int)tile.Occupant;
-                            background = Color::Active;
-                            border = Color::Inactive;
-                        }
-                        else
-                        {
-                            object = (int)tile.Type;
-                            background = Color::Highlight;
-                            border = Color::Inactive;
-                        }
-
-                        if (object >= 0 && object < textures.size())
-                        {
-                            scene.Add(Scene::Element(objectx, objecty, objectw, map.TileSize, background, border, 4));
-                            scene.Add(Scene::Element(textures[object], objectx, objecty));
-                        }
+                        // character class
+                        object = (int)party[tile.Id].Class + 7;
                     }
-                }
-
-                if (background >= 0 && background < backgrounds.size())
-                {
-                    scene.Add(Scene::Element(backgroundx, backgroundy, backgroundw, backgroundh, Color::Highlight, Color::Active, 4));
-                    scene.Add(Scene::Element(backgrounds[background], backgroundx, backgroundy, backgroundh, offset));
-                }
-
-                if (scroll_up)
-                {
-                    input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
-
-                    scroll_up = false;
-                }
-                else if (scroll_down)
-                {
-                    input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
-
-                    scroll_down = false;
-                }
-
-                input = Input::WaitForInput(graphics, scene, input);
-
-                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
-                {
-                    if (input.Type == Controls::Type::EXIT)
+                    else if (tile.IsPassable())
                     {
-                        break;
+                        object = (int)tile.Type;
+                        background = Color::Background;
+                        border = Color::Active;
                     }
-                    else if (input.Type == Controls::Type::WARRIOR)
+                    else if (tile.IsPassableToEnemy())
                     {
-                        prev_background = background;
-
-                        background = 1;
-
-                        change = true;
+                        object = (int)tile.Type;
+                        background = Color::Background;
+                        border = Color::Highlight;
                     }
-                    else if (input.Type == Controls::Type::TRICKSTER)
+                    else if (tile.IsOccupied())
                     {
-                        prev_background = background;
-
-                        background = 2;
-
-                        change = true;
-                    }
-                    else if (input.Type == Controls::Type::SAGE)
-                    {
-                        prev_background = background;
-
-                        background = 3;
-
-                        change = true;
-                    }
-                    else if (input.Type == Controls::Type::ENCHANTER)
-                    {
-                        prev_background = background;
-
-                        background = 4;
-
-                        change = true;
-                    }
-                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
-                    {
-                        if (backgroundh < textureh)
-                        {
-                            offset -= scrollSpeed;
-
-                            if (offset < 0)
-                            {
-                                offset = 0;
-                            }
-
-                            scroll_up = true;
-                        }
-                    }
-                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
-                    {
-                        if (backgroundh < textureh)
-                        {
-                            offset += scrollSpeed;
-
-                            if (offset > (textureh - backgroundh))
-                            {
-                                offset = textureh - backgroundh;
-                            }
-
-                            scroll_down = true;
-                        }
+                        object = (int)tile.Occupant;
+                        background = Color::Active;
+                        border = Color::Inactive;
                     }
                     else
                     {
-                        prev_background = background;
-
-                        background = 0;
-
-                        change = true;
+                        object = (int)tile.Type;
+                        background = Color::Highlight;
+                        border = Color::Inactive;
                     }
 
-                    if (background != prev_background && background >= 0 && background < backgrounds.size())
+                    if (object >= 0 && object < textures.size())
                     {
-                        if (change)
-                        {
-                            SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
-
-                            offset = 0;
-
-                            change = false;
-                        }
+                        scene.Add(Scene::Element(objectx, objecty, objectw, map.TileSize, background, border, 4));
+                        scene.Add(Scene::Element(textures[object], objectx, objecty));
                     }
                 }
             }
 
-            BloodSword::Free(stats);
-            BloodSword::Free(backgrounds);
-            BloodSword::Free(textures);
+            if (background >= 0 && background < backgrounds.size())
+            {
+                scene.Add(Scene::Element(backgroundx, backgroundy, backgroundw, backgroundh, Color::Highlight, Color::Active, 4));
+                scene.Add(Scene::Element(backgrounds[background], backgroundx, backgroundy, backgroundh, offset));
+            }
+
+            if (scroll_up)
+            {
+                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
+
+                scroll_up = false;
+            }
+            else if (scroll_down)
+            {
+                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
+
+                scroll_down = false;
+            }
+
+            input = Input::WaitForInput(graphics, scene, input);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::EXIT)
+                {
+                    break;
+                }
+                else if (input.Type == Controls::Type::WARRIOR)
+                {
+                    prev_background = background;
+
+                    background = 1;
+
+                    change = true;
+                }
+                else if (input.Type == Controls::Type::TRICKSTER)
+                {
+                    prev_background = background;
+
+                    background = 2;
+
+                    change = true;
+                }
+                else if (input.Type == Controls::Type::SAGE)
+                {
+                    prev_background = background;
+
+                    background = 3;
+
+                    change = true;
+                }
+                else if (input.Type == Controls::Type::ENCHANTER)
+                {
+                    prev_background = background;
+
+                    background = 4;
+
+                    change = true;
+                }
+                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (backgroundh < textureh)
+                    {
+                        offset -= scrollSpeed;
+
+                        if (offset < 0)
+                        {
+                            offset = 0;
+                        }
+
+                        scroll_up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (backgroundh < textureh)
+                    {
+                        offset += scrollSpeed;
+
+                        if (offset > (textureh - backgroundh))
+                        {
+                            offset = textureh - backgroundh;
+                        }
+
+                        scroll_down = true;
+                    }
+                }
+                else
+                {
+                    prev_background = background;
+
+                    background = 0;
+
+                    change = true;
+                }
+
+                if (background != prev_background && background >= 0 && background < backgrounds.size())
+                {
+                    if (change)
+                    {
+                        SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
+
+                        offset = 0;
+
+                        change = false;
+                    }
+                }
+            }
         }
+
+        BloodSword::Free(stats);
+        BloodSword::Free(backgrounds);
+        BloodSword::Free(textures);
     }
 
     // animation test
@@ -1107,6 +1101,13 @@ namespace BloodSword::Test
                                 popupid = map[scene.Controls[input.Current].Map].Id;
                             }
 
+                            if (popupid >= 0 && popupid < party.Count() && party[popupid].Skills.size() == 1 && party[popupid].Skills[0] == Skills::Type::SPELLS)
+                            {
+                                skill = false;
+
+                                spell = true;
+                            }
+
                             input.Current = -1;
                         }
                         else if (input.Type == Controls::Type::EXIT)
@@ -1388,6 +1389,104 @@ namespace BloodSword::Test
         Interface::ReloadTextures(graphics, palette);
     }
 
+    void AttributesTest(Graphics::Base &graphics)
+    {
+        // create party
+        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
+                                  Generate::Character(Character::Class::TRICKSTER, 2),
+                                  Generate::Character(Character::Class::SAGE, 2),
+                                  Generate::Character(Character::Class::ENCHANTER, 2)});
+
+        auto RegenerateCharacterCaptions = [&](Party::Base &party)
+        {
+            std::vector<Graphics::RichText> characters = {};
+
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
+
+                characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, 160));
+            }
+
+            return Graphics::CreateText(graphics, characters);
+        };
+
+        auto RegenerateStats = [&](Party::Base &party)
+        {
+            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, 320, false);
+
+            return stats;
+        };
+
+        auto stats = RegenerateStats(party);
+
+        auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto captions = RegenerateCharacterCaptions(party);
+
+        auto pad = 10;
+
+        auto input = Controls::User();
+
+        auto characters = true;
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto scene = Scene::Base();
+
+            auto overlay = Scene::Base();
+
+            if (characters)
+            {
+                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
+
+                auto &popup = overlay.Elements[0];
+
+                overlay.Add(Scene::Element(select, popup.X + 16, popup.Y + 8));
+            }
+
+            if (Input::IsValid(overlay, input))
+            {
+                // party popup captions
+                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                {
+                    auto &control = overlay.Controls[input.Current];
+                    auto &popup = overlay.Elements[0];
+
+                    overlay.Add(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+
+                    auto texturew = 0;
+
+                    if (stats[input.Current])
+                    {
+                        SDL_QueryTexture(stats[input.Current], NULL, NULL, &texturew, NULL);
+                    }
+
+                    overlay.Add(Scene::Element(stats[input.Current], popup.X - (texturew + pad * 2), popup.Y, 0, Color::Active, 4));
+                }
+            }
+
+            input = Input::WaitForInput(graphics, scene, overlay, input, characters);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    if (characters)
+                    {
+                        done = true;
+                    }
+                }
+            }
+        }
+
+        Free(&select);
+        Free(stats);
+        Free(captions);
+    }
+
     void Menu(Graphics::Base &graphics)
     {
         auto width = 640;
@@ -1409,7 +1508,8 @@ namespace BloodSword::Test
                  Graphics::RichText("03 ANIMATION TEST\n\nDemonstrates A* path-finding and animation engine and window clipping", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("04 BATTLE ORDER\n\nDemonstrates battle order/action/turn sequence and pop-up windows", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("05 PALETTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+                 Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
             return menu;
         };
 
@@ -1499,6 +1599,9 @@ namespace BloodSword::Test
                         break;
                     case 6:
                         Graphics::ToggleScanLines();
+                        break;
+                    case 7:
+                        Test::AttributesTest(graphics);
                         break;
                     default:
                         // do nothing - menu test

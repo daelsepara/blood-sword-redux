@@ -162,7 +162,7 @@ namespace BloodSword::Input
         {
             Input::InitializeGamePads();
         }
-        else if (result.type == SDL_KEYDOWN)
+        else if (result.type == SDL_KEYDOWN && !controls.empty())
         {
             if (result.key.keysym.sym == SDLK_PAGEUP)
             {
@@ -219,7 +219,7 @@ namespace BloodSword::Input
                 }
             }
         }
-        else if (result.type == SDL_CONTROLLERAXISMOTION)
+        else if (result.type == SDL_CONTROLLERAXISMOTION && !controls.empty())
         {
             if (result.caxis.axis == SDL_CONTROLLER_AXIS_LEFTX)
             {
@@ -264,7 +264,7 @@ namespace BloodSword::Input
                 }
             }
         }
-        else if (result.type == SDL_CONTROLLERBUTTONDOWN && result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
+        else if (result.type == SDL_CONTROLLERBUTTONDOWN && result.cbutton.button == SDL_CONTROLLER_BUTTON_A && !controls.empty())
         {
             input.Hold = true;
 
@@ -273,7 +273,7 @@ namespace BloodSword::Input
                 input.Selected = true;
             }
         }
-        else if (result.type == SDL_CONTROLLERBUTTONUP)
+        else if (result.type == SDL_CONTROLLERBUTTONUP && !controls.empty())
         {
             input.Selected = false;
 
