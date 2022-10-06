@@ -579,7 +579,7 @@ namespace BloodSword::Interface
 
         if (!choices.empty())
         {
-            auto startid = (int)(scene.Controls.size());
+            auto startid = 0;
             auto end = last - start;
             auto options = (int)(choices.size());
             auto more = options - last > 0;
@@ -642,6 +642,48 @@ namespace BloodSword::Interface
         }
 
         return scene;
+    }
+
+    // add horizontal text menu to existing overlay
+    void HorizontalMenu(Scene::Base &overlay, std::vector<SDL_Texture *> &choices, std::vector<Controls::Type> controls, int x, int y, Uint32 border, Uint32 highlight)
+    {
+        if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
+        {
+            auto pixels = 2;
+            auto offset = pixels * 2;
+            auto adjust = pixels * 4;
+            auto pad = pixels * 6;
+            auto items = (int)(choices.size());
+            auto startid = (int)(overlay.size());
+
+            for (auto item = 0; item < items; item++)
+            {
+                auto currentw = 0;
+                auto currenth = 0;
+
+                if (choices[item])
+                {
+                    SDL_QueryTexture(choices[item], NULL, NULL, &currentw, &currenth);
+                }
+
+                auto previousw = 0;
+
+                if (item > 0 && choices[item - 1])
+                {
+                    SDL_QueryTexture(choices[item - 1], NULL, NULL, &previousw, NULL);
+                }
+
+                auto itemx = x + item * (previousw + pad);
+
+                auto id = startid + item;
+                auto lt = id > 0 ? id - 1 : id;
+                auto rt = id < items - 1 ? id + 1 : id;
+
+                overlay.Add(Scene::Element(itemx, y, currentw, currenth, 0, border, pixels));
+                overlay.Add(Scene::Element(choices[item], itemx, y));
+                overlay.Add(Controls::Base(controls[item], id, lt, rt, id, id, itemx - offset, y - offset, currentw + adjust, currenth + adjust, highlight));
+            }
+        }
     }
 
     // skills overlay menu

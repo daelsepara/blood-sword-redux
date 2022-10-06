@@ -255,6 +255,30 @@
         {
             "id": "DETECT ENCHANTMENT",
             "path": "images/spells/gaze.png"
+        },
+        {
+            "id": "DICE1",
+            "path": "images/system/dice-six-faces-one.png"
+        },
+        {
+            "id": "DICE2",
+            "path": "images/system/dice-six-faces-two.png"
+        },
+        {
+            "id": "DICE3",
+            "path": "images/system/dice-six-faces-three.png"
+        },
+        {
+            "id": "DICE4",
+            "path": "images/system/dice-six-faces-four.png"
+        },
+        {
+            "id": "DICE5",
+            "path": "images/system/dice-six-faces-five.png"
+        },
+        {
+            "id": "DICE6",
+            "path": "images/system/dice-six-faces-six.png"
         }
     ]
 }

@@ -90,7 +90,13 @@ namespace BloodSword::Asset
         SERVILE_ENTHRALMENT,
         SUMMON_FALTYN,
         PREDICTION,
-        DETECT_ENCHANTMENT
+        DETECT_ENCHANTMENT,
+        DICE1,
+        DICE2,
+        DICE3,
+        DICE4,
+        DICE5,
+        DICE6
     };
 
     template <typename T>
@@ -176,7 +182,13 @@ namespace BloodSword::Asset
         {Type::SERVILE_ENTHRALMENT, "SERVILE ENTHRALMENT"},
         {Type::SUMMON_FALTYN, "SUMMON FALTYN"},
         {Type::PREDICTION, "PREDICTION"},
-        {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
+        {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"},
+        {Type::DICE1, "DICE1"},
+        {Type::DICE2, "DICE2"},
+        {Type::DICE3, "DICE3"},
+        {Type::DICE4, "DICE4"},
+        {Type::DICE5, "DICE5"},
+        {Type::DICE6, "DICE6"}};
 
     Asset::Type Map(const char *asset)
     {
