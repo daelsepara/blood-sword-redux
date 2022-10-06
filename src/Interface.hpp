@@ -654,7 +654,7 @@ namespace BloodSword::Interface
             auto adjust = pixels * 4;
             auto pad = pixels * 6;
             auto items = (int)(choices.size());
-            auto startid = (int)(overlay.size());
+            auto startid = (int)(overlay.Controls.size());
 
             for (auto item = 0; item < items; item++)
             {
