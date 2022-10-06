@@ -170,9 +170,11 @@ namespace BloodSword::Scene
 
         Base(std::vector<Scene::Element> elements, Uint32 background) : Elements(elements), Background(background) {}
 
+        Base(std::vector<Scene::Element> elements) : Elements(elements) {}
+
         Base(Uint32 background) : Background(background) {}
 
-        Base(SDL_Texture *texture, int x, int y) : Elements(std::vector<Scene::Element>({Scene::Element(texture, x, y)})) {}
+        Base(SDL_Texture *texture, int x, int y) : Base(std::vector<Scene::Element>({Scene::Element(texture, x, y)})) {}
 
         Base(SDL_Texture *texture, Point point) : Base(texture, point.X, point.Y) {}
 
