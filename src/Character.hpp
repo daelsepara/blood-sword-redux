@@ -431,9 +431,19 @@ namespace BloodSword::Character
         // is the character armed?
         bool IsArmed()
         {
-            auto weapon = this->Find({Item::Property::WEAPON, Item::Property::EQUIPPED});
+            auto armed = false;
 
-            return weapon != this->Items.end() && (*weapon).Type != Item::Type::BOW;
+            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
+            {
+                if ((*item).Has(Item::Property::WEAPON) && (*item).Has(Item::Property::EQUIPPED) && (*item).Type != Item::Type::BOW)
+                {
+                    armed = true;
+
+                    break;
+                }
+            }
+
+            return armed;
         }
 
         // is the character a player character?

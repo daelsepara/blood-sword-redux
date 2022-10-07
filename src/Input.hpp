@@ -110,7 +110,7 @@ namespace BloodSword::Input
     }
 
     // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool isDialog = false)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool isDialog = false, bool blur = false)
     {
         SDL_Event result;
 
@@ -126,7 +126,7 @@ namespace BloodSword::Input
         }
         else
         {
-            Graphics::Dialog(graphics, scene, overlay, input);
+            Graphics::Dialog(graphics, scene, overlay, input, blur);
         }
 
         Graphics::DisplayVersion(graphics);

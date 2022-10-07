@@ -1,7 +1,6 @@
 #ifndef __TEST_HPP__
 #define __TEST_HPP__
 
-#include "Input.hpp"
 #include "Interface.hpp"
 
 // framework for testing game subsystems
@@ -149,7 +148,7 @@ namespace BloodSword::Test
              Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
              Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
 
-        auto stats = Interface::Attributes(graphics, party, Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw);
+        auto stats = Interface::Attributes(graphics, party, Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw, false, true);
 
         auto background = 0;
         auto prev_background = -1;
@@ -556,11 +555,7 @@ namespace BloodSword::Test
 
                         std::string fpsString = "FPS: " + std::to_string(fps) + "/sec";
 
-                        auto fpswidth = 0;
-
-                        Graphics::Estimate(Fonts::Normal, fpsString.c_str(), &fpswidth, NULL);
-
-                        ftptexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, fpswidth);
+                        ftptexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                     }
 
                     for (auto &animation : animations.List)
@@ -646,14 +641,14 @@ namespace BloodSword::Test
 
         auto RegenerateStats = [&](Map::Base &map, Party::Base &party)
         {
-            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
+            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true, true);
 
             return stats;
         };
 
         auto stats = RegenerateStats(map, party);
 
-        auto enemyStats = Interface::Attributes(graphics, enemies, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true);
+        auto enemyStats = Interface::Attributes(graphics, enemies, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true, true);
 
         auto draw = Point(map.DrawX, map.DrawY);
 
@@ -851,7 +846,7 @@ namespace BloodSword::Test
             {
                 if (popupid >= 0 && popupid < party.Count())
                 {
-                    overlay = Interface::Skills(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4, inbattle);
+                    overlay = Interface::Skills(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
                 }
                 else
                 {
@@ -864,7 +859,7 @@ namespace BloodSword::Test
             {
                 if (popupid >= 0 && popupid < party.Count())
                 {
-                    overlay = Interface::Spells(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Inactive, 4, inbattle);
+                    overlay = Interface::Spells(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
                 }
                 else
                 {
@@ -1043,7 +1038,7 @@ namespace BloodSword::Test
                     }
                 }
 
-                input = Input::WaitForInput(graphics, scene, overlay, input, skill || spell);
+                input = Input::WaitForInput(graphics, scene, overlay, input, skill || spell, true);
 
                 if (!skill && !spell)
                 {
@@ -1389,8 +1384,14 @@ namespace BloodSword::Test
         Interface::ReloadTextures(graphics, palette);
     }
 
-    void AttributesTest(Graphics::Base &graphics)
+    void Attribute(Graphics::Base &graphics)
     {
+        auto random = Random::Base();
+        auto difficulty = Random::Base();
+
+        random.UniformIntDistribution(0, 2);
+        difficulty.UniformIntDistribution(-2, 2);
+
         // create party
         auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
                                   Generate::Character(Character::Class::TRICKSTER, 2),
@@ -1413,7 +1414,7 @@ namespace BloodSword::Test
 
         auto RegenerateStats = [&](Party::Base &party)
         {
-            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, 320, false);
+            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, 320, false, true);
 
             return stats;
         };
@@ -1431,6 +1432,11 @@ namespace BloodSword::Test
         auto characters = true;
 
         auto done = false;
+
+        std::vector<Attribute::Type> attributes = {
+            Attribute::Type::FIGHTING_PROWESS,
+            Attribute::Type::AWARENESS,
+            Attribute::Type::PSYCHIC_ABILITY};
 
         while (!done)
         {
@@ -1478,6 +1484,18 @@ namespace BloodSword::Test
                     {
                         done = true;
                     }
+                }
+                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
+                {
+                    auto popupw = 512;
+
+                    auto popuph = 208;
+
+                    auto &character = party[input.Current];
+
+                    auto origin = (Point(graphics.Width, graphics.Height) - Point(popupw, popuph)) / 2;
+
+                    Interface::Test(graphics, scene, origin, popupw, popuph, Color::Active, 4, character, attributes[random.NextInt()], 2, difficulty.NextInt());
                 }
             }
         }
@@ -1601,7 +1619,7 @@ namespace BloodSword::Test
                         Graphics::ToggleScanLines();
                         break;
                     case 7:
-                        Test::AttributesTest(graphics);
+                        Test::Attribute(graphics);
                         break;
                     default:
                         // do nothing - menu test

@@ -82,7 +82,8 @@ namespace BloodSword::Controls
         SERVILE_ENTHRALMENT,
         SUMMON_FALTYN,
         PREDICTION,
-        DETECT_ENCHANTMENT
+        DETECT_ENCHANTMENT,
+        START
     };
 
     std::vector<Controls::Type> Spells = {
@@ -101,7 +102,6 @@ namespace BloodSword::Controls
         Type::SERVILE_ENTHRALMENT,
         Type::SUMMON_FALTYN,
         Type::PREDICTION,
-        Type::DETECT_ENCHANTMENT
-    };
+        Type::DETECT_ENCHANTMENT};
 }
 #endif

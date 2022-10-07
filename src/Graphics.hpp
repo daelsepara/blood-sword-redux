@@ -371,11 +371,18 @@ namespace BloodSword::Graphics
     }
 
     // handle controls on pop-up dialog instead of the background
-    void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input)
+    void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input, bool blur = false)
     {
         if (graphics.Renderer)
         {
             Graphics::Render(graphics, background);
+
+            if (blur)
+            {
+                auto rect = Graphics::CreateRect(graphics, graphics.Width, graphics.Height, 0, 0, 0xB0000000);
+
+                SDL_RenderFillRect(graphics.Renderer, &rect);
+            }
 
             Graphics::Overlay(graphics, dialog);
 
@@ -484,17 +491,17 @@ namespace BloodSword::Graphics
     }
 
     // create a SDL_Surface representation of a string (without line wrapping)
-    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style)
+    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textcolor, int style)
     {
-        return Graphics::CreateSurfaceText(text, font, textColor, style, 0);
+        return Graphics::CreateSurfaceText(text, font, textcolor, style, 0);
     }
 
     // create a texture representation of a string
-    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
+    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textcolor, int style, int wrap)
     {
         SDL_Texture *texture = NULL;
 
-        auto surface = Graphics::CreateSurfaceText(text, font, textColor, style, wrap);
+        auto surface = Graphics::CreateSurfaceText(text, font, textcolor, style, wrap);
 
         if (surface)
         {
@@ -504,6 +511,11 @@ namespace BloodSword::Graphics
         }
 
         return texture;
+    }
+
+    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textcolor, int style)
+    {
+        return Graphics::CreateText(graphics, text, font, textcolor, style, 0);
     }
 
     // create a list of texture representation of a collection of strings

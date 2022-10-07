@@ -4,6 +4,7 @@
 #include "Animation.hpp"
 #include "Engine.hpp"
 #include "Graphics.hpp"
+#include "Input.hpp"
 #include "Maze.hpp"
 #include "Palette.hpp"
 
@@ -226,7 +227,7 @@ namespace BloodSword::Interface
                     case Map::Object::PLAYER:
                         if (tile.Id >= 0 && tile.Id < party.Count())
                         {
-                            if (party[tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
+                            if (Engine::Score(party[tile.Id], Attribute::Type::ENDURANCE, true) > 0)
                             {
                                 scene.Add(Scene::Element(Asset::Get(party[tile.Id].Asset), screen));
 
@@ -330,13 +331,74 @@ namespace BloodSword::Interface
         return Interface::Map(map, party, enemies, bottom);
     }
 
+    std::string ScoreString(Character::Base &character, Attribute::Type attribute, bool inbattle = false)
+    {
+        std::string stats;
+
+        auto value = std::max(character.Value(attribute), character.Maximum(attribute));
+
+        auto modifier = character.Modifier(attribute) + character.Modifiers(attribute);
+
+        if (attribute == Attribute::Type::ENDURANCE)
+        {
+            stats += std::to_string(value + modifier);
+        }
+        else if (attribute == Attribute::Type::ARMOUR)
+        {
+            stats += std::to_string(modifier);
+        }
+        else if (attribute == Attribute::Type::DAMAGE)
+        {
+            if (inbattle && character.IsPlayer() && !character.IsArmed())
+            {
+                modifier -= 2;
+            }
+
+            stats += std::to_string(value) + "D";
+
+            if (modifier != 0)
+            {
+                if (modifier > 0)
+                {
+                    stats += "+";
+                }
+
+                stats += std::to_string(modifier);
+            }
+        }
+        else
+        {
+            if (inbattle && character.IsPlayer() && !character.IsArmed() && attribute == Attribute::Type::FIGHTING_PROWESS)
+            {
+                modifier -= 2;
+            }
+
+            stats += std::to_string(value);
+
+            if (modifier != 0)
+            {
+                stats += "(";
+
+                if (modifier > 0)
+                {
+                    stats += "+";
+                }
+
+                stats += std::to_string(modifier);
+
+                stats += ")";
+            }
+        }
+
+        return stats;
+    }
+
     // create character attributes text box
-    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false)
+    SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false, bool inbattle = false)
     {
         SDL_Texture *texture = NULL;
 
-        std::string labels;
-        std::string stats;
+        std::string labels, stats;
 
         if (character.ControlType == Character::ControlType::PLAYER)
         {
@@ -377,50 +439,7 @@ namespace BloodSword::Interface
                 stats += '\n';
             }
 
-            auto value = character.Value(attribute);
-
-            auto modifier = character.Modifier(attribute) + character.Modifiers(attribute);
-
-            if (attribute == Attribute::Type::ENDURANCE)
-            {
-                stats += std::to_string(value + modifier);
-            }
-            else if (attribute == Attribute::Type::ARMOUR)
-            {
-                stats += std::to_string(modifier);
-            }
-            else if (attribute == Attribute::Type::DAMAGE)
-            {
-                stats += std::to_string(value) + "D";
-
-                if (modifier != 0)
-                {
-                    if (modifier > 0)
-                    {
-                        stats += "+";
-                    }
-
-                    stats += std::to_string(modifier);
-                }
-            }
-            else
-            {
-                stats += std::to_string(value);
-
-                if (modifier != 0)
-                {
-                    stats += "(";
-
-                    if (modifier > 0)
-                    {
-                        stats += "+";
-                    }
-
-                    stats += std::to_string(modifier);
-
-                    stats += ")";
-                }
-            }
+            stats += Interface::ScoreString(character, attribute, inbattle);
         }
 
         if (addname)
@@ -440,7 +459,7 @@ namespace BloodSword::Interface
             {
                 auto namewidth = 0;
 
-                Graphics::Estimate(font, "DMGG", &namewidth, NULL);
+                Graphics::Estimate(font, character.Name.c_str(), &namewidth, NULL);
 
                 if (namewidth > surfacewidth)
                 {
@@ -491,7 +510,7 @@ namespace BloodSword::Interface
                 // add character class if player character
                 if (addname)
                 {
-                    auto surfacename = Graphics::CreateSurfaceText(character.Name.c_str(), font, Color::S(statscolor), style | TTF_STYLE_UNDERLINE, labelsw + statsw + 8);
+                    auto surfacename = Graphics::CreateSurfaceText(character.Name.c_str(), font, Color::S(statscolor), style | TTF_STYLE_UNDERLINE, surfacewidth);
 
                     if (surfacename)
                     {
@@ -525,7 +544,7 @@ namespace BloodSword::Interface
         return texture;
     }
 
-    std::vector<SDL_Texture *> Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false)
+    std::vector<SDL_Texture *> Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false, bool inbattle = false)
     {
         std::vector<SDL_Texture *> textures = {};
 
@@ -533,7 +552,7 @@ namespace BloodSword::Interface
         {
             auto &character = party[i];
 
-            auto texture = Interface::Attributes(graphics, character, font, labelcolor, statscolor, style, wrap, addname);
+            auto texture = Interface::Attributes(graphics, character, font, labelcolor, statscolor, style, wrap, addname, inbattle);
 
             if (texture)
             {
@@ -645,7 +664,7 @@ namespace BloodSword::Interface
     }
 
     // add horizontal text menu to existing overlay
-    void HorizontalMenu(Scene::Base &overlay, std::vector<SDL_Texture *> &choices, std::vector<Controls::Type> controls, int x, int y, Uint32 border, Uint32 highlight)
+    void HorizontalMenu(Scene::Base &overlay, std::vector<SDL_Texture *> &choices, std::vector<Controls::Type> controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
     {
         if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
         {
@@ -679,7 +698,7 @@ namespace BloodSword::Interface
                 auto lt = id > 0 ? id - 1 : id;
                 auto rt = id < items - 1 ? id + 1 : id;
 
-                overlay.Add(Scene::Element(itemx, y, currentw, currenth, 0, border, pixels));
+                overlay.Add(Scene::Element(itemx, y, currentw, currenth, background, border, pixels));
                 overlay.Add(Scene::Element(choices[item], itemx, y));
                 overlay.Add(Controls::Base(controls[item], id, lt, rt, id, id, itemx - offset, y - offset, currentw + adjust, currenth + adjust, highlight));
             }
@@ -983,6 +1002,150 @@ namespace BloodSword::Interface
         }
 
         return overlay;
+    }
+
+    // attribute difficulty check
+    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &character, Attribute::Type attribute, int roll, int modifier, bool inbattle = false)
+    {
+        auto result = false;
+
+        std::string attribute_string = Attribute::TypeMapping[attribute] + std::string(": ") + Interface::ScoreString(character, attribute, inbattle);
+
+        attribute_string += "\nDIFFICULTY: " + std::to_string(roll) + "D";
+
+        if (modifier != 0)
+        {
+            if (modifier > 0)
+            {
+                attribute_string += "+";
+            }
+
+            attribute_string += std::to_string(modifier);
+        }
+
+        auto attribute_texture = Graphics::CreateText(graphics, attribute_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto attributew = 0;
+
+        auto passed = Graphics::CreateText(graphics, "PASSED", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto failed = Graphics::CreateText(graphics, "FAILED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
+
+        SDL_QueryTexture(attribute_texture, NULL, NULL, &attributew, NULL);
+
+        auto start = Graphics::CreateText(graphics, {Graphics::RichText(" ROLL ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
+
+        auto end = Graphics::CreateText(graphics, {Graphics::RichText(" DONE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
+
+        auto stage = Engine::RollStage::START;
+
+        auto done = false;
+
+        auto pad = 16;
+
+        auto input = Controls::User();
+
+        auto rolled = false;
+
+        auto rolls = Engine::RollResult();
+
+        std::vector<Asset::Type> dicetextures = {
+            Asset::Type::DICE1,
+            Asset::Type::DICE2,
+            Asset::Type::DICE3,
+            Asset::Type::DICE4,
+            Asset::Type::DICE5,
+            Asset::Type::DICE6};
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            // draw border
+            overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
+            // add character icon
+            overlay.Add(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
+            // attribute label
+            overlay.Add(Scene::Element(attribute_texture, origin + Point(pad + 4, pad)));
+
+            if (stage == Engine::RollStage::START)
+            {
+                // initial
+                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin.X + pad + 8, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+            }
+            else if (stage == Engine::RollStage::RESULT)
+            {
+                // result
+                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin.X + pad + 8, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+            }
+
+            if (rolled)
+            {
+                for (auto dice = 0; dice < roll; dice++)
+                {
+                    // dice rolled
+                    overlay.Add(Scene::Element(Asset::Get(dicetextures[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
+                }
+
+                if (result)
+                {
+                    // passed
+                    overlay.Add(Scene::Element(passed, origin + Point(w - pad - 64, pad + 64)));
+                }
+                else
+                {
+                    // failed
+                    overlay.Add(Scene::Element(failed, origin + Point(w - pad - 64, pad + 64)));
+                }
+            }
+            else
+            {
+                for (auto dice = 0; dice < roll; dice++)
+                {
+                    // random dice/rolling
+                    overlay.Add(Scene::Element(Asset::Get(dicetextures[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+
+            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            {
+                if (input.Type == Controls::Type::START)
+                {
+                    if (stage == Engine::RollStage::START)
+                    {
+                        stage = Engine::RollStage::RESULT;
+
+                        // roll dice
+                        if (!rolled)
+                        {
+                            rolls = Engine::Roll(roll, modifier);
+
+                            rolled = true;
+
+                            // check result
+                            result = rolls.Sum <= Engine::Score(character, attribute, inbattle);
+                        }
+                    }
+                }
+                else if (input.Type == Controls::Type::EXIT)
+                {
+                    if (stage == Engine::RollStage::RESULT)
+                    {
+                        done = true;
+                    }
+                }
+            }
+        }
+
+        Free(start);
+        Free(end);
+        Free(&passed);
+        Free(&failed);
+        Free(&attribute_texture);
+
+        return result;
     }
 }
 

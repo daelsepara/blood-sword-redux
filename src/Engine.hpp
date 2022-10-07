@@ -34,6 +34,12 @@ namespace BloodSword::Engine
     // Queue type
     typedef std::vector<Engine::ScoreElement> Queue;
 
+    enum class RollStage
+    {
+        START,
+        RESULT
+    };
+
     // RNG engine
     auto Random = Random::Base();
 
@@ -47,27 +53,44 @@ namespace BloodSword::Engine
         Random.UniformDistribution(0, 1.0);
     }
 
-    // roll number of dice and include modifiers
-    int Roll(int count, int modifier)
+    class RollResult
     {
+    public:
+        std::vector<int> Rolls = {};
+
+        int Sum = 0;
+
+        RollResult(std::vector<int> rolls, int sum) : Rolls(rolls), Sum(sum) {}
+
+        // empty result
+        RollResult() {}
+    };
+
+    // roll number of dice and include modifiers
+    Engine::RollResult Roll(int count, int modifier)
+    {
+        std::vector<int> rolls = {};
+
         auto sum = 0;
 
         for (auto i = 0; i < count; i++)
         {
-            sum += Engine::Random.NextInt();
+            rolls.push_back(Engine::Random.NextInt());
+
+            sum += rolls.back();
         }
 
         sum += modifier;
 
-        return std::min(0, sum);
+        return Engine::RollResult(rolls, std::max(0, sum));
     }
 
     // total character score
-    int Score(Character::Base &character, Attribute::Type attribute)
+    int Score(Character::Base &character, Attribute::Type attribute, bool inbattle = false)
     {
         auto score = 0;
 
-        auto value = character.Value(attribute);
+        auto value = std::max(character.Value(attribute), character.Maximum(attribute));
 
         auto modifier = character.Modifier(attribute) + character.Modifiers(attribute);
 
@@ -77,10 +100,15 @@ namespace BloodSword::Engine
         }
         else if (attribute != Attribute::Type::DAMAGE)
         {
+            if (inbattle && character.IsPlayer() && !character.IsArmed() && attribute == Attribute::Type::FIGHTING_PROWESS)
+            {
+                modifier -= 2;
+            }
+
             score = value + modifier;
         }
 
-        return score;
+        return std::max(0, score);
     }
 
     // sort queue
@@ -107,7 +135,7 @@ namespace BloodSword::Engine
         // add characters in party to queue
         for (auto i = 0; i < party.Count(); i++)
         {
-            auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE) > 0;
+            auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle) > 0;
             auto paralyzed = party[i].Is(Character::Status::PARALYZED);
             auto away = party[i].Is(Character::Status::AWAY);
             auto knockedout = party[i].Is(Character::Status::KNOCKED_OUT);
@@ -115,14 +143,14 @@ namespace BloodSword::Engine
 
             if (alive && !paralyzed && !away && battle)
             {
-                queue.push_back(ScoreElement(party[i].ControlType, i, knockedout ? 1 : Engine::Score(party[i], attribute)));
+                queue.push_back(ScoreElement(party[i].ControlType, i, knockedout ? 1 : Engine::Score(party[i], attribute, inbattle)));
             }
         }
 
         // add characters from the other party to the queue
         for (auto i = 0; i < other.Count(); i++)
         {
-            auto alive = Engine::Score(other[i], Attribute::Type::ENDURANCE) > 0;
+            auto alive = Engine::Score(other[i], Attribute::Type::ENDURANCE, inbattle) > 0;
             auto paralyzed = other[i].Is(Character::Status::PARALYZED);
             auto away = other[i].Is(Character::Status::AWAY);
             auto knockedout = other[i].Is(Character::Status::KNOCKED_OUT);
@@ -239,7 +267,7 @@ namespace BloodSword::Engine
 
         for (auto i = 0; i < party.Count(); i++)
         {
-            auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE) > 0;
+            auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle) > 0;
             auto away = party[i].Is(Character::Status::AWAY);
             auto battle = (inbattle && party[i].Is(Character::Status::IN_BATTLE)) || !inbattle;
 
@@ -281,7 +309,7 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE) > 0;
+                auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle) > 0;
                 auto away = party[i].Is(Character::Status::AWAY);
                 auto battle = (inbattle && party[i].Is(Character::Status::IN_BATTLE)) || !inbattle;
 
