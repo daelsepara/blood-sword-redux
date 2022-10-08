@@ -9,6 +9,8 @@ namespace BloodSword
 
         BloodSword::Initialize(graphics);
 
+        Input::InitializeGamePads();
+
         try
         {
             Test::Menu(graphics);

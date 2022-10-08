@@ -90,7 +90,7 @@ namespace BloodSword::Engine
     {
         auto score = 0;
 
-        auto value = std::max(character.Value(attribute), character.Maximum(attribute));
+        auto value = std::min(character.Value(attribute), character.Maximum(attribute));
 
         auto modifier = character.Modifier(attribute) + character.Modifiers(attribute);
 
@@ -360,6 +360,19 @@ namespace BloodSword::Engine
         }
 
         return isspell;
+    }
+
+    bool Damage(Character::Base &character, int damage, bool inbattle = false)
+    {
+        auto endurance = Engine::Score(character, Attribute::Type::ENDURANCE, inbattle);
+
+        endurance -= damage;
+
+        endurance = std::max(0, endurance);
+
+        character.Set(Attribute::Type::ENDURANCE, endurance, 0);
+
+        return Engine::Score(character, Attribute::Type::ENDURANCE, inbattle) > 0;
     }
 }
 

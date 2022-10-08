@@ -1495,7 +1495,9 @@ namespace BloodSword::Test
 
                     auto origin = (Point(graphics.Width, graphics.Height) - Point(popupw, popuph)) / 2;
 
-                    Interface::Test(graphics, scene, origin, popupw, popuph, Color::Active, 4, character, attributes[random.NextInt()], 2, difficulty.NextInt());
+                    auto attribute = attributes[random.NextInt()];
+
+                    Interface::Test(graphics, scene, origin, popupw, popuph, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), attribute == Attribute::Type::FIGHTING_PROWESS);
                 }
             }
         }
@@ -1503,6 +1505,41 @@ namespace BloodSword::Test
         Free(&select);
         Free(stats);
         Free(captions);
+    }
+
+    // damage resolution
+    void Fight(Graphics::Base &graphics)
+    {
+        auto player = Generate::Character(Character::Class::WARRIOR, 4);
+
+        auto enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 100, Asset::Type::BARBARIAN);
+
+        auto scene = Scene::Base();
+
+        auto popupw = 512;
+
+        auto popuph = 280;
+
+        auto origin = (Point(graphics.Width, graphics.Height) - Point(popupw, popuph)) / 2;
+
+        while (true)
+        {
+            auto damage = 0;
+
+            damage = Interface::Damage(graphics, scene, origin, popupw, popuph, Color::Active, 4, player, enemy, true);
+
+            if (!Engine::Damage(enemy, damage, true))
+            {
+                break;
+            }
+
+            damage = Interface::Damage(graphics, scene, origin, popupw, popuph, Color::Active, 4, enemy, player, true);
+
+            if (!Engine::Damage(player, damage, true))
+            {
+                break;
+            }
+        }
     }
 
     void Menu(Graphics::Base &graphics)
@@ -1527,7 +1564,8 @@ namespace BloodSword::Test
                  Graphics::RichText("04 BATTLE ORDER\n\nDemonstrates battle order/action/turn sequence and pop-up windows", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("05 PALETTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+                 Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
             return menu;
         };
 
@@ -1620,6 +1658,9 @@ namespace BloodSword::Test
                         break;
                     case 7:
                         Test::Attribute(graphics);
+                        break;
+                    case 8:
+                        Test::Fight(graphics);
                         break;
                     default:
                         // do nothing - menu test

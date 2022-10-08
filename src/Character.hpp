@@ -77,7 +77,7 @@ namespace BloodSword::Character
                                       attributes,
                                       skills,
                                       100,
-                                      1) {}
+                                      2) {}
 
         Base(const char *name,
              Character::Class characterClass,
@@ -86,7 +86,7 @@ namespace BloodSword::Character
         Base(const char *name,
              Character::Class characterClass) : Base(name, characterClass, {}, {}, 100, 2) {}
 
-        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100, 2) {}
+        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100, rank) {}
 
         Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100, 2) {}
 

@@ -305,6 +305,11 @@ namespace BloodSword::Map
                         break;
                     }
                 }
+
+                if (!point.IsNone())
+                {
+                    break;
+                }
             }
 
             return point;
@@ -330,6 +335,11 @@ namespace BloodSword::Map
                         break;
                     }
                 }
+
+                if (!point.IsNone())
+                {
+                    break;
+                }
             }
 
             return point;
@@ -348,6 +358,28 @@ namespace BloodSword::Map
             }
 
             return dist;
+        }
+
+        bool Adjacent(Point src, Map::Object occupant)
+        {
+            bool adjacent = false;
+
+            if (this->IsValid(src) && (*this)[src].IsOccupied())
+            {
+                for (auto &direction : Map::Directions)
+                {
+                    auto neighbor = src + direction;
+
+                    if (this->IsValid(neighbor) && (*this)[neighbor].Occupant == occupant)
+                    {
+                        adjacent = true;
+
+                        break;
+                    }
+                }
+            }
+
+            return adjacent;
         }
     };
 }

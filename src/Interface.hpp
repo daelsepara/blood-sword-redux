@@ -71,8 +71,17 @@ namespace BloodSword::Interface
     SDL_Texture *NoSkills = NULL;
     SDL_Texture *NoSpells = NULL;
 
+    std::vector<Asset::Type> DICE = {
+        Asset::Type::DICE1,
+        Asset::Type::DICE2,
+        Asset::Type::DICE3,
+        Asset::Type::DICE4,
+        Asset::Type::DICE5,
+        Asset::Type::DICE6};
+
     // create textures
-    void InitializeTextures(Graphics::Base &graphics)
+    void
+    InitializeTextures(Graphics::Base &graphics)
     {
         auto estimate = 0;
 
@@ -335,7 +344,7 @@ namespace BloodSword::Interface
     {
         std::string stats;
 
-        auto value = std::max(character.Value(attribute), character.Maximum(attribute));
+        auto value = std::min(character.Value(attribute), character.Maximum(attribute));
 
         auto modifier = character.Modifier(attribute) + character.Modifiers(attribute);
 
@@ -1049,22 +1058,22 @@ namespace BloodSword::Interface
 
         auto rolls = Engine::RollResult();
 
-        std::vector<Asset::Type> dicetextures = {
-            Asset::Type::DICE1,
-            Asset::Type::DICE2,
-            Asset::Type::DICE3,
-            Asset::Type::DICE4,
-            Asset::Type::DICE5,
-            Asset::Type::DICE6};
-
         while (!done)
         {
             auto overlay = Scene::Base();
 
             // draw border
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
+
             // add character icon
             overlay.Add(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
+
+            // add fight icon if in battle and attribute is FIGHTING PROWESS
+            if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS)
+            {
+                overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
+            }
+
             // attribute label
             overlay.Add(Scene::Element(attribute_texture, origin + Point(pad + 4, pad)));
 
@@ -1084,7 +1093,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.Add(Scene::Element(Asset::Get(dicetextures[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
+                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
                 }
 
                 if (result)
@@ -1103,7 +1112,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.Add(Scene::Element(Asset::Get(dicetextures[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
+                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
                 }
             }
 
@@ -1146,6 +1155,158 @@ namespace BloodSword::Interface
         Free(&attribute_texture);
 
         return result;
+    }
+
+    // roll for damage
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false)
+    {
+        SDL_Texture *damage_value = NULL;
+
+        int damage = 0;
+
+        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, true) + "\n" + std::string("DMG: ") + Interface::ScoreString(attacker, Attribute::Type::DAMAGE, inbattle);
+
+        std::string armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, true) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, inbattle);
+
+        auto damage_texture = Graphics::CreateText(graphics, damage_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto armour_texture = Graphics::CreateText(graphics, armour_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto passed = Graphics::CreateText(graphics, "DAMAGED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
+
+        auto failed = Graphics::CreateText(graphics, "UNHARMED", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL);
+
+        auto start = Graphics::CreateText(graphics, {Graphics::RichText(" DAMAGE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
+
+        auto end = Graphics::CreateText(graphics, {Graphics::RichText(" DONE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
+
+        auto stage = Engine::RollStage::START;
+
+        auto done = false;
+
+        auto pad = 16;
+
+        auto input = Controls::User();
+
+        auto rolled = false;
+
+        auto rolls = Engine::RollResult();
+
+        auto roll = attacker.Value(Attribute::Type::DAMAGE);
+
+        auto modifier = attacker.Modifier(Attribute::Type::DAMAGE);
+
+        if (inbattle && attacker.IsPlayer() && !attacker.IsArmed())
+        {
+            modifier -= 2;
+        }
+
+        auto textw = 0;
+
+        auto texth = 0;
+
+        SDL_QueryTexture(failed, NULL, NULL, &textw, &texth);
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+            // draw border
+            overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
+            // add fight icon
+            overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point((w - 64) / 2, pad)));
+            // add attacker icon and stats
+            overlay.Add(Scene::Element(Asset::Get(attacker.Asset), origin + pad));
+            overlay.Add(Scene::Element(damage_texture, origin + Point(pad, pad + 64)));
+            // add defender icon and stats
+            overlay.Add(Scene::Element(Asset::Get(defender.Asset), origin + Point(w - textw - pad, pad)));
+            overlay.Add(Scene::Element(armour_texture, origin + Point(w - textw - pad, pad + 64)));
+
+            if (stage == Engine::RollStage::START)
+            {
+                // initial
+                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin.X + pad + 8, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+            }
+            else if (stage == Engine::RollStage::RESULT)
+            {
+                // result
+                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin.X + pad + 8, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+            }
+
+            if (rolled)
+            {
+                for (auto dice = 0; dice < roll; dice++)
+                {
+                    // dice rolled
+                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 128)));
+                }
+
+                if (damage > 0)
+                {
+                    // damaged
+                    overlay.Add(Scene::Element(passed, origin + Point(w - textw - pad, texth * 2 + pad + 64)));
+                    overlay.Add(Scene::Element(damage_value, origin + Point(w - textw - pad, texth * 3 + pad + 64)));
+                }
+                else
+                {
+                    // unharmed
+                    overlay.Add(Scene::Element(failed, origin + Point(w - textw - pad, texth * 2 + pad + 64)));
+                }
+            }
+            else
+            {
+                for (auto dice = 0; dice < roll; dice++)
+                {
+                    // random dice/rolling
+                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 128)));
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+
+            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            {
+                if (input.Type == Controls::Type::START)
+                {
+                    if (stage == Engine::RollStage::START)
+                    {
+                        stage = Engine::RollStage::RESULT;
+
+                        // roll dice
+                        if (!rolled)
+                        {
+                            rolls = Engine::Roll(roll, modifier);
+
+                            rolled = true;
+
+                            // check damage
+                            damage = std::max(0, rolls.Sum - Engine::Score(defender, Attribute::Type::ARMOUR, inbattle));
+
+                            if (damage > 0)
+                            {
+                                damage_value = Graphics::CreateText(graphics, ("-" + std::to_string(damage) + " END").c_str(), Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
+                            }
+                        }
+                    }
+                }
+                else if (input.Type == Controls::Type::EXIT)
+                {
+                    if (stage == Engine::RollStage::RESULT)
+                    {
+                        done = true;
+                    }
+                }
+            }
+        }
+
+        Free(end);
+        Free(start);
+        Free(&failed);
+        Free(&passed);
+        Free(&armour_texture);
+        Free(&damage_texture);
+        Free(&damage_value);
+
+        return damage;
     }
 }
 
