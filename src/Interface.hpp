@@ -236,7 +236,7 @@ namespace BloodSword::Interface
                     case Map::Object::PLAYER:
                         if (tile.Id >= 0 && tile.Id < party.Count())
                         {
-                            if (Engine::Score(party[tile.Id], Attribute::Type::ENDURANCE, true) > 0)
+                            if (Engine::IsAlive(party[tile.Id]))
                             {
                                 scene.Add(Scene::Element(Asset::Get(party[tile.Id].Asset), screen));
 
@@ -265,7 +265,7 @@ namespace BloodSword::Interface
                     case Map::Object::ENEMY:
                         if (tile.Id >= 0 && tile.Id < enemies.Count())
                         {
-                            if (enemies[tile.Id].Value(Attribute::Type::ENDURANCE) > 0)
+                            if (Engine::IsAlive(enemies[tile.Id]))
                             {
                                 scene.Add(Scene::Element(Asset::Get(enemies[tile.Id].Asset), screen));
 
@@ -1164,9 +1164,9 @@ namespace BloodSword::Interface
 
         int damage = 0;
 
-        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, true) + "\n" + std::string("DMG: ") + Interface::ScoreString(attacker, Attribute::Type::DAMAGE, inbattle);
+        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("DMG: ") + Interface::ScoreString(attacker, Attribute::Type::DAMAGE, inbattle);
 
-        std::string armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, true) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, inbattle);
+        std::string armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, inbattle);
 
         auto damage_texture = Graphics::CreateText(graphics, damage_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
@@ -1210,15 +1210,21 @@ namespace BloodSword::Interface
         while (!done)
         {
             auto overlay = Scene::Base();
+
             // draw border
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
+
             // add fight icon
             overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point((w - 64) / 2, pad)));
+
             // add attacker icon and stats
             overlay.Add(Scene::Element(Asset::Get(attacker.Asset), origin + pad));
+
             overlay.Add(Scene::Element(damage_texture, origin + Point(pad, pad + 64)));
+
             // add defender icon and stats
             overlay.Add(Scene::Element(Asset::Get(defender.Asset), origin + Point(w - textw - pad, pad)));
+
             overlay.Add(Scene::Element(armour_texture, origin + Point(w - textw - pad, pad + 64)));
 
             if (stage == Engine::RollStage::START)
@@ -1307,6 +1313,51 @@ namespace BloodSword::Interface
         Free(&damage_value);
 
         return damage;
+    }
+
+    // Fight action
+    bool Fight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender)
+    {
+        auto alive = true;
+
+        auto fightw = 512;
+
+        auto fighth = 208;
+
+        auto fight = origin + (Point(w, h) - Point(fightw, fighth)) / 2;
+
+        auto damagew = 512;
+
+        auto damageh = 280;
+
+        auto damage = origin + (Point(w, h) - Point(damagew, damageh)) / 2;
+
+        if (!attacker.Is(Character::Status::DEFENDING))
+        {
+            if (Engine::IsAlive(attacker))
+            {
+                auto roll = defender.Is(Character::Status::DEFENDING) ? 3 : 2;
+
+                if (Interface::Test(graphics, background, fight, fightw, fighth, Color::Active, 4, attacker, Attribute::Type::FIGHTING_PROWESS, roll, 0, true))
+                {
+                    auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, attacker, defender, true);
+
+                    alive &= Engine::Damage(defender, hit, true);
+                }
+            }
+
+            if (Engine::IsAlive(defender) || (Engine::Score(defender, Attribute::Type::AWARENESS, true) >= Engine::Score(attacker, Attribute::Type::AWARENESS, true) && !defender.Is(Character::Status::DEFENDING)))
+            {
+                if (Interface::Test(graphics, background, fight, fightw, fighth, Color::Active, 4, defender, Attribute::Type::FIGHTING_PROWESS, 2, 0, true))
+                {
+                    auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, defender, attacker, true);
+
+                    alive &= Engine::Damage(attacker, hit, true);
+                }
+            }
+        }
+
+        return alive;
     }
 }
 

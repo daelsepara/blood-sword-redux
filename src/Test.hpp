@@ -1516,28 +1516,27 @@ namespace BloodSword::Test
 
         auto scene = Scene::Base();
 
-        auto popupw = 512;
+        auto alive = true;
 
-        auto popuph = 280;
-
-        auto origin = (Point(graphics.Width, graphics.Height) - Point(popupw, popuph)) / 2;
-
-        while (true)
+        while (alive)
         {
-            auto damage = 0;
-
-            damage = Interface::Damage(graphics, scene, origin, popupw, popuph, Color::Active, 4, player, enemy, true);
-
-            if (!Engine::Damage(enemy, damage, true))
+            if (Engine::Score(player, Attribute::Type::AWARENESS, true) >= Engine::Score(enemy, Attribute::Type::AWARENESS, true))
             {
-                break;
+                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
+
+                if (alive)
+                {
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                }
             }
-
-            damage = Interface::Damage(graphics, scene, origin, popupw, popuph, Color::Active, 4, enemy, player, true);
-
-            if (!Engine::Damage(player, damage, true))
+            else
             {
-                break;
+                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+
+                if (alive)
+                {
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
+                }
             }
         }
     }

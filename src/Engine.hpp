@@ -111,6 +111,12 @@ namespace BloodSword::Engine
         return std::max(0, score);
     }
 
+    // check if character is still alive
+    bool IsAlive(Character::Base &character)
+    {
+        return Engine::Score(character, Attribute::Type::ENDURANCE) > 0;
+    }
+
     // sort queue
     void Sort(Engine::Queue &queue, bool descending = true)
     {
@@ -135,7 +141,7 @@ namespace BloodSword::Engine
         // add characters in party to queue
         for (auto i = 0; i < party.Count(); i++)
         {
-            auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle) > 0;
+            auto alive = Engine::IsAlive(party[i]);
             auto paralyzed = party[i].Is(Character::Status::PARALYZED);
             auto away = party[i].Is(Character::Status::AWAY);
             auto knockedout = party[i].Is(Character::Status::KNOCKED_OUT);
@@ -150,7 +156,7 @@ namespace BloodSword::Engine
         // add characters from the other party to the queue
         for (auto i = 0; i < other.Count(); i++)
         {
-            auto alive = Engine::Score(other[i], Attribute::Type::ENDURANCE, inbattle) > 0;
+            auto alive = Engine::IsAlive(other[i]);
             auto paralyzed = other[i].Is(Character::Status::PARALYZED);
             auto away = other[i].Is(Character::Status::AWAY);
             auto knockedout = other[i].Is(Character::Status::KNOCKED_OUT);
@@ -267,7 +273,7 @@ namespace BloodSword::Engine
 
         for (auto i = 0; i < party.Count(); i++)
         {
-            auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle) > 0;
+            auto alive = Engine::IsAlive(party[i]);
             auto away = party[i].Is(Character::Status::AWAY);
             auto battle = (inbattle && party[i].Is(Character::Status::IN_BATTLE)) || !inbattle;
 
@@ -309,7 +315,7 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto alive = Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle) > 0;
+                auto alive = Engine::IsAlive(party[i]);
                 auto away = party[i].Is(Character::Status::AWAY);
                 auto battle = (inbattle && party[i].Is(Character::Status::IN_BATTLE)) || !inbattle;
 
@@ -372,7 +378,7 @@ namespace BloodSword::Engine
 
         character.Set(Attribute::Type::ENDURANCE, endurance, 0);
 
-        return Engine::Score(character, Attribute::Type::ENDURANCE, inbattle) > 0;
+        return Engine::IsAlive(character);
     }
 }
 
