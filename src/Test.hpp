@@ -779,6 +779,11 @@ namespace BloodSword::Test
         auto popupid = 0;
         auto inbattle = true;
 
+        if (Engine::IsPlayer(order, character))
+        {
+            input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+        }
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -793,6 +798,11 @@ namespace BloodSword::Test
                     if (!Move::Available(map, src))
                     {
                         Engine::Next(order, character);
+
+                        if (Engine::IsPlayer(order, character))
+                        {
+                            input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+                        }
                     }
                     else
                     {
@@ -827,11 +837,21 @@ namespace BloodSword::Test
                                 if (!validtarget)
                                 {
                                     Engine::Next(order, character);
+
+                                    if (Engine::IsPlayer(order, character))
+                                    {
+                                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+                                    }
                                 }
                             }
                             else
                             {
                                 Engine::Next(order, character);
+
+                                if (Engine::IsPlayer(order, character))
+                                {
+                                    input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+                                }
                             }
                         }
                     }
@@ -839,6 +859,11 @@ namespace BloodSword::Test
                 else
                 {
                     Engine::Next(order, character);
+
+                    if (Engine::IsPlayer(order, character))
+                    {
+                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+                    }
                 }
             }
 
@@ -1014,6 +1039,11 @@ namespace BloodSword::Test
                     scene = RegenerateScene(map);
 
                     Engine::Next(order, character);
+
+                    if (Engine::IsPlayer(order, character))
+                    {
+                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+                    }
                 }
             }
             else
@@ -1178,6 +1208,11 @@ namespace BloodSword::Test
                                             }
 
                                             Engine::Next(order, character);
+
+                                            if (Engine::IsPlayer(order, character))
+                                            {
+                                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+                                            }
                                         }
                                         else if (!spellbook.IsBasic())
                                         {
@@ -1191,6 +1226,11 @@ namespace BloodSword::Test
                                             stats = RegenerateStats(map, party);
 
                                             Engine::Next(order, character);
+
+                                            if (Engine::IsPlayer(order, character))
+                                            {
+                                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].ID].Class]);
+                                            }
                                         }
                                     }
                                 }
