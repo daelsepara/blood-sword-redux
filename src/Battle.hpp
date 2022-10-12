@@ -17,18 +17,51 @@ namespace BloodSword::Battle
         CANNOT_FLEE
     };
 
+    enum class Result
+    {
+        NONE = -1,
+        DEFEAT,
+        VICTORY,
+        FLEE
+    };
+
+    const int Unlimited = -1;
+
     class Base
     {
     public:
+        // battle conditions (see Battle::Condition types)
         std::vector<Battle::Condition> Conditions = {};
 
+        // battle map
         Map::Base Map;
 
-        Party::Base NPC;
+        // enemy combatants
+        Party::Base Opponents;
 
-        Base(std::vector<Battle::Condition> conditions, Map::Base &map, Party::Base &npc) : Conditions(conditions), Map(map), NPC(npc) {}
+        // round limit (-1 if unlimited)
+        int Duration = -1;
+
+        Base(std::vector<Battle::Condition> conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}
+
+        bool Is(Battle::Condition condition)
+        {
+            auto result = false;
+
+            for (auto &check : this->Conditions)
+            {
+                if (check == condition)
+                {
+                    result = true;
+
+                    break;   
+                }
+            }
+
+            return result;
+        }
     };
 }
 

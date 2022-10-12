@@ -2,6 +2,7 @@
 #define __TEST_HPP__
 
 #include "Interface.hpp"
+#include "InterfaceBattle.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test

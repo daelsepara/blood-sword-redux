@@ -2,7 +2,6 @@
 #define __INTERFACE_HPP__
 
 #include "Animation.hpp"
-#include "Battle.hpp"
 #include "Engine.hpp"
 #include "Graphics.hpp"
 #include "Input.hpp"

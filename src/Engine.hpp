@@ -223,14 +223,20 @@ namespace BloodSword::Engine
     }
 
     // move to next item in queue
-    void Next(Engine::Queue &queue, int &item)
+    bool Next(Engine::Queue &queue, int &item)
     {
+        auto first = false;
+
         item++;
 
         if (item >= queue.size())
         {
             item = 0;
+
+            first = true;
         }
+
+        return first;
     }
 
     // move to previous item in queue
@@ -379,6 +385,41 @@ namespace BloodSword::Engine
         character.Set(Attribute::Type::ENDURANCE, endurance, 0);
 
         return Engine::IsAlive(character);
+    }
+
+    // cooldown status effects
+    void CoolDown(Character::Base &character)
+    {
+        // cool down status effects
+        if (character.Is(Character::Status::DEFENDING))
+        {
+            // change DEFENDING to DEFENDED
+            character.Remove(Character::Status::DEFENDING);
+            character.Add(Character::Status::DEFENDED, 1);
+        }
+        else
+        {
+            IntMapping<Character::Status> Active = {};
+
+            for (auto &status : character.Status)
+            {
+                if (status.second < 0)
+                {
+                    Active[status.first] = -1;
+                }
+                else if (status.second > 0)
+                {
+                    status.second--;
+
+                    if (status.second > 0)
+                    {
+                        Active[status.first] = status.second;
+                    }
+                }
+            }
+
+            character.Status = Active;
+        }
     }
 }
 
