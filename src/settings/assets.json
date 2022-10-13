@@ -189,6 +189,10 @@
             "path": "images/system/exit-door.png"
         },
         {
+            "id": "CONFIRM",
+            "path": "images/system/confirmed.png"
+        },
+        {
             "id": "BACK",
             "path": "images/system/anticlockwise-rotation.png"
         },

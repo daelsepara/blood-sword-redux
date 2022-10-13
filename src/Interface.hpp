@@ -1359,6 +1359,58 @@ namespace BloodSword::Interface
 
         return alive;
     }
+
+    // draws a message box over a scene
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Graphics::RichText message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        auto box = Scene::Base();
+
+        auto pad = 16;
+
+        if (texture)
+        {
+            auto texturew = 0;
+
+            auto textureh = 0;
+
+            SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+
+            auto boxw = texturew + pad * 2;
+
+            auto boxh = textureh + pad * 3 + 64;
+
+            auto origin = (Point(graphics.Width, graphics.Height) - Point(boxw, boxh)) / 2;
+
+            box.Add(Scene::Element(origin, boxw, boxh, background, border, borderSize));
+
+            box.Add(Scene::Element(texture, origin + Point(pad, pad)));
+
+            auto confirm = origin + Point(pad + texturew / 2 - 32, textureh + pad * 2);
+
+            box.Add(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
+
+            box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, confirm.X, confirm.Y, 64, 64, highlight));
+
+            auto input = Controls::User();
+
+            while (true)
+            {
+                input = Input::WaitForInput(graphics, scene, box, input, true, blur);
+
+                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                {
+                    if (input.Type == Controls::Type::CONFIRM)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+
+        Free(&texture);
+    }
 }
 
 #endif

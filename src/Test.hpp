@@ -1580,6 +1580,15 @@ namespace BloodSword::Test
                 }
             }
         }
+
+        if (Engine::IsAlive(player))
+        {
+            Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " wins!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+        }
+        else
+        {
+            Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " wins!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, true);
+        }
     }
 
     void Menu(Graphics::Base &graphics)
