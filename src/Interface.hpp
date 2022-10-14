@@ -68,6 +68,28 @@ namespace BloodSword::Interface
         {Character::Class::SAGE, Controls::Type::SAGE},
         {Character::Class::ENCHANTER, Controls::Type::ENCHANTER}};
 
+    Controls::Mapped<Asset::Type> BattleControls = {
+        {Controls::Type::MOVE, Asset::Type::MOVE},
+        {Controls::Type::FIGHT, Asset::Type::FIGHT},
+        {Controls::Type::SHOOT, Asset::Type::SHOOT},
+        {Controls::Type::QUARTERSTAFF, Asset::Type::QUARTERSTAFF},
+        {Controls::Type::SPELLS, Asset::Type::SPELLS},
+        {Controls::Type::DEFEND, Asset::Type::DEFEND},
+        {Controls::Type::FLEE, Asset::Type::FLEE},
+        {Controls::Type::ITEMS, Asset::Type::ITEMS},
+        {Controls::Type::BACK, Asset::Type::BACK}};
+    Controls::Mapped<const char *> BattleControlsText = {
+        {Controls::Type::MOVE, "MOVE"},
+        {Controls::Type::FIGHT, "FIGHT"},
+        {Controls::Type::SHOOT, "SHOOT"},
+        {Controls::Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Controls::Type::SPELLS, "SPELLS"},
+        {Controls::Type::DEFEND, "DEFEND"},
+        {Controls::Type::FLEE, "FLEE"},
+        {Controls::Type::ITEMS, "ITEMS"},
+        {Controls::Type::BACK, "BACK"}};
+    Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
+
     SDL_Texture *NoSkills = NULL;
     SDL_Texture *NoSpells = NULL;
 
@@ -80,17 +102,12 @@ namespace BloodSword::Interface
         Asset::Type::DICE6};
 
     // create textures
-    void
-    InitializeTextures(Graphics::Base &graphics)
+    void InitializeTextures(Graphics::Base &graphics)
     {
-        auto estimate = 0;
-
         for (auto &skill : Skills::TypeMapping)
         {
-            Graphics::Estimate(Fonts::Caption, skill.second, &estimate, NULL);
-
-            auto active = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
-            auto inactive = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, estimate);
+            auto active = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            auto inactive = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
 
             SkillCaptionsActive[skill.first] = active;
             SkillCaptionsInactive[skill.first] = inactive;
@@ -99,21 +116,21 @@ namespace BloodSword::Interface
 
         for (auto &spell : Spells::TypeMapping)
         {
-            Graphics::Estimate(Fonts::Caption, spell.second, &estimate, NULL);
-
-            auto active = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
-            auto inactive = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, estimate);
+            auto active = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            auto inactive = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
 
             SpellCaptionsActive[spell.first] = active;
             SpellCaptionsInactive[spell.first] = inactive;
             SpellsTexturesInactive[spell.first] = Asset::Copy(graphics.Renderer, Spells::Assets[spell.first], Color::Inactive);
         }
 
-        Graphics::Estimate(Fonts::Caption, "No special skills", &estimate, NULL);
-        NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
+        NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+        NoSpells = Graphics::CreateText(graphics, "No spells", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        Graphics::Estimate(Fonts::Caption, "No spells", &estimate, NULL);
-        NoSpells = Graphics::CreateText(graphics, "No spells", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
+        for (auto &control : BattleControlsText)
+        {
+            BattleControlCaptions[control.first] = Graphics::CreateText(graphics, control.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+        }
     }
 
     // unload all textures allocated by this module
@@ -134,9 +151,15 @@ namespace BloodSword::Interface
             Free(&skill.second);
         }
 
+        for (auto &control : BattleControlCaptions)
+        {
+            Free(&control.second);
+        }
+
         SkillCaptionsActive.clear();
         SkillCaptionsInactive.clear();
         SkillsTexturesInactive.clear();
+        BattleControlCaptions.clear();
 
         Free(&NoSkills);
         Free(&NoSpells);
@@ -1343,16 +1366,6 @@ namespace BloodSword::Interface
                     auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, attacker, defender, true);
 
                     alive &= Engine::Damage(defender, hit, true);
-                }
-            }
-
-            if (Engine::IsAlive(defender) || (Engine::Score(defender, Attribute::Type::AWARENESS, true) >= Engine::Score(attacker, Attribute::Type::AWARENESS, true) && !defender.Is(Character::Status::DEFENDING)))
-            {
-                if (Interface::Test(graphics, background, fight, fightw, fighth, Color::Active, 4, defender, Attribute::Type::FIGHTING_PROWESS, 2, 0, true))
-                {
-                    auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, defender, attacker, true);
-
-                    alive &= Engine::Damage(attacker, hit, true);
                 }
             }
         }

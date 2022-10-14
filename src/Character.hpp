@@ -428,6 +428,24 @@ namespace BloodSword::Character
             return modifiers;
         }
 
+        // is armed with a specific weapon
+        bool IsArmed(Item::Type weapon)
+        {
+            auto armed = false;
+
+            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
+            {
+                if ((*item).Has(Item::Property::WEAPON) && (*item).Has(Item::Property::EQUIPPED) && (*item).Type == weapon)
+                {
+                    armed = true;
+
+                    break;
+                }
+            }
+
+            return armed;
+        }
+
         // is the character armed?
         bool IsArmed()
         {
@@ -444,6 +462,12 @@ namespace BloodSword::Character
             }
 
             return armed;
+        }
+
+        // is character armed with a ranged weapon?
+        bool IsArmed(Item::Type weapon, Item::Type container, Item::Type ammo)
+        {
+            return this->Has(container, ammo, 1) && this->Has(weapon);
         }
 
         // is the character a player character?

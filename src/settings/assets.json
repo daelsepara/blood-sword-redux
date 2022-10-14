@@ -185,6 +185,10 @@
             "path": "images/skills/spell-book.png"
         },
         {
+            "id": "ITEMS",
+            "path": "images/system/paper-bag-crumpled.png"
+        },
+        {
             "id": "EXIT",
             "path": "images/system/exit-door.png"
         },

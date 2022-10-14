@@ -37,7 +37,7 @@ namespace BloodSword::Controls
         HEAL,
         PLUS,
         MINUS,
-        ATTACK,
+        FIGHT,
         DEFEND,
         SHOOT,
         CAST,

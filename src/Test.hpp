@@ -1551,44 +1551,116 @@ namespace BloodSword::Test
     // damage resolution
     void Fight(Graphics::Base &graphics)
     {
-        auto player = Generate::Character(Character::Class::WARRIOR, 4);
+        auto player = Generate::Character(Character::Class::WARRIOR, 2);
 
         auto enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 100, Asset::Type::BARBARIAN);
 
-        auto scene = Scene::Base();
-
         auto alive = true;
+
+        auto round = 0;
+
+        auto fixed = Color::Active;
+
+        std::vector<Graphics::RichText> collection = {
+            Graphics::RichText("PLAYER TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText("ENEMY TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText("PLAYER RETALIATES", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText("ENEMY RETALIATES", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0)};
+
+        auto events = Graphics::CreateText(graphics, collection);
+
+        auto scene = Scene::Base();
 
         while (alive)
         {
+            scene = Scene::Base();
+
+            std::string round_text = "ROUND: " + std::to_string(round + 1);
+
+            auto texture = Graphics::CreateText(graphics, ("ROUND: " + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+            scene.Add(Scene::Element(texture, Point(0, 0)));
+
             if (Engine::Score(player, Attribute::Type::AWARENESS, true) >= Engine::Score(enemy, Attribute::Type::AWARENESS, true))
             {
+                // player turn
+                scene.Add(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
+
                 alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
 
+                // enemy retaliates
                 if (alive)
                 {
+                    scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
+
                     alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                }
+
+                // enemy turn
+                if (alive)
+                {
+                    scene.Elements[1] = Scene::Element(events[1], Point(0, scene.Elements[0].H));
+
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                }
+
+                // player retaliates
+                if (alive)
+                {
+                    scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
+
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
                 }
             }
             else
             {
+                // enemy turn
+                scene.Add(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
+
                 alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
 
+                // player retaliates
                 if (alive)
                 {
+                    scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
+
                     alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
                 }
+
+                // player turn
+                if (alive)
+                {
+                    scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
+
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
+                }
+
+                // enemy retaliates
+                if (alive)
+                {
+                    scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
+
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                }
             }
+
+            round++;
+
+            Free(&texture);
         }
+
+        scene.Clear();
 
         if (Engine::IsAlive(player))
         {
-            Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " wins!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " WINS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
         }
         else
         {
-            Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " wins!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " WINS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, true);
         }
+
+        Free(events);
     }
 
     void Menu(Graphics::Base &graphics)

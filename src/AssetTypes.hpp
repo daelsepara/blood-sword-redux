@@ -73,6 +73,7 @@ namespace BloodSword::Asset
         EXORCISM,
         LEVITATION,
         SPELLS,
+        ITEMS,
         EXIT,
         CONFIRM,
         BACK,

@@ -374,6 +374,7 @@ namespace BloodSword::Engine
         return isspell;
     }
 
+    // assign damage to character
     bool Damage(Character::Base &character, int damage, bool inbattle = false)
     {
         auto endurance = Engine::Score(character, Attribute::Type::ENDURANCE, inbattle);
@@ -395,12 +396,14 @@ namespace BloodSword::Engine
         {
             // change DEFENDING to DEFENDED
             character.Remove(Character::Status::DEFENDING);
+
             character.Add(Character::Status::DEFENDED, 1);
         }
         else
         {
             IntMapping<Character::Status> Active = {};
 
+            // cooldown other status effects
             for (auto &status : character.Status)
             {
                 if (status.second < 0)
@@ -420,6 +423,78 @@ namespace BloodSword::Engine
 
             character.Status = Active;
         }
+    }
+
+    bool CanFlee(Map::Base &map, Party::Base &party, int character)
+    {
+        auto flee = false;
+
+        auto src = map.Find(Map::Object::PLAYER, character);
+
+        if (!src.IsNone())
+        {
+            if (map[src].IsExit())
+            {
+                flee = true;
+            }
+            else
+            {
+                for (auto &direction : Map::Directions)
+                {
+                    auto neighbor = src + direction;
+
+                    if (map.IsValid(neighbor) && map[neighbor].Type == Map::Object::EXIT)
+                    {
+                        flee = true;
+
+                        break;
+                    }
+                }
+            }
+
+            // check if character is adjacent to a team mate who can flee
+            if (!flee && party.Count() > 1)
+            {
+                for (auto other = 0; other < party.Count(); other++)
+                {
+                    if (character != other)
+                    {
+                        auto next = map.Find(Map::Object::PLAYER, other);
+
+                        if (!next.IsNone() && map.Distance(src, next) == 1)
+                        {
+                            if (map[next].Type == Map::Object::EXIT)
+                            {
+                                flee = true;
+
+                                break;
+                            }
+                            else
+                            {
+                                for (auto &direction : Map::Directions)
+                                {
+                                    auto neighbor = next + direction;
+
+                                    if (map.IsValid(neighbor) && map[neighbor].Type == Map::Object::EXIT)
+                                    {
+                                        flee = true;
+
+                                        break;
+                                    }
+                                }
+
+                                if (flee)
+                                {
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return flee;
     }
 }
 
