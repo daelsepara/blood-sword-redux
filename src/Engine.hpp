@@ -222,6 +222,12 @@ namespace BloodSword::Engine
         return queue[character].Type == Character::ControlType::PLAYER;
     }
 
+    // check if current character (in the queue) is non-player-controlled
+    bool IsEnemy(Engine::Queue &queue, int &character)
+    {
+        return !Engine::IsPlayer(queue, character);
+    }
+
     // move to next item in queue
     bool Next(Engine::Queue &queue, int &item)
     {
@@ -357,6 +363,7 @@ namespace BloodSword::Engine
         return queue;
     }
 
+    // check if control is a spell
     bool IsSpell(Controls::Type type)
     {
         auto isspell = false;
@@ -425,6 +432,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // check if character can flee
     bool CanFlee(Map::Base &map, Party::Base &party, int character)
     {
         auto flee = false;

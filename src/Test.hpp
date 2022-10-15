@@ -149,13 +149,13 @@ namespace BloodSword::Test
              Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
              Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
 
-        auto stats = Interface::Attributes(graphics, party, Fonts::Fixed, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, objectw, false, true);
+        auto stats = Interface::GenerateStats(graphics, party, objectw, false, true);
 
         auto background = 0;
         auto prev_background = -1;
         auto change = false;
         auto offset = 0;
-        auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
+        auto objectx = map.DrawX + (map.ViewX * 2 + 1) * map.TileSize / 2 + pad;
         auto objecty = map.DrawY + map.TileSize * 7 - pad;
         auto backgroundx = objectx;
         auto backgroundy = map.DrawY + pad;
@@ -177,7 +177,7 @@ namespace BloodSword::Test
 
             auto id = (int)(scene.Controls.size());
             auto x = map.DrawX;
-            auto y = map.DrawY + map.SizeY * map.TileSize;
+            auto y = map.DrawY + map.ViewY * map.TileSize;
 
             scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
@@ -196,7 +196,7 @@ namespace BloodSword::Test
 
             if (arrow_up || arrow_down)
             {
-                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
+                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - map.ViewX, id, x, y, map.TileSize, map.TileSize, Color::Active));
             }
 
             if (arrow_up && arrow_down)
@@ -214,7 +214,7 @@ namespace BloodSword::Test
             }
             else
             {
-                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.SizeX, id, x, y, map.TileSize, map.TileSize, Color::Active));
+                scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id - map.ViewX, id, x, y, map.TileSize, map.TileSize, Color::Active));
             }
 
             if (Input::IsValid(scene, input))
@@ -421,12 +421,12 @@ namespace BloodSword::Test
 
             auto id = (int)(scene.Controls.size());
 
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.SizeX, id, map.DrawX, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-            scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.SizeX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
+            scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
 
             return scene;
         };
@@ -640,16 +640,9 @@ namespace BloodSword::Test
             center + 1,
             center - 1};
 
-        auto RegenerateStats = [&](Map::Base &map, Party::Base &party)
-        {
-            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true, true);
+        auto stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
 
-            return stats;
-        };
-
-        auto stats = RegenerateStats(map, party);
-
-        auto enemyStats = Interface::Attributes(graphics, enemies, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, map.TileSize * 5, true, true);
+        auto enemyStats = Interface::GenerateStats(graphics, enemies, map.TileSize * 5);
 
         auto draw = Point(map.DrawX, map.DrawY);
 
@@ -682,12 +675,12 @@ namespace BloodSword::Test
 
             auto id = scene.Controls.size();
 
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize));
-            scene.Add(Controls::Base(Controls::Type::MOVE, id, id, id + 1, id - map.SizeX, id, map.DrawX, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-            scene.Add(Controls::Base(Controls::Type::RESET, id + 1, id, id + 2, id - map.SizeX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
-            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.SizeX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.SizeY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
+            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
+            scene.Add(Controls::Base(Controls::Type::MOVE, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::RESET, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
 
             return scene;
         };
@@ -717,22 +710,6 @@ namespace BloodSword::Test
                 }
 
                 map.Put(spawn[i], Map::Object::ENEMY, i);
-            }
-        };
-
-        auto Blink = [&](Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
-        {
-            // blink cursor
-            if (Engine::IsPlayer(order, character))
-            {
-                auto blink = map.Find(Map::Object::PLAYER, order[character].ID);
-
-                if (map.IsValid(blink))
-                {
-                    auto screen = (draw + blink * map.TileSize) + 4;
-
-                    overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::Active, 2));
-                }
             }
         };
 
@@ -773,7 +750,7 @@ namespace BloodSword::Test
         }
 
         auto pad = 10;
-        auto objectx = map.DrawX + (map.SizeX * 2 + 1) * map.TileSize / 2 + pad;
+        auto objectx = map.DrawX + (map.ViewX * 2 + 1) * map.TileSize / 2 + pad;
         auto objecty = map.DrawY + pad;
         auto skill = false;
         auto spell = false;
@@ -872,7 +849,7 @@ namespace BloodSword::Test
             {
                 if (popupid >= 0 && popupid < party.Count())
                 {
-                    overlay = Interface::Skills(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
+                    overlay = Interface::Skills(draw, map.ViewX * map.TileSize, map.ViewY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
                 }
                 else
                 {
@@ -885,7 +862,7 @@ namespace BloodSword::Test
             {
                 if (popupid >= 0 && popupid < party.Count())
                 {
-                    overlay = Interface::Spells(draw, map.SizeX * map.TileSize, map.SizeY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
+                    overlay = Interface::Spells(draw, map.ViewX * map.TileSize, map.ViewY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
                 }
                 else
                 {
@@ -1055,8 +1032,8 @@ namespace BloodSword::Test
                     {
                         if (blinking)
                         {
-                            // blink cursor
-                            Blink(map, order, character, overlay);
+                            // focus cursor
+                            Interface::Focus(map, order, character, overlay);
                         }
 
                         blinking = !blinking;
@@ -1205,7 +1182,7 @@ namespace BloodSword::Test
 
                                                 Free(characters);
 
-                                                stats = RegenerateStats(map, party);
+                                                stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
                                             }
 
                                             Engine::Next(order, character);
@@ -1224,7 +1201,7 @@ namespace BloodSword::Test
 
                                             caster.CallToMind(spellbook.Type);
 
-                                            stats = RegenerateStats(map, party);
+                                            stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
 
                                             Engine::Next(order, character);
 
@@ -1428,9 +1405,11 @@ namespace BloodSword::Test
     void Attribute(Graphics::Base &graphics)
     {
         auto random = Random::Base();
-        auto difficulty = Random::Base();
 
         random.UniformIntDistribution(0, 2);
+
+        auto difficulty = Random::Base();
+
         difficulty.UniformIntDistribution(-2, 2);
 
         // create party
@@ -1453,14 +1432,7 @@ namespace BloodSword::Test
             return Graphics::CreateText(graphics, characters);
         };
 
-        auto RegenerateStats = [&](Party::Base &party)
-        {
-            auto stats = Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, 320, false, true);
-
-            return stats;
-        };
-
-        auto stats = RegenerateStats(party);
+        auto stats = Interface::GenerateStats(graphics, party, 320, false, true);
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 

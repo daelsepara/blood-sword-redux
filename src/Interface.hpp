@@ -202,11 +202,11 @@ namespace BloodSword::Interface
 
         auto numcontrols = 0;
 
-        for (auto y = map.Y; y < map.Y + map.SizeY; y++)
+        for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {
             auto ctrly = y - map.Y;
 
-            for (auto x = map.X; x < map.X + map.SizeX; x++)
+            for (auto x = map.X; x < map.X + map.ViewX; x++)
             {
                 auto ctrlx = x - map.X;
 
@@ -217,18 +217,18 @@ namespace BloodSword::Interface
 
                 if (ctrly > 0)
                 {
-                    up = numcontrols - map.SizeX;
+                    up = numcontrols - map.ViewX;
                 }
 
-                if (ctrly < map.SizeY - 1)
+                if (ctrly < map.ViewY - 1)
                 {
-                    dn = numcontrols + map.SizeX;
+                    dn = numcontrols + map.ViewX;
                 }
                 else
                 {
                     if (ctrlx < bottom)
                     {
-                        dn = numcontrols + map.SizeX;
+                        dn = numcontrols + map.ViewX;
                     }
                 }
 
@@ -237,7 +237,7 @@ namespace BloodSword::Interface
                     lt = numcontrols - 1;
                 }
 
-                if (ctrlx < map.SizeX - 1)
+                if (ctrlx < map.ViewX - 1)
                 {
                     rt = numcontrols + 1;
                 }
@@ -1423,6 +1423,24 @@ namespace BloodSword::Interface
         }
 
         Free(&texture);
+    }
+
+    // focus cursor on character on the map
+    void Focus(Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
+    {
+        auto draw = Point(map.DrawX, map.DrawY);
+
+        if (Engine::IsPlayer(order, character))
+        {
+            auto focus = map.Find(Map::Object::PLAYER, order[character].ID);
+
+            if (map.IsVisible(focus))
+            {
+                auto screen = (draw + focus * map.TileSize) + 4;
+
+                overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::Active, 2));
+            }
+        }
     }
 }
 

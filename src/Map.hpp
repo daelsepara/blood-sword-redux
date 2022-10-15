@@ -96,10 +96,10 @@ namespace BloodSword::Map
         int Height = 0;
 
         // viewable width (number of tiles)
-        int SizeX = 8;
+        int ViewX = 8;
 
         // viewable height (number of tiles)
-        int SizeY = 8;
+        int ViewY = 8;
 
         // x offset (navigation)
         int X = 0;
@@ -134,11 +134,11 @@ namespace BloodSword::Map
         }
 
         // set viewable region
-        void Viewable(int sizex, int sizey)
+        void Viewable(int viewx, int viewy)
         {
-            this->SizeX = sizex;
+            this->ViewX = viewx;
 
-            this->SizeY = sizey;
+            this->ViewY = viewy;
         }
 
         // initialize the map
@@ -172,6 +172,16 @@ namespace BloodSword::Map
         bool IsValid(Point coords)
         {
             return coords.X >= 0 && coords.Y >= 0 && coords.X < this->Width && coords.Y < this->Height;
+        }
+
+        // check if location is visible in current map view
+        bool IsVisible(Point coords)
+        {
+            auto valid = this->IsValid(coords);
+            auto viewx = coords.X >= this->X && coords.X < (this->X + this->ViewX);
+            auto viewy = coords.Y >= this->Y && coords.Y < (this->Y + this->ViewY);
+
+            return valid && viewx && viewy;
         }
 
         // check if a location is within map boundaries

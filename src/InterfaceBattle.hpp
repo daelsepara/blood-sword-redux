@@ -107,11 +107,17 @@ namespace BloodSword::Interface
 
         auto id = scene.Controls.size();
 
-        scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), battle.Map.DrawX, battle.Map.DrawY + battle.Map.SizeY * battle.Map.TileSize));
+        scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), battle.Map.DrawX, battle.Map.DrawY + battle.Map.ViewY * battle.Map.TileSize));
 
-        scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.SizeX, id, battle.Map.DrawX, battle.Map.DrawY + battle.Map.SizeY * battle.Map.TileSize, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
+        scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, battle.Map.DrawX, battle.Map.DrawY + battle.Map.ViewY * battle.Map.TileSize, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
 
         return scene;
+    }
+
+    // generate stats
+    std::vector<SDL_Texture *> GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool inbattle = true)
+    {
+        return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, inbattle);
     }
 
     // fight battle
@@ -121,6 +127,10 @@ namespace BloodSword::Interface
 
         if (battle.Duration != 0 && battle.Opponents.Count() > 0 && party.Count() > 0)
         {
+            auto enemyStats = GenerateStats(graphics, battle.Opponents, battle.Map.TileSize * 5);
+
+            auto partyStats = GenerateStats(graphics, party, battle.Map.TileSize * 5);
+
             int round = 0;
 
             Engine::Queue order = {};
@@ -137,6 +147,8 @@ namespace BloodSword::Interface
             auto movement = Animation::Base();
 
             auto scene = Interface::BattleScene(battle, party);
+
+            auto input = Controls::User();
 
             while (round < battle.Duration || battle.Duration == Battle::Unlimited)
             {
@@ -176,20 +188,106 @@ namespace BloodSword::Interface
                     // main loop
                     if (!animating)
                     {
-                    }
+                        auto src = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].ID);
 
-                    // spells popup
-                    if (spells)
+                        if (!src.IsNone())
+                        {
+                            // if enemy, move to/fight/shoot at nearest target
+                            if (Engine::IsEnemy(order, combatant))
+                            {
+                                auto &enemy = battle.Opponents[order[combatant].ID];
+
+                                if (!enemy.Is(Character::Status::PARALYZED) && !enemy.Is(Character::Status::ENTHRALLED))
+                                {
+                                    // enemy combatant is not player controlled or paralyze
+                                }
+                                else if (enemy.Is(Character::Status::PARALYZED))
+                                {
+                                    next = Engine::Next(order, combatant);
+
+                                    if (Engine::IsPlayer(order, combatant))
+                                    {
+                                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[combatant].ID].Class]);
+                                    }
+
+                                    continue;
+                                }
+                                else
+                                {
+                                    // enemy combatant is enthralled
+                                }
+                            }
+                            else
+                            {
+                                auto &character = party[order[combatant].ID];
+
+                                if (!character.Is(Character::Status::PARALYZED))
+                                {
+                                    if (spells)
+                                    {
+                                        // spells popup
+                                    }
+                                    else if (actions)
+                                    {
+                                        // actions popup
+                                    }
+                                }
+                                else
+                                {
+                                    // move to next character in battle order
+                                    next = Engine::Next(order, combatant);
+
+                                    if (Engine::IsPlayer(order, combatant))
+                                    {
+                                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[combatant].ID].Class]);
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            // move to next character in battle order
+                            next = Engine::Next(order, combatant);
+
+                            if (Engine::IsPlayer(order, combatant))
+                            {
+                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[combatant].ID].Class]);
+                            }
+                        }
+                    }
+                    else
                     {
-                    }
+                        animating = !Graphics::Animate(graphics, scene, movement);
 
-                    // actions popup
-                    if (actions)
-                    {
-                    }
+                        Graphics::Refresh(graphics);
 
-                    // move to next character in battle order
-                    next = Engine::Next(order, combatant);
+                        if (!animating)
+                        {
+                            if (Engine::IsPlayer(order, combatant))
+                            {
+                                battle.Map.Put(movement.Current, Map::Object::PLAYER, order[combatant].ID);
+                            }
+                            else
+                            {
+                                battle.Map.Put(movement.Current, Map::Object::ENEMY, order[combatant].ID);
+                            }
+
+                            Input::Flush();
+
+                            input.Current = -1;
+
+                            input.Selected = false;
+
+                            scene = Interface::BattleScene(battle, party);
+
+                            next = Engine::Next(order, combatant);
+
+                            if (Engine::IsPlayer(order, combatant))
+                            {
+                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[combatant].ID].Class]);
+                            }
+                        }
+                    }
                 }
 
                 // end of round effects
@@ -197,6 +295,10 @@ namespace BloodSword::Interface
                 // move to next round
                 round++;
             }
+
+            Free(partyStats);
+
+            Free(enemyStats);
         }
 
         return result;
