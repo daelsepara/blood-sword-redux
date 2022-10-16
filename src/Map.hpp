@@ -325,7 +325,7 @@ namespace BloodSword::Map
             return point;
         }
 
-        // find occupant
+        // find occupant with this id
         Point Find(Map::Object occupant, int id)
         {
             auto point = Point(-1, -1);
@@ -334,13 +334,43 @@ namespace BloodSword::Map
             {
                 for (auto x = 0; x < this->Width; x++)
                 {
-                    auto test = Point(x, y);
+                    auto search = Point(x, y);
 
-                    auto &tile = (*this)[test];
+                    auto &tile = (*this)[search];
 
                     if (tile.Occupant == occupant && tile.Id == id)
                     {
-                        point = test;
+                        point = search;
+
+                        break;
+                    }
+                }
+
+                if (!point.IsNone())
+                {
+                    break;
+                }
+            }
+
+            return point;
+        }
+
+        // find occupant except occupant with id
+        Point Except(Map::Object occupant, int id)
+        {
+            auto point = Point(-1, -1);
+
+            for (auto y = 0; y < this->Height; y++)
+            {
+                for (auto x = 0; x < this->Width; x++)
+                {
+                    auto search = Point(x, y);
+
+                    auto &tile = (*this)[search];
+
+                    if (tile.Occupant == occupant && tile.Id != id)
+                    {
+                        point = search;
 
                         break;
                     }
@@ -370,6 +400,7 @@ namespace BloodSword::Map
             return dist;
         }
 
+        // check if adjacent to a type of occupant
         bool Adjacent(Point src, Map::Object occupant)
         {
             bool adjacent = false;

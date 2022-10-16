@@ -83,7 +83,8 @@ namespace BloodSword::Controls
         SUMMON_FALTYN,
         PREDICTION,
         DETECT_ENCHANTMENT,
-        START
+        START,
+        SHOOT_SHURIKEN
     };
 
     std::vector<Controls::Type> Spells = {

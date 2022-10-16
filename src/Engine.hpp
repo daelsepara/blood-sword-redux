@@ -111,10 +111,43 @@ namespace BloodSword::Engine
         return std::max(0, score);
     }
 
-    // check if character is still alive
+    // check if character is still alive (and not enthralled)
     bool IsAlive(Character::Base &character)
     {
-        return Engine::Score(character, Attribute::Type::ENDURANCE) > 0;
+        auto alive = Engine::Score(character, Attribute::Type::ENDURANCE) > 0;
+
+        auto enthralled = character.ControlType == Character::ControlType::NPC && character.Is(Character::Status::ENTHRALLED);
+
+        return alive && !enthralled;
+    }
+
+    // check if there is at least one character in the party still alive
+    bool IsAlive(Party::Base &party)
+    {
+        auto alive = false;
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            alive |= Engine::IsAlive(party[character]);
+        }
+
+        return alive;
+    }
+
+    // check if the entire party is fleeing
+    bool IsFleeing(Party::Base &party)
+    {
+        auto fleeing = true;
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            if (Engine::IsAlive(party[character]) && party[character].ControlType == Character::ControlType::PLAYER)
+            {
+                fleeing &= party[character].Is(Character::Status::FLEEING);
+            }
+        }
+
+        return fleeing;
     }
 
     // sort queue

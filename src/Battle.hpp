@@ -20,6 +20,7 @@ namespace BloodSword::Battle
     enum class Result
     {
         NONE = -1,
+        DETERMINE,
         DEFEAT,
         VICTORY,
         FLEE

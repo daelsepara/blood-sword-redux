@@ -87,6 +87,7 @@ namespace BloodSword::Interface
         {Controls::Type::DEFEND, "DEFEND"},
         {Controls::Type::FLEE, "FLEE"},
         {Controls::Type::ITEMS, "ITEMS"},
+        {Controls::Type::SHOOT_SHURIKEN, "SHOOT SHURIKEN"},
         {Controls::Type::BACK, "BACK"}};
     Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
 
@@ -356,6 +357,7 @@ namespace BloodSword::Interface
         return scene;
     }
 
+    // create map display
     Scene::Base Map(Map::Base &map, Party::Base &party, int bottom)
     {
         auto enemies = Party::Base();
@@ -363,6 +365,7 @@ namespace BloodSword::Interface
         return Interface::Map(map, party, enemies, bottom);
     }
 
+    // form attribute score string
     std::string ScoreString(Character::Base &character, Attribute::Type attribute, bool inbattle = false)
     {
         std::string stats;
@@ -576,6 +579,7 @@ namespace BloodSword::Interface
         return texture;
     }
 
+    // create party attributes text box collection
     std::vector<SDL_Texture *> Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false, bool inbattle = false)
     {
         std::vector<SDL_Texture *> textures = {};
@@ -940,6 +944,7 @@ namespace BloodSword::Interface
         return overlay;
     }
 
+    // setup movement animation
     Animation::Base Movement(Map::Base &map, Character::Base &character, std::vector<Point> path, Point start)
     {
         auto movement = Animation::Base(
@@ -995,6 +1000,7 @@ namespace BloodSword::Interface
         return moving;
     }
 
+    // path overlay from src to dst
     Scene::Base Path(Map::Base &map, Character::Base &character, Point &src, Point &dst)
     {
         auto overlay = Scene::Base();
@@ -1037,7 +1043,7 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check
-    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &character, Attribute::Type attribute, int roll, int modifier, bool inbattle = false)
+    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &character, Attribute::Type attribute, int roll, int modifier, bool inbattle = false, bool shooting = false, Asset::Type shoot = Asset::Type::NONE)
     {
         auto result = false;
 
@@ -1092,9 +1098,13 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
 
             // add fight icon if in battle and attribute is FIGHTING PROWESS
-            if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS)
+            if (inbattle && !shooting && attribute == Attribute::Type::FIGHTING_PROWESS)
             {
                 overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
+            }
+            else if (inbattle && shooting && attribute == Attribute::Type::FIGHTING_PROWESS)
+            {
+                overlay.Add(Scene::Element(Asset::Get(shoot), origin + Point(w - pad * 2 - 128, pad)));
             }
 
             // attribute label
@@ -1181,13 +1191,13 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false, bool shooting = false, Asset::Type shoot = Asset::Type::NONE)
     {
         SDL_Texture *damage_value = NULL;
 
         int damage = 0;
 
-        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("DMG: ") + Interface::ScoreString(attacker, Attribute::Type::DAMAGE, inbattle);
+        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("DMG: ") + (!shooting ? Interface::ScoreString(attacker, Attribute::Type::DAMAGE, inbattle) : "1D");
 
         std::string armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, inbattle);
 
@@ -1215,9 +1225,9 @@ namespace BloodSword::Interface
 
         auto rolls = Engine::RollResult();
 
-        auto roll = attacker.Value(Attribute::Type::DAMAGE);
+        auto roll = !shooting ? attacker.Value(Attribute::Type::DAMAGE) : 1;
 
-        auto modifier = attacker.Modifier(Attribute::Type::DAMAGE);
+        auto modifier = !shooting ? attacker.Modifier(Attribute::Type::DAMAGE) : 0;
 
         if (inbattle && attacker.IsPlayer() && !attacker.IsArmed())
         {
@@ -1238,7 +1248,14 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
 
             // add fight icon
-            overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point((w - 64) / 2, pad)));
+            if (!shooting)
+            {
+                overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point((w - 64) / 2, pad)));
+            }
+            else
+            {
+                overlay.Add(Scene::Element(Asset::Get(shoot), origin + Point((w - 64) / 2, pad)));
+            }
 
             // add attacker icon and stats
             overlay.Add(Scene::Element(Asset::Get(attacker.Asset), origin + pad));
@@ -1336,41 +1353,6 @@ namespace BloodSword::Interface
         Free(&damage_value);
 
         return damage;
-    }
-
-    // Fight action
-    bool Fight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender)
-    {
-        auto alive = true;
-
-        auto fightw = 512;
-
-        auto fighth = 208;
-
-        auto fight = origin + (Point(w, h) - Point(fightw, fighth)) / 2;
-
-        auto damagew = 512;
-
-        auto damageh = 280;
-
-        auto damage = origin + (Point(w, h) - Point(damagew, damageh)) / 2;
-
-        if (!attacker.Is(Character::Status::DEFENDING))
-        {
-            if (Engine::IsAlive(attacker))
-            {
-                auto roll = defender.Is(Character::Status::DEFENDING) ? 3 : 2;
-
-                if (Interface::Test(graphics, background, fight, fightw, fighth, Color::Active, 4, attacker, Attribute::Type::FIGHTING_PROWESS, roll, 0, true))
-                {
-                    auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, attacker, defender, true);
-
-                    alive &= Engine::Damage(defender, hit, true);
-                }
-            }
-        }
-
-        return alive;
     }
 
     // draws a message box over a scene

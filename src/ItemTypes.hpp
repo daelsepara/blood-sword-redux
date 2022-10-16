@@ -21,7 +21,8 @@ namespace BloodSword::Item
         CHAINMAIL,
         LEATHER_ARMOUR,
         RINGMAIL,
-        SILVER_ARMOUR
+        SILVER_ARMOUR,
+        SHURIKEN
     };
 
     Mapping<Item::Type> TypeMapping = {
@@ -36,7 +37,8 @@ namespace BloodSword::Item
         {Type::CHAINMAIL, "CHAINMAIL"},
         {Type::LEATHER_ARMOUR, "LEATHER ARMOUR"},
         {Type::RINGMAIL, "RINGMAIL"},
-        {Type::SILVER_ARMOUR, "SILVER ARMOUR"}};
+        {Type::SILVER_ARMOUR, "SILVER ARMOUR"},
+        {Type::SHURIKEN, "SHURIKEN"}};
 
     Item::Type Map(const char *item)
     {
