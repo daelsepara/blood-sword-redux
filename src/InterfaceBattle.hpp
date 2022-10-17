@@ -213,6 +213,23 @@ namespace BloodSword::Interface
         return alive;
     }
 
+    // helper function (next character in battle order)
+    bool Next(Battle::Base &battle, Scene::Base &scene, Party::Base &party, Engine::Queue &order, int &combatant, Controls::User &input, bool &endturn)
+    {
+        auto next = Engine::Next(order, combatant);
+
+        if (Engine::IsPlayer(order, combatant))
+        {
+            input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[combatant].ID].Class]);
+        }
+        else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+        {
+            input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+        }
+
+        return next;
+    }
+
     // fight battle
     Battle::Result Battle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -351,18 +368,8 @@ namespace BloodSword::Interface
                                                 }
                                             }
 
-                                            next = Engine::Next(order, combatant);
-
-                                            if (Engine::IsPlayer(order, combatant))
-                                            {
-                                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                            }
-                                            else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
-                                            {
-                                                input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                            }
-
-                                            endturn = true;
+                                            // next character in battle order
+                                            next = Next(battle, scene, party, order, combatant, input, endturn);
                                         }
                                         else if (character.Moves > 0 && Move::Available(battle.Map, src))
                                         {
@@ -393,18 +400,8 @@ namespace BloodSword::Interface
 
                                                 if (!validtarget)
                                                 {
-                                                    next = Engine::Next(order, combatant);
-
-                                                    if (Engine::IsPlayer(order, combatant))
-                                                    {
-                                                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                                    }
-                                                    else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
-                                                    {
-                                                        input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                                    }
-
-                                                    endturn = true;
+                                                    // next character in battle order
+                                                    next = Next(battle, scene, party, order, combatant, input, endturn);
                                                 }
                                             }
                                         }
@@ -434,35 +431,15 @@ namespace BloodSword::Interface
                                                     }
                                                 }
 
-                                                next = Engine::Next(order, combatant);
-
-                                                if (Engine::IsPlayer(order, combatant))
-                                                {
-                                                    input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                                }
-                                                else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
-                                                {
-                                                    input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                                }
-
-                                                endturn = true;
+                                                // next character in battle order
+                                                next = Next(battle, scene, party, order, combatant, input, endturn);
                                             }
                                         }
                                     }
                                     else
                                     {
-                                        next = Engine::Next(order, combatant);
-
-                                        if (Engine::IsPlayer(order, combatant))
-                                        {
-                                            input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                        }
-                                        else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
-                                        {
-                                            input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                        }
-
-                                        endturn = true;
+                                        // next character in battle order
+                                        next = Next(battle, scene, party, order, combatant, input, endturn);
                                     }
                                 }
                                 else
@@ -582,37 +559,15 @@ namespace BloodSword::Interface
                                     }
                                     else
                                     {
-                                        // move to next character in battle order
-                                        next = Engine::Next(order, combatant);
-
-                                        if (Engine::IsPlayer(order, combatant))
-                                        {
-                                            input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                        }
-                                        else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
-                                        {
-                                            input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                        }
-
-                                        endturn = true;
+                                        // next character in battle order
+                                        next = Next(battle, scene, party, order, combatant, input, endturn);
                                     }
                                 }
                             }
                             else
                             {
-                                // move to next character in battle order
-                                next = Engine::Next(order, combatant);
-
-                                if (Engine::IsPlayer(order, combatant))
-                                {
-                                    input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                }
-                                else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
-                                {
-                                    input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                }
-
-                                endturn = true;
+                                // next character in battle order
+                                next = Next(battle, scene, party, order, combatant, input, endturn);
                             }
                         }
                         else
@@ -646,18 +601,8 @@ namespace BloodSword::Interface
 
                                 scene = Interface::BattleScene(battle, party);
 
-                                next = Engine::Next(order, combatant);
-
-                                if (Engine::IsPlayer(order, combatant))
-                                {
-                                    input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                }
-                                else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
-                                {
-                                    input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                }
-
-                                endturn = true;
+                                // next character in battle order
+                                next = Next(battle, scene, party, order, combatant, input, endturn);
                             }
                         }
                     }
