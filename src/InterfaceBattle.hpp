@@ -334,37 +334,25 @@ namespace BloodSword::Interface
                                         // enemy combatant is not paralyzed
 
                                         // check if there are adjacent combatants to fight
-                                        auto fights = Engine::FightTargets(battle.Map, party, src, true, false);
+                                        auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
 
-                                        if (fights.size() > 0)
+                                        if (opponents.size() > 0)
                                         {
                                             auto alive = true;
 
-                                            alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, party[fights[0].ID]);
+                                            alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, party[opponents[0].ID]);
 
                                             if (!alive)
                                             {
-                                                auto kill = battle.Map.Find(Map::Object::PLAYER, fights[0].ID);
-
-                                                if (!kill.IsNone())
-                                                {
-                                                    battle.Map[kill].Occupant = Map::Object::NONE;
-                                                    battle.Map[kill].Id = -1;
-                                                }
+                                                battle.Map.Remove(Map::Object::PLAYER, opponents[0].ID);
                                             }
                                             else
                                             {
-                                                alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, party[fights[0].ID], character);
+                                                alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, party[opponents[0].ID], character);
 
                                                 if (!alive)
                                                 {
-                                                    auto kill = battle.Map.Find(Map::Object::PLAYER, order[combatant].ID);
-
-                                                    if (!kill.IsNone())
-                                                    {
-                                                        battle.Map[kill].Occupant = Map::Object::NONE;
-                                                        battle.Map[kill].Id = -1;
-                                                    }
+                                                    battle.Map.Remove(Map::Object::ENEMY, order[combatant].ID);
                                                 }
                                             }
 
@@ -422,13 +410,7 @@ namespace BloodSword::Interface
 
                                                 if (!alive)
                                                 {
-                                                    auto kill = battle.Map.Find(Map::Object::PLAYER, targets[0].ID);
-
-                                                    if (!kill.IsNone())
-                                                    {
-                                                        battle.Map[kill].Occupant = Map::Object::NONE;
-                                                        battle.Map[kill].Id = -1;
-                                                    }
+                                                    battle.Map.Remove(Map::Object::PLAYER, targets[0].ID);
                                                 }
 
                                                 // next character in battle order

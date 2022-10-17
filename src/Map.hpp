@@ -422,6 +422,18 @@ namespace BloodSword::Map
 
             return adjacent;
         }
+
+        // remove occupant from map
+        void Remove(Map::Object occupant, int id)
+        {
+            auto remove = this->Find(occupant, id);
+
+            if (!remove.IsNone())
+            {
+                (*this)[remove].Occupant = Map::Object::NONE;
+                (*this)[remove].Id = -1;
+            }
+        }
     };
 }
 
