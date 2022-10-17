@@ -352,7 +352,7 @@ namespace BloodSword::Engine
     }
 
     // build queue based on path to target (alternative to the distance-based (between src and dst) approach
-    Engine::Queue Targets(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
+    Engine::Queue MoveTargets(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
     {
         Engine::Queue queue = {};
 
@@ -383,9 +383,95 @@ namespace BloodSword::Engine
 
                     distance = Move::Count(map, path, map[src].IsEnemy());
 
-                    if (distance > 0 && map.IsValid(location))
+                    if (distance > 0 && map.IsValid(location) && location != src)
                     {
                         queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+                    }
+                }
+            }
+        }
+
+        Engine::Sort(queue, descending);
+
+        return queue;
+    }
+
+    // build shot targets
+    Engine::Queue ShotTargets(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
+    {
+        Engine::Queue queue = {};
+
+        if (map.IsValid(src))
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                auto alive = Engine::IsAlive(party[i]);
+                auto away = party[i].Is(Character::Status::AWAY);
+                auto battle = (inbattle && party[i].Is(Character::Status::IN_BATTLE)) || !inbattle;
+
+                if (alive && !away && battle)
+                {
+                    auto distance = -1;
+
+                    Point location;
+
+                    if (party[i].ControlType == Character::ControlType::PLAYER)
+                    {
+                        location = map.Find(Map::Object::PLAYER, i);
+                    }
+                    else if (party[i].ControlType == Character::ControlType::NPC)
+                    {
+                        location = map.Find(Map::Object::ENEMY, i);
+                    }
+
+                    distance = map.Distance(src, location);
+
+                    if (distance > 1 && map.IsValid(location) && location != src)
+                    {
+                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle)));
+                    }
+                }
+            }
+        }
+
+        Engine::Sort(queue, descending);
+
+        return queue;
+    }
+
+    // build queue endurance score for adjacent opponents
+    Engine::Queue FightTargets(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
+    {
+        Engine::Queue queue = {};
+
+        if (map.IsValid(src))
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                auto alive = Engine::IsAlive(party[i]);
+                auto away = party[i].Is(Character::Status::AWAY);
+                auto battle = (inbattle && party[i].Is(Character::Status::IN_BATTLE)) || !inbattle;
+
+                if (alive && !away && battle)
+                {
+                    auto distance = -1;
+
+                    Point location;
+
+                    if (party[i].ControlType == Character::ControlType::PLAYER)
+                    {
+                        location = map.Find(Map::Object::PLAYER, i);
+                    }
+                    else if (party[i].ControlType == Character::ControlType::NPC)
+                    {
+                        location = map.Find(Map::Object::ENEMY, i);
+                    }
+
+                    distance = map.Distance(src, location);
+
+                    if (distance == 1 && map.IsValid(location) && location != src)
+                    {
+                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle)));
                     }
                 }
             }

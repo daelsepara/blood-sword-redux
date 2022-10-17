@@ -1412,16 +1412,13 @@ namespace BloodSword::Interface
     {
         auto draw = Point(map.DrawX, map.DrawY);
 
-        if (Engine::IsPlayer(order, character))
+        auto focus = map.Find(Engine::IsPlayer(order, character) ? Map::Object::PLAYER : Map::Object::ENEMY, order[character].ID);
+
+        if (map.IsVisible(focus))
         {
-            auto focus = map.Find(Map::Object::PLAYER, order[character].ID);
+            auto screen = (draw + focus * map.TileSize) + 4;
 
-            if (map.IsVisible(focus))
-            {
-                auto screen = (draw + focus * map.TileSize) + 4;
-
-                overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::Active, 2));
-            }
+            overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::Active, 2));
         }
     }
 }

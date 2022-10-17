@@ -244,13 +244,15 @@ namespace BloodSword::Interface
 
             auto animating = false;
 
-            auto movement = Animation::Base();
-
             auto scene = Interface::BattleScene(battle, party);
 
-            auto move = false;
+            auto movement = Animation::Base();
+
+            auto previous = Controls::User();
 
             auto input = Controls::User();
+
+            auto move = false;
 
             auto pad = 10;
 
@@ -283,173 +285,379 @@ namespace BloodSword::Interface
 
                 while (!next)
                 {
-                    auto overlay = Scene::Base();
-
                     auto isenemy = Engine::IsEnemy(order, combatant);
 
                     auto isplayer = Engine::IsPlayer(order, combatant);
 
                     auto &character = isplayer ? party[order[combatant].ID] : battle.Opponents[order[combatant].ID];
 
+                    auto blinking = false;
+
                     // start of character turn
                     Engine::CoolDown(character);
 
-                    // main loop
-                    if (!animating)
+                    auto endturn = false;
+
+                    while (!endturn)
                     {
-                        auto src = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].ID);
+                        auto overlay = Scene::Base();
 
-                        if (!src.IsNone())
+                        // main loop
+                        if (!animating)
                         {
-                            // if enemy, move to/fight/shoot at nearest target
-                            if (isenemy && !character.Is(Character::Status::ENTHRALLED))
-                            {
-                                if (!character.Is(Character::Status::PARALYZED))
-                                {
-                                    // enemy combatant is not paralyzed
-                                }
-                                else if (character.Is(Character::Status::PARALYZED))
-                                {
-                                    next = Engine::Next(order, combatant);
+                            auto src = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].ID);
 
-                                    if (isplayer)
-                                    {
-                                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                                    }
-                                    else if (isenemy && character.Is(Character::Status::ENTHRALLED))
-                                    {
-                                        input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                                    }
-                                }
-                            }
-                            else
+                            if (!src.IsNone())
                             {
-                                if (!character.Is(Character::Status::PARALYZED))
+                                // if enemy, move to/fight/shoot at nearest target
+                                if (isenemy && !character.Is(Character::Status::ENTHRALLED))
                                 {
-                                    if (!spells && !actions && Input::IsValid(scene, input))
+                                    if (!character.Is(Character::Status::PARALYZED))
                                     {
-                                        auto &control = scene.Controls[input.Current];
+                                        // enemy combatant is not paralyzed
 
-                                        if (control.OnMap)
+                                        // check if there are adjacent combatants to fight
+                                        auto fights = Engine::FightTargets(battle.Map, party, src, true, false);
+
+                                        if (fights.size() > 0)
                                         {
-                                            // draw path to destination
-                                            if (move)
+                                            auto alive = true;
+
+                                            alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, party[fights[0].ID]);
+
+                                            if (!alive)
                                             {
-                                                auto src = isplayer ? battle.Map.Find(Map::Object::PLAYER, order[combatant].ID) : battle.Map.Find(Map::Object::ENEMY, order[combatant].ID);
+                                                auto kill = battle.Map.Find(Map::Object::PLAYER, fights[0].ID);
 
-                                                auto dst = control.Map;
-
-                                                overlay = Interface::Path(battle.Map, character, src, dst);
-                                            }
-
-                                            if (battle.Map[control.Map].Occupant == Map::Object::PLAYER)
-                                            {
-                                                if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < party.Count())
+                                                if (!kill.IsNone())
                                                 {
-                                                    // stats
-                                                    overlay.Add(Scene::Element(partyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
+                                                    battle.Map[kill].Occupant = Map::Object::NONE;
+                                                    battle.Map[kill].Id = -1;
                                                 }
                                             }
-                                            else if (battle.Map[control.Map].Occupant == Map::Object::ENEMY)
+                                            else
                                             {
-                                                if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < battle.Opponents.Count())
+                                                alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, party[fights[0].ID], character);
+
+                                                if (!alive)
                                                 {
-                                                    // enemy stats
-                                                    overlay.Add(Scene::Element(enemyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
+                                                    auto kill = battle.Map.Find(Map::Object::PLAYER, order[combatant].ID);
+
+                                                    if (!kill.IsNone())
+                                                    {
+                                                        battle.Map[kill].Occupant = Map::Object::NONE;
+                                                        battle.Map[kill].Id = -1;
+                                                    }
+                                                }
+                                            }
+
+                                            next = Engine::Next(order, combatant);
+
+                                            if (Engine::IsPlayer(order, combatant))
+                                            {
+                                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                            }
+                                            else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+                                            {
+                                                input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                            }
+
+                                            endturn = true;
+                                        }
+                                        else if (character.Moves > 0 && Move::Available(battle.Map, src))
+                                        {
+                                            auto targets = Engine::MoveTargets(battle.Map, party, src, true, false);
+
+                                            if (targets.size() > 0)
+                                            {
+                                                auto validtarget = false;
+
+                                                for (auto &target : targets)
+                                                {
+                                                    auto end = battle.Map.Find(Map::Object::PLAYER, target.ID);
+
+                                                    if (!end.IsNone())
+                                                    {
+                                                        validtarget = Interface::Move(battle.Map, character, movement, src, end);
+
+                                                        if (validtarget)
+                                                        {
+                                                            scene = Interface::BattleScene(battle, party);
+
+                                                            animating = true;
+
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+
+                                                if (!validtarget)
+                                                {
+                                                    next = Engine::Next(order, combatant);
+
+                                                    if (Engine::IsPlayer(order, combatant))
+                                                    {
+                                                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                                    }
+                                                    else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+                                                    {
+                                                        input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                                    }
+
+                                                    endturn = true;
                                                 }
                                             }
                                         }
-                                        else
+                                        else if (character.Has(Skills::Type::ARCHERY) || character.Has(Skills::Type::SHOOT_SHURIKEN))
                                         {
-                                            // captions for other controls
-                                            auto exitid = Controls::Find(scene.Controls, Controls::Type::EXIT);
+                                            auto targets = Engine::ShotTargets(battle.Map, party, src, true, false);
 
-                                            auto caption = control.ID - exitid;
-
-                                            if (caption >= 0 && caption < captions.size())
+                                            if (targets.size() > 0)
                                             {
-                                                auto control = exitid + caption;
+                                                Asset::Type asset = Asset::Type::ARCHERY;
 
-                                                overlay.Add(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + 8));
+                                                if (character.Has(Skills::Type::SHOOT_SHURIKEN))
+                                                {
+                                                    asset = Asset::Type::SHOOT_SHURIKEN;
+                                                }
+
+                                                auto alive = Interface::Shoot(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, party[targets[0].ID], asset);
+
+                                                if (!alive)
+                                                {
+                                                    auto kill = battle.Map.Find(Map::Object::PLAYER, targets[0].ID);
+
+                                                    if (!kill.IsNone())
+                                                    {
+                                                        battle.Map[kill].Occupant = Map::Object::NONE;
+                                                        battle.Map[kill].Id = -1;
+                                                    }
+                                                }
+
+                                                next = Engine::Next(order, combatant);
+
+                                                if (Engine::IsPlayer(order, combatant))
+                                                {
+                                                    input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                                }
+                                                else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+                                                {
+                                                    input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                                }
+
+                                                endturn = true;
                                             }
                                         }
                                     }
-                                    else if (spells)
+                                    else
                                     {
-                                        // spells popup
-                                        overlay = Interface::Spells(draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, Color::Background, Color::Active, 4, true);
-                                    }
-                                    else if (actions)
-                                    {
-                                        // actions popup
-                                        overlay = Interface::BattleActions(draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, battle, isplayer ? party : battle.Opponents, order[combatant].ID, Color::Background, Color::Active, 4);
+                                        next = Engine::Next(order, combatant);
+
+                                        if (Engine::IsPlayer(order, combatant))
+                                        {
+                                            input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                        }
+                                        else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+                                        {
+                                            input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                        }
+
+                                        endturn = true;
                                     }
                                 }
                                 else
                                 {
-                                    // move to next character in battle order
-                                    next = Engine::Next(order, combatant);
+                                    if (!character.Is(Character::Status::PARALYZED))
+                                    {
+                                        if (!spells && !actions && Input::IsValid(scene, input))
+                                        {
+                                            auto &control = scene.Controls[input.Current];
 
-                                    if (isplayer)
-                                    {
-                                        input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                            if (control.OnMap)
+                                            {
+                                                // draw path to destination
+                                                if (move)
+                                                {
+                                                    auto src = isplayer ? battle.Map.Find(Map::Object::PLAYER, order[combatant].ID) : battle.Map.Find(Map::Object::ENEMY, order[combatant].ID);
+
+                                                    auto dst = control.Map;
+
+                                                    overlay = Interface::Path(battle.Map, character, src, dst);
+                                                }
+
+                                                // show character stats
+                                                if (battle.Map[control.Map].Occupant == Map::Object::PLAYER)
+                                                {
+                                                    if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < party.Count())
+                                                    {
+                                                        // stats
+                                                        overlay.Add(Scene::Element(partyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
+                                                    }
+                                                }
+                                                else if (battle.Map[control.Map].Occupant == Map::Object::ENEMY)
+                                                {
+                                                    if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < battle.Opponents.Count())
+                                                    {
+                                                        // enemy stats
+                                                        overlay.Add(Scene::Element(enemyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                // captions for other controls
+                                                auto exitid = Controls::Find(scene.Controls, Controls::Type::EXIT);
+
+                                                auto caption = control.ID - exitid;
+
+                                                if (caption >= 0 && caption < captions.size())
+                                                {
+                                                    auto control = exitid + caption;
+
+                                                    overlay.Add(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + 8));
+                                                }
+                                            }
+                                        }
+                                        else if (spells)
+                                        {
+                                            // spells popup
+                                            overlay = Interface::Spells(draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, Color::Background, Color::Active, 4, true);
+                                        }
+                                        else if (actions)
+                                        {
+                                            // actions popup
+                                            overlay = Interface::BattleActions(draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, battle, isplayer ? party : battle.Opponents, order[combatant].ID, Color::Background, Color::Active, 4);
+                                        }
+
+                                        if (!move && !actions && !spells)
+                                        {
+                                            if (blinking)
+                                            {
+                                                // focus cursor
+                                                Interface::Focus(battle.Map, order, combatant, overlay);
+                                            }
+
+                                            blinking = !blinking;
+
+                                            input.Blink = false;
+                                        }
+                                        else
+                                        {
+                                            input.Blink = !input.Blink;
+                                        }
+
+                                        input = Input::WaitForInput(graphics, scene, overlay, input, actions || spells, true);
+
+                                        if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                                        {
+                                            if (!actions && !spells)
+                                            {
+                                                if (Input::IsValid(scene, input) && battle.Map[scene.Controls[input.Current].Map].Id == order[combatant].ID)
+                                                {
+                                                    previous = input;
+
+                                                    actions = true;
+
+                                                    input.Current = -1;
+                                                }
+                                            }
+                                            else if (actions)
+                                            {
+                                                if (input.Type == Controls::Type::MOVE)
+                                                {
+                                                    // toggles between move/hover mode
+                                                    move = !move;
+                                                }
+                                                else if (input.Type == Controls::Type::FIGHT)
+                                                {
+                                                }
+                                                else if (input.Type == Controls::Type::QUARTERSTAFF)
+                                                {
+                                                }
+                                                else if (input.Type == Controls::Type::SPELLS)
+                                                {
+                                                }
+                                            }
+                                        }
                                     }
-                                    else if (isenemy && character.Is(Character::Status::ENTHRALLED))
+                                    else
                                     {
-                                        input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                        // move to next character in battle order
+                                        next = Engine::Next(order, combatant);
+
+                                        if (Engine::IsPlayer(order, combatant))
+                                        {
+                                            input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                        }
+                                        else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+                                        {
+                                            input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                        }
+
+                                        endturn = true;
                                     }
                                 }
+                            }
+                            else
+                            {
+                                // move to next character in battle order
+                                next = Engine::Next(order, combatant);
+
+                                if (Engine::IsPlayer(order, combatant))
+                                {
+                                    input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                }
+                                else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+                                {
+                                    input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                }
+
+                                endturn = true;
                             }
                         }
                         else
                         {
-                            // move to next character in battle order
-                            next = Engine::Next(order, combatant);
+                            animating = !Graphics::Animate(graphics, scene, movement);
 
-                            if (isplayer)
+                            Graphics::Refresh(graphics);
+
+                            if (!animating)
                             {
-                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                            }
-                            else if (isenemy && character.Is(Character::Status::ENTHRALLED))
-                            {
-                                input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        animating = !Graphics::Animate(graphics, scene, movement);
+                                // cancel fleeing status
+                                if (character.Is(Character::Status::FLEEING))
+                                {
+                                    character.Remove(Character::Status::FLEEING);
+                                }
 
-                        Graphics::Refresh(graphics);
+                                if (isplayer)
+                                {
+                                    battle.Map.Put(movement.Current, Map::Object::PLAYER, order[combatant].ID);
+                                }
+                                else
+                                {
+                                    battle.Map.Put(movement.Current, Map::Object::ENEMY, order[combatant].ID);
+                                }
 
-                        if (!animating)
-                        {
-                            if (Engine::IsPlayer(order, combatant))
-                            {
-                                battle.Map.Put(movement.Current, Map::Object::PLAYER, order[combatant].ID);
-                            }
-                            else
-                            {
-                                battle.Map.Put(movement.Current, Map::Object::ENEMY, order[combatant].ID);
-                            }
+                                Input::Flush();
 
-                            Input::Flush();
+                                input.Current = -1;
 
-                            input.Current = -1;
+                                input.Selected = false;
 
-                            input.Selected = false;
+                                scene = Interface::BattleScene(battle, party);
 
-                            scene = Interface::BattleScene(battle, party);
+                                next = Engine::Next(order, combatant);
 
-                            next = Engine::Next(order, combatant);
+                                if (Engine::IsPlayer(order, combatant))
+                                {
+                                    input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
+                                }
+                                else if (Engine::IsEnemy(order, combatant) && battle.Opponents[order[combatant].ID].Is(Character::Status::ENTHRALLED))
+                                {
+                                    input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                }
 
-                            if (isplayer)
-                            {
-                                input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[character.Class]);
-                            }
-                            else if (isenemy && character.Is(Character::Status::ENTHRALLED))
-                            {
-                                input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, order[combatant].ID);
+                                endturn = true;
                             }
                         }
                     }

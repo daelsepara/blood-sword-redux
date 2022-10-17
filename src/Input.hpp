@@ -411,6 +411,11 @@ namespace BloodSword::Input
         return (input.Type == Controls::Type::WARRIOR || input.Type == Controls::Type::TRICKSTER || input.Type == Controls::Type::SAGE || input.Type == Controls::Type::ENCHANTER);
     }
 
+    bool IsEnemy(Controls::User &input)
+    {
+        return input.Type == Controls::Type::ENEMY;
+    }
+
     // flush all events
     void Flush()
     {
