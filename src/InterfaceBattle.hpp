@@ -130,9 +130,11 @@ namespace BloodSword::Interface
 
         auto id = scene.Controls.size();
 
-        scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), battle.Map.DrawX, battle.Map.DrawY + battle.Map.ViewY * battle.Map.TileSize));
+        auto maph = battle.Map.ViewY * battle.Map.TileSize;
 
-        scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, battle.Map.DrawX, battle.Map.DrawY + battle.Map.ViewY * battle.Map.TileSize, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
+        scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), battle.Map.DrawX, battle.Map.DrawY + maph));
+
+        scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, battle.Map.DrawX, battle.Map.DrawY + maph, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
 
         return scene;
     }
@@ -279,6 +281,10 @@ namespace BloodSword::Interface
 
             auto infoy = battle.Map.DrawY + pad;
 
+            auto mapw = battle.Map.ViewX * battle.Map.TileSize;
+
+            auto maph = battle.Map.ViewY * battle.Map.TileSize;
+
             while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && Engine::IsFleeing(party))
             {
                 if (round == 0 && battle.Is(Battle::Condition::AMBUSH_PLAYER))
@@ -340,7 +346,7 @@ namespace BloodSword::Interface
                                         {
                                             auto alive = true;
 
-                                            alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, party[opponents[0].ID]);
+                                            alive &= Interface::Fight(graphics, scene, draw, mapw, maph, character, party[opponents[0].ID]);
 
                                             if (!alive)
                                             {
@@ -348,7 +354,7 @@ namespace BloodSword::Interface
                                             }
                                             else
                                             {
-                                                alive &= Interface::Fight(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, party[opponents[0].ID], character);
+                                                alive &= Interface::Fight(graphics, scene, draw, mapw, maph, party[opponents[0].ID], character);
 
                                                 if (!alive)
                                                 {
@@ -406,7 +412,7 @@ namespace BloodSword::Interface
                                                     asset = Asset::Type::SHOOT_SHURIKEN;
                                                 }
 
-                                                auto alive = Interface::Shoot(graphics, scene, draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, party[targets[0].ID], asset);
+                                                auto alive = Interface::Shoot(graphics, scene, draw, mapw, maph, character, party[targets[0].ID], asset);
 
                                                 if (!alive)
                                                 {
@@ -480,12 +486,12 @@ namespace BloodSword::Interface
                                         else if (spells)
                                         {
                                             // spells popup
-                                            overlay = Interface::Spells(draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, character, Color::Background, Color::Active, 4, true);
+                                            overlay = Interface::Spells(draw, mapw, maph, character, Color::Background, Color::Active, 4, true);
                                         }
                                         else if (actions)
                                         {
                                             // actions popup
-                                            overlay = Interface::BattleActions(draw, battle.Map.ViewX * battle.Map.TileSize, battle.Map.ViewY * battle.Map.TileSize, battle, isplayer ? party : battle.Opponents, order[combatant].ID, Color::Background, Color::Active, 4);
+                                            overlay = Interface::BattleActions(draw, mapw, maph, battle, isplayer ? party : battle.Opponents, order[combatant].ID, Color::Background, Color::Active, 4);
                                         }
 
                                         if (!move && !actions && !spells)
