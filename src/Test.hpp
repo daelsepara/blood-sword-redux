@@ -1520,7 +1520,7 @@ namespace BloodSword::Test
         Free(captions);
     }
 
-    // damage resolution
+    // fight and damage resolution
     void Fight(Graphics::Base &graphics)
     {
         auto player = Generate::Character(Character::Class::WARRIOR, 2);
@@ -1635,6 +1635,14 @@ namespace BloodSword::Test
         Free(events);
     }
 
+    // shoot demo
+    void Shoot(Graphics::Base &graphics)
+    {
+        auto player = Generate::Character(Character::Class::TRICKSTER, 2);
+
+        auto enemy = Generate::NPC("ASSASSIN", {Skills::Type::SHOOT_SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+    }
+
     void Menu(Graphics::Base &graphics)
     {
         auto width = 640;
@@ -1658,7 +1666,8 @@ namespace BloodSword::Test
                  Graphics::RichText("05 PALETTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+                 Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
             return menu;
         };
 
@@ -1754,6 +1763,9 @@ namespace BloodSword::Test
                         break;
                     case 8:
                         Test::Fight(graphics);
+                        break;
+                    case 9:
+                        Test::Shoot(graphics);
                         break;
                     default:
                         // do nothing - menu test

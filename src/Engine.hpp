@@ -114,11 +114,7 @@ namespace BloodSword::Engine
     // check if character is still alive (and not enthralled)
     bool IsAlive(Character::Base &character)
     {
-        auto alive = Engine::Score(character, Attribute::Type::ENDURANCE) > 0;
-
-        auto enthralled = character.ControlType == Character::ControlType::NPC && character.Is(Character::Status::ENTHRALLED);
-
-        return alive && !enthralled;
+        return Engine::Score(character, Attribute::Type::ENDURANCE) > 0;
     }
 
     // check if there is at least one character in the party still alive
@@ -128,7 +124,9 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            alive |= Engine::IsAlive(party[character]);
+            auto enthralled = party[character].ControlType == Character::ControlType::NPC && party[character].Is(Character::Status::ENTHRALLED);
+
+            alive |= Engine::IsAlive(party[character]) && !enthralled;
         }
 
         return alive;
