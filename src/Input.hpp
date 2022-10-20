@@ -178,21 +178,21 @@ namespace BloodSword::Input
             }
             else if (input.Current < 0)
             {
-                input.Current = controls[0].ID;
+                input.Current = controls[0].Id;
             }
             else if (result.key.keysym.sym == SDLK_TAB || result.key.keysym.sym == SDLK_KP_TAB || result.key.keysym.sym == SDL_SCANCODE_KP_TAB)
             {
                 if (input.Current < 0)
                 {
-                    input.Current = controls[0].ID;
+                    input.Current = controls[0].Id;
                 }
                 else if (input.Current == controls.size() - 1)
                 {
-                    input.Current = controls[0].ID;
+                    input.Current = controls[0].Id;
                 }
                 else if (input.Current >= 0 && input.Current < controls.size() - 1)
                 {
-                    input.Current = controls[input.Current + 1].ID;
+                    input.Current = controls[input.Current + 1].Id;
                 }
             }
             else if (input.Current >= 0 && input.Current < controls.size())
@@ -225,7 +225,7 @@ namespace BloodSword::Input
             {
                 if (input.Current < 0)
                 {
-                    input.Current = controls[0].ID;
+                    input.Current = controls[0].Id;
                 }
                 else if (result.caxis.value < -sensitivity)
                 {
@@ -246,7 +246,7 @@ namespace BloodSword::Input
             {
                 if (input.Current < 0)
                 {
-                    input.Current = controls[0].ID;
+                    input.Current = controls[0].Id;
                 }
                 else if (result.caxis.value < -sensitivity)
                 {
@@ -281,7 +281,7 @@ namespace BloodSword::Input
 
             if (input.Current < 0)
             {
-                input.Current = controls[0].ID;
+                input.Current = controls[0].Id;
             }
             else if (input.Current >= 0 && input.Current < controls.size())
             {
@@ -317,7 +317,7 @@ namespace BloodSword::Input
             {
                 if (result.motion.x >= control.X && result.motion.x <= control.X + control.W - 1 && result.motion.y >= control.Y && result.motion.y <= control.Y + control.H - 1)
                 {
-                    input.Current = control.ID;
+                    input.Current = control.Id;
                 }
             }
         }

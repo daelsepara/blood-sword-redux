@@ -20,7 +20,7 @@ namespace BloodSword::Controls
         Controls::Type Type = Controls::Type::ANY;
 
         // ID
-        int ID = -1;
+        int Id = -1;
 
         // ID of control to the left of this control, equal to ID if none
         int Left = -1;
@@ -62,7 +62,7 @@ namespace BloodSword::Controls
              int id, int left, int right, int up, int down,
              int x, int y, int w, int h,
              int highlight) : Type(type),
-                              ID(id), Left(left), Right(right), Up(up), Down(down),
+                              Id(id), Left(left), Right(right), Up(up), Down(down),
                               X(x), Y(y), W(w), H(h),
                               Highlight(highlight) {}
 
@@ -146,7 +146,7 @@ namespace BloodSword::Controls
         {
             if (control.Type == type)
             {
-                result = control.ID;
+                result = control.Id;
 
                 break;
             }

@@ -599,6 +599,91 @@ namespace BloodSword::Interface
         return textures;
     }
 
+    // generate texture of character status
+    SDL_Texture *Status(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 color, int style, int wrap, bool inbattle = false)
+    {
+        SDL_Texture *texture = NULL;
+
+        std::string list;
+
+        for (auto &status : character.Status)
+        {
+            if (status.second != 0)
+            {
+                if (list.length() > 0)
+                {
+                    list += '\n';
+                }
+
+                list += Character::StatusMapping[status.first];
+
+                if (status.second > 0)
+                {
+                    list += ": " + std::to_string(status.second) + " TURN" + (status.second > 1 ? "S" : "");
+                }
+            }
+        }
+
+        for (auto &skill : character.Skills)
+        {
+            auto show = (inbattle && Skills::IsBattleSkill(skill)) || (!inbattle && Skills::IsStorySkill(skill));
+
+            if (show)
+            {
+                if (list.length() > 0)
+                {
+                    list += '\n';
+                }
+
+                list += Skills::TypeMapping[skill];
+            }
+        }
+
+        if (inbattle && character.Has(Skills::Type::ARCHERY))
+        {
+            if (list.length() > 0)
+            {
+                list += '\n';
+            }
+
+            list += "ARROWS: " + std::to_string(character.Quantity(Item::Type::ARROW));
+        }
+
+        if (list.length() > 0)
+        {
+            list += '\n';
+        }
+
+        list += "GOLD: " + std::to_string(character.Quantity(Item::Type::GOLD));
+
+        if (list.length() > 0)
+        {
+            texture = Graphics::CreateText(graphics, list.c_str(), font, Color::S(color), style, wrap);
+        }
+
+        return texture;
+    }
+
+    // create party status text box collection
+    std::vector<SDL_Texture *> Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelcolor, int style, int wrap, bool inbattle = false)
+    {
+        std::vector<SDL_Texture *> textures = {};
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto &character = party[i];
+
+            auto texture = Interface::Status(graphics, character, font, labelcolor, style, wrap, inbattle);
+
+            if (texture)
+            {
+                textures.push_back(texture);
+            }
+        }
+
+        return textures;
+    }
+
     // clip rendering outside of map area
     void Clip(Graphics::Base &graphics, Map::Base &map)
     {
@@ -1412,7 +1497,7 @@ namespace BloodSword::Interface
     {
         auto draw = Point(map.DrawX, map.DrawY);
 
-        auto focus = map.Find(Engine::IsPlayer(order, character) ? Map::Object::PLAYER : Map::Object::ENEMY, order[character].ID);
+        auto focus = map.Find(Engine::IsPlayer(order, character) ? Map::Object::PLAYER : Map::Object::ENEMY, order[character].Id);
 
         if (map.IsVisible(focus))
         {

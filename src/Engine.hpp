@@ -23,12 +23,12 @@ namespace BloodSword::Engine
         Character::ControlType Type = Character::ControlType::NONE;
 
         // character ID within the party
-        int ID = -1;
+        int Id = -1;
 
         // score (used in ranking)
         int Score = 0;
 
-        ScoreElement(Character::ControlType type, int id, int score) : Type(type), ID(id), Score(score) {}
+        ScoreElement(Character::ControlType type, int id, int score) : Type(type), Id(id), Score(score) {}
     };
 
     // Queue type
@@ -221,7 +221,7 @@ namespace BloodSword::Engine
         {
             auto &character = *characters;
 
-            if (character.Type == control && character.ID == id)
+            if (character.Type == control && character.Id == id)
             {
                 found = characters;
 

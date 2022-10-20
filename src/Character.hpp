@@ -102,7 +102,7 @@ namespace BloodSword::Character
 
         bool Has(Skills::Type skill)
         {
-            return BloodSword::Found(this->Skills, skill);
+            return this->Skills.size() > 0 && BloodSword::Found(this->Skills, skill);
         }
 
         void Add(Skills::Type skill)
@@ -477,15 +477,18 @@ namespace BloodSword::Character
         }
 
         // recall the spell that was called to mind
-        Memorized::iterator Recall(Spells::Type)
+        Memorized::iterator Recall(Spells::Type spell)
         {
             auto found = this->CalledToMind.end();
 
             for (auto search = this->CalledToMind.begin(); search != this->CalledToMind.end(); search++)
             {
-                found = search;
+                if (*search == spell)
+                {
+                    found = search;
 
-                break;
+                    break;
+                }
             }
 
             return found;
@@ -518,19 +521,7 @@ namespace BloodSword::Character
         // check if spell was called to mind
         bool HasCalledToMind(Spells::Type spell)
         {
-            auto memorized = false;
-
-            for (auto called = this->CalledToMind.begin(); called != this->CalledToMind.end(); called++)
-            {
-                if (*called == spell)
-                {
-                    memorized = true;
-
-                    break;
-                }
-            }
-
-            return memorized;
+            return this->CalledToMind.size() > 0 && BloodSword::Find(this->CalledToMind, spell) != this->CalledToMind.end();
         }
 
         // call a spell to mind
@@ -554,6 +545,32 @@ namespace BloodSword::Character
                     this->CalledToMind.erase(recall);
                 }
             }
+        }
+
+        void Remove(Item::Type ammo, int quantity)
+        {
+            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
+            {
+                if ((*item).Has(ammo, quantity))
+                {
+                    (*item).Quantity -= quantity;
+
+                    break;
+                }
+            }
+        }
+
+        // count ammo in all containers in character's possessions
+        int Quantity(Item::Type ammo)
+        {
+            auto quantity = 0;
+
+            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
+            {
+                quantity += (*item).Has(ammo, 1) ? (*item).Quantity : 0;
+            }
+
+            return quantity;
         }
     };
 }

@@ -45,7 +45,7 @@ namespace BloodSword
 
     // search for a key in a vector of type/objects
     template <typename T, typename R = typename std::vector<T>::const_iterator>
-    R Find(std::vector<T> vector, T key)
+    R Find(std::vector<T> &vector, T &key)
     {
         return std::find(vector.begin(), vector.end(), key);
     }
@@ -60,7 +60,7 @@ namespace BloodSword
 
     // check if the vector contains the key/object
     template <typename T>
-    bool Found(std::vector<T> vector, T key)
+    bool Found(std::vector<T> &vector, T &key)
     {
         return BloodSword::Find(vector, key) != vector.end();
     }

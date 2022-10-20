@@ -111,19 +111,7 @@ namespace BloodSword::Spells
 
     bool In(std::vector<Spells::Type> &list, Spells::Type spell)
     {
-        auto found = false;
-
-        for (auto search = list.begin(); search != list.end(); search++)
-        {
-            if (*search == spell)
-            {
-                found = true;
-
-                break;
-            }
-        }
-
-        return found;
+        return list.size() > 0 && BloodSword::Find(list, spell) != list.end();
     }
 
     // spell base class

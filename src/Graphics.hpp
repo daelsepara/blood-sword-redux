@@ -359,7 +359,7 @@ namespace BloodSword::Graphics
 
             for (auto &control : scene.Controls)
             {
-                if (control.ID == input.Current)
+                if (control.Id == input.Current)
                 {
                     if (!input.Blink || !control.OnMap)
                     {
@@ -388,7 +388,7 @@ namespace BloodSword::Graphics
 
             for (auto &control : dialog.Controls)
             {
-                if (control.ID == input.Current)
+                if (control.Id == input.Current)
                 {
                     if (!input.Blink || !control.OnMap)
                     {

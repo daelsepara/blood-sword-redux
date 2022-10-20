@@ -86,19 +86,7 @@ namespace BloodSword::Skills
 
     bool In(std::vector<Skills::Type> &list, Skills::Type skill)
     {
-        auto found = false;
-
-        for (auto search = list.begin(); search != list.end(); search++)
-        {
-            if (*search == skill)
-            {
-                found = true;
-
-                break;
-            }
-        }
-
-        return found;
+        return list.size() > 0 && BloodSword::Find(list, skill) != list.end();
     }
 
     bool IsBattleSkill(Skills::Type skill)
