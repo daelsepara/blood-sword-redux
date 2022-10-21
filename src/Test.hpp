@@ -1769,6 +1769,20 @@ namespace BloodSword::Test
             map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
         }
 
+        auto center = Point(xdim, ydim) / 2;
+
+        for (auto i = 0; i < 5; i++)
+        {
+            map.Put(Point(center.X + i - 2, center.Y - 3), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
+            map.Put(Point(center.X + i - 2, center.Y + 3), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
+        }
+
+        for (auto i = 0; i < 5; i++)
+        {
+            map.Put(Point(center.X - 3, center.Y + i - 2), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
+            map.Put(Point(center.X + 3, center.Y + i - 2), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
+        }
+
         // create party
         auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
                                   Generate::Character(Character::Class::TRICKSTER, 2),
@@ -1786,8 +1800,6 @@ namespace BloodSword::Test
             Point(1, map.Height - 2),
             Point(map.Width - 2, map.Height - 2),
         };
-
-        auto center = Point(xdim, ydim) / 2;
 
         std::vector<Point> spawn = {
             center,

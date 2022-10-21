@@ -454,17 +454,17 @@ namespace BloodSword::Map
 
         void CoolDown()
         {
-            for (auto rows = this->Tiles.begin(); rows != this->Tiles.end(); rows++)
+            for (auto y = 0; y < this->Height; y++)
             {
-                for (auto &tile : *rows)
+                for (auto x = 0; x < this->Width; x++)
                 {
-                    if (tile.Lifetime != -1)
+                    auto &tile = (*this)[Point(x, y)];
+
+                    if (tile.IsTemporarilyBlocked())
                     {
-                        if (tile.Lifetime > 0)
-                        {
-                            tile.Lifetime--;
-                        }
-                        else
+                        tile.Lifetime--;
+
+                        if (tile.Lifetime == 0)
                         {
                             tile.TemporaryAsset = Asset::Type::NONE;
 
