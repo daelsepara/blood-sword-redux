@@ -198,7 +198,23 @@ namespace BloodSword::Map
                 auto &tile = (*this)[location];
 
                 tile.Occupant = object;
+
                 tile.Id = id;
+            }
+        }
+
+        // temporary object
+        void Put(Point location, Map::Object object, Asset::Type asset, int duration)
+        {
+            if (this->IsValid(location))
+            {
+                auto &tile = (*this)[location];
+
+                tile.Occupant = object;
+
+                tile.TemporaryAsset = asset;
+
+                tile.Lifetime = duration;
             }
         }
 
@@ -210,6 +226,7 @@ namespace BloodSword::Map
                 auto &tile = (*this)[location];
 
                 tile.Type = type;
+
                 tile.Asset = asset;
             }
         }
@@ -308,7 +325,7 @@ namespace BloodSword::Map
 
                     auto &tile = (*this)[test];
 
-                    if (tile.Type == object)
+                    if (tile.Type == object || tile.Occupant == object)
                     {
                         point = test;
 
@@ -432,6 +449,33 @@ namespace BloodSword::Map
             {
                 (*this)[remove].Occupant = Map::Object::NONE;
                 (*this)[remove].Id = -1;
+            }
+        }
+
+        void CoolDown()
+        {
+            for (auto rows = this->Tiles.begin(); rows != this->Tiles.end(); rows++)
+            {
+                for (auto &tile : *rows)
+                {
+                    if (tile.Lifetime != -1)
+                    {
+                        if (tile.Lifetime > 0)
+                        {
+                            tile.Lifetime--;
+                        }
+                        else
+                        {
+                            tile.TemporaryAsset = Asset::Type::NONE;
+
+                            tile.Occupant = Map::Object::NONE;
+
+                            tile.Lifetime = -1;
+
+                            tile.Id = -1;
+                        }
+                    }
+                }
             }
         }
     };

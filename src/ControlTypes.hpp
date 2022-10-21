@@ -84,7 +84,7 @@ namespace BloodSword::Controls
         PREDICTION,
         DETECT_ENCHANTMENT,
         START,
-        SHOOT_SHURIKEN
+        SHURIKEN
     };
 
     std::vector<Controls::Type> Spells = {

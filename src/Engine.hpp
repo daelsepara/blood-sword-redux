@@ -120,32 +120,38 @@ namespace BloodSword::Engine
     // check if there is at least one character in the party still alive
     bool IsAlive(Party::Base &party)
     {
-        auto alive = false;
+        auto live = 0;
+
+        auto enthralled = 0;
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            auto enthralled = party[character].ControlType == Character::ControlType::NPC && party[character].Is(Character::Status::ENTHRALLED);
+            enthralled += party[character].ControlType == Character::ControlType::NPC && party[character].Is(Character::Status::ENTHRALLED) ? 1 : 0;
 
-            alive |= Engine::IsAlive(party[character]) && !enthralled;
+            live += Engine::IsAlive(party[character]) ? 1 : 0;
         }
 
-        return alive;
+        return live > 0 && live > enthralled;
     }
 
     // check if the entire party is fleeing
     bool IsFleeing(Party::Base &party)
     {
-        auto fleeing = true;
+        auto live = 0;
+
+        auto fleeing = 0;
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            if (Engine::IsAlive(party[character]) && party[character].ControlType == Character::ControlType::PLAYER)
+            if (party[character].ControlType == Character::ControlType::PLAYER)
             {
-                fleeing &= party[character].Is(Character::Status::FLEEING);
+                live += Engine::IsAlive(party[character]) ? 1 : 0;
+
+                fleeing += Engine::IsAlive(party[character]) && party[character].Is(Character::Status::FLEEING) ? 1 : 0;
             }
         }
 
-        return fleeing;
+        return live > 0 && fleeing > 0 && fleeing >= live;
     }
 
     // sort queue
@@ -426,7 +432,7 @@ namespace BloodSword::Engine
 
                     if (distance > 1 && map.IsValid(location) && location != src)
                     {
-                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, inbattle)));
+                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
                     }
                 }
             }
@@ -513,8 +519,10 @@ namespace BloodSword::Engine
     }
 
     // cooldown status effects
-    void CoolDown(Character::Base &character)
+    bool CoolDown(Character::Base &character)
     {
+        auto update = false;
+
         // cool down status effects
         if (character.Is(Character::Status::DEFENDING))
         {
@@ -522,6 +530,8 @@ namespace BloodSword::Engine
             character.Remove(Character::Status::DEFENDING);
 
             character.Add(Character::Status::DEFENDED, 1);
+
+            update = true;
         }
         else
         {
@@ -536,6 +546,8 @@ namespace BloodSword::Engine
                 }
                 else if (status.second > 0)
                 {
+                    update = true;
+
                     status.second--;
 
                     if (status.second > 0)
@@ -545,8 +557,15 @@ namespace BloodSword::Engine
                 }
             }
 
+            if (Active.size() != character.Status.size())
+            {
+                update = true;
+            }
+
             character.Status = Active;
         }
+
+        return update;
     }
 
     // check if character can flee

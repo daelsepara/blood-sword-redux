@@ -1640,7 +1640,7 @@ namespace BloodSword::Test
     {
         auto player = Generate::Character(Character::Class::TRICKSTER, 2);
 
-        auto enemy = Generate::NPC("ASSASSIN", {Skills::Type::SHOOT_SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+        auto enemy = Generate::NPC("ASSASSIN", {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
 
         auto alive = true;
 
@@ -1651,8 +1651,6 @@ namespace BloodSword::Test
         std::vector<Graphics::RichText> collection = {
             Graphics::RichText("PLAYER TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
             Graphics::RichText("ENEMY TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText("PLAYER RETALIATES", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText("ENEMY RETALIATES", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
             Graphics::RichText("QUIVER EMPTY!", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0)};
 
         auto events = Graphics::CreateText(graphics, collection);
@@ -1682,15 +1680,8 @@ namespace BloodSword::Test
                 }
                 else
                 {
-                    scene.Add(Scene::Element(events[4], Point(0, scene.Elements[0].H)));
-                }
-
-                // enemy retaliates
-                if (alive)
-                {
-                    scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
-
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHOOT_SHURIKEN);
+                    // quiver empty
+                    scene.Add(Scene::Element(events[2], Point(0, scene.Elements[0].H)));
                 }
 
                 // enemy turn
@@ -1698,24 +1689,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[1], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHOOT_SHURIKEN);
-                }
-
-                // player retaliates
-                if (alive)
-                {
-                    if (player.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
-                    {
-                        scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
-
-                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, Asset::Type::ARCHERY);
-
-                        player.Remove(Item::Type::ARROW, 1);
-                    }
-                    else
-                    {
-                        scene.Elements[1] = Scene::Element(events[4], Point(0, scene.Elements[0].H));
-                    }
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHURIKEN);
                 }
             }
             else
@@ -1723,24 +1697,7 @@ namespace BloodSword::Test
                 // enemy turn
                 scene.Add(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHOOT_SHURIKEN);
-
-                // player retaliates
-                if (alive)
-                {
-                    if (player.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
-                    {
-                        scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
-
-                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, Asset::Type::ARCHERY);
-
-                        player.Remove(Item::Type::ARROW, 1);
-                    }
-                    else
-                    {
-                        scene.Elements[1] = Scene::Element(events[4], Point(0, scene.Elements[0].H));
-                    }
-                }
+                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHURIKEN);
 
                 // player turn
                 if (alive)
@@ -1755,16 +1712,9 @@ namespace BloodSword::Test
                     }
                     else
                     {
-                        scene.Elements[1] = Scene::Element(events[4], Point(0, scene.Elements[0].H));
+                        // quiver empty
+                        scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
                     }
-                }
-
-                // enemy retaliates
-                if (alive)
-                {
-                    scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
-
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHOOT_SHURIKEN);
                 }
             }
 
@@ -1785,6 +1735,109 @@ namespace BloodSword::Test
         }
 
         Free(events);
+    }
+
+    // battle
+    void Battle(Graphics::Base &graphics)
+    {
+        auto xdim = 14;
+
+        auto ydim = 9;
+
+        auto map = Map::Base(xdim, ydim);
+
+        map.Viewable(xdim, ydim);
+
+        // generate map
+        for (auto y = 0; y < ydim; y++)
+        {
+            for (auto x = 0; x < xdim; x++)
+            {
+                map.Put(x, y, Map::Object::PASSABLE, Asset::Type::NONE);
+            }
+        }
+
+        for (auto i = 0; i < ydim; i++)
+        {
+            map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
+            map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
+        }
+
+        for (auto i = 0; i < xdim; i++)
+        {
+            map.Put(i, 0, Map::Object::OBSTACLE, Asset::Type::WALL);
+            map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
+        }
+
+        // create party
+        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
+                                  Generate::Character(Character::Class::TRICKSTER, 2),
+                                  Generate::Character(Character::Class::SAGE, 2),
+                                  Generate::Character(Character::Class::ENCHANTER, 2)});
+
+        auto enemies = Party::Base(
+            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 100, Asset::Type::BARBARIAN),
+             Generate::NPC("ASSASSIN", {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN),
+             Generate::NPC("CORPSE", {}, 5, 4, 2, 4, 0, 1, 1, 3, Asset::Type::CORPSE)});
+
+        std::vector<Point> origins = {
+            Point(1, 1),
+            Point(map.Width - 2, 1),
+            Point(1, map.Height - 2),
+            Point(map.Width - 2, map.Height - 2),
+        };
+
+        auto center = Point(xdim, ydim) / 2;
+
+        std::vector<Point> spawn = {
+            center,
+            center + 1,
+            center - 1};
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto location = map.Find(Map::Object::PLAYER, i);
+
+            if (!location.IsNone())
+            {
+                map.Put(location, Map::Object::NONE, -1);
+            }
+
+            map.Put(origins[i], Map::Object::PLAYER, i);
+        }
+
+        for (auto i = 0; i < enemies.Count(); i++)
+        {
+            auto enemy = map.Find(Map::Object::ENEMY, i);
+
+            if (!enemy.IsNone())
+            {
+                map.Put(enemy, Map::Object::NONE, -1);
+            }
+
+            map.Put(spawn[i], Map::Object::ENEMY, i);
+        }
+
+        auto battle = Battle::Base({Battle::Condition::NORMAL, Battle::Condition::CANNOT_FLEE}, map, enemies, -1);
+
+        auto result = Interface::Battle(graphics, battle, party);
+
+        auto scene = Scene::Base();
+
+        switch (result)
+        {
+        case Battle::Result::VICTORY:
+            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY IS VICTORIOUS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+            break;
+        case Battle::Result::DEFEAT:
+            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY HAS BEEN DEFEATED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Highlight, true);
+            break;
+        case Battle::Result::FLEE:
+            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY FLEES!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+            break;
+        default:
+            break;
+        }
     }
 
     void Menu(Graphics::Base &graphics)
@@ -1811,7 +1864,8 @@ namespace BloodSword::Test
                  Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+                 Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
             return menu;
         };
 
@@ -1910,6 +1964,9 @@ namespace BloodSword::Test
                         break;
                     case 9:
                         Test::Shoot(graphics);
+                        break;
+                    case 10:
+                        Test::Battle(graphics);
                         break;
                     default:
                         // do nothing - menu test

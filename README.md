@@ -6,13 +6,13 @@ An SDL implementation of the revised Blood Sword gamebook (2014)
 # Planned Features
 
 - Moddable/Configurable (**IN PROGRESS**)
-- New texture rendering and animation engine (**IN PROGRESS**)
+- New texture rendering and animation engine (**DONE**)
 - Keyboard friendly with mouse and gamepad support (**DONE**)
-- Fully digitized gameplay (**TO DO**)
-- Quality of life improvements to record keeping (**TO DO**)
+- Fully digitized gameplay (**IN PROGRESS**)
+- Quality of life improvements to record keeping (**IN PROGRESS**)
 - Load / Save game at any point (**TO DO**)
 - Sound (**TO DO**)
-- Multiplatform Linux/Windows/OSX (**TO DO**)
+- Multiplatform Linux/Windows/OSX (**PARTIAL**)
 
 ## What happened to the previous attempt?
 
@@ -47,6 +47,16 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 **Battle Order**
 
 ![Battle Order](/screenshots/battle-order.gif)
+
+**Battle/Combat**
+
+## Fight/Shoot
+
+![Fight/Shoot](/screenshots/fight-shoot.png)
+
+## Deal fight/shot damage
+
+![Damage](/screenshots/damage.png)
 
 # Copyright Information
 ```

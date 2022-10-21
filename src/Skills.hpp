@@ -25,7 +25,7 @@ namespace BloodSword::Skills
         SPELLS,
         CALL_TO_MIND,
         CAST_SPELL,
-        SHOOT_SHURIKEN
+        SHURIKEN
     };
 
     template <typename T>
@@ -44,14 +44,14 @@ namespace BloodSword::Skills
         {Type::SPELLS, "SPELLS"},
         {Type::CALL_TO_MIND, "CALL TO MIND"},
         {Type::CAST_SPELL, "CAST SPELL"},
-        {Type::SHOOT_SHURIKEN, "SHOOT SHURIKEN"}};
+        {Type::SHURIKEN, "SHURIKEN"}};
 
     std::vector<Skills::Type> BattleSkills = {
         Type::ARCHERY,
         Type::DODGING,
         Type::QUARTERSTAFF,
         Type::SPELLS,
-        Type::SHOOT_SHURIKEN};
+        Type::SHURIKEN};
 
     std::vector<Skills::Type> StorySkills = {
         Type::HEALING,
@@ -72,7 +72,7 @@ namespace BloodSword::Skills
         {Type::LEVITATION, Asset::Type::LEVITATION},
         {Type::EXORCISM, Asset::Type::EXORCISM},
         {Type::SPELLS, Asset::Type::SPELLS},
-        {Type::SHOOT_SHURIKEN, Asset::Type::SHOOT_SHURIKEN}};
+        {Type::SHURIKEN, Asset::Type::SHURIKEN}};
 
     Skills::Type Map(const char *skill)
     {

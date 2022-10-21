@@ -72,6 +72,7 @@ namespace BloodSword::Interface
         {Controls::Type::MOVE, Asset::Type::MOVE},
         {Controls::Type::FIGHT, Asset::Type::FIGHT},
         {Controls::Type::SHOOT, Asset::Type::SHOOT},
+        {Controls::Type::SHURIKEN, Asset::Type::SHURIKEN},
         {Controls::Type::QUARTERSTAFF, Asset::Type::QUARTERSTAFF},
         {Controls::Type::SPELLS, Asset::Type::SPELLS},
         {Controls::Type::DEFEND, Asset::Type::DEFEND},
@@ -87,7 +88,7 @@ namespace BloodSword::Interface
         {Controls::Type::DEFEND, "DEFEND"},
         {Controls::Type::FLEE, "FLEE"},
         {Controls::Type::ITEMS, "ITEMS"},
-        {Controls::Type::SHOOT_SHURIKEN, "SHOOT SHURIKEN"},
+        {Controls::Type::SHURIKEN, "SHOOT SHURIKEN"},
         {Controls::Type::BACK, "BACK"}};
     Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
 
@@ -488,7 +489,7 @@ namespace BloodSword::Interface
         {
             SDL_Surface *surface = NULL;
 
-            auto surfacewidth = surfacelabels->w + surfacestats->w;
+            auto surfacewidth = surfacelabels->w + surfacestats->w + 12;
 
             if (addname)
             {
@@ -600,26 +601,38 @@ namespace BloodSword::Interface
     }
 
     // generate texture of character status
-    SDL_Texture *Status(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 color, int style, int wrap, bool inbattle = false)
+    SDL_Texture *Status(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 color, int style, bool inbattle = false)
     {
         SDL_Texture *texture = NULL;
 
         std::string list;
 
+        auto labelsw = 0;
+
+        auto statsw = 0;
+
+        // estimate maximum line width
+        Graphics::Estimate(font, "DMGG ", &labelsw, NULL);
+
+        Graphics::Estimate(font, "99D+D99", &statsw, NULL);
+
         for (auto &status : character.Status)
         {
             if (status.second != 0)
             {
-                if (list.length() > 0)
+                if ((inbattle && status.first != Character::Status::IN_BATTLE && status.first != Character::Status::AWAY) || !inbattle)
                 {
-                    list += '\n';
-                }
+                    if (list.length() > 0)
+                    {
+                        list += '\n';
+                    }
 
-                list += Character::StatusMapping[status.first];
+                    list += Character::StatusMapping[status.first];
 
-                if (status.second > 0)
-                {
-                    list += ": " + std::to_string(status.second) + " TURN" + (status.second > 1 ? "S" : "");
+                    if (status.second > 0)
+                    {
+                        list += " (" + std::to_string(status.second) + ")";
+                    }
                 }
             }
         }
@@ -636,6 +649,11 @@ namespace BloodSword::Interface
                 }
 
                 list += Skills::TypeMapping[skill];
+
+                if (skill == Skills::Type::SPELLS && character.CalledToMind.size() > 0)
+                {
+                    list += " (" + std::to_string(character.CalledToMind.size()) + ')';
+                }
             }
         }
 
@@ -649,23 +667,30 @@ namespace BloodSword::Interface
             list += "ARROWS: " + std::to_string(character.Quantity(Item::Type::ARROW));
         }
 
-        if (list.length() > 0)
+        if (!inbattle)
         {
-            list += '\n';
+            if (list.length() > 0)
+            {
+                list += '\n';
+            }
+
+            list += "GOLD: " + std::to_string(character.Quantity(Item::Type::GOLD));
         }
 
-        list += "GOLD: " + std::to_string(character.Quantity(Item::Type::GOLD));
-
-        if (list.length() > 0)
+        if (list.length() == 0)
         {
-            texture = Graphics::CreateText(graphics, list.c_str(), font, Color::S(color), style, wrap);
+            list = "NORMAL";
         }
+
+        list += "\n\n";
+
+        texture = Graphics::CreateText(graphics, list.c_str(), font, Color::S(color), style, labelsw + statsw);
 
         return texture;
     }
 
     // create party status text box collection
-    std::vector<SDL_Texture *> Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelcolor, int style, int wrap, bool inbattle = false)
+    std::vector<SDL_Texture *> Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 labelcolor, int style, bool inbattle = false)
     {
         std::vector<SDL_Texture *> textures = {};
 
@@ -673,7 +698,7 @@ namespace BloodSword::Interface
         {
             auto &character = party[i];
 
-            auto texture = Interface::Status(graphics, character, font, labelcolor, style, wrap, inbattle);
+            auto texture = Interface::Status(graphics, character, font, labelcolor, style, inbattle);
 
             if (texture)
             {
@@ -1128,7 +1153,7 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check
-    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &character, Attribute::Type attribute, int roll, int modifier, bool inbattle = false, bool shooting = false, Asset::Type shoot = Asset::Type::NONE)
+    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &character, Attribute::Type attribute, int roll, int modifier, bool inbattle = false, Asset::Type asset = Asset::Type::NONE)
     {
         auto result = false;
 
@@ -1183,13 +1208,13 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
 
             // add fight icon if in battle and attribute is FIGHTING PROWESS
-            if (inbattle && !shooting && attribute == Attribute::Type::FIGHTING_PROWESS)
+            if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS && asset == Asset::Type::NONE)
             {
                 overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
             }
-            else if (inbattle && shooting && attribute == Attribute::Type::FIGHTING_PROWESS)
+            else if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS && asset != Asset::Type::NONE)
             {
-                overlay.Add(Scene::Element(Asset::Get(shoot), origin + Point(w - pad * 2 - 128, pad)));
+                overlay.Add(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
             }
 
             // attribute label
@@ -1276,7 +1301,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false, bool shooting = false, Asset::Type shoot = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false, bool shooting = false, bool knockout = false, Asset::Type asset = Asset::Type::NONE)
     {
         SDL_Texture *damage_value = NULL;
 
@@ -1312,6 +1337,8 @@ namespace BloodSword::Interface
 
         auto roll = !shooting ? attacker.Value(Attribute::Type::DAMAGE) : 1;
 
+        roll += knockout ? 1 : 0;
+
         auto modifier = !shooting ? attacker.Modifier(Attribute::Type::DAMAGE) : 0;
 
         if (inbattle && attacker.IsPlayer() && !attacker.IsArmed())
@@ -1333,13 +1360,13 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
 
             // add fight icon
-            if (!shooting)
+            if (!shooting && !knockout)
             {
                 overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point((w - 64) / 2, pad)));
             }
             else
             {
-                overlay.Add(Scene::Element(Asset::Get(shoot), origin + Point((w - 64) / 2, pad)));
+                overlay.Add(Scene::Element(Asset::Get(asset), origin + Point((w - 64) / 2, pad)));
             }
 
             // add attacker icon and stats
@@ -1440,34 +1467,32 @@ namespace BloodSword::Interface
         return damage;
     }
 
-    // draws a message box over a scene
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Graphics::RichText message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    // draws a message box on screen
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
     {
-        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
-
         auto box = Scene::Base();
 
         auto pad = 16;
 
-        if (texture)
+        if (message)
         {
             auto texturew = 0;
 
             auto textureh = 0;
 
-            SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+            SDL_QueryTexture(message, NULL, NULL, &texturew, &textureh);
 
             auto boxw = texturew + pad * 2;
 
             auto boxh = textureh + pad * 3 + 64;
 
-            auto origin = (Point(graphics.Width, graphics.Height) - Point(boxw, boxh)) / 2;
+            auto location = offset + (Point(width, height) - Point(boxw, boxh)) / 2;
 
-            box.Add(Scene::Element(origin, boxw, boxh, background, border, borderSize));
+            box.Add(Scene::Element(location, boxw, boxh, background, border, borderSize));
 
-            box.Add(Scene::Element(texture, origin + Point(pad, pad)));
+            box.Add(Scene::Element(message, location + Point(pad, pad)));
 
-            auto confirm = origin + Point(pad + texturew / 2 - 32, textureh + pad * 2);
+            auto confirm = location + Point(pad + texturew / 2 - 32, textureh + pad * 2);
 
             box.Add(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
 
@@ -1488,8 +1513,38 @@ namespace BloodSword::Interface
                 }
             }
         }
+    }
 
-        Free(&texture);
+    // draws a message box over a scene
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point origin, int width, int height, Graphics::RichText message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        if (texture)
+        {
+            Interface::MessageBox(graphics, scene, origin, width, height, texture, background, border, borderSize, highlight, blur);
+
+            Free(&texture);
+        }
+    }
+
+    // draws a message box over a scene
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    {
+        Interface::MessageBox(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, message, background, border, borderSize, highlight, blur);
+    }
+
+    // draws a message box over a scene
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Graphics::RichText message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        if (texture)
+        {
+            Interface::MessageBox(graphics, scene, texture, background, border, borderSize, highlight, blur);
+
+            Free(&texture);
+        }
     }
 
     // focus cursor on character on the map

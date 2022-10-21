@@ -89,6 +89,15 @@ namespace BloodSword::Spells
         Type::PREDICTION,
         Type::DETECT_ENCHANTMENT};
 
+    std::vector<Spells::Type> Target = {
+        Type::NIGHTHOWL,
+        Type::WHITE_FIRE,
+        Type::THE_VAMPIRE_SPELL,
+        Type::PILLAR_OF_SALT,
+        Type::GHASTLY_TOUCH,
+        Type::NEMESIS_BOLT,
+        Type::SERVILE_ENTHRALMENT};
+
     Spells::Type Map(const char *spell)
     {
         return BloodSword::Find(Spells::TypeMapping, spell);
@@ -161,6 +170,11 @@ namespace BloodSword::Spells
         bool IsBasic()
         {
             return Spells::In(Spells::Basic, this->Type);
+        }
+
+        bool RequiresTarget()
+        {
+            return Spells::In(Spells::Target, this->Type);
         }
     };
 }
