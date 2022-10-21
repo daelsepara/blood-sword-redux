@@ -1771,16 +1771,10 @@ namespace BloodSword::Test
 
         auto center = Point(xdim, ydim) / 2;
 
-        for (auto i = 0; i < 5; i++)
+        for (auto i = 0; i < 4; i++)
         {
-            map.Put(Point(center.X + i - 2, center.Y - 3), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
-            map.Put(Point(center.X + i - 2, center.Y + 3), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
-        }
-
-        for (auto i = 0; i < 5; i++)
-        {
-            map.Put(Point(center.X - 3, center.Y + i - 2), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
-            map.Put(Point(center.X + 3, center.Y + i - 2), Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
+            map.Put(Point(center.X - 1, center.Y - 2) + i, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
+            map.Put(Point(center.X - 2, center.Y - 1) + i, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
         }
 
         // create party
