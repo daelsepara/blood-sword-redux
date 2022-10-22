@@ -11,10 +11,10 @@ namespace BloodSword::Battle
 {
     enum class Condition
     {
-        NORMAL,
         AMBUSH_PLAYER,
         AMBUSH_NPC,
-        CANNOT_FLEE
+        CANNOT_FLEE,
+        SURVIVORS
     };
 
     enum class Result
@@ -41,7 +41,7 @@ namespace BloodSword::Battle
         Party::Base Opponents;
 
         // round limit (-1 if unlimited)
-        int Duration = -1;
+        int Duration = Battle::Unlimited;
 
         Base(std::vector<Battle::Condition> conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
@@ -57,7 +57,7 @@ namespace BloodSword::Battle
                 {
                     result = true;
 
-                    break;   
+                    break;
                 }
             }
 

@@ -389,6 +389,12 @@ namespace BloodSword::Interface
 
             auto partyStatus = Interface::GenerateStatus(graphics, party, infow);
 
+            SDL_Texture *texture = NULL;
+
+            auto asset = Asset::Type::NONE;
+
+            auto lifetime = -1;
+
             std::vector<Graphics::RichText> text = {
                 Graphics::RichText("SELECT OPPONENT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("SELECT TARGET", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
@@ -397,7 +403,7 @@ namespace BloodSword::Interface
                 Graphics::RichText("THERE ARE NEARBY ENEMIES!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("CANNOT MOVE THERE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
-            auto textures = Graphics::CreateText(graphics, text);
+            auto messages = Graphics::CreateText(graphics, text);
 
             int round = 0;
 
@@ -631,17 +637,17 @@ namespace BloodSword::Interface
 
                                                     overlay = Interface::Path(battle.Map, character, src, dst);
 
-                                                    overlay.Add(Scene::Element(textures[2], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.Add(Scene::Element(messages[2], battle.Map.DrawX, battle.Map.TileSize / 2));
                                                 }
                                                 else if (fight)
                                                 {
                                                     // fight mode
-                                                    overlay.Add(Scene::Element(textures[0], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.Add(Scene::Element(messages[0], battle.Map.DrawX, battle.Map.TileSize / 2));
                                                 }
                                                 else if (shoot || spell)
                                                 {
                                                     // shoot mode
-                                                    overlay.Add(Scene::Element(textures[1], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.Add(Scene::Element(messages[1], battle.Map.DrawX, battle.Map.TileSize / 2));
                                                 }
                                                 else
                                                 {
@@ -675,6 +681,23 @@ namespace BloodSword::Interface
                                                         // status
                                                         overlay.Add(Scene::Element(enemyStatus[battle.Map[control.Map].Id], infox, infoy + stats.H + pad * 4, Color::Background, Color::Active, 4));
                                                     }
+                                                }
+                                                else if (battle.Map[control.Map].IsTemporarilyBlocked())
+                                                {
+                                                    if (asset != battle.Map[control.Map].TemporaryAsset || lifetime != battle.Map[control.Map].Lifetime)
+                                                    {
+                                                        asset = battle.Map[control.Map].TemporaryAsset;
+
+                                                        lifetime = battle.Map[control.Map].Lifetime;
+
+                                                        std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
+
+                                                        Free(&texture);
+
+                                                        texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                                                    }
+
+                                                    overlay.Add(Scene::Element(texture, infox, infoy, Color::Background, Color::Inactive, 4));
                                                 }
                                             }
                                             else
@@ -832,14 +855,14 @@ namespace BloodSword::Interface
                                                                 else
                                                                 {
                                                                     // no route to destination
-                                                                    Interface::MessageBox(graphics, scene, draw, mapw, maph, textures[5], Color::Background, Color::Highlight, 4, Color::Active, true);
+                                                                    Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[5], Color::Background, Color::Highlight, 4, Color::Active, true);
                                                                 }
                                                             }
                                                         }
                                                         else
                                                         {
                                                             // enemies nearby
-                                                            Interface::MessageBox(graphics, scene, draw, mapw, maph, textures[4], Color::Background, Color::Highlight, 4, Color::Active, true);
+                                                            Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[4], Color::Background, Color::Highlight, 4, Color::Active, true);
                                                         }
 
                                                         move = !move;
@@ -940,7 +963,7 @@ namespace BloodSword::Interface
                                                             else
                                                             {
                                                                 // enemies nearby
-                                                                Interface::MessageBox(graphics, scene, draw, mapw, maph, textures[4], Color::Background, Color::Highlight, 4, Color::Active, true);
+                                                                Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[4], Color::Background, Color::Highlight, 4, Color::Active, true);
                                                             }
 
                                                             shoot = false;
@@ -1248,6 +1271,8 @@ namespace BloodSword::Interface
                 result = Battle::Result::FLEE;
             }
 
+            Free(&texture);
+
             Free(&roundstring);
 
             Free(captions);
@@ -1260,7 +1285,18 @@ namespace BloodSword::Interface
 
             Free(enemyStats);
 
-            Free(textures);
+            Free(messages);
+        }
+
+        // clear "IN BATTLE" status
+        for (auto member = 0; member < party.Count(); member++)
+        {
+            party[member].Remove(Character::Status::IN_BATTLE);
+        }
+
+        for (auto member = 0; member < battle.Opponents.Count(); member++)
+        {
+            battle.Opponents[member].Remove(Character::Status::IN_BATTLE);
         }
 
         // determine results of battle

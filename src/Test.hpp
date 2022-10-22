@@ -1802,29 +1802,15 @@ namespace BloodSword::Test
 
         for (auto i = 0; i < party.Count(); i++)
         {
-            auto location = map.Find(Map::Object::PLAYER, i);
-
-            if (!location.IsNone())
-            {
-                map.Put(location, Map::Object::NONE, -1);
-            }
-
             map.Put(origins[i], Map::Object::PLAYER, i);
         }
 
         for (auto i = 0; i < enemies.Count(); i++)
         {
-            auto enemy = map.Find(Map::Object::ENEMY, i);
-
-            if (!enemy.IsNone())
-            {
-                map.Put(enemy, Map::Object::NONE, -1);
-            }
-
             map.Put(spawn[i], Map::Object::ENEMY, i);
         }
 
-        auto battle = Battle::Base({Battle::Condition::NORMAL, Battle::Condition::CANNOT_FLEE}, map, enemies, -1);
+        auto battle = Battle::Base({Battle::Condition::CANNOT_FLEE}, map, enemies, Battle::Unlimited);
 
         auto result = Interface::Battle(graphics, battle, party);
 
