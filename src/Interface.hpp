@@ -1207,12 +1207,16 @@ namespace BloodSword::Interface
             // add character icon
             overlay.Add(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
 
-            // add fight icon if in battle and attribute is FIGHTING PROWESS
+            // set up icon
             if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS && asset == Asset::Type::NONE)
             {
                 overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
             }
             else if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS && asset != Asset::Type::NONE)
+            {
+                overlay.Add(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
+            }
+            else if (attribute == Attribute::Type::PSYCHIC_ABILITY && asset != Asset::Type::NONE)
             {
                 overlay.Add(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
             }
@@ -1301,13 +1305,23 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false, bool shooting = false, bool knockout = false, Asset::Type asset = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, int roll, int modifier, bool inbattle = false, Asset::Type asset = Asset::Type::NONE)
     {
         SDL_Texture *damage_value = NULL;
 
         int damage = 0;
 
-        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("DMG: ") + (!shooting ? Interface::ScoreString(attacker, Attribute::Type::DAMAGE, inbattle) : "1D");
+        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("DMG: ") + std::to_string(roll) + 'D';
+
+        if (modifier != 0)
+        {
+            if (modifier > 0)
+            {
+                damage_string += '+';
+            }
+
+            damage_string + std::to_string(modifier);
+        }
 
         std::string armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, inbattle);
 
@@ -1335,17 +1349,6 @@ namespace BloodSword::Interface
 
         auto rolls = Engine::RollResult();
 
-        auto roll = !shooting ? attacker.Value(Attribute::Type::DAMAGE) : 1;
-
-        roll += knockout ? 1 : 0;
-
-        auto modifier = !shooting ? attacker.Modifier(Attribute::Type::DAMAGE) : 0;
-
-        if (inbattle && attacker.IsPlayer() && !attacker.IsArmed())
-        {
-            modifier -= 2;
-        }
-
         auto textw = 0;
 
         auto texth = 0;
@@ -1359,15 +1362,8 @@ namespace BloodSword::Interface
             // draw border
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
 
-            // add fight icon
-            if (!shooting && !knockout)
-            {
-                overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point((w - 64) / 2, pad)));
-            }
-            else
-            {
-                overlay.Add(Scene::Element(Asset::Get(asset), origin + Point((w - 64) / 2, pad)));
-            }
+            // add damage icon
+            overlay.Add(Scene::Element(Asset::Get(asset), origin + Point((w - 64) / 2, pad)));
 
             // add attacker icon and stats
             overlay.Add(Scene::Element(Asset::Get(attacker.Asset), origin + pad));
@@ -1467,6 +1463,28 @@ namespace BloodSword::Interface
         return damage;
     }
 
+    // roll for damage
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false, bool shooting = false, bool knockout = false, Asset::Type asset = Asset::Type::NONE)
+    {
+        auto roll = !shooting ? attacker.Value(Attribute::Type::DAMAGE) : 1;
+
+        roll += knockout ? 1 : 0;
+
+        auto modifier = !shooting ? attacker.Modifier(Attribute::Type::DAMAGE) : 0;
+
+        if (inbattle && attacker.IsPlayer() && !attacker.IsArmed())
+        {
+            modifier -= 2;
+        }
+
+        if (!shooting && !knockout)
+        {
+            asset = Asset::Type::FIGHT;
+        }
+
+        return Interface::Damage(graphics, background, origin, w, h, border, borderSize, attacker, defender, roll, modifier, inbattle, asset);
+    }
+
     // draws a message box on screen
     void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
     {
@@ -1560,6 +1578,48 @@ namespace BloodSword::Interface
 
             overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - 8, map.TileSize - 8, 0, Color::Active, 2));
         }
+    }
+
+    // cast spell
+    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Spells::Type spell, bool inbattle)
+    {
+        auto result = false;
+
+        auto castw = 512;
+
+        auto casth = 208;
+
+        auto cast = origin + (Point(w, h) - Point(castw, casth)) / 2;
+
+        if (!caster.Is(Character::Status::DEFENDING))
+        {
+            if (Engine::IsAlive(caster))
+            {
+                auto casting = caster.Find(spell);
+
+                if (caster.HasCalledToMind(spell) && casting != caster.Spells.end())
+                {
+                    auto roll = 2;
+
+                    auto modifier = (*casting).CurrentComplexity;
+
+                    result = Interface::Test(graphics, background, cast, castw, casth, Color::Active, 4, caster, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, inbattle, Spells::Assets[spell]);
+
+                    if (!result)
+                    {
+                        (*casting).CurrentComplexity--;
+                    }
+                    else
+                    {
+                        (*casting).CurrentComplexity = (*casting).Complexity;
+
+                        caster.Forget(spell);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }
 

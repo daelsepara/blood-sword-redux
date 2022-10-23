@@ -92,6 +92,7 @@ namespace BloodSword::Spells
     std::vector<Spells::Type> Target = {
         Type::NIGHTHOWL,
         Type::WHITE_FIRE,
+        Type::SWORDTHRUST,
         Type::THE_VAMPIRE_SPELL,
         Type::PILLAR_OF_SALT,
         Type::GHASTLY_TOUCH,

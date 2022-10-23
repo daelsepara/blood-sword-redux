@@ -180,6 +180,8 @@ namespace BloodSword::Interface
 
                 roll += knockout ? 1 : 0;
 
+                roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
+
                 auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
 
                 if (Interface::Test(graphics, background, fight, fightw, fighth, Color::Active, 4, attacker, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::NONE))
@@ -253,6 +255,8 @@ namespace BloodSword::Interface
             if (Engine::IsAlive(attacker))
             {
                 auto roll = defender.Is(Character::Status::DEFENDING) ? 3 : 2;
+
+                roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
 
                 auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
 
@@ -365,6 +369,49 @@ namespace BloodSword::Interface
         }
     }
 
+    void ResolveSpell(Graphics::Base &graphics, Battle::Base &battle, Scene::Base &background, Character::Base &caster, Character::Base &target, int targetid, Spells::Type spell)
+    {
+        auto alive = true;
+
+        auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
+
+        auto mapw = battle.Map.ViewX * battle.Map.TileSize;
+
+        auto maph = battle.Map.ViewY * battle.Map.TileSize;
+
+        auto damagew = 512;
+
+        auto damageh = 280;
+
+        auto damage = draw + (Point(mapw, maph) - Point(damagew, damageh)) / 2;
+
+        if (spell == Spells::Type::WHITE_FIRE)
+        {
+            auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, caster, target, 2, 2, true, Spells::Assets[spell]);
+
+            alive &= Engine::Damage(target, hit, true);
+        }
+        else if (spell == Spells::Type::SWORDTHRUST)
+        {
+            auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, caster, target, 3, 3, true, Spells::Assets[spell]);
+
+            alive &= Engine::Damage(target, hit, true);
+        }
+        else if (spell == Spells::Type::NEMESIS_BOLT)
+        {
+            auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, caster, target, 7, 7, true, Spells::Assets[spell]);
+
+            alive &= Engine::Damage(target, hit, true);
+        }
+
+        if (!alive)
+        {
+            battle.Map.Remove(target.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, targetid);
+
+            Interface::MessageBox(graphics, background, draw, mapw, maph, Graphics::RichText(target.Name + " KILLED!", Fonts::Normal, target.IsPlayer() ? Color::Highlight : Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, target.IsPlayer() ? Color::Highlight : Color::Active, 4, Color::Highlight, true);
+        }
+    }
+
     // fight battle
     Battle::Result Battle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -401,7 +448,9 @@ namespace BloodSword::Interface
                 Graphics::RichText("SELECT DESTINATION", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("ENTHRALMENT BROKEN!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("THERE ARE NEARBY ENEMIES!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-                Graphics::RichText("CANNOT MOVE THERE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+                Graphics::RichText("CANNOT MOVE THERE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+                Graphics::RichText("CASTER MUST BE ADJACENT TO TARGET!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+                Graphics::RichText("CASTING ATTEMPT WAS UNSUCCESSFUL!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
             auto messages = Graphics::CreateText(graphics, text);
 
@@ -536,6 +585,11 @@ namespace BloodSword::Interface
 
                                         if (opponents.size() > 0)
                                         {
+                                            if (character.Has(Skills::Type::SPELLS))
+                                            {
+                                                character.ResetSpellComplexities();
+                                            }
+
                                             // fight
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id);
 
@@ -569,7 +623,7 @@ namespace BloodSword::Interface
                                         }
                                         else if (character.Has(Skills::Type::SPELLS))
                                         {
-                                            // TODO: cast spells
+                                            // TODO: enemy cast spells
                                             next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
                                         }
                                         else if (character.Moves > 0 && Move::Available(battle.Map, src))
@@ -873,18 +927,27 @@ namespace BloodSword::Interface
                                                         {
                                                             spell = false;
 
-                                                            character.Forget(cast);
+                                                            if (Interface::Cast(graphics, scene, draw, mapw, maph, character, cast, true))
+                                                            {
+                                                                battle.Map.Put(control.Map, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 5);
 
-                                                            cast = Spells::Type::NONE;
+                                                                // regenerate stats
+                                                                Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
 
-                                                            battle.Map.Put(control.Map, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 5);
-
-                                                            // regenerate scene
-                                                            scene = Interface::BattleScene(battle, party);
+                                                                // regenerate scene
+                                                                scene = Interface::BattleScene(battle, party);
+                                                            }
+                                                            else
+                                                            {
+                                                                // spellcasting unsuccessful!
+                                                                Interface::MessageBox(graphics, scene, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                            }
 
                                                             // next character in battle order
                                                             next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
                                                         }
+
+                                                        cast = Spells::Type::NONE;
                                                     }
                                                 }
                                                 else if (control.OnMap && input.Type == Controls::Type::ENEMY)
@@ -906,6 +969,11 @@ namespace BloodSword::Interface
                                                                 if (character.Is(Character::Status::DEFENDED))
                                                                 {
                                                                     character.Remove(Character::Status::DEFENDED);
+                                                                }
+
+                                                                if (character.Has(Skills::Type::SPELLS))
+                                                                {
+                                                                    character.ResetSpellComplexities();
                                                                 }
 
                                                                 // fight
@@ -974,25 +1042,40 @@ namespace BloodSword::Interface
 
                                                             auto spellbook = character.Find(cast);
 
-                                                            if (spellbook != character.Spells.end() && !(*spellbook).IsBasic())
+                                                            if (spellbook != character.Spells.end())
                                                             {
-                                                                if (!(*spellbook).Ranged)
+                                                                auto distance = battle.Map.Distance(src, control.Map);
+
+                                                                if (!(*spellbook).Ranged && distance != 1)
                                                                 {
                                                                     // must be adjacent
+                                                                    Interface::MessageBox(graphics, scene, messages[6], Color::Background, Color::Highlight, 4, Color::Highlight, true);
                                                                 }
+                                                                else
+                                                                {
+                                                                    if (Interface::Cast(graphics, scene, draw, mapw, maph, character, cast, true))
+                                                                    {
+                                                                        // resolve spell
+                                                                        Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, cast);
 
-                                                                // TODO: cast spell if successful then forget
-                                                                cast = Spells::Type::NONE;
+                                                                        // regenerate stats
+                                                                        Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        // spellcasting unsuccessful!
+                                                                        Interface::MessageBox(graphics, scene, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                                    }
 
-                                                                // forget ... for now
-                                                                character.Forget(cast);
+                                                                    // regenerate scene
+                                                                    scene = Interface::BattleScene(battle, party);
 
-                                                                // regenerate stats
-                                                                Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
+                                                                    // next character in battle order
+                                                                    next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                                }
                                                             }
 
-                                                            // next character in battle order
-                                                            next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                            cast = Spells::Type::NONE;
                                                         }
                                                     }
                                                 }
@@ -1028,6 +1111,11 @@ namespace BloodSword::Interface
                                                         if (character.Is(Character::Status::DEFENDED))
                                                         {
                                                             character.Remove(Character::Status::DEFENDED);
+                                                        }
+
+                                                        if (character.Has(Skills::Type::SPELLS))
+                                                        {
+                                                            character.ResetSpellComplexities();
                                                         }
 
                                                         fight = false;
@@ -1120,6 +1208,11 @@ namespace BloodSword::Interface
                                                         character.Add(Character::Status::DEFENDING);
                                                     }
 
+                                                    if (character.Has(Skills::Type::SPELLS))
+                                                    {
+                                                        character.ResetSpellComplexities();
+                                                    }
+
                                                     Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
 
                                                     // next character in battle order
@@ -1175,11 +1268,21 @@ namespace BloodSword::Interface
 
                                                                     cast = Spells::Type::NONE;
 
-                                                                    // TODO: cast spell
-                                                                    character.Forget(spellbook.Type);
+                                                                    if (Interface::Cast(graphics, scene, draw, mapw, maph, character, spellbook.Type, true))
+                                                                    {
+                                                                        // resolve spell
 
-                                                                    // regenerate stats
-                                                                    Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
+                                                                        // regenerate stats
+                                                                        Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
+
+                                                                        // regenerate scene
+                                                                        scene = Interface::BattleScene(battle, party);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        // spellcasting unsuccessful!
+                                                                        Interface::MessageBox(graphics, scene, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                                    }
 
                                                                     // next character in battle order
                                                                     next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
@@ -1292,11 +1395,21 @@ namespace BloodSword::Interface
         for (auto member = 0; member < party.Count(); member++)
         {
             party[member].Remove(Character::Status::IN_BATTLE);
+
+            if (party[member].Has(Skills::Type::SPELLS))
+            {
+                party[member].ResetSpellComplexities();
+            }
         }
 
         for (auto member = 0; member < battle.Opponents.Count(); member++)
         {
             battle.Opponents[member].Remove(Character::Status::IN_BATTLE);
+
+            if (battle.Opponents[member].Has(Skills::Type::SPELLS))
+            {
+                battle.Opponents[member].ResetSpellComplexities();
+            }
         }
 
         // determine results of battle

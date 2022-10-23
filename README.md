@@ -58,6 +58,12 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Damage](/screenshots/damage.png)
 
+## Combat Spells (Call to Mind/Cast) **IN PROGRESS**
+
+![Call Spell to Mind](/screenshots/call-to-mind.png)
+
+![Cast Spell](/screenshots/cast-spell.png)
+
 # Copyright Information
 ```
             Originally published 1987 by Knight Books

@@ -547,6 +547,15 @@ namespace BloodSword::Character
             }
         }
 
+        // reset spell complexities
+        void ResetSpellComplexities()
+        {
+            for (auto &spell : this->Spells)
+            {
+                spell.CurrentComplexity = spell.Complexity;
+            }
+        }
+
         void Remove(Item::Type ammo, int quantity)
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
