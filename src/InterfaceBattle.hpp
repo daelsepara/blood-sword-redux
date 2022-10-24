@@ -385,6 +385,10 @@ namespace BloodSword::Interface
 
         auto damage = draw + (Point(mapw, maph) - Point(damagew, damageh)) / 2;
 
+        auto affected = target.Name + " SUCCUMBS TO " + std::string(Spells::TypeMapping[spell]);
+
+        auto resisted = target.Name + " RESISTS " + std::string(Spells::TypeMapping[spell]);
+
         if (spell == Spells::Type::WHITE_FIRE)
         {
             auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, caster, target, 2, 2, true, Spells::Assets[spell]);
@@ -402,6 +406,19 @@ namespace BloodSword::Interface
             auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, caster, target, 7, 7, true, Spells::Assets[spell]);
 
             alive &= Engine::Damage(target, hit, true);
+        }
+        else if (spell == Spells::Type::NIGHTHOWL)
+        {
+            if (!Interface::Test(graphics, background, draw, mapw, maph, Color::Active, 4, target, Attribute::Type::PSYCHIC_ABILITY, 2, 0, true, Spells::Assets[spell]))
+            {
+                Interface::MessageBox(graphics, background, draw, mapw, maph, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, 4, Color::Highlight, true);
+
+                target.Add(Character::Status::NIGHTHOWL, 5);
+            }
+            else
+            {
+                Interface::MessageBox(graphics, background, draw, mapw, maph, Graphics::RichText(resisted, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Highlight : Color::Active, 4, Color::Highlight, true);
+            }
         }
 
         if (!alive)
@@ -929,6 +946,12 @@ namespace BloodSword::Interface
 
                                                             if (Interface::Cast(graphics, scene, draw, mapw, maph, character, cast, true))
                                                             {
+                                                                // spellcasting successful
+                                                                auto spellstring = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
+
+                                                                Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+
+                                                                // resolve spell
                                                                 battle.Map.Put(control.Map, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 5);
 
                                                                 // regenerate stats
@@ -940,7 +963,7 @@ namespace BloodSword::Interface
                                                             else
                                                             {
                                                                 // spellcasting unsuccessful!
-                                                                Interface::MessageBox(graphics, scene, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                                Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
                                                             }
 
                                                             // next character in battle order
@@ -1055,6 +1078,11 @@ namespace BloodSword::Interface
                                                                 {
                                                                     if (Interface::Cast(graphics, scene, draw, mapw, maph, character, cast, true))
                                                                     {
+                                                                        // spellcasting successful
+                                                                        auto spellstring = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
+
+                                                                        Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+
                                                                         // resolve spell
                                                                         Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, cast);
 
@@ -1064,7 +1092,7 @@ namespace BloodSword::Interface
                                                                     else
                                                                     {
                                                                         // spellcasting unsuccessful!
-                                                                        Interface::MessageBox(graphics, scene, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                                        Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
                                                                     }
 
                                                                     // regenerate scene
@@ -1270,6 +1298,11 @@ namespace BloodSword::Interface
 
                                                                     if (Interface::Cast(graphics, scene, draw, mapw, maph, character, spellbook.Type, true))
                                                                     {
+                                                                        // spellcasting successful
+                                                                        auto spellstring = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
+
+                                                                        Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+
                                                                         // resolve spell
 
                                                                         // regenerate stats
@@ -1281,7 +1314,7 @@ namespace BloodSword::Interface
                                                                     else
                                                                     {
                                                                         // spellcasting unsuccessful!
-                                                                        Interface::MessageBox(graphics, scene, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                                        Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
                                                                     }
 
                                                                     // next character in battle order
