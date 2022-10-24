@@ -464,7 +464,7 @@ namespace BloodSword::Interface
         // estimate maximum line width
         Graphics::Estimate(font, "DMGG", &labelsw, NULL);
 
-        Graphics::Estimate(font, "99D+D99", &statsw, NULL);
+        Graphics::Estimate(font, "999D+D999", &statsw, NULL);
 
         auto surfacelabels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelcolor), style, labelsw);
 
@@ -614,7 +614,7 @@ namespace BloodSword::Interface
         // estimate maximum line width
         Graphics::Estimate(font, "DMGG ", &labelsw, NULL);
 
-        Graphics::Estimate(font, "99D+D99", &statsw, NULL);
+        Graphics::Estimate(font, "999D+D999", &statsw, NULL);
 
         for (auto &status : character.Status)
         {
@@ -1305,7 +1305,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, int roll, int modifier, bool inbattle = false, Asset::Type asset = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, int roll, int modifier, bool inbattle = false, bool ignoreArmor = false, Asset::Type asset = Asset::Type::NONE)
     {
         SDL_Texture *damage_value = NULL;
 
@@ -1433,7 +1433,7 @@ namespace BloodSword::Interface
                             rolled = true;
 
                             // check damage
-                            damage = std::max(0, rolls.Sum - Engine::Score(defender, Attribute::Type::ARMOUR, inbattle));
+                            damage = std::max(0, rolls.Sum - (!ignoreArmor ? 0 : Engine::Score(defender, Attribute::Type::ARMOUR, inbattle)));
 
                             if (damage > 0)
                             {
@@ -1464,7 +1464,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false, bool shooting = false, bool knockout = false, Asset::Type asset = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, bool inbattle = false, bool shooting = false, bool knockout = false, bool ignoreArmor = false, Asset::Type asset = Asset::Type::NONE)
     {
         auto roll = !shooting ? attacker.Value(Attribute::Type::DAMAGE) : 1;
 
@@ -1482,7 +1482,7 @@ namespace BloodSword::Interface
             asset = Asset::Type::FIGHT;
         }
 
-        return Interface::Damage(graphics, background, origin, w, h, border, borderSize, attacker, defender, roll, modifier, inbattle, asset);
+        return Interface::Damage(graphics, background, origin, w, h, border, borderSize, attacker, defender, roll, modifier, inbattle, ignoreArmor, asset);
     }
 
     // draws a message box on screen

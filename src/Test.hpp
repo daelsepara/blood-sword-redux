@@ -1674,7 +1674,7 @@ namespace BloodSword::Test
                     // player turn
                     scene.Add(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, Asset::Type::ARCHERY);
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, false, Asset::Type::ARCHERY);
 
                     player.Remove(Item::Type::ARROW, 1);
                 }
@@ -1689,7 +1689,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[1], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHURIKEN);
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, false, Asset::Type::SHURIKEN);
                 }
             }
             else
@@ -1697,7 +1697,7 @@ namespace BloodSword::Test
                 // enemy turn
                 scene.Add(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Asset::Type::SHURIKEN);
+                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, false, Asset::Type::SHURIKEN);
 
                 // player turn
                 if (alive)
@@ -1706,7 +1706,7 @@ namespace BloodSword::Test
                     {
                         scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
-                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, Asset::Type::ARCHERY);
+                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, false, Asset::Type::ARCHERY);
 
                         player.Remove(Item::Type::ARROW, 1);
                     }
