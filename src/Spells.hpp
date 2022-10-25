@@ -99,6 +99,11 @@ namespace BloodSword::Spells
         Type::NEMESIS_BOLT,
         Type::SERVILE_ENTHRALMENT};
 
+    std::vector<Spells::Type> TargetsParty = {
+        Type::VOLCANO_SPRAY,
+        Type::MISTS_OF_DEATH,
+        Type::SHEET_LIGHTNING};
+
     Spells::Type Map(const char *spell)
     {
         return BloodSword::Find(Spells::TypeMapping, spell);
@@ -176,6 +181,11 @@ namespace BloodSword::Spells
         bool RequiresTarget()
         {
             return Spells::In(Spells::Target, this->Type);
+        }
+
+        bool MultipleTargets()
+        {
+            return Spells::In(Spells::TargetsParty, this->Type);
         }
     };
 }

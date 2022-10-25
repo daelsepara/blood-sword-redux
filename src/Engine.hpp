@@ -401,7 +401,7 @@ namespace BloodSword::Engine
     }
 
     // build shot targets
-    Engine::Queue ShotTargets(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
+    Engine::Queue RangedTargets(Map::Base &map, Party::Base &party, Point &src, bool inbattle = false, bool descending = false)
     {
         Engine::Queue queue = {};
 
@@ -504,12 +504,12 @@ namespace BloodSword::Engine
         return isspell;
     }
 
-    // assign damage to character
-    bool Damage(Character::Base &character, int damage, bool inbattle = false)
+    // character gains/loses endurance
+    bool GainEndurance(Character::Base &character, int gain, bool inbattle = false)
     {
         auto endurance = Engine::Score(character, Attribute::Type::ENDURANCE, inbattle);
 
-        endurance -= damage;
+        endurance -= gain;
 
         endurance = std::max(0, endurance);
 

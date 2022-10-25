@@ -1857,7 +1857,7 @@ namespace BloodSword::Test
                  Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+                 Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting/spells)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
             return menu;
         };
 

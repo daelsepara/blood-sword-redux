@@ -254,6 +254,8 @@ namespace BloodSword::Character
                 (*attribute).Value = value;
 
                 (*attribute).Modifier = modifier;
+
+                (*attribute).Value = std::min((*attribute).Value, (*attribute).Maximum);
             }
         }
 
