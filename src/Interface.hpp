@@ -1197,6 +1197,21 @@ namespace BloodSword::Interface
 
         auto rolls = Engine::RollResult();
 
+        auto score = Engine::Score(character, attribute, inbattle);
+
+        // Eye of the Tiger effects
+        if (attribute == Attribute::Type::FIGHTING_PROWESS)
+        {
+            if (character.Has(Character::Status::FPR_PLUS2))
+            {
+                score += 2;
+            }
+            else if (character.Has(Character::Status::FPR_PLUS1))
+            {
+                score += 1;
+            }
+        }
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -1281,7 +1296,7 @@ namespace BloodSword::Interface
                             rolled = true;
 
                             // check result
-                            result = rolls.Sum <= Engine::Score(character, attribute, inbattle);
+                            result = rolls.Sum <= score;
                         }
                     }
                 }
@@ -1310,6 +1325,16 @@ namespace BloodSword::Interface
         SDL_Texture *damage_value = NULL;
 
         int damage = 0;
+
+        // Eye of the Tiger effects
+        if (attacker.Has(Character::Status::FPR_PLUS2))
+        {
+            roll += 2;
+        }
+        else if (attacker.Has(Character::Status::FPR_PLUS1))
+        {
+            roll += 1;
+        }
 
         std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("DMG: ") + std::to_string(roll) + 'D';
 
@@ -1620,6 +1645,100 @@ namespace BloodSword::Interface
         }
 
         return result;
+    }
+
+    // select from a list of options
+    int Choice(Graphics::Base &graphics, Scene::Base &background, std::vector<Graphics::RichText> &choices, Point origin, int w, int h, int limit, Uint32 border, Uint32 highlight)
+    {
+        auto menu = Graphics::CreateText(graphics, choices);
+        auto options = (int)(choices.size());
+        auto input = Controls::User();
+        auto choice = -1;
+        auto start = 0;
+        auto last = start + limit;
+        auto done = false;
+
+        while (!done)
+        {
+            auto overlay = Interface::Menu(menu, origin.X, origin.Y, w, h, start, last, limit, border, highlight, false);
+
+            if (input.Up)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
+
+                input.Up = false;
+            }
+            else if (input.Down)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
+
+                input.Down = false;
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::CHOICE)
+                {
+                    choice = start + (input.Current - Controls::Find(overlay.Controls, Controls::Type::CHOICE));
+
+                    if (choice >= 0 && choice < options)
+                    {
+                        done = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (start > 0)
+                    {
+                        start -= 1;
+
+                        if (start < 0)
+                        {
+                            start = 0;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (options - last > 0)
+                    {
+                        if (start < options - limit)
+                        {
+                            start += 1;
+                        }
+
+                        if (start > options - limit)
+                        {
+                            start = options - limit;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Down = true;
+                    }
+                }
+            }
+        }
+
+        Free(menu);
+
+        return choice;
     }
 }
 

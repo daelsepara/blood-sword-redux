@@ -512,6 +512,12 @@ namespace BloodSword::Interface
     {
         auto spellbook = caster.Find(spell);
 
+        auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
+
+        auto mapw = battle.Map.ViewX * battle.Map.TileSize;
+
+        auto maph = battle.Map.ViewY * battle.Map.TileSize;
+
         if (spellbook != caster.Spells.end() && (*spellbook).MultipleTargets())
         {
             for (auto target = 0; target < targets.Count(); target++)
@@ -524,6 +530,28 @@ namespace BloodSword::Interface
         }
         else if (spell == Spells::Type::EYE_OF_THE_TIGER)
         {
+            std::vector<Graphics::RichText> tiger_eye =
+                {Graphics::RichText("CHARACTER FPR/DMG ROLLS +2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+                 Graphics::RichText("PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+
+            auto popup = draw + (Point(mapw, maph) - Point(640, 256)) / 2;
+
+            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, 640, 256, 2, Color::Inactive, Color::Active);
+
+            if (tiger == 0)
+            {
+                caster.Add(Character::Status::FPR_PLUS2, 5);
+            }
+            else if (tiger == 1)
+            {
+                for (auto character = 0; character < targets.Count(); character++)
+                {
+                    if (Engine::IsAlive(targets[character]))
+                    {
+                        targets[character].Add(Character::Status::FPR_PLUS1);
+                    }
+                }
+            }
         }
         else if (spell == Spells::Type::IMMEDIATE_DELIVERANCE)
         {
@@ -1447,8 +1475,11 @@ namespace BloodSword::Interface
 
                                                                         Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
 
+                                                                        // check if spell targets own party
+                                                                        auto myparty = (cast == Spells::Type::EYE_OF_THE_TIGER) || (cast == Spells::Type::IMMEDIATE_DELIVERANCE);
+
                                                                         // resolve spell
-                                                                        Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents, spellbook.Type);
+                                                                        Interface::ResolveSpell(graphics, battle, scene, character, myparty ? party : battle.Opponents, spellbook.Type);
 
                                                                         // regenerate stats
                                                                         Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
