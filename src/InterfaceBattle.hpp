@@ -555,6 +555,13 @@ namespace BloodSword::Interface
         }
         else if (spell == Spells::Type::IMMEDIATE_DELIVERANCE)
         {
+            for (auto character = 0; character < targets.Count(); character++)
+            {
+                if (Engine::IsAlive(targets[character]))
+                {
+                    targets[character].Add(Character::Status::FLEEING);
+                }
+            }
         }
     }
 
@@ -596,7 +603,8 @@ namespace BloodSword::Interface
                 Graphics::RichText("THERE ARE NEARBY ENEMIES!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("CANNOT MOVE THERE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("CASTER MUST BE ADJACENT TO TARGET!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-                Graphics::RichText("CASTING ATTEMPT WAS UNSUCCESSFUL!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+                Graphics::RichText("CASTING ATTEMPT WAS UNSUCCESSFUL!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+                Graphics::RichText("YOU CANNOT FLEE THIS BATTLE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
             auto messages = Graphics::CreateText(graphics, text);
 
@@ -1468,10 +1476,14 @@ namespace BloodSword::Interface
 
                                                                     cast = Spells::Type::NONE;
 
-                                                                    if (Interface::Cast(graphics, scene, draw, mapw, maph, character, spellbook.Type, true))
+                                                                    if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Is(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
+                                                                    {
+                                                                        Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[8], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                                    }
+                                                                    else if (Interface::Cast(graphics, scene, draw, mapw, maph, character, spellbook.Type, true))
                                                                     {
                                                                         // spellcasting successful
-                                                                        auto spellstring = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
+                                                                        auto spellstring = std::string(Spells::TypeMapping[spellbook.Type]) + " SUCESSFULLY CAST";
 
                                                                         Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
 
