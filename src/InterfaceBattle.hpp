@@ -1480,33 +1480,36 @@ namespace BloodSword::Interface
                                                                     {
                                                                         Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[8], Color::Background, Color::Highlight, 4, Color::Highlight, true);
                                                                     }
-                                                                    else if (Interface::Cast(graphics, scene, draw, mapw, maph, character, spellbook.Type, true))
-                                                                    {
-                                                                        // spellcasting successful
-                                                                        auto spellstring = std::string(Spells::TypeMapping[spellbook.Type]) + " SUCESSFULLY CAST";
-
-                                                                        Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
-
-                                                                        // check if spell targets own party
-                                                                        auto myparty = (cast == Spells::Type::EYE_OF_THE_TIGER) || (cast == Spells::Type::IMMEDIATE_DELIVERANCE);
-
-                                                                        // resolve spell
-                                                                        Interface::ResolveSpell(graphics, battle, scene, character, myparty ? party : battle.Opponents, spellbook.Type);
-
-                                                                        // regenerate stats
-                                                                        Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
-
-                                                                        // regenerate scene
-                                                                        scene = Interface::BattleScene(battle, party);
-                                                                    }
                                                                     else
                                                                     {
-                                                                        // spellcasting unsuccessful!
-                                                                        Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
-                                                                    }
+                                                                        if (Interface::Cast(graphics, scene, draw, mapw, maph, character, spellbook.Type, true))
+                                                                        {
+                                                                            // spellcasting successful
+                                                                            auto spellstring = std::string(Spells::TypeMapping[spellbook.Type]) + " SUCESSFULLY CAST";
 
-                                                                    // next character in battle order
-                                                                    next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                                            Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+
+                                                                            // check if spell targets own party
+                                                                            auto myparty = (cast == Spells::Type::EYE_OF_THE_TIGER) || (cast == Spells::Type::IMMEDIATE_DELIVERANCE);
+
+                                                                            // resolve spell
+                                                                            Interface::ResolveSpell(graphics, battle, scene, character, myparty ? party : battle.Opponents, spellbook.Type);
+
+                                                                            // regenerate stats
+                                                                            Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
+
+                                                                            // regenerate scene
+                                                                            scene = Interface::BattleScene(battle, party);
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            // spellcasting unsuccessful!
+                                                                            Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
+                                                                        }
+                                                                        
+                                                                        // next character in battle order
+                                                                        next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                                    }
                                                                 }
                                                             }
                                                             else
