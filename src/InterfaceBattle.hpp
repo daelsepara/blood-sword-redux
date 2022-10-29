@@ -260,7 +260,7 @@ namespace BloodSword::Interface
 
                 auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
 
-                if (Interface::Test(graphics, background, fight, shootw, shooth, Color::Active, 4, attacker, Attribute::Type::FIGHTING_PROWESS, roll, modifier, ignoreArmor, asset))
+                if (Interface::Test(graphics, background, fight, shootw, shooth, Color::Active, 4, attacker, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, asset))
                 {
                     auto hit = Interface::Damage(graphics, background, damage, damagew, damageh, Color::Active, 4, attacker, defender, true, true, false, ignoreArmor, asset);
 
@@ -534,9 +534,9 @@ namespace BloodSword::Interface
                 {Graphics::RichText("CHARACTER FPR/DMG ROLLS +2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                  Graphics::RichText("PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
-            auto popup = draw + (Point(mapw, maph) - Point(640, 256)) / 2;
+            auto popup = draw + (Point(mapw, maph) - Point(512, 140)) / 2;
 
-            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, 640, 256, 2, Color::Inactive, Color::Active);
+            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, 512, 64, 2, Color::Background, Color::Inactive, Color::Active);
 
             if (tiger == 0)
             {
@@ -548,7 +548,7 @@ namespace BloodSword::Interface
                 {
                     if (Engine::IsAlive(targets[character]))
                     {
-                        targets[character].Add(Character::Status::FPR_PLUS1);
+                        targets[character].Add(Character::Status::FPR_PLUS1, 5);
                     }
                 }
             }
@@ -827,6 +827,7 @@ namespace BloodSword::Interface
                                 }
                                 else
                                 {
+                                    // player-controlled characters including enthralled enemies
                                     if (!character.Is(Character::Status::PARALYZED) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character))
                                     {
                                         // captions and overlays
@@ -1298,12 +1299,16 @@ namespace BloodSword::Interface
                                                         }
 
                                                         fight = true;
+
+                                                        input = previous;
                                                     }
                                                     else
                                                     {
                                                         fight = false;
 
                                                         knockout = false;
+
+                                                        input = previous;
                                                     }
                                                 }
                                                 else if (input.Type == Controls::Type::SHOOT || input.Type == Controls::Type::SHURIKEN)
@@ -1320,6 +1325,11 @@ namespace BloodSword::Interface
                                                         if (character.Is(Character::Status::DEFENDED))
                                                         {
                                                             character.Remove(Character::Status::DEFENDED);
+                                                        }
+
+                                                        if (character.Has(Skills::Type::SPELLS))
+                                                        {
+                                                            character.ResetSpellComplexities();
                                                         }
 
                                                         shoot = false;
@@ -1342,10 +1352,14 @@ namespace BloodSword::Interface
                                                     else if (targets.size() > 1)
                                                     {
                                                         shoot = true;
+
+                                                        input = previous;
                                                     }
                                                     else
                                                     {
                                                         shoot = false;
+
+                                                        input = previous;
                                                     }
                                                 }
                                                 else if (input.Type == Controls::Type::SPELLS)
@@ -1379,6 +1393,11 @@ namespace BloodSword::Interface
                                                     if (!character.Is(Character::Status::FLEEING))
                                                     {
                                                         character.Add(Character::Status::FLEEING);
+                                                    }
+
+                                                    if (character.Has(Skills::Type::SPELLS))
+                                                    {
+                                                        character.ResetSpellComplexities();
                                                     }
 
                                                     Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
@@ -1423,15 +1442,13 @@ namespace BloodSword::Interface
 
                                                                     if (targets.size() == 1 && cast != Spells::Type::PILLAR_OF_SALT)
                                                                     {
-                                                                        auto spellbook = character.Find(cast);
-
                                                                         auto target = battle.Map.Find(Map::Object::ENEMY, targets[0].Id);
 
-                                                                        if (spellbook != character.Spells.end() && battle.Map.IsValid(target))
+                                                                        if (battle.Map.IsValid(target))
                                                                         {
                                                                             auto distance = battle.Map.Distance(src, target);
 
-                                                                            if (!(*spellbook).Ranged && distance != 1)
+                                                                            if (!spellbook.Ranged && distance != 1)
                                                                             {
                                                                                 // must be adjacent
                                                                                 Interface::MessageBox(graphics, scene, messages[6], Color::Background, Color::Highlight, 4, Color::Highlight, true);
@@ -1441,9 +1458,7 @@ namespace BloodSword::Interface
                                                                                 if (Interface::Cast(graphics, scene, draw, mapw, maph, character, cast, true))
                                                                                 {
                                                                                     // spellcasting successful
-                                                                                    auto spellstring = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
-
-                                                                                    Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+                                                                                    Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
 
                                                                                     // resolve spell
                                                                                     Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[target].Id], battle.Map[target].Id, cast);
@@ -1485,12 +1500,10 @@ namespace BloodSword::Interface
                                                                         if (Interface::Cast(graphics, scene, draw, mapw, maph, character, spellbook.Type, true))
                                                                         {
                                                                             // spellcasting successful
-                                                                            auto spellstring = std::string(Spells::TypeMapping[spellbook.Type]) + " SUCESSFULLY CAST";
-
-                                                                            Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(spellstring, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+                                                                            Interface::MessageBox(graphics, scene, draw, mapw, maph, Graphics::RichText(std::string(Spells::TypeMapping[spellbook.Type]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
 
                                                                             // check if spell targets own party
-                                                                            auto myparty = (cast == Spells::Type::EYE_OF_THE_TIGER) || (cast == Spells::Type::IMMEDIATE_DELIVERANCE);
+                                                                            auto myparty = (spellbook.Type == Spells::Type::EYE_OF_THE_TIGER) || (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE);
 
                                                                             // resolve spell
                                                                             Interface::ResolveSpell(graphics, battle, scene, character, myparty ? party : battle.Opponents, spellbook.Type);
@@ -1506,7 +1519,7 @@ namespace BloodSword::Interface
                                                                             // spellcasting unsuccessful!
                                                                             Interface::MessageBox(graphics, scene, draw, mapw, maph, messages[7], Color::Background, Color::Highlight, 4, Color::Highlight, true);
                                                                         }
-                                                                        
+
                                                                         // next character in battle order
                                                                         next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
                                                                     }
@@ -1525,9 +1538,15 @@ namespace BloodSword::Interface
                                                             }
                                                         }
                                                     }
+                                                    else
+                                                    {
+                                                        input = previous;
+                                                    }
                                                 }
-
-                                                input = previous;
+                                                else
+                                                {
+                                                    input = previous;
+                                                }
                                             }
                                         }
                                     }

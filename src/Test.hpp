@@ -1277,7 +1277,7 @@ namespace BloodSword::Test
 
         while (!done)
         {
-            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, fixed, highlight, true);
+            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, fixed, highlight, true);
 
             scene.Add(Scene::Element(title, xadjust, 28));
 
@@ -1885,7 +1885,7 @@ namespace BloodSword::Test
 
         while (!done)
         {
-            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, Color::Inactive, Color::Highlight, true);
+            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, Color::Inactive, Color::Highlight, true);
 
             scene.Add(Scene::Element(title, xadjust, 28));
 

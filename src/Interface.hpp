@@ -385,9 +385,22 @@ namespace BloodSword::Interface
         }
         else if (attribute == Attribute::Type::DAMAGE)
         {
-            if (inbattle && character.IsPlayer() && !character.IsArmed())
+            if (inbattle && character.IsPlayer())
             {
-                modifier -= 2;
+                if (!character.IsArmed())
+                {
+                    modifier -= 2;
+                }
+
+                if (character.Has(Character::Status::FPR_PLUS2))
+                {
+                    modifier += 2;
+                }
+
+                if (character.Has(Character::Status::FPR_PLUS1))
+                {
+                    modifier += 1;
+                }
             }
 
             stats += std::to_string(value) + "D";
@@ -404,9 +417,22 @@ namespace BloodSword::Interface
         }
         else
         {
-            if (inbattle && character.IsPlayer() && !character.IsArmed() && attribute == Attribute::Type::FIGHTING_PROWESS)
+            if (inbattle && character.IsPlayer() && attribute == Attribute::Type::FIGHTING_PROWESS)
             {
-                modifier -= 2;
+                if (!character.IsArmed())
+                {
+                    modifier -= 2;
+                }
+
+                if (character.Has(Character::Status::FPR_PLUS2))
+                {
+                    modifier += 2;
+                }
+
+                if (character.Has(Character::Status::FPR_PLUS1))
+                {
+                    modifier += 1;
+                }
             }
 
             stats += std::to_string(value);
@@ -738,7 +764,7 @@ namespace BloodSword::Interface
     }
 
     // add vertical text menu to the scene
-    Scene::Base Menu(std::vector<SDL_Texture *> &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 border, Uint32 highlight, bool others = false)
+    Scene::Base Menu(std::vector<SDL_Texture *> &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false)
     {
         auto scene = Scene::Base();
 
@@ -772,8 +798,8 @@ namespace BloodSword::Interface
                 auto dn = item < end - 1 ? id + 1 : (others ? (scrollup || scrolldn ? (scrollup && scrolldn ? scroll + 2 : scroll + 1) : id + 1) : (scrollup && scrolldn ? scroll + 2 : (scrolldn ? scroll : id)));
                 auto itemy = y + item * (h + pad);
 
+                scene.Add(Scene::Element(x, itemy, w, h, background, border, pixels));
                 scene.Add(Scene::Element(choices[start + item], x, itemy));
-                scene.Add(Scene::Element(x, itemy, w, h, 0, border, pixels));
                 scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, itemy - offset, wadjust, h + adjust, highlight));
             }
 
@@ -1199,9 +1225,14 @@ namespace BloodSword::Interface
 
         auto score = Engine::Score(character, attribute, inbattle);
 
-        // Eye of the Tiger effects
+        // Unarmed/Eye of the Tiger effects
         if (attribute == Attribute::Type::FIGHTING_PROWESS)
         {
+            if (inbattle && !character.IsArmed())
+            {
+                score -= 2;
+            }
+
             if (character.Has(Character::Status::FPR_PLUS2))
             {
                 score += 2;
@@ -1211,6 +1242,8 @@ namespace BloodSword::Interface
                 score += 1;
             }
         }
+
+        score = std::max(0, score);
 
         while (!done)
         {
@@ -1223,13 +1256,16 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
 
             // set up icon
-            if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS && asset == Asset::Type::NONE)
+            if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS)
             {
-                overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
-            }
-            else if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS && asset != Asset::Type::NONE)
-            {
-                overlay.Add(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
+                if (asset == Asset::Type::NONE)
+                {
+                    overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
+                }
+                else
+                {
+                    overlay.Add(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
+                }
             }
             else if (attribute == Attribute::Type::PSYCHIC_ABILITY && asset != Asset::Type::NONE)
             {
@@ -1329,11 +1365,11 @@ namespace BloodSword::Interface
         // Eye of the Tiger effects
         if (attacker.Has(Character::Status::FPR_PLUS2))
         {
-            roll += 2;
+            modifier += 2;
         }
         else if (attacker.Has(Character::Status::FPR_PLUS1))
         {
-            roll += 1;
+            modifier += 1;
         }
 
         std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("DMG: ") + std::to_string(roll) + 'D';
@@ -1345,7 +1381,7 @@ namespace BloodSword::Interface
                 damage_string += '+';
             }
 
-            damage_string + std::to_string(modifier);
+            damage_string += std::to_string(modifier);
         }
 
         std::string armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, inbattle) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, inbattle);
@@ -1648,7 +1684,7 @@ namespace BloodSword::Interface
     }
 
     // select from a list of options
-    int Choice(Graphics::Base &graphics, Scene::Base &background, std::vector<Graphics::RichText> &choices, Point origin, int w, int h, int limit, Uint32 border, Uint32 highlight)
+    int Choice(Graphics::Base &graphics, Scene::Base &background, std::vector<Graphics::RichText> &choices, Point origin, int w, int h, int limit, Uint32 bgcolor, Uint32 border, Uint32 highlight)
     {
         auto menu = Graphics::CreateText(graphics, choices);
         auto options = (int)(choices.size());
@@ -1660,7 +1696,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto overlay = Interface::Menu(menu, origin.X, origin.Y, w, h, start, last, limit, border, highlight, false);
+            auto overlay = Interface::Menu(menu, origin.X, origin.Y, w, h, start, last, limit, bgcolor, border, highlight, false);
 
             if (input.Up)
             {
@@ -1681,7 +1717,7 @@ namespace BloodSword::Interface
             {
                 if (input.Type == Controls::Type::CHOICE)
                 {
-                    choice = start + (input.Current - Controls::Find(overlay.Controls, Controls::Type::CHOICE));
+                    choice = start + input.Current;
 
                     if (choice >= 0 && choice < options)
                     {
