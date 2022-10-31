@@ -7,6 +7,7 @@
 #include "Input.hpp"
 #include "Maze.hpp"
 #include "Palette.hpp"
+#include "Story.hpp"
 
 namespace BloodSword::Interface
 {
