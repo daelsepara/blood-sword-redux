@@ -19,11 +19,27 @@ namespace BloodSword::Story
     class Base
     {
     public:
-        Book::Destination Section = std::make_pair<Book::Number, int>(Book::Number::None, -1);
+        Book::Destination Section = std::make_pair<Book::Number, int>(Book::Number::None, 0);
 
         std::vector<Story::Option> Settings = {};
 
         std::string Text;
+
+        Battle::Base Battle;
+
+        virtual Book::Destination Background(Party::Base &party)
+        {
+            return {Book::Number::None, 0};
+        }
+
+        virtual void Event(Party::Base &party)
+        {
+        }
+
+        virtual Book::Destination Continue(Party::Base &party)
+        {
+            return {Book::Number::None, 0};
+        }
     };
 }
 
