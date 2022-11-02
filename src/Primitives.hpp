@@ -12,6 +12,16 @@
 
 namespace BloodSword
 {
+    // relative positions
+    enum class Position
+    {
+        NONE = -1,
+        TOP,
+        LEFT,
+        RIGHT,
+        BOTTOM
+    };
+
     // cartesian coordinates
     class Point
     {
