@@ -5,6 +5,7 @@
 
 #include "Book.hpp"
 #include "Battle.hpp"
+#include "Choice.hpp"
 
 // classes and functions for managing story sections
 namespace BloodSword::Story
@@ -22,6 +23,8 @@ namespace BloodSword::Story
         Book::Destination Section = std::make_pair<Book::Number, int>(Book::Number::None, 0);
 
         std::vector<Story::Option> Settings = {};
+
+        std::vector<Choice::Base> Choices = {};
 
         std::string Text;
 

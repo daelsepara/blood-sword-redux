@@ -37,5 +37,15 @@ namespace BloodSword::Book
         {Book::Number::Book3, {16, 8, 5, 4}},
         {Book::Number::Book4, {20, 10, 7, 5}},
         {Book::Number::Book5, {20, 12, 8, 6}}};
+
+    bool IsUndefined(Destination destination)
+    {
+        return (destination.first == Book::Number::None && destination.second == 0);
+    }
+
+    bool IsDefined(Destination destination)
+    {
+        return !Book::IsUndefined(destination);
+    }
 }
 #endif
