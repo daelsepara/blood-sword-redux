@@ -48,21 +48,21 @@ namespace BloodSword::Story
 
             return (search != this->Features.end()) && (*search != Story::Feature::NONE);
         }
-
-        virtual Book::Destination Background(Party::Base &party)
-        {
-            return {Book::Number::None, 0};
-        }
-
-        virtual void Event(Party::Base &party)
-        {
-        }
-
-        virtual Book::Destination Continue(Party::Base &party)
-        {
-            return {Book::Number::None, 0};
-        }
     };
+
+    // process story
+    Book::Destination Play(Story::Base &story)
+    {
+        return {Book::Number::None, 0};    
+    }
+
+    // load story from file
+    Story::Base Load(const char* file)
+    {
+        auto story = Story::Base();
+
+        return story;
+    }
 }
 
 #endif
