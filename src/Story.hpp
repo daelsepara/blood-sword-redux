@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "nlohmann/json.hpp"
 #include "Templates.hpp"
 #include "Book.hpp"
 #include "Battle.hpp"
@@ -53,13 +54,43 @@ namespace BloodSword::Story
     // process story
     Book::Destination Play(Story::Base &story)
     {
-        return {Book::Number::None, 0};    
+        return {Book::Number::None, 0};
     }
 
     // load story from file
-    Story::Base Load(const char* file)
+    Story::Base Load(const char *file)
     {
         auto story = Story::Base();
+
+        std::ifstream ifs(file);
+
+        if (ifs.good())
+        {
+            auto data = nlohmann::json::parse(ifs);
+
+            if (!data["story"].is_null())
+            {
+                if (!data["story"]["section"].is_null())
+                {
+                    // set section
+                }
+
+                if (!data["story"]["features"].is_null() && data["story"]["features"].is_array() && data["story"]["features"].size() > 0)
+                {
+                    // set features
+                }
+
+                if (!data["story"]["destinations"].is_null() && data["story"]["destinations"].is_array() && data["story"]["destinations"].size() > 0)
+                {
+                    // set destinations
+                }
+
+                if (!data["story"]["choices"].is_null() && data["story"]["choices"].is_array() && data["story"]["choices"].size() > 0)
+                {
+                    // set choices
+                }
+            }
+        }
 
         return story;
     }
