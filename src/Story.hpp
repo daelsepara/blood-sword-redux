@@ -33,7 +33,7 @@ namespace BloodSword::Story
 
         std::vector<Choice::Base> Choices = {};
 
-        Position ImageLocation = Position::NONE;
+        Position ImagePosition = Position::NONE;
 
         Battle::Base Battle;
 
