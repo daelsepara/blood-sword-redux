@@ -7,6 +7,7 @@
 #include "Book.hpp"
 #include "Attribute.hpp"
 #include "CharacterClasses.hpp"
+#include "Item.hpp"
 
 // classes and functions for managing story choices
 namespace BloodSword::Choice
@@ -17,7 +18,15 @@ namespace BloodSword::Choice
         ATTRIBUTE,
         CHARACTER,
         SKILL,
+        ITEM
     };
+
+    Mapping<Choice::Type> TypeMapping = {
+        {Type::NORMAL, "NORMAL"},
+        {Type::ATTRIBUTE, "ATTRIBUTE"},
+        {Type::CHARACTER, "CHARACTER"},
+        {Type::SKILL, "SKILL"},
+        {Type::ITEM, "ITEM"}};
 
     class Base
     {
@@ -29,6 +38,8 @@ namespace BloodSword::Choice
         Attribute::Type Attribute = Attribute::Type::NONE;
 
         Character::Class Class = Character::Class::NONE;
+
+        Item::Type Item = Item::Type::NONE;
 
         std::string Text;
 
