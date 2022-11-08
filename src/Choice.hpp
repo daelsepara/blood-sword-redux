@@ -28,6 +28,16 @@ namespace BloodSword::Choice
         {Type::SKILL, "SKILL"},
         {Type::ITEM, "ITEM"}};
 
+    Choice::Type Map(const char *choice)
+    {
+        return BloodSword::Find(Choice::TypeMapping, choice);
+    }
+
+    Choice::Type Map(std::string choice)
+    {
+        return Choice::Map(choice.c_str());
+    }
+
     class Base
     {
     public:

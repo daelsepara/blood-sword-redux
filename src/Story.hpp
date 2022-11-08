@@ -4,7 +4,6 @@
 #include <string>
 
 #include "nlohmann/json.hpp"
-#include "Templates.hpp"
 #include "Book.hpp"
 #include "Battle.hpp"
 #include "Choice.hpp"
@@ -22,10 +21,27 @@ namespace BloodSword::Story
         SHOP
     };
 
+    Mapping<Story::Feature> FeatureMapping = {
+        {Feature::NONE, "NONE"},
+        {Feature::DESTINATIONS, "DESTINATIONS"},
+        {Feature::CHOICES, "CHOICES"},
+        {Feature::BATTLE, "BATTLE"},
+        {Feature::SHOP, "SHOP"}};
+
+    Story::Feature MapFeature(const char *feature)
+    {
+        return BloodSword::Find(Story::FeatureMapping, feature);
+    }
+
+    Story::Feature MapFeature(std::string feature)
+    {
+        return Story::MapFeature(feature.c_str());
+    }
+
     class Base
     {
     public:
-        Book::Destination Section = std::make_pair<Book::Number, int>(Book::Number::None, 0);
+        Book::Destination Section = {Book::Number::None, 0};
 
         std::vector<Story::Feature> Features = {};
 
