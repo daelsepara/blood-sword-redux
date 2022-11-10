@@ -73,7 +73,7 @@ namespace BloodSword::Story
         return {Book::Number::None, 0};
     }
 
-    // load story from file
+    // TODO: load story from file
     Story::Base Load(const char *file)
     {
         auto story = Story::Base();
@@ -94,16 +94,25 @@ namespace BloodSword::Story
                 if (!data["story"]["features"].is_null() && data["story"]["features"].is_array() && data["story"]["features"].size() > 0)
                 {
                     // set features
+                    auto features = std::vector<Story::Feature>();
+
+                    story.Features = features;
                 }
 
                 if (!data["story"]["destinations"].is_null() && data["story"]["destinations"].is_array() && data["story"]["destinations"].size() > 0)
                 {
                     // set destinations
+                    auto destinations = std::vector<Book::Destination>();
+
+                    story.Destinations = destinations;
                 }
 
                 if (!data["story"]["choices"].is_null() && data["story"]["choices"].is_array() && data["story"]["choices"].size() > 0)
                 {
                     // set choices
+                    auto choices = std::vector<Choice::Base>();
+
+                    story.Choices = choices;
                 }
             }
         }

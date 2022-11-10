@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 
+#include "nlohmann/json.hpp"
 #include "Book.hpp"
 #include "Attribute.hpp"
 #include "CharacterClasses.hpp"
@@ -55,6 +56,14 @@ namespace BloodSword::Choice
 
         int Quantity = -1;
     };
+
+    // TODO: parse choice from json
+    Choice::Base Parse(nlohmann::json json)
+    {
+        auto choice = Choice::Base();
+
+        return choice;
+    }
 }
 
 #endif
