@@ -30,6 +30,14 @@ namespace BloodSword::Book
         {Book::Number::Book4, "Doomwalk"},
         {Book::Number::Book5, "The Walls of Spyte"}};
 
+    Mapping<Book::Number> BookNumber = {
+        {Book::Number::None, "NONE"},
+        {Book::Number::Book1, "BOOK1"},
+        {Book::Number::Book2, "BOOK2"},
+        {Book::Number::Book3, "BOOK3"},
+        {Book::Number::Book4, "BOOK4"},
+        {Book::Number::Book5, "BOOK5"}};
+
     std::unordered_map<Book::Number, std::vector<int>> Ranks = {
         {Book::Number::None, {1, 1, 1, 1}},
         {Book::Number::Book1, {8, 4, 3, 2}},
