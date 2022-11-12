@@ -55,5 +55,25 @@ namespace BloodSword::Book
     {
         return !Book::IsUndefined(destination);
     }
+
+    Book::Number MapTitle(const char *book)
+    {
+        return BloodSword::Find(Book::Title, book);
+    }
+
+    Book::Number MapTitle(std::string book)
+    {
+        return Book::MapTitle(book.c_str());
+    }
+
+    Book::Number MapBook(const char *book)
+    {
+        return BloodSword::Find(Book::BookNumber, book);
+    }
+
+    Book::Number MapBook(std::string book)
+    {
+        return Book::MapBook(book.c_str());
+    }
 }
 #endif
