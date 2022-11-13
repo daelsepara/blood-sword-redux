@@ -41,7 +41,7 @@ namespace BloodSword::Story
     class Base
     {
     public:
-        Book::Destination Section = {Book::Number::None, 0};
+        Book::Destination Section = {Book::Number::NONE, 0};
 
         std::vector<Story::Feature> Features = {};
 
@@ -70,7 +70,7 @@ namespace BloodSword::Story
     // process story
     Book::Destination Play(Story::Base &story)
     {
-        return {Book::Number::None, 0};
+        return {Book::Number::NONE, 0};
     }
 
     // TODO: load story from file
@@ -82,16 +82,18 @@ namespace BloodSword::Story
 
         if (ifs.good())
         {
-            auto data = nlohmann::json::parse(ifs);
+            auto json = nlohmann::json::parse(ifs);
 
-            if (!data["story"].is_null())
+            if (!json["story"].is_null())
             {
-                if (!data["story"]["section"].is_null())
+                auto data = json["story"];
+
+                if (!data["section"].is_null())
                 {
                     // set section
                 }
 
-                if (!data["story"]["features"].is_null() && data["story"]["features"].is_array() && data["story"]["features"].size() > 0)
+                if (!data["features"].is_null() && data["features"].is_array() && data["features"].size() > 0)
                 {
                     // set features
                     auto features = std::vector<Story::Feature>();
@@ -99,7 +101,7 @@ namespace BloodSword::Story
                     story.Features = features;
                 }
 
-                if (!data["story"]["destinations"].is_null() && data["story"]["destinations"].is_array() && data["story"]["destinations"].size() > 0)
+                if (!data["destinations"].is_null() && data["destinations"].is_array() && data["destinations"].size() > 0)
                 {
                     // set destinations
                     auto destinations = std::vector<Book::Destination>();
@@ -107,7 +109,7 @@ namespace BloodSword::Story
                     story.Destinations = destinations;
                 }
 
-                if (!data["story"]["choices"].is_null() && data["story"]["choices"].is_array() && data["story"]["choices"].size() > 0)
+                if (!data["choices"].is_null() && data["choices"].is_array() && data["choices"].size() > 0)
                 {
                     // set choices
                     auto choices = std::vector<Choice::Base>();
