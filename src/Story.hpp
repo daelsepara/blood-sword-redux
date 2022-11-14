@@ -91,6 +91,10 @@ namespace BloodSword::Story
                 if (!data["section"].is_null())
                 {
                     // set section
+                    auto book = !data["section"]["book"].is_null() ? Book::MapBook(std::string(data["section"]["book"])) : Book::Number::NONE;
+                    auto number = !data["section"]["number"].is_null() ? std::stoi(std::string(data["section"]["book"])) : 0;
+                    
+                    story.Section = {book, number};
                 }
 
                 if (!data["features"].is_null() && data["features"].is_array() && data["features"].size() > 0)
