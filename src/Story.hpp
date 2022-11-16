@@ -88,35 +88,56 @@ namespace BloodSword::Story
             {
                 auto data = json["story"];
 
+                // set book and section number
                 if (!data["section"].is_null())
                 {
-                    // set section
                     auto book = !data["section"]["book"].is_null() ? Book::MapBook(std::string(data["section"]["book"])) : Book::Number::NONE;
-                    auto number = !data["section"]["number"].is_null() ? std::stoi(std::string(data["section"]["book"])) : 0;
-                    
+
+                    auto number = !data["section"]["number"].is_null() ? std::stoi(std::string(data["section"]["number"])) : 0;
+
                     story.Section = {book, number};
                 }
 
+                // set features
                 if (!data["features"].is_null() && data["features"].is_array() && data["features"].size() > 0)
                 {
-                    // set features
                     auto features = std::vector<Story::Feature>();
+
+                    for (auto i = 0; i < data["features"].size(); i++)
+                    {
+                        auto feature = !data["features"][i].is_null() ? Story::MapFeature(std::string(data["features"][i])) : Feature::NONE;
+
+                        features.push_back(feature);
+                    }
 
                     story.Features = features;
                 }
 
+                // read destinations
                 if (!data["destinations"].is_null() && data["destinations"].is_array() && data["destinations"].size() > 0)
                 {
-                    // set destinations
                     auto destinations = std::vector<Book::Destination>();
+
+                    for (auto i = 0; i < data["destinations"].size(); i++)
+                    {
+                        auto book = !data["destinations"][i]["book"].is_null() ? Book::MapBook(std::string(data["destinations"][i]["book"])) : Book::Number::NONE;
+
+                        auto number = !data["destinations"][i]["number"].is_null() ? std::stoi(std::string(data["destinations"][i]["number"])) : 0;
+
+                        destinations.push_back({book, number});
+                    }
 
                     story.Destinations = destinations;
                 }
 
+                // read choices
                 if (!data["choices"].is_null() && data["choices"].is_array() && data["choices"].size() > 0)
                 {
-                    // set choices
                     auto choices = std::vector<Choice::Base>();
+
+                    for (auto i = 0; i < data["choices"].size(); i++)
+                    {
+                    }
 
                     story.Choices = choices;
                 }
