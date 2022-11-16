@@ -70,6 +70,11 @@ namespace BloodSword::Choice
             if (!data["destination"].is_null())
             {
                 // set destination
+                auto book = !data["destination"]["book"].is_null() ? Book::MapBook(std::string(data["destination"]["book"])) : Book::Number::NONE;
+
+                auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : 0;
+
+                choice.Destination = {book, number};
             }
 
             if (!data["type"].is_null())

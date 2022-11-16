@@ -137,6 +137,9 @@ namespace BloodSword::Story
 
                     for (auto i = 0; i < data["choices"].size(); i++)
                     {
+                        auto choice = Choice::Parse(data["choices"][i]);
+
+                        choices.push_back(choice);
                     }
 
                     story.Choices = choices;
