@@ -34,6 +34,7 @@ namespace BloodSword::Conditions
 
     class Base
     {
+    public:
         Conditions::Type Type = Type::NONE;
 
         std::string Variable;
@@ -43,6 +44,10 @@ namespace BloodSword::Conditions
         Book::Destination Destination = {Book::Number::NONE, 0};
 
         Base() {}
+
+        Base(Conditions::Type type, std::string variable, std::string text, Book::Destination destination) : Type(type), Variable(variable), Text(text), Destination(destination)
+        {
+        }
     };
 }
 #endif
