@@ -113,6 +113,13 @@ namespace BloodSword::Choice
 
         return choice;
     }
+
+    bool Process(Choice::Base &choice)
+    {
+        auto valid = false;
+
+        return valid;
+    }
 }
 
 #endif

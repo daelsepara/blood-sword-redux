@@ -168,6 +168,12 @@ namespace BloodSword::Map
             return (*this)(point);
         }
 
+        // check if map is valid
+        bool IsValid()
+        {
+            return this->Width > 0 && this->Height > 0 && this->Tiles.size() > 0;
+        }
+        
         // check if a location is within map boundaries
         bool IsValid(Point coords)
         {

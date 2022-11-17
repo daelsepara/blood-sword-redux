@@ -63,6 +63,11 @@ namespace BloodSword::Battle
 
             return result;
         }
+
+        bool IsDefined()
+        {
+            return this->Opponents.Count() > 0 && Map.IsValid();
+        }
     };
 }
 

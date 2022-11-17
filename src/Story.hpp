@@ -7,43 +7,19 @@
 #include "Book.hpp"
 #include "Battle.hpp"
 #include "Choice.hpp"
+#include "Conditions.hpp"
+#include "Feature.hpp"
 #include "Primitives.hpp"
 
 // classes and functions for managing story sections
 namespace BloodSword::Story
 {
-    enum class Feature
-    {
-        NONE = -1,
-        DESTINATIONS,
-        CHOICES,
-        BATTLE,
-        SHOP
-    };
-
-    Mapping<Story::Feature> FeatureMapping = {
-        {Feature::NONE, "NONE"},
-        {Feature::DESTINATIONS, "DESTINATIONS"},
-        {Feature::CHOICES, "CHOICES"},
-        {Feature::BATTLE, "BATTLE"},
-        {Feature::SHOP, "SHOP"}};
-
-    Story::Feature MapFeature(const char *feature)
-    {
-        return BloodSword::Find(Story::FeatureMapping, feature);
-    }
-
-    Story::Feature MapFeature(std::string feature)
-    {
-        return Story::MapFeature(feature.c_str());
-    }
-
     class Base
     {
     public:
         Book::Destination Section = {Book::Number::NONE, 0};
 
-        std::vector<Story::Feature> Features = {};
+        std::vector<Feature::Type> Features = {};
 
         std::vector<Book::Destination> Destinations = {};
 
@@ -57,21 +33,21 @@ namespace BloodSword::Story
 
         std::string Text;
 
+        std::vector<Conditions::Base> Background = {};
+
+        std::vector<Conditions::Base> Events = {};
+
+        std::vector<Conditions::Base> Next = {};
+
         Base() {}
 
-        bool Has(Story::Feature feature)
+        bool Has(Feature::Type feature)
         {
             auto search = BloodSword::Find(this->Features, feature);
 
-            return (search != this->Features.end()) && (*search != Story::Feature::NONE);
+            return (search != this->Features.end()) && (*search != Feature::Type::NONE);
         }
     };
-
-    // process story
-    Book::Destination Play(Story::Base &story)
-    {
-        return {Book::Number::NONE, 0};
-    }
 
     // TODO: load story from file
     Story::Base Load(const char *file)
@@ -101,11 +77,11 @@ namespace BloodSword::Story
                 // set features
                 if (!data["features"].is_null() && data["features"].is_array() && data["features"].size() > 0)
                 {
-                    auto features = std::vector<Story::Feature>();
+                    auto features = std::vector<Feature::Type>();
 
                     for (auto i = 0; i < data["features"].size(); i++)
                     {
-                        auto feature = !data["features"][i].is_null() ? Story::MapFeature(std::string(data["features"][i])) : Feature::NONE;
+                        auto feature = !data["features"][i].is_null() ? Feature::Map(std::string(data["features"][i])) : Feature::Type::NONE;
 
                         features.push_back(feature);
                     }
@@ -148,6 +124,38 @@ namespace BloodSword::Story
         }
 
         return story;
+    }
+
+    // process story
+    Book::Destination Play(Story::Base &story)
+    {
+        Book::Destination next = {Book::Number::NONE, 0};
+
+        // process any background events
+        if (story.Background.size() > 0)
+        {
+        }
+
+        // process current events
+        if (story.Events.size() > 0)
+        {
+        }
+
+        if (story.Battle.IsDefined())
+        {
+            // fight battle
+        }
+
+        // process choices if any
+        if (story.Choices.size() > 0)
+        {
+        }
+        else if (story.Next.size() > 0)
+        {
+            // select next destination
+        }
+
+        return next;
     }
 }
 
