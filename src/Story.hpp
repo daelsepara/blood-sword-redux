@@ -21,8 +21,6 @@ namespace BloodSword::Story
 
         std::vector<Feature::Type> Features = {};
 
-        std::vector<Book::Destination> Destinations = {};
-
         std::vector<Choice::Base> Choices = {};
 
         Position ImagePosition = Position::NONE;
@@ -87,23 +85,6 @@ namespace BloodSword::Story
                     }
 
                     story.Features = features;
-                }
-
-                // read destinations
-                if (!data["destinations"].is_null() && data["destinations"].is_array() && data["destinations"].size() > 0)
-                {
-                    auto destinations = std::vector<Book::Destination>();
-
-                    for (auto i = 0; i < data["destinations"].size(); i++)
-                    {
-                        auto book = !data["destinations"][i]["book"].is_null() ? Book::MapBook(std::string(data["destinations"][i]["book"])) : Book::Number::NONE;
-
-                        auto number = !data["destinations"][i]["number"].is_null() ? std::stoi(std::string(data["destinations"][i]["number"])) : 0;
-
-                        destinations.push_back({book, number});
-                    }
-
-                    story.Destinations = destinations;
                 }
 
                 // read choices
