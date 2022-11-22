@@ -3,6 +3,7 @@
 
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
+#include "Party.hpp"
 #include "Templates.hpp"
 
 namespace BloodSword::Conditions
@@ -92,19 +93,23 @@ namespace BloodSword::Conditions
         return condition;
     }
 
-    bool Process(Conditions::Base condition)
+    bool Process(Party::Base &party, Conditions::Base condition)
     {
         auto result = false;
 
-        switch (condition.Type)
+        if (condition.Type == Conditions::Type::NONE)
         {
-        case Conditions::Type::NONE:
             result = true;
-        case Conditions::Type::NORMAL:
+        }
+        else if (condition.Type == Conditions::Type::NORMAL)
+        {
             result = true;
-            break;
-        default:
-            result = true;
+        }
+        else if (condition.Type == Conditions::Type::CHARACTER)
+        {
+            auto character = Character::Map(condition.Variable);
+
+            result = party.Has(character);
         }
 
         return result;
