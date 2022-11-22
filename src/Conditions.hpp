@@ -6,24 +6,19 @@
 #include "Party.hpp"
 #include "Templates.hpp"
 
-namespace BloodSword::Conditions
+namespace BloodSword::Story::Conditions
 {
     enum class Type
     {
         NONE = -1,
         NORMAL,
-        CHARACTER,
-        ITEM,
-        BATTLE,
-        SHOP
+        CHARACTER
     };
 
     Mapping<Conditions::Type> TypeMapping = {
         {Type::NONE, "NONE"},
-        {Type::CHARACTER, "CHARACTER"},
-        {Type::ITEM, "ITEM"},
-        {Type::BATTLE, "BATTLE"},
-        {Type::SHOP, "SHOP"}};
+        {Type::NORMAL, "NORMAL"},
+        {Type::CHARACTER, "CHARACTER"}};
 
     Conditions::Type Map(const char *Conditions)
     {
