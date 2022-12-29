@@ -464,15 +464,15 @@ namespace BloodSword::Test
 
         auto fps = 0.0;
 
-        SDL_Texture *ftptexture = NULL;
+        SDL_Texture *fpstexture = NULL;
 
         while (true)
         {
             if (done)
             {
-                if (ftptexture)
+                if (fpstexture)
                 {
-                    auto overlay = Scene::Base(ftptexture, map.DrawX, map.TileSize / 2);
+                    auto overlay = Scene::Base(fpstexture, map.DrawX, map.TileSize / 2);
 
                     input = Input::WaitForInput(graphics, background, overlay, input);
                 }
@@ -550,13 +550,13 @@ namespace BloodSword::Test
 
                     if (msec > 0)
                     {
-                        Free(&ftptexture);
+                        Free(&fpstexture);
 
                         fps = frames * 1000.0 / (double)msec;
 
                         std::string fpsString = "FPS: " + std::to_string(fps) + "/sec";
 
-                        ftptexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                        fpstexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                     }
 
                     for (auto &animation : animations.List)
@@ -580,7 +580,7 @@ namespace BloodSword::Test
             }
         }
 
-        Free(&ftptexture);
+        Free(&fpstexture);
     }
 
     // battle order

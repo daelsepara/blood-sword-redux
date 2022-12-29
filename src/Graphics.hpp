@@ -484,7 +484,53 @@ namespace BloodSword::Graphics
         {
             TTF_SetFontStyle(font, style);
 
-            surface = TTF_RenderUTF8_Blended_Wrapped(font, text, textColor, wrap);
+            if (wrap == 0 && strchr(text, '\n') == NULL)
+            {
+                surface = TTF_RenderUTF8_Blended(font, text, textColor);
+            }
+            else
+            {
+                // TODO: Find better code to working with TTF_RenderUTF8_Blended_Wrapped on wraplength = 0
+                auto estimate = wrap;
+
+                if (wrap == 0 && strchr(text, '\n') != NULL)
+                {
+                    auto maxlength = 0;
+                    auto current = 0;
+
+                    for (auto i = 0; i < strlen(text); i++)
+                    {
+                        if (text[i] != '\n')
+                        {
+                            current++;
+                        }
+                        else
+                        {
+                            if (current > maxlength)
+                            {
+                                maxlength = current;
+                                
+                            }
+
+                            current = 0;
+                        }
+                    }
+
+                    if (current > maxlength)
+                    {
+                        maxlength = current;
+                    }
+
+                    if (maxlength > 0)
+                    {
+                        auto temp = std::string(maxlength, 'M') + ' ';
+
+                        Graphics::Estimate(font, temp.c_str(), &estimate, NULL);
+                    }
+                }
+                
+                surface = TTF_RenderUTF8_Blended_Wrapped(font, text, textColor, estimate);
+            }
         }
 
         return surface;
