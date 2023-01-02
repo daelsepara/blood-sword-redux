@@ -496,6 +496,7 @@ namespace BloodSword::Graphics
                 if (wrap == 0 && strchr(text, '\n') != NULL)
                 {
                     auto maxlength = 0;
+                    
                     auto current = 0;
 
                     for (auto i = 0; i < strlen(text); i++)
@@ -509,7 +510,6 @@ namespace BloodSword::Graphics
                             if (current > maxlength)
                             {
                                 maxlength = current;
-                                
                             }
 
                             current = 0;
@@ -528,7 +528,7 @@ namespace BloodSword::Graphics
                         Graphics::Estimate(font, temp.c_str(), &estimate, NULL);
                     }
                 }
-                
+
                 surface = TTF_RenderUTF8_Blended_Wrapped(font, text, textColor, estimate);
             }
         }
