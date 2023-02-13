@@ -154,6 +154,21 @@ namespace BloodSword::Interface
             Free(&skill.second);
         }
 
+        for (auto &spell : SpellCaptionsActive)
+        {
+            Free(&spell.second);
+        }
+
+        for (auto &spell : SpellCaptionsActive)
+        {
+            Free(&spell.second);
+        }
+
+        for (auto &spell : SpellsTexturesInactive)
+        {
+            Free(&spell.second);
+        }
+
         for (auto &control : BattleControlCaptions)
         {
             Free(&control.second);
