@@ -159,7 +159,7 @@ namespace BloodSword::Interface
             Free(&spell.second);
         }
 
-        for (auto &spell : SpellCaptionsActive)
+        for (auto &spell : SpellCaptionsInactive)
         {
             Free(&spell.second);
         }
