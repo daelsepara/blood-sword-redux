@@ -177,6 +177,9 @@ namespace BloodSword::Interface
         SkillCaptionsActive.clear();
         SkillCaptionsInactive.clear();
         SkillsTexturesInactive.clear();
+        SpellCaptionsActive.clear();
+        SpellCaptionsInactive.clear();
+        SpellsTexturesInactive.clear();
         BattleControlCaptions.clear();
 
         Free(&NoSkills);
