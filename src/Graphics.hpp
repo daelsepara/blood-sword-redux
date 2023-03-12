@@ -630,17 +630,17 @@ namespace BloodSword::Graphics
 
         IMG_Quit();
 
-        if (SDL_WasInit(SDL_INIT_GAMECONTROLLER) & SDL_INIT_GAMECONTROLLER)
+        if (SDL_WasInit(SDL_INIT_GAMECONTROLLER))
         {
             SDL_QuitSubSystem(SDL_INIT_GAMECONTROLLER);
         }
 
-        if (SDL_WasInit(SDL_INIT_AUDIO) & SDL_INIT_AUDIO)
+        if (SDL_WasInit(SDL_INIT_AUDIO))
         {
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
 
-        if (SDL_WasInit(SDL_INIT_VIDEO) & SDL_INIT_VIDEO)
+        if (SDL_WasInit(SDL_INIT_VIDEO))
         {
             SDL_QuitSubSystem(SDL_INIT_VIDEO);
         }
