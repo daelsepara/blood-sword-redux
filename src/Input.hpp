@@ -391,7 +391,7 @@ namespace BloodSword::Input
     {
         auto overlay = Scene::Base();
 
-        return WaitForInput(graphics, scene, overlay, input, false);
+        return WaitForInput(graphics, scene, overlay, input);
     }
 
     // check if user input is valid

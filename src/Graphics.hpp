@@ -189,6 +189,7 @@ namespace BloodSword::Graphics
             for (auto i = 0; i < graphics.Height; i += 2)
             {
                 scanline.y = i + 1;
+                
                 SDL_RenderFillRect(graphics.Renderer, &scanline);
             }
         }
@@ -612,8 +613,6 @@ namespace BloodSword::Graphics
     // close graphics system
     void Quit(Base &graphics)
     {
-        Graphics::FreeTextures();
-
         if (graphics.Renderer)
         {
             SDL_DestroyRenderer(graphics.Renderer);
