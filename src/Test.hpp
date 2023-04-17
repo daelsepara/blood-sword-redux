@@ -1835,7 +1835,7 @@ namespace BloodSword::Test
     void Story(Graphics::Base &graphics)
     {
         auto scene = Scene::Base();
-        auto width = 260;
+        auto width = 254;
         auto base_height = 32;
         auto pad = 8;
         auto items = 4;
