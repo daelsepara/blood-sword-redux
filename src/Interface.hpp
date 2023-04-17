@@ -1797,7 +1797,7 @@ namespace BloodSword::Interface
     }
 
     // create a party
-    Party::Base CreateParty(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 bgcolor, Uint32 border)
+    Party::Base CreateParty(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 bgcolor, Uint32 border, Uint32 highlight)
     {
         auto party = Party::Base();
 
@@ -1808,7 +1808,7 @@ namespace BloodSword::Interface
             Graphics::RichText(" 4 Starting rank(s): 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         };
 
-        auto party_size = Choice(graphics, background, party_sizes, origin, w, h, 4, bgcolor, border, Color::Highlight) + 1;
+        auto party_size = Choice(graphics, background, party_sizes, origin, w, h, 4, bgcolor, border, highlight) + 1;
 
         if (party_size > 0 && party_size <= 4)
         {
