@@ -1835,11 +1835,11 @@ namespace BloodSword::Test
     void Story(Graphics::Base &graphics)
     {
         auto scene = Scene::Base();
-        auto width = 300;
+        auto width = 260;
         auto base_height = 32;
         auto pad = 8;
         auto items = 4;
-        auto height = (base_height + pad * 2) * items - pad * 2;
+        auto height = (base_height + pad * 2) * items - pad * 7 / 2;
         auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
         auto menuw = 0;
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_BOLD);
