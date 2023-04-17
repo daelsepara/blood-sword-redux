@@ -1795,6 +1795,23 @@ namespace BloodSword::Interface
 
         return choice;
     }
+
+    // create a party
+    Party::Base CreateParty(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 bgcolor, Uint32 border)
+    {
+        auto party = Party::Base();
+
+        std::vector<Graphics::RichText> party_sizes = {
+            Graphics::RichText("1 - Starting rank: 8", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText("2 - Starting rank: 4", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText("3 - Starting rank: 3", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText("4 - Starting rank: 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        };
+
+        auto party_size = Choice(graphics, background, party_sizes, origin, w, h, 4, bgcolor, border, Color::Highlight);
+
+        return party;
+    }
 }
 
 #endif
