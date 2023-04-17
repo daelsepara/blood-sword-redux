@@ -282,7 +282,7 @@ namespace BloodSword::Interface
                         {
                             if (Engine::IsAlive(party[tile.Id]))
                             {
-                                scene.Add(Scene::Element(Asset::Get(party[tile.Id].Asset), screen));
+                                scene.VerifyAndAdd(Scene::Element(Asset::Get(party[tile.Id].Asset), screen));
 
                                 switch (party[tile.Id].Class)
                                 {
@@ -311,7 +311,7 @@ namespace BloodSword::Interface
                         {
                             if (Engine::IsAlive(enemies[tile.Id]))
                             {
-                                scene.Add(Scene::Element(Asset::Get(enemies[tile.Id].Asset), screen));
+                                scene.VerifyAndAdd(Scene::Element(Asset::Get(enemies[tile.Id].Asset), screen));
 
                                 type = Controls::Type::ENEMY;
 
@@ -324,7 +324,7 @@ namespace BloodSword::Interface
                         {
                             if (tile.TemporaryAsset != Asset::Type::NONE)
                             {
-                                scene.Add(Scene::Element(Asset::Get(tile.TemporaryAsset), screen));
+                                scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.TemporaryAsset), screen));
 
                                 type = Controls::Type::TEMPORARY_OBSTACLE;
 
@@ -335,7 +335,7 @@ namespace BloodSword::Interface
                         {
                             if (tile.Asset != Asset::Type::NONE)
                             {
-                                scene.Add(Scene::Element(Asset::Get(tile.Asset), screen));
+                                scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                             }
                         }
                         break;
@@ -364,7 +364,7 @@ namespace BloodSword::Interface
 
                     if (tile.Asset != Asset::Type::NONE)
                     {
-                        scene.Add(Scene::Element(Asset::Get(tile.Asset), screen));
+                        scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                     }
                 }
 
@@ -818,7 +818,7 @@ namespace BloodSword::Interface
                 auto itemy = y + item * (h + pad);
 
                 scene.Add(Scene::Element(x, itemy, w, h, background, border, pixels));
-                scene.Add(Scene::Element(choices[start + item], x, itemy));
+                scene.VerifyAndAdd(Scene::Element(choices[start + item], x, itemy));
                 scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, itemy - offset, wadjust, h + adjust, highlight));
             }
 
@@ -826,7 +826,7 @@ namespace BloodSword::Interface
             {
                 if (scrollup)
                 {
-                    scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), xpad, y));
+                    scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), xpad, y));
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_UP,
                         scroll, startid, scroll, scroll, (more ? scroll + 1 : startid),
@@ -837,7 +837,7 @@ namespace BloodSword::Interface
 
                 if (scrolldn)
                 {
-                    scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), xpad, y + yadjust));
+                    scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), xpad, y + yadjust));
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_DOWN,
                         start > 0 ? scroll + 1 : scroll,
@@ -890,7 +890,7 @@ namespace BloodSword::Interface
                 auto rt = id < items - 1 ? id + 1 : id;
 
                 overlay.Add(Scene::Element(itemx, y, currentw, currenth, background, border, pixels));
-                overlay.Add(Scene::Element(choices[item], itemx, y));
+                overlay.VerifyAndAdd(Scene::Element(choices[item], itemx, y));
                 overlay.Add(Controls::Base(controls[item], id, lt, rt, id, id, itemx - offset, y - offset, currentw + adjust, currenth + adjust, highlight));
             }
         }
@@ -951,18 +951,18 @@ namespace BloodSword::Interface
                     auto rt = i < character.Skills.size() ? i + 1 : i;
 
                     overlay.Add(Controls::Base(Interface::SkillControls[character.Skills[i]], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
-                    overlay.Add(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
+                    overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
                 }
             }
         }
         else
         {
-            overlay.Add(Scene::Element(NoSkills, screen + Point(pad, pad / 2)));
+            overlay.VerifyAndAdd(Scene::Element(NoSkills, screen + Point(pad, pad / 2)));
         }
 
         auto id = (int)(character.Skills.size());
 
-        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * 64 + pad, screen.Y + pad + 32));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * 64 + pad, screen.Y + pad + 32));
 
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * 64 + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
 
@@ -1025,7 +1025,7 @@ namespace BloodSword::Interface
                     auto y = screen.Y + row * (textureh + 32) + pad + 32;
 
                     overlay.Add(Controls::Base(Interface::SpellControls[character.Spells[i].Type], i, lt, rt, up, dn, x, y, 64, 64, Color::Highlight));
-                    overlay.Add(Scene::Element(texture, x, y));
+                    overlay.VerifyAndAdd(Scene::Element(texture, x, y));
                 }
 
                 if (col < 5)
@@ -1042,7 +1042,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            overlay.Add(Scene::Element(NoSpells, screen + Point(pad, pad / 2)));
+            overlay.VerifyAndAdd(Scene::Element(NoSpells, screen + Point(pad, pad / 2)));
         }
 
         auto id = (int)(character.Spells.size());
@@ -1050,7 +1050,7 @@ namespace BloodSword::Interface
         auto x = screen.X + col * 64 + pad;
         auto y = screen.Y + row * 96 + pad + 32;
 
-        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), x, y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, y));
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, col < 6 ? id - 6 : id, id, x, y, 64, 64, Color::Highlight));
 
         return overlay;
@@ -1086,13 +1086,13 @@ namespace BloodSword::Interface
                 auto rt = i < party.Count() ? i + 1 : i;
 
                 overlay.Add(Controls::Base(Interface::CharacterControls[party[i].Class], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
-                overlay.Add(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
+                overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
             }
         }
 
         auto id = party.Count();
 
-        overlay.Add(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + party.Count() * 64 + pad, screen.Y + pad + 32));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + party.Count() * 64 + pad, screen.Y + pad + 32));
 
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * 64 + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
 
@@ -1272,27 +1272,27 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
 
             // add character icon
-            overlay.Add(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - 64, pad)));
 
             // set up icon
             if (inbattle && attribute == Attribute::Type::FIGHTING_PROWESS)
             {
                 if (asset == Asset::Type::NONE)
                 {
-                    overlay.Add(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - 128, pad)));
                 }
                 else
                 {
-                    overlay.Add(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
                 }
             }
             else if (attribute == Attribute::Type::PSYCHIC_ABILITY && asset != Asset::Type::NONE)
             {
-                overlay.Add(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - 128, pad)));
             }
 
             // attribute label
-            overlay.Add(Scene::Element(attribute_texture, origin + Point(pad + 4, pad)));
+            overlay.VerifyAndAdd(Scene::Element(attribute_texture, origin + Point(pad + 4, pad)));
 
             if (stage == Engine::RollStage::START)
             {
@@ -1310,18 +1310,18 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
                 }
 
                 if (result)
                 {
                     // passed
-                    overlay.Add(Scene::Element(passed, origin + Point(w - pad - 64, pad + 64)));
+                    overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(w - pad - 64, pad + 64)));
                 }
                 else
                 {
                     // failed
-                    overlay.Add(Scene::Element(failed, origin + Point(w - pad - 64, pad + 64)));
+                    overlay.VerifyAndAdd(Scene::Element(failed, origin + Point(w - pad - 64, pad + 64)));
                 }
             }
             else
@@ -1329,7 +1329,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 64)));
                 }
             }
 
@@ -1443,17 +1443,17 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, borderSize));
 
             // add damage icon
-            overlay.Add(Scene::Element(Asset::Get(asset), origin + Point((w - 64) / 2, pad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point((w - 64) / 2, pad)));
 
             // add attacker icon and stats
-            overlay.Add(Scene::Element(Asset::Get(attacker.Asset), origin + pad));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin + pad));
 
-            overlay.Add(Scene::Element(damage_texture, origin + Point(pad, pad + 64)));
+            overlay.VerifyAndAdd(Scene::Element(damage_texture, origin + Point(pad, pad + 64)));
 
             // add defender icon and stats
-            overlay.Add(Scene::Element(Asset::Get(defender.Asset), origin + Point(w - textw - pad, pad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(defender.Asset), origin + Point(w - textw - pad, pad)));
 
-            overlay.Add(Scene::Element(armour_texture, origin + Point(w - textw - pad, pad + 64)));
+            overlay.VerifyAndAdd(Scene::Element(armour_texture, origin + Point(w - textw - pad, pad + 64)));
 
             if (stage == Engine::RollStage::START)
             {
@@ -1471,19 +1471,19 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 128)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + 64) + pad, pad + 128)));
                 }
 
                 if (damage > 0)
                 {
                     // damaged
-                    overlay.Add(Scene::Element(passed, origin + Point(w - textw - pad, texth * 2 + pad + 64)));
-                    overlay.Add(Scene::Element(damage_value, origin + Point(w - textw - pad, texth * 3 + pad + 64)));
+                    overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(w - textw - pad, texth * 2 + pad + 64)));
+                    overlay.VerifyAndAdd(Scene::Element(damage_value, origin + Point(w - textw - pad, texth * 3 + pad + 64)));
                 }
                 else
                 {
                     // unharmed
-                    overlay.Add(Scene::Element(failed, origin + Point(w - textw - pad, texth * 2 + pad + 64)));
+                    overlay.VerifyAndAdd(Scene::Element(failed, origin + Point(w - textw - pad, texth * 2 + pad + 64)));
                 }
             }
             else
@@ -1491,7 +1491,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.Add(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 128)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + 64) + pad, pad + 128)));
                 }
             }
 
@@ -1588,11 +1588,11 @@ namespace BloodSword::Interface
 
             box.Add(Scene::Element(location, boxw, boxh, background, border, borderSize));
 
-            box.Add(Scene::Element(message, location + Point(pad, pad)));
+            box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
 
             auto confirm = location + Point(pad + texturew / 2 - 32, textureh + pad * 2);
 
-            box.Add(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
+            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
 
             box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, confirm.X, confirm.Y, 64, 64, highlight));
 

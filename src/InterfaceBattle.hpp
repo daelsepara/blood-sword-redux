@@ -118,7 +118,7 @@ namespace BloodSword::Interface
 
                 overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
 
-                overlay.Add(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
+                overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
             }
         }
 
@@ -134,7 +134,7 @@ namespace BloodSword::Interface
 
         auto maph = battle.Map.ViewY * battle.Map.TileSize;
 
-        scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), battle.Map.DrawX, battle.Map.DrawY + maph));
+        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), battle.Map.DrawX, battle.Map.DrawY + maph));
 
         scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, battle.Map.DrawX, battle.Map.DrawY + maph, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
 
@@ -846,22 +846,22 @@ namespace BloodSword::Interface
 
                                                     overlay = Interface::Path(battle.Map, character, src, dst);
 
-                                                    overlay.Add(Scene::Element(messages[2], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(messages[2], battle.Map.DrawX, battle.Map.TileSize / 2));
                                                 }
                                                 else if (fight)
                                                 {
                                                     // fight mode
-                                                    overlay.Add(Scene::Element(messages[0], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(messages[0], battle.Map.DrawX, battle.Map.TileSize / 2));
                                                 }
                                                 else if (shoot || spell)
                                                 {
                                                     // shoot mode
-                                                    overlay.Add(Scene::Element(messages[1], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(messages[1], battle.Map.DrawX, battle.Map.TileSize / 2));
                                                 }
                                                 else
                                                 {
                                                     // round number
-                                                    overlay.Add(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
                                                 }
 
                                                 // show character stats
@@ -870,12 +870,12 @@ namespace BloodSword::Interface
                                                     if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < party.Count())
                                                     {
                                                         // stats
-                                                        overlay.Add(Scene::Element(partyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
+                                                        overlay.VerifyAndAdd(Scene::Element(partyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
 
                                                         auto &stats = overlay.Elements.back();
 
                                                         // status
-                                                        overlay.Add(Scene::Element(partyStatus[battle.Map[control.Map].Id], infox, infoy + stats.H + pad * 4, Color::Background, Color::Active, 4));
+                                                        overlay.VerifyAndAdd(Scene::Element(partyStatus[battle.Map[control.Map].Id], infox, infoy + stats.H + pad * 4, Color::Background, Color::Active, 4));
                                                     }
                                                 }
                                                 else if (battle.Map[control.Map].Occupant == Map::Object::ENEMY)
@@ -883,12 +883,12 @@ namespace BloodSword::Interface
                                                     if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < battle.Opponents.Count())
                                                     {
                                                         // enemy stats
-                                                        overlay.Add(Scene::Element(enemyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
+                                                        overlay.VerifyAndAdd(Scene::Element(enemyStats[battle.Map[control.Map].Id], infox, infoy, Color::Background, Color::Active, 4));
 
                                                         auto &stats = overlay.Elements.back();
 
                                                         // status
-                                                        overlay.Add(Scene::Element(enemyStatus[battle.Map[control.Map].Id], infox, infoy + stats.H + pad * 4, Color::Background, Color::Active, 4));
+                                                        overlay.VerifyAndAdd(Scene::Element(enemyStatus[battle.Map[control.Map].Id], infox, infoy + stats.H + pad * 4, Color::Background, Color::Active, 4));
                                                     }
                                                 }
                                                 else if (battle.Map[control.Map].IsTemporarilyBlocked())
@@ -906,13 +906,13 @@ namespace BloodSword::Interface
                                                         texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                                                     }
 
-                                                    overlay.Add(Scene::Element(texture, infox, infoy, Color::Background, Color::Inactive, 4));
+                                                    overlay.VerifyAndAdd(Scene::Element(texture, infox, infoy, Color::Background, Color::Inactive, 4));
                                                 }
                                             }
                                             else
                                             {
                                                 // round number
-                                                overlay.Add(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                overlay.VerifyAndAdd(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
 
                                                 // captions for other controls
                                                 auto exitid = Controls::Find(scene.Controls, Controls::Type::EXIT);
@@ -923,7 +923,7 @@ namespace BloodSword::Interface
                                                 {
                                                     auto control = exitid + caption;
 
-                                                    overlay.Add(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + 8));
+                                                    overlay.VerifyAndAdd(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + 8));
                                                 }
                                             }
                                         }
@@ -933,7 +933,7 @@ namespace BloodSword::Interface
                                             overlay = Interface::Spells(draw, mapw, maph, character, Color::Background, Color::Active, 4, true);
 
                                             // round number
-                                            overlay.Add(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                            overlay.VerifyAndAdd(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
 
                                             if (Input::IsValid(overlay, input))
                                             {
@@ -947,19 +947,19 @@ namespace BloodSword::Interface
 
                                                     if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                                                     {
-                                                        overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
-                                                        overlay.Add(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
-                                                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                                                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
+                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
                                                     }
                                                     else if (!spell.IsBasic() && spell.IsBattle)
                                                     {
-                                                        overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
-                                                        overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
-                                                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                                                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
+                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
                                                     }
                                                     else
                                                     {
-                                                        overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
                                                     }
                                                 }
                                             }
@@ -970,7 +970,7 @@ namespace BloodSword::Interface
                                             overlay = Interface::BattleActions(draw, mapw, maph, battle, isplayer ? party : battle.Opponents, order[combatant].Id, Color::Background, Color::Active, 4);
 
                                             // round number
-                                            overlay.Add(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                            overlay.VerifyAndAdd(Scene::Element(roundstring, battle.Map.DrawX, battle.Map.TileSize / 2));
 
                                             if (Input::IsValid(overlay, input))
                                             {
@@ -979,7 +979,7 @@ namespace BloodSword::Interface
 
                                                 if (BattleControlCaptions.count(control.Type) > 0)
                                                 {
-                                                    overlay.Add(Scene::Element(Interface::BattleControlCaptions[control.Type], control.X, control.Y + control.H + pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::BattleControlCaptions[control.Type], control.X, control.Y + control.H + pad));
                                                 }
                                             }
                                         }

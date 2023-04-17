@@ -158,6 +158,14 @@ namespace BloodSword::Scene
             this->Elements.push_back(element);
         }
 
+        void VerifyAndAdd(Scene::Element element)
+        {
+            if (element.Texture != NULL)
+            {
+                this->Add(element);
+            }
+        }
+
         // add a control hitbox
         void Add(Controls::Base control)
         {

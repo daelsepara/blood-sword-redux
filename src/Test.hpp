@@ -179,19 +179,19 @@ namespace BloodSword::Test
             auto x = map.DrawX;
             auto y = map.DrawY + map.ViewY * map.TileSize;
 
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
             auto arrow_up = offset > 0;
             auto arrow_down = backgroundh < textureh && offset < (textureh - backgroundh);
 
             if (arrow_up)
             {
-                scene.Add(Scene::Element(Asset::Get(Asset::Type::UP), scrollx, map.DrawY));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scrollx, map.DrawY));
             }
 
             if (arrow_down)
             {
-                scene.Add(Scene::Element(Asset::Get(Asset::Type::DOWN), scrollx, scrolly));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scrollx, scrolly));
             }
 
             if (arrow_up || arrow_down)
@@ -231,7 +231,7 @@ namespace BloodSword::Test
                     if (tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER)
                     {
                         // stats
-                        scene.Add(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, Color::Background, Color::Active, 4));
+                        scene.VerifyAndAdd(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, Color::Background, Color::Active, 4));
 
                         // character class
                         object = (int)party[tile.Id].Class + 7;
@@ -264,7 +264,7 @@ namespace BloodSword::Test
                     if (object >= 0 && object < textures.size())
                     {
                         scene.Add(Scene::Element(objectx, objecty, objectw, map.TileSize, background, border, 4));
-                        scene.Add(Scene::Element(textures[object], objectx, objecty));
+                        scene.VerifyAndAdd(Scene::Element(textures[object], objectx, objecty));
                     }
                 }
             }
@@ -272,7 +272,7 @@ namespace BloodSword::Test
             if (background >= 0 && background < backgrounds.size())
             {
                 scene.Add(Scene::Element(backgroundx, backgroundy, backgroundw, backgroundh, Color::Highlight, Color::Active, 4));
-                scene.Add(Scene::Element(backgrounds[background], backgroundx, backgroundy, backgroundh, offset));
+                scene.VerifyAndAdd(Scene::Element(backgrounds[background], backgroundx, backgroundy, backgroundh, offset));
             }
 
             if (scroll_up)
@@ -421,9 +421,9 @@ namespace BloodSword::Test
 
             auto id = (int)(scene.Controls.size());
 
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
             scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
@@ -675,9 +675,9 @@ namespace BloodSword::Test
 
             auto id = scene.Controls.size();
 
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
             scene.Add(Controls::Base(Controls::Type::MOVE, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::RESET, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
@@ -895,7 +895,7 @@ namespace BloodSword::Test
                         if (map[control.Map].Id >= 0 && map[control.Map].Id < party.Count())
                         {
                             // stats
-                            overlay.Add(Scene::Element(stats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
+                            overlay.VerifyAndAdd(Scene::Element(stats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
                         }
                     }
                     else if (map[control.Map].Occupant == Map::Object::ENEMY)
@@ -903,7 +903,7 @@ namespace BloodSword::Test
                         if (map[control.Map].Id >= 0 && map[control.Map].Id < enemies.Count())
                         {
                             // enemy stats
-                            overlay.Add(Scene::Element(enemyStats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
+                            overlay.VerifyAndAdd(Scene::Element(enemyStats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
                         }
                     }
                 }
@@ -917,7 +917,7 @@ namespace BloodSword::Test
                     {
                         auto control = moveid + caption;
 
-                        overlay.Add(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + 8));
+                        overlay.VerifyAndAdd(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + 8));
                     }
                 }
             }
@@ -932,11 +932,11 @@ namespace BloodSword::Test
 
                     if ((inbattle && Skills::IsBattleSkill(skill)) || (!inbattle && Skills::IsStorySkill(skill)))
                     {
-                        overlay.Add(Scene::Element(Interface::SkillCaptionsActive[skill], control.X, control.Y + control.H + pad));
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[skill], control.X, control.Y + control.H + pad));
                     }
                     else
                     {
-                        overlay.Add(Scene::Element(Interface::SkillCaptionsInactive[skill], control.X, control.Y + control.H + pad));
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsInactive[skill], control.X, control.Y + control.H + pad));
                     }
                 }
             }
@@ -955,37 +955,37 @@ namespace BloodSword::Test
                     {
                         if (spell.IsBasic() || party[popupid].HasCalledToMind(spell.Type))
                         {
-                            overlay.Add(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
                         }
 
                         if (spell.IsBasic() || (party[popupid].HasCalledToMind(spell.Type) && !spell.IsBattle))
                         {
-                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
-                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
                         }
                         else if (!party[popupid].HasCalledToMind(spell.Type))
                         {
-                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
-                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
                         }
                     }
                     else
                     {
                         if (party[popupid].HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                         {
-                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
-                            overlay.Add(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
-                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
                         }
                         else if (!spell.IsBasic() && spell.IsBattle)
                         {
-                            overlay.Add(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
-                            overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
-                            overlay.Add(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
                         }
                         else
                         {
-                            overlay.Add(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
                         }
                     }
                 }
@@ -1279,14 +1279,14 @@ namespace BloodSword::Test
         {
             auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, fixed, highlight, true);
 
-            scene.Add(Scene::Element(title, xadjust, 28));
+            scene.VerifyAndAdd(Scene::Element(title, xadjust, 28));
 
             auto &lastControl = scene.Controls.back();
             auto id = lastControl.Id + 1;
             auto first = Controls::Find(scene.Controls, Controls::Type::CHOICE);
             auto bottomy = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, xadjust, bottomy, dim, dim, highlight));
 
             if (Input::IsValid(scene, input) && input.Type == Controls::Type::CHOICE)
@@ -1306,11 +1306,11 @@ namespace BloodSword::Test
             scene.Add(Scene::Element(boxx + pad * 2 + 192, origin, 192, 128, Palette::List[palette][1], Palette::List[palette][1], 2));
             scene.Add(Scene::Element(boxx + pad, origin + 192, 192, 128, Palette::List[palette][2], Palette::List[palette][2], 2));
             scene.Add(Scene::Element(boxx + pad * 2 + 192, origin + 192, 192, 128, Palette::List[palette][3], fixed, 2));
-            scene.Add(Scene::Element(labels[0], Point(boxx + pad, origin + 136)));
-            scene.Add(Scene::Element(labels[1], Point(boxx + pad * 2 + 192, origin + 136)));
-            scene.Add(Scene::Element(labels[2], Point(boxx + pad, origin + 328)));
-            scene.Add(Scene::Element(labels[3], Point(boxx + pad * 2 + 192, origin + 328)));
-            scene.Add(Scene::Element(menu[palette], boxx + pad, origin + 392));
+            scene.VerifyAndAdd(Scene::Element(labels[0], Point(boxx + pad, origin + 136)));
+            scene.VerifyAndAdd(Scene::Element(labels[1], Point(boxx + pad * 2 + 192, origin + 136)));
+            scene.VerifyAndAdd(Scene::Element(labels[2], Point(boxx + pad, origin + 328)));
+            scene.VerifyAndAdd(Scene::Element(labels[3], Point(boxx + pad * 2 + 192, origin + 328)));
+            scene.VerifyAndAdd(Scene::Element(menu[palette], boxx + pad, origin + 392));
 
             if (input.Up)
             {
@@ -1463,7 +1463,7 @@ namespace BloodSword::Test
 
                 auto &popup = overlay.Elements[0];
 
-                overlay.Add(Scene::Element(select, popup.X + 16, popup.Y + 8));
+                overlay.VerifyAndAdd(Scene::Element(select, popup.X + 16, popup.Y + 8));
             }
 
             if (Input::IsValid(overlay, input))
@@ -1474,7 +1474,7 @@ namespace BloodSword::Test
                     auto &control = overlay.Controls[input.Current];
                     auto &popup = overlay.Elements[0];
 
-                    overlay.Add(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
                     auto texturew = 0;
 
@@ -1483,7 +1483,7 @@ namespace BloodSword::Test
                         SDL_QueryTexture(stats[input.Current], NULL, NULL, &texturew, NULL);
                     }
 
-                    overlay.Add(Scene::Element(stats[input.Current], popup.X - (texturew + pad * 2), popup.Y, 0, Color::Active, 4));
+                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texturew + pad * 2), popup.Y, 0, Color::Active, 4));
                 }
             }
 
@@ -1551,12 +1551,12 @@ namespace BloodSword::Test
 
             auto texture = Graphics::CreateText(graphics, ("ROUND: " + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
-            scene.Add(Scene::Element(texture, Point(0, 0)));
+            scene.VerifyAndAdd(Scene::Element(texture, Point(0, 0)));
 
             if (Engine::Score(player, Attribute::Type::AWARENESS, true) >= Engine::Score(enemy, Attribute::Type::AWARENESS, true))
             {
                 // player turn
-                scene.Add(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
+                scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
                 alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
 
@@ -1587,7 +1587,7 @@ namespace BloodSword::Test
             else
             {
                 // enemy turn
-                scene.Add(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
+                scene.VerifyAndAdd(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
                 alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
 
@@ -1665,14 +1665,14 @@ namespace BloodSword::Test
 
             auto texture = Graphics::CreateText(graphics, ("ROUND: " + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
-            scene.Add(Scene::Element(texture, Point(0, 0)));
+            scene.VerifyAndAdd(Scene::Element(texture, Point(0, 0)));
 
             if (Engine::Score(player, Attribute::Type::AWARENESS, true) >= Engine::Score(enemy, Attribute::Type::AWARENESS, true))
             {
                 if (player.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
                 {
                     // player turn
-                    scene.Add(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
+                    scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
                     alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, false, Asset::Type::ARCHERY);
 
@@ -1681,7 +1681,7 @@ namespace BloodSword::Test
                 else
                 {
                     // quiver empty
-                    scene.Add(Scene::Element(events[2], Point(0, scene.Elements[0].H)));
+                    scene.VerifyAndAdd(Scene::Element(events[2], Point(0, scene.Elements[0].H)));
                 }
 
                 // enemy turn
@@ -1695,7 +1695,7 @@ namespace BloodSword::Test
             else
             {
                 // enemy turn
-                scene.Add(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
+                scene.VerifyAndAdd(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
                 alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, false, Asset::Type::SHURIKEN);
 
@@ -1892,14 +1892,14 @@ namespace BloodSword::Test
         {
             auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, Color::Inactive, Color::Highlight, true);
 
-            scene.Add(Scene::Element(title, xadjust, 28));
+            scene.VerifyAndAdd(Scene::Element(title, xadjust, 28));
 
             auto &lastControl = scene.Controls.back();
             auto id = lastControl.Id + 1;
             auto first = Controls::Find(scene.Controls, Controls::Type::CHOICE);
             auto bottomy = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.Add(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, xadjust, bottomy, dim, dim, Color::Highlight));
 
             if (input.Up)

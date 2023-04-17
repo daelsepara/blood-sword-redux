@@ -358,7 +358,7 @@ namespace BloodSword::Animation
                     scene.Add(Scene::Element(dst + 4, 58, 58, 0, Color::Inactive, 2));
                 }
 
-                scene.Add(Scene::Element(animation.Frames[animation.Frame].Texture, location));
+                scene.VerifyAndAdd(Scene::Element(animation.Frames[animation.Frame].Texture, location));
 
                 if (trail)
                 {
