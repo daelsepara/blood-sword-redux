@@ -1802,13 +1802,18 @@ namespace BloodSword::Interface
         auto party = Party::Base();
 
         std::vector<Graphics::RichText> party_sizes = {
-            Graphics::RichText("1 - Starting rank: 8", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText("2 - Starting rank: 4", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText("3 - Starting rank: 3", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText("4 - Starting rank: 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(" 1 Starting rank(s): 8", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(" 2 Starting rank(s): 4", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(" 3 Starting rank(s): 3", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(" 4 Starting rank(s): 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         };
 
-        auto party_size = Choice(graphics, background, party_sizes, origin, w, h, 4, bgcolor, border, Color::Highlight);
+        auto party_size = Choice(graphics, background, party_sizes, origin, w, h, 4, bgcolor, border, Color::Highlight) + 1;
+
+        if (party_size > 0 && party_size <= 4)
+        {
+            
+        }
 
         return party;
     }
