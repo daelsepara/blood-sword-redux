@@ -1834,24 +1834,7 @@ namespace BloodSword::Test
 
     void Story(Graphics::Base &graphics)
     {
-        auto scene = Scene::Base();
-        auto width = 254;
-        auto base_height = 32;
-        auto pad = 8;
-        auto items = 4;
-        auto height = (base_height + pad * 2) * items - pad * 7 / 2;
-        auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
-        auto menuw = 0;
-        auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_BOLD);
-
-        SDL_QueryTexture(menu_title, NULL, NULL, &menuw, NULL);
-
-        scene.Add(Scene::Element(menu_title, Point((graphics.Width - menuw) / 2, origin.Y - pad * 6)));
-        scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, 4));
-
-        auto party = Interface::CreateParty(graphics, scene, origin, width, base_height, Color::Background, Color::Background, Color::Highlight);
-
-        Free(&menu_title);
+        auto party = Interface::CreateParty(graphics);
     }
 
     void Menu(Graphics::Base &graphics)

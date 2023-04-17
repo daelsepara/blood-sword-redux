@@ -645,6 +645,12 @@ namespace BloodSword::Interface
         return textures;
     }
 
+    // generate stats
+    std::vector<SDL_Texture *> GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool inbattle = true)
+    {
+        return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, inbattle);
+    }
+
     // generate texture of character status
     SDL_Texture *Status(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 color, int style, bool inbattle = false)
     {
@@ -1796,9 +1802,131 @@ namespace BloodSword::Interface
         return choice;
     }
 
-    // create a party
-    Party::Base CreateParty(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 bgcolor, Uint32 border, Uint32 highlight)
+    // choose a character
+    Character::Class Character(Graphics::Base &graphics, int rank)
     {
+        auto characterClass = Character::Class::NONE;
+
+        // create party
+        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, rank),
+                                  Generate::Character(Character::Class::TRICKSTER, rank),
+                                  Generate::Character(Character::Class::SAGE, rank),
+                                  Generate::Character(Character::Class::ENCHANTER, rank)});
+
+        auto RegenerateCharacterCaptions = [&](Party::Base &party)
+        {
+            std::vector<Graphics::RichText> characters = {};
+
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
+
+                characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, 160));
+            }
+
+            return Graphics::CreateText(graphics, characters);
+        };
+
+        auto stats = Interface::GenerateStats(graphics, party, 320, false, true);
+
+        auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto captions = RegenerateCharacterCaptions(party);
+
+        auto pad = 10;
+
+        auto input = Controls::User();
+
+        auto characters = true;
+
+        auto done = false;
+
+        std::vector<Attribute::Type> attributes = {
+            Attribute::Type::FIGHTING_PROWESS,
+            Attribute::Type::AWARENESS,
+            Attribute::Type::PSYCHIC_ABILITY};
+
+        while (!done)
+        {
+            auto scene = Scene::Base();
+
+            auto overlay = Scene::Base();
+
+            if (characters)
+            {
+                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
+
+                auto &popup = overlay.Elements[0];
+
+                overlay.VerifyAndAdd(Scene::Element(select, popup.X + 16, popup.Y + 8));
+            }
+
+            if (Input::IsValid(overlay, input))
+            {
+                // party popup captions
+                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                {
+                    auto &control = overlay.Controls[input.Current];
+                    auto &popup = overlay.Elements[0];
+
+                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+
+                    auto texturew = 0;
+
+                    if (stats[input.Current])
+                    {
+                        SDL_QueryTexture(stats[input.Current], NULL, NULL, &texturew, NULL);
+                    }
+
+                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texturew + pad * 2), popup.Y, 0, Color::Active, 4));
+                }
+            }
+
+            input = Input::WaitForInput(graphics, scene, overlay, input, characters);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    if (characters)
+                    {
+                        done = true;
+                    }
+                }
+                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
+                {
+                    characterClass = party[input.Current].Class;
+
+                    done = true;
+                }
+            }
+        }
+
+        Free(&select);
+        Free(stats);
+        Free(captions);
+
+        return characterClass;
+    }
+
+    // create a party
+    Party::Base CreateParty(Graphics::Base &graphics)
+    {
+        auto scene = Scene::Base();
+        auto width = 254;
+        auto base_height = 32;
+        auto pad = 8;
+        auto items = 4;
+        auto height = (base_height + pad * 2) * items - pad * 7 / 2;
+        auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
+        auto menuw = 0;
+        auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_BOLD);
+
+        SDL_QueryTexture(menu_title, NULL, NULL, &menuw, NULL);
+
+        scene.Add(Scene::Element(menu_title, Point((graphics.Width - menuw) / 2, origin.Y - pad * 6)));
+        scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, 4));
+
         auto party = Party::Base();
 
         std::vector<Graphics::RichText> party_sizes = {
@@ -1808,12 +1936,57 @@ namespace BloodSword::Interface
             Graphics::RichText(" 4 Starting rank(s): 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         };
 
-        auto party_size = Choice(graphics, background, party_sizes, origin, w, h, 4, bgcolor, border, highlight) + 1;
+        auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, 4, Color::Background, Color::Background, Color::Highlight) + 1;
 
         if (party_size > 0 && party_size <= 4)
         {
-            
+            auto rank = 8;
+
+            if (party_size == 2)
+            {
+                rank = 4;
+            }
+            else if (party_size == 3)
+            {
+                rank = 3;
+            }
+            else if (party_size == 4)
+            {
+                rank = 2;
+            }
+
+            for (auto i = 0; i < party_size; i++)
+            {
+                auto valid = false;
+
+                while (!valid)
+                {
+                    auto characterClass = Interface::Character(graphics, rank);
+
+                    if (party.Count() < party_size)
+                    {
+                        auto bgScene = Scene::Base();
+
+                        if (!party.Has(characterClass))
+                        {
+                            auto character = Generate::Character(characterClass, rank);
+
+                            party.Add(character);
+
+                            valid = true;
+                            
+                            Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " already added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, false);
+                        }
+                    }
+                }
+            }
         }
+
+        Free(&menu_title);
 
         return party;
     }

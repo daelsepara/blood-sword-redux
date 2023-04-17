@@ -141,12 +141,6 @@ namespace BloodSword::Interface
         return scene;
     }
 
-    // generate stats
-    std::vector<SDL_Texture *> GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool inbattle = true)
-    {
-        return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, inbattle);
-    }
-
     // generate status
     std::vector<SDL_Texture *> GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool inbattle = true)
     {
