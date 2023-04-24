@@ -82,6 +82,43 @@ namespace BloodSword::Party
 
             return (*this)[this->Find(characterClass) - this->Members.begin()];
         }
+
+        // remove character from party (based on index)
+        void Remove(int index)
+        {
+            if (index >= 0 && index < this->Count())
+            {
+                this->Members.erase(this->Members.begin() + index);
+            }
+        }
+
+        // remove character from party (based on character class)
+        void Remove(Character::Class characterClass)
+        {
+            auto found = -1;
+
+            if (!this->Has(characterClass))
+            {
+                throw std::invalid_argument("Character not in party!");
+            }
+
+            for (auto i = 0; i < this->Count(); i++)
+            {
+                auto member = (*this)[i];
+
+                if (member.Class == characterClass)
+                {
+                    found = i;
+
+                    break;
+                }
+            }
+
+            if (found >= 0 && found < this->Count())
+            {
+                this->Remove(found);
+            }
+        }
     };
 }
 

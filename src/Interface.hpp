@@ -1955,33 +1955,25 @@ namespace BloodSword::Interface
                 rank = 2;
             }
 
-            for (auto i = 0; i < party_size; i++)
+            while (party.Count() != party_size)
             {
-                auto valid = false;
+                auto characterClass = Interface::Character(graphics, rank);
 
-                while (!valid)
+                auto bgScene = Scene::Base();
+
+                if (!party.Has(characterClass))
                 {
-                    auto characterClass = Interface::Character(graphics, rank);
+                    auto character = Generate::Character(characterClass, rank);
 
-                    if (party.Count() < party_size)
-                    {
-                        auto bgScene = Scene::Base();
+                    party.Add(character);
 
-                        if (!party.Has(characterClass))
-                        {
-                            auto character = Generate::Character(characterClass, rank);
+                    Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
+                }
+                else
+                {
+                    party.Remove(characterClass);
 
-                            party.Add(character);
-
-                            valid = true;
-                            
-                            Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
-                        }
-                        else
-                        {
-                            Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " already added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, false);
-                        }
-                    }
+                    Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, false);
                 }
             }
         }
