@@ -1063,7 +1063,7 @@ namespace BloodSword::Interface
     }
 
     // choose character from a party
-    Scene::Base Party(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int bordersize)
+    Scene::Base Party(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int bordersize, bool back = true)
     {
         auto overlay = Scene::Base();
 
@@ -1089,18 +1089,31 @@ namespace BloodSword::Interface
                 SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
 
                 auto lt = i > 0 ? i - 1 : i;
-                auto rt = i < party.Count() ? i + 1 : i;
+                
+                auto rt  = 0;
+
+                if (back)
+                {
+                    rt = i < party.Count() ? i + 1 : i;
+                }
+                else
+                {
+                    rt = i < party.Count() - 1 ? i + 1 : i;
+                }
 
                 overlay.Add(Controls::Base(Interface::CharacterControls[party[i].Class], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
                 overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
             }
         }
 
-        auto id = party.Count();
+        if (back)
+        {
+            auto id = party.Count();
 
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + party.Count() * 64 + pad, screen.Y + pad + 32));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + party.Count() * 64 + pad, screen.Y + pad + 32));
 
-        overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * 64 + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+            overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * 64 + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+        }
 
         return overlay;
     }
@@ -1854,7 +1867,7 @@ namespace BloodSword::Interface
 
             if (characters)
             {
-                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
+                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4, false);
 
                 auto &popup = overlay.Elements[0];
 
@@ -1961,19 +1974,22 @@ namespace BloodSword::Interface
 
                 auto bgScene = Scene::Base();
 
-                if (!party.Has(characterClass))
+                if (characterClass != Character::Class::NONE)
                 {
-                    auto character = Generate::Character(characterClass, rank);
+                    if (!party.Has(characterClass))
+                    {
+                        auto character = Generate::Character(characterClass, rank);
 
-                    party.Add(character);
+                        party.Add(character);
 
-                    Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
-                }
-                else
-                {
-                    party.Remove(characterClass);
+                        Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
+                    }
+                    else
+                    {
+                        party.Remove(characterClass);
 
-                    Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, false);
+                        Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, false);
+                    }
                 }
             }
         }
