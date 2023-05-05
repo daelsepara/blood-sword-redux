@@ -530,7 +530,7 @@ namespace BloodSword::Interface
 
             auto popup = draw + (Point(mapw, maph) - Point(512, 140)) / 2;
 
-            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, 512, 64, 2, Color::Background, Color::Inactive, Color::Active);
+            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, 512, 64, 2, Color::Background, Color::Inactive, Color::Active, true);
 
             if (tiger == 0)
             {

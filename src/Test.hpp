@@ -1451,6 +1451,17 @@ namespace BloodSword::Test
             Attribute::Type::AWARENESS,
             Attribute::Type::PSYCHIC_ABILITY};
 
+        auto popup_pad = 16;
+
+        auto popupw = (party.Count() + 1) * 64 + popup_pad * 2;
+
+        auto popuph = 0;
+
+        if (stats.size() > 0)
+        {
+            SDL_QueryTexture(stats[0], NULL, NULL, NULL, &popuph);
+        }
+
         while (!done)
         {
             auto scene = Scene::Base();
@@ -1459,7 +1470,14 @@ namespace BloodSword::Test
 
             if (characters)
             {
-                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
+                if (popuph > 0)
+                {
+                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4);
+                }
+                else
+                {
+                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
+                }
 
                 auto &popup = overlay.Elements[0];
 
@@ -1834,7 +1852,7 @@ namespace BloodSword::Test
 
     void Story(Graphics::Base &graphics)
     {
-        auto party = Interface::CreateParty(graphics);
+        auto party = Interface::CreateParty(graphics, false);
     }
 
     void Menu(Graphics::Base &graphics)

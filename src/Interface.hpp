@@ -1063,15 +1063,11 @@ namespace BloodSword::Interface
     }
 
     // choose character from a party
-    Scene::Base Party(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int bordersize, bool back = true)
+    Scene::Base Party(Point origin, int w, int h, Party::Base &party, int popupw, int popuph, Uint32 background, Uint32 border, int bordersize, bool back = true)
     {
         auto overlay = Scene::Base();
 
         auto pad = 16;
-
-        auto popupw = (party.Count() + 1) * 64 + pad * 2;
-
-        auto popuph = 128 + pad * 2;
 
         auto screen = origin + Point(w - popupw, h - popuph) / 2;
 
@@ -1089,8 +1085,8 @@ namespace BloodSword::Interface
                 SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
 
                 auto lt = i > 0 ? i - 1 : i;
-                
-                auto rt  = 0;
+
+                auto rt = 0;
 
                 if (back)
                 {
@@ -1116,6 +1112,18 @@ namespace BloodSword::Interface
         }
 
         return overlay;
+    }
+
+    // choose character from a party
+    Scene::Base Party(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int bordersize, bool back = true)
+    {
+        auto pad = 16;
+
+        auto popupw = (party.Count() + 1) * 64 + pad * 2;
+
+        auto popuph = 128 + pad * 2;
+
+        return Party(origin, w, h, party, popupw, popuph, background, border, bordersize, back);
     }
 
     // setup movement animation
@@ -1722,7 +1730,7 @@ namespace BloodSword::Interface
     }
 
     // select from a list of options
-    int Choice(Graphics::Base &graphics, Scene::Base &background, std::vector<Graphics::RichText> &choices, Point origin, int w, int h, int limit, Uint32 bgcolor, Uint32 border, Uint32 highlight)
+    int Choice(Graphics::Base &graphics, Scene::Base &background, std::vector<Graphics::RichText> &choices, Point origin, int w, int h, int limit, Uint32 bgcolor, Uint32 border, Uint32 highlight, bool blur = true)
     {
         auto menu = Graphics::CreateText(graphics, choices);
         auto options = (int)(choices.size());
@@ -1749,7 +1757,7 @@ namespace BloodSword::Interface
                 input.Down = false;
             }
 
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+            input = Input::WaitForInput(graphics, background, overlay, input, true, blur);
 
             if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
             {
@@ -1859,6 +1867,17 @@ namespace BloodSword::Interface
             Attribute::Type::AWARENESS,
             Attribute::Type::PSYCHIC_ABILITY};
 
+        auto popup_pad = 16;
+
+        auto popupw = (party.Count() + 1) * 64 + popup_pad * 2;
+
+        auto popuph = 0;
+
+        if (stats.size() > 0)
+        {
+            SDL_QueryTexture(stats[0], NULL, NULL, NULL, &popuph);
+        }
+
         while (!done)
         {
             auto scene = Scene::Base();
@@ -1867,7 +1886,14 @@ namespace BloodSword::Interface
 
             if (characters)
             {
-                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4, false);
+                if (popuph > 0)
+                {
+                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4, false);
+                }
+                else
+                {
+                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4, false);
+                }
 
                 auto &popup = overlay.Elements[0];
 
@@ -1923,7 +1949,7 @@ namespace BloodSword::Interface
     }
 
     // create a party
-    Party::Base CreateParty(Graphics::Base &graphics)
+    Party::Base CreateParty(Graphics::Base &graphics, bool blur = true)
     {
         auto scene = Scene::Base();
         auto width = 254;
@@ -1933,7 +1959,7 @@ namespace BloodSword::Interface
         auto height = (base_height + pad * 2) * items - pad * 7 / 2;
         auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
         auto menuw = 0;
-        auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_BOLD);
+        auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
         SDL_QueryTexture(menu_title, NULL, NULL, &menuw, NULL);
 
@@ -1949,7 +1975,7 @@ namespace BloodSword::Interface
             Graphics::RichText(" 4 Starting rank(s): 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         };
 
-        auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, 4, Color::Background, Color::Background, Color::Highlight) + 1;
+        auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, 4, Color::Background, Color::Background, Color::Highlight, blur) + 1;
 
         if (party_size > 0 && party_size <= 4)
         {
