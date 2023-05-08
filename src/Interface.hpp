@@ -651,6 +651,53 @@ namespace BloodSword::Interface
         return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, inbattle);
     }
 
+    // generate character skills
+    SDL_Texture *Skills(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 skillsColor, int style, int wrap)
+    {
+        std::string skills;
+
+        if (character.Skills.size() > 0)
+        {
+            for (auto &skill : character.Skills)
+            {
+                if (skills.length() > 0)
+                {
+                    skills += "\n";
+                }
+
+                skills += Skills::TypeMapping[skill];
+            }
+        }
+        else
+        {
+            skills = Skills::TypeMapping[Skills::Type::NONE];
+        }
+
+        auto texture = Graphics::CreateText(graphics, skills.c_str(), font, Color::S(skillsColor), style, wrap);
+
+        return texture;
+    }
+
+    // create party skills text box collection
+    std::vector<SDL_Texture *> Skills(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 skillsColor, int style, int wrap)
+    {
+        std::vector<SDL_Texture *> textures = {};
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto &character = party[i];
+
+            auto texture = Interface::Skills(graphics, character, font, skillsColor, style, wrap);
+
+            if (texture)
+            {
+                textures.push_back(texture);
+            }
+        }
+
+        return textures;
+    }
+
     // generate texture of character status
     SDL_Texture *Status(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 color, int style, bool inbattle = false)
     {
