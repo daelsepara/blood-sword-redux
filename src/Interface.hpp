@@ -1897,6 +1897,8 @@ namespace BloodSword::Interface
 
         auto stats = Interface::GenerateStats(graphics, party, 320, false, true);
 
+        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 320);
+
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
         auto captions = RegenerateCharacterCaptions(party);
@@ -1957,14 +1959,21 @@ namespace BloodSword::Interface
 
                     overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
-                    auto texturew = 0;
-
                     if (stats[input.Current])
                     {
-                        SDL_QueryTexture(stats[input.Current], NULL, NULL, &texturew, NULL);
+                        auto statsw = 0;
+
+                        SDL_QueryTexture(stats[input.Current], NULL, NULL, &statsw, NULL);
+
+                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (statsw + pad * 2), popup.Y, 0, Color::Active, 4));
                     }
 
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texturew + pad * 2), popup.Y, 0, Color::Active, 4));
+                    if (skills[input.Current])
+                    {
+                        auto skillsx = popup.X + (popup.W + pad * 2);
+                        overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skillsx, popup.Y));
+                        overlay.Add(Scene::Element(skillsx, popup.Y, 320, popup.H, 0, Color::Active, 4));
+                    }
                 }
             }
 
@@ -1989,6 +1998,7 @@ namespace BloodSword::Interface
         }
 
         Free(&select);
+        Free(skills);
         Free(stats);
         Free(captions);
 
