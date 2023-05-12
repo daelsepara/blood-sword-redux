@@ -648,19 +648,6 @@ namespace BloodSword::Test
 
         auto captionw = 320;
 
-        // initialize character info boxes
-        auto GenerateCharacterClassCaptions = [&]()
-        {
-            auto characters = Graphics::CreateText(
-                graphics,
-                {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-                 Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-                 Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-                 Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
-
-            return characters;
-        };
-
         // initialize captions
         auto captions = Graphics::CreateText(
             graphics,
@@ -713,8 +700,8 @@ namespace BloodSword::Test
             }
         };
 
-        // regenerate character info boxes
-        auto characters = GenerateCharacterClassCaptions();
+        // Generate character info boxes
+        auto characters = Interface::GenerateCharacterClassCaptions(graphics, captionw);
 
         // set starting locations
         ResetLocations(map, party, origins);

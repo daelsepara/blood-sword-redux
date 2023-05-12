@@ -1868,6 +1868,32 @@ namespace BloodSword::Interface
         return choice;
     }
 
+    std::vector<SDL_Texture *> GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
+    {
+        std::vector<Graphics::RichText> characters = {};
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
+
+            characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, 160));
+        }
+
+        return Graphics::CreateText(graphics, characters);
+    }
+
+    std::vector<SDL_Texture *> GenerateCharacterClassCaptions(Graphics::Base &graphics, int captionw)
+    {
+        auto characters = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
+
+        return characters;
+    }
+
     // choose a character
     Character::Class SelectCharacter(Graphics::Base &graphics, int rank, Party::Base &currentParty)
     {
@@ -1879,20 +1905,6 @@ namespace BloodSword::Interface
                                   Generate::Character(Character::Class::SAGE, rank),
                                   Generate::Character(Character::Class::ENCHANTER, rank)});
 
-        auto GenerateCharacterClassCaptions = [&](Party::Base &party)
-        {
-            std::vector<Graphics::RichText> characters = {};
-
-            for (auto character = 0; character < party.Count(); character++)
-            {
-                auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
-
-                characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, 160));
-            }
-
-            return Graphics::CreateText(graphics, characters);
-        };
-
         auto stats = Interface::GenerateStats(graphics, party, 320, false, true);
 
         auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 320);
@@ -1901,7 +1913,7 @@ namespace BloodSword::Interface
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto captions = GenerateCharacterClassCaptions(party);
+        auto captions = Interface::GenerateCharacterClassCaptions(graphics, party);
 
         auto pad = 10;
 
