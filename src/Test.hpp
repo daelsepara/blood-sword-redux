@@ -1405,25 +1405,11 @@ namespace BloodSword::Test
                                   Generate::Character(Character::Class::SAGE, 2),
                                   Generate::Character(Character::Class::ENCHANTER, 2)});
 
-        auto GenerateCharacterCaptions = [&](Party::Base &party)
-        {
-            std::vector<Graphics::RichText> characters = {};
-
-            for (auto character = 0; character < party.Count(); character++)
-            {
-                auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
-
-                characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, 160));
-            }
-
-            return Graphics::CreateText(graphics, characters);
-        };
-
         auto stats = Interface::GenerateStats(graphics, party, 320, false, true);
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto captions = GenerateCharacterCaptions(party);
+        auto captions = Interface::GenerateCharacterClassCaptions(graphics, party);
 
         auto pad = 10;
 
