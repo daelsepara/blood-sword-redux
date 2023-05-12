@@ -1871,7 +1871,7 @@ namespace BloodSword::Interface
     }
 
     // choose a character
-    Character::Class Character(Graphics::Base &graphics, int rank)
+    Character::Class Character(Graphics::Base &graphics, int rank, Party::Base &currentParty)
     {
         auto characterClass = Character::Class::NONE;
 
@@ -1901,13 +1901,13 @@ namespace BloodSword::Interface
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
+        auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
         auto captions = RegenerateCharacterCaptions(party);
 
         auto pad = 10;
 
         auto input = Controls::User();
-
-        auto characters = true;
 
         auto done = false;
 
@@ -1933,21 +1933,18 @@ namespace BloodSword::Interface
 
             auto overlay = Scene::Base();
 
-            if (characters)
+            if (popuph > 0)
             {
-                if (popuph > 0)
-                {
-                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4, false);
-                }
-                else
-                {
-                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4, false);
-                }
-
-                auto &popup = overlay.Elements[0];
-
-                overlay.VerifyAndAdd(Scene::Element(select, popup.X + 16, popup.Y + 8));
+                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4, false);
             }
+            else
+            {
+                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4, false);
+            }
+
+            auto &popup = overlay.Elements[0];
+
+            overlay.VerifyAndAdd(Scene::Element(select, popup.X + 16, popup.Y + 8));
 
             if (Input::IsValid(overlay, input))
             {
@@ -1955,7 +1952,6 @@ namespace BloodSword::Interface
                 if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
                 {
                     auto &control = overlay.Controls[input.Current];
-                    auto &popup = overlay.Elements[0];
 
                     overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
@@ -1977,16 +1973,38 @@ namespace BloodSword::Interface
                 }
             }
 
-            input = Input::WaitForInput(graphics, scene, overlay, input, characters);
+            if (currentParty.Count() > 0)
+            {
+                auto &origin = overlay.Elements[0];
+                auto screen = Point(origin.X, origin.Y - 160);
+
+                overlay.Add(Scene::Element(screen, popup.W, 128, 0, Color::Active, 4));
+
+                for (auto i = 0; i < currentParty.Count(); i++)
+                {
+                    auto texture = Asset::Get(currentParty[i].Asset);
+
+                    if (texture)
+                    {
+                        auto texturew = 0;
+                        auto textureh = 0;
+
+                        SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+
+                        overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
+                    }
+                }
+
+                overlay.VerifyAndAdd(Scene::Element(current, screen.X + 16, screen.Y + pad));
+            }
+
+            input = Input::WaitForInput(graphics, scene, overlay, input, true);
 
             if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
             {
                 if (input.Type == Controls::Type::BACK)
                 {
-                    if (characters)
-                    {
-                        done = true;
-                    }
+                    done = true;
                 }
                 else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
                 {
@@ -1997,6 +2015,7 @@ namespace BloodSword::Interface
             }
         }
 
+        Free(&current);
         Free(&select);
         Free(skills);
         Free(stats);
@@ -2053,7 +2072,7 @@ namespace BloodSword::Interface
 
             while (party.Count() != party_size)
             {
-                auto characterClass = Interface::Character(graphics, rank);
+                auto characterClass = Interface::Character(graphics, rank, party);
 
                 auto bgScene = Scene::Base();
 
