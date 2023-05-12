@@ -535,7 +535,7 @@ namespace BloodSword::Engine
         }
         else
         {
-            IntMapping<Character::Status> Active = {};
+            BloodSword::IntMapping<Character::Status> Active = {};
 
             // cooldown other status effects
             for (auto &status : character.Status)

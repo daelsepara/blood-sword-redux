@@ -16,7 +16,7 @@ namespace BloodSword::Item
     {
     public:
         // attributes and modifiers
-        IntMapping<Attribute::Type> Attributes = {};
+        BloodSword::IntMapping<Attribute::Type> Attributes = {};
 
         // item properties
         std::vector<Item::Property> Properties = {};
@@ -35,7 +35,7 @@ namespace BloodSword::Item
 
         Base(const char *name,
              Item::Type type,
-             IntMapping<Attribute::Type> attributes,
+             BloodSword::IntMapping<Attribute::Type> attributes,
              std::vector<Item::Property> properties,
              Item::Type contains,
              int quantity) : Attributes(attributes),
@@ -53,7 +53,7 @@ namespace BloodSword::Item
 
         Base(const char *name,
              Item::Type type,
-             IntMapping<Attribute::Type> attributes,
+             BloodSword::IntMapping<Attribute::Type> attributes,
              std::vector<Item::Property> properties) : Base(name,
                                                             type,
                                                             attributes,

@@ -16,16 +16,17 @@ namespace BloodSword
     template <typename T>
     using Array = std::vector<std::vector<T>>;
 
+    // unordered mapping
+    template <typename T, typename R>
+    using UnorderedMap = std::unordered_map<T, R>;
+
     // maps object/type to a constant character string
     template <typename T>
-    using Mapping = std::unordered_map<T, const char *>;
+    using Mapping = BloodSword::UnorderedMap<T, const char *>;
 
     // maps object/type to an integer
     template <typename T>
-    using IntMapping = std::unordered_map<T, int>;
-
-    template <typename T, typename R>
-    using UnorderedMap = std::unordered_map<T, R>;
+    using IntMapping = BloodSword::UnorderedMap<T, int>;
 
     // search for a constant string key in a map
     template <typename T>

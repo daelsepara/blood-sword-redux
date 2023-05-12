@@ -28,7 +28,7 @@ namespace BloodSword::Character
     class Base
     {
     public:
-        IntMapping<Character::Status> Status = {};
+        BloodSword::IntMapping<Character::Status> Status = {};
 
         Characteristics Attributes = {};
 
