@@ -1109,7 +1109,7 @@ namespace BloodSword::Interface
     }
 
     // choose character from a party
-    Scene::Base Party(Point origin, int w, int h, Party::Base &party, int popupw, int popuph, Uint32 background, Uint32 border, int bordersize, bool back = true)
+    Scene::Base SelectCharacter(Point origin, int w, int h, Party::Base &party, int popupw, int popuph, Uint32 background, Uint32 border, int bordersize, bool back = true)
     {
         auto overlay = Scene::Base();
 
@@ -1160,7 +1160,7 @@ namespace BloodSword::Interface
     }
 
     // choose character from a party
-    Scene::Base Party(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int bordersize, bool back = true)
+    Scene::Base SelectCharacter(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int bordersize, bool back = true)
     {
         auto pad = 16;
 
@@ -1168,7 +1168,7 @@ namespace BloodSword::Interface
 
         auto popuph = 128 + pad * 2;
 
-        return Party(origin, w, h, party, popupw, popuph, background, border, bordersize, back);
+        return Interface::SelectCharacter(origin, w, h, party, popupw, popuph, background, border, bordersize, back);
     }
 
     // setup movement animation
@@ -1869,7 +1869,7 @@ namespace BloodSword::Interface
     }
 
     // choose a character
-    Character::Class Character(Graphics::Base &graphics, int rank, Party::Base &currentParty)
+    Character::Class SelectCharacter(Graphics::Base &graphics, int rank, Party::Base &currentParty)
     {
         auto characterClass = Character::Class::NONE;
 
@@ -1879,7 +1879,7 @@ namespace BloodSword::Interface
                                   Generate::Character(Character::Class::SAGE, rank),
                                   Generate::Character(Character::Class::ENCHANTER, rank)});
 
-        auto RegenerateCharacterCaptions = [&](Party::Base &party)
+        auto GenerateCharacterClassCaptions = [&](Party::Base &party)
         {
             std::vector<Graphics::RichText> characters = {};
 
@@ -1901,7 +1901,7 @@ namespace BloodSword::Interface
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto captions = RegenerateCharacterCaptions(party);
+        auto captions = GenerateCharacterClassCaptions(party);
 
         auto pad = 10;
 
@@ -1933,11 +1933,11 @@ namespace BloodSword::Interface
 
             if (popuph > 0)
             {
-                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4, false);
+                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4, false);
             }
             else
             {
-                overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4, false);
+                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4, false);
             }
 
             auto &popup = overlay.Elements[0];
@@ -2069,7 +2069,7 @@ namespace BloodSword::Interface
 
             while (party.Count() != party_size)
             {
-                auto characterClass = Interface::Character(graphics, rank, party);
+                auto characterClass = Interface::SelectCharacter(graphics, rank, party);
 
                 auto bgScene = Scene::Base();
 

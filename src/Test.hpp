@@ -649,7 +649,7 @@ namespace BloodSword::Test
         auto captionw = 320;
 
         // initialize character info boxes
-        auto RegenerateCharacters = [&]()
+        auto GenerateCharacterClassCaptions = [&]()
         {
             auto characters = Graphics::CreateText(
                 graphics,
@@ -714,7 +714,7 @@ namespace BloodSword::Test
         };
 
         // regenerate character info boxes
-        auto characters = RegenerateCharacters();
+        auto characters = GenerateCharacterClassCaptions();
 
         // set starting locations
         ResetLocations(map, party, origins);
@@ -1418,7 +1418,7 @@ namespace BloodSword::Test
                                   Generate::Character(Character::Class::SAGE, 2),
                                   Generate::Character(Character::Class::ENCHANTER, 2)});
 
-        auto RegenerateCharacterCaptions = [&](Party::Base &party)
+        auto GenerateCharacterCaptions = [&](Party::Base &party)
         {
             std::vector<Graphics::RichText> characters = {};
 
@@ -1436,7 +1436,7 @@ namespace BloodSword::Test
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto captions = RegenerateCharacterCaptions(party);
+        auto captions = GenerateCharacterCaptions(party);
 
         auto pad = 10;
 
@@ -1472,11 +1472,11 @@ namespace BloodSword::Test
             {
                 if (popuph > 0)
                 {
-                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4);
+                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4);
                 }
                 else
                 {
-                    overlay = Interface::Party(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
+                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
                 }
 
                 auto &popup = overlay.Elements[0];
