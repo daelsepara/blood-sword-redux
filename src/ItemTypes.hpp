@@ -26,19 +26,19 @@ namespace BloodSword::Item
     };
 
     Mapping<Item::Type> TypeMapping = {
-        {Type::NONE, "NONE"},
-        {Type::SWORD, "SWORD"},
-        {Type::BOW, "BOW"},
-        {Type::ARROW, "ARROW"},
-        {Type::QUARTERSTAFF, "QUARTERSTAFF"},
-        {Type::QUIVER, "QUIVER"},
-        {Type::POUCH, "POUCH"},
-        {Type::GOLD, "GOLD"},
-        {Type::CHAINMAIL, "CHAINMAIL"},
-        {Type::LEATHER_ARMOUR, "LEATHER ARMOUR"},
-        {Type::RINGMAIL, "RINGMAIL"},
-        {Type::SILVER_ARMOUR, "SILVER ARMOUR"},
-        {Type::SHURIKEN, "SHURIKEN"}};
+        {Item::Type::NONE, "NONE"},
+        {Item::Type::SWORD, "SWORD"},
+        {Item::Type::BOW, "BOW"},
+        {Item::Type::ARROW, "ARROW"},
+        {Item::Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Item::Type::QUIVER, "QUIVER"},
+        {Item::Type::POUCH, "POUCH"},
+        {Item::Type::GOLD, "GOLD"},
+        {Item::Type::CHAINMAIL, "CHAINMAIL"},
+        {Item::Type::LEATHER_ARMOUR, "LEATHER ARMOUR"},
+        {Item::Type::RINGMAIL, "RINGMAIL"},
+        {Item::Type::SILVER_ARMOUR, "SILVER ARMOUR"},
+        {Item::Type::SHURIKEN, "SHURIKEN"}};
 
     Item::Type Map(const char *item)
     {

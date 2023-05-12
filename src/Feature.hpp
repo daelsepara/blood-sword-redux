@@ -15,11 +15,11 @@ namespace BloodSword::Feature
     };
 
     Mapping<Feature::Type> TypeMapping = {
-        {Type::NONE, "NONE"},
-        {Type::DESTINATIONS, "DESTINATIONS"},
-        {Type::CHOICES, "CHOICES"},
-        {Type::BATTLE, "BATTLE"},
-        {Type::SHOP, "SHOP"}};
+        {Feature::Type::NONE, "NONE"},
+        {Feature::Type::DESTINATIONS, "DESTINATIONS"},
+        {Feature::Type::CHOICES, "CHOICES"},
+        {Feature::Type::BATTLE, "BATTLE"},
+        {Feature::Type::SHOP, "SHOP"}};
 
     Feature::Type Map(const char *feature)
     {

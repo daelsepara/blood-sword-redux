@@ -42,67 +42,67 @@ namespace BloodSword::Spells
     };
 
     Mapping<Spells::Type> TypeMapping = {
-        {Type::NONE, "NONE"},
-        {Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
-        {Type::NIGHTHOWL, "NIGHTHOWL"},
-        {Type::WHITE_FIRE, "WHITE FIRE"},
-        {Type::SWORDTHRUST, "SWORDTHRUST"},
-        {Type::EYE_OF_THE_TIGER, "EYE OF THE TIGER"},
-        {Type::IMMEDIATE_DELIVERANCE, "IMMEDIATE DELIVERANCE"},
-        {Type::MISTS_OF_DEATH, "MISTS OF DEATH"},
-        {Type::THE_VAMPIRE_SPELL, "THE VAMPIRE SPELL"},
-        {Type::PILLAR_OF_SALT, "PILLAR OF SALT"},
-        {Type::SHEET_LIGHTNING, "SHEET LIGHTNING"},
-        {Type::GHASTLY_TOUCH, "GHASTLY TOUCH"},
-        {Type::NEMESIS_BOLT, "NEMESIS BOLT"},
-        {Type::SERVILE_ENTHRALMENT, "SERVILE ENTHRALMENT"},
-        {Type::SUMMON_FALTYN, "SUMMON FALTYN"},
-        {Type::PREDICTION, "PREDICTION"},
-        {Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
+        {Spells::Type::NONE, "NONE"},
+        {Spells::Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
+        {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
+        {Spells::Type::WHITE_FIRE, "WHITE FIRE"},
+        {Spells::Type::SWORDTHRUST, "SWORDTHRUST"},
+        {Spells::Type::EYE_OF_THE_TIGER, "EYE OF THE TIGER"},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, "IMMEDIATE DELIVERANCE"},
+        {Spells::Type::MISTS_OF_DEATH, "MISTS OF DEATH"},
+        {Spells::Type::THE_VAMPIRE_SPELL, "THE VAMPIRE SPELL"},
+        {Spells::Type::PILLAR_OF_SALT, "PILLAR OF SALT"},
+        {Spells::Type::SHEET_LIGHTNING, "SHEET LIGHTNING"},
+        {Spells::Type::GHASTLY_TOUCH, "GHASTLY TOUCH"},
+        {Spells::Type::NEMESIS_BOLT, "NEMESIS BOLT"},
+        {Spells::Type::SERVILE_ENTHRALMENT, "SERVILE ENTHRALMENT"},
+        {Spells::Type::SUMMON_FALTYN, "SUMMON FALTYN"},
+        {Spells::Type::PREDICTION, "PREDICTION"},
+        {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
     std::unordered_map<Spells::Type, Asset::Type> Assets = {
-        {Type::VOLCANO_SPRAY, Asset::Type::VOLCANO_SPRAY},
-        {Type::NIGHTHOWL, Asset::Type::NIGHTHOWL},
-        {Type::WHITE_FIRE, Asset::Type::WHITE_FIRE},
-        {Type::SWORDTHRUST, Asset::Type::SWORDTHRUST},
-        {Type::EYE_OF_THE_TIGER, Asset::Type::EYE_OF_THE_TIGER},
-        {Type::IMMEDIATE_DELIVERANCE, Asset::Type::IMMEDIATE_DELIVERANCE},
-        {Type::MISTS_OF_DEATH, Asset::Type::MISTS_OF_DEATH},
-        {Type::THE_VAMPIRE_SPELL, Asset::Type::THE_VAMPIRE_SPELL},
-        {Type::PILLAR_OF_SALT, Asset::Type::PILLAR_OF_SALT},
-        {Type::SHEET_LIGHTNING, Asset::Type::SHEET_LIGHTNING},
-        {Type::GHASTLY_TOUCH, Asset::Type::GHASTLY_TOUCH},
-        {Type::NEMESIS_BOLT, Asset::Type::NEMESIS_BOLT},
-        {Type::SERVILE_ENTHRALMENT, Asset::Type::SERVILE_ENTHRALMENT},
-        {Type::SUMMON_FALTYN, Asset::Type::SUMMON_FALTYN},
-        {Type::PREDICTION, Asset::Type::PREDICTION},
-        {Type::DETECT_ENCHANTMENT, Asset::Type::DETECT_ENCHANTMENT}};
+        {Spells::Type::VOLCANO_SPRAY, Asset::Type::VOLCANO_SPRAY},
+        {Spells::Type::NIGHTHOWL, Asset::Type::NIGHTHOWL},
+        {Spells::Type::WHITE_FIRE, Asset::Type::WHITE_FIRE},
+        {Spells::Type::SWORDTHRUST, Asset::Type::SWORDTHRUST},
+        {Spells::Type::EYE_OF_THE_TIGER, Asset::Type::EYE_OF_THE_TIGER},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, Asset::Type::IMMEDIATE_DELIVERANCE},
+        {Spells::Type::MISTS_OF_DEATH, Asset::Type::MISTS_OF_DEATH},
+        {Spells::Type::THE_VAMPIRE_SPELL, Asset::Type::THE_VAMPIRE_SPELL},
+        {Spells::Type::PILLAR_OF_SALT, Asset::Type::PILLAR_OF_SALT},
+        {Spells::Type::SHEET_LIGHTNING, Asset::Type::SHEET_LIGHTNING},
+        {Spells::Type::GHASTLY_TOUCH, Asset::Type::GHASTLY_TOUCH},
+        {Spells::Type::NEMESIS_BOLT, Asset::Type::NEMESIS_BOLT},
+        {Spells::Type::SERVILE_ENTHRALMENT, Asset::Type::SERVILE_ENTHRALMENT},
+        {Spells::Type::SUMMON_FALTYN, Asset::Type::SUMMON_FALTYN},
+        {Spells::Type::PREDICTION, Asset::Type::PREDICTION},
+        {Spells::Type::DETECT_ENCHANTMENT, Asset::Type::DETECT_ENCHANTMENT}};
 
     Mapping<Spells::Class> ClassMapping = {
-        {Class::NONE, "NONE"},
-        {Class::BLASTING, "BLASTING"},
-        {Class::PSYCHIC, "PSYCHIC"}};
+        {Spells::Class::NONE, "NONE"},
+        {Spells::Class::BLASTING, "BLASTING"},
+        {Spells::Class::PSYCHIC, "PSYCHIC"}};
 
     // spells that do not need to be called to mind
     std::vector<Spells::Type> Basic = {
-        Type::SUMMON_FALTYN,
-        Type::PREDICTION,
-        Type::DETECT_ENCHANTMENT};
+        Spells::Type::SUMMON_FALTYN,
+        Spells::Type::PREDICTION,
+        Spells::Type::DETECT_ENCHANTMENT};
 
     std::vector<Spells::Type> Target = {
-        Type::NIGHTHOWL,
-        Type::WHITE_FIRE,
-        Type::SWORDTHRUST,
-        Type::THE_VAMPIRE_SPELL,
-        Type::PILLAR_OF_SALT,
-        Type::GHASTLY_TOUCH,
-        Type::NEMESIS_BOLT,
-        Type::SERVILE_ENTHRALMENT};
+        Spells::Type::NIGHTHOWL,
+        Spells::Type::WHITE_FIRE,
+        Spells::Type::SWORDTHRUST,
+        Spells::Type::THE_VAMPIRE_SPELL,
+        Spells::Type::PILLAR_OF_SALT,
+        Spells::Type::GHASTLY_TOUCH,
+        Spells::Type::NEMESIS_BOLT,
+        Spells::Type::SERVILE_ENTHRALMENT};
 
     std::vector<Spells::Type> TargetsParty = {
-        Type::VOLCANO_SPRAY,
-        Type::MISTS_OF_DEATH,
-        Type::SHEET_LIGHTNING};
+        Spells::Type::VOLCANO_SPRAY,
+        Spells::Type::MISTS_OF_DEATH,
+        Spells::Type::SHEET_LIGHTNING};
 
     Spells::Type Map(const char *spell)
     {

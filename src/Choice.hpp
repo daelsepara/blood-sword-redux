@@ -24,11 +24,11 @@ namespace BloodSword::Choice
     };
 
     Mapping<Choice::Type> TypeMapping = {
-        {Type::NORMAL, "NORMAL"},
-        {Type::ATTRIBUTE, "ATTRIBUTE"},
-        {Type::CHARACTER, "CHARACTER"},
-        {Type::SKILL, "SKILL"},
-        {Type::ITEM, "ITEM"}};
+        {Choice::Type::NORMAL, "NORMAL"},
+        {Choice::Type::ATTRIBUTE, "ATTRIBUTE"},
+        {Choice::Type::CHARACTER, "CHARACTER"},
+        {Choice::Type::SKILL, "SKILL"},
+        {Choice::Type::ITEM, "ITEM"}};
 
     Choice::Type Map(const char *choice)
     {

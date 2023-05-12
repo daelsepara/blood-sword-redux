@@ -88,21 +88,21 @@ namespace BloodSword::Controls
     };
 
     std::vector<Controls::Type> Spells = {
-        Type::VOLCANO_SPRAY,
-        Type::NIGHTHOWL,
-        Type::WHITE_FIRE,
-        Type::SWORDTHRUST,
-        Type::EYE_OF_THE_TIGER,
-        Type::IMMEDIATE_DELIVERANCE,
-        Type::MISTS_OF_DEATH,
-        Type::THE_VAMPIRE_SPELL,
-        Type::PILLAR_OF_SALT,
-        Type::SHEET_LIGHTNING,
-        Type::GHASTLY_TOUCH,
-        Type::NEMESIS_BOLT,
-        Type::SERVILE_ENTHRALMENT,
-        Type::SUMMON_FALTYN,
-        Type::PREDICTION,
-        Type::DETECT_ENCHANTMENT};
+        Controls::Type::VOLCANO_SPRAY,
+        Controls::Type::NIGHTHOWL,
+        Controls::Type::WHITE_FIRE,
+        Controls::Type::SWORDTHRUST,
+        Controls::Type::EYE_OF_THE_TIGER,
+        Controls::Type::IMMEDIATE_DELIVERANCE,
+        Controls::Type::MISTS_OF_DEATH,
+        Controls::Type::THE_VAMPIRE_SPELL,
+        Controls::Type::PILLAR_OF_SALT,
+        Controls::Type::SHEET_LIGHTNING,
+        Controls::Type::GHASTLY_TOUCH,
+        Controls::Type::NEMESIS_BOLT,
+        Controls::Type::SERVILE_ENTHRALMENT,
+        Controls::Type::SUMMON_FALTYN,
+        Controls::Type::PREDICTION,
+        Controls::Type::DETECT_ENCHANTMENT};
 }
 #endif

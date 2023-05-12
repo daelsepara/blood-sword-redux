@@ -21,12 +21,12 @@ namespace BloodSword::Attribute
     };
 
     std::vector<Attribute::Type> All = {
-        Type::FIGHTING_PROWESS,
-        Type::AWARENESS,
-        Type::PSYCHIC_ABILITY,
-        Type::ENDURANCE,
-        Type::DAMAGE,
-        Type::ARMOUR};
+        Attribute::Type::FIGHTING_PROWESS,
+        Attribute::Type::AWARENESS,
+        Attribute::Type::PSYCHIC_ABILITY,
+        Attribute::Type::ENDURANCE,
+        Attribute::Type::DAMAGE,
+        Attribute::Type::ARMOUR};
 
     // attribute case class
     class Base
@@ -50,13 +50,13 @@ namespace BloodSword::Attribute
     };
 
     Mapping<Attribute::Type> TypeMapping = {
-        {Type::NONE, "NONE"},
-        {Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
-        {Type::AWARENESS, "AWARENESS"},
-        {Type::PSYCHIC_ABILITY, "PSYCHIC ABILITY"},
-        {Type::ENDURANCE, "ENDURANCE"},
-        {Type::DAMAGE, "DAMAGE"},
-        {Type::ARMOUR, "ARMOUR"}};
+        {Attribute::Type::NONE, "NONE"},
+        {Attribute::Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
+        {Attribute::Type::AWARENESS, "AWARENESS"},
+        {Attribute::Type::PSYCHIC_ABILITY, "PSYCHIC ABILITY"},
+        {Attribute::Type::ENDURANCE, "ENDURANCE"},
+        {Attribute::Type::DAMAGE, "DAMAGE"},
+        {Attribute::Type::ARMOUR, "ARMOUR"}};
 
     Attribute::Type Map(const char *attribute)
     {

@@ -32,47 +32,47 @@ namespace BloodSword::Skills
     using Mapped = std::unordered_map<Skills::Type, T>;
 
     Mapping<Skills::Type> TypeMapping = {
-        {Type::NONE, "NONE"},
-        {Type::ARCHERY, "ARCHERY"},
-        {Type::DODGING, "DODGING"},
-        {Type::QUARTERSTAFF, "QUARTERSTAFF"},
-        {Type::HEALING, "HEALING"},
-        {Type::ESP, "ESP"},
-        {Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
-        {Type::LEVITATION, "LEVITATION"},
-        {Type::EXORCISM, "EXORCISM"},
-        {Type::SPELLS, "SPELLS"},
-        {Type::CALL_TO_MIND, "CALL TO MIND"},
-        {Type::CAST_SPELL, "CAST SPELL"},
-        {Type::SHURIKEN, "SHURIKEN"}};
+        {Skills::Type::NONE, "NONE"},
+        {Skills::Type::ARCHERY, "ARCHERY"},
+        {Skills::Type::DODGING, "DODGING"},
+        {Skills::Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Skills::Type::HEALING, "HEALING"},
+        {Skills::Type::ESP, "ESP"},
+        {Skills::Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
+        {Skills::Type::LEVITATION, "LEVITATION"},
+        {Skills::Type::EXORCISM, "EXORCISM"},
+        {Skills::Type::SPELLS, "SPELLS"},
+        {Skills::Type::CALL_TO_MIND, "CALL TO MIND"},
+        {Skills::Type::CAST_SPELL, "CAST SPELL"},
+        {Skills::Type::SHURIKEN, "SHURIKEN"}};
 
     std::vector<Skills::Type> BattleSkills = {
-        Type::ARCHERY,
-        Type::DODGING,
-        Type::QUARTERSTAFF,
-        Type::SPELLS,
-        Type::SHURIKEN};
+        Skills::Type::ARCHERY,
+        Skills::Type::DODGING,
+        Skills::Type::QUARTERSTAFF,
+        Skills::Type::SPELLS,
+        Skills::Type::SHURIKEN};
 
     std::vector<Skills::Type> StorySkills = {
-        Type::HEALING,
-        Type::ESP,
-        Type::PARANORMAL_SIGHT,
-        Type::SPELLS,
-        Type::LEVITATION,
-        Type::EXORCISM};
+        Skills::Type::HEALING,
+        Skills::Type::ESP,
+        Skills::Type::PARANORMAL_SIGHT,
+        Skills::Type::SPELLS,
+        Skills::Type::LEVITATION,
+        Skills::Type::EXORCISM};
 
     std::unordered_map<Skills::Type, Asset::Type> Assets = {
-        {Type::NONE, Asset::Type::NONE},
-        {Type::ARCHERY, Asset::Type::ARCHERY},
-        {Type::DODGING, Asset::Type::DODGING},
-        {Type::QUARTERSTAFF, Asset::Type::QUARTERSTAFF},
-        {Type::HEALING, Asset::Type::HEALING},
-        {Type::ESP, Asset::Type::ESP},
-        {Type::PARANORMAL_SIGHT, Asset::Type::PARANORMAL_SIGHT},
-        {Type::LEVITATION, Asset::Type::LEVITATION},
-        {Type::EXORCISM, Asset::Type::EXORCISM},
-        {Type::SPELLS, Asset::Type::SPELLS},
-        {Type::SHURIKEN, Asset::Type::SHURIKEN}};
+        {Skills::Type::NONE, Asset::Type::NONE},
+        {Skills::Type::ARCHERY, Asset::Type::ARCHERY},
+        {Skills::Type::DODGING, Asset::Type::DODGING},
+        {Skills::Type::QUARTERSTAFF, Asset::Type::QUARTERSTAFF},
+        {Skills::Type::HEALING, Asset::Type::HEALING},
+        {Skills::Type::ESP, Asset::Type::ESP},
+        {Skills::Type::PARANORMAL_SIGHT, Asset::Type::PARANORMAL_SIGHT},
+        {Skills::Type::LEVITATION, Asset::Type::LEVITATION},
+        {Skills::Type::EXORCISM, Asset::Type::EXORCISM},
+        {Skills::Type::SPELLS, Asset::Type::SPELLS},
+        {Skills::Type::SHURIKEN, Asset::Type::SHURIKEN}};
 
     Skills::Type Map(const char *skill)
     {

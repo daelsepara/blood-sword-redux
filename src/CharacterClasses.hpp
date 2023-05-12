@@ -15,9 +15,9 @@ namespace BloodSword::Character
     };
 
     Mapping<Character::ControlType> ControlTypeMapping = {
-        {ControlType::NONE, "NONE"},
-        {ControlType::PLAYER, "PLAYER"},
-        {ControlType::NPC, "NPC"}};
+        {Character::ControlType::NONE, "NONE"},
+        {Character::ControlType::PLAYER, "PLAYER"},
+        {Character::ControlType::NPC, "NPC"}};
 
     Character::ControlType MapControlType(const char *controlType)
     {
@@ -47,18 +47,18 @@ namespace BloodSword::Character
     };
 
     Mapping<Character::Status> StatusMapping = {
-        {Status::NONE, "NONE"},
-        {Status::DEFENDING, "DEFENDING"},
-        {Status::DEFENDED, "DEFENDED"},
-        {Status::FLEEING, "FLEEING"},
-        {Status::ENTHRALLED, "ENTHRALLED"},
-        {Status::AWAY, "AWAY"},
-        {Status::PARALYZED, "PARALYZED"},
-        {Status::KNOCKED_OUT, "KNOCKED OUT"},
-        {Status::IN_BATTLE, "IN BATTLE"},
-        {Status::NIGHTHOWL, "NIGHTHOWL"},
-        {Status::FPR_PLUS1, "FPR +1"},
-        {Status::FPR_PLUS2, "FPR +2"}};
+        {Character::Status::NONE, "NONE"},
+        {Character::Status::DEFENDING, "DEFENDING"},
+        {Character::Status::DEFENDED, "DEFENDED"},
+        {Character::Status::FLEEING, "FLEEING"},
+        {Character::Status::ENTHRALLED, "ENTHRALLED"},
+        {Character::Status::AWAY, "AWAY"},
+        {Character::Status::PARALYZED, "PARALYZED"},
+        {Character::Status::KNOCKED_OUT, "KNOCKED OUT"},
+        {Character::Status::IN_BATTLE, "IN BATTLE"},
+        {Character::Status::NIGHTHOWL, "NIGHTHOWL"},
+        {Character::Status::FPR_PLUS1, "FPR +1"},
+        {Character::Status::FPR_PLUS2, "FPR +2"}};
 
     Character::Status MapStatus(const char *status)
     {
@@ -81,11 +81,11 @@ namespace BloodSword::Character
     };
 
     Mapping<Character::Class> ClassMapping = {
-        {Class::NONE, "NONE"},
-        {Class::WARRIOR, "WARRIOR"},
-        {Class::TRICKSTER, "TRICKSTER"},
-        {Class::SAGE, "SAGE"},
-        {Class::ENCHANTER, "ENCHANTER"}};
+        {Character::Class::NONE, "NONE"},
+        {Character::Class::WARRIOR, "WARRIOR"},
+        {Character::Class::TRICKSTER, "TRICKSTER"},
+        {Character::Class::SAGE, "SAGE"},
+        {Character::Class::ENCHANTER, "ENCHANTER"}};
 
     Character::Class Map(const char *characterClass)
     {

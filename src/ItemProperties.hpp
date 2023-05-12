@@ -21,13 +21,13 @@ namespace BloodSword::Item
     };
 
     Mapping<Item::Property> PropertyMapping = {
-        {Property::NONE, "NONE"},
-        {Property::NORMAL, "NORMAL"},
-        {Property::WEAPON, "WEAPON"},
-        {Property::ARMOUR, "ARMOUR"},
-        {Property::CONTAINER, "CONTAINER"},
-        {Property::EQUIPPED, "EQUIPPED"},
-        {Property::POISONED, "POISONED"}};
+        {Item::Property::NONE, "NONE"},
+        {Item::Property::NORMAL, "NORMAL"},
+        {Item::Property::WEAPON, "WEAPON"},
+        {Item::Property::ARMOUR, "ARMOUR"},
+        {Item::Property::CONTAINER, "CONTAINER"},
+        {Item::Property::EQUIPPED, "EQUIPPED"},
+        {Item::Property::POISONED, "POISONED"}};
 
     Item::Property MapProperty(const char *property)
     {

@@ -21,14 +21,14 @@ namespace BloodSword::Map
     };
 
     Mapping<Map::Object> ObjectMapping = {
-        {Object::NONE, "NONE"},
-        {Object::PLAYER, "PLAYER"},
-        {Object::ENEMY, "ENEMY"},
-        {Object::PASSABLE, "PASSABLE"},
-        {Object::ENEMY_PASSABLE, "ENEMY PASSABLE"},
-        {Object::OBSTACLE, "OBSTACLE"},
-        {Object::TEMPORARY_OBSTACLE, "TEMPORARY OBSTACLE"},
-        {Object::EXIT, "EXIT"}};
+        {Map::Object::NONE, "NONE"},
+        {Map::Object::PLAYER, "PLAYER"},
+        {Map::Object::ENEMY, "ENEMY"},
+        {Map::Object::PASSABLE, "PASSABLE"},
+        {Map::Object::ENEMY_PASSABLE, "ENEMY PASSABLE"},
+        {Map::Object::OBSTACLE, "OBSTACLE"},
+        {Map::Object::TEMPORARY_OBSTACLE, "TEMPORARY OBSTACLE"},
+        {Map::Object::EXIT, "EXIT"}};
 
     Map::Object MapObject(const char *object)
     {

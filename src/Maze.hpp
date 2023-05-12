@@ -133,6 +133,7 @@ namespace BloodSword::Maze
                 auto neighbor = Maze::RandomUnvisited(random, map, current);
 
                 Maze::Remove(map, current, neighbor);
+                
                 Maze::Remove(unvisited, neighbor);
 
                 map.Put(neighbor, Map::Object::PASSABLE, Asset::Type::NONE);
