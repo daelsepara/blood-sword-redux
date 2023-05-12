@@ -14,6 +14,11 @@ namespace BloodSword::Generate
     // warriors's attributes based on rank
     void WarriorAttributes(Character::Base &warrior)
     {
+        if (warrior.Class != Character::Class::WARRIOR)
+        {
+            return;
+        }
+
         if (warrior.Rank <= 2)
         {
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
@@ -77,6 +82,11 @@ namespace BloodSword::Generate
     // trickster's attributes based on rank
     void TricksterAttributes(Character::Base &trickster)
     {
+        if (trickster.Class != Character::Class::TRICKSTER)
+        {
+            return;
+        }
+
         if (trickster.Rank <= 2)
         {
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
@@ -140,6 +150,11 @@ namespace BloodSword::Generate
     // sage's attributes based on rank
     void SageAttributes(Character::Base &sage)
     {
+        if (sage.Class != Character::Class::SAGE)
+        {
+            return;
+        }
+
         if (sage.Rank <= 2)
         {
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
@@ -203,6 +218,11 @@ namespace BloodSword::Generate
     // enchanter's attributes based on rank
     void EnchanterAttributes(Character::Base &enchanter)
     {
+        if (enchanter.Class != Character::Class::ENCHANTER)
+        {
+            return;
+        }
+
         if (enchanter.Rank <= 2)
         {
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 6, 0));
@@ -293,9 +313,13 @@ namespace BloodSword::Generate
         }
     }
 
-
     void EnchanterSpells(Character::Base &character)
     {
+        if (!character.Has(Skills::Type::SPELLS) || character.Class != Character::Class::ENCHANTER)
+        {
+            return;
+        }
+
         character.Spells.clear();
         character.Spells.push_back(Spells::Base(Spells::Type::VOLCANO_SPRAY, Spells::Class::BLASTING, true, true, 1));
         character.Spells.push_back(Spells::Base(Spells::Type::NIGHTHOWL, Spells::Class::PSYCHIC, true, true, 1, 5));
@@ -318,6 +342,11 @@ namespace BloodSword::Generate
     // set character spells
     void Spells(Character::Base &character)
     {
+        if (!character.Has(Skills::Type::SPELLS))
+        {
+            return;
+        }
+        
         switch (character.Class)
         {
         case Character::Class::ENCHANTER:
@@ -487,7 +516,7 @@ namespace BloodSword::Generate
         Generate::Attributes(character);
 
         Generate::Skills(character);
-        
+
         Generate::Spells(character);
 
         Generate::Items(character);
