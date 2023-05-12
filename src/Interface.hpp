@@ -12,8 +12,11 @@
 namespace BloodSword::Interface
 {
     Skills::Mapped<SDL_Texture *> SkillsTexturesInactive = {};
+
     Skills::Mapped<SDL_Texture *> SkillCaptionsActive = {};
+
     Skills::Mapped<SDL_Texture *> SkillCaptionsInactive = {};
+
     Skills::Mapped<Controls::Type> SkillControls = {
         {Skills::Type::ARCHERY, Controls::Type::ARCHERY},
         {Skills::Type::DODGING, Controls::Type::DODGING},
@@ -26,8 +29,11 @@ namespace BloodSword::Interface
         {Skills::Type::SPELLS, Controls::Type::SPELLS}};
 
     Spells::Mapped<SDL_Texture *> SpellsTexturesInactive = {};
+
     Spells::Mapped<SDL_Texture *> SpellCaptionsActive = {};
+
     Spells::Mapped<SDL_Texture *> SpellCaptionsInactive = {};
+
     Spells::Mapped<Controls::Type> SpellControls = {
         {Spells::Type::VOLCANO_SPRAY, Controls::Type::VOLCANO_SPRAY},
         {Spells::Type::NIGHTHOWL, Controls::Type::NIGHTHOWL},
@@ -45,6 +51,7 @@ namespace BloodSword::Interface
         {Spells::Type::SUMMON_FALTYN, Controls::Type::SUMMON_FALTYN},
         {Spells::Type::PREDICTION, Controls::Type::PREDICTION},
         {Spells::Type::DETECT_ENCHANTMENT, Controls::Type::DETECT_ENCHANTMENT}};
+
     Controls::Mapped<Spells::Type> ControlSpellMapping = {
         {Controls::Type::VOLCANO_SPRAY, Spells::Type::VOLCANO_SPRAY},
         {Controls::Type::NIGHTHOWL, Spells::Type::NIGHTHOWL},
@@ -80,6 +87,7 @@ namespace BloodSword::Interface
         {Controls::Type::FLEE, Asset::Type::FLEE},
         {Controls::Type::ITEMS, Asset::Type::ITEMS},
         {Controls::Type::BACK, Asset::Type::BACK}};
+
     Controls::Mapped<const char *> BattleControlsText = {
         {Controls::Type::MOVE, "MOVE"},
         {Controls::Type::FIGHT, "FIGHT"},
@@ -91,9 +99,11 @@ namespace BloodSword::Interface
         {Controls::Type::ITEMS, "ITEMS"},
         {Controls::Type::SHURIKEN, "SHOOT SHURIKEN"},
         {Controls::Type::BACK, "BACK"}};
+
     Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
 
     SDL_Texture *NoSkills = NULL;
+
     SDL_Texture *NoSpells = NULL;
 
     std::vector<Asset::Type> DICE = {
@@ -110,24 +120,31 @@ namespace BloodSword::Interface
         for (auto &skill : Skills::TypeMapping)
         {
             auto active = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
             auto inactive = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
 
             SkillCaptionsActive[skill.first] = active;
+
             SkillCaptionsInactive[skill.first] = inactive;
+
             SkillsTexturesInactive[skill.first] = Asset::Copy(graphics.Renderer, Skills::Assets[skill.first], Color::Inactive);
         }
 
         for (auto &spell : Spells::TypeMapping)
         {
             auto active = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
             auto inactive = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
 
             SpellCaptionsActive[spell.first] = active;
+
             SpellCaptionsInactive[spell.first] = inactive;
+
             SpellsTexturesInactive[spell.first] = Asset::Copy(graphics.Renderer, Spells::Assets[spell.first], Color::Inactive);
         }
 
         NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
         NoSpells = Graphics::CreateText(graphics, "No spells", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
         for (auto &control : BattleControlsText)
@@ -175,14 +192,21 @@ namespace BloodSword::Interface
         }
 
         SkillCaptionsActive.clear();
+
         SkillCaptionsInactive.clear();
+
         SkillsTexturesInactive.clear();
+
         SpellCaptionsActive.clear();
+
         SpellCaptionsInactive.clear();
+
         SpellsTexturesInactive.clear();
+
         BattleControlCaptions.clear();
 
         Free(&NoSkills);
+
         Free(&NoSpells);
     }
 
@@ -230,7 +254,6 @@ namespace BloodSword::Interface
             for (auto x = map.X; x < map.X + map.ViewX; x++)
             {
                 auto ctrlx = x - map.X;
-
                 auto up = numcontrols;
                 auto dn = numcontrols;
                 auto lt = numcontrols;
