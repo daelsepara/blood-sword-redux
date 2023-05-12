@@ -20,7 +20,7 @@ namespace BloodSword::Map
         EXIT
     };
 
-    Mapping<Map::Object> ObjectMapping = {
+    BloodSword::Mapping<Map::Object> ObjectMapping = {
         {Map::Object::NONE, "NONE"},
         {Map::Object::PLAYER, "PLAYER"},
         {Map::Object::ENEMY, "ENEMY"},

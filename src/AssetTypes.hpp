@@ -102,9 +102,9 @@ namespace BloodSword::Asset
     };
 
     template <typename T>
-    using AssetMapping = std::unordered_map<Asset::Type, T>;
+    using AssetMapping = BloodSword::UnorderedMap<Asset::Type, T>;
 
-    Mapping<Asset::Type> TypeMapping = {
+    BloodSword::Mapping<Asset::Type> TypeMapping = {
         {Asset::Type::NONE, "NONE"},
         {Asset::Type::WARRIOR, "WARRIOR"},
         {Asset::Type::TRICKSTER, "TRICKSTER"},

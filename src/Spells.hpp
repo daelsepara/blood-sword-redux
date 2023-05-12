@@ -41,7 +41,7 @@ namespace BloodSword::Spells
         PSYCHIC
     };
 
-    Mapping<Spells::Type> TypeMapping = {
+    BloodSword::Mapping<Spells::Type> TypeMapping = {
         {Spells::Type::NONE, "NONE"},
         {Spells::Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
         {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
@@ -60,7 +60,7 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, "PREDICTION"},
         {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
-    std::unordered_map<Spells::Type, Asset::Type> Assets = {
+    BloodSword::UnorderedMap<Spells::Type, Asset::Type> Assets = {
         {Spells::Type::VOLCANO_SPRAY, Asset::Type::VOLCANO_SPRAY},
         {Spells::Type::NIGHTHOWL, Asset::Type::NIGHTHOWL},
         {Spells::Type::WHITE_FIRE, Asset::Type::WHITE_FIRE},
@@ -78,7 +78,7 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, Asset::Type::PREDICTION},
         {Spells::Type::DETECT_ENCHANTMENT, Asset::Type::DETECT_ENCHANTMENT}};
 
-    Mapping<Spells::Class> ClassMapping = {
+    BloodSword::Mapping<Spells::Class> ClassMapping = {
         {Spells::Class::NONE, "NONE"},
         {Spells::Class::BLASTING, "BLASTING"},
         {Spells::Class::PSYCHIC, "PSYCHIC"}};

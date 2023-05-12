@@ -24,6 +24,9 @@ namespace BloodSword
     template <typename T>
     using IntMapping = std::unordered_map<T, int>;
 
+    template <typename T, typename R>
+    using UnorderedMap = std::unordered_map<T, R>;
+
     // search for a constant string key in a map
     template <typename T>
     T Find(Mapping<T> &unordered_map, const char *key)

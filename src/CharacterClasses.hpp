@@ -14,7 +14,7 @@ namespace BloodSword::Character
         NPC
     };
 
-    Mapping<Character::ControlType> ControlTypeMapping = {
+    BloodSword::Mapping<Character::ControlType> ControlTypeMapping = {
         {Character::ControlType::NONE, "NONE"},
         {Character::ControlType::PLAYER, "PLAYER"},
         {Character::ControlType::NPC, "NPC"}};
@@ -46,7 +46,7 @@ namespace BloodSword::Character
         FPR_PLUS2
     };
 
-    Mapping<Character::Status> StatusMapping = {
+    BloodSword::Mapping<Character::Status> StatusMapping = {
         {Character::Status::NONE, "NONE"},
         {Character::Status::DEFENDING, "DEFENDING"},
         {Character::Status::DEFENDED, "DEFENDED"},
@@ -80,7 +80,7 @@ namespace BloodSword::Character
         ENCHANTER
     };
 
-    Mapping<Character::Class> ClassMapping = {
+    BloodSword::Mapping<Character::Class> ClassMapping = {
         {Character::Class::NONE, "NONE"},
         {Character::Class::WARRIOR, "WARRIOR"},
         {Character::Class::TRICKSTER, "TRICKSTER"},

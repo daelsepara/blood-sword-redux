@@ -25,7 +25,7 @@ namespace BloodSword::Item
         SHURIKEN
     };
 
-    Mapping<Item::Type> TypeMapping = {
+    BloodSword::Mapping<Item::Type> TypeMapping = {
         {Item::Type::NONE, "NONE"},
         {Item::Type::SWORD, "SWORD"},
         {Item::Type::BOW, "BOW"},

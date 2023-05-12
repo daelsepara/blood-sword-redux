@@ -31,7 +31,7 @@ namespace BloodSword::Skills
     template <typename T>
     using Mapped = std::unordered_map<Skills::Type, T>;
 
-    Mapping<Skills::Type> TypeMapping = {
+    BloodSword::Mapping<Skills::Type> TypeMapping = {
         {Skills::Type::NONE, "NONE"},
         {Skills::Type::ARCHERY, "ARCHERY"},
         {Skills::Type::DODGING, "DODGING"},
@@ -61,7 +61,7 @@ namespace BloodSword::Skills
         Skills::Type::LEVITATION,
         Skills::Type::EXORCISM};
 
-    std::unordered_map<Skills::Type, Asset::Type> Assets = {
+    BloodSword::UnorderedMap<Skills::Type, Asset::Type> Assets = {
         {Skills::Type::NONE, Asset::Type::NONE},
         {Skills::Type::ARCHERY, Asset::Type::ARCHERY},
         {Skills::Type::DODGING, Asset::Type::DODGING},

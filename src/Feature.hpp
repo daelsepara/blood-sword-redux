@@ -14,7 +14,7 @@ namespace BloodSword::Feature
         SHOP
     };
 
-    Mapping<Feature::Type> TypeMapping = {
+    BloodSword::Mapping<Feature::Type> TypeMapping = {
         {Feature::Type::NONE, "NONE"},
         {Feature::Type::DESTINATIONS, "DESTINATIONS"},
         {Feature::Type::CHOICES, "CHOICES"},

@@ -23,7 +23,7 @@ namespace BloodSword::Choice
         ITEM
     };
 
-    Mapping<Choice::Type> TypeMapping = {
+    BloodSword::Mapping<Choice::Type> TypeMapping = {
         {Choice::Type::NORMAL, "NORMAL"},
         {Choice::Type::ATTRIBUTE, "ATTRIBUTE"},
         {Choice::Type::CHARACTER, "CHARACTER"},

@@ -20,7 +20,7 @@ namespace BloodSword::Item
         POISONED
     };
 
-    Mapping<Item::Property> PropertyMapping = {
+    BloodSword::Mapping<Item::Property> PropertyMapping = {
         {Item::Property::NONE, "NONE"},
         {Item::Property::NORMAL, "NORMAL"},
         {Item::Property::WEAPON, "WEAPON"},

@@ -11,7 +11,7 @@
 namespace BloodSword::Palette
 {
     // active, inactive, highlight, background
-    Array<Uint32> List = {
+    BloodSword::Array<Uint32> List = {
         {0XFFFFFFFF, 0XFF404040, 0XFFFF0000, 0XFF000000},
         {0XFFFFFFFF, 0XFF56FFFF, 0XFFFE02A2, 0XFF000000},
         {0XFF00AA00, 0XFFAA5500, 0XFFAA0000, 0XFF000000},

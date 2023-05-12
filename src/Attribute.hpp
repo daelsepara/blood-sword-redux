@@ -49,7 +49,7 @@ namespace BloodSword::Attribute
         Base() {}
     };
 
-    Mapping<Attribute::Type> TypeMapping = {
+    BloodSword::Mapping<Attribute::Type> TypeMapping = {
         {Attribute::Type::NONE, "NONE"},
         {Attribute::Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
         {Attribute::Type::AWARENESS, "AWARENESS"},

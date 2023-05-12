@@ -22,7 +22,7 @@ namespace BloodSword::Book
     // book location specifier: book and section number pair
     typedef std::pair<Book::Number, int> Destination;
 
-    Mapping<Book::Number> Title = {
+    BloodSword::Mapping<Book::Number> Title = {
         {Book::Number::NONE, "Blood Sword"},
         {Book::Number::BOOK1, "The Battlepits of Krarth"},
         {Book::Number::BOOK2, "The Kingdom of Wyrd"},
@@ -30,7 +30,7 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, "Doomwalk"},
         {Book::Number::BOOK5, "The Walls of Spyte"}};
 
-    Mapping<Book::Number> BookNumber = {
+    BloodSword::Mapping<Book::Number> BookNumber = {
         {Book::Number::NONE, "NONE"},
         {Book::Number::BOOK1, "BOOK1"},
         {Book::Number::BOOK2, "BOOK2"},
@@ -38,7 +38,7 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, "BOOK4"},
         {Book::Number::BOOK5, "BOOK5"}};
 
-    std::unordered_map<Book::Number, std::vector<int>> Ranks = {
+    BloodSword::UnorderedMap<Book::Number, std::vector<int>> Ranks = {
         {Book::Number::NONE, {1, 1, 1, 1}},
         {Book::Number::BOOK1, {8, 4, 3, 2}},
         {Book::Number::BOOK2, {12, 6, 4, 3}},

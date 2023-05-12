@@ -15,7 +15,7 @@ namespace BloodSword::Story::Conditions
         CHARACTER
     };
 
-    Mapping<Conditions::Type> TypeMapping = {
+    BloodSword::Mapping<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
         {Conditions::Type::CHARACTER, "CHARACTER"}};
