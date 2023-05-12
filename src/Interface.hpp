@@ -619,6 +619,7 @@ namespace BloodSword::Interface
             }
 
             BloodSword::Free(&surfacestats);
+
             BloodSword::Free(&surfacelabels);
         }
 
@@ -922,6 +923,7 @@ namespace BloodSword::Interface
             for (auto item = 0; item < items; item++)
             {
                 auto currentw = 0;
+
                 auto currenth = 0;
 
                 if (choices[item])
@@ -937,13 +939,14 @@ namespace BloodSword::Interface
                 }
 
                 auto itemx = x + item * (previousw + pad);
-
                 auto id = startid + item;
                 auto lt = id > 0 ? id - 1 : id;
                 auto rt = id < items - 1 ? id + 1 : id;
 
                 overlay.Add(Scene::Element(itemx, y, currentw, currenth, background, border, pixels));
+
                 overlay.VerifyAndAdd(Scene::Element(choices[item], itemx, y));
+
                 overlay.Add(Controls::Base(controls[item], id, lt, rt, id, id, itemx - offset, y - offset, currentw + adjust, currenth + adjust, highlight));
             }
         }
@@ -1000,9 +1003,11 @@ namespace BloodSword::Interface
                     SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
 
                     auto lt = i > 0 ? i - 1 : i;
+
                     auto rt = i < character.Skills.size() ? i + 1 : i;
 
                     overlay.Add(Controls::Base(Interface::SkillControls[character.Skills[i]], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+
                     overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
                 }
             }
@@ -1064,6 +1069,7 @@ namespace BloodSword::Interface
                 if (texture)
                 {
                     auto texturew = 0;
+
                     auto textureh = 0;
 
                     SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
@@ -1072,11 +1078,11 @@ namespace BloodSword::Interface
                     auto rt = col < 5 ? i + 1 : i;
                     auto up = i - 6 >= 0 ? i - 6 : i;
                     auto dn = i + 6 < (spells + 1) ? i + 6 : i;
-
                     auto x = screen.X + col * texturew + pad;
                     auto y = screen.Y + row * (textureh + 32) + pad + 32;
 
                     overlay.Add(Controls::Base(Interface::SpellControls[character.Spells[i].Type], i, lt, rt, up, dn, x, y, 64, 64, Color::Highlight));
+
                     overlay.VerifyAndAdd(Scene::Element(texture, x, y));
                 }
 
@@ -1100,9 +1106,11 @@ namespace BloodSword::Interface
         auto id = (int)(character.Spells.size());
 
         auto x = screen.X + col * 64 + pad;
+
         auto y = screen.Y + row * 96 + pad + 32;
 
         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, y));
+
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, col < 6 ? id - 6 : id, id, x, y, 64, 64, Color::Highlight));
 
         return overlay;
@@ -1290,11 +1298,11 @@ namespace BloodSword::Interface
 
         auto attribute_texture = Graphics::CreateText(graphics, attribute_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
-        auto attributew = 0;
-
         auto passed = Graphics::CreateText(graphics, "PASSED", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
         auto failed = Graphics::CreateText(graphics, "FAILED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
+
+        auto attributew = 0;
 
         SDL_QueryTexture(attribute_texture, NULL, NULL, &attributew, NULL);
 
@@ -1302,19 +1310,19 @@ namespace BloodSword::Interface
 
         auto end = Graphics::CreateText(graphics, {Graphics::RichText(" DONE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
 
+        auto score = Engine::Score(character, attribute, inbattle);
+
         auto stage = Engine::RollStage::START;
+
+        auto input = Controls::User();
 
         auto done = false;
 
         auto pad = 16;
 
-        auto input = Controls::User();
-
         auto rolled = false;
 
         auto rolls = Engine::RollResult();
-
-        auto score = Engine::Score(character, attribute, inbattle);
 
         // Unarmed/Eye of the Tiger effects
         if (attribute == Attribute::Type::FIGHTING_PROWESS)
@@ -1491,15 +1499,15 @@ namespace BloodSword::Interface
 
         auto stage = Engine::RollStage::START;
 
+        auto rolls = Engine::RollResult();
+
+        auto input = Controls::User();
+
         auto done = false;
 
         auto pad = 16;
 
-        auto input = Controls::User();
-
         auto rolled = false;
-
-        auto rolls = Engine::RollResult();
 
         auto textw = 0;
 
@@ -1550,6 +1558,7 @@ namespace BloodSword::Interface
                 {
                     // damaged
                     overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(w - textw - pad, texth * 2 + pad + 64)));
+
                     overlay.VerifyAndAdd(Scene::Element(damage_value, origin + Point(w - textw - pad, texth * 3 + pad + 64)));
                 }
                 else
@@ -1658,17 +1667,17 @@ namespace BloodSword::Interface
 
             auto location = offset + (Point(width, height) - Point(boxw, boxh)) / 2;
 
+            auto confirm = location + Point(pad + texturew / 2 - 32, textureh + pad * 2);
+
+            auto input = Controls::User();
+
             box.Add(Scene::Element(location, boxw, boxh, background, border, borderSize));
 
             box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
 
-            auto confirm = location + Point(pad + texturew / 2 - 32, textureh + pad * 2);
-
             box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
 
             box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, confirm.X, confirm.Y, 64, 64, highlight));
-
-            auto input = Controls::User();
 
             while (true)
             {
@@ -1977,7 +1986,9 @@ namespace BloodSword::Interface
                     if (skills[input.Current])
                     {
                         auto skillsx = popup.X + (popup.W + pad * 2);
+
                         overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skillsx, popup.Y));
+
                         overlay.Add(Scene::Element(skillsx, popup.Y, 320, popup.H, 0, Color::Active, 4));
                     }
                 }
@@ -1986,6 +1997,7 @@ namespace BloodSword::Interface
             if (currentParty.Count() > 0)
             {
                 auto &origin = overlay.Elements[0];
+
                 auto screen = Point(origin.X, origin.Y - 160);
 
                 overlay.Add(Scene::Element(screen, popup.W, 128, 0, Color::Active, 4));
@@ -2049,6 +2061,7 @@ namespace BloodSword::Interface
         SDL_QueryTexture(menu_title, NULL, NULL, &menuw, NULL);
 
         scene.Add(Scene::Element(menu_title, Point((graphics.Width - menuw) / 2, origin.Y - pad * 6)));
+
         scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, 4));
 
         auto party = Party::Base();
