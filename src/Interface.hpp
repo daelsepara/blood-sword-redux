@@ -996,9 +996,8 @@ namespace BloodSword::Interface
                 if (texture)
                 {
                     auto texturew = 0;
-                    auto textureh = 0;
 
-                    SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+                    SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
 
                     auto lt = i > 0 ? i - 1 : i;
                     auto rt = i < character.Skills.size() ? i + 1 : i;
@@ -1127,9 +1126,8 @@ namespace BloodSword::Interface
             if (texture)
             {
                 auto texturew = 0;
-                auto textureh = 0;
 
-                SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+                SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
 
                 auto lt = i > 0 ? i - 1 : i;
 
@@ -1987,9 +1985,8 @@ namespace BloodSword::Interface
                     if (texture)
                     {
                         auto texturew = 0;
-                        auto textureh = 0;
 
-                        SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+                        SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
 
                         overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
                     }
