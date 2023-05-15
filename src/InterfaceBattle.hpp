@@ -1,7 +1,7 @@
 #ifndef __INTERFACE_BATTLE_HPP__
 #define __INTERFACE_BATTLE_HPP__
 
-#include "Story.hpp"
+#include "Battle.hpp"
 #include "Interface.hpp"
 
 namespace BloodSword::Interface

@@ -5,11 +5,11 @@
 
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
-#include "Battle.hpp"
 #include "Choice.hpp"
 #include "Conditions.hpp"
 #include "Feature.hpp"
 #include "Primitives.hpp"
+#include "InterfaceBattle.hpp"
 
 // classes and functions for managing story sections
 namespace BloodSword::Story
@@ -108,7 +108,7 @@ namespace BloodSword::Story
     }
 
     // process story
-    Book::Destination Play(Story::Base &story)
+    Book::Destination Play(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
     {
         Book::Destination next = {Book::Number::NONE, 0};
 
@@ -122,18 +122,35 @@ namespace BloodSword::Story
         {
         }
 
-        if (story.Battle.IsDefined())
-        {
-            // fight battle
-        }
+        return next;
+    }
 
-        // process choices if any
-        if (story.Choices.size() > 0)
+    // get next destination
+    Book::Destination Next(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    {
+        Book::Destination next = {Book::Number::NONE, 0};
+
+        auto battleResult = Battle::Result::NONE;
+
+        if (story.Next.size() > 0)
         {
-        }
-        else if (story.Next.size() > 0)
-        {
-            // select next destination
+            if (story.Battle.IsDefined())
+            {
+                // fight battle
+                auto result = Interface::Battle(graphics, story.Battle, party);
+            }
+
+            if (Engine::IsAlive(party))
+            {
+                // process choices if any
+                if (story.Choices.size() > 0)
+                {
+                }
+                else
+                {
+                    // select next destination
+                }
+            }
         }
 
         return next;

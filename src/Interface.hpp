@@ -7,7 +7,6 @@
 #include "Input.hpp"
 #include "Maze.hpp"
 #include "Palette.hpp"
-#include "Story.hpp"
 
 namespace BloodSword::Interface
 {
@@ -593,7 +592,9 @@ namespace BloodSword::Interface
                 if (convertedlabels)
                 {
                     SDL_SetSurfaceAlphaMod(convertedlabels, SDL_ALPHA_OPAQUE);
+
                     SDL_BlitSurface(convertedlabels, NULL, surface, &labelsrect);
+
                     BloodSword::Free(&convertedlabels);
                 }
 
@@ -607,7 +608,9 @@ namespace BloodSword::Interface
                 if (convertedstats)
                 {
                     SDL_SetSurfaceAlphaMod(convertedstats, SDL_ALPHA_OPAQUE);
+
                     SDL_BlitSurface(convertedstats, NULL, surface, &statsrect);
+
                     BloodSword::Free(&convertedstats);
                 }
 
@@ -628,7 +631,9 @@ namespace BloodSword::Interface
                         if (convertedname)
                         {
                             SDL_SetSurfaceAlphaMod(convertedname, SDL_ALPHA_OPAQUE);
+
                             SDL_BlitSurface(convertedname, NULL, surface, &labelsrect);
+
                             BloodSword::Free(&convertedname);
                         }
 
@@ -895,7 +900,9 @@ namespace BloodSword::Interface
                 auto itemy = y + item * (h + pad);
 
                 scene.Add(Scene::Element(x, itemy, w, h, background, border, pixels));
+
                 scene.VerifyAndAdd(Scene::Element(choices[start + item], x, itemy));
+
                 scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, itemy - offset, wadjust, h + adjust, highlight));
             }
 
@@ -904,6 +911,7 @@ namespace BloodSword::Interface
                 if (scrollup)
                 {
                     scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), xpad, y));
+
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_UP,
                         scroll, startid, scroll, scroll, (more ? scroll + 1 : startid),
@@ -915,6 +923,7 @@ namespace BloodSword::Interface
                 if (scrolldn)
                 {
                     scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), xpad, y + yadjust));
+
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_DOWN,
                         start > 0 ? scroll + 1 : scroll,
@@ -1174,6 +1183,7 @@ namespace BloodSword::Interface
                 }
 
                 overlay.Add(Controls::Base(Interface::CharacterControls[party[i].Class], i, lt, rt, i, i, screen.X + i * texturew + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+
                 overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
             }
         }
@@ -1469,9 +1479,13 @@ namespace BloodSword::Interface
         }
 
         Free(start);
+
         Free(end);
+
         Free(&passed);
+
         Free(&failed);
+
         Free(&attribute_texture);
 
         return result;
@@ -1556,6 +1570,7 @@ namespace BloodSword::Interface
             // add defender icon and stats
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(defender.Asset), origin + Point(w - textw - pad, pad)));
 
+            // add armour stats
             overlay.VerifyAndAdd(Scene::Element(armour_texture, origin + Point(w - textw - pad, pad + 64)));
 
             if (stage == Engine::RollStage::START)
@@ -1637,11 +1652,17 @@ namespace BloodSword::Interface
         }
 
         Free(end);
+
         Free(start);
+
         Free(&failed);
+
         Free(&passed);
+
         Free(&armour_texture);
+
         Free(&damage_texture);
+
         Free(&damage_value);
 
         return damage;
@@ -2060,9 +2081,13 @@ namespace BloodSword::Interface
         }
 
         Free(&current);
+
         Free(&select);
+
         Free(skills);
+
         Free(stats);
+
         Free(captions);
 
         return characterClass;

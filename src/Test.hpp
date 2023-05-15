@@ -96,11 +96,15 @@ namespace BloodSword::Test
             input = Input::WaitForInput(graphics, scene, input);
         }
 
-        BloodSword::Free(&enchanter_text);
-        BloodSword::Free(&sage_text);
-        BloodSword::Free(&trickster_text);
-        BloodSword::Free(&warrior_text);
-        BloodSword::Free(&text);
+        Free(&enchanter_text);
+
+        Free(&sage_text);
+
+        Free(&trickster_text);
+
+        Free(&warrior_text);
+
+        Free(&text);
     }
 
     // map rendering test
@@ -379,9 +383,11 @@ namespace BloodSword::Test
             }
         }
 
-        BloodSword::Free(stats);
-        BloodSword::Free(backgrounds);
-        BloodSword::Free(textures);
+        Free(stats);
+
+        Free(backgrounds);
+
+        Free(textures);
     }
 
     // animation test
@@ -1507,7 +1513,9 @@ namespace BloodSword::Test
         }
 
         Free(&select);
+
         Free(stats);
+
         Free(captions);
     }
 
