@@ -526,7 +526,7 @@ namespace BloodSword::Interface
         {
             std::vector<Graphics::RichText> tiger_eye =
                 {Graphics::RichText("CHARACTER FPR/DMG ROLLS +2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-                 Graphics::RichText("PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+                 Graphics::RichText("    PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
             auto popup = draw + (Point(mapw, maph) - Point(512, 140)) / 2;
 
