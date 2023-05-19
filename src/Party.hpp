@@ -17,7 +17,7 @@ namespace BloodSword::Party
 
     public:
         // current book and section number
-        Book::Destination Location = {Book::Number::NONE, -1};
+        Book::Location Location = {Book::Number::NONE, -1};
 
         Base() {}
 

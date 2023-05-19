@@ -1050,7 +1050,7 @@ namespace BloodSword::Test
                             // toggles between move/hover mode
                             move = !move;
                         }
-                        else if (input.Type == Controls::Type::DESTINATION)
+                        else if (input.Type == Controls::Type::LOCATION)
                         {
                             // setup animation
                             if (move)

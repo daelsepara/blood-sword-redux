@@ -20,7 +20,7 @@ namespace BloodSword::Book
     };
 
     // book location specifier: book and section number pair
-    typedef std::pair<Book::Number, int> Destination;
+    typedef std::pair<Book::Number, int> Location;
 
     BloodSword::Mapping<Book::Number> Title = {
         {Book::Number::NONE, "Blood Sword"},
@@ -46,14 +46,14 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, {20, 10, 7, 5}},
         {Book::Number::BOOK5, {20, 12, 8, 6}}};
 
-    bool IsUndefined(Destination destination)
+    bool IsUndefined(Location location)
     {
-        return (destination.first == Book::Number::NONE && destination.second == -1);
+        return (location.first == Book::Number::NONE && location.second == -1);
     }
 
-    bool IsDefined(Destination destination)
+    bool IsDefined(Location location)
     {
-        return !Book::IsUndefined(destination);
+        return !Book::IsUndefined(location);
     }
 
     Book::Number MapTitle(const char *book)
@@ -77,7 +77,7 @@ namespace BloodSword::Book
     }
 
     // compare if the book locations are the same
-    bool Equal(Book::Destination &current, Book::Destination &next)
+    bool Equal(Book::Location &current, Book::Location &next)
     {
         return ((current.first == next.first) && (current.second == next.second));
     }

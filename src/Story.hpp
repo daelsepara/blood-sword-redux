@@ -17,7 +17,7 @@ namespace BloodSword::Story
     class Base
     {
     public:
-        Book::Destination Section = {Book::Number::NONE, -1};
+        Book::Location Section = {Book::Number::NONE, -1};
 
         std::vector<Feature::Type> Features = {};
 
@@ -114,9 +114,9 @@ namespace BloodSword::Story
     }
 
     // process story
-    Book::Destination Play(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    Book::Location Play(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
     {
-        Book::Destination next = {Book::Number::NONE, -1};
+        Book::Location next = {Book::Number::NONE, -1};
 
         // process any background events
         if (story.Background.size() > 0)
@@ -132,9 +132,9 @@ namespace BloodSword::Story
     }
 
     // get next destination
-    Book::Destination Next(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    Book::Location Next(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
     {
-        Book::Destination next = {Book::Number::NONE, -1};
+        Book::Location next = {Book::Number::NONE, -1};
 
         auto battleResult = Battle::Result::NONE;
 

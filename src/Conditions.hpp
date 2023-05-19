@@ -39,11 +39,11 @@ namespace BloodSword::Story::Conditions
 
         std::string Text;
 
-        Book::Destination Destination = {Book::Number::NONE, -1};
+        Book::Location Location = {Book::Number::NONE, -1};
 
         Base() {}
 
-        Base(Conditions::Type type, std::string variable, std::string text, Book::Destination destination) : Type(type), Variable(variable), Text(text), Destination(destination)
+        Base(Conditions::Type type, std::string variable, std::string text, Book::Location destination) : Type(type), Variable(variable), Text(text), Location(destination)
         {
         }
     };
@@ -63,7 +63,7 @@ namespace BloodSword::Story::Conditions
 
                 auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : -1;
 
-                condition.Destination = {book, number};
+                condition.Location = {book, number};
             }
 
             if (!data["type"].is_null())

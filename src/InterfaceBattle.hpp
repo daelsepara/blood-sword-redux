@@ -1025,7 +1025,7 @@ namespace BloodSword::Interface
 
                                                     input.Current = -1;
                                                 }
-                                                else if (control.OnMap && battle.Map.IsValid(control.Map) && input.Type == Controls::Type::DESTINATION)
+                                                else if (control.OnMap && battle.Map.IsValid(control.Map) && input.Type == Controls::Type::LOCATION)
                                                 {
                                                     // setup animation
                                                     if (move)

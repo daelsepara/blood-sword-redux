@@ -43,7 +43,7 @@ namespace BloodSword::Choice
     class Base
     {
     public:
-        Book::Destination Destination = {Book::Number::NONE, -1};
+        Book::Location Destination = {Book::Number::NONE, -1};
 
         Choice::Type Type = Choice::Type::NORMAL;
 

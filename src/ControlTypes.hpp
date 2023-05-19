@@ -27,7 +27,7 @@ namespace BloodSword::Controls
         ROLL,
         PLAYER,
         ENEMY,
-        DESTINATION,
+        LOCATION,
         ABILITY,
         ITEMS,
         CALL_TO_MIND,

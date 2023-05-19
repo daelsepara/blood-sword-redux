@@ -375,7 +375,7 @@ namespace BloodSword::Interface
                     }
                     else if (tile.IsPassable())
                     {
-                        type = Controls::Type::DESTINATION;
+                        type = Controls::Type::LOCATION;
 
                         color = Color::Highlight;
                     }
