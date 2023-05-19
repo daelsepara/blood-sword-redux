@@ -43,7 +43,7 @@ namespace BloodSword::Choice
     class Base
     {
     public:
-        Book::Destination Destination = {Book::Number::NONE, 0};
+        Book::Destination Destination = {Book::Number::NONE, -1};
 
         Choice::Type Type = Choice::Type::NORMAL;
 
@@ -72,7 +72,7 @@ namespace BloodSword::Choice
                 // set destination
                 auto book = !data["destination"]["book"].is_null() ? Book::MapBook(std::string(data["destination"]["book"])) : Book::Number::NONE;
 
-                auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : 0;
+                auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : -1;
 
                 choice.Destination = {book, number};
             }

@@ -48,7 +48,7 @@ namespace BloodSword::Book
 
     bool IsUndefined(Destination destination)
     {
-        return (destination.first == Book::Number::NONE && destination.second == 0);
+        return (destination.first == Book::Number::NONE && destination.second == -1);
     }
 
     bool IsDefined(Destination destination)
@@ -74,6 +74,12 @@ namespace BloodSword::Book
     Book::Number MapBook(std::string book)
     {
         return Book::MapBook(book.c_str());
+    }
+
+    // compare if the book locations are the same
+    bool Equal(Book::Destination &current, Book::Destination &next)
+    {
+        return ((current.first == next.first) && (current.second == next.second));
     }
 }
 #endif

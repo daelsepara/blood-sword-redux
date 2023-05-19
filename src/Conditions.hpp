@@ -39,7 +39,7 @@ namespace BloodSword::Story::Conditions
 
         std::string Text;
 
-        Book::Destination Destination = {Book::Number::NONE, 0};
+        Book::Destination Destination = {Book::Number::NONE, -1};
 
         Base() {}
 
@@ -61,7 +61,7 @@ namespace BloodSword::Story::Conditions
                 // set destination
                 auto book = !data["destination"]["book"].is_null() ? Book::MapBook(std::string(data["destination"]["book"])) : Book::Number::NONE;
 
-                auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : 0;
+                auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : -1;
 
                 condition.Destination = {book, number};
             }

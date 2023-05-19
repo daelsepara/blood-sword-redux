@@ -17,7 +17,7 @@ namespace BloodSword::Story
     class Base
     {
     public:
-        Book::Destination Section = {Book::Number::NONE, 0};
+        Book::Destination Section = {Book::Number::NONE, -1};
 
         std::vector<Feature::Type> Features = {};
 
@@ -67,7 +67,7 @@ namespace BloodSword::Story
                 {
                     auto book = !data["section"]["book"].is_null() ? Book::MapBook(std::string(data["section"]["book"])) : Book::Number::NONE;
 
-                    auto number = !data["section"]["number"].is_null() ? std::stoi(std::string(data["section"]["number"])) : 0;
+                    auto number = !data["section"]["number"].is_null() ? std::stoi(std::string(data["section"]["number"])) : -1;
 
                     story.Section = {book, number};
                 }
@@ -110,7 +110,7 @@ namespace BloodSword::Story
     // process story
     Book::Destination Play(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
     {
-        Book::Destination next = {Book::Number::NONE, 0};
+        Book::Destination next = {Book::Number::NONE, -1};
 
         // process any background events
         if (story.Background.size() > 0)
@@ -128,7 +128,7 @@ namespace BloodSword::Story
     // get next destination
     Book::Destination Next(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
     {
-        Book::Destination next = {Book::Number::NONE, 0};
+        Book::Destination next = {Book::Number::NONE, -1};
 
         auto battleResult = Battle::Result::NONE;
 
