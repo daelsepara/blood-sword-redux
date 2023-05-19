@@ -173,7 +173,7 @@ namespace BloodSword::Map
         {
             return this->Width > 0 && this->Height > 0 && this->Tiles.size() > 0;
         }
-        
+
         // check if a location is within map boundaries
         bool IsValid(Point coords)
         {
@@ -249,6 +249,59 @@ namespace BloodSword::Map
             this->Put(Point(x, y), type, asset);
         }
 
+        bool Load(nlohmann::json &data)
+        {
+            auto LoadError = false;
+
+            this->Width = !data["width"].is_null() ? (int)data["width"] : 0;
+            this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
+            this->TileSize = !data["tilesize"].is_null() ? (int)data["tilesize"] : 0;
+
+            if (this->Width > 0 && this->Height > 0)
+            {
+                this->Initialize(this->Width, this->Height);
+
+                if (!data["tiles"].is_null() && data["tiles"].is_array() && data["tiles"].size() == this->Height)
+                {
+                    for (auto y = 0; y < this->Height; y++)
+                    {
+                        if (!data["tiles"][y].is_null() && data["tiles"][y].is_array() && data["tiles"][y].size() == this->Width)
+                        {
+                            for (auto x = 0; x < this->Width; x++)
+                            {
+                                auto &map = (*this)(x, y);
+
+                                auto &tile = data["tiles"][y][x];
+
+                                map.Id = !tile["id"].is_null() ? (int)tile["id"] : -1;
+                                map.Type = !tile["type"].is_null() ? Map::MapObject(std::string(tile["type"])) : Map::Object::NONE;
+                                map.Occupant = !tile["occupant"].is_null() ? Map::MapObject(std::string(tile["occupant"])) : Map::Object::NONE;
+                                map.Asset = !tile["asset"].is_null() ? Asset::Map(std::string(tile["asset"])) : Asset::Type::NONE;
+                                map.TemporaryAsset = !tile["temporary_asset"].is_null() ? Asset::Map(std::string(tile["temporary_asset"])) : Asset::Type::NONE;
+                                map.Lifetime = !tile["lifetime"].is_null() ? (int)tile["lifetime"] : -1;
+                            }
+                        }
+                        else
+                        {
+                            LoadError = true;
+
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    LoadError = true;
+                }
+            }
+            else
+            {
+                LoadError = true;
+            }
+
+            return LoadError;
+        }
+
         // load map from json file
         bool Load(const char *filename)
         {
@@ -260,54 +313,8 @@ namespace BloodSword::Map
             {
                 auto data = nlohmann::json::parse(file);
 
-                this->Width = !data["width"].is_null() ? (int)data["width"] : 0;
-                this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
-                this->TileSize = !data["tilesize"].is_null() ? (int)data["tilesize"] : 0;
-
-                LoadError = false;
-
-                if (this->Width > 0 && this->Height > 0)
-                {
-                    this->Initialize(this->Width, this->Height);
-
-                    if (!data["tiles"].is_null() && data["tiles"].is_array() && data["tiles"].size() == this->Height)
-                    {
-                        for (auto y = 0; y < this->Height; y++)
-                        {
-                            if (!data["tiles"][y].is_null() && data["tiles"][y].is_array() && data["tiles"][y].size() == this->Width)
-                            {
-                                for (auto x = 0; x < this->Width; x++)
-                                {
-                                    auto &map = (*this)(x, y);
-
-                                    auto &tile = data["tiles"][y][x];
-
-                                    map.Id = !tile["id"].is_null() ? (int)tile["id"] : -1;
-                                    map.Type = !tile["type"].is_null() ? Map::MapObject(std::string(tile["type"])) : Map::Object::NONE;
-                                    map.Occupant = !tile["occupant"].is_null() ? Map::MapObject(std::string(tile["occupant"])) : Map::Object::NONE;
-                                    map.Asset = !tile["asset"].is_null() ? Asset::Map(std::string(tile["asset"])) : Asset::Type::NONE;
-                                    map.TemporaryAsset = !tile["temporary_asset"].is_null() ? Asset::Map(std::string(tile["temporary_asset"])) : Asset::Type::NONE;
-                                    map.Lifetime = !tile["lifetime"].is_null() ? (int)tile["lifetime"] : -1;
-                                }
-                            }
-                            else
-                            {
-                                LoadError = true;
-
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        LoadError = true;
-                    }
-                }
-                else
-                {
-                    LoadError = true;
-                }
-
+                LoadError = this->Load(data);
+                
                 file.close();
             }
             else
