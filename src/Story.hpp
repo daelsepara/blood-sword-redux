@@ -10,6 +10,7 @@
 #include "Feature.hpp"
 #include "Primitives.hpp"
 #include "InterfaceBattle.hpp"
+#include "InterfaceStory.hpp"
 #include "Templates.hpp"
 
 // classes and functions for managing story sections
@@ -191,10 +192,12 @@ namespace BloodSword::Story
                 // process choices if any
                 if (story.Choices.size() > 0)
                 {
+                    next = Interface::Choices(party, story.Choices);
                 }
-                else
+                else if (story.Next.size() > 0)
                 {
                     // select next location
+                    next = Interface::Next(party, story.Next);
                 }
             }
         }
