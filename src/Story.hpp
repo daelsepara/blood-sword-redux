@@ -101,6 +101,12 @@ namespace BloodSword::Story
 
                     story.Choices = choices;
                 }
+
+                // load battle
+                if (!data["battle"].is_null())
+                {
+                    story.Battle.Initialize(data);
+                }
             }
         }
 
