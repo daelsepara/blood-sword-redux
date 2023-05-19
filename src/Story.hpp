@@ -10,10 +10,28 @@
 #include "Feature.hpp"
 #include "Primitives.hpp"
 #include "InterfaceBattle.hpp"
+#include "Templates.hpp"
 
 // classes and functions for managing story sections
 namespace BloodSword::Story
 {
+    BloodSword::Mapping<BloodSword::Position> PositionMapping = {
+        {Position::NONE, "NONE"},
+        {Position::TOP, "TOP"},
+        {Position::LEFT, "LEFT"},
+        {Position::RIGHT, "RIGHT"},
+        {Position::BOTTOM, "BOTTOM"}};
+
+    BloodSword::Position MapPosition(const char *position)
+    {
+        return BloodSword::Find(Story::PositionMapping, position);
+    }
+
+    BloodSword::Position MapPosition(std::string position)
+    {
+        return Story::MapPosition(position.c_str());
+    }
+
     class Base
     {
     public:
@@ -106,6 +124,28 @@ namespace BloodSword::Story
                 if (!data["battle"].is_null())
                 {
                     story.Battle.Initialize(data);
+                }
+
+                // image asset and position
+                story.ImagePosition = !data["imagePosition"].is_null() ? Story::MapPosition(data["imagePosition"]) : Position::NONE;
+                story.ImageAsset = !data["imageAsset"].is_null() ? std::string(data["imageAsset"]) : std::string();
+
+                // story section text
+                story.Text = !data["text"].is_null() ? std::string(data["text"]) : std::string();
+
+                // TODO: load background events conditions
+                if (!data["background"].is_null() && data["background"].is_array() && data["background"].size() > 0)
+                {
+                }
+
+                // TODO: load real-time/run-once events conditions
+                if (!data["events"].is_null() && data["events"].is_array() && data["events"].size() > 0)
+                {
+                }
+
+                // TODO: load "next section" conditions
+                if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
+                {
                 }
             }
         }
