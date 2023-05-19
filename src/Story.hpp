@@ -155,18 +155,22 @@ namespace BloodSword::Story
     }
 
     // process story
-    Book::Location Play(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    Book::Location Render(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
-        // process any background events
+        // TODO: process any background events
         if (story.Background.size() > 0)
         {
         }
 
-        // process current events
-        if (story.Events.size() > 0)
+        // if background event causes a jump to another location, exit immediately
+        if (Book::IsUndefined(next))
         {
+            // TODO: process current events
+            if (story.Events.size() > 0)
+            {
+            }
         }
 
         return next;
