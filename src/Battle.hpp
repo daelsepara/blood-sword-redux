@@ -106,7 +106,7 @@ namespace BloodSword::Battle
                 }
 
                 this->Duration = !data["battle"]["duration"].is_null() ? (int)data["battle"]["duration"] : -1;
-                
+
                 // initialize map from file
                 if (!data["battle"]["map"].is_null())
                 {
@@ -121,7 +121,6 @@ namespace BloodSword::Battle
                 // TODO: load opponents
                 if (!data["battle"]["opponents"].is_null())
                 {
-
                 }
             }
         }

@@ -314,7 +314,7 @@ namespace BloodSword::Map
                 auto data = nlohmann::json::parse(file);
 
                 LoadError = this->Load(data);
-                
+
                 file.close();
             }
             else
