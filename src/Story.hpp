@@ -131,7 +131,7 @@ namespace BloodSword::Story
         return next;
     }
 
-    // get next destination
+    // get next location
     Book::Location Next(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
     {
         Book::Location next = {Book::Number::NONE, -1};
@@ -154,7 +154,7 @@ namespace BloodSword::Story
                 }
                 else
                 {
-                    // select next destination
+                    // select next location
                 }
             }
         }

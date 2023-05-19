@@ -8,7 +8,7 @@ namespace BloodSword::Feature
     enum class Type
     {
         NONE = -1,
-        DESTINATIONS,
+        LOCATIONS,
         CHOICES,
         BATTLE,
         SHOP
@@ -16,7 +16,7 @@ namespace BloodSword::Feature
 
     BloodSword::Mapping<Feature::Type> TypeMapping = {
         {Feature::Type::NONE, "NONE"},
-        {Feature::Type::DESTINATIONS, "DESTINATIONS"},
+        {Feature::Type::LOCATIONS, "LOCATIONS"},
         {Feature::Type::CHOICES, "CHOICES"},
         {Feature::Type::BATTLE, "BATTLE"},
         {Feature::Type::SHOP, "SHOP"}};

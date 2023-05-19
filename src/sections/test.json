@@ -2,11 +2,13 @@
     "story": {
         "section": {},
         "features": [],
-        "destinations": [],
         "choices": [],
         "battle": {},
         "text": "",
         "imageAsset": "",
-        "imagePosition": ""
+        "imagePosition": "",
+        "background": [],
+        "events": [],
+        "next": []
     }
 }

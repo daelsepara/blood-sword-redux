@@ -43,7 +43,7 @@ namespace BloodSword::Story::Conditions
 
         Base() {}
 
-        Base(Conditions::Type type, std::string variable, std::string text, Book::Location destination) : Type(type), Variable(variable), Text(text), Location(destination)
+        Base(Conditions::Type type, std::string variable, std::string text, Book::Location location) : Type(type), Variable(variable), Text(text), Location(location)
         {
         }
     };
@@ -56,31 +56,31 @@ namespace BloodSword::Story::Conditions
         {
             auto data = json["condition"];
 
-            if (!data["destination"].is_null())
+            if (!data["location"].is_null())
             {
-                // set destination
-                auto book = !data["destination"]["book"].is_null() ? Book::MapBook(std::string(data["destination"]["book"])) : Book::Number::NONE;
+                // set location
+                auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
 
-                auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : -1;
+                auto number = !data["location"]["number"].is_null() ? std::stoi(std::string(data["location"]["number"])) : -1;
 
                 condition.Location = {book, number};
             }
 
             if (!data["type"].is_null())
             {
-                // set choice type
+                // set condition type
                 condition.Type = Conditions::Map(std::string(data["type"]));
             }
 
             if (!data["text"].is_null())
             {
-                // set attribute
+                // set text
                 condition.Text = std::string(data["text"]);
             }
 
             if (!data["variable"].is_null())
             {
-                // set character class
+                // set variable
                 condition.Variable = std::string(data["variable"]);
             }
         }

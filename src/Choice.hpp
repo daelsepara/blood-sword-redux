@@ -43,7 +43,7 @@ namespace BloodSword::Choice
     class Base
     {
     public:
-        Book::Location Destination = {Book::Number::NONE, -1};
+        Book::Location Location = {Book::Number::NONE, -1};
 
         Choice::Type Type = Choice::Type::NORMAL;
 
@@ -67,14 +67,14 @@ namespace BloodSword::Choice
         {
             auto data = json["choice"];
 
-            if (!data["destination"].is_null())
+            if (!data["location"].is_null())
             {
-                // set destination
-                auto book = !data["destination"]["book"].is_null() ? Book::MapBook(std::string(data["destination"]["book"])) : Book::Number::NONE;
+                // set location
+                auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
 
-                auto number = !data["destination"]["number"].is_null() ? std::stoi(std::string(data["destination"]["number"])) : -1;
+                auto number = !data["location"]["number"].is_null() ? std::stoi(std::string(data["location"]["number"])) : -1;
 
-                choice.Destination = {book, number};
+                choice.Location = {book, number};
             }
 
             if (!data["type"].is_null())
