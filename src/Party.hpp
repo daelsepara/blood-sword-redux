@@ -92,6 +92,11 @@ namespace BloodSword::Party
             }
         }
 
+        void Clear()
+        {
+            this->Members.clear();
+        }
+
         // remove character from party (based on character class)
         void Remove(Character::Class characterClass)
         {
@@ -117,6 +122,14 @@ namespace BloodSword::Party
             if (found >= 0 && found < this->Count())
             {
                 this->Remove(found);
+            }
+        }
+
+        void Load(nlohmann::json data)
+        {
+            // TODO: load party from json data
+            if (!data["party"].is_null())
+            {
             }
         }
     };

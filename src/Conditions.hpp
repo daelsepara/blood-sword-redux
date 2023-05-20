@@ -33,7 +33,7 @@ namespace BloodSword::Story::Conditions
     class Base
     {
     public:
-        Conditions::Type Type = Type::NONE;
+        Story::Conditions::Type Type = Type::NONE;
 
         std::string Variable;
 
@@ -43,7 +43,7 @@ namespace BloodSword::Story::Conditions
 
         Base() {}
 
-        Base(Conditions::Type type, std::string variable, std::string text, Book::Location location) : Type(type), Variable(variable), Text(text), Location(location)
+        Base(Story::Conditions::Type type, std::string variable, std::string text, Book::Location location) : Type(type), Variable(variable), Text(text), Location(location)
         {
         }
     };
@@ -88,19 +88,19 @@ namespace BloodSword::Story::Conditions
         return condition;
     }
 
-    bool Process(Party::Base &party, Conditions::Base condition)
+    bool Process(Party::Base &party, Story::Conditions::Base condition)
     {
         auto result = false;
 
-        if (condition.Type == Conditions::Type::NONE)
+        if (condition.Type == Story::Conditions::Type::NONE)
         {
             result = true;
         }
-        else if (condition.Type == Conditions::Type::NORMAL)
+        else if (condition.Type == Story::Conditions::Type::NORMAL)
         {
             result = true;
         }
-        else if (condition.Type == Conditions::Type::CHARACTER)
+        else if (condition.Type == Story::Conditions::Type::CHARACTER)
         {
             auto character = Character::Map(condition.Variable);
 

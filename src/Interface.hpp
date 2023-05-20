@@ -1711,7 +1711,7 @@ namespace BloodSword::Interface
 
             auto location = offset + (Point(width, height) - Point(boxw, boxh)) / 2;
 
-            auto confirm = location + Point(pad + texturew / 2 - 32, textureh + pad * 2);
+            auto confirm = location + Point(2 * pad + texturew / 2 - 32, textureh + pad * 2);
 
             auto input = Controls::User();
 
@@ -1768,6 +1768,93 @@ namespace BloodSword::Interface
 
             Free(&texture);
         }
+    }
+
+    // draws a confirmation message box on screen
+    bool Confirm(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    {
+        auto result = false;
+
+        auto box = Scene::Base();
+
+        auto pad = 16;
+
+        if (message)
+        {
+            auto texturew = 0;
+
+            auto textureh = 0;
+
+            SDL_QueryTexture(message, NULL, NULL, &texturew, &textureh);
+
+            auto boxw = texturew + pad * 2;
+
+            auto boxh = textureh + pad * 3 + 64;
+
+            auto location = offset + (Point(width, height) - Point(boxw, boxh)) / 2;
+
+            auto confirm = location + Point(texturew / 2 - 64, textureh + pad * 2);
+
+            auto input = Controls::User();
+
+            box.Add(Scene::Element(location, boxw, boxh, background, border, borderSize));
+
+            box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
+
+            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
+
+            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CANCEL), confirm + Point(64 + pad * 2, 0)));
+
+            box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 1, 0, 0, confirm.X, confirm.Y, 64, 64, highlight));
+
+            box.Add(Controls::Base(Controls::Type::CANCEL, 1, 0, 1, 1, 1, confirm.X + 64 + pad * 2, confirm.Y, 64, 64, highlight));
+
+            while (true)
+            {
+                input = Input::WaitForInput(graphics, scene, box, input, true, blur);
+
+                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                {
+                    if (input.Type == Controls::Type::CONFIRM)
+                    {
+                        result = true;
+
+                        break;
+                    }
+                    else if (input.Type == Controls::Type::CANCEL)
+                    {
+                        result = false;
+
+                        break;
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    // draws a confirm message box over a scene
+    bool Confirm(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    {
+        return Interface::Confirm(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, message, background, border, borderSize, highlight, blur);
+    }
+
+    // draws a confirm message box over a scene
+    bool Confirm(Graphics::Base &graphics, Scene::Base &scene, Graphics::RichText message, Uint32 background, Uint32 border, int borderSize, Uint32 highlight, bool blur = true)
+    {
+        auto result = false;
+
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        if (texture)
+        {
+            result = Interface::Confirm(graphics, scene, texture, background, border, borderSize, highlight, blur);
+
+            Free(&texture);
+        }
+
+        return result;
     }
 
     // focus cursor on character on the map
@@ -2097,6 +2184,7 @@ namespace BloodSword::Interface
     Party::Base CreateParty(Graphics::Base &graphics, bool blur = true)
     {
         auto scene = Scene::Base();
+        auto bgScene = Scene::Base();
         auto width = 254;
         auto base_height = 32;
         auto pad = 8;
@@ -2138,13 +2226,18 @@ namespace BloodSword::Interface
             else if (party_size == 4)
             {
                 rank = 2;
+
+                for (auto &characterClass : Character::All)
+                {
+                    auto character = Generate::Character(characterClass, rank);
+
+                    party.Add(character);
+                }
             }
 
             while (party.Count() != party_size)
             {
                 auto characterClass = Interface::SelectCharacter(graphics, rank, party);
-
-                auto bgScene = Scene::Base();
 
                 if (characterClass != Character::Class::NONE)
                 {
@@ -2163,7 +2256,19 @@ namespace BloodSword::Interface
                         Interface::MessageBox(graphics, bgScene, Graphics::RichText(std::string(Character::ClassMapping[characterClass]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, false);
                     }
                 }
+
+                if (party.Count() == party_size)
+                {
+                    auto done = Interface::Confirm(graphics, bgScene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Inactive, false);
+
+                    if (!done)
+                    {
+                        party.Clear();
+                    }
+                }
             }
+
+            Interface::MessageBox(graphics, bgScene, Graphics::RichText("Party Complete!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
         }
 
         Free(&menu_title);

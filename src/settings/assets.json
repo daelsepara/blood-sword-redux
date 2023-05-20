@@ -197,6 +197,10 @@
             "path": "images/system/confirmed.png"
         },
         {
+            "id": "CANCEL",
+            "path": "images/system/cancel.png"
+        },
+        {
             "id": "BACK",
             "path": "images/system/anticlockwise-rotation.png"
         },

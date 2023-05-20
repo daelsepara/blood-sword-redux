@@ -583,6 +583,14 @@ namespace BloodSword::Character
 
             return quantity;
         }
+
+        void Load(nlohmann::json data)
+        {
+            // TODO: load character from json
+            if (!data["character"].is_null())
+            {
+            }
+        }
     };
 }
 

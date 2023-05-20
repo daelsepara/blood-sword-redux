@@ -24,6 +24,7 @@ namespace BloodSword::Controls
         BACK,
         RESET,
         CONFIRM,
+        CANCEL,
         ROLL,
         PLAYER,
         ENEMY,

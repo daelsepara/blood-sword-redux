@@ -87,6 +87,12 @@ namespace BloodSword::Character
         {Character::Class::SAGE, "SAGE"},
         {Character::Class::ENCHANTER, "ENCHANTER"}};
 
+    std::vector<Character::Class> All = {
+        Character::Class::WARRIOR,
+        Character::Class::TRICKSTER,
+        Character::Class::SAGE,
+        Character::Class::ENCHANTER};
+
     Character::Class Map(const char *characterClass)
     {
         return BloodSword::Find(Character::ClassMapping, characterClass);

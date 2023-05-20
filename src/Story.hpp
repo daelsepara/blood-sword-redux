@@ -50,11 +50,11 @@ namespace BloodSword::Story
 
         std::string Text;
 
-        std::vector<Conditions::Base> Background = {};
+        std::vector<Story::Conditions::Base> Background = {};
 
-        std::vector<Conditions::Base> Events = {};
+        std::vector<Story::Conditions::Base> Events = {};
 
-        std::vector<Conditions::Base> Next = {};
+        std::vector<Story::Conditions::Base> Next = {};
 
         Base() {}
 
