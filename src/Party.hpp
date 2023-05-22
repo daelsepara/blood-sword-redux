@@ -125,11 +125,33 @@ namespace BloodSword::Party
             }
         }
 
+        // Load party from json data
         void Load(nlohmann::json data)
         {
-            // TODO: load party from json data
             if (!data["party"].is_null())
             {
+                // set party location
+                if (!data["party"]["location"].is_null())
+                {
+                    auto book = !data["party"]["location"]["book"].is_null() ? Book::MapBook(std::string(data["party"]["location"]["book"])) : Book::Number::NONE;
+
+                    auto number = !data["party"]["location"]["number"].is_null() ? std::stoi(std::string(data["party"]["location"]["number"])) : -1;
+
+                    this->Location = {book, number};
+                }
+
+                // load party members
+                if (!data["party"]["members"].is_null() && data["party"]["members"].is_array() && data["party"]["members"].size() > 0)
+                {
+                    for (auto i = 0; i < (int)(data["party"]["members"].size()); i++)
+                    {
+                        auto character = Character::Base();
+
+                        character.Load(data["party"]["members"][i]);
+
+                        this->Add(character);
+                    }
+                }
             }
         }
     };

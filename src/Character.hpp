@@ -40,7 +40,7 @@ namespace BloodSword::Character
 
         Memorized CalledToMind = {};
 
-        ControlType ControlType = ControlType::NONE;
+        Character::ControlType ControlType = ControlType::NONE;
 
         Character::Class Class = Character::Class::NONE;
 
@@ -99,6 +99,8 @@ namespace BloodSword::Character
                           ControlType(control),
                           Name(name),
                           Moves(moves) {}
+
+        Base() {}
 
         bool Has(Skills::Type skill)
         {
@@ -584,10 +586,39 @@ namespace BloodSword::Character
             return quantity;
         }
 
+        // TODO: load character from json
         void Load(nlohmann::json data)
         {
-            // TODO: load character from json
-            if (!data["character"].is_null())
+            this->Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
+            this->Rank = !data["rank"].is_null() ? (int)data["rank"] : 0;
+            this->Experience = !data["experience"].is_null() ? (int)data["experience"] : 0;
+            this->Moves = !data["moves"].is_null() ? (int)data["moves"] : 0;
+            this->ItemLimit = !data["itemLimit"].is_null() ? (int)data["itemLimit"] : 0;
+            this->Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
+            this->ControlType = !data["controlType"].is_null() ? Character::MapControlType(std::string(data["controlType"])) : Character::ControlType::NONE;
+            this->Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::Type::NONE;
+
+            if (!data["attributes"].is_null() && data["attributes"].is_array() && data["attributes"].size() > 0)
+            {
+            }
+
+            if (!data["skills"].is_null() && data["skills"].is_array() && data["skills"].size() > 0)
+            {
+            }
+
+            if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+            {
+            }
+
+            if (!data["spells"].is_null() && data["spells"].is_array() && data["spells"].size() > 0)
+            {
+            }
+
+            if (!data["calledToMind"].is_null() && data["calledToMind"].is_array() && data["calledToMind"].size() > 0)
+            {
+            }
+
+            if (!data["status"].is_null())
             {
             }
         }
