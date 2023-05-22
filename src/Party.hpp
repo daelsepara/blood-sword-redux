@@ -145,9 +145,7 @@ namespace BloodSword::Party
                 {
                     for (auto i = 0; i < (int)(data["party"]["members"].size()); i++)
                     {
-                        auto character = Character::Base();
-
-                        character.Load(data["party"]["members"][i]);
+                        auto character = Character::Load(data["party"]["members"][i]);
 
                         this->Add(character);
                     }
@@ -155,6 +153,15 @@ namespace BloodSword::Party
             }
         }
     };
+
+    Party::Base Load(nlohmann::json data)
+    {
+        auto party = Party::Base();
+
+        party.Load(data);
+
+        return party;
+    }
 }
 
 #endif

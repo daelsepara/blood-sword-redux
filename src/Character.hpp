@@ -623,6 +623,15 @@ namespace BloodSword::Character
             }
         }
     };
+
+    Character::Base Load(nlohmann::json data)
+    {
+        auto character = Character::Base();
+
+        character.Load(data);
+
+        return character;
+    }
 }
 
 #endif
