@@ -1711,7 +1711,7 @@ namespace BloodSword::Interface
 
             auto location = offset + (Point(width, height) - Point(boxw, boxh)) / 2;
 
-            auto confirm = location + Point(2 * pad + texturew / 2 - 32, textureh + pad * 2);
+            auto confirm = location + Point(pad + texturew / 2 - 32, textureh + pad * 2);
 
             auto input = Controls::User();
 
@@ -2209,6 +2209,15 @@ namespace BloodSword::Interface
             Graphics::RichText(" 4 Starting rank(s): 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         };
 
+        auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto currentw = 0;
+
+        if (current)
+        {
+            SDL_QueryTexture(current, NULL, NULL, &currentw, NULL);
+        }
+
         auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, 4, Color::Background, Color::Background, Color::Highlight, blur) + 1;
 
         if (party_size > 0 && party_size <= 4)
@@ -2237,6 +2246,8 @@ namespace BloodSword::Interface
 
             while (party.Count() != party_size)
             {
+                bgScene = Scene::Base();
+
                 auto characterClass = Interface::SelectCharacter(graphics, rank, party);
 
                 if (characterClass != Character::Class::NONE)
@@ -2259,17 +2270,45 @@ namespace BloodSword::Interface
 
                 if (party.Count() == party_size)
                 {
-                    auto done = Interface::Confirm(graphics, bgScene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Inactive, false);
+                    auto partyWidth = party_size < 3 ? 256 : party_size * 64;
 
-                    if (!done)
+                    auto partyX = (graphics.Width - (party_size * 64)) / 2;
+
+                    auto screen = Point((graphics.Width - partyWidth) / 2, 128);
+
+                    bgScene = Scene::Base();
+
+                    bgScene.Add(Scene::Element(screen, partyWidth, 128, 0, Color::Active, 4));
+
+                    for (auto i = 0; i < party_size; i++)
+                    {
+                        auto texture = Asset::Get(party[i].Asset);
+
+                        if (texture)
+                        {
+                            auto texturew = 0;
+
+                            SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
+
+                            bgScene.VerifyAndAdd(Scene::Element(texture, partyX + i * texturew, screen.Y + pad + 32));
+                        }
+                    }
+
+                    bgScene.VerifyAndAdd(Scene::Element(current, (graphics.Width - currentw) / 2, screen.Y + pad));
+
+                    if (!Interface::Confirm(graphics, bgScene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Inactive, false))
                     {
                         party.Clear();
                     }
                 }
+
+                bgScene = Scene::Base();
             }
 
             Interface::MessageBox(graphics, bgScene, Graphics::RichText("Party Complete!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
         }
+
+        Free(&current);
 
         Free(&menu_title);
 

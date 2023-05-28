@@ -15,7 +15,7 @@ namespace BloodSword
     {
         std::stringstream version;
 
-        version << "v" 
+        version << "v"
                 << std::to_string(MajorVersion)
                 << "."
                 << std::to_string(MinorVersion)

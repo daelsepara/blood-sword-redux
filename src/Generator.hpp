@@ -346,7 +346,7 @@ namespace BloodSword::Generate
         {
             return;
         }
-        
+
         switch (character.Class)
         {
         case Character::Class::ENCHANTER:

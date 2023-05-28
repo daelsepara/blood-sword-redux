@@ -189,7 +189,7 @@ namespace BloodSword::Graphics
             for (auto i = 0; i < graphics.Height; i += 2)
             {
                 scanline.y = i + 1;
-                
+
                 SDL_RenderFillRect(graphics.Renderer, &scanline);
             }
         }
@@ -497,7 +497,7 @@ namespace BloodSword::Graphics
                 if (wrap == 0 && strchr(text, '\n') != NULL)
                 {
                     auto maxlength = 0;
-                    
+
                     auto current = 0;
 
                     for (auto i = 0; i < strlen(text); i++)

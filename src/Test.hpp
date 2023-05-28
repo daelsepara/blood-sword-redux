@@ -1279,7 +1279,7 @@ namespace BloodSword::Test
             auto bottomy = scene.Controls[first + limit - 1].Y + height + pad;
 
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
-            
+
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, xadjust, bottomy, dim, dim, highlight));
 
             if (Input::IsValid(scene, input) && input.Type == Controls::Type::CHOICE)
@@ -1296,21 +1296,21 @@ namespace BloodSword::Test
 
             // add color boxes
             scene.Add(Scene::Element(boxx + pad, origin, 192, 128, Palette::List[palette][0], Palette::List[palette][0], 2));
-            
+
             scene.Add(Scene::Element(boxx + pad * 2 + 192, origin, 192, 128, Palette::List[palette][1], Palette::List[palette][1], 2));
-            
+
             scene.Add(Scene::Element(boxx + pad, origin + 192, 192, 128, Palette::List[palette][2], Palette::List[palette][2], 2));
-            
+
             scene.Add(Scene::Element(boxx + pad * 2 + 192, origin + 192, 192, 128, Palette::List[palette][3], fixed, 2));
-            
+
             scene.VerifyAndAdd(Scene::Element(labels[0], Point(boxx + pad, origin + 136)));
-            
+
             scene.VerifyAndAdd(Scene::Element(labels[1], Point(boxx + pad * 2 + 192, origin + 136)));
-            
+
             scene.VerifyAndAdd(Scene::Element(labels[2], Point(boxx + pad, origin + 328)));
-            
+
             scene.VerifyAndAdd(Scene::Element(labels[3], Point(boxx + pad * 2 + 192, origin + 328)));
-            
+
             scene.VerifyAndAdd(Scene::Element(menu[palette], boxx + pad, origin + 392));
 
             if (input.Up)

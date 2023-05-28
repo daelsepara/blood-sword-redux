@@ -28,7 +28,7 @@ After the implementation of the first book is completed in the new engine, it is
 
 ## Progress and Pace
 
-A slower, more methodical pace is being adopted to bring the new engine to fruition. This allows for more opportunities to do unit tests in the core systems. As expected, due to numerous real life<sup>tm</sup> and third world concerns among the software engineers involved in the project, progress in this endeavour takes a lower priority. 
+A slower, more methodical pace is being adopted to bring the new engine to fruition. This allows for more opportunities to do unit tests in the core systems. As expected, due to numerous real life<sup>tm</sup> and third world concerns among the software engineers involved in the project, progress in this endeavour takes a lower priority.
 
 ## Tests
 
