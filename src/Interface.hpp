@@ -2270,15 +2270,11 @@ namespace BloodSword::Interface
 
                 if (party.Count() == party_size)
                 {
-                    auto partyWidth = party_size < 3 ? 256 : party_size * 64;
-
                     auto partyX = (graphics.Width - (party_size * 64)) / 2;
 
-                    auto screen = Point((graphics.Width - partyWidth) / 2, 128);
+                    auto partyY = (graphics.Height - 432) / 2;
 
                     bgScene = Scene::Base();
-
-                    bgScene.Add(Scene::Element(screen, partyWidth, 128, 0, Color::Active, 4));
 
                     for (auto i = 0; i < party_size; i++)
                     {
@@ -2290,11 +2286,11 @@ namespace BloodSword::Interface
 
                             SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
 
-                            bgScene.VerifyAndAdd(Scene::Element(texture, partyX + i * texturew, screen.Y + pad + 32));
+                            bgScene.VerifyAndAdd(Scene::Element(texture, partyX + i * texturew, partyY + pad + 32));
                         }
                     }
 
-                    bgScene.VerifyAndAdd(Scene::Element(current, (graphics.Width - currentw) / 2, screen.Y + pad));
+                    bgScene.VerifyAndAdd(Scene::Element(current, (graphics.Width - currentw) / 2, partyY + pad));
 
                     if (!Interface::Confirm(graphics, bgScene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Inactive, false))
                     {
