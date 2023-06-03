@@ -1146,9 +1146,11 @@ namespace BloodSword::Test
                         }
                         else if (Engine::IsSpell(input.Type))
                         {
-                            if (Interface::ControlSpellMapping.count(input.Type) > 0)
+                            auto ptr = Interface::ControlSpellMapping.find(input.Type);
+
+                            if (ptr != Interface::ControlSpellMapping.end())
                             {
-                                auto &type = Interface::ControlSpellMapping[input.Type];
+                                auto &type = ptr->second;
                                 auto &caster = party[popupid];
                                 auto search = caster.Find(type);
 

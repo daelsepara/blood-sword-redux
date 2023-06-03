@@ -971,9 +971,11 @@ namespace BloodSword::Interface
                                                 // actions popup captions
                                                 auto &control = overlay.Controls[input.Current];
 
-                                                if (BattleControlCaptions.count(control.Type) > 0)
+                                                auto ptr = Interface::BattleControlCaptions.find(control.Type);
+
+                                                if (ptr != Interface::BattleControlCaptions.end())
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::BattleControlCaptions[control.Type], control.X, control.Y + control.H + pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(ptr->second, control.X, control.Y + control.H + pad));
                                                 }
                                             }
                                         }
@@ -1408,11 +1410,13 @@ namespace BloodSword::Interface
                                             }
                                             else if (spells && Input::IsValid(overlay, input))
                                             {
+                                                auto ptr = Interface::ControlSpellMapping.find(input.Type);
+
                                                 spells = false;
 
-                                                if (Engine::IsSpell(input.Type) && Interface::ControlSpellMapping.count(input.Type) > 0)
+                                                if (Engine::IsSpell(input.Type) && ptr != Interface::ControlSpellMapping.end())
                                                 {
-                                                    auto &type = Interface::ControlSpellMapping[input.Type];
+                                                    auto &type = ptr->second;
 
                                                     auto search = character.Find(type);
 
