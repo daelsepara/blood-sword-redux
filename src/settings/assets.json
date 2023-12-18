@@ -269,6 +269,10 @@
             "path": "images/spells/gaze.png"
         },
         {
+            "id": "IGNORE ARMOUR",
+            "path": "images/skills/armor-downgrade.png"
+        },
+        {
             "id": "DICE1",
             "path": "images/system/dice-six-faces-one.png"
         },

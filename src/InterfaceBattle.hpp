@@ -1658,7 +1658,14 @@ namespace BloodSword::Interface
         {
             if (Engine::IsAlive(party))
             {
-                result = Battle::Result::VICTORY;
+                if (Engine::Count(battle.Opponents, Character::ControlType::NPC, Character::Status::ENTHRALLED) > 0)
+                {
+                    result = Battle::Result::ENTHRALLED;
+                }
+                else
+                {
+                    result = Battle::Result::VICTORY;
+                }
             }
             else
             {

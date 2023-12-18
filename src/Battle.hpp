@@ -24,7 +24,8 @@ namespace BloodSword::Battle
         DETERMINE,
         DEFEAT,
         VICTORY,
-        FLEE
+        FLEE,
+        ENTHRALLED
     };
 
     const int Unlimited = -1;

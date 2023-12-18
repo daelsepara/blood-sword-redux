@@ -12,13 +12,23 @@ namespace BloodSword::Story::Conditions
     {
         NONE = -1,
         NORMAL,
-        CHARACTER
+        HAS_CHARACTER,
+        CHOOSE_CHARACTER,
+        BATTLE_WIN,
+        BATTLE_FLEE,
+        BATTLE_ENTHRALLED,
+        BATTLE_WIN_OR_ENTHRALLED,
+        HAS_ITEM,
+        USE_ITEM,
+        DROP_ITEM,
+        GAIN_ENDURANCE,
+        LOSE_ENDURANCE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
-        {Conditions::Type::CHARACTER, "CHARACTER"}};
+        {Conditions::Type::HAS_CHARACTER, "HAS_CHARACTER"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -35,15 +45,15 @@ namespace BloodSword::Story::Conditions
     public:
         Story::Conditions::Type Type = Type::NONE;
 
-        std::string Variable;
-
         std::string Text;
 
         Book::Location Location = {Book::Number::NONE, -1};
 
+        std::vector<std::string> Variables = {};
+
         Base() {}
 
-        Base(Story::Conditions::Type type, std::string variable, std::string text, Book::Location location) : Type(type), Variable(variable), Text(text), Location(location)
+        Base(Story::Conditions::Type type, std::string text, Book::Location location, std::vector<std::string> variables) : Type(type), Variables(variables), Text(text), Location(location)
         {
         }
     };
@@ -78,10 +88,17 @@ namespace BloodSword::Story::Conditions
                 condition.Text = std::string(data["text"]);
             }
 
-            if (!data["variable"].is_null())
+            if (!data["variables"].is_null() && data["variables"].is_array() && data["variables"].size() > 0)
             {
-                // set variable
-                condition.Variable = std::string(data["variable"]);
+                std::vector<std::string> variables = {};
+
+                // set variables
+                for (auto i = 0; i < data["variables"].size(); i++)
+                {
+                    variables.push_back(std::string(data["variables"][i]));
+                }
+
+                condition.Variables = variables;
             }
         }
 
@@ -100,9 +117,9 @@ namespace BloodSword::Story::Conditions
         {
             result = true;
         }
-        else if (condition.Type == Story::Conditions::Type::CHARACTER)
+        else if (condition.Type == Story::Conditions::Type::HAS_CHARACTER)
         {
-            auto character = Character::Map(condition.Variable);
+            auto character = Character::Map(condition.Variables[0]);
 
             result = party.Has(character);
         }

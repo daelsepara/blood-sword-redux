@@ -117,19 +117,37 @@ namespace BloodSword::Engine
         return Engine::Score(character, Attribute::Type::ENDURANCE) > 0;
     }
 
-    // check if there is at least one character in the party still alive
-    bool IsAlive(Party::Base &party)
+    // count characters in party who are alive
+    int Count(Party::Base &party)
     {
         auto live = 0;
 
-        auto enthralled = 0;
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            live += Engine::IsAlive(party[character]) ? 1 : 0;
+        }
+
+        return live;
+    }
+
+    int Count(Party::Base &party, Character::ControlType control, Character::Status status)
+    {
+        auto count = 0;
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            enthralled += party[character].ControlType == Character::ControlType::NPC && party[character].Is(Character::Status::ENTHRALLED) ? 1 : 0;
-
-            live += Engine::IsAlive(party[character]) ? 1 : 0;
+            count += party[character].ControlType == control && party[character].Is(status) ? 1 : 0;
         }
+
+        return count;
+    }
+
+    // check if there is at least one character in the party still alive
+    bool IsAlive(Party::Base &party)
+    {
+        auto live = Engine::Count(party);
+
+        auto enthralled = Engine::Count(party, Character::ControlType::NPC, Character::Status::ENTHRALLED);
 
         return live > 0 && live > enthralled;
     }

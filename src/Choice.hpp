@@ -9,6 +9,7 @@
 #include "Attribute.hpp"
 #include "CharacterClasses.hpp"
 #include "Item.hpp"
+#include "Conditions.hpp"
 
 // classes and functions for managing story choices
 namespace BloodSword::Choice
@@ -43,73 +44,15 @@ namespace BloodSword::Choice
     class Base
     {
     public:
-        Book::Location Location = {Book::Number::NONE, -1};
+        BloodSword::Story::Conditions::Base Condition;
 
-        Choice::Type Type = Choice::Type::NORMAL;
-
-        Attribute::Type Attribute = Attribute::Type::NONE;
-
-        Character::Class CharacterClass = Character::Class::NONE;
-
-        Item::Type Item = Item::Type::NONE;
-
-        std::string Text;
-
-        int Quantity = -1;
+        Base() {}
     };
 
     // TODO: parse choice from json
     Choice::Base Parse(nlohmann::json json)
     {
         auto choice = Choice::Base();
-
-        if (!json["choice"].is_null())
-        {
-            auto data = json["choice"];
-
-            if (!data["location"].is_null())
-            {
-                // set location
-                auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
-
-                auto number = !data["location"]["number"].is_null() ? std::stoi(std::string(data["location"]["number"])) : -1;
-
-                choice.Location = {book, number};
-            }
-
-            if (!data["type"].is_null())
-            {
-                // set choice type
-                choice.Type = Choice::Map(std::string(data["type"]));
-            }
-
-            if (!data["attribute"].is_null())
-            {
-                // set attribute
-                choice.Attribute = Attribute::Map(std::string(data["attribute"]));
-            }
-
-            if (!data["characterClass"].is_null())
-            {
-                // set character class
-                choice.CharacterClass = Character::Map(std::string(data["characterClass"]));
-            }
-
-            if (!data["item"].is_null())
-            {
-                // set item
-            }
-
-            if (!data["text"].is_null())
-            {
-                choice.Text = std::string(data["text"]);
-            }
-
-            if (!data["quantity"].is_null())
-            {
-                choice.Quantity = std::stoi(std::string(data["quantity"]));
-            }
-        }
 
         return choice;
     }
