@@ -273,6 +273,10 @@
             "path": "images/skills/armor-downgrade.png"
         },
         {
+            "id": "ENTHRALMENT IMMUNITY",
+            "path": "images/skills/helmet-head-shot.png"
+        },
+        {
             "id": "DICE1",
             "path": "images/system/dice-six-faces-one.png"
         },

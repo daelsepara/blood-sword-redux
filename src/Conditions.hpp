@@ -14,15 +14,22 @@ namespace BloodSword::Story::Conditions
         NORMAL,
         HAS_CHARACTER,
         CHOOSE_CHARACTER,
-        BATTLE_WIN,
+        CHOSEN_CHARACTER,
+        BATTLE_VICTORY,
         BATTLE_FLEE,
-        BATTLE_ENTHRALLED,
-        BATTLE_WIN_OR_ENTHRALLED,
+        BATTLE_ENTHRALMENT,
+        BATTLE_VICTORY_OR_ENTHRALMENT,
         HAS_ITEM,
         USE_ITEM,
         DROP_ITEM,
+        TAKE_ITEM,
+        TAKE_ITEMS,
         GAIN_ENDURANCE,
-        LOSE_ENDURANCE
+        LOSE_ENDURANCE,
+        CHOOSE_NUMBER,
+        CHOSEN_NUMBER,
+        PARTY_WOUNDED,
+        PREVIOUS_LOCATION
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -51,11 +58,9 @@ namespace BloodSword::Story::Conditions
 
         std::vector<std::string> Variables = {};
 
-        Base() {}
+        bool Invert = false;
 
-        Base(Story::Conditions::Type type, std::string text, Book::Location location, std::vector<std::string> variables) : Type(type), Variables(variables), Text(text), Location(location)
-        {
-        }
+        Base() {}
     };
 
     Conditions::Base Parse(nlohmann::json json)
@@ -100,6 +105,11 @@ namespace BloodSword::Story::Conditions
 
                 condition.Variables = variables;
             }
+
+            if (!data["invert"].is_null() && data["variables"].is_boolean())
+            {
+                condition.Invert = bool(!data["invert"]);
+            }
         }
 
         return condition;
@@ -124,7 +134,7 @@ namespace BloodSword::Story::Conditions
             result = party.Has(character);
         }
 
-        return result;
+        return condition.Invert ? !result : result;
     }
 }
 #endif

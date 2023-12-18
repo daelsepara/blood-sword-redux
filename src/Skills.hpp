@@ -26,7 +26,8 @@ namespace BloodSword::Skills
         CALL_TO_MIND,
         CAST_SPELL,
         SHURIKEN,
-        IGNORE_ARMOUR
+        IGNORE_ARMOUR,
+        ENTHRALMENT_IMMUNITY
     };
 
     template <typename T>
@@ -46,7 +47,8 @@ namespace BloodSword::Skills
         {Skills::Type::CALL_TO_MIND, "CALL TO MIND"},
         {Skills::Type::CAST_SPELL, "CAST SPELL"},
         {Skills::Type::SHURIKEN, "SHURIKEN"},
-        {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"}};
+        {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
+        {Skills::Type::ENTHRALMENT_IMMUNITY, "ENTHRALMENT IMMUNITY"}};
 
     std::vector<Skills::Type> BattleSkills = {
         Skills::Type::ARCHERY,
@@ -54,7 +56,8 @@ namespace BloodSword::Skills
         Skills::Type::QUARTERSTAFF,
         Skills::Type::SPELLS,
         Skills::Type::SHURIKEN,
-        Skills::Type::IGNORE_ARMOUR};
+        Skills::Type::IGNORE_ARMOUR,
+        Skills::Type::ENTHRALMENT_IMMUNITY};
 
     std::vector<Skills::Type> StorySkills = {
         Skills::Type::HEALING,
