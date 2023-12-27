@@ -200,7 +200,7 @@ namespace BloodSword::Story
             if (story.Battle.IsDefined())
             {
                 // fight battle
-                auto result = Interface::Battle(graphics, story.Battle, party);
+                party.LastBattle = Interface::Battle(graphics, story.Battle, party);
             }
 
             if (Engine::IsAlive(party))
