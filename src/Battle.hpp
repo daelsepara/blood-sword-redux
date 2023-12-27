@@ -18,16 +18,6 @@ namespace BloodSword::Battle
         SURVIVORS
     };
 
-    enum class Result
-    {
-        NONE = -1,
-        DETERMINE,
-        DEFEAT,
-        VICTORY,
-        FLEE,
-        ENTHRALLED
-    };
-
     const int Unlimited = -1;
 
     BloodSword::Mapping<Battle::Condition> ConditionMapping = {

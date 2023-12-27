@@ -14,33 +14,6 @@
 // classes and functions for managing story choices
 namespace BloodSword::Choice
 {
-    enum class Type
-    {
-        NONE,
-        NORMAL,
-        ATTRIBUTE,
-        CHARACTER,
-        SKILL,
-        ITEM
-    };
-
-    BloodSword::Mapping<Choice::Type> TypeMapping = {
-        {Choice::Type::NORMAL, "NORMAL"},
-        {Choice::Type::ATTRIBUTE, "ATTRIBUTE"},
-        {Choice::Type::CHARACTER, "CHARACTER"},
-        {Choice::Type::SKILL, "SKILL"},
-        {Choice::Type::ITEM, "ITEM"}};
-
-    Choice::Type Map(const char *choice)
-    {
-        return BloodSword::Find(Choice::TypeMapping, choice);
-    }
-
-    Choice::Type Map(std::string choice)
-    {
-        return Choice::Map(choice.c_str());
-    }
-
     class Base
     {
     public:
@@ -49,19 +22,18 @@ namespace BloodSword::Choice
         Base() {}
     };
 
-    // TODO: parse choice from json
     Choice::Base Parse(nlohmann::json json)
     {
         auto choice = Choice::Base();
 
+        choice.Condition = Story::Conditions::Parse(json);
+
         return choice;
     }
 
-    bool Process(Choice::Base &choice)
+    bool Process(Party::Base &party, Choice::Base &choice)
     {
-        auto valid = false;
-
-        return valid;
+        return Story::Conditions::Process(party, choice.Condition);
     }
 }
 

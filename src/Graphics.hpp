@@ -181,7 +181,9 @@ namespace BloodSword::Graphics
             SDL_Rect scanline;
 
             scanline.w = graphics.Width;
+
             scanline.h = 1;
+
             scanline.x = 0;
 
             SDL_SetRenderDrawColor(graphics.Renderer, 0, 0, 0, 0x40);

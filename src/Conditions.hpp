@@ -35,7 +35,7 @@ namespace BloodSword::Story::Conditions
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
-        {Conditions::Type::HAS_CHARACTER, "HAS_CHARACTER"}};
+        {Conditions::Type::HAS_CHARACTER, "HAS CHARACTER"}};
 
     Conditions::Type Map(const char *Conditions)
     {

@@ -129,6 +129,7 @@ namespace BloodSword::Story
 
                 // image asset and position
                 story.ImagePosition = !data["imagePosition"].is_null() ? Story::MapPosition(data["imagePosition"]) : Position::NONE;
+
                 story.ImageAsset = !data["imageAsset"].is_null() ? std::string(data["imageAsset"]) : std::string();
 
                 // story section text
@@ -159,17 +160,28 @@ namespace BloodSword::Story
     {
         Book::Location next = {Book::Number::NONE, -1};
 
-        // TODO: process any background events
         if (story.Background.size() > 0)
         {
+            for (auto &condition : story.Background)
+            {
+                if (Story::Conditions::Process(party, condition))
+                {
+                    next = condition.Location;
+
+                    break;
+                }
+            }
         }
 
         // if background event causes a jump to another location, exit immediately
         if (Book::IsUndefined(next))
         {
-            // TODO: process current events
             if (story.Events.size() > 0)
             {
+                for (auto &condition : story.Events)
+                {
+                    Story::Conditions::Process(party, condition);
+                }
             }
         }
 

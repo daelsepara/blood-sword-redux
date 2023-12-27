@@ -1659,7 +1659,7 @@ namespace BloodSword::Interface
             if (Engine::IsAlive(party))
             {
                 auto enthralled = Engine::Count(battle.Opponents, Character::ControlType::NPC, Character::Status::ENTHRALLED);
-                
+
                 auto alive = Engine::Count(battle.Opponents);
 
                 if (enthralled > 0 && enthralled >= alive)

@@ -7,6 +7,19 @@
 #include "Book.hpp"
 #include "Character.hpp"
 
+namespace BloodSword::Battle
+{
+    enum class Result
+    {
+        NONE = -1,
+        DETERMINE,
+        DEFEAT,
+        VICTORY,
+        FLEE,
+        ENTHRALLED
+    };
+}
+
 namespace BloodSword::Party
 {
     class Base
@@ -18,6 +31,17 @@ namespace BloodSword::Party
     public:
         // current book and section number
         Book::Location Location = {Book::Number::NONE, -1};
+
+        Book::Location PreviousLocation = {Book::Number::NONE, -1};
+
+        // for choices / conditions requiring a selected character
+        Character::Class ChosenCharacter = Character::Class::NONE;
+
+        // for choices / conditions requiring the result of the last battle
+        Battle::Result LastBattle = Battle::Result::NONE;
+
+        // for choices / conditions requiring a chosen number (1-6)
+        int ChosenNumber = -1;
 
         Base() {}
 
