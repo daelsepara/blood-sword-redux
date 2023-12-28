@@ -16,14 +16,14 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Book::Location Next(Party::Base &party, std::vector<Story::Conditions::Base> &conditions)
+    Book::Location Next(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::vector<Story::Conditions::Base> &conditions)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
         // process through each condition
         for (auto &condition : conditions)
         {
-            if (Story::Conditions::Process(party, condition))
+            if (Story::Conditions::Process(graphics, background, party, condition))
             {
                 next = condition.Location;
 

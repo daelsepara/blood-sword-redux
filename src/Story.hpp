@@ -155,8 +155,8 @@ namespace BloodSword::Story
         return story;
     }
 
-    // process story
-    Book::Location Render(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    // process background events
+    Book::Location Background(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
@@ -164,7 +164,7 @@ namespace BloodSword::Story
         {
             for (auto &condition : story.Background)
             {
-                if (Story::Conditions::Process(party, condition))
+                if (Story::Conditions::Process(graphics, background, party, condition))
                 {
                     next = condition.Location;
 
@@ -173,27 +173,28 @@ namespace BloodSword::Story
             }
         }
 
-        // if background event causes a jump to another location, exit immediately
-        if (Book::IsUndefined(next))
-        {
-            if (story.Events.size() > 0)
-            {
-                for (auto &condition : story.Events)
-                {
-                    Story::Conditions::Process(party, condition);
-                }
-            }
-        }
-
         return next;
     }
 
+    // process real-time events
+    void Events(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
+    {
+        if (story.Events.size() > 0)
+        {
+            for (auto &condition : story.Events)
+            {
+                if (Engine::IsAlive(party))
+                {
+                    Story::Conditions::Process(graphics, background, party, condition);
+                }
+            }
+        }
+    }
+
     // get next location
-    Book::Location Next(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    Book::Location Next(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
     {
         Book::Location next = {Book::Number::NONE, -1};
-
-        auto battleResult = Battle::Result::NONE;
 
         if (story.Next.size() > 0)
         {
@@ -213,7 +214,45 @@ namespace BloodSword::Story
                 else if (story.Next.size() > 0)
                 {
                     // select next location
-                    next = Interface::Next(party, story.Next);
+                    next = Interface::Next(graphics, background, party, story.Next);
+                }
+            }
+        }
+
+        return next;
+    }
+
+    Book::Location Render(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    {
+        auto background = Scene::Base();
+
+        Book::Location next = Story::Background(graphics, background, story, party);
+
+        if (!Book::IsUndefined(next))
+        {
+            auto once = false;
+
+            while (true)
+            {
+                // TODO: render story
+                if (!once)
+                {
+                    Story::Events(graphics, background, story, party);
+
+                    once = true;
+                }
+
+                if (Engine::IsAlive(party))
+                {
+                    // TODO: Wait for input
+
+                    // get next location
+                    next = Story::Next(graphics, background, story, party);
+
+                    if (Book::IsDefined(next) || !Engine::IsAlive(party))
+                    {
+                        break;
+                    }
                 }
             }
         }

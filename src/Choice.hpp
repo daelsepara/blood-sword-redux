@@ -10,6 +10,7 @@
 #include "CharacterClasses.hpp"
 #include "Item.hpp"
 #include "Conditions.hpp"
+#include "Graphics.hpp"
 
 // classes and functions for managing story choices
 namespace BloodSword::Choice
@@ -31,9 +32,9 @@ namespace BloodSword::Choice
         return choice;
     }
 
-    bool Process(Party::Base &party, Choice::Base &choice)
+    bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choice::Base &choice)
     {
-        return Story::Conditions::Process(party, choice.Condition);
+        return Story::Conditions::Process(graphics, background, party, choice.Condition);
     }
 }
 
