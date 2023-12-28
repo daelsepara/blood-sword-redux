@@ -298,9 +298,9 @@ namespace BloodSword::Interface
     }
 
     // helper function (next character in battle order)
-    bool Next(Battle::Base &battle, Scene::Base &scene, Party::Base &party, Engine::Queue &order, int &combatant, Controls::User &input, bool &endturn)
+    bool NextCharacter(Battle::Base &battle, Scene::Base &scene, Party::Base &party, Engine::Queue &order, int &combatant, Controls::User &input, bool &endturn)
     {
-        auto next = Engine::Next(order, combatant);
+        auto next = Engine::NextInQueue(order, combatant);
 
         if (Engine::IsPlayer(order, combatant))
         {
@@ -748,7 +748,7 @@ namespace BloodSword::Interface
                                             Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
 
                                             // next character in battle order
-                                            next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                         }
                                         else if (character.Has(Skills::Type::ARCHERY) || character.Has(Skills::Type::SHURIKEN))
                                         {
@@ -767,12 +767,12 @@ namespace BloodSword::Interface
                                             }
 
                                             // next character in battle order
-                                            next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                         }
                                         else if (character.Has(Skills::Type::SPELLS))
                                         {
                                             // TODO: enemy cast spells
-                                            next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                         }
                                         else if (character.Moves > 0 && Move::Available(battle.Map, src))
                                         {
@@ -804,19 +804,19 @@ namespace BloodSword::Interface
                                             if (!validtarget)
                                             {
                                                 // next character in battle order
-                                                next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                             }
                                         }
                                         else
                                         {
                                             // no valid moves
-                                            next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                         }
                                     }
                                     else
                                     {
                                         // next character in battle order
-                                        next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                     }
                                 }
                                 else
@@ -1094,7 +1094,7 @@ namespace BloodSword::Interface
                                                         }
 
                                                         // next character in battle order
-                                                        next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
 
                                                         spell = false;
 
@@ -1138,7 +1138,7 @@ namespace BloodSword::Interface
                                                             Interface::CheckEnthrallment(graphics, battle, scene, character, text[3]);
 
                                                             // next character in battle order
-                                                            next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                         }
 
                                                         fight = false;
@@ -1175,7 +1175,7 @@ namespace BloodSword::Interface
                                                             Interface::CheckEnthrallment(graphics, battle, scene, character, text[3]);
 
                                                             // next character in battle order
-                                                            next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                         }
                                                         else
                                                         {
@@ -1225,7 +1225,7 @@ namespace BloodSword::Interface
                                                                 scene = Interface::BattleScene(battle, party);
 
                                                                 // next character in battle order
-                                                                next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                             }
                                                         }
 
@@ -1285,7 +1285,7 @@ namespace BloodSword::Interface
                                                         Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
 
                                                         // next character in battle order
-                                                        next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                     }
                                                     else if (opponents.size() > 1)
                                                     {
@@ -1343,7 +1343,7 @@ namespace BloodSword::Interface
                                                         Interface::CheckEnthrallment(graphics, battle, scene, character, text[3]);
 
                                                         // next character in battle order
-                                                        next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                     }
                                                     else if (targets.size() > 1)
                                                     {
@@ -1382,7 +1382,7 @@ namespace BloodSword::Interface
                                                     Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
 
                                                     // next character in battle order
-                                                    next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                    next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                 }
                                                 else if (input.Type == Controls::Type::FLEE)
                                                 {
@@ -1399,7 +1399,7 @@ namespace BloodSword::Interface
                                                     Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
 
                                                     // next character in battle order
-                                                    next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                    next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                 }
                                                 else if (input.Type == Controls::Type::BACK)
                                                 {
@@ -1474,7 +1474,7 @@ namespace BloodSword::Interface
                                                                                 scene = Interface::BattleScene(battle, party);
 
                                                                                 // next character in battle order
-                                                                                next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                                             }
                                                                         }
 
@@ -1519,7 +1519,7 @@ namespace BloodSword::Interface
                                                                         }
 
                                                                         // next character in battle order
-                                                                        next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                                     }
                                                                 }
                                                             }
@@ -1532,7 +1532,7 @@ namespace BloodSword::Interface
                                                                 Interface::RegenerateStats(graphics, battle, party, partyStats, partyStatus, enemyStats, enemyStatus);
 
                                                                 // next character in battle order
-                                                                next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                                             }
                                                         }
                                                     }
@@ -1551,14 +1551,14 @@ namespace BloodSword::Interface
                                     else
                                     {
                                         // next character in battle order
-                                        next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                                     }
                                 }
                             }
                             else
                             {
                                 // next character in battle order
-                                next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                             }
                         }
                         else
@@ -1594,7 +1594,7 @@ namespace BloodSword::Interface
                                 scene = Interface::BattleScene(battle, party);
 
                                 // next character in battle order
-                                next = Interface::Next(battle, scene, party, order, combatant, input, endturn);
+                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, endturn);
                             }
                         }
                     }

@@ -115,7 +115,7 @@ namespace BloodSword::Story::Conditions
         return condition;
     }
 
-    bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Story::Conditions::Base condition)
+    bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Story::Conditions::Base &condition)
     {
         auto result = false;
 

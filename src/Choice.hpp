@@ -31,11 +31,6 @@ namespace BloodSword::Choice
 
         return choice;
     }
-
-    bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choice::Base &choice)
-    {
-        return Story::Conditions::Process(graphics, background, party, choice.Condition);
-    }
 }
 
 #endif

@@ -768,7 +768,7 @@ namespace BloodSword::Test
                 {
                     if (!Move::Available(map, src))
                     {
-                        Engine::Next(order, character);
+                        Engine::NextInQueue(order, character);
 
                         if (Engine::IsPlayer(order, character))
                         {
@@ -807,7 +807,7 @@ namespace BloodSword::Test
 
                                 if (!validtarget)
                                 {
-                                    Engine::Next(order, character);
+                                    Engine::NextInQueue(order, character);
 
                                     if (Engine::IsPlayer(order, character))
                                     {
@@ -817,7 +817,7 @@ namespace BloodSword::Test
                             }
                             else
                             {
-                                Engine::Next(order, character);
+                                Engine::NextInQueue(order, character);
 
                                 if (Engine::IsPlayer(order, character))
                                 {
@@ -829,7 +829,7 @@ namespace BloodSword::Test
                 }
                 else
                 {
-                    Engine::Next(order, character);
+                    Engine::NextInQueue(order, character);
 
                     if (Engine::IsPlayer(order, character))
                     {
@@ -1009,7 +1009,7 @@ namespace BloodSword::Test
 
                     scene = RegenerateScene(map);
 
-                    Engine::Next(order, character);
+                    Engine::NextInQueue(order, character);
 
                     if (Engine::IsPlayer(order, character))
                     {
@@ -1180,7 +1180,7 @@ namespace BloodSword::Test
                                                 stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
                                             }
 
-                                            Engine::Next(order, character);
+                                            Engine::NextInQueue(order, character);
 
                                             if (Engine::IsPlayer(order, character))
                                             {
@@ -1198,7 +1198,7 @@ namespace BloodSword::Test
 
                                             stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
 
-                                            Engine::Next(order, character);
+                                            Engine::NextInQueue(order, character);
 
                                             if (Engine::IsPlayer(order, character))
                                             {

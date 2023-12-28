@@ -284,7 +284,7 @@ namespace BloodSword::Engine
     }
 
     // move to next item in queue
-    bool Next(Engine::Queue &queue, int &item)
+    bool NextInQueue(Engine::Queue &queue, int &item)
     {
         auto first = false;
 
