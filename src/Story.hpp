@@ -209,7 +209,7 @@ namespace BloodSword::Story
                 // process choices if any
                 if (story.Choices.size() > 0)
                 {
-                    next = Interface::Choices(party, story.Choices);
+                    next = Interface::Choices(graphics, background, party, story.Choices);
                 }
                 else if (story.Next.size() > 0)
                 {

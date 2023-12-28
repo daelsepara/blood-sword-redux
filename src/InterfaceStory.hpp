@@ -7,7 +7,7 @@
 
 namespace BloodSword::Interface
 {
-    Book::Location Choices(Party::Base &party, std::vector<Choice::Base> &choices)
+    Book::Location Choices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::vector<Choice::Base> &choices)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
