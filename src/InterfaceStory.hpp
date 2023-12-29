@@ -62,7 +62,7 @@ namespace BloodSword::Interface
             if (story.Battle.IsDefined())
             {
                 // fight battle
-                party.LastBattle = Interface::Battle(graphics, story.Battle, party);
+                party.LastBattle = Interface::RenderBattle(graphics, story.Battle, party);
             }
 
             if (Engine::IsAlive(party))
@@ -139,7 +139,6 @@ namespace BloodSword::Interface
 
         return next;
     }
-
 }
 
 #endif

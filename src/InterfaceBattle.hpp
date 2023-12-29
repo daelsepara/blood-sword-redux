@@ -560,7 +560,7 @@ namespace BloodSword::Interface
     }
 
     // fight battle
-    Battle::Result Battle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
+    Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
         auto result = Battle::Result::DETERMINE;
 
@@ -738,8 +738,11 @@ namespace BloodSword::Interface
                                                 character.ResetSpellComplexities();
                                             }
 
+                                            // check if armor is ignored
+                                            auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
+
                                             // fight
-                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, false, false);
+                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, false, ignoreArmor);
 
                                             // regenerate scene
                                             scene = Interface::BattleScene(battle, party);
@@ -756,8 +759,11 @@ namespace BloodSword::Interface
 
                                             if (targets.size() > 0)
                                             {
+                                                // check if armor is ignored
+                                                auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
+
                                                 // shoot
-                                                Interface::Shoot(graphics, scene, battle, character, party[targets[0].Id], targets[0].Id);
+                                                Interface::Shoot(graphics, scene, battle, character, party[targets[0].Id], targets[0].Id, ignoreArmor);
 
                                                 // regenerate scene
                                                 scene = Interface::BattleScene(battle, party);
@@ -1125,8 +1131,11 @@ namespace BloodSword::Interface
                                                                 character.ResetSpellComplexities();
                                                             }
 
+                                                            // check if armor is ignored
+                                                            auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
+
                                                             // fight
-                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout, false);
+                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout, ignoreArmor);
 
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
@@ -1162,8 +1171,11 @@ namespace BloodSword::Interface
                                                                 character.Remove(Character::Status::DEFENDED);
                                                             }
 
+                                                            // check if armor is ignored
+                                                            auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
+
                                                             // shoot
-                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id);
+                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, ignoreArmor);
 
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
@@ -1275,8 +1287,11 @@ namespace BloodSword::Interface
 
                                                         knockout = input.Type == Controls::Type::QUARTERSTAFF;
 
+                                                        // check if armor is ignored
+                                                        auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
+
                                                         // fight
-                                                        Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout, false);
+                                                        Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout, ignoreArmor);
 
                                                         // regenerate scene
                                                         scene = Interface::BattleScene(battle, party);
@@ -1330,8 +1345,11 @@ namespace BloodSword::Interface
 
                                                         shoot = false;
 
+                                                        // check if armor is ignored
+                                                        auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
+
                                                         // shoot
-                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
+                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id, ignoreArmor);
 
                                                         // regenerate scene
                                                         scene = Interface::BattleScene(battle, party);

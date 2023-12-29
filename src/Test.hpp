@@ -1821,7 +1821,7 @@ namespace BloodSword::Test
 
         auto battle = Battle::Base({Battle::Condition::CANNOT_FLEE}, map, enemies, Battle::Unlimited);
 
-        auto result = Interface::Battle(graphics, battle, party);
+        auto result = Interface::RenderBattle(graphics, battle, party);
 
         auto scene = Scene::Base();
 
