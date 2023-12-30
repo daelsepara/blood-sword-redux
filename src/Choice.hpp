@@ -18,6 +18,9 @@ namespace BloodSword::Choice
     class Base
     {
     public:
+        // Text to display
+        std::string Text;
+
         BloodSword::Story::Conditions::Base Condition;
 
         Base() {}
@@ -27,7 +30,19 @@ namespace BloodSword::Choice
     {
         auto choice = Choice::Base();
 
-        choice.Condition = Story::Conditions::Parse(json);
+        if (!json["choice"].is_null())
+        {
+            auto data = json["choice"];
+
+            if (!data["text"].is_null())
+            {
+                // set text
+                choice.Text = std::string(data["text"]);
+            }
+
+            // parse condition
+            choice.Condition = Story::Conditions::Parse(data);
+        }
 
         return choice;
     }

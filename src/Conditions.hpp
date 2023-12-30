@@ -50,14 +50,19 @@ namespace BloodSword::Story::Conditions
     class Base
     {
     public:
+        // condition type
         Story::Conditions::Type Type = Type::NONE;
 
+        // text to display
         std::string Text;
 
+        // destination (book, section)
         Book::Location Location = {Book::Number::NONE, -1};
 
+        // internal variables used to validate "condition"
         std::vector<std::string> Variables = {};
 
+        // flag to indicate that the result (or condition) is inverted
         bool Invert = false;
 
         Base() {}
@@ -115,6 +120,7 @@ namespace BloodSword::Story::Conditions
         return condition;
     }
 
+    // routine to validate "condition"
     bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Story::Conditions::Base &condition)
     {
         auto result = false;
