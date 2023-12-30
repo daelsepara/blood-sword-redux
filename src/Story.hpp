@@ -135,19 +135,49 @@ namespace BloodSword::Story
                 // story section text
                 story.Text = !data["text"].is_null() ? std::string(data["text"]) : std::string();
 
-                // TODO: load background events conditions
+                // load background events conditions
                 if (!data["background"].is_null() && data["background"].is_array() && data["background"].size() > 0)
                 {
+                    auto background = std::vector<Story::Conditions::Base>();
+
+                    for (auto i = 0; i < data["background"].size(); i++)
+                    {
+                        auto condition = Conditions::Parse(data["background"][i]);
+
+                        background.push_back(condition);
+                    }
+
+                    story.Background = background;
                 }
 
-                // TODO: load real-time/run-once events conditions
+                // load real-time/run-once events conditions
                 if (!data["events"].is_null() && data["events"].is_array() && data["events"].size() > 0)
                 {
+                    auto events = std::vector<Story::Conditions::Base>();
+
+                    for (auto i = 0; i < data["event"].size(); i++)
+                    {
+                        auto condition = Conditions::Parse(data["event"][i]);
+
+                        events.push_back(condition);
+                    }
+
+                    story.Events = events;
                 }
 
-                // TODO: load "next section" conditions
+                // load "next section" conditions
                 if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
                 {
+                    auto next = std::vector<Story::Conditions::Base>();
+
+                    for (auto i = 0; i < data["next"].size(); i++)
+                    {
+                        auto condition = Conditions::Parse(data["next"][i]);
+
+                        next.push_back(condition);
+                    }
+
+                    story.Next = next;
                 }
             }
         }
