@@ -3,6 +3,7 @@
 
 #include "Choice.hpp"
 #include "Conditions.hpp"
+#include "Story.hpp"
 #include "Interface.hpp"
 
 namespace BloodSword::Interface
