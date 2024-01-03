@@ -3,7 +3,9 @@
 
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
+#include "Graphics.hpp"
 #include "Party.hpp"
+#include "Scene.hpp"
 #include "Templates.hpp"
 
 namespace BloodSword::Story::Conditions
@@ -121,7 +123,7 @@ namespace BloodSword::Story::Conditions
     }
 
     // routine to validate "condition"
-    bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Story::Conditions::Base &condition)
+    bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {
         auto result = false;
 
