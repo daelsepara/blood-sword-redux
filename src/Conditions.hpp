@@ -4,6 +4,7 @@
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
 #include "Graphics.hpp"
+#include "Item.hpp"
 #include "Party.hpp"
 #include "Scene.hpp"
 #include "Templates.hpp"
@@ -113,7 +114,7 @@ namespace BloodSword::Story::Conditions
                 condition.Variables = variables;
             }
 
-            if (!data["invert"].is_null() && data["variables"].is_boolean())
+            if (!data["invert"].is_null() && data["invert"].is_boolean())
             {
                 condition.Invert = bool(!data["invert"]);
             }
@@ -140,6 +141,12 @@ namespace BloodSword::Story::Conditions
             auto character = Character::Map(condition.Variables[0]);
 
             result = party.Has(character);
+        }
+        else if (condition.Type == Conditions::Type::HAS_ITEM)
+        {
+            auto item = Item::Map(condition.Variables[0]);
+
+            result = party.Has(item);
         }
 
         return condition.Invert ? !result : result;

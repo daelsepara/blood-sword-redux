@@ -171,7 +171,7 @@ namespace BloodSword::Character
 
             for (auto attribute = this->Attributes.begin(); attribute != this->Attributes.end(); attribute++)
             {
-                if ((*attribute).Type == type)
+                if (attribute->Type == type)
                 {
                     result = attribute;
 
@@ -186,7 +186,7 @@ namespace BloodSword::Character
         {
             auto attribute = this->Attribute(type);
 
-            return this->Is(attribute) ? (*attribute).Value : 0;
+            return this->Is(attribute) ? attribute->Value : 0;
         }
 
         void Value(Attribute::Type type, int value)
@@ -195,7 +195,7 @@ namespace BloodSword::Character
 
             if (this->Is(attribute))
             {
-                (*attribute).Value = value;
+                attribute->Value = value;
             }
         }
 
@@ -203,7 +203,7 @@ namespace BloodSword::Character
         {
             auto attribute = this->Attribute(type);
 
-            return this->Is(attribute) ? (*attribute).Modifier : 0;
+            return this->Is(attribute) ? attribute->Modifier : 0;
         }
 
         void Modifier(Attribute::Type type, int modifier)
@@ -212,7 +212,7 @@ namespace BloodSword::Character
 
             if (this->Is(attribute))
             {
-                (*attribute).Modifier = modifier;
+                attribute->Modifier = modifier;
             }
         }
 
@@ -220,7 +220,7 @@ namespace BloodSword::Character
         {
             auto attribute = this->Attribute(type);
 
-            return this->Is(attribute) ? (*attribute).Maximum : 0;
+            return this->Is(attribute) ? attribute->Maximum : 0;
         }
 
         void Maximum(Attribute::Type type, int maximum)
@@ -229,7 +229,7 @@ namespace BloodSword::Character
 
             if (this->Is(attribute))
             {
-                (*attribute).Maximum = maximum;
+                attribute->Maximum = maximum;
             }
         }
 
@@ -239,11 +239,11 @@ namespace BloodSword::Character
 
             if (this->Is(attribute))
             {
-                (*attribute).Value = value;
+                attribute->Value = value;
 
-                (*attribute).Modifier = modifier;
+                attribute->Modifier = modifier;
 
-                (*attribute).Maximum = maximum;
+                attribute->Maximum = maximum;
             }
         }
 
@@ -253,11 +253,11 @@ namespace BloodSword::Character
 
             if (this->Is(attribute))
             {
-                (*attribute).Value = value;
+                attribute->Value = value;
 
-                (*attribute).Modifier = modifier;
+                attribute->Modifier = modifier;
 
-                (*attribute).Value = std::min((*attribute).Value, (*attribute).Maximum);
+                attribute->Value = std::min(attribute->Value, attribute->Maximum);
             }
         }
 
@@ -268,7 +268,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Type == type)
+                if (item->Type == type)
                 {
                     result = item;
 
@@ -291,7 +291,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Type == container && (*item).Has(Item::Property::CONTAINER) && (*item).Has(type, quantity))
+                if (item->Type == container && item->Has(Item::Property::CONTAINER) && item->Has(type, quantity))
                 {
                     result = item;
 
@@ -308,7 +308,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Type == container && (*item).Has(Item::Property::CONTAINER) && (*item).Contains == type)
+                if (item->Type == container && item->Has(Item::Property::CONTAINER) && item->Contains == type)
                 {
                     result = item;
 
@@ -336,7 +336,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Type == type && (*item).Has(property))
+                if (item->Type == type && item->Has(property))
                 {
                     result = item;
 
@@ -359,7 +359,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Type == type && (*item).Has(property) && (*item).Has(attribute))
+                if (item->Type == type && item->Has(property) && item->Has(attribute))
                 {
                     result = item;
 
@@ -386,7 +386,7 @@ namespace BloodSword::Character
 
                 for (auto property : properties)
                 {
-                    has &= (*item).Has(property);
+                    has &= item->Has(property);
                 }
 
                 if (has)
@@ -439,7 +439,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Has(Item::Property::WEAPON) && (*item).Has(Item::Property::EQUIPPED) && (*item).Type == weapon)
+                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && item->Type == weapon)
                 {
                     armed = true;
 
@@ -457,7 +457,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Has(Item::Property::WEAPON) && (*item).Has(Item::Property::EQUIPPED) && (*item).Type != Item::Type::BOW)
+                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && item->Type != Item::Type::BOW)
                 {
                     armed = true;
 
@@ -505,7 +505,7 @@ namespace BloodSword::Character
 
             for (auto search = this->Spells.begin(); search != this->Spells.end(); search++)
             {
-                if ((*search).Type == spell)
+                if (search->Type == spell)
                 {
                     found = search;
 
@@ -564,9 +564,9 @@ namespace BloodSword::Character
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if ((*item).Has(ammo, quantity))
+                if (item->Has(ammo, quantity))
                 {
-                    (*item).Quantity -= quantity;
+                    item->Quantity -= quantity;
 
                     break;
                 }
@@ -580,7 +580,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                quantity += (*item).Has(ammo, 1) ? (*item).Quantity : 0;
+                quantity += item->Has(ammo, 1) ? item->Quantity : 0;
             }
 
             return quantity;
@@ -618,7 +618,7 @@ namespace BloodSword::Character
             {
             }
 
-            if (!data["status"].is_null())
+            if (!data["status"].is_null() && data["status"].is_array() && data["status"].size() > 0)
             {
             }
         }

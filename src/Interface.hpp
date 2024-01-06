@@ -1893,17 +1893,17 @@ namespace BloodSword::Interface
                 {
                     auto roll = 2;
 
-                    auto modifier = (*casting).CurrentComplexity;
+                    auto modifier = casting->CurrentComplexity;
 
                     result = Interface::Test(graphics, background, cast, castw, casth, Color::Active, 4, caster, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, inbattle, Spells::Assets[spell]);
 
                     if (!result)
                     {
-                        (*casting).CurrentComplexity--;
+                        casting->CurrentComplexity--;
                     }
                     else
                     {
-                        (*casting).CurrentComplexity = (*casting).Complexity;
+                        casting->CurrentComplexity = casting->Complexity;
 
                         caster.Forget(spell);
                     }

@@ -79,7 +79,7 @@ namespace BloodSword::Party
 
             for (auto character = this->Members.begin(); character != this->Members.end(); character++)
             {
-                if ((*character).Class == characterClass)
+                if (character->Class == characterClass)
                 {
                     found = character;
 
@@ -94,6 +94,24 @@ namespace BloodSword::Party
         bool Has(Character::Class characterClass)
         {
             return this->Find(characterClass) != this->Members.end();
+        }
+
+        // check if party has an item of type
+        bool Has(Item::Type item)
+        {
+            auto result = false;
+
+            for (auto character = this->Members.begin(); character != this->Members.end(); character++)
+            {
+                if (character->Has(item))
+                {
+                    result = true;
+
+                    break;
+                }
+            }
+
+            return result;
         }
 
         // access party by character class

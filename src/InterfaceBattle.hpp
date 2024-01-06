@@ -512,7 +512,7 @@ namespace BloodSword::Interface
 
         auto maph = battle.Map.ViewY * battle.Map.TileSize;
 
-        if (spellbook != caster.Spells.end() && (*spellbook).MultipleTargets())
+        if (spellbook != caster.Spells.end() && spellbook->MultipleTargets())
         {
             for (auto target = 0; target < targets.Count(); target++)
             {
@@ -1207,7 +1207,7 @@ namespace BloodSword::Interface
                                                         {
                                                             auto distance = battle.Map.Distance(src, control.Map);
 
-                                                            if (!(*spellbook).Ranged && distance != 1)
+                                                            if (!spellbook->Ranged && distance != 1)
                                                             {
                                                                 // must be adjacent
                                                                 Interface::MessageBox(graphics, scene, messages[6], Color::Background, Color::Highlight, 4, Color::Highlight, true);
