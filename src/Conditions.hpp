@@ -53,7 +53,7 @@ namespace BloodSword::Story::Conditions
     {
     public:
         // condition type
-        Story::Conditions::Type Type = Type::NONE;
+        Conditions::Type Type = Type::NONE;
 
         // text to display
         std::string Text;
@@ -127,15 +127,15 @@ namespace BloodSword::Story::Conditions
     {
         auto result = false;
 
-        if (condition.Type == Story::Conditions::Type::NONE)
+        if (condition.Type == Conditions::Type::NONE)
         {
             result = true;
         }
-        else if (condition.Type == Story::Conditions::Type::NORMAL)
+        else if (condition.Type == Conditions::Type::NORMAL)
         {
             result = true;
         }
-        else if (condition.Type == Story::Conditions::Type::HAS_CHARACTER)
+        else if (condition.Type == Conditions::Type::HAS_CHARACTER)
         {
             auto character = Character::Map(condition.Variables[0]);
 
