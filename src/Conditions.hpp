@@ -15,7 +15,7 @@ namespace BloodSword::Story::Conditions
     {
         NONE = -1,
         NORMAL,
-        HAS_CHARACTER,
+        IN_PARTY,
         CHOOSE_CHARACTER,
         CHOSEN_CHARACTER,
         BATTLE_VICTORY,
@@ -26,7 +26,7 @@ namespace BloodSword::Story::Conditions
         USE_ITEM,
         DROP_ITEM,
         TAKE_ITEM,
-        TAKE_ITEMS,
+        TAKE_ITEM,
         GAIN_ENDURANCE,
         LOSE_ENDURANCE,
         CHOOSE_NUMBER,
@@ -38,7 +38,7 @@ namespace BloodSword::Story::Conditions
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
-        {Conditions::Type::HAS_CHARACTER, "HAS CHARACTER"}};
+        {Conditions::Type::IN_PARTY, "IN PARTY"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -128,15 +128,11 @@ namespace BloodSword::Story::Conditions
     {
         auto result = false;
 
-        if (condition.Type == Conditions::Type::NONE)
+        if (condition.Type == Conditions::Type::NORMAL)
         {
             result = true;
         }
-        else if (condition.Type == Conditions::Type::NORMAL)
-        {
-            result = true;
-        }
-        else if (condition.Type == Conditions::Type::HAS_CHARACTER)
+        else if (condition.Type == Conditions::Type::IN_PARTY)
         {
             auto character = Character::Map(condition.Variables[0]);
 
