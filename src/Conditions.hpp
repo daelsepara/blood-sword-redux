@@ -26,7 +26,7 @@ namespace BloodSword::Story::Conditions
         USE_ITEM,
         DROP_ITEM,
         TAKE_ITEM,
-        TAKE_ITEM,
+        TAKE_ITEMS,
         GAIN_ENDURANCE,
         LOSE_ENDURANCE,
         CHOOSE_NUMBER,
@@ -38,7 +38,24 @@ namespace BloodSword::Story::Conditions
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
-        {Conditions::Type::IN_PARTY, "IN PARTY"}};
+        {Conditions::Type::IN_PARTY, "IN PARTY"},
+        {Conditions::Type::CHOOSE_CHARACTER, "CHOOSE CHARACTER"},
+        {Conditions::Type::CHOSEN_CHARACTER, "CHOSEN CHARACTER"},
+        {Conditions::Type::BATTLE_VICTORY, "BATTLE VICTORY"},
+        {Conditions::Type::BATTLE_FLEE, "BATTLE FLEE"},
+        {Conditions::Type::BATTLE_ENTHRALMENT, "BATTLE ENTHRALMENT"},
+        {Conditions::Type::BATTLE_VICTORY_OR_ENTHRALMENT, "BATTLE VICTORY OR ENTHRALMENT"},
+        {Conditions::Type::HAS_ITEM, "HAS ITEM"},
+        {Conditions::Type::USE_ITEM, "USE ITEM"},
+        {Conditions::Type::DROP_ITEM, "DROP ITEM"},
+        {Conditions::Type::TAKE_ITEM, "TAKE ITEM"},
+        {Conditions::Type::TAKE_ITEMS, "TAKE ITEMS"},
+        {Conditions::Type::GAIN_ENDURANCE, "GAIN ENDURANCE"},
+        {Conditions::Type::LOSE_ENDURANCE, "LOSE ENDURANCE"},
+        {Conditions::Type::CHOOSE_NUMBER, "CHOOSE NUMBER"},
+        {Conditions::Type::CHOSEN_NUMBER, "CHOSEN NUMBER"},
+        {Conditions::Type::PARTY_WOUNDED, "PARTY WOUNDED"},
+        {Conditions::Type::PREVIOUS_LOCATION, "PREVIOUS LOCATION"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -137,6 +154,18 @@ namespace BloodSword::Story::Conditions
             auto character = Character::Map(condition.Variables[0]);
 
             result = party.Has(character);
+        }
+        else if (condition.Type == Conditions::Type::CHOSEN_CHARACTER)
+        {
+            auto character = Character::Map(condition.Variables[0]);
+
+            result = party.ChosenCharacter == character;
+        }
+        else if (condition.Type == Conditions::Type::CHOSEN_NUMBER)
+        {
+            auto number = std::stoi(condition.Variables[0]);
+
+            result = party.ChosenNumber == number;
         }
         else if (condition.Type == Conditions::Type::HAS_ITEM)
         {
