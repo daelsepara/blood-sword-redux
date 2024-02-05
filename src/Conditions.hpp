@@ -163,7 +163,7 @@ namespace BloodSword::Story::Conditions
         }
         else if (condition.Type == Conditions::Type::CHOSEN_NUMBER)
         {
-            auto number = std::stoi(condition.Variables[0]);
+            auto number = std::stoi(condition.Variables[0], nullptr, 10);
 
             result = party.ChosenNumber == number;
         }
