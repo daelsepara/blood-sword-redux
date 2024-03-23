@@ -12,27 +12,11 @@
 #include "InterfaceBattle.hpp"
 #include "InterfaceStory.hpp"
 #include "Templates.hpp"
+#include "Position.hpp"
 
 // classes and functions for managing story sections
 namespace BloodSword::Story
 {
-    BloodSword::Mapping<BloodSword::Position> PositionMapping = {
-        {Position::NONE, "NONE"},
-        {Position::TOP, "TOP"},
-        {Position::LEFT, "LEFT"},
-        {Position::RIGHT, "RIGHT"},
-        {Position::BOTTOM, "BOTTOM"}};
-
-    BloodSword::Position MapPosition(const char *position)
-    {
-        return BloodSword::Find(Story::PositionMapping, position);
-    }
-
-    BloodSword::Position MapPosition(std::string position)
-    {
-        return Story::MapPosition(position.c_str());
-    }
-
     class Base
     {
     public:
@@ -128,7 +112,7 @@ namespace BloodSword::Story
                 }
 
                 // image asset and position
-                story.ImagePosition = !data["imagePosition"].is_null() ? Story::MapPosition(data["imagePosition"]) : Position::NONE;
+                story.ImagePosition = !data["imagePosition"].is_null() ? BloodSword::MapPosition(data["imagePosition"]) : Position::NONE;
 
                 story.ImageAsset = !data["imageAsset"].is_null() ? std::string(data["imageAsset"]) : std::string();
 
