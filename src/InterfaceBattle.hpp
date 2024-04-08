@@ -216,7 +216,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            alive &= Interface::Fight(graphics, background, draw, mapw, maph, defender, attacker, false, ignoreArmor);
+            alive &= Interface::Fight(graphics, background, draw, mapw, maph, defender, attacker, false, defender.Has(Skills::Type::IGNORE_ARMOUR));
 
             if (!alive)
             {
@@ -1135,7 +1135,7 @@ namespace BloodSword::Interface
                                                             auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
 
                                                             // fight
-                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout, ignoreArmor);
+                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, false, ignoreArmor);
 
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
@@ -1304,10 +1304,7 @@ namespace BloodSword::Interface
                                                     }
                                                     else if (opponents.size() > 1)
                                                     {
-                                                        if (input.Type == Controls::Type::QUARTERSTAFF)
-                                                        {
-                                                            knockout = true;
-                                                        }
+                                                        knockout = (input.Type == Controls::Type::QUARTERSTAFF);
 
                                                         fight = true;
 
