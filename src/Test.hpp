@@ -173,7 +173,7 @@ namespace BloodSword::Test
         auto scroll_up = false;
         auto scroll_down = false;
 
-        SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
+        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texturew, &textureh);
 
         while (true)
         {
@@ -373,7 +373,7 @@ namespace BloodSword::Test
                 {
                     if (change)
                     {
-                        SDL_QueryTexture(backgrounds[background], NULL, NULL, &texturew, &textureh);
+                        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texturew, &textureh);
 
                         offset = 0;
 
@@ -470,7 +470,7 @@ namespace BloodSword::Test
 
         auto fps = 0.0;
 
-        SDL_Texture *fpstexture = NULL;
+        SDL_Texture *fpstexture = nullptr;
 
         while (true)
         {
@@ -1448,7 +1448,7 @@ namespace BloodSword::Test
 
         if (stats.size() > 0)
         {
-            SDL_QueryTexture(stats[0], NULL, NULL, NULL, &popuph);
+            SDL_QueryTexture(stats[0], nullptr, nullptr, nullptr, &popuph);
         }
 
         while (!done)
@@ -1487,7 +1487,7 @@ namespace BloodSword::Test
 
                     if (stats[input.Current])
                     {
-                        SDL_QueryTexture(stats[input.Current], NULL, NULL, &texturew, NULL);
+                        SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &texturew, nullptr);
                     }
 
                     overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texturew + pad * 2), popup.Y, 0, Color::Active, 4));

@@ -15,7 +15,7 @@ namespace BloodSword::Graphics
         std::string Text;
 
         // font to render text in
-        TTF_Font *Font = NULL;
+        TTF_Font *Font = nullptr;
 
         // color
         SDL_Color Color = Color::S(Color::Active);

@@ -13,7 +13,7 @@
 namespace BloodSword::Graphics
 {
     // version string texture overlay
-    SDL_Texture *VersionOverlay = NULL;
+    SDL_Texture *VersionOverlay = nullptr;
 
     // location where version string texture is rendered
     Point VersionCoordinates = Point(0, 0);
@@ -26,10 +26,10 @@ namespace BloodSword::Graphics
     {
     public:
         // window
-        SDL_Window *Window = NULL;
+        SDL_Window *Window = nullptr;
 
         // renderer
-        SDL_Renderer *Renderer = NULL;
+        SDL_Renderer *Renderer = nullptr;
 
         // screen dimension (width)
         int Width = 1280;
@@ -44,9 +44,9 @@ namespace BloodSword::Graphics
     void CreateWindow(Uint32 flags, const char *title, Base &graphics)
     {
         // the window and renderer we'll be rendering to
-        graphics.Window = NULL;
+        graphics.Window = nullptr;
 
-        graphics.Renderer = NULL;
+        graphics.Renderer = nullptr;
 
         if (SDL_Init(flags) < 0)
         {
@@ -275,7 +275,7 @@ namespace BloodSword::Graphics
 
             auto texture_h = 0;
 
-            SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
+            SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, &texture_h);
 
             Graphics::Render(graphics, texture, texture_w, texture_h, x, y, bounds, offset, w, h, background);
         }
@@ -290,7 +290,7 @@ namespace BloodSword::Graphics
 
             auto texture_h = 0;
 
-            SDL_QueryTexture(texture, NULL, NULL, &texture_w, &texture_h);
+            SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, &texture_h);
 
             Graphics::Render(graphics, texture, texture_w, texture_h, x, y, std::min(texture_h, bounds), offset, texture_w, std::min(texture_h, bounds), background);
         }
@@ -303,7 +303,7 @@ namespace BloodSword::Graphics
         {
             auto texture_h = 0;
 
-            SDL_QueryTexture(texture, NULL, NULL, NULL, &texture_h);
+            SDL_QueryTexture(texture, nullptr, nullptr, nullptr, &texture_h);
 
             Graphics::Render(graphics, texture, x, y, texture_h, 0, background);
         }
@@ -481,13 +481,13 @@ namespace BloodSword::Graphics
     // create a SDL_Surface representation of a string
     SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
     {
-        SDL_Surface *surface = NULL;
+        SDL_Surface *surface = nullptr;
 
         if (font)
         {
             TTF_SetFontStyle(font, style);
 
-            if (wrap == 0 && strchr(text, '\n') == NULL)
+            if (wrap == 0 && strchr(text, '\n') == nullptr)
             {
                 surface = TTF_RenderUTF8_Blended(font, text, textColor);
             }
@@ -496,7 +496,7 @@ namespace BloodSword::Graphics
                 // TODO: Find better code to working with TTF_RenderUTF8_Blended_Wrapped on wraplength = 0
                 auto estimate = wrap;
 
-                if (wrap == 0 && strchr(text, '\n') != NULL)
+                if (wrap == 0 && strchr(text, '\n') != nullptr)
                 {
                     auto maxlength = 0;
 
@@ -528,7 +528,7 @@ namespace BloodSword::Graphics
                     {
                         auto temp = std::string(maxlength, 'M') + ' ';
 
-                        Graphics::Estimate(font, temp.c_str(), &estimate, NULL);
+                        Graphics::Estimate(font, temp.c_str(), &estimate, nullptr);
                     }
                 }
 
@@ -548,7 +548,7 @@ namespace BloodSword::Graphics
     // create a texture representation of a string
     SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textcolor, int style, int wrap)
     {
-        SDL_Texture *texture = NULL;
+        SDL_Texture *texture = nullptr;
 
         auto surface = Graphics::CreateSurfaceText(text, font, textcolor, style, wrap);
 
@@ -590,7 +590,7 @@ namespace BloodSword::Graphics
     {
         auto estimate = 0;
 
-        Graphics::Estimate(Fonts::Caption, Version().c_str(), &estimate, NULL);
+        Graphics::Estimate(Fonts::Caption, Version().c_str(), &estimate, nullptr);
 
         VersionOverlay = Graphics::CreateText(graphics, Version().c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, estimate);
 
@@ -600,7 +600,7 @@ namespace BloodSword::Graphics
 
             auto h = 0;
 
-            SDL_QueryTexture(VersionOverlay, NULL, NULL, &w, &h);
+            SDL_QueryTexture(VersionOverlay, nullptr, nullptr, &w, &h);
 
             VersionCoordinates = Point(graphics.Width - w, graphics.Height - h);
         }
@@ -619,14 +619,14 @@ namespace BloodSword::Graphics
         {
             SDL_DestroyRenderer(graphics.Renderer);
 
-            graphics.Renderer = NULL;
+            graphics.Renderer = nullptr;
         }
 
         if (graphics.Window)
         {
             SDL_DestroyWindow(graphics.Window);
 
-            graphics.Window = NULL;
+            graphics.Window = nullptr;
         }
 
         IMG_Quit();

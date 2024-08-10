@@ -138,7 +138,7 @@ namespace BloodSword
         {
             SDL_FreeSurface(*surface);
 
-            *surface = NULL;
+            *surface = nullptr;
         }
     }
 
@@ -149,7 +149,7 @@ namespace BloodSword
         {
             SDL_DestroyTexture(*texture);
 
-            *texture = NULL;
+            *texture = nullptr;
         }
     }
 

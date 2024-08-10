@@ -13,7 +13,7 @@ namespace BloodSword::Animation
     {
     public:
         // texture associated with this frame
-        SDL_Texture *Texture = NULL;
+        SDL_Texture *Texture = nullptr;
 
         // duration before switching to the next frame
         Uint32 Duration = 0;

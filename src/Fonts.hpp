@@ -10,9 +10,9 @@
 // classes and functions for handling fonts
 namespace BloodSword::Fonts
 {
-    TTF_Font *Caption = NULL;
-    TTF_Font *Normal = NULL;
-    TTF_Font *Fixed = NULL;
+    TTF_Font *Caption = nullptr;
+    TTF_Font *Normal = nullptr;
+    TTF_Font *Fixed = nullptr;
 
     // set up font types
     void Initialize(const char *font_ttf, int caption, int normal, int fixed)
@@ -35,21 +35,21 @@ namespace BloodSword::Fonts
         {
             TTF_CloseFont(Fonts::Caption);
 
-            Fonts::Caption = NULL;
+            Fonts::Caption = nullptr;
         }
 
         if (Fonts::Normal)
         {
             TTF_CloseFont(Fonts::Normal);
 
-            Fonts::Normal = NULL;
+            Fonts::Normal = nullptr;
         }
 
         if (Fonts::Fixed)
         {
             TTF_CloseFont(Fonts::Fixed);
 
-            Fonts::Fixed = NULL;
+            Fonts::Fixed = nullptr;
         }
 
         TTF_Quit();

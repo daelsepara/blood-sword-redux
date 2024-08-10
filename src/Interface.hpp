@@ -101,9 +101,9 @@ namespace BloodSword::Interface
 
     Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
 
-    SDL_Texture *NoSkills = NULL;
+    SDL_Texture *NoSkills = nullptr;
 
-    SDL_Texture *NoSpells = NULL;
+    SDL_Texture *NoSpells = nullptr;
 
     std::vector<Asset::Type> DICE = {
         Asset::Type::DICE1,
@@ -499,7 +499,7 @@ namespace BloodSword::Interface
     // create character attributes text box
     SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelcolor, Uint32 statscolor, int style, int wrap, bool addname = false, bool inbattle = false)
     {
-        SDL_Texture *texture = NULL;
+        SDL_Texture *texture = nullptr;
 
         std::string labels, stats;
 
@@ -529,9 +529,9 @@ namespace BloodSword::Interface
         auto statsw = 0;
 
         // estimate maximum line width
-        Graphics::Estimate(font, "DMGG", &labelsw, NULL);
+        Graphics::Estimate(font, "DMGG", &labelsw, nullptr);
 
-        Graphics::Estimate(font, "999D+D999", &statsw, NULL);
+        Graphics::Estimate(font, "999D+D999", &statsw, nullptr);
 
         auto surfacelabels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelcolor), style, labelsw);
 
@@ -554,7 +554,7 @@ namespace BloodSword::Interface
 
         if (surfacelabels && surfacestats)
         {
-            SDL_Surface *surface = NULL;
+            SDL_Surface *surface = nullptr;
 
             auto surfacewidth = surfacelabels->w + surfacestats->w + 12;
 
@@ -562,7 +562,7 @@ namespace BloodSword::Interface
             {
                 auto namewidth = 0;
 
-                Graphics::Estimate(font, character.Name.c_str(), &namewidth, NULL);
+                Graphics::Estimate(font, character.Name.c_str(), &namewidth, nullptr);
 
                 if (namewidth > surfacewidth)
                 {
@@ -578,7 +578,7 @@ namespace BloodSword::Interface
 
             if (surface)
             {
-                SDL_FillRect(surface, NULL, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
+                SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
 
                 SDL_Rect labelsrect, statsrect;
 
@@ -593,7 +593,7 @@ namespace BloodSword::Interface
                 {
                     SDL_SetSurfaceAlphaMod(convertedlabels, SDL_ALPHA_OPAQUE);
 
-                    SDL_BlitSurface(convertedlabels, NULL, surface, &labelsrect);
+                    SDL_BlitSurface(convertedlabels, nullptr, surface, &labelsrect);
 
                     BloodSword::Free(&convertedlabels);
                 }
@@ -609,7 +609,7 @@ namespace BloodSword::Interface
                 {
                     SDL_SetSurfaceAlphaMod(convertedstats, SDL_ALPHA_OPAQUE);
 
-                    SDL_BlitSurface(convertedstats, NULL, surface, &statsrect);
+                    SDL_BlitSurface(convertedstats, nullptr, surface, &statsrect);
 
                     BloodSword::Free(&convertedstats);
                 }
@@ -632,7 +632,7 @@ namespace BloodSword::Interface
                         {
                             SDL_SetSurfaceAlphaMod(convertedname, SDL_ALPHA_OPAQUE);
 
-                            SDL_BlitSurface(convertedname, NULL, surface, &labelsrect);
+                            SDL_BlitSurface(convertedname, nullptr, surface, &labelsrect);
 
                             BloodSword::Free(&convertedname);
                         }
@@ -730,7 +730,7 @@ namespace BloodSword::Interface
     // generate texture of character status
     SDL_Texture *Status(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 color, int style, bool inbattle = false)
     {
-        SDL_Texture *texture = NULL;
+        SDL_Texture *texture = nullptr;
 
         std::string list;
 
@@ -739,9 +739,9 @@ namespace BloodSword::Interface
         auto statsw = 0;
 
         // estimate maximum line width
-        Graphics::Estimate(font, "DMGG ", &labelsw, NULL);
+        Graphics::Estimate(font, "DMGG ", &labelsw, nullptr);
 
-        Graphics::Estimate(font, "999D+D999", &statsw, NULL);
+        Graphics::Estimate(font, "999D+D999", &statsw, nullptr);
 
         for (auto &status : character.Status)
         {
@@ -860,7 +860,7 @@ namespace BloodSword::Interface
     {
         if (graphics.Renderer)
         {
-            SDL_RenderSetClipRect(graphics.Renderer, NULL);
+            SDL_RenderSetClipRect(graphics.Renderer, nullptr);
         }
     }
 
@@ -960,14 +960,14 @@ namespace BloodSword::Interface
 
                 if (choices[item])
                 {
-                    SDL_QueryTexture(choices[item], NULL, NULL, &currentw, &currenth);
+                    SDL_QueryTexture(choices[item], nullptr, nullptr, &currentw, &currenth);
                 }
 
                 auto previousw = 0;
 
                 if (item > 0 && choices[item - 1])
                 {
-                    SDL_QueryTexture(choices[item - 1], NULL, NULL, &previousw, NULL);
+                    SDL_QueryTexture(choices[item - 1], nullptr, nullptr, &previousw, nullptr);
                 }
 
                 auto itemx = x + item * (previousw + pad);
@@ -1003,7 +1003,7 @@ namespace BloodSword::Interface
         {
             for (auto i = 0; i < character.Skills.size(); i++)
             {
-                SDL_Texture *texture = NULL;
+                SDL_Texture *texture = nullptr;
 
                 if (inbattle)
                 {
@@ -1032,7 +1032,7 @@ namespace BloodSword::Interface
                 {
                     auto texturew = 0;
 
-                    SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
+                    SDL_QueryTexture(texture, nullptr, nullptr, &texturew, nullptr);
 
                     auto lt = i > 0 ? i - 1 : i;
 
@@ -1087,7 +1087,7 @@ namespace BloodSword::Interface
             {
                 auto &spell = character.Spells[i];
 
-                SDL_Texture *texture = NULL;
+                SDL_Texture *texture = nullptr;
 
                 if ((!inbattle && spell.IsBasic()) || character.HasCalledToMind(character.Spells[i].Type))
                 {
@@ -1104,7 +1104,7 @@ namespace BloodSword::Interface
 
                     auto textureh = 0;
 
-                    SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+                    SDL_QueryTexture(texture, nullptr, nullptr, &texturew, &textureh);
 
                     auto lt = col > 0 ? i - 1 : i;
                     auto rt = col < 5 ? i + 1 : i;
@@ -1167,7 +1167,7 @@ namespace BloodSword::Interface
             {
                 auto texturew = 0;
 
-                SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
+                SDL_QueryTexture(texture, nullptr, nullptr, &texturew, nullptr);
 
                 auto lt = i > 0 ? i - 1 : i;
 
@@ -1337,7 +1337,7 @@ namespace BloodSword::Interface
 
         auto attributew = 0;
 
-        SDL_QueryTexture(attribute_texture, NULL, NULL, &attributew, NULL);
+        SDL_QueryTexture(attribute_texture, nullptr, nullptr, &attributew, nullptr);
 
         auto start = Graphics::CreateText(graphics, {Graphics::RichText(" ROLL ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
 
@@ -1494,7 +1494,7 @@ namespace BloodSword::Interface
     // roll for damage
     int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int borderSize, Character::Base &attacker, Character::Base &defender, int roll, int modifier, bool inbattle = false, bool ignoreArmor = false, Asset::Type asset = Asset::Type::NONE)
     {
-        SDL_Texture *damage_value = NULL;
+        SDL_Texture *damage_value = nullptr;
 
         int damage = 0;
 
@@ -1550,7 +1550,7 @@ namespace BloodSword::Interface
 
         auto texth = 0;
 
-        SDL_QueryTexture(failed, NULL, NULL, &textw, &texth);
+        SDL_QueryTexture(failed, nullptr, nullptr, &textw, &texth);
 
         while (!done)
         {
@@ -1703,7 +1703,7 @@ namespace BloodSword::Interface
 
             auto textureh = 0;
 
-            SDL_QueryTexture(message, NULL, NULL, &texturew, &textureh);
+            SDL_QueryTexture(message, nullptr, nullptr, &texturew, &textureh);
 
             auto boxw = texturew + pad * 2;
 
@@ -1785,7 +1785,7 @@ namespace BloodSword::Interface
 
             auto textureh = 0;
 
-            SDL_QueryTexture(message, NULL, NULL, &texturew, &textureh);
+            SDL_QueryTexture(message, nullptr, nullptr, &texturew, &textureh);
 
             auto boxw = texturew + pad * 2;
 
@@ -2074,7 +2074,7 @@ namespace BloodSword::Interface
 
         if (stats.size() > 0)
         {
-            SDL_QueryTexture(stats[0], NULL, NULL, NULL, &popuph);
+            SDL_QueryTexture(stats[0], nullptr, nullptr, nullptr, &popuph);
         }
 
         while (!done)
@@ -2109,7 +2109,7 @@ namespace BloodSword::Interface
                     {
                         auto statsw = 0;
 
-                        SDL_QueryTexture(stats[input.Current], NULL, NULL, &statsw, NULL);
+                        SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &statsw, nullptr);
 
                         overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (statsw + pad * 2), popup.Y, 0, Color::Active, 4));
                     }
@@ -2141,7 +2141,7 @@ namespace BloodSword::Interface
                     {
                         auto texturew = 0;
 
-                        SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
+                        SDL_QueryTexture(texture, nullptr, nullptr, &texturew, nullptr);
 
                         overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texturew + pad, screen.Y + pad + 32));
                     }
@@ -2194,7 +2194,7 @@ namespace BloodSword::Interface
         auto menuw = 0;
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
-        SDL_QueryTexture(menu_title, NULL, NULL, &menuw, NULL);
+        SDL_QueryTexture(menu_title, nullptr, nullptr, &menuw, nullptr);
 
         scene.Add(Scene::Element(menu_title, Point((graphics.Width - menuw) / 2, origin.Y - pad * 6)));
 
@@ -2215,7 +2215,7 @@ namespace BloodSword::Interface
 
         if (current)
         {
-            SDL_QueryTexture(current, NULL, NULL, &currentw, NULL);
+            SDL_QueryTexture(current, nullptr, nullptr, &currentw, nullptr);
         }
 
         auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, 4, Color::Background, Color::Background, Color::Highlight, blur) + 1;
@@ -2284,7 +2284,7 @@ namespace BloodSword::Interface
                         {
                             auto texturew = 0;
 
-                            SDL_QueryTexture(texture, NULL, NULL, &texturew, NULL);
+                            SDL_QueryTexture(texture, nullptr, nullptr, &texturew, nullptr);
 
                             bgScene.VerifyAndAdd(Scene::Element(texture, partyX + i * texturew, partyY + pad + 32));
                         }

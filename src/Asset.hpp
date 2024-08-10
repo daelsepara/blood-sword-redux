@@ -20,7 +20,7 @@ namespace BloodSword::Asset
     // create texture from a file
     SDL_Texture *Create(SDL_Renderer *renderer, const char *path)
     {
-        SDL_Texture *texture = NULL;
+        SDL_Texture *texture = nullptr;
 
         auto surface = BloodSword::Load(path);
 
@@ -107,7 +107,7 @@ namespace BloodSword::Asset
     // get texture associated with the asset type
     SDL_Texture *Get(Asset::Type asset)
     {
-        SDL_Texture *texture = NULL;
+        SDL_Texture *texture = nullptr;
 
         auto ptr = Asset::Textures.find(asset);
 
@@ -135,7 +135,7 @@ namespace BloodSword::Asset
     // create a copy of the asset. must be de-allocated manually
     SDL_Texture *Copy(SDL_Renderer *renderer, Asset::Type asset)
     {
-        SDL_Texture *texture = NULL;
+        SDL_Texture *texture = nullptr;
 
         auto ptr = Asset::Locations.find(asset);
 

@@ -70,7 +70,7 @@ namespace BloodSword::Scene
         {
             if (this->Texture)
             {
-                SDL_QueryTexture(this->Texture, NULL, NULL, &this->W, &this->H);
+                SDL_QueryTexture(this->Texture, nullptr, nullptr, &this->W, &this->H);
             }
         }
 
@@ -93,7 +93,7 @@ namespace BloodSword::Scene
         {
             if (texture)
             {
-                SDL_QueryTexture(texture, NULL, NULL, &this->W, &this->H);
+                SDL_QueryTexture(texture, nullptr, nullptr, &this->W, &this->H);
 
                 this->Bounds = this->H;
             }
@@ -107,7 +107,7 @@ namespace BloodSword::Scene
         {
             if (this->Texture)
             {
-                SDL_QueryTexture(this->Texture, NULL, NULL, &this->W, &this->H);
+                SDL_QueryTexture(this->Texture, nullptr, nullptr, &this->W, &this->H);
             }
 
             this->Bounds = this->H;
@@ -118,7 +118,7 @@ namespace BloodSword::Scene
         Element(int x, int y, int w, int h,
                 Uint32 background,
                 Uint32 border,
-                int borderSize) : Element(NULL, x, y, h, 0, w, h, background, border, borderSize) {}
+                int borderSize) : Element(nullptr, x, y, h, 0, w, h, background, border, borderSize) {}
 
         Element(Point point, int w, int h,
                 Uint32 background,
@@ -126,7 +126,7 @@ namespace BloodSword::Scene
                 int borderSize) : Element(point.X, point.Y, w, h, background, border, borderSize) {}
 
         Element(int x, int y, int w, int h,
-                Uint32 background) : Element(NULL, x, y, h, 0, w, h, background, 0, 0) {}
+                Uint32 background) : Element(nullptr, x, y, h, 0, w, h, background, 0, 0) {}
     };
 
     // Scene base clas
@@ -160,7 +160,7 @@ namespace BloodSword::Scene
 
         void VerifyAndAdd(Scene::Element element)
         {
-            if (element.Texture != NULL)
+            if (element.Texture != nullptr)
             {
                 this->Add(element);
             }

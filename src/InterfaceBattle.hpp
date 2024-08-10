@@ -100,7 +100,7 @@ namespace BloodSword::Interface
 
         for (auto i = 0; i < controls.size(); i++)
         {
-            SDL_Texture *texture = NULL;
+            SDL_Texture *texture = nullptr;
 
             texture = Asset::Get(Interface::BattleControls[controls[i]]);
 
@@ -110,7 +110,7 @@ namespace BloodSword::Interface
 
                 auto textureh = 0;
 
-                SDL_QueryTexture(texture, NULL, NULL, &texturew, &textureh);
+                SDL_QueryTexture(texture, nullptr, nullptr, &texturew, &textureh);
 
                 auto lt = i > 0 ? i - 1 : i;
 
@@ -583,7 +583,7 @@ namespace BloodSword::Interface
 
             auto partyStatus = Interface::GenerateStatus(graphics, party, infow);
 
-            SDL_Texture *texture = NULL;
+            SDL_Texture *texture = nullptr;
 
             auto asset = Asset::Type::NONE;
 
