@@ -208,7 +208,7 @@ namespace BloodSword::Graphics
     {
         SDL_Event result;
 
-        SDL_PollEvent(&result);
+        SDL_WaitEventTimeout(&result, 1);
 
         if (result.type == SDL_WINDOWEVENT)
         {

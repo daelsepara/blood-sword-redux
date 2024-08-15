@@ -69,7 +69,7 @@ namespace BloodSword::Input
 
             SDL_RenderPresent(graphics.Renderer);
 
-            SDL_PollEvent(&result);
+            SDL_WaitEventTimeout(&result, 100);
 
             if (result.type == SDL_QUIT)
             {
@@ -135,7 +135,7 @@ namespace BloodSword::Input
 
         SDL_RenderPresent(graphics.Renderer);
 
-        SDL_PollEvent(&result);
+        SDL_WaitEventTimeout(&result, 100);
 
         input.Selected = false;
 
