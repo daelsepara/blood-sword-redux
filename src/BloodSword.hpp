@@ -29,6 +29,8 @@ namespace BloodSword
             Palette::Switch(0);
 
             Interface::LoadTextures(this->graphics);
+
+            Input::InitializeGamePads();
         }
 
         void Initialize()
