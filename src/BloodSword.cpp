@@ -7,7 +7,7 @@ namespace BloodSword
     {
         auto game = BloodSword::Game();
 
-        game.Initialize("Blood Sword");
+        game.Initialize();
 
         Input::InitializeGamePads();
 

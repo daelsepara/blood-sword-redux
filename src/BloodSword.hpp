@@ -31,6 +31,11 @@ namespace BloodSword
             Interface::LoadTextures(this->graphics);
         }
 
+        void Initialize()
+        {
+            this->Initialize("Blood Sword");
+        }
+
         // shutdown all subsystems
         void Shutdown()
         {
