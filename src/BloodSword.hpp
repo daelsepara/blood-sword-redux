@@ -12,27 +12,42 @@
 
 namespace BloodSword
 {
-    // initialize all subsytems
-    void Initialize(Graphics::Base &graphics)
+    class Game
     {
-        Engine::InitializeRNG();
+    public:
+        Graphics::Base graphics;
 
-        Fonts::Load("settings/font-settings.json");
+        // initialize all subsytems
+        void Initialize(const char *session_name)
+        {
+            this->graphics = Graphics::Initialize(session_name);
 
-        Palette::Switch(0);
+            Engine::InitializeRNG();
 
-        Interface::LoadTextures(graphics);
-    }
+            Fonts::Load("settings/font-settings.json");
 
-    // shutdown all subsystems
-    void Shutdown(Graphics::Base &graphics)
-    {
-        Fonts::Free();
+            Palette::Switch(0);
 
-        Interface::UnloadTextures();
+            Interface::LoadTextures(this->graphics);
+        }
 
-        Graphics::Quit(graphics);
-    }
+        // shutdown all subsystems
+        void Shutdown()
+        {
+            Fonts::Free();
+
+            Interface::UnloadTextures();
+
+            Graphics::Quit(this->graphics);
+        }
+
+        Game() {}
+
+        Game(const char *session_name)
+        {
+            this->Initialize(session_name);
+        }
+    };
 }
 
 #endif
