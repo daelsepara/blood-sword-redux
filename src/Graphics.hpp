@@ -204,7 +204,7 @@ namespace BloodSword::Graphics
     }
 
     // respond to window resizing/in focus/out of focus events
-    void Refresh(Graphics::Base &graphics)
+    void WaitForWindowEvent(Graphics::Base &graphics)
     {
         SDL_Event result;
 

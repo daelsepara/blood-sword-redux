@@ -543,11 +543,11 @@ namespace BloodSword::Test
             }
             else
             {
+                frames++;
+
                 done = Graphics::Animate(graphics, background, animations, true);
 
-                Graphics::Refresh(graphics);
-
-                frames++;
+                Graphics::WaitForWindowEvent(graphics);
 
                 if (done)
                 {
@@ -988,7 +988,7 @@ namespace BloodSword::Test
             {
                 animating = !Graphics::Animate(graphics, scene, movement);
 
-                Graphics::Refresh(graphics);
+                Graphics::WaitForWindowEvent(graphics);
 
                 if (!animating)
                 {

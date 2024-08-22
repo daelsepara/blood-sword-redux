@@ -1580,7 +1580,7 @@ namespace BloodSword::Interface
                         {
                             animating = !Graphics::Animate(graphics, scene, movement);
 
-                            Graphics::Refresh(graphics);
+                            Graphics::WaitForWindowEvent(graphics);
 
                             if (!animating)
                             {
