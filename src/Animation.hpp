@@ -443,10 +443,12 @@ namespace BloodSword::Animations
 
             auto frames = 0;
 
-            if (delay && animations.List.size() != 1)
+            if (delay && animations.List.size() > 1)
             {
                 SDL_Delay(animations.Delay);
             }
+
+            auto forced_delay = animations.List.size() == 1 && delay;
 
             for (auto &animation : animations.List)
             {
@@ -454,13 +456,13 @@ namespace BloodSword::Animations
                 {
                     moves++;
 
-                    movement &= Animation::Step(scene, animation, trail, false || (animations.List.size() == 1 && delay));
+                    movement &= Animation::Step(scene, animation, trail, forced_delay);
                 }
                 else
                 {
                     frames++;
 
-                    frame &= Animation::Step(scene, animation, trail, false || (animations.List.size() == 1 && delay));
+                    frame &= Animation::Step(scene, animation, trail, forced_delay);
                 }
             }
 
