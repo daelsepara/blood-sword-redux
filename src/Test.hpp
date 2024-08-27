@@ -628,8 +628,8 @@ namespace BloodSword::Test
                                   Generate::Character(Character::Class::ENCHANTER, 2)});
 
         auto enemies = Party::Base(
-            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 100, Asset::Type::BARBARIAN),
-             Generate::NPC("ASSASSIN", {}, 7, 6, 7, 5, 0, 1, 0, 100, Asset::Type::ASSASSIN),
+            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 1000, Asset::Type::BARBARIAN),
+             Generate::NPC("ASSASSIN", {}, 7, 6, 7, 5, 0, 1, 0, 1000, Asset::Type::ASSASSIN),
              Generate::NPC("CORPSE", {}, 5, 4, 2, 4, 0, 1, 1, 3, Asset::Type::CORPSE)});
 
         std::vector<Point> origins = {
@@ -1534,7 +1534,7 @@ namespace BloodSword::Test
     {
         auto player = Generate::Character(Character::Class::WARRIOR, 2);
 
-        auto enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 100, Asset::Type::BARBARIAN);
+        auto enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 1000, Asset::Type::BARBARIAN);
 
         auto alive = true;
 
@@ -1793,7 +1793,7 @@ namespace BloodSword::Test
                                   Generate::Character(Character::Class::ENCHANTER, 2)});
 
         auto enemies = Party::Base(
-            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 100, Asset::Type::BARBARIAN),
+            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 1000, Asset::Type::BARBARIAN),
              Generate::NPC("ASSASSIN", {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN),
              Generate::NPC("CORPSE", {}, 5, 4, 2, 4, 0, 1, 1, 3, Asset::Type::CORPSE)});
 

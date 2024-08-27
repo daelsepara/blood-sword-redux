@@ -441,7 +441,7 @@ namespace BloodSword::Graphics
     {
         auto foreground = Scene::Base();
 
-        auto done = Animations::Step(foreground, animations, delay, trail);
+        auto done = Animations::Step(foreground, animations, trail, delay);
 
         Graphics::RenderNow(graphics, background, foreground);
 
@@ -453,7 +453,7 @@ namespace BloodSword::Graphics
     {
         auto animations = Animations::Base(animation);
 
-        auto done = Graphics::Animate(graphics, background, animations, delay, trail);
+        auto done = Graphics::Animate(graphics, background, animations, trail, delay);
 
         animation = *(animations.List.begin());
 

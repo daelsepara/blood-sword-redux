@@ -50,7 +50,7 @@ namespace BloodSword::Character
 
         int Experience = 0;
 
-        int Moves = 100;
+        int Moves = 1000;
 
         int Rank = 0;
 
@@ -76,19 +76,19 @@ namespace BloodSword::Character
                                       characterClass,
                                       attributes,
                                       skills,
-                                      100,
+                                      1000,
                                       2) {}
 
         Base(const char *name,
              Character::Class characterClass,
-             Characteristics attributes) : Base(name, characterClass, attributes, {}, 100, 2) {}
+             Characteristics attributes) : Base(name, characterClass, attributes, {}, 1000, 2) {}
 
         Base(const char *name,
-             Character::Class characterClass) : Base(name, characterClass, {}, {}, 100, 2) {}
+             Character::Class characterClass) : Base(name, characterClass, {}, {}, 1000, 2) {}
 
-        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100, rank) {}
+        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 1000, rank) {}
 
-        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 100, 2) {}
+        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 1000, 2) {}
 
         Base(const char *name,
              Characteristics attributes,
