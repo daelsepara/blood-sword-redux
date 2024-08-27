@@ -659,6 +659,13 @@ namespace BloodSword::Interface
                 battle.Opponents[member].Add(Character::Status::IN_BATTLE);
             }
 
+            // focus/cursor blink variables
+            Uint64 blink_start = SDL_GetTicks64();
+
+            Uint64 blink_delay = 100;
+
+            auto blinking = false;
+
             while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && !Engine::IsFleeing(party) && !exit)
             {
                 // battle order
@@ -699,8 +706,6 @@ namespace BloodSword::Interface
                     auto isplayer = Engine::IsPlayer(order, combatant);
 
                     auto &character = isplayer ? party[order[combatant].Id] : battle.Opponents[order[combatant].Id];
-
-                    auto blinking = false;
 
                     // start of character turn
                     if (round > 0 && Engine::CoolDown(character))
@@ -995,8 +1000,6 @@ namespace BloodSword::Interface
                                                 Interface::Focus(battle.Map, order, combatant, overlay);
                                             }
 
-                                            blinking = !blinking;
-
                                             input.Blink = false;
                                         }
                                         else
@@ -1005,7 +1008,19 @@ namespace BloodSword::Interface
                                         }
 
                                         // wait for input
-                                        input = Input::WaitForInput(graphics, scene, overlay, input, actions || spells, true);
+                                        input = Input::WaitForInput(graphics, scene, overlay, input, actions || spells, true, 0);
+
+                                        if (!actions && !spells)
+                                        {
+                                            auto blink_end = SDL_GetTicks64();
+
+                                            if (blink_end - blink_start >= blink_delay)
+                                            {
+                                                blinking = !blinking;
+
+                                                blink_start = blink_end;
+                                            }
+                                        }
 
                                         if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                                         {

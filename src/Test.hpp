@@ -464,7 +464,7 @@ namespace BloodSword::Test
 
         auto done = true;
 
-        Uint32 framestart = 0;
+        Uint64 framestart = 0;
 
         auto frames = 0;
 
@@ -522,7 +522,7 @@ namespace BloodSword::Test
 
                             done = false;
 
-                            framestart = SDL_GetTicks();
+                            framestart = SDL_GetTicks64();
 
                             frames = 0;
 
@@ -552,7 +552,7 @@ namespace BloodSword::Test
                 if (done)
                 {
                     // compute FPS
-                    auto msec = SDL_GetTicks() - framestart;
+                    auto msec = SDL_GetTicks64() - framestart;
 
                     if (msec > 0)
                     {

@@ -1446,7 +1446,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
 
             if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
             {
@@ -1614,7 +1614,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
 
             if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
             {

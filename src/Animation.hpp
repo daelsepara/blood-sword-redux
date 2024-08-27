@@ -67,7 +67,7 @@ namespace BloodSword::Animation
         bool Loop = false;
 
         // Timestamp of current update (MOVE, FRAME, both)
-        Uint32 TimeStamp = 0;
+        Uint64 TimeStamp = 0;
 
         // frame currently being rendered
         int Frame = 0;
@@ -76,7 +76,7 @@ namespace BloodSword::Animation
         int Move = 0;
 
         // Delay (ms) before continuing movement to next location (used on MOVE type)
-        int Speed = 0;
+        Uint32 Speed = 0;
 
         // current frames cycle
         int Cycle = 0;
@@ -369,12 +369,12 @@ namespace BloodSword::Animation
             if (move != animation.Move || frame != animation.Frame)
             {
                 // update timestamp
-                animation.TimeStamp = SDL_GetTicks();
+                animation.TimeStamp = SDL_GetTicks64();
             }
         }
         else
         {
-            animation.TimeStamp = SDL_GetTicks();
+            animation.TimeStamp = SDL_GetTicks64();
         }
 
         return done;

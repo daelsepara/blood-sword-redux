@@ -110,7 +110,7 @@ namespace BloodSword::Input
     }
 
     // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool isDialog = false, bool blur = false)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool isDialog = false, bool blur = false, int delay = 100)
     {
         SDL_Event result;
 
@@ -135,7 +135,14 @@ namespace BloodSword::Input
 
         SDL_RenderPresent(graphics.Renderer);
 
-        SDL_WaitEventTimeout(&result, 100);
+        if (delay > 0)
+        {
+            SDL_WaitEventTimeout(&result, delay);
+        }
+        else
+        {
+            SDL_PollEvent(&result);
+        }
 
         input.Selected = false;
 
