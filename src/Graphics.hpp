@@ -253,7 +253,7 @@ namespace BloodSword::Graphics
     }
 
     // render texture, background and borders
-    void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int borderSize)
+    void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background, Uint32 border, int border_size)
     {
         if (graphics.Renderer)
         {
@@ -261,7 +261,7 @@ namespace BloodSword::Graphics
 
             if (border != 0)
             {
-                Graphics::ThickRect(graphics, w, h, x, y, border, borderSize);
+                Graphics::ThickRect(graphics, w, h, x, y, border, border_size);
             }
         }
     }
@@ -507,7 +507,7 @@ namespace BloodSword::Graphics
 
                 if (wrap == 0 && strchr(text, '\n') != nullptr)
                 {
-                    auto maxlength = 0;
+                    auto max_length = 0;
 
                     auto current = 0;
 
@@ -519,23 +519,23 @@ namespace BloodSword::Graphics
                         }
                         else
                         {
-                            if (current > maxlength)
+                            if (current > max_length)
                             {
-                                maxlength = current;
+                                max_length = current;
                             }
 
                             current = 0;
                         }
                     }
 
-                    if (current > maxlength)
+                    if (current > max_length)
                     {
-                        maxlength = current;
+                        max_length = current;
                     }
 
-                    if (maxlength > 0)
+                    if (max_length > 0)
                     {
-                        auto temp = std::string(maxlength, 'M') + ' ';
+                        auto temp = std::string(max_length, 'M') + ' ';
 
                         Graphics::Estimate(font, temp.c_str(), &estimate, nullptr);
                     }
@@ -549,17 +549,17 @@ namespace BloodSword::Graphics
     }
 
     // create a SDL_Surface representation of a string (without line wrapping)
-    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textcolor, int style)
+    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color text_color, int style)
     {
-        return Graphics::CreateSurfaceText(text, font, textcolor, style, 0);
+        return Graphics::CreateSurfaceText(text, font, text_color, style, 0);
     }
 
     // create a texture representation of a string
-    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textcolor, int style, int wrap)
+    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color text_color, int style, int wrap)
     {
         SDL_Texture *texture = nullptr;
 
-        auto surface = Graphics::CreateSurfaceText(text, font, textcolor, style, wrap);
+        auto surface = Graphics::CreateSurfaceText(text, font, text_color, style, wrap);
 
         if (surface)
         {
@@ -571,9 +571,9 @@ namespace BloodSword::Graphics
         return texture;
     }
 
-    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color textcolor, int style)
+    SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color text_color, int style)
     {
-        return Graphics::CreateText(graphics, text, font, textcolor, style, 0);
+        return Graphics::CreateText(graphics, text, font, text_color, style, 0);
     }
 
     // create a list of texture representation of a collection of strings

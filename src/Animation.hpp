@@ -206,7 +206,7 @@ namespace BloodSword::Animation
     };
 
     // show a frame of the animation on screen and cycle (if possible)
-    bool Show(Scene::Base &scene, Animation::Base &animation, bool update = false)
+    bool Show(Scene::Base &scene, Animation::Base &animation, bool update)
     {
         auto done = true;
 
@@ -241,7 +241,7 @@ namespace BloodSword::Animation
     }
 
     // move the object towards destination and render it on screen
-    bool Move(Scene::Base &scene, Animation::Base &animation, bool update = false)
+    bool Move(Scene::Base &scene, Animation::Base &animation, bool update)
     {
         auto Sign = [&](int Value)
         {

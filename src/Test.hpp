@@ -1157,24 +1157,24 @@ namespace BloodSword::Test
 
                                 if (search != caster.Spells.end())
                                 {
-                                    auto &spellbook = *search;
+                                    auto &spell_book = *search;
 
-                                    auto battlecast = in_battle && !spellbook.IsBasic() && spellbook.IsBattle;
-                                    auto storycast = !in_battle && !spellbook.IsBasic() && !spellbook.IsBattle;
-                                    auto basiccast = !in_battle && spellbook.IsBasic();
+                                    auto battlecast = in_battle && !spell_book.IsBasic() && spell_book.IsBattle;
+                                    auto storycast = !in_battle && !spell_book.IsBasic() && !spell_book.IsBattle;
+                                    auto basiccast = !in_battle && spell_book.IsBasic();
 
                                     if (battlecast || storycast || basiccast)
                                     {
-                                        if (caster.HasCalledToMind(spellbook.Type) || spellbook.IsBasic())
+                                        if (caster.HasCalledToMind(spell_book.Type) || spell_book.IsBasic())
                                         {
                                             // cast
                                             spell = false;
 
                                             skill = false;
 
-                                            if (!spellbook.IsBasic())
+                                            if (!spell_book.IsBasic())
                                             {
-                                                caster.Forget(spellbook.Type);
+                                                caster.Forget(spell_book.Type);
 
                                                 Free(characters);
 
@@ -1188,14 +1188,14 @@ namespace BloodSword::Test
                                                 input.Current = Controls::Find(scene.Controls, Interface::CharacterControls[party[order[character].Id].Class]);
                                             }
                                         }
-                                        else if (!spellbook.IsBasic())
+                                        else if (!spell_book.IsBasic())
                                         {
                                             // call to mind
                                             spell = false;
 
                                             skill = false;
 
-                                            caster.CallToMind(spellbook.Type);
+                                            caster.CallToMind(spell_book.Type);
 
                                             stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
 

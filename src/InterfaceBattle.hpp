@@ -142,9 +142,9 @@ namespace BloodSword::Interface
     }
 
     // generate status
-    std::vector<SDL_Texture *> GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool inbattle = true)
+    std::vector<SDL_Texture *> GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
     {
-        return Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, inbattle);
+        return Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, in_battle);
     }
 
     // fight action
@@ -228,7 +228,7 @@ namespace BloodSword::Interface
     }
 
     // shoot action
-    bool Shoot(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, bool ignoreArmor = false, Asset::Type asset = Asset::Type::ARCHERY)
+    bool Shoot(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, bool ignore_armor = false, Asset::Type asset = Asset::Type::ARCHERY)
     {
         auto alive = true;
 
@@ -256,7 +256,7 @@ namespace BloodSword::Interface
 
                 if (Interface::Test(graphics, background, fight, shoot_w, shoot_h, Color::Active, 4, attacker, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, asset))
                 {
-                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, 4, attacker, defender, true, true, false, ignoreArmor, asset);
+                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, 4, attacker, defender, true, true, false, ignore_armor, asset);
 
                     alive &= Engine::GainEndurance(defender, hit, true);
                 }
@@ -267,7 +267,7 @@ namespace BloodSword::Interface
     }
 
     // shoot helper
-    void Shoot(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, Character::Base &defender, int defenderid, bool ignoreArmor = false)
+    void Shoot(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, Character::Base &defender, int defenderid, bool ignore_armor = false)
     {
         auto asset = Asset::Type::ARCHERY;
 
@@ -282,7 +282,7 @@ namespace BloodSword::Interface
             asset = Asset::Type::SHURIKEN;
         }
 
-        auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, ignoreArmor, asset);
+        auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, ignore_armor, asset);
 
         if (attacker.Has(Skills::Type::ARCHERY) && !attacker.Has(Skills::Type::SHURIKEN))
         {
@@ -1358,10 +1358,10 @@ namespace BloodSword::Interface
                                                         shoot = false;
 
                                                         // check if armor is ignored
-                                                        auto ignoreArmor = character.Has(Skills::Type::IGNORE_ARMOUR);
+                                                        auto ignore_armor = character.Has(Skills::Type::IGNORE_ARMOUR);
 
                                                         // shoot
-                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id, ignoreArmor);
+                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id, ignore_armor);
 
                                                         // regenerate scene
                                                         scene = Interface::BattleScene(battle, party);

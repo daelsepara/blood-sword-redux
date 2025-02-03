@@ -50,23 +50,23 @@ namespace BloodSword::Scene
                 int w, int h,
                 Uint32 background,
                 Uint32 border,
-                int borderSize) : Texture(texture),
+                int border_size) : Texture(texture),
                                   Background(background), Border(border),
                                   X(x), Y(y),
                                   Bounds(bounds), Offset(offset),
                                   W(w), H(h),
-                                  BorderSize(borderSize) {}
+                                  BorderSize(border_size) {}
 
         Element(SDL_Texture *texture,
                 int x, int y,
                 int bounds, int offset,
                 Uint32 background,
                 Uint32 border,
-                int borderSize) : Texture(texture),
+                int border_size) : Texture(texture),
                                   Background(background), Border(border),
                                   X(x), Y(y),
                                   Bounds(bounds), Offset(offset),
-                                  BorderSize(borderSize)
+                                  BorderSize(border_size)
         {
             if (this->Texture)
             {
@@ -78,18 +78,18 @@ namespace BloodSword::Scene
                 int x, int y,
                 int bounds, int offset,
                 Uint32 border,
-                int borderSize) : Element(texture, x, y, bounds, offset, 0, border, borderSize) {}
+                int border_size) : Element(texture, x, y, bounds, offset, 0, border, border_size) {}
 
         Element(SDL_Texture *texture,
                 int x, int y,
                 Uint32 background,
                 Uint32 border,
-                int borderSize) : Texture(texture),
+                int border_size) : Texture(texture),
                                   Background(background),
                                   Border(border),
                                   X(x), Y(y),
                                   Offset(0),
-                                  BorderSize(borderSize)
+                                  BorderSize(border_size)
         {
             if (texture)
             {
@@ -118,12 +118,12 @@ namespace BloodSword::Scene
         Element(int x, int y, int w, int h,
                 Uint32 background,
                 Uint32 border,
-                int borderSize) : Element(nullptr, x, y, h, 0, w, h, background, border, borderSize) {}
+                int border_size) : Element(nullptr, x, y, h, 0, w, h, background, border, border_size) {}
 
         Element(Point point, int w, int h,
                 Uint32 background,
                 Uint32 border,
-                int borderSize) : Element(point.X, point.Y, w, h, background, border, borderSize) {}
+                int border_size) : Element(point.X, point.Y, w, h, background, border, border_size) {}
 
         Element(int x, int y, int w, int h,
                 Uint32 background) : Element(nullptr, x, y, h, 0, w, h, background, 0, 0) {}
