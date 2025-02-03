@@ -127,53 +127,53 @@ namespace BloodSword::Test
 
         auto pad = 10;
 
-        auto textw = map.TileSize * 8 + 3 * pad;
+        auto text_w = map.TileSize * 8 + 3 * pad;
 
-        auto objectw = map.TileSize * 5;
+        auto object_w = map.TileSize * 5;
 
         auto textures = Graphics::CreateText(
             graphics,
-            {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw),
-             Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, objectw)});
+            {Graphics::RichText("PLAYER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("ENEMY", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("PASSABLE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("ENEMY PASSABLE", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("OBSTACLE", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("TEMPORARY OBSTACLE", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("WARRIOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("TRICKSTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("SAGE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, object_w),
+             Graphics::RichText("ENCHANTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, object_w)});
 
         auto backgrounds = Graphics::CreateText(
             graphics,
-            {Graphics::RichText("THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-             Graphics::RichText("WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-             Graphics::RichText("TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-             Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw),
-             Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, textw)});
+            {Graphics::RichText("THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w),
+             Graphics::RichText("WARRIOR\n\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage. You also have chainmail armour which provides an Armour rating of 3, which is better than the armour available to other characters.\n\nThese advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w),
+             Graphics::RichText("TRICKSTER\n\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w),
+             Graphics::RichText("SAGE\n\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w),
+             Graphics::RichText("ENCHANTER\n\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w)});
 
-        auto stats = Interface::GenerateStats(graphics, party, objectw, false, true);
+        auto stats = Interface::GenerateStats(graphics, party, object_w, false, true);
 
         auto background = 0;
         auto prev_background = -1;
         auto change = false;
         auto offset = 0;
-        auto objectx = map.DrawX + (map.ViewX * 2 + 1) * map.TileSize / 2 + pad;
-        auto objecty = map.DrawY + map.TileSize * 7 - pad;
-        auto backgroundx = objectx;
-        auto backgroundy = map.DrawY + pad;
-        auto backgroundw = textw;
-        auto backgroundh = map.TileSize * 5;
-        auto texturew = 0;
-        auto textureh = 0;
-        auto scrollx = objectx + backgroundw + pad * 2;
-        auto scrolly = map.DrawY + backgroundh - map.TileSize + pad * 2;
-        auto scrollSpeed = 20;
+        auto object_x = map.DrawX + (map.ViewX * 2 + 1) * map.TileSize / 2 + pad;
+        auto object_y = map.DrawY + map.TileSize * 7 - pad;
+        auto background_x = object_x;
+        auto background_y = map.DrawY + pad;
+        auto background_w = text_w;
+        auto background_h = map.TileSize * 5;
+        auto texture_w = 0;
+        auto texture_h = 0;
+        auto scroll_x = object_x + background_w + pad * 2;
+        auto scroll_y = map.DrawY + background_h - map.TileSize + pad * 2;
+        auto scroll_speed = 20;
         auto scroll_up = false;
         auto scroll_down = false;
 
-        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texturew, &textureh);
+        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texture_w, &texture_h);
 
         while (true)
         {
@@ -186,16 +186,16 @@ namespace BloodSword::Test
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
             auto arrow_up = offset > 0;
-            auto arrow_down = backgroundh < textureh && offset < (textureh - backgroundh);
+            auto arrow_down = background_h < texture_h && offset < (texture_h - background_h);
 
             if (arrow_up)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scrollx, map.DrawY));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scroll_x, map.DrawY));
             }
 
             if (arrow_down)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scrollx, scrolly));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scroll_x, scroll_y));
             }
 
             if (arrow_up || arrow_down)
@@ -205,16 +205,16 @@ namespace BloodSword::Test
 
             if (arrow_up && arrow_down)
             {
-                scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 2, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
-                scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id, id + 2, id + 1, id + 2, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
+                scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 2, scroll_x, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
+                scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id, id + 2, id + 1, id + 2, scroll_x, scroll_y, map.TileSize, map.TileSize, Color::Inactive));
             }
             else if (arrow_up)
             {
-                scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 1, scrollx, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
+                scene.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 1, id, id + 1, id + 1, id + 1, scroll_x, map.DrawY, map.TileSize, map.TileSize, Color::Inactive));
             }
             else if (arrow_down)
             {
-                scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id, id + 1, id + 1, id + 1, scrollx, scrolly, map.TileSize, map.TileSize, Color::Inactive));
+                scene.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id, id + 1, id + 1, id + 1, scroll_x, scroll_y, map.TileSize, map.TileSize, Color::Inactive));
             }
             else
             {
@@ -235,7 +235,7 @@ namespace BloodSword::Test
                     if (tile.IsOccupied() && tile.Occupant == Map::Object::PLAYER)
                     {
                         // stats
-                        scene.VerifyAndAdd(Scene::Element(stats[tile.Id], objectx + objectw + pad * 3, objecty, Color::Background, Color::Active, 4));
+                        scene.VerifyAndAdd(Scene::Element(stats[tile.Id], object_x + object_w + pad * 3, object_y, Color::Background, Color::Active, 4));
 
                         // character class
                         object = (int)party[tile.Id].Class + 7;
@@ -267,16 +267,16 @@ namespace BloodSword::Test
 
                     if (object >= 0 && object < textures.size())
                     {
-                        scene.Add(Scene::Element(objectx, objecty, objectw, map.TileSize, background, border, 4));
-                        scene.VerifyAndAdd(Scene::Element(textures[object], objectx, objecty));
+                        scene.Add(Scene::Element(object_x, object_y, object_w, map.TileSize, background, border, 4));
+                        scene.VerifyAndAdd(Scene::Element(textures[object], object_x, object_y));
                     }
                 }
             }
 
             if (background >= 0 && background < backgrounds.size())
             {
-                scene.Add(Scene::Element(backgroundx, backgroundy, backgroundw, backgroundh, Color::Highlight, Color::Active, 4));
-                scene.VerifyAndAdd(Scene::Element(backgrounds[background], backgroundx, backgroundy, backgroundh, offset));
+                scene.Add(Scene::Element(background_x, background_y, background_w, background_h, Color::Highlight, Color::Active, 4));
+                scene.VerifyAndAdd(Scene::Element(backgrounds[background], background_x, background_y, background_h, offset));
             }
 
             if (scroll_up)
@@ -334,9 +334,9 @@ namespace BloodSword::Test
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
-                    if (backgroundh < textureh)
+                    if (background_h < texture_h)
                     {
-                        offset -= scrollSpeed;
+                        offset -= scroll_speed;
 
                         if (offset < 0)
                         {
@@ -348,13 +348,13 @@ namespace BloodSword::Test
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
-                    if (backgroundh < textureh)
+                    if (background_h < texture_h)
                     {
-                        offset += scrollSpeed;
+                        offset += scroll_speed;
 
-                        if (offset > (textureh - backgroundh))
+                        if (offset > (texture_h - background_h))
                         {
-                            offset = textureh - backgroundh;
+                            offset = texture_h - background_h;
                         }
 
                         scroll_down = true;
@@ -373,7 +373,7 @@ namespace BloodSword::Test
                 {
                     if (change)
                     {
-                        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texturew, &textureh);
+                        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texture_w, &texture_h);
 
                         offset = 0;
 
@@ -393,31 +393,31 @@ namespace BloodSword::Test
     // animation test
     void Animation(Graphics::Base &graphics)
     {
-        auto Class = Character::Class::TRICKSTER;
-        auto party = Party::Base(Generate::Character(Class, 8));
+        auto player_class = Character::Class::TRICKSTER;
+        auto party = Party::Base(Generate::Character(player_class, 8));
         auto enemies = Party::Base();
 
         auto map = Map::Base();
-        auto mazew = (graphics.Width / map.TileSize) - 2;
-        auto mazeh = (graphics.Height / map.TileSize) - 3;
+        auto maze_w = (graphics.Width / map.TileSize) - 2;
+        auto maze_h = (graphics.Height / map.TileSize) - 3;
 
-        if ((mazew & 1) == 0)
+        if ((maze_w & 1) == 0)
         {
-            mazew--;
+            maze_w--;
         }
 
-        if ((mazeh & 1) == 0)
+        if ((maze_h & 1) == 0)
         {
-            mazeh--;
+            maze_h--;
         }
 
-        Maze::Generate(map, mazew, mazeh);
-        map.Viewable(mazew, mazeh);
+        Maze::Generate(map, maze_w, maze_h);
+        map.Viewable(maze_w, maze_h);
 
         auto random = Random::Base();
 
         auto start = Point(1, map.Height - 1);
-        auto exit = (random.NextInt() % (mazeh / 2)) * 2 + 1;
+        auto exit = (random.NextInt() % (maze_h / 2)) * 2 + 1;
         auto end = Point(map.Width - 1, exit);
         auto draw = Point(map.DrawX, map.DrawY);
 
@@ -443,7 +443,7 @@ namespace BloodSword::Test
 
             map.Put(start, Map::Object::PLAYER, 0);
 
-            exit = (random.NextInt() % (mazeh / 2)) * 2 + 1;
+            exit = (random.NextInt() % (maze_h / 2)) * 2 + 1;
 
             end = Point(map.Width - 1, exit);
 
@@ -456,7 +456,7 @@ namespace BloodSword::Test
         auto animations = Animations::Base();
 
         // set frame, type, and delay
-        auto movement = Interface::Movement(map, party[Class], {}, start);
+        auto movement = Interface::Movement(map, party[player_class], {}, start);
 
         ResetObjects(map);
 
@@ -464,21 +464,21 @@ namespace BloodSword::Test
 
         auto done = true;
 
-        Uint64 framestart = 0;
+        Uint64 frame_start = 0;
 
-        Uint64 frameend = 0;
+        Uint64 frame_end = 0;
 
         auto fps = 0.0;
 
-        SDL_Texture *fpstexture = nullptr;
+        SDL_Texture *fps_texture = nullptr;
 
         while (true)
         {
             if (done)
             {
-                if (fpstexture)
+                if (fps_texture)
                 {
-                    auto overlay = Scene::Base(fpstexture, map.DrawX, map.TileSize / 2);
+                    auto overlay = Scene::Base(fps_texture, map.DrawX, map.TileSize / 2);
 
                     input = Input::WaitForInput(graphics, background, overlay, input);
                 }
@@ -511,9 +511,9 @@ namespace BloodSword::Test
                             // add destination to the count
                             auto first = path.Points.begin();
 
-                            auto moves = std::min(valid + 1, party[Class].Moves);
+                            auto moves = std::min(valid + 1, party[player_class].Moves);
 
-                            movement = Interface::Movement(map, party[Class], std::vector<Point>(first, first + moves), start);
+                            movement = Interface::Movement(map, party[player_class], std::vector<Point>(first, first + moves), start);
 
                             // add to list
                             animations.Clear();
@@ -529,9 +529,9 @@ namespace BloodSword::Test
                     }
                     else if (input.Type == Controls::Type::BACK && done)
                     {
-                        Maze::Generate(map, mazew, mazeh);
+                        Maze::Generate(map, maze_w, maze_h);
 
-                        map.Viewable(mazew, mazeh);
+                        map.Viewable(maze_w, maze_h);
 
                         ResetObjects(map);
 
@@ -544,27 +544,27 @@ namespace BloodSword::Test
                 while (!done)
                 {
                     // get performance counters in between animation loops
-                    framestart = SDL_GetPerformanceCounter();
+                    frame_start = SDL_GetPerformanceCounter();
 
                     done = Graphics::Animate(graphics, background, animations, true);
 
-                    frameend = SDL_GetPerformanceCounter();
+                    frame_end = SDL_GetPerformanceCounter();
                 }
 
                 if (done)
                 {
                     // compute FPS
-                    auto perf = frameend - framestart;
+                    auto perf_counter = frame_end - frame_start;
 
-                    if (perf > 0)
+                    if (perf_counter > 0)
                     {
-                        Free(&fpstexture);
+                        Free(&fps_texture);
 
-                        fps = (double)SDL_GetPerformanceFrequency() / (double)perf;
+                        fps = (double)SDL_GetPerformanceFrequency() / (double)perf_counter;
 
                         std::string fpsString = "FPS: " + std::to_string(fps) + "/sec";
 
-                        fpstexture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                        fps_texture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                     }
 
                     for (auto &animation : animations.List)
@@ -588,36 +588,36 @@ namespace BloodSword::Test
             }
         }
 
-        Free(&fpstexture);
+        Free(&fps_texture);
     }
 
     // battle order
     void Queue(Graphics::Base &graphics)
     {
-        auto xdim = 14;
+        auto x_dim = 14;
 
-        auto ydim = 9;
+        auto y_dim = 9;
 
-        auto map = Map::Base(xdim, ydim);
+        auto map = Map::Base(x_dim, y_dim);
 
-        map.Viewable(xdim, ydim);
+        map.Viewable(x_dim, y_dim);
 
         // generate map
-        for (auto y = 0; y < ydim; y++)
+        for (auto y = 0; y < y_dim; y++)
         {
-            for (auto x = 0; x < xdim; x++)
+            for (auto x = 0; x < x_dim; x++)
             {
                 map.Put(x, y, Map::Object::PASSABLE, Asset::Type::NONE);
             }
         }
 
-        for (auto i = 0; i < ydim; i++)
+        for (auto i = 0; i < y_dim; i++)
         {
             map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
             map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
         }
 
-        for (auto i = 0; i < xdim; i++)
+        for (auto i = 0; i < x_dim; i++)
         {
             map.Put(i, 0, Map::Object::OBSTACLE, Asset::Type::WALL);
             map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
@@ -641,7 +641,7 @@ namespace BloodSword::Test
             Point(map.Width - 2, map.Height - 2),
         };
 
-        auto center = Point(xdim, ydim) / 2;
+        auto center = Point(x_dim, y_dim) / 2;
 
         std::vector<Point> spawn = {
             center,
@@ -650,18 +650,18 @@ namespace BloodSword::Test
 
         auto stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
 
-        auto enemyStats = Interface::GenerateStats(graphics, enemies, map.TileSize * 5);
+        auto enemy_stats = Interface::GenerateStats(graphics, enemies, map.TileSize * 5);
 
         auto draw = Point(map.DrawX, map.DrawY);
 
-        auto captionw = 320;
+        auto caption_w = 320;
 
         // initialize captions
         auto captions = Graphics::CreateText(
             graphics,
-            {Graphics::RichText("Move character", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("Reset starting locations", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("Back to test suite", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
+            {Graphics::RichText("Move character", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w),
+             Graphics::RichText("Reset starting locations", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w),
+             Graphics::RichText("Back to test suite", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w)});
 
         // regenerate map
         auto RegenerateScene = [&](Map::Base &map)
@@ -709,7 +709,7 @@ namespace BloodSword::Test
         };
 
         // Generate character info boxes
-        auto characters = Interface::GenerateCharacterClassCaptions(graphics, captionw);
+        auto characters = Interface::GenerateCharacterClassCaptions(graphics, caption_w);
 
         // set starting locations
         ResetLocations(map, party, origins);
@@ -745,12 +745,12 @@ namespace BloodSword::Test
         }
 
         auto pad = 10;
-        auto objectx = map.DrawX + (map.ViewX * 2 + 1) * map.TileSize / 2 + pad;
-        auto objecty = map.DrawY + pad;
+        auto object_x = map.DrawX + (map.ViewX * 2 + 1) * map.TileSize / 2 + pad;
+        auto object_y = map.DrawY + pad;
         auto skill = false;
         auto spell = false;
-        auto popupid = 0;
-        auto inbattle = true;
+        auto popup_id = 0;
+        auto in_battle = true;
 
         if (Engine::IsPlayer(order, character))
         {
@@ -786,7 +786,7 @@ namespace BloodSword::Test
 
                             if (targets.size() > 0)
                             {
-                                auto validtarget = false;
+                                auto valid_target = false;
 
                                 for (auto &target : targets)
                                 {
@@ -794,9 +794,9 @@ namespace BloodSword::Test
 
                                     if (!end.IsNone())
                                     {
-                                        validtarget = Interface::Move(map, enemies[order[character].Id], movement, src, end);
+                                        valid_target = Interface::Move(map, enemies[order[character].Id], movement, src, end);
 
-                                        if (validtarget)
+                                        if (valid_target)
                                         {
                                             scene = RegenerateScene(map);
 
@@ -807,7 +807,7 @@ namespace BloodSword::Test
                                     }
                                 }
 
-                                if (!validtarget)
+                                if (!valid_target)
                                 {
                                     Engine::NextInQueue(order, character);
 
@@ -842,9 +842,9 @@ namespace BloodSword::Test
 
             if (skill)
             {
-                if (popupid >= 0 && popupid < party.Count())
+                if (popup_id >= 0 && popup_id < party.Count())
                 {
-                    overlay = Interface::Skills(draw, map.ViewX * map.TileSize, map.ViewY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
+                    overlay = Interface::Skills(draw, map.ViewX * map.TileSize, map.ViewY * map.TileSize, party[popup_id], Color::Background, Color::Active, 4, in_battle);
                 }
                 else
                 {
@@ -855,9 +855,9 @@ namespace BloodSword::Test
             }
             else if (spell)
             {
-                if (popupid >= 0 && popupid < party.Count())
+                if (popup_id >= 0 && popup_id < party.Count())
                 {
-                    overlay = Interface::Spells(draw, map.ViewX * map.TileSize, map.ViewY * map.TileSize, party[popupid], Color::Background, Color::Active, 4, inbattle);
+                    overlay = Interface::Spells(draw, map.ViewX * map.TileSize, map.ViewY * map.TileSize, party[popup_id], Color::Background, Color::Active, 4, in_battle);
                 }
                 else
                 {
@@ -890,7 +890,7 @@ namespace BloodSword::Test
                         if (map[control.Map].Id >= 0 && map[control.Map].Id < party.Count())
                         {
                             // stats
-                            overlay.VerifyAndAdd(Scene::Element(stats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
+                            overlay.VerifyAndAdd(Scene::Element(stats[map[control.Map].Id], object_x, object_y, Color::Background, Color::Active, 4));
                         }
                     }
                     else if (map[control.Map].Occupant == Map::Object::ENEMY)
@@ -898,7 +898,7 @@ namespace BloodSword::Test
                         if (map[control.Map].Id >= 0 && map[control.Map].Id < enemies.Count())
                         {
                             // enemy stats
-                            overlay.VerifyAndAdd(Scene::Element(enemyStats[map[control.Map].Id], objectx, objecty, Color::Background, Color::Active, 4));
+                            overlay.VerifyAndAdd(Scene::Element(enemy_stats[map[control.Map].Id], object_x, object_y, Color::Background, Color::Active, 4));
                         }
                     }
                 }
@@ -921,11 +921,11 @@ namespace BloodSword::Test
                 // skill popup captions
                 auto &control = overlay.Controls[input.Current];
 
-                if (control.Type != Controls::Type::BACK && popupid >= 0 && popupid < party.Count())
+                if (control.Type != Controls::Type::BACK && popup_id >= 0 && popup_id < party.Count())
                 {
-                    auto skill = party[popupid].Skills[control.Id];
+                    auto skill = party[popup_id].Skills[control.Id];
 
-                    if ((inbattle && Skills::IsBattleSkill(skill)) || (!inbattle && Skills::IsStorySkill(skill)))
+                    if ((in_battle && Skills::IsBattleSkill(skill)) || (!in_battle && Skills::IsStorySkill(skill)))
                     {
                         overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[skill], control.X, control.Y + control.H + pad));
                     }
@@ -940,25 +940,25 @@ namespace BloodSword::Test
                 // spell popup captions
                 auto &control = overlay.Controls[input.Current];
 
-                if (control.Type != Controls::Type::BACK && popupid >= 0 && popupid < party.Count())
+                if (control.Type != Controls::Type::BACK && popup_id >= 0 && popup_id < party.Count())
                 {
-                    auto &spell = party[popupid].Spells[control.Id];
+                    auto &spell = party[popup_id].Spells[control.Id];
 
                     auto &popup = overlay.Elements[0];
 
-                    if (!inbattle)
+                    if (!in_battle)
                     {
-                        if (spell.IsBasic() || party[popupid].HasCalledToMind(spell.Type))
+                        if (spell.IsBasic() || party[popup_id].HasCalledToMind(spell.Type))
                         {
                             overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
                         }
 
-                        if (spell.IsBasic() || (party[popupid].HasCalledToMind(spell.Type) && !spell.IsBattle))
+                        if (spell.IsBasic() || (party[popup_id].HasCalledToMind(spell.Type) && !spell.IsBattle))
                         {
                             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
                             overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
                         }
-                        else if (!party[popupid].HasCalledToMind(spell.Type))
+                        else if (!party[popup_id].HasCalledToMind(spell.Type))
                         {
                             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
                             overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
@@ -966,7 +966,7 @@ namespace BloodSword::Test
                     }
                     else
                     {
-                        if (party[popupid].HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
+                        if (party[popup_id].HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                         {
                             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
                             overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
@@ -1062,6 +1062,7 @@ namespace BloodSword::Test
                                     if (control.OnMap && map.IsValid(control.Map) && Engine::IsPlayer(order, character))
                                     {
                                         auto start = map.Find(Map::Object::PLAYER, order[character].Id);
+
                                         auto end = control.Map;
 
                                         // find a path to the destination
@@ -1094,10 +1095,10 @@ namespace BloodSword::Test
 
                             if (scene.Controls[input.Current].OnMap)
                             {
-                                popupid = map[scene.Controls[input.Current].Map].Id;
+                                popup_id = map[scene.Controls[input.Current].Map].Id;
                             }
 
-                            if (popupid >= 0 && popupid < party.Count() && party[popupid].Skills.size() == 1 && party[popupid].Skills[0] == Skills::Type::SPELLS)
+                            if (popup_id >= 0 && popup_id < party.Count() && party[popup_id].Skills.size() == 1 && party[popup_id].Skills[0] == Skills::Type::SPELLS)
                             {
                                 skill = false;
 
@@ -1124,7 +1125,7 @@ namespace BloodSword::Test
 
                             input = previous;
                         }
-                        else if (input.Type == Controls::Type::SPELLS && party[popupid].Spells.size() > 0)
+                        else if (input.Type == Controls::Type::SPELLS && party[popup_id].Spells.size() > 0)
                         {
                             skill = false;
 
@@ -1151,16 +1152,16 @@ namespace BloodSword::Test
                             if (ptr != Interface::ControlSpellMapping.end())
                             {
                                 auto &type = ptr->second;
-                                auto &caster = party[popupid];
+                                auto &caster = party[popup_id];
                                 auto search = caster.Find(type);
 
                                 if (search != caster.Spells.end())
                                 {
                                     auto &spellbook = *search;
 
-                                    auto battlecast = inbattle && !spellbook.IsBasic() && spellbook.IsBattle;
-                                    auto storycast = !inbattle && !spellbook.IsBasic() && !spellbook.IsBattle;
-                                    auto basiccast = !inbattle && spellbook.IsBasic();
+                                    auto battlecast = in_battle && !spellbook.IsBasic() && spellbook.IsBattle;
+                                    auto storycast = !in_battle && !spellbook.IsBasic() && !spellbook.IsBattle;
+                                    auto basiccast = !in_battle && spellbook.IsBasic();
 
                                     if (battlecast || storycast || basiccast)
                                     {
@@ -1214,7 +1215,7 @@ namespace BloodSword::Test
             }
         }
 
-        Free(enemyStats);
+        Free(enemy_stats);
 
         Free(stats);
 
@@ -1256,7 +1257,7 @@ namespace BloodSword::Test
         auto limit = 4;
         auto last = start + limit;
         auto options = (int)(menu.size());
-        auto xadjust = 60;
+        auto x_adjust = 60;
         auto origin = 64;
         auto pad = 16;
         auto dim = 64;
@@ -1267,22 +1268,22 @@ namespace BloodSword::Test
 
         auto palette = Palette::Current;
 
-        auto boxx = origin + width + dim + pad / 2;
+        auto box_x = origin + width + dim + pad / 2;
 
         while (!done)
         {
             auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, fixed, highlight, true);
 
-            scene.VerifyAndAdd(Scene::Element(title, xadjust, 28));
+            scene.VerifyAndAdd(Scene::Element(title, x_adjust, 28));
 
-            auto &lastControl = scene.Controls.back();
-            auto id = lastControl.Id + 1;
+            auto &last_control = scene.Controls.back();
+            auto id = last_control.Id + 1;
             auto first = Controls::Find(scene.Controls, Controls::Type::CHOICE);
-            auto bottomy = scene.Controls[first + limit - 1].Y + height + pad;
+            auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x_adjust, bottom_y));
 
-            scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, xadjust, bottomy, dim, dim, highlight));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, highlight));
 
             if (Input::IsValid(scene, input) && input.Type == Controls::Type::CHOICE)
             {
@@ -1297,23 +1298,23 @@ namespace BloodSword::Test
             }
 
             // add color boxes
-            scene.Add(Scene::Element(boxx + pad, origin, 192, 128, Palette::List[palette][0], Palette::List[palette][0], 2));
+            scene.Add(Scene::Element(box_x + pad, origin, 192, 128, Palette::List[palette][0], Palette::List[palette][0], 2));
 
-            scene.Add(Scene::Element(boxx + pad * 2 + 192, origin, 192, 128, Palette::List[palette][1], Palette::List[palette][1], 2));
+            scene.Add(Scene::Element(box_x + pad * 2 + 192, origin, 192, 128, Palette::List[palette][1], Palette::List[palette][1], 2));
 
-            scene.Add(Scene::Element(boxx + pad, origin + 192, 192, 128, Palette::List[palette][2], Palette::List[palette][2], 2));
+            scene.Add(Scene::Element(box_x + pad, origin + 192, 192, 128, Palette::List[palette][2], Palette::List[palette][2], 2));
 
-            scene.Add(Scene::Element(boxx + pad * 2 + 192, origin + 192, 192, 128, Palette::List[palette][3], fixed, 2));
+            scene.Add(Scene::Element(box_x + pad * 2 + 192, origin + 192, 192, 128, Palette::List[palette][3], fixed, 2));
 
-            scene.VerifyAndAdd(Scene::Element(labels[0], Point(boxx + pad, origin + 136)));
+            scene.VerifyAndAdd(Scene::Element(labels[0], Point(box_x + pad, origin + 136)));
 
-            scene.VerifyAndAdd(Scene::Element(labels[1], Point(boxx + pad * 2 + 192, origin + 136)));
+            scene.VerifyAndAdd(Scene::Element(labels[1], Point(box_x + pad * 2 + 192, origin + 136)));
 
-            scene.VerifyAndAdd(Scene::Element(labels[2], Point(boxx + pad, origin + 328)));
+            scene.VerifyAndAdd(Scene::Element(labels[2], Point(box_x + pad, origin + 328)));
 
-            scene.VerifyAndAdd(Scene::Element(labels[3], Point(boxx + pad * 2 + 192, origin + 328)));
+            scene.VerifyAndAdd(Scene::Element(labels[3], Point(box_x + pad * 2 + 192, origin + 328)));
 
-            scene.VerifyAndAdd(Scene::Element(menu[palette], boxx + pad, origin + 392));
+            scene.VerifyAndAdd(Scene::Element(menu[palette], box_x + pad, origin + 392));
 
             if (input.Up)
             {
@@ -1442,13 +1443,13 @@ namespace BloodSword::Test
 
         auto popup_pad = 16;
 
-        auto popupw = (party.Count() + 1) * 64 + popup_pad * 2;
+        auto popup_w = (party.Count() + 1) * 64 + popup_pad * 2;
 
-        auto popuph = 0;
+        auto popup_h = 0;
 
         if (stats.size() > 0)
         {
-            SDL_QueryTexture(stats[0], nullptr, nullptr, nullptr, &popuph);
+            SDL_QueryTexture(stats[0], nullptr, nullptr, nullptr, &popup_h);
         }
 
         while (!done)
@@ -1459,9 +1460,9 @@ namespace BloodSword::Test
 
             if (characters)
             {
-                if (popuph > 0)
+                if (popup_h > 0)
                 {
-                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popupw, popuph, 0, Color::Active, 4);
+                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, 0, Color::Active, 4);
                 }
                 else
                 {
@@ -1483,14 +1484,14 @@ namespace BloodSword::Test
 
                     overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
-                    auto texturew = 0;
+                    auto texture_w = 0;
 
                     if (stats[input.Current])
                     {
-                        SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &texturew, nullptr);
+                        SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &texture_w, nullptr);
                     }
 
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texturew + pad * 2), popup.Y, 0, Color::Active, 4));
+                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texture_w + pad * 2), popup.Y, 0, Color::Active, 4));
                 }
             }
 
@@ -1507,17 +1508,17 @@ namespace BloodSword::Test
                 }
                 else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
                 {
-                    auto popupw = 512;
+                    auto popup_w = 512;
 
-                    auto popuph = 208;
+                    auto popup_h = 208;
 
                     auto &character = party[input.Current];
 
-                    auto origin = (Point(graphics.Width, graphics.Height) - Point(popupw, popuph)) / 2;
+                    auto origin = (Point(graphics.Width, graphics.Height) - Point(popup_w, popup_h)) / 2;
 
                     auto attribute = attributes[random.NextInt()];
 
-                    Interface::Test(graphics, scene, origin, popupw, popuph, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), attribute == Attribute::Type::FIGHTING_PROWESS);
+                    Interface::Test(graphics, scene, origin, popup_w, popup_h, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), attribute == Attribute::Type::FIGHTING_PROWESS);
                 }
             }
         }
@@ -1749,36 +1750,36 @@ namespace BloodSword::Test
     // battle
     void Battle(Graphics::Base &graphics)
     {
-        auto xdim = 14;
+        auto x_dim = 14;
 
-        auto ydim = 9;
+        auto y_dim = 9;
 
-        auto map = Map::Base(xdim, ydim);
+        auto map = Map::Base(x_dim, y_dim);
 
-        map.Viewable(xdim, ydim);
+        map.Viewable(x_dim, y_dim);
 
         // generate map
-        for (auto y = 0; y < ydim; y++)
+        for (auto y = 0; y < y_dim; y++)
         {
-            for (auto x = 0; x < xdim; x++)
+            for (auto x = 0; x < x_dim; x++)
             {
                 map.Put(x, y, Map::Object::PASSABLE, Asset::Type::NONE);
             }
         }
 
-        for (auto i = 0; i < ydim; i++)
+        for (auto i = 0; i < y_dim; i++)
         {
             map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
             map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
         }
 
-        for (auto i = 0; i < xdim; i++)
+        for (auto i = 0; i < x_dim; i++)
         {
             map.Put(i, 0, Map::Object::OBSTACLE, Asset::Type::WALL);
             map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
         }
 
-        auto center = Point(xdim, ydim) / 2;
+        auto center = Point(x_dim, y_dim) / 2;
 
         for (auto i = 0; i < 4; i++)
         {
@@ -1890,7 +1891,7 @@ namespace BloodSword::Test
         auto limit = 4;
         auto last = start + limit;
         auto options = (int)(menu.size());
-        auto xadjust = 60;
+        auto x_adjust = 60;
         auto origin = 64;
         auto pad = 16;
         auto dim = 64;
@@ -1902,15 +1903,15 @@ namespace BloodSword::Test
         {
             auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, Color::Inactive, Color::Highlight, true);
 
-            scene.VerifyAndAdd(Scene::Element(title, xadjust, 28));
+            scene.VerifyAndAdd(Scene::Element(title, x_adjust, 28));
 
             auto &lastControl = scene.Controls.back();
             auto id = lastControl.Id + 1;
             auto first = Controls::Find(scene.Controls, Controls::Type::CHOICE);
-            auto bottomy = scene.Controls[first + limit - 1].Y + height + pad;
+            auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), xadjust, bottomy));
-            scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, xadjust, bottomy, dim, dim, Color::Highlight));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x_adjust, bottom_y));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, Color::Highlight));
 
             if (input.Up)
             {
