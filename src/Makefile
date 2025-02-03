@@ -1,5 +1,5 @@
-BLOODWORD=BloodSword.cpp
-BLOODWORD_OUTPUT=BloodSword.exe
+BLOODWORD=BloodSwordTest.cpp
+BLOODWORD_OUTPUT=BloodSwordTest.exe
 LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 INCLUDES=-I/usr/include/SDL2
 
