@@ -280,7 +280,7 @@ namespace BloodSword::Animation
     }
 
     // update the animation on screen (MOVE, FRAME, both)
-    bool Step(Scene::Base &scene, Animation::Base &animation, Uint64 delay, bool update, bool trail = false)
+    bool Step(Scene::Base &scene, Animation::Base &animation, bool update, bool trail = false)
     {
         auto done = false;
 
@@ -414,13 +414,13 @@ namespace BloodSword::Animations
                 {
                     moves++;
 
-                    movement &= Animation::Step(scene, animation, animations.Delay, update, trail);
+                    movement &= Animation::Step(scene, animation, update, trail);
                 }
                 else
                 {
                     frames++;
 
-                    frame &= Animation::Step(scene, animation, animations.Delay, update, trail);
+                    frame &= Animation::Step(scene, animation, update, trail);
                 }
             }
 
