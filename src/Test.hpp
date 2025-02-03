@@ -452,7 +452,7 @@ namespace BloodSword::Test
         auto animations = Animations::Base();
 
         // movement animation
-        auto movement = Animation::Base();
+        auto movement = Interface::Movement(map, party[player_class], {}, start);
 
         auto background = RegenerateScene(map);
 
