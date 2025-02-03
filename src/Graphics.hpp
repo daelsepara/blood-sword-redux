@@ -445,6 +445,27 @@ namespace BloodSword::Graphics
 
         Graphics::RenderNow(graphics, background, foreground);
 
+        Graphics::WaitForWindowEvent(graphics);
+
+        return done;
+    }
+
+    // process single animation
+    bool Animate(Base &graphics, Scene::Base &background, Animation::Base &movement, Uint64 delay, bool trail = false)
+    {
+        auto animations = Animations::Base(movement);
+
+        animations.Delay = delay;
+
+        auto done = false;
+
+        while (!done)
+        {
+            done = Graphics::Animate(graphics, background, animations, trail);
+        }
+
+        movement = *(animations.List.begin());
+
         return done;
     }
 

@@ -66,9 +66,6 @@ namespace BloodSword::Animation
         // loop through the Frames
         bool Loop = false;
 
-        // Timestamp of current update (MOVE, FRAME, both)
-        Uint64 TimeStamp = 0;
-
         // frame currently being rendered
         int Frame = 0;
 
@@ -187,8 +184,6 @@ namespace BloodSword::Animation
         // reset animation
         void Reset()
         {
-            this->TimeStamp = 0;
-
             this->Frame = 0;
 
             this->Move = 0;
