@@ -66,17 +66,11 @@ namespace BloodSword::Animation
         // loop through the Frames
         bool Loop = false;
 
-        // Timestamp of current update (MOVE, FRAME, both)
-        Uint64 TimeStamp = 0;
-
         // frame currently being rendered
         int Frame = 0;
 
         // Current step (move number) in the path
         int Move = 0;
-
-        // Delay (ms) before continuing movement to next location (used on MOVE type)
-        Uint32 Speed = 0;
 
         // current frames cycle
         int Cycle = 0;
@@ -85,8 +79,7 @@ namespace BloodSword::Animation
              std::vector<Animation::Type> mode,
              std::vector<Point> path,
              int cycles,
-             int speed,
-             bool loop) : Frames(frames), Mode(mode), Path(path), Cycles(cycles), Loop(loop), Speed(speed)
+             bool loop) : Frames(frames), Mode(mode), Path(path), Cycles(cycles), Loop(loop)
         {
             if (!this->Frames.empty())
             {
@@ -100,18 +93,16 @@ namespace BloodSword::Animation
         }
 
         Base(std::vector<Animation::Frame> frames,
-             std::vector<Point> path,
-             int speed) : Base(frames, {Type::MOVE}, path, 1, speed, false) {}
+             std::vector<Point> path) : Base(frames, {Type::MOVE}, path, 1, false) {}
 
         Base(SDL_Texture *texture,
-             std::vector<Point> path,
-             int speed) : Base({Animation::Frame(texture)}, {Type::MOVE}, path, 1, speed, false) {}
+             std::vector<Point> path) : Base({Animation::Frame(texture)}, {Type::MOVE}, path, 1, false) {}
 
-        Base(std::vector<Animation::Frame> frames, int cycles, bool loop) : Base(frames, {Type::FRAME}, {}, cycles, 0, loop) {}
+        Base(std::vector<Animation::Frame> frames, int cycles, bool loop) : Base(frames, {Type::FRAME}, {}, cycles, loop) {}
 
         Base(std::vector<Animation::Frame> frames, bool loop) : Base(frames, 1, loop) {}
 
-        Base(std::vector<Animation::Frame> frames) : Base(frames, {Type::FRAME}, {}, 1, 0, false) {}
+        Base(std::vector<Animation::Frame> frames) : Base(frames, {Type::FRAME}, {}, 1, false) {}
 
         Base() {}
 
@@ -137,12 +128,6 @@ namespace BloodSword::Animation
         void Set(std::vector<Animation::Type> modes)
         {
             this->Mode = modes;
-        }
-
-        // set delay, lower speed = faster animation
-        void Set(int speed)
-        {
-            this->Speed = speed;
         }
 
         // set current location
@@ -199,8 +184,6 @@ namespace BloodSword::Animation
         // reset animation
         void Reset()
         {
-            this->TimeStamp = 0;
-
             this->Frame = 0;
 
             this->Move = 0;
@@ -223,7 +206,7 @@ namespace BloodSword::Animation
     };
 
     // show a frame of the animation on screen and cycle (if possible)
-    bool Show(Scene::Base &scene, Animation::Base &animation, bool delay = true)
+    bool Show(Scene::Base &scene, Animation::Base &animation, bool update = false)
     {
         auto done = true;
 
@@ -231,28 +214,26 @@ namespace BloodSword::Animation
         {
             done = false;
 
-            if (delay)
+            if (update)
             {
-                SDL_Delay(animation.Frames[animation.Frame].Duration);
-            }
+                if (animation.Frame < animation.Frames.size() - 1)
+                {
+                    animation.Frame++;
+                }
+                else if (animation.Loop)
+                {
+                    animation.Frame = 0;
+                }
+                else if (animation.Cycle < animation.Cycles)
+                {
+                    animation.Frame = 0;
 
-            if (animation.Frame < animation.Frames.size() - 1)
-            {
-                animation.Frame++;
-            }
-            else if (animation.Loop)
-            {
-                animation.Frame = 0;
-            }
-            else if (animation.Cycle < animation.Cycles)
-            {
-                animation.Frame = 0;
-
-                animation.Cycle++;
-            }
-            else
-            {
-                done = true;
+                    animation.Cycle++;
+                }
+                else
+                {
+                    done = true;
+                }
             }
         }
 
@@ -260,7 +241,7 @@ namespace BloodSword::Animation
     }
 
     // move the object towards destination and render it on screen
-    bool Move(Scene::Base &scene, Animation::Base &animation, bool delay = true)
+    bool Move(Scene::Base &scene, Animation::Base &animation, bool update = false)
     {
         auto Sign = [&](int Value)
         {
@@ -276,11 +257,6 @@ namespace BloodSword::Animation
 
         if (!animation.Path.empty() && animation.Move >= 0 && animation.Move < animation.Path.size() - 1)
         {
-            if (delay)
-            {
-                SDL_Delay(animation.Speed);
-            }
-
             auto delta = (animation.Current - animation.Path[animation.Move + 1]) * animation.Scale + animation.Offset;
 
             // check if we have reached our destination
@@ -292,7 +268,7 @@ namespace BloodSword::Animation
 
                 animation.Move++;
             }
-            else
+            else if (update)
             {
                 animation.Offset -= Direction(delta) * animation.Delta;
             }
@@ -304,77 +280,55 @@ namespace BloodSword::Animation
     }
 
     // update the animation on screen (MOVE, FRAME, both)
-    bool Step(Scene::Base &scene, Animation::Base &animation, bool trail = false, bool delay = true)
+    bool Step(Scene::Base &scene, Animation::Base &animation, Uint64 delay, bool trail = false, bool update = false)
     {
         auto done = false;
 
-        auto move = animation.Move;
-
-        auto frame = animation.Frame;
-
-        if (animation.TimeStamp != 0)
+        if (animation.Is({Type::MOVE, Type::FRAME}))
         {
-            if (animation.Is({Type::MOVE, Type::FRAME}))
-            {
-                if (delay)
-                {
-                    SDL_Delay(animation.Speed);
-                }
+            Animation::Show(scene, animation, update);
 
-                Animation::Show(scene, animation, false);
-
-                // stop when move is completed
-                done = Animation::Move(scene, animation, false);
-            }
-            else if (animation.Is(Type::MOVE))
-            {
-                done = Animation::Move(scene, animation, delay);
-            }
-            else if (animation.Is(Type::FRAME))
-            {
-                done = Animation::Show(scene, animation, delay);
-            }
-
-            if (animation.Frame >= 0 && animation.Frame < animation.Frames.size())
-            {
-                // add trail to movement
-                if (trail && animation.Is(Type::MOVE))
-                {
-                    for (auto i = animation.Move + 1; i < animation.Path.size() - 1; i++)
-                    {
-                        auto trails = animation.Origin + animation.Path[i] * animation.Scale;
-
-                        scene.Add(Scene::Element(trails, 64, 64, Color::Inactive, 0, 0));
-                    }
-                }
-
-                // add sprite to scene
-                auto location = animation.Origin + animation.Current * animation.Scale + animation.Offset;
-
-                if (trail)
-                {
-                    auto dst = animation.Origin + animation.Path.back() * animation.Scale;
-
-                    scene.Add(Scene::Element(dst + 4, 58, 58, 0, Color::Inactive, 2));
-                }
-
-                scene.VerifyAndAdd(Scene::Element(animation.Frames[animation.Frame].Texture, location));
-
-                if (trail)
-                {
-                    scene.Add(Scene::Element(location + 4, 58, 58, 0, Color::Inactive, 2));
-                }
-            }
-
-            if (move != animation.Move || frame != animation.Frame)
-            {
-                // update timestamp
-                animation.TimeStamp = SDL_GetTicks64();
-            }
+            // stop when move is completed
+            done = Animation::Move(scene, animation, update);
         }
-        else
+        else if (animation.Is(Type::MOVE))
         {
-            animation.TimeStamp = SDL_GetTicks64();
+            done = Animation::Move(scene, animation, update);
+        }
+        else if (animation.Is(Type::FRAME))
+        {
+            done = Animation::Show(scene, animation, update);
+        }
+
+        if (animation.Frame >= 0 && animation.Frame < animation.Frames.size())
+        {
+            // add trail to movement
+            if (trail && animation.Is(Type::MOVE))
+            {
+                for (auto i = animation.Move + 1; i < animation.Path.size() - 1; i++)
+                {
+                    auto trails = animation.Origin + animation.Path[i] * animation.Scale;
+
+                    scene.Add(Scene::Element(trails, 64, 64, Color::Inactive, 0, 0));
+                }
+            }
+
+            // add sprite to scene
+            auto location = animation.Origin + animation.Current * animation.Scale + animation.Offset;
+
+            if (trail)
+            {
+                auto dst = animation.Origin + animation.Path.back() * animation.Scale;
+
+                scene.Add(Scene::Element(dst + 4, 58, 58, 0, Color::Inactive, 2));
+            }
+
+            scene.VerifyAndAdd(Scene::Element(animation.Frames[animation.Frame].Texture, location));
+
+            if (trail)
+            {
+                scene.Add(Scene::Element(location + 4, 58, 58, 0, Color::Inactive, 2));
+            }
         }
 
         return done;
@@ -391,7 +345,10 @@ namespace BloodSword::Animations
         std::vector<Animation::Base> List = {};
 
         // global delay (speed)
-        Uint32 Delay = 0;
+        Uint64 Delay = 0;
+
+        // global timestamp
+        Uint64 TimeStamp = 0;
 
         // set objects to animate
         void Set(std::vector<Animation::Base> list)
@@ -429,9 +386,9 @@ namespace BloodSword::Animations
     };
 
     // process all animations in the list
-    bool Step(Scene::Base &scene, Animations::Base &animations, bool trail = false, bool delay = true)
+    bool Step(Scene::Base &scene, Animations::Base &animations, bool trail = false)
     {
-        auto done = true;
+        auto done = false;
 
         if (!animations.List.empty())
         {
@@ -443,12 +400,13 @@ namespace BloodSword::Animations
 
             auto frames = 0;
 
-            if (delay && animations.List.size() > 1)
+            if (animations.TimeStamp == 0)
             {
-                SDL_Delay(animations.Delay);
+                animations.TimeStamp = SDL_GetTicks64();
             }
 
-            auto forced_delay = animations.List.size() == 1 && delay;
+            // check if frame / sprite needs to be updated / moved
+            auto update = (SDL_GetTicks64() - animations.TimeStamp > animations.Delay);
 
             for (auto &animation : animations.List)
             {
@@ -456,13 +414,13 @@ namespace BloodSword::Animations
                 {
                     moves++;
 
-                    movement &= Animation::Step(scene, animation, trail, forced_delay);
+                    movement &= Animation::Step(scene, animation, animations.Delay, trail, update);
                 }
                 else
                 {
                     frames++;
 
-                    frame &= Animation::Step(scene, animation, trail, forced_delay);
+                    frame &= Animation::Step(scene, animation, animations.Delay, trail, update);
                 }
             }
 
@@ -475,6 +433,18 @@ namespace BloodSword::Animations
             {
                 done = frame;
             }
+
+            // reset animation delay
+            if (update)
+            {
+                animations.TimeStamp = SDL_GetTicks64();
+            }
+        }
+
+        if (done)
+        {
+            // reset time stamp
+            animations.TimeStamp = 0;
         }
 
         return done;

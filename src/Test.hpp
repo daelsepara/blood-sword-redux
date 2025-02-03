@@ -520,6 +520,8 @@ namespace BloodSword::Test
 
                             animations.Add(movement);
 
+                            animations.Delay = 25;
+
                             done = false;
 
                             framestart = SDL_GetTicks64();
@@ -543,11 +545,12 @@ namespace BloodSword::Test
             }
             else
             {
-                frames++;
+                while (!done)
+                {
+                    frames++;
 
-                done = Graphics::Animate(graphics, background, animations, true);
-
-                Graphics::WaitForWindowEvent(graphics);
+                    done = Graphics::Animate(graphics, background, animations, true);
+                }
 
                 if (done)
                 {
@@ -986,9 +989,7 @@ namespace BloodSword::Test
 
             if (animating)
             {
-                animating = !Graphics::Animate(graphics, scene, movement);
-
-                Graphics::WaitForWindowEvent(graphics);
+                animating = !Graphics::Animate(graphics, scene, movement, 25);
 
                 if (!animating)
                 {
