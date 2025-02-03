@@ -203,6 +203,17 @@ namespace BloodSword::Graphics
         Graphics::ScanLinesEnabled = !Graphics::ScanLinesEnabled;
     }
 
+    // handle window events
+    void HandleWindowEvent(SDL_Event &result, Graphics::Base &graphics)
+    {
+        if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
+        {
+            Graphics::Scanlines(graphics);
+
+            SDL_RenderPresent(graphics.Renderer);
+        }
+    }
+
     // respond to window resizing/in focus/out of focus events
     void WaitForWindowEvent(Graphics::Base &graphics)
     {
@@ -214,9 +225,7 @@ namespace BloodSword::Graphics
         {
             if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
             {
-                Graphics::Scanlines(graphics);
-
-                SDL_RenderPresent(graphics.Renderer);
+                Graphics::HandleWindowEvent(result, graphics);
             }
         }
     }

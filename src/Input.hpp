@@ -21,23 +21,23 @@ namespace BloodSword::Input
             }
         }
 
-        auto nJoysticks = SDL_NumJoysticks();
+        auto n_joysticks = SDL_NumJoysticks();
 
-        auto numGamepads = 0;
+        auto n_gamepads = 0;
 
         // count how many controllers there are
-        for (auto i = 0; i < nJoysticks; i++)
+        for (auto i = 0; i < n_joysticks; i++)
         {
             if (SDL_IsGameController(i))
             {
-                numGamepads++;
+                n_gamepads++;
             }
         }
 
         // If we have some controllers attached
-        if (numGamepads > 0)
+        if (n_gamepads > 0)
         {
-            for (auto i = 0; i < numGamepads; i++)
+            for (auto i = 0; i < n_gamepads; i++)
             {
                 // Open the controller and add it to our list
                 auto pad = SDL_GameControllerOpen(i);
@@ -51,7 +51,7 @@ namespace BloodSword::Input
             SDL_GameControllerEventState(SDL_ENABLE);
         }
 
-        return numGamepads;
+        return n_gamepads;
     }
 
     // wait for button (gamepad/mouse) click or the return key
@@ -77,12 +77,7 @@ namespace BloodSword::Input
             }
             else if (result.type == SDL_WINDOWEVENT)
             {
-                if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
-                {
-                    Graphics::Scanlines(graphics);
-
-                    SDL_RenderPresent(graphics.Renderer);
-                }
+                Graphics::HandleWindowEvent(result, graphics);
             }
             else if (result.type == SDL_CONTROLLERDEVICEADDED)
             {
@@ -110,13 +105,13 @@ namespace BloodSword::Input
     }
 
     // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool isDialog = false, bool blur = false, int delay = 100)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = 100)
     {
         SDL_Event result;
 
         auto sensitivity = 32000;
 
-        if (!isDialog)
+        if (!is_dialog)
         {
             Graphics::Render(graphics, scene, input);
 
@@ -150,7 +145,7 @@ namespace BloodSword::Input
 
         input.Down = false;
 
-        auto &controls = !isDialog ? scene.Controls : overlay.Controls;
+        auto &controls = !is_dialog ? scene.Controls : overlay.Controls;
 
         if (result.type == SDL_QUIT)
         {
@@ -158,12 +153,7 @@ namespace BloodSword::Input
         }
         else if (result.type == SDL_WINDOWEVENT)
         {
-            if (result.window.event == SDL_WINDOWEVENT_RESTORED || result.window.event == SDL_WINDOWEVENT_MAXIMIZED || result.window.event == SDL_WINDOWEVENT_SHOWN)
-            {
-                Graphics::Scanlines(graphics);
-
-                SDL_RenderPresent(graphics.Renderer);
-            }
+            Graphics::HandleWindowEvent(result, graphics);
         }
         else if (result.type == SDL_CONTROLLERDEVICEADDED)
         {
