@@ -1220,7 +1220,6 @@ namespace BloodSword::Interface
             {Animation::Type::MOVE},
             path,
             1,
-            10,
             false);
 
         // scale movement scale to map dimensions

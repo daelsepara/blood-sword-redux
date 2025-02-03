@@ -520,6 +520,8 @@ namespace BloodSword::Test
 
                             animations.Add(movement);
 
+                            animations.Delay = 25;
+
                             done = false;
 
                             framestart = SDL_GetTicks64();
@@ -543,11 +545,14 @@ namespace BloodSword::Test
             }
             else
             {
-                frames++;
+                while (!done)
+                {
+                    frames++;
 
-                done = Graphics::Animate(graphics, background, animations, true);
+                    done = Graphics::Animate(graphics, background, animations, true);
 
-                Graphics::WaitForWindowEvent(graphics);
+                    Graphics::WaitForWindowEvent(graphics);
+                }
 
                 if (done)
                 {
@@ -733,13 +738,23 @@ namespace BloodSword::Test
 
         auto movement = Animation::Base();
 
+        auto animations = Animations::Base();
+
         if (Engine::IsPlayer(order, character))
         {
             movement = Interface::Movement(map, party[order[character].Id], {}, origins[order[character].Id]);
+
+            animations = Animation::Base(movement);
+
+            animations.Delay = 25;
         }
         else
         {
             movement = Interface::Movement(map, enemies[order[character].Id], {}, spawn[order[character].Id]);
+
+            animations = Animation::Base(movement);
+
+            animations.Delay = 25;
         }
 
         auto pad = 10;
@@ -799,6 +814,10 @@ namespace BloodSword::Test
                                             scene = RegenerateScene(map);
 
                                             animating = true;
+
+                                            animations = Animation::Base(movement);
+
+                                            animations.Delay = 25;
 
                                             break;
                                         }
@@ -986,12 +1005,17 @@ namespace BloodSword::Test
 
             if (animating)
             {
-                animating = !Graphics::Animate(graphics, scene, movement);
+                while (animating)
+                {
+                    animating = !Graphics::Animate(graphics, scene, animations);
 
-                Graphics::WaitForWindowEvent(graphics);
+                    Graphics::WaitForWindowEvent(graphics);
+                }
 
                 if (!animating)
                 {
+                    movement = *(animations.List.begin());
+
                     if (Engine::IsPlayer(order, character))
                     {
                         map.Put(movement.Current, Map::Object::PLAYER, order[character].Id);
@@ -1069,6 +1093,10 @@ namespace BloodSword::Test
 
                                         if (animating)
                                         {
+                                            animations = Animation::Base(movement);
+
+                                            animations.Delay = 25;
+
                                             scene = RegenerateScene(map);
                                         }
                                     }

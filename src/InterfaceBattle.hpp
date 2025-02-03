@@ -614,6 +614,8 @@ namespace BloodSword::Interface
 
             auto animating = false;
 
+            auto animations = Animations::Base();
+
             auto movement = Animation::Base();
 
             auto previous = Controls::User();
@@ -806,6 +808,10 @@ namespace BloodSword::Interface
                                                         scene = Interface::BattleScene(battle, party);
 
                                                         animating = true;
+
+                                                        animations = Animations::Base(movement);
+
+                                                        animations.Delay = 25;
 
                                                         break;
                                                     }
@@ -1593,12 +1599,17 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            animating = !Graphics::Animate(graphics, scene, movement);
+                            while (animating)
+                            {
+                                animating = !Graphics::Animate(graphics, scene, animations);
 
-                            Graphics::WaitForWindowEvent(graphics);
+                                Graphics::WaitForWindowEvent(graphics);
+                            }
 
                             if (!animating)
                             {
+                                movement = *(animations.List.begin());
+
                                 // cancel fleeing status
                                 if (character.Is(Character::Status::FLEEING))
                                 {

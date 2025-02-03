@@ -437,25 +437,13 @@ namespace BloodSword::Graphics
     }
 
     // process through all animations
-    bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool trail = false, bool delay = true)
+    bool Animate(Base &graphics, Scene::Base &background, Animations::Base &animations, bool trail = false)
     {
         auto foreground = Scene::Base();
 
-        auto done = Animations::Step(foreground, animations, trail, delay);
+        auto done = Animations::Step(foreground, animations, trail);
 
         Graphics::RenderNow(graphics, background, foreground);
-
-        return done;
-    }
-
-    // process a single animation
-    bool Animate(Base &graphics, Scene::Base &background, Animation::Base &animation, bool trail = false, bool delay = true)
-    {
-        auto animations = Animations::Base(animation);
-
-        auto done = Graphics::Animate(graphics, background, animations, trail, delay);
-
-        animation = *(animations.List.begin());
 
         return done;
     }
