@@ -31,6 +31,8 @@ namespace BloodSword
             Interface::LoadTextures(this->graphics);
 
             Input::InitializeGamePads();
+
+            Input::Flush();
         }
 
         void Initialize()
