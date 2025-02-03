@@ -454,6 +454,8 @@ namespace BloodSword::Test
         // movement animation
         auto movement = Interface::Movement(map, party[player_class], {}, start);
 
+        ResetObjects(map);
+
         auto background = RegenerateScene(map);
 
         auto done = true;
@@ -465,8 +467,6 @@ namespace BloodSword::Test
         auto fps = 0.0;
 
         SDL_Texture *fps_texture = nullptr;
-
-        ResetObjects(map);
 
         while (true)
         {
@@ -1154,12 +1154,11 @@ namespace BloodSword::Test
                                 if (search != caster.Spells.end())
                                 {
                                     auto &spell_book = *search;
+                                    auto battle_cast = in_battle && !spell_book.IsBasic() && spell_book.IsBattle;
+                                    auto story_cast = !in_battle && !spell_book.IsBasic() && !spell_book.IsBattle;
+                                    auto basic_cast = !in_battle && spell_book.IsBasic();
 
-                                    auto battlecast = in_battle && !spell_book.IsBasic() && spell_book.IsBattle;
-                                    auto storycast = !in_battle && !spell_book.IsBasic() && !spell_book.IsBattle;
-                                    auto basiccast = !in_battle && spell_book.IsBasic();
-
-                                    if (battlecast || storycast || basiccast)
+                                    if (battle_cast || story_cast || basic_cast)
                                     {
                                         if (caster.HasCalledToMind(spell_book.Type) || spell_book.IsBasic())
                                         {
