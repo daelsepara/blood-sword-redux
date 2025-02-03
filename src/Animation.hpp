@@ -210,12 +210,12 @@ namespace BloodSword::Animation
     {
         auto done = true;
 
-        if (!animation.Frames.empty() && animation.Frame >= 0 && animation.Frame < animation.Frames.size())
+        if (update)
         {
-            done = false;
-
-            if (update)
+            if (!animation.Frames.empty() && animation.Frame >= 0 && animation.Frame < animation.Frames.size())
             {
+                done = false;
+
                 if (animation.Frame < animation.Frames.size() - 1)
                 {
                     animation.Frame++;
@@ -280,7 +280,7 @@ namespace BloodSword::Animation
     }
 
     // update the animation on screen (MOVE, FRAME, both)
-    bool Step(Scene::Base &scene, Animation::Base &animation, Uint64 delay, bool trail = false, bool update = false)
+    bool Step(Scene::Base &scene, Animation::Base &animation, Uint64 delay, bool update, bool trail = false)
     {
         auto done = false;
 
@@ -414,13 +414,13 @@ namespace BloodSword::Animations
                 {
                     moves++;
 
-                    movement &= Animation::Step(scene, animation, animations.Delay, trail, update);
+                    movement &= Animation::Step(scene, animation, animations.Delay, update, trail);
                 }
                 else
                 {
                     frames++;
 
-                    frame &= Animation::Step(scene, animation, animations.Delay, trail, update);
+                    frame &= Animation::Step(scene, animation, animations.Delay, update, trail);
                 }
             }
 
