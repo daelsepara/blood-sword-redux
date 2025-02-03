@@ -464,6 +464,8 @@ namespace BloodSword::Test
 
         Uint64 frame_end = 0;
 
+        Uint64 frames = 0;
+
         auto fps = 0.0;
 
         SDL_Texture *fps_texture = nullptr;
@@ -521,6 +523,10 @@ namespace BloodSword::Test
                             done = false;
 
                             fps = 0.0;
+
+                            frames = 0;
+
+                            frame_start = SDL_GetTicks64();
                         }
                     }
                     else if (input.Type == Controls::Type::BACK && done)
@@ -539,24 +545,23 @@ namespace BloodSword::Test
             {
                 while (!done)
                 {
-                    // get performance counters in between animation loops
-                    frame_start = SDL_GetPerformanceCounter();
-
                     done = Graphics::Animate(graphics, background, animations, true);
 
-                    frame_end = SDL_GetPerformanceCounter();
+                    frames++;
                 }
 
                 if (done)
                 {
                     // compute FPS
-                    auto perf_counter = frame_end - frame_start;
+                    frame_end = SDL_GetTicks64();
 
-                    if (perf_counter > 0)
+                    auto msec = frame_end - frame_start;
+
+                    if (msec > 0)
                     {
                         Free(&fps_texture);
 
-                        fps = (double)SDL_GetPerformanceFrequency() / (double)perf_counter;
+                        fps = (double)(frames * 1000) / (double)msec;
 
                         std::string fpsString = "FPS: " + std::to_string(fps) + "/sec";
 
