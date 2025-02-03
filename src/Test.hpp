@@ -177,16 +177,14 @@ namespace BloodSword::Test
 
         while (true)
         {
-            auto scene = Interface::Map(map, party, enemies, 1);
-
             auto id = (int)(scene.Controls.size());
             auto x = map.DrawX;
             auto y = map.DrawY + map.ViewY * map.TileSize;
-
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
-
             auto arrow_up = offset > 0;
             auto arrow_down = background_h < texture_h && offset < (texture_h - background_h);
+            auto scene = Interface::Map(map, party, enemies, 1);
+
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
 
             if (arrow_up)
             {
@@ -424,12 +422,12 @@ namespace BloodSword::Test
         auto RegenerateScene = [&](Map::Base &map)
         {
             auto scene = Interface::Map(map, party, enemies, 3);
-
             auto id = (int)(scene.Controls.size());
 
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
+
             scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
@@ -439,26 +437,22 @@ namespace BloodSword::Test
 
         auto ResetObjects = [&](Map::Base &map)
         {
-            map.Put(start, Map::Object::PASSABLE, Asset::Type::NONE);
-
-            map.Put(start, Map::Object::PLAYER, 0);
-
             exit = (random.NextInt() % (maze_h / 2)) * 2 + 1;
-
             end = Point(map.Width - 1, exit);
 
+            map.Put(start, Map::Object::PASSABLE, Asset::Type::NONE);
+            map.Put(start, Map::Object::PLAYER, 0);
             map.Put(end, Map::Object::PASSABLE, Asset::Type::RIGHT);
         };
 
+        // user inputs
         auto input = Controls::User();
 
-        // initialize animation
+        // animations
         auto animations = Animations::Base();
 
-        // set frame, type, and delay
-        auto movement = Interface::Movement(map, party[player_class], {}, start);
-
-        ResetObjects(map);
+        // movement animation
+        auto movement = Animation::Base();
 
         auto background = RegenerateScene(map);
 
@@ -471,6 +465,8 @@ namespace BloodSword::Test
         auto fps = 0.0;
 
         SDL_Texture *fps_texture = nullptr;
+
+        ResetObjects(map);
 
         while (true)
         {
@@ -667,12 +663,12 @@ namespace BloodSword::Test
         auto RegenerateScene = [&](Map::Base &map)
         {
             auto scene = Interface::Map(map, party, enemies, 3);
-
             auto id = scene.Controls.size();
 
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
+
             scene.Add(Controls::Base(Controls::Type::MOVE, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::RESET, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
             scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));

@@ -507,19 +507,19 @@ namespace BloodSword::Engine
     // check if control is a spell
     bool IsSpell(Controls::Type type)
     {
-        auto isspell = false;
+        auto is_spell = false;
 
         for (auto spell = Controls::Spells.begin(); spell != Controls::Spells.end(); spell++)
         {
             if (*spell == type)
             {
-                isspell = true;
+                is_spell = true;
 
                 break;
             }
         }
 
-        return isspell;
+        return is_spell;
     }
 
     // character gains/loses endurance

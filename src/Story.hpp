@@ -51,11 +51,11 @@ namespace BloodSword::Story
     };
 
     // TODO: load story from file
-    Story::Base Load(const char *file)
+    Story::Base Load(const char *filename)
     {
         auto story = Story::Base();
 
-        std::ifstream ifs(file);
+        std::ifstream ifs(filename);
 
         if (ifs.good())
         {

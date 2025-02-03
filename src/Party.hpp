@@ -73,13 +73,13 @@ namespace BloodSword::Party
         }
 
         // check if a specific character class is present in party
-        std::vector<Character::Base>::const_iterator Find(Character::Class characterClass)
+        std::vector<Character::Base>::const_iterator Find(Character::Class character_class)
         {
             auto found = this->Members.end();
 
             for (auto character = this->Members.begin(); character != this->Members.end(); character++)
             {
-                if (character->Class == characterClass)
+                if (character->Class == character_class)
                 {
                     found = character;
 
@@ -91,9 +91,9 @@ namespace BloodSword::Party
         }
 
         // check if party has a member of a specific character class
-        bool Has(Character::Class characterClass)
+        bool Has(Character::Class character_class)
         {
-            return this->Find(characterClass) != this->Members.end();
+            return this->Find(character_class) != this->Members.end();
         }
 
         // check if party has an item of type
@@ -115,14 +115,14 @@ namespace BloodSword::Party
         }
 
         // access party by character class
-        Character::Base &operator[](Character::Class characterClass)
+        Character::Base &operator[](Character::Class character_class)
         {
-            if (!this->Has(characterClass))
+            if (!this->Has(character_class))
             {
                 throw std::invalid_argument("Character not in party!");
             }
 
-            return (*this)[this->Find(characterClass) - this->Members.begin()];
+            return (*this)[this->Find(character_class) - this->Members.begin()];
         }
 
         // remove character from party (based on index)
@@ -140,11 +140,11 @@ namespace BloodSword::Party
         }
 
         // remove character from party (based on character class)
-        void Remove(Character::Class characterClass)
+        void Remove(Character::Class character_class)
         {
             auto found = -1;
 
-            if (!this->Has(characterClass))
+            if (!this->Has(character_class))
             {
                 throw std::invalid_argument("Character not in party!");
             }
@@ -153,7 +153,7 @@ namespace BloodSword::Party
             {
                 auto member = (*this)[i];
 
-                if (member.Class == characterClass)
+                if (member.Class == character_class)
                 {
                     found = i;
 

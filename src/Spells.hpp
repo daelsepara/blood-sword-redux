@@ -114,9 +114,9 @@ namespace BloodSword::Spells
         return Spells::Map(spell.c_str());
     }
 
-    Spells::Class MapClass(const char *spellClass)
+    Spells::Class MapClass(const char *spell_class)
     {
-        return BloodSword::Find(Spells::ClassMapping, spellClass);
+        return BloodSword::Find(Spells::ClassMapping, spell_class);
     }
 
     Spells::Class MapClass(std::string spell)
@@ -155,23 +155,23 @@ namespace BloodSword::Spells
         int Duration = -1;
 
         Base(Spells::Type type,
-             Spells::Class spellClass,
-             bool isBattle,
+             Spells::Class spell_class,
+             bool is_battle,
              bool ranged,
              int complexity,
              int duration) : Type(type),
-                             Class(spellClass),
-                             IsBattle(isBattle),
+                             Class(spell_class),
+                             IsBattle(is_battle),
                              Ranged(ranged),
                              Complexity(complexity),
                              CurrentComplexity(complexity),
                              Duration(duration) {}
 
         Base(Spells::Type type,
-             Spells::Class spellClass,
-             bool isBattle,
+             Spells::Class spell_class,
+             bool is_battle,
              bool ranged,
-             int complexity) : Base(type, spellClass, isBattle, ranged, complexity, -1) {}
+             int complexity) : Base(type, spell_class, is_battle, ranged, complexity, -1) {}
 
         bool IsBasic()
         {

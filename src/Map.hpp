@@ -134,17 +134,17 @@ namespace BloodSword::Map
         }
 
         // set viewable region
-        void Viewable(int viewx, int viewy)
+        void Viewable(int view_x, int view_y)
         {
-            this->ViewX = viewx;
+            this->ViewX = view_x;
 
-            this->ViewY = viewy;
+            this->ViewY = view_y;
         }
 
         // initialize the map
-        Base(int sizex, int sizey)
+        Base(int size_x, int size_y)
         {
-            Initialize(sizex, sizey);
+            Initialize(size_x, size_y);
         }
 
         // an empty map
@@ -251,7 +251,7 @@ namespace BloodSword::Map
 
         bool Load(nlohmann::json &data)
         {
-            auto LoadError = false;
+            auto load_error = false;
 
             this->Width = !data["width"].is_null() ? (int)data["width"] : 0;
             this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
@@ -283,7 +283,7 @@ namespace BloodSword::Map
                         }
                         else
                         {
-                            LoadError = true;
+                            load_error = true;
 
                             break;
                         }
@@ -291,15 +291,15 @@ namespace BloodSword::Map
                 }
                 else
                 {
-                    LoadError = true;
+                    load_error = true;
                 }
             }
             else
             {
-                LoadError = true;
+                load_error = true;
             }
 
-            return LoadError;
+            return load_error;
         }
 
         // load map from json file
