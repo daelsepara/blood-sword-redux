@@ -178,7 +178,7 @@ namespace BloodSword::Move
     }
 
     // Find path from src to dst using the A* algorithm
-    Move::Path FindPath(Map::Base &map, Point src, Point dst, bool Unrestricted = false)
+    Move::Path FindPath(Map::Base &map, Point src, Point dst, bool unrestricted = false)
     {
         auto path = Move::Path();
 
@@ -233,7 +233,7 @@ namespace BloodSword::Move
 
                 Move::Remove(active, check);
 
-                auto nodes = Move::Nodes(map, check, end, is_enemy, Unrestricted);
+                auto nodes = Move::Nodes(map, check, end, is_enemy, unrestricted);
 
                 for (auto &node : nodes)
                 {

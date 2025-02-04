@@ -2190,12 +2190,12 @@ namespace BloodSword::Interface
         auto items = 4;
         auto height = (base_height + pad * 2) * items - pad * 7 / 2;
         auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
-        auto menuw = 0;
+        auto menu_w = 0;
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
-        SDL_QueryTexture(menu_title, nullptr, nullptr, &menuw, nullptr);
+        SDL_QueryTexture(menu_title, nullptr, nullptr, &menu_w, nullptr);
 
-        scene.Add(Scene::Element(menu_title, Point((graphics.Width - menuw) / 2, origin.Y - pad * 6)));
+        scene.Add(Scene::Element(menu_title, Point((graphics.Width - menu_w) / 2, origin.Y - pad * 6)));
 
         scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, 4));
 

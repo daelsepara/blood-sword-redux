@@ -57,38 +57,38 @@ namespace BloodSword::Character
         int ItemLimit = 6;
 
         Base(const char *name,
-             Character::Class characterClass,
+             Character::Class character_class,
              Characteristics attributes,
              Abilities skills,
              int moves,
              int rank) : Attributes(attributes),
                          Skills(skills),
                          ControlType(ControlType::PLAYER),
-                         Class(characterClass),
+                         Class(character_class),
                          Name(name),
                          Moves(moves),
                          Rank(rank) {}
 
         Base(const char *name,
-             Character::Class characterClass,
+             Character::Class character_class,
              Characteristics attributes,
              Abilities skills) : Base(name,
-                                      characterClass,
+                                      character_class,
                                       attributes,
                                       skills,
                                       1000,
                                       2) {}
 
         Base(const char *name,
-             Character::Class characterClass,
-             Characteristics attributes) : Base(name, characterClass, attributes, {}, 1000, 2) {}
+             Character::Class character_class,
+             Characteristics attributes) : Base(name, character_class, attributes, {}, 1000, 2) {}
 
         Base(const char *name,
-             Character::Class characterClass) : Base(name, characterClass, {}, {}, 1000, 2) {}
+             Character::Class character_class) : Base(name, character_class, {}, {}, 1000, 2) {}
 
-        Base(Character::Class characterClass, int rank) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 1000, rank) {}
+        Base(Character::Class character_class, int rank) : Base(Character::ClassMapping[character_class], character_class, {}, {}, 1000, rank) {}
 
-        Base(Character::Class characterClass) : Base(Character::ClassMapping[characterClass], characterClass, {}, {}, 1000, 2) {}
+        Base(Character::Class character_class) : Base(Character::ClassMapping[character_class], character_class, {}, {}, 1000, 2) {}
 
         Base(const char *name,
              Characteristics attributes,
@@ -118,11 +118,11 @@ namespace BloodSword::Character
         // does a character have this status?
         bool Has(Character::Status status)
         {
-            auto hasStatus = this->Status.find(status) != this->Status.end();
+            auto has_status = this->Status.find(status) != this->Status.end();
 
-            auto isActive = this->Status[status] != 0;
+            auto is_active = this->Status[status] != 0;
 
-            return hasStatus && isActive;
+            return has_status && is_active;
         }
 
         bool Is(Character::Status status)

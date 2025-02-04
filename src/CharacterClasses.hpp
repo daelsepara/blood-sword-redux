@@ -19,14 +19,14 @@ namespace BloodSword::Character
         {Character::ControlType::PLAYER, "PLAYER"},
         {Character::ControlType::NPC, "NPC"}};
 
-    Character::ControlType MapControlType(const char *controlType)
+    Character::ControlType MapControlType(const char *control_type)
     {
-        return BloodSword::Find(Character::ControlTypeMapping, controlType);
+        return BloodSword::Find(Character::ControlTypeMapping, control_type);
     }
 
-    Character::ControlType MapControlType(std::string controlType)
+    Character::ControlType MapControlType(std::string control_type)
     {
-        return Character::MapControlType(controlType.c_str());
+        return Character::MapControlType(control_type.c_str());
     }
 
     // character status types
@@ -93,14 +93,14 @@ namespace BloodSword::Character
         Character::Class::SAGE,
         Character::Class::ENCHANTER};
 
-    Character::Class Map(const char *characterClass)
+    Character::Class Map(const char *character_class)
     {
-        return BloodSword::Find(Character::ClassMapping, characterClass);
+        return BloodSword::Find(Character::ClassMapping, character_class);
     }
 
-    Character::Class Map(std::string characterClass)
+    Character::Class Map(std::string character_class)
     {
-        return Character::Map(characterClass.c_str());
+        return Character::Map(character_class.c_str());
     }
 }
 

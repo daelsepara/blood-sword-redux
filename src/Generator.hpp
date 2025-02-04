@@ -507,9 +507,9 @@ namespace BloodSword::Generate
     }
 
     // generate character based on class and rank
-    Character::Base Character(Character::Class characterClass, int rank)
+    Character::Base Character(Character::Class character_class, int rank)
     {
-        auto character = Character::Base(characterClass, rank);
+        auto character = Character::Base(character_class, rank);
 
         Generate::Experience(character);
 
@@ -544,14 +544,14 @@ namespace BloodSword::Generate
     }
 
     // generate NPC
-    Character::Base NPC(const char *name, Character::Abilities skills, int fpr, int psy, int awr, int end, int arm, int dmgV, int dmgM, int moves, Asset::Type asset)
+    Character::Base NPC(const char *name, Character::Abilities skills, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
         auto FPR = Attribute::Base(Attribute::Type::FIGHTING_PROWESS, fpr, 0);
         auto PSY = Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, psy, 0);
         auto AWR = Attribute::Base(Attribute::Type::AWARENESS, awr, 0);
         auto END = Attribute::Base(Attribute::Type::ENDURANCE, end, 0);
         auto ARM = Attribute::Base(Attribute::Type::ARMOUR, 0, arm);
-        auto DMG = Attribute::Base(Attribute::Type::DAMAGE, dmgV, dmgM);
+        auto DMG = Attribute::Base(Attribute::Type::DAMAGE, dmg_v, dmg_m);
 
         return Generate::NPC(name, skills, {FPR, PSY, AWR, END, ARM, DMG}, moves, asset);
     }
