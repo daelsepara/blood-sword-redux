@@ -1,5 +1,8 @@
-BLOODWORD=BloodSwordTest.cpp
-BLOODWORD_OUTPUT=BloodSwordTest.exe
+BSWORD_TEST=BloodSwordTest.cpp
+BSWORD_TEST_OUTPUT=BloodSwordTest.exe
+BSWORD_BATTLES=BattleBoard.cpp
+BSWORD_BATTLES_OUTPUT=BattleBoard.exe
+
 LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 INCLUDES=-I/usr/include/SDL2
 
@@ -14,10 +17,18 @@ else
 	LINKER_FLAGS += -lstdc++fs
 endif
 
-all: clean blood-sword
+all: clean blood-sword battle-board
 
 blood-sword:
-	$(CC) -Wall $(BLOODWORD) $(LINKER_FLAGS) $(INCLUDES) -o $(BLOODWORD_OUTPUT)
+	$(CC) -Wall $(BSWORD_TEST) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT)
 
-clean:
-	rm -f *.exe *.o
+battle-board:
+	$(CC) -Wall $(BSWORD_BATTLES) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_BATTLES_OUTPUT)
+
+clean-blood-sword:
+	rm -f $(BSWORD_TEST_OUTPUT) *.o
+
+clean-battle-board:
+	rm -f $(BSWORD_BATTLES_OUTPUT) *.o
+
+clean: clean-blood-sword clean-battle-board

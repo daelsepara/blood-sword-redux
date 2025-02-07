@@ -1,4 +1,5 @@
 #include "BloodSword.hpp"
+#include "Test.hpp"
 
 namespace BloodSword
 {
