@@ -93,7 +93,7 @@
                 "control_type": "NPC",
                 "experience": 0,
                 "item_limit": 6,
-                "moves": 0,
+                "moves": 1000,
                 "name": "ASSASSIN",
                 "rank": 0,
                 "skills": [
