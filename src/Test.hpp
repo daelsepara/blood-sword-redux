@@ -675,61 +675,13 @@ namespace BloodSword::Test
     // battle order
     void Queue(Graphics::Base &graphics)
     {
-        auto x_dim = 14;
+        auto map = Map::Base();
 
-        auto y_dim = 9;
+        map.Load("maps/queue.json");
 
-        auto map = Map::Base(x_dim, y_dim);
+        auto party = Party::Load("party/rank02.json", "party");
 
-        map.Viewable(x_dim, y_dim);
-
-        // generate map
-        for (auto y = 0; y < y_dim; y++)
-        {
-            for (auto x = 0; x < x_dim; x++)
-            {
-                map.Put(x, y, Map::Object::PASSABLE, Asset::Type::NONE);
-            }
-        }
-
-        for (auto i = 0; i < y_dim; i++)
-        {
-            map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
-
-            map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
-        }
-
-        for (auto i = 0; i < x_dim; i++)
-        {
-            map.Put(i, 0, Map::Object::OBSTACLE, Asset::Type::WALL);
-
-            map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
-        }
-
-        // create party
-        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
-                                  Generate::Character(Character::Class::TRICKSTER, 2),
-                                  Generate::Character(Character::Class::SAGE, 2),
-                                  Generate::Character(Character::Class::ENCHANTER, 2)});
-
-        auto enemies = Party::Base(
-            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 1000, Asset::Type::BARBARIAN),
-             Generate::NPC("ASSASSIN", {}, 7, 6, 7, 5, 0, 1, 0, 1000, Asset::Type::ASSASSIN),
-             Generate::NPC("CORPSE", {}, 5, 4, 2, 4, 0, 1, 1, 3, Asset::Type::CORPSE)});
-
-        std::vector<Point> origins = {
-            Point(1, 1),
-            Point(map.Width - 2, 1),
-            Point(1, map.Height - 2),
-            Point(map.Width - 2, map.Height - 2),
-        };
-
-        auto center = Point(x_dim, y_dim) / 2;
-
-        std::vector<Point> spawn = {
-            center,
-            center + 1,
-            center - 1};
+        auto enemies = Party::Load("party/assassin-barbarian-corpse.json", "opponents");
 
         auto stats = Interface::GenerateStats(graphics, party, map.TileSize * 5);
 
@@ -769,38 +721,18 @@ namespace BloodSword::Test
         };
 
         // reset stating locations
-        auto ResetLocations = [&](Map::Base &map, Party::Base &party, std::vector<Point> origins)
+        auto ResetLocations = [&](Map::Base &map, Party::Base &party)
         {
-            for (auto i = 0; i < party.Count(); i++)
-            {
-                auto location = map.Find(Map::Object::PLAYER, i);
+            map.ResetLocations(party, Map::Object::PLAYER, map.Origins);
 
-                if (!location.IsNone())
-                {
-                    map.Put(location, Map::Object::NONE, -1);
-                }
-
-                map.Put(origins[i], Map::Object::PLAYER, i);
-            }
-
-            for (auto i = 0; i < enemies.Count(); i++)
-            {
-                auto enemy = map.Find(Map::Object::ENEMY, i);
-
-                if (!enemy.IsNone())
-                {
-                    map.Put(enemy, Map::Object::NONE, -1);
-                }
-
-                map.Put(spawn[i], Map::Object::ENEMY, i);
-            }
+            map.ResetLocations(enemies, Map::Object::ENEMY, map.Spawn);
         };
 
         // Generate character info boxes
         auto characters = Interface::GenerateCharacterClassCaptions(graphics, caption_w);
 
         // set starting locations
-        ResetLocations(map, party, origins);
+        ResetLocations(map, party);
 
         // generate a queue based on AWARENESS score
         auto order = Engine::Build(party, enemies, Attribute::Type::AWARENESS);
@@ -825,11 +757,11 @@ namespace BloodSword::Test
 
         if (Engine::IsPlayer(order, character))
         {
-            movement = Interface::Movement(map, party[order[character].Id], {}, origins[order[character].Id]);
+            movement = Interface::Movement(map, party[order[character].Id], {}, map.Origins[order[character].Id]);
         }
         else
         {
-            movement = Interface::Movement(map, enemies[order[character].Id], {}, spawn[order[character].Id]);
+            movement = Interface::Movement(map, enemies[order[character].Id], {}, map.Spawn[order[character].Id]);
         }
 
         auto pad = 10;
@@ -1181,7 +1113,7 @@ namespace BloodSword::Test
                         else if (input.Type == Controls::Type::RESET)
                         {
                             // reset starting locations
-                            ResetLocations(map, party, origins);
+                            ResetLocations(map, party);
 
                             scene = RegenerateScene(map);
 
@@ -1532,11 +1464,8 @@ namespace BloodSword::Test
 
         difficulty.UniformIntDistribution(-2, 2);
 
-        // create party
-        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
-                                  Generate::Character(Character::Class::TRICKSTER, 2),
-                                  Generate::Character(Character::Class::SAGE, 2),
-                                  Generate::Character(Character::Class::ENCHANTER, 2)});
+        // load party
+        auto party = Party::Load("party/rank02.json", "party");
 
         auto stats = Interface::GenerateStats(graphics, party, 320, false, true);
 
@@ -1868,7 +1797,7 @@ namespace BloodSword::Test
     void Battle(Graphics::Base &graphics)
     {
         // Load party from configuration file
-        auto party = Party::Load("battles/party.json", "party");
+        auto party = Party::Load("party/rank02.json", "party");
 
         // Load battle from configuration file
         auto battle = Battle::Load("battles/test.json");

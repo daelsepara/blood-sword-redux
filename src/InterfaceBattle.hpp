@@ -571,13 +571,13 @@ namespace BloodSword::Interface
             {
                 battle.Map.Put(battle.Map.Origins[i], Map::Object::PLAYER, i);
             }
-    
+
             // set opponents starting locations
             for (auto i = 0; i < battle.Opponents.Count(); i++)
             {
                 battle.Map.Put(battle.Map.Spawn[i], Map::Object::ENEMY, i);
             }
-    
+
             // initialize captions
             auto caption_w = 320;
 

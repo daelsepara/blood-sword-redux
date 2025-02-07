@@ -5,6 +5,7 @@
 
 #include "Asset.hpp"
 #include "MapObjects.hpp"
+#include "Party.hpp"
 
 namespace BloodSword::Map
 {
@@ -257,7 +258,7 @@ namespace BloodSword::Map
             this->Put(Point(x, y), type, asset);
         }
 
-        bool Load(nlohmann::json &data)
+        bool Setup(nlohmann::json &data)
         {
             auto load_error = false;
 
@@ -374,7 +375,7 @@ namespace BloodSword::Map
             {
                 auto data = nlohmann::json::parse(file);
 
-                LoadError = this->Load(data);
+                LoadError = this->Setup(data);
 
                 file.close();
             }
@@ -643,6 +644,21 @@ namespace BloodSword::Map
                         }
                     }
                 }
+            }
+        }
+
+        void ResetLocations(Party::Base &party, Map::Object type, std::vector<BloodSword::Point> origins)
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                auto location = this->Find(type, i);
+
+                if (!location.IsNone())
+                {
+                    this->Put(location, Map::Object::NONE, -1);
+                }
+
+                this->Put(origins[i], type, i);
             }
         }
     };
