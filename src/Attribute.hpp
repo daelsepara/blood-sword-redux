@@ -97,6 +97,28 @@ namespace BloodSword::Attributes
 
         return characteristics;
     }
+
+    nlohmann::json Data(std::vector<Attribute::Base> &attributes)
+    {
+        nlohmann::json data;
+
+        for (auto &attribute: attributes)
+        {
+            nlohmann::json row;
+
+            row.emplace("type", Attribute::TypeMapping[attribute.Type]);
+
+            row.emplace("value", attribute.Value);
+
+            row.emplace("modifier", attribute.Modifier);
+
+            row.emplace("maximum", attribute.Maximum);
+
+            data.push_back(row);
+        }
+
+        return data;
+    }
 }
 
 #endif

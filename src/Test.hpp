@@ -1867,80 +1867,11 @@ namespace BloodSword::Test
     // battle
     void Battle(Graphics::Base &graphics)
     {
-        auto x_dim = 14;
+        // Load party from configuration file
+        auto party = Party::Load("battles/party.json", "party");
 
-        auto y_dim = 9;
-
-        auto map = Map::Base(x_dim, y_dim);
-
-        map.Viewable(x_dim, y_dim);
-
-        // generate map
-        for (auto y = 0; y < y_dim; y++)
-        {
-            for (auto x = 0; x < x_dim; x++)
-            {
-                map.Put(x, y, Map::Object::PASSABLE, Asset::Type::NONE);
-            }
-        }
-
-        for (auto i = 0; i < y_dim; i++)
-        {
-            map.Put(0, i, Map::Object::OBSTACLE, Asset::Type::WALL);
-
-            map.Put(map.Width - 1, i, Map::Object::OBSTACLE, Asset::Type::WALL);
-        }
-
-        for (auto i = 0; i < x_dim; i++)
-        {
-            map.Put(i, 0, Map::Object::OBSTACLE, Asset::Type::WALL);
-
-            map.Put(i, map.Height - 1, Map::Object::OBSTACLE, Asset::Type::WALL);
-        }
-
-        auto center = Point(x_dim, y_dim) / 2;
-
-        for (auto i = 0; i < 4; i++)
-        {
-            map.Put(Point(center.X - 1, center.Y - 2) + i, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
-
-            map.Put(Point(center.X - 2, center.Y - 1) + i, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 2);
-        }
-
-        // create party
-        auto party = Party::Base({Generate::Character(Character::Class::WARRIOR, 2),
-                                  Generate::Character(Character::Class::TRICKSTER, 2),
-                                  Generate::Character(Character::Class::SAGE, 2),
-                                  Generate::Character(Character::Class::ENCHANTER, 2)});
-
-        auto enemies = Party::Base(
-            {Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, 1000, Asset::Type::BARBARIAN),
-             Generate::NPC("ASSASSIN", {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN),
-             Generate::NPC("CORPSE", {}, 5, 4, 2, 4, 0, 1, 1, 3, Asset::Type::CORPSE)});
-
-        std::vector<Point> origins = {
-            Point(1, 1),
-            Point(map.Width - 2, 1),
-            Point(1, map.Height - 2),
-            Point(map.Width - 2, map.Height - 2),
-        };
-
-        std::vector<Point> spawn = {
-            center,
-            center + 1,
-            center - 1};
-
-        for (auto i = 0; i < party.Count(); i++)
-        {
-            map.Put(origins[i], Map::Object::PLAYER, i);
-        }
-
-        for (auto i = 0; i < enemies.Count(); i++)
-        {
-            map.Put(spawn[i], Map::Object::ENEMY, i);
-        }
-
-        auto battle = Battle::Base({Battle::Condition::CANNOT_FLEE}, map, enemies, Battle::Unlimited);
+        // Load battle from configuration file
+        auto battle = Battle::Load("battles/test.json");
 
         auto result = Interface::RenderBattle(graphics, battle, party);
 

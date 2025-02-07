@@ -566,6 +566,18 @@ namespace BloodSword::Interface
 
         if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents) && Engine::IsAlive(party))
         {
+            // set party starting locations
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                battle.Map.Put(battle.Map.Origins[i], Map::Object::PLAYER, i);
+            }
+    
+            // set opponents starting locations
+            for (auto i = 0; i < battle.Opponents.Count(); i++)
+            {
+                battle.Map.Put(battle.Map.Spawn[i], Map::Object::ENEMY, i);
+            }
+    
             // initialize captions
             auto caption_w = 320;
 

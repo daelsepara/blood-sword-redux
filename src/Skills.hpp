@@ -119,6 +119,21 @@ namespace BloodSword::Skills
 
         return skills;
     }
+
+    nlohmann::json Data(std::vector<Skills::Type> &skills)
+    {
+        nlohmann::json data;
+
+        for (auto &skill : skills)
+        {
+            if (skill != Skills::Type::NONE)
+            {
+                data.push_back(Skills::TypeMapping[skill]);
+            }
+        }
+
+        return data;
+    }
 }
 
 #endif

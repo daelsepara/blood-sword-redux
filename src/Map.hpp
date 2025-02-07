@@ -116,6 +116,12 @@ namespace BloodSword::Map
         // size of each tile (pixels)
         int TileSize = 64;
 
+        // starting locations of party
+        std::vector<BloodSword::Point> Origins = {};
+
+        // starting locations of opponents
+        std::vector<BloodSword::Point> Spawn = {};
+
         // initialize the map
         void Initialize(int width, int height)
         {
@@ -314,6 +320,40 @@ namespace BloodSword::Map
                 {
                     load_error = true;
                 }
+
+                if (!data["origins"].is_null() && data["origins"].is_array() && data["origins"].size() > 0)
+                {
+                    this->Origins.clear();
+
+                    for (auto i = 0; i < int(data["origins"].size()); i++)
+                    {
+                        auto x = !data["origins"][i]["x"].is_null() ? int(data["origins"][i]["x"]) : -1;
+
+                        auto y = !data["origins"][i]["y"].is_null() ? int(data["origins"][i]["y"]) : -1;
+
+                        if (x >= 0 && x < this->Width && y >= 0 && y < this->Height)
+                        {
+                            this->Origins.push_back(BloodSword::Point(x, y));
+                        }
+                    }
+                }
+
+                if (!data["spawn"].is_null() && data["spawn"].is_array() && data["spawn"].size() > 0)
+                {
+                    this->Spawn.clear();
+
+                    for (auto i = 0; i < int(data["spawn"].size()); i++)
+                    {
+                        auto x = !data["spawn"][i]["x"].is_null() ? int(data["spawn"][i]["x"]) : -1;
+
+                        auto y = !data["spawn"][i]["y"].is_null() ? int(data["spawn"][i]["y"]) : -1;
+
+                        if (x >= 0 && x < this->Width && y >= 0 && y < this->Height)
+                        {
+                            this->Spawn.push_back(BloodSword::Point(x, y));
+                        }
+                    }
+                }
             }
             else
             {
@@ -344,6 +384,98 @@ namespace BloodSword::Map
             }
 
             return !LoadError;
+        }
+
+        void Save(const char *filename)
+        {
+            nlohmann::json map;
+
+            map["width"] = this->Width;
+
+            map["height"] = this->Height;
+
+            map["viewx"] = this->ViewX;
+
+            map["viewy"] = this->ViewY;
+
+            map["drawx"] = this->DrawX;
+
+            map["drawy"] = this->DrawY;
+
+            map["tilesize"] = this->TileSize;
+
+            nlohmann::json tiles;
+
+            for (auto y = 0; y < Height; y++)
+            {
+                nlohmann::json row;
+
+                for (auto x = 0; x < Width; x++)
+                {
+                    nlohmann::json tile;
+
+                    tile.emplace("type", Map::ObjectMapping[this->Tiles[y][x].Type]);
+
+                    tile.emplace("occupant", Map::ObjectMapping[this->Tiles[y][x].Occupant]);
+
+                    tile.emplace("asset", Asset::TypeMapping[this->Tiles[y][x].Asset]);
+
+                    tile.emplace("temporary_asset", Asset::TypeMapping[this->Tiles[y][x].TemporaryAsset]);
+
+                    tile.emplace("lifetime", this->Tiles[y][x].Lifetime);
+
+                    tile.emplace("id", this->Tiles[y][x].Id);
+
+                    row.push_back(tile);
+                }
+
+                map["tiles"].push_back(row);
+            }
+
+            if (this->Origins.size() > 0)
+            {
+                nlohmann::json origins;
+
+                for (auto &origin : this->Origins)
+                {
+                    nlohmann::json point;
+
+                    point.emplace("x", origin.X);
+
+                    point.emplace("y", origin.Y);
+
+                    origins.push_back(point);
+                }
+
+                map["origins"] = origins;
+            }
+
+            if (this->Spawn.size() > 0)
+            {
+                nlohmann::json spawn_sites;
+
+                for (auto &spawn : this->Spawn)
+                {
+                    nlohmann::json point;
+
+                    point.emplace("x", spawn.X);
+
+                    point.emplace("y", spawn.Y);
+
+                    spawn_sites.push_back(point);
+                }
+
+                map["spawn"] = spawn_sites;
+            }
+
+            std::ofstream file(filename);
+
+            if (file.is_open())
+            {
+                file << map.dump();
+
+                file.close();
+            }
         }
 
         // find object

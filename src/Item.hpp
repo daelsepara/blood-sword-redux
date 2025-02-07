@@ -257,6 +257,48 @@ namespace BloodSword::Items
 
         return items;
     }
+
+    nlohmann::json Data(std::vector<Item::Base> &items)
+    {
+        nlohmann::json data;
+
+        for (auto &item : items)
+        {
+            nlohmann::json row;
+
+            nlohmann::json attributes;
+
+            nlohmann::json properties;
+
+            for (auto &attribute : item.Attributes)
+            {
+                auto attribute_name = std::string(Attribute::TypeMapping[attribute.first]);
+
+                attributes.emplace(attribute_name, attribute.second);
+            }
+
+            for (auto &property : item.Properties)
+            {
+                properties.push_back(std::string(Item::PropertyMapping[property]));
+            }
+
+            row["name"] = item.Name;
+
+            row["contains"] = std::string(Item::TypeMapping[item.Contains]);
+
+            row["type"] = std::string(Item::TypeMapping[item.Type]);
+
+            row["quantity"] = item.Quantity;
+
+            row["attributes"] = attributes;
+
+            row["properties"] = properties;
+
+            data.push_back(row);
+        }
+
+        return data;
+    }
 }
 
 #endif

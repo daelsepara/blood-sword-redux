@@ -199,9 +199,9 @@ namespace BloodSword::Spells
 
             auto spell_class = !data[i]["class"].is_null() ? Spells::MapClass(std::string(data[i]["class"])) : Spells::Class::NONE;
 
-            auto battle = !data[i]["battle"].is_null() ? (std::string(data[i]["battle"]) == "true") : false;
+            auto battle = !data[i]["battle"].is_null() ? data[i]["battle"].get<bool>() : false;
 
-            auto ranged = !data[i]["ranged"].is_null() ? (std::string(data[i]["battle"]) == "ranged") : false;
+            auto ranged = !data[i]["ranged"].is_null() ? data[i]["ranged"].get<bool>() : false;
 
             auto complexity = !data[i]["complexity"].is_null() ? int(data[i]["complexity"]) : 0;
 
@@ -231,6 +231,44 @@ namespace BloodSword::Spells
         }
 
         return spells;
+    }
+
+    nlohmann::json SpellBook(std::vector<Spells::Base> &spells)
+    {
+        nlohmann::json data;
+
+        for (auto &spell : spells)
+        {
+            nlohmann::json row;
+
+            row.emplace("type", Spells::TypeMapping[spell.Type]);
+
+            row.emplace("class", Spells::ClassMapping[spell.Class]);
+
+            row.emplace("battle", spell.IsBattle);
+
+            row.emplace("ranged", spell.Ranged);
+
+            row.emplace("complexity", spell.Complexity);
+
+            row.emplace("duration", spell.Duration);
+
+            data.push_back(row);
+        }
+
+        return data;
+    }
+
+    nlohmann::json Memory(std::vector<Spells::Type> &memorized)
+    {
+        nlohmann::json data;
+
+        for (auto &spell : memorized)
+        {
+            data.push_back(std::string(Spells::TypeMapping[spell]));
+        }
+
+        return data;
     }
 }
 

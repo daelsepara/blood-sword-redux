@@ -4,21 +4,9 @@
 #include <stdexcept>
 #include <vector>
 
+#include "BattleResults.hpp"
 #include "Book.hpp"
 #include "Character.hpp"
-
-namespace BloodSword::Battle
-{
-    enum class Result
-    {
-        NONE = -1,
-        DETERMINE,
-        DEFEAT,
-        VICTORY,
-        FLEE,
-        ENTHRALLED
-    };
-}
 
 namespace BloodSword::Party
 {
@@ -170,47 +158,106 @@ namespace BloodSword::Party
         // Load party from json data
         void Load(nlohmann::json data)
         {
-            if (!data["party"].is_null())
+            // set party location
+            if (!data["location"].is_null())
             {
-                // set party location
-                if (!data["party"]["location"].is_null())
+                auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
+
+                auto number = !data["location"]["number"].is_null() ? int(data["location"]["number"]) : -1;
+
+                this->Location = {book, number};
+            }
+
+            // set party previous location
+            if (!data["previous_location"].is_null())
+            {
+                auto book = !data["previous_location"]["book"].is_null() ? Book::MapBook(std::string(data["previous_location"]["book"])) : Book::Number::NONE;
+
+                auto number = !data["previous_location"]["number"].is_null() ? int(data["previous_location"]["number"]) : -1;
+
+                this->Location = {book, number};
+            }
+
+            this->ChosenNumber = !data["chosen_number"].is_null() ? int(data["chosen_number"]) : -1;
+
+            this->ChosenCharacter = !data["chosen_character"].is_null() ? Character::Map(std::string(data["chosen_character"])) : Character::Class::NONE;
+
+            this->LastBattle = !data["last_battle"].is_null() ? Battle::MapResult(std::string(data["last_battle"])) : Battle::Result::NONE;
+
+            // load party members
+            if (!data["members"].is_null() && data["members"].is_array() && data["members"].size() > 0)
+            {
+                for (auto i = 0; i < int(data["members"].size()); i++)
                 {
-                    auto book = !data["party"]["location"]["book"].is_null() ? Book::MapBook(std::string(data["party"]["location"]["book"])) : Book::Number::NONE;
+                    auto character = Character::Load(data["members"][i]);
 
-                    auto number = !data["party"]["location"]["number"].is_null() ? int(data["party"]["location"]["number"]) : -1;
-
-                    this->Location = {book, number};
-                }
-
-                // set party previous location
-                if (!data["party"]["previous_location"].is_null())
-                {
-                    auto book = !data["party"]["previous_location"]["book"].is_null() ? Book::MapBook(std::string(data["party"]["previous_location"]["book"])) : Book::Number::NONE;
-
-                    auto number = !data["party"]["previous_location"]["number"].is_null() ? int(data["party"]["previous_location"]["number"]) : -1;
-
-                    this->Location = {book, number};
-                }
-
-                // load party members
-                if (!data["party"]["members"].is_null() && data["party"]["members"].is_array() && data["party"]["members"].size() > 0)
-                {
-                    for (auto i = 0; i < int(data["party"]["members"].size()); i++)
-                    {
-                        auto character = Character::Load(data["party"]["members"][i]);
-
-                        this->Add(character);
-                    }
+                    this->Add(character);
                 }
             }
         }
     };
 
-    Party::Base Load(nlohmann::json data)
+    Party::Base Initialize(nlohmann::json data)
     {
         auto party = Party::Base();
 
-        party.Load(data);
+        if (!data.is_null())
+        {
+            party.Load(data);
+        }
+
+        return party;
+    }
+
+    nlohmann::json Data(Party::Base &party)
+    {
+        nlohmann::json data;
+
+        if (party.Count() > 0)
+        {
+            nlohmann::json members;
+
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                auto character_data = Character::Data(party[character]);
+
+                members.push_back(character_data);
+            }
+
+            data["members"] = members;
+        }
+
+        return data;
+    }
+
+    void Save(Party::Base &party, const char *filename, const char *name)
+    {
+        nlohmann::json data;
+
+        data.emplace(std::string(name), Party::Data(party));
+
+        std::ofstream file(filename);
+
+        if (file.is_open())
+        {
+            file << data.dump();
+
+            file.close();
+        }
+    }
+
+    Party::Base Load(const char *filename, const char *name)
+    {
+        auto party = Party::Base();
+
+        std::ifstream file(filename);
+
+        if (file.good())
+        {
+            auto data = nlohmann::json::parse(file);
+
+            party = Party::Initialize(data[std::string(name)]);
+        }
 
         return party;
     }

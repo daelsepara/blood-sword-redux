@@ -613,11 +613,11 @@ namespace BloodSword::Character
 
             this->Moves = !data["moves"].is_null() ? int(data["moves"]) : 1000;
 
-            this->ItemLimit = !data["itemLimit"].is_null() ? int(data["itemLimit"]) : 6;
+            this->ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 6;
 
             this->Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
 
-            this->ControlType = !data["controlType"].is_null() ? Character::MapControlType(std::string(data["controlType"])) : Character::ControlType::NONE;
+            this->ControlType = !data["control_type"].is_null() ? Character::MapControlType(std::string(data["control_type"])) : Character::ControlType::NONE;
 
             this->Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::Type::NONE;
 
@@ -660,6 +660,65 @@ namespace BloodSword::Character
         character.Load(data);
 
         return character;
+    }
+
+    nlohmann::json Data(Character::Base character)
+    {
+        nlohmann::json data;
+
+        data["name"] = character.Name;
+
+        data["asset"] = Asset::TypeMapping[character.Asset];
+
+        data["experience"] = character.Experience;
+
+        data["moves"] = character.Moves;
+
+        data["rank"] = character.Rank;
+
+        data["item_limit"] = character.ItemLimit;
+
+        data["control_type"] = Character::ControlTypeMapping[character.ControlType];
+
+        data["class"] = Character::ClassMapping[character.Class];
+
+        data["attributes"] = Attributes::Data(character.Attributes);
+
+        if (character.Skills.size() > 0)
+        {
+            data["skills"] = Skills::Data(character.Skills);
+        }
+
+        if (character.Items.size() > 0)
+        {
+            data["items"] = Items::Data(character.Items);
+        }
+
+        if (character.Spells.size() > 0)
+        {
+            data["spells"] = Spells::SpellBook(character.Spells);
+        }
+
+        if (character.CalledToMind.size() > 0)
+        {
+            data["called_to_mind"] = Spells::Memory(character.CalledToMind);
+        }
+
+        if (character.Status.size() > 0)
+        {
+            nlohmann::json row;
+
+            for (auto &status: character.Status)
+            {
+                auto status_name = std::string(Character::StatusMapping[status.first]);
+
+                row.emplace(status_name, status.second);
+            }
+
+            data["status"] = row;
+        }
+
+        return data;
     }
 }
 

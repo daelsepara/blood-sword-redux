@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "BattleResults.hpp"
 #include "Map.hpp"
 #include "Party.hpp"
 
@@ -80,15 +81,15 @@ namespace BloodSword::Battle
         // initialize battle from data
         void Initialize(nlohmann::json data)
         {
-            if (!data["battle"].is_null())
+            if (!data.is_null())
             {
-                if (!data["battle"]["conditions"].is_null() && data["battle"]["conditions"].is_array() && data["battle"]["conditions"].size() > 0)
+                if (!data["conditions"].is_null() && data["conditions"].is_array() && data["conditions"].size() > 0)
                 {
                     auto conditions = std::vector<Battle::Condition>();
 
-                    for (auto i = 0; i < data["battle"]["conditions"].size(); i++)
+                    for (auto i = 0; i < data["conditions"].size(); i++)
                     {
-                        auto condition = !data["battle"]["conditions"][i].is_null() ? Battle::MapCondition(std::string(data["battle"]["conditions"][i])) : Battle::Condition::NONE;
+                        auto condition = !data["conditions"][i].is_null() ? Battle::MapCondition(std::string(data["conditions"][i])) : Battle::Condition::NONE;
 
                         conditions.push_back(condition);
                     }
@@ -96,26 +97,47 @@ namespace BloodSword::Battle
                     this->Conditions = conditions;
                 }
 
-                this->Duration = !data["battle"]["duration"].is_null() ? int(data["battle"]["duration"]) : -1;
+                this->Duration = !data["duration"].is_null() ? int(data["duration"]) : Battle::Unlimited;
 
                 // initialize map from file
-                if (!data["battle"]["map"].is_null())
+                if (!data["map"].is_null())
                 {
-                    auto map = std::string(data["battle"]["map"]);
+                    auto map = std::string(data["map"]);
 
-                    if (!map.empty())
+                    if (map.size() > 0)
                     {
                         this->Map.Load(map.c_str());
                     }
                 }
 
-                if (!data["battle"]["opponents"].is_null() && data["battle"]["opponents"].is_array() && data["battle"]["opponents"].size() > 0)
+                if (!data["opponents"].is_null() && data["opponents"].is_object() && data["opponents"].size() > 0)
                 {
-                    this->Opponents = Party::Load(data["battle"]["opponents"]);
+                    this->Opponents = Party::Initialize(data["opponents"]);
                 }
             }
         }
     };
+
+    Battle::Base Load(const char *filename)
+    {
+        Battle::Base battle;
+
+        std::ifstream file(filename);
+
+        if (file.good())
+        {
+            auto data = nlohmann::json::parse(file);
+
+            if (!data["battle"].is_null())
+            {
+                battle.Initialize(data["battle"]);
+            }
+
+            file.close();
+        }
+
+        return battle;
+    }
 }
 
 #endif

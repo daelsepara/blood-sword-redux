@@ -1,0 +1,153 @@
+{
+    "opponents": {
+        "members": [
+            {
+                "asset": "BARBARIAN",
+                "attributes": [
+                    {
+                        "maximum": 8,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 8
+                    },
+                    {
+                        "maximum": 5,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 5
+                    },
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 12,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 12
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 1,
+                        "type": "ARMOUR",
+                        "value": 0
+                    },
+                    {
+                        "maximum": 1,
+                        "modifier": 2,
+                        "type": "DAMAGE",
+                        "value": 1
+                    }
+                ],
+                "class": "NONE",
+                "control_type": "NPC",
+                "experience": 0,
+                "item_limit": 6,
+                "moves": 1000,
+                "name": "BARBARIAN",
+                "rank": 0
+            },
+            {
+                "asset": "ASSASSIN",
+                "attributes": [
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 6,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 6
+                    },
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 5,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 5
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 0,
+                        "type": "ARMOUR",
+                        "value": 0
+                    },
+                    {
+                        "maximum": 1,
+                        "modifier": 0,
+                        "type": "DAMAGE",
+                        "value": 1
+                    }
+                ],
+                "class": "NONE",
+                "control_type": "NPC",
+                "experience": 0,
+                "item_limit": 6,
+                "moves": 0,
+                "name": "ASSASSIN",
+                "rank": 0,
+                "skills": [
+                    "SHURIKEN"
+                ]
+            },
+            {
+                "asset": "CORPSE",
+                "attributes": [
+                    {
+                        "maximum": 5,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 5
+                    },
+                    {
+                        "maximum": 4,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 4
+                    },
+                    {
+                        "maximum": 2,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 2
+                    },
+                    {
+                        "maximum": 4,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 4
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 0,
+                        "type": "ARMOUR",
+                        "value": 0
+                    },
+                    {
+                        "maximum": 1,
+                        "modifier": 1,
+                        "type": "DAMAGE",
+                        "value": 1
+                    }
+                ],
+                "class": "NONE",
+                "control_type": "NPC",
+                "experience": 0,
+                "item_limit": 6,
+                "moves": 3,
+                "name": "CORPSE",
+                "rank": 0
+            }
+        ]
+    }
+}
