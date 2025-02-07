@@ -872,31 +872,53 @@ namespace BloodSword::Interface
         if (!choices.empty())
         {
             auto start_id = 0;
+
             auto end = last - start;
-            auto options = (int)(choices.size());
+
+            auto options = int(choices.size());
+
             auto more = options - last > 0;
+
             auto scroll = start_id + (options < limit ? options : limit);
+
             auto pixels = 2;
+
             auto offset = pixels * 2;
+
             auto adjust = pixels * 4;
+
             auto pad = pixels * 6;
+
             auto bars = options > limit;
+
             auto scroll_up = bars && start > 0;
+
             auto scroll_dn = bars && more;
+
             auto dim = 64;
+
             auto dim_adjust = dim + adjust;
+
             auto y_adjust = (limit - 1) * (h + pad) + (h - dim);
+
             auto w_adjust = w + adjust;
+
             auto x_offset = x + w_adjust;
+
             auto y_offset = y - offset;
+
             auto x_pad = x + w + pad;
 
             for (auto item = 0; item < end; item++)
             {
                 auto id = start_id + item;
+
                 auto rt = scroll_up || scroll_dn ? (item == end - 1 && scroll_dn ? (scroll_up ? scroll + 1 : scroll) : scroll) : id;
+
                 auto up = (item > 0 ? id - 1 : id);
+
                 auto dn = item < end - 1 ? id + 1 : (others ? (scroll_up || scroll_dn ? (scroll_up && scroll_dn ? scroll + 2 : scroll + 1) : id + 1) : (scroll_up && scroll_dn ? scroll + 2 : (scroll_dn ? scroll : id)));
+
                 auto item_y = y + item * (h + pad);
 
                 scene.Add(Scene::Element(x, item_y, w, h, background, border, pixels));
@@ -946,11 +968,16 @@ namespace BloodSword::Interface
         if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
         {
             auto pixels = 2;
+
             auto offset = pixels * 2;
+
             auto adjust = pixels * 4;
+
             auto pad = pixels * 6;
-            auto items = (int)(choices.size());
-            auto start_id = (int)(overlay.Controls.size());
+
+            auto items = int(choices.size());
+
+            auto start_id = int(overlay.Controls.size());
 
             for (auto item = 0; item < items; item++)
             {
@@ -971,8 +998,11 @@ namespace BloodSword::Interface
                 }
 
                 auto item_x = x + item * (previous_w + pad);
+
                 auto id = start_id + item;
+
                 auto lt = id > 0 ? id - 1 : id;
+
                 auto rt = id < items - 1 ? id + 1 : id;
 
                 overlay.Add(Scene::Element(item_x, y, current_w, current_h, background, border, pixels));
@@ -989,7 +1019,7 @@ namespace BloodSword::Interface
     {
         auto overlay = Scene::Base();
 
-        auto popup_w = (std::max((int)(character.Skills.size()), 2) + 2) * 64;
+        auto popup_w = (std::max(int(character.Skills.size()), 2) + 2) * 64;
 
         auto popup_h = 160;
 
@@ -1049,7 +1079,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(NoSkills, screen + Point(pad, pad / 2)));
         }
 
-        auto id = (int)(character.Skills.size());
+        auto id = int(character.Skills.size());
 
         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * 64 + pad, screen.Y + pad + 32));
 
@@ -1061,7 +1091,7 @@ namespace BloodSword::Interface
     // spells overlay menu
     Scene::Base Spells(Point origin, int w, int h, Character::Base &character, Uint32 background, Uint32 border, int border_size, bool in_battle = false)
     {
-        auto spells = (int)(character.Spells.size());
+        auto spells = int(character.Spells.size());
 
         auto overlay = Scene::Base();
 
@@ -1107,10 +1137,15 @@ namespace BloodSword::Interface
                     SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, &texture_h);
 
                     auto lt = col > 0 ? i - 1 : i;
+
                     auto rt = col < 5 ? i + 1 : i;
+
                     auto up = i - 6 >= 0 ? i - 6 : i;
+
                     auto dn = i + 6 < (spells + 1) ? i + 6 : i;
+
                     auto x = screen.X + col * texture_w + pad;
+
                     auto y = screen.Y + row * (texture_h + 32) + pad + 32;
 
                     overlay.Add(Controls::Base(Interface::SpellControls[character.Spells[i].Type], i, lt, rt, up, dn, x, y, 64, 64, Color::Highlight));
@@ -1135,7 +1170,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(NoSpells, screen + Point(pad, pad / 2)));
         }
 
-        auto id = (int)(character.Spells.size());
+        auto id = int(character.Spells.size());
 
         auto x = screen.X + col * 64 + pad;
 
@@ -1917,11 +1952,17 @@ namespace BloodSword::Interface
     int Choice(Graphics::Base &graphics, Scene::Base &background, std::vector<Graphics::RichText> &choices, Point origin, int w, int h, int limit, Uint32 bg_color, Uint32 border, Uint32 highlight, bool blur = true)
     {
         auto menu = Graphics::CreateText(graphics, choices);
-        auto options = (int)(choices.size());
+
+        auto options = int(choices.size());
+
         auto input = Controls::User();
+
         auto choice = -1;
+
         auto start = 0;
+
         auto last = start + limit;
+
         auto done = false;
 
         while (!done)
@@ -2183,14 +2224,23 @@ namespace BloodSword::Interface
     Party::Base CreateParty(Graphics::Base &graphics, bool blur = true)
     {
         auto scene = Scene::Base();
+
         auto bg_scene = Scene::Base();
+
         auto width = 254;
+
         auto base_height = 32;
+
         auto pad = 8;
+
         auto items = 4;
+
         auto height = (base_height + pad * 2) * items - pad * 7 / 2;
+
         auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
+
         auto menu_w = 0;
+
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
         SDL_QueryTexture(menu_title, nullptr, nullptr, &menu_w, nullptr);

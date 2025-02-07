@@ -33,6 +33,8 @@ namespace BloodSword::Item
         // item name
         std::string Name;
 
+        Base() {}
+
         Base(const char *name,
              Item::Type type,
              BloodSword::IntMapping<Attribute::Type> attributes,
@@ -188,6 +190,73 @@ namespace BloodSword::Item
             return result;
         }
     };
+
+    BloodSword::IntMapping<Attribute::Type> LoadAttributes(nlohmann::json data)
+    {
+        BloodSword::IntMapping<Attribute::Type> attributes = {};
+
+        for (auto &[key, value] : data.items())
+        {
+            auto attribute = Attribute::Map(std::string(key));
+
+            if (attribute != Attribute::Type::NONE)
+            {
+                attributes[attribute] = int(value);
+            }
+        }
+
+        return attributes;
+    }
+
+    std::vector<Item::Property> LoadProperties(nlohmann::json data)
+    {
+        auto properties = std::vector<Item::Property>();
+
+        for (auto i = 0; i < int(data.size()); i++)
+        {
+            properties.push_back(Item::MapProperty(std::string(data[i])));
+        }
+
+        return properties;
+    }
+}
+
+namespace BloodSword::Items
+{
+    std::vector<Item::Base> Load(nlohmann::json data)
+    {
+        auto items = std::vector<Item::Base>();
+
+        for (auto i = 0; i < int(data.size()); i++)
+        {
+            auto item = Item::Base();
+
+            if (!data[i]["attributes"].is_null() && data[i]["attributes"].is_object())
+            {
+                item.Attributes = Item::LoadAttributes(data[i]["attributes"]);
+            }
+
+            if (!data[i]["properties"].is_null() && data[i]["properties"].is_array() && data[i]["properties"].size() > 0)
+            {
+                item.Properties = Item::LoadProperties(data[i]["properties"]);
+            }
+
+            item.Type = !data[i]["type"].is_null() ? Item::Map(std::string(data[i]["type"])) : Item::Type::NONE;
+
+            item.Contains = !data[i]["contains"].is_null() ? Item::Map(std::string(data[i]["contains"])) : Item::Type::NONE;
+
+            item.Quantity = !data[i]["quantity"].is_null() ? int(data[i]["quantity"]) : 0;
+
+            item.Name = !data[i]["name"].is_null() ? std::string(data[i]["name"]) : std::string();
+
+            if (item.Name.size() > 0)
+            {
+                items.push_back(item);
+            }
+        }
+
+        return items;
+    }
 }
 
 #endif

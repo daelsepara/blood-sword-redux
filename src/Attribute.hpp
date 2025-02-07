@@ -44,6 +44,8 @@ namespace BloodSword::Attribute
         // maximum value
         int Maximum = 0;
 
+        Base(Attribute::Type type, int value, int modifier, int maximum) : Type(type), Value(value), Modifier(modifier), Maximum(maximum) {}
+
         Base(Attribute::Type type, int value, int modifier) : Type(type), Value(value), Modifier(modifier), Maximum(value) {}
 
         Base() {}
@@ -66,6 +68,34 @@ namespace BloodSword::Attribute
     Attribute::Type Map(std::string attribute)
     {
         return Attribute::Map(attribute.c_str());
+    }
+}
+
+namespace BloodSword::Attributes
+{
+    std::vector<Attribute::Base> Load(nlohmann::json data)
+    {
+        auto characteristics = std::vector<Attribute::Base>();
+
+        for (auto i = 0; i < int(data.size()); i++)
+        {
+            auto attribute = Attribute::Base();
+
+            attribute.Type = !data[i]["type"].is_null() ? Attribute::Map(std::string(data[i]["type"])) : Attribute::Type::NONE;
+
+            attribute.Value = !data[i]["value"].is_null() ? int(data[i]["value"]) : 0;
+
+            attribute.Modifier = !data[i]["modifier"].is_null() ? int(data[i]["modifier"]) : 0;
+
+            attribute.Maximum = !data[i]["maximum"].is_null() ? int(data[i]["maximum"]) : 0;
+
+            if (attribute.Type != Attribute::Type::NONE)
+            {
+                characteristics.push_back(attribute);
+            }
+        }
+
+        return characteristics;
     }
 }
 

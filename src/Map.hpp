@@ -184,7 +184,9 @@ namespace BloodSword::Map
         bool IsVisible(Point coords)
         {
             auto valid = this->IsValid(coords);
+
             auto viewx = coords.X >= this->X && coords.X < (this->X + this->ViewX);
+
             auto viewy = coords.Y >= this->Y && coords.Y < (this->Y + this->ViewY);
 
             return valid && viewx && viewy;
@@ -253,9 +255,23 @@ namespace BloodSword::Map
         {
             auto load_error = false;
 
-            this->Width = !data["width"].is_null() ? (int)data["width"] : 0;
-            this->Height = !data["height"].is_null() ? (int)data["height"] : 0;
-            this->TileSize = !data["tilesize"].is_null() ? (int)data["tilesize"] : 0;
+            this->Width = !data["width"].is_null() ? int(data["width"]) : 0;
+
+            this->Height = !data["height"].is_null() ? int(data["height"]) : 0;
+
+            this->ViewX = !data["viewx"].is_null() ? int(data["viewx"]) : 8;
+
+            this->ViewY = !data["viewy"].is_null() ? int(data["viewy"]) : 8;
+
+            this->X = !data["x"].is_null() ? int(data["x"]) : 0;
+
+            this->Y = !data["y"].is_null() ? int(data["y"]) : 0;
+
+            this->DrawX = !data["drawx"].is_null() ? int(data["drawx"]) : 64;
+
+            this->DrawY = !data["drawy"].is_null() ? int(data["drawy"]) : 64;
+
+            this->TileSize = !data["tilesize"].is_null() ? int(data["tilesize"]) : 64;
 
             if (this->Width > 0 && this->Height > 0)
             {
@@ -273,12 +289,17 @@ namespace BloodSword::Map
 
                                 auto &tile = data["tiles"][y][x];
 
-                                map.Id = !tile["id"].is_null() ? (int)tile["id"] : -1;
+                                map.Id = !tile["id"].is_null() ? int(tile["id"]) : -1;
+
                                 map.Type = !tile["type"].is_null() ? Map::MapObject(std::string(tile["type"])) : Map::Object::NONE;
+
                                 map.Occupant = !tile["occupant"].is_null() ? Map::MapObject(std::string(tile["occupant"])) : Map::Object::NONE;
+
                                 map.Asset = !tile["asset"].is_null() ? Asset::Map(std::string(tile["asset"])) : Asset::Type::NONE;
+
                                 map.TemporaryAsset = !tile["temporary_asset"].is_null() ? Asset::Map(std::string(tile["temporary_asset"])) : Asset::Type::NONE;
-                                map.Lifetime = !tile["lifetime"].is_null() ? (int)tile["lifetime"] : -1;
+
+                                map.Lifetime = !tile["lifetime"].is_null() ? int(tile["lifetime"]) : -1;
                             }
                         }
                         else
@@ -461,6 +482,7 @@ namespace BloodSword::Map
             if (!remove.IsNone())
             {
                 (*this)[remove].Occupant = Map::Object::NONE;
+
                 (*this)[remove].Id = -1;
             }
         }

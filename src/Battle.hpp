@@ -96,7 +96,7 @@ namespace BloodSword::Battle
                     this->Conditions = conditions;
                 }
 
-                this->Duration = !data["battle"]["duration"].is_null() ? (int)data["battle"]["duration"] : -1;
+                this->Duration = !data["battle"]["duration"].is_null() ? int(data["battle"]["duration"]) : -1;
 
                 // initialize map from file
                 if (!data["battle"]["map"].is_null())
@@ -109,9 +109,9 @@ namespace BloodSword::Battle
                     }
                 }
 
-                // TODO: load opponents
-                if (!data["battle"]["opponents"].is_null())
+                if (!data["battle"]["opponents"].is_null() && data["battle"]["opponents"].is_array() && data["battle"]["opponents"].size() > 0)
                 {
+                    this->Opponents = Party::Load(data["battle"]["opponents"]);
                 }
             }
         }

@@ -105,6 +105,20 @@ namespace BloodSword::Skills
     {
         return Skills::In(Skills::StorySkills, skill);
     }
+
+    std::vector<Skills::Type> Load(nlohmann::json data)
+    {
+        auto skills = std::vector<Skills::Type>();
+
+        for (auto i = 0; i < int(data.size()); i++)
+        {
+            auto skill = !data[i].is_null() ? Skills::Map(std::string(data[i])) : Skills::Type::NONE;
+
+            skills.push_back(skill);
+        }
+
+        return skills;
+    }
 }
 
 #endif

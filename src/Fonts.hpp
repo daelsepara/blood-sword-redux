@@ -68,10 +68,10 @@ namespace BloodSword::Fonts
 
             if (!data["font-settings"].is_null())
             {
-                std::string font = !data["font-settings"]["font"].is_null() ? data["font-settings"]["font"] : "fonts/bookman-old-style.ttf";
-                auto caption = !data["font-settings"]["caption"].is_null() ? ((int)data["font-settings"]["caption"]) : 22;
-                auto normal = !data["font-settings"]["normal"].is_null() ? ((int)data["font-settings"]["normal"]) : 24;
-                auto fixed = !data["font-settings"]["fixed"].is_null() ? ((int)data["font-settings"]["fixed"]) : 24;
+                std::string font = !data["font-settings"]["font"].is_null() ? std::string(data["font-settings"]["font"]) : "fonts/bookman-old-style.ttf";
+                auto caption = !data["font-settings"]["caption"].is_null() ? int(data["font-settings"]["caption"]) : 22;
+                auto normal = !data["font-settings"]["normal"].is_null() ? int(data["font-settings"]["normal"]) : 24;
+                auto fixed = !data["font-settings"]["fixed"].is_null() ? int(data["font-settings"]["fixed"]) : 24;
 
                 Fonts::Initialize(font.c_str(), caption, normal, fixed);
             }

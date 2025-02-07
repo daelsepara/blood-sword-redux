@@ -88,7 +88,7 @@ namespace BloodSword::Interface
 
         controls.push_back(Controls::Type::BACK);
 
-        auto popup_w = (std::max((int)(controls.size()), 2) + 2) * 64;
+        auto popup_w = (std::max(int(controls.size()), 2) + 2) * 64;
 
         auto popup_h = 160;
 
@@ -130,7 +130,7 @@ namespace BloodSword::Interface
     {
         auto scene = Interface::Map(battle.Map, party, battle.Opponents, 1);
 
-        auto id = scene.Controls.size();
+        auto id = int(scene.Controls.size());
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
@@ -504,7 +504,7 @@ namespace BloodSword::Interface
     // multiple targets
     void ResolveSpell(Graphics::Base &graphics, Battle::Base &battle, Scene::Base &background, Character::Base &caster, Party::Base &targets, Spells::Type spell)
     {
-        auto spell_book = caster.Find(spell);
+        auto spellbook = caster.Find(spell);
 
         auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
 
@@ -512,7 +512,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        if (spell_book != caster.Spells.end() && spell_book->MultipleTargets())
+        if (spellbook != caster.Spells.end() && spellbook->MultipleTargets())
         {
             for (auto target = 0; target < targets.Count(); target++)
             {
@@ -1216,13 +1216,13 @@ namespace BloodSword::Interface
                                                     {
                                                         spell = false;
 
-                                                        auto spell_book = character.Find(cast);
+                                                        auto spellbook = character.Find(cast);
 
-                                                        if (spell_book != character.Spells.end())
+                                                        if (spellbook != character.Spells.end())
                                                         {
                                                             auto distance = battle.Map.Distance(src, control.Map);
 
-                                                            if (!spell_book->Ranged && distance != 1)
+                                                            if (!spellbook->Ranged && distance != 1)
                                                             {
                                                                 // must be adjacent
                                                                 Interface::MessageBox(graphics, scene, messages[6], Color::Background, Color::Highlight, 4, Color::Highlight, true);
@@ -1452,18 +1452,18 @@ namespace BloodSword::Interface
 
                                                     if (search != character.Spells.end())
                                                     {
-                                                        auto &spell_book = *search;
+                                                        auto &spellbook = *search;
 
-                                                        if (!spell_book.IsBasic() && spell_book.IsBattle)
+                                                        if (!spellbook.IsBasic() && spellbook.IsBattle)
                                                         {
-                                                            if (character.HasCalledToMind(spell_book.Type))
+                                                            if (character.HasCalledToMind(spellbook.Type))
                                                             {
-                                                                if (spell_book.RequiresTarget())
+                                                                if (spellbook.RequiresTarget())
                                                                 {
                                                                     // select target
                                                                     spell = true;
 
-                                                                    cast = spell_book.Type;
+                                                                    cast = spellbook.Type;
 
                                                                     // unless there is only one valid target
                                                                     auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
@@ -1476,7 +1476,7 @@ namespace BloodSword::Interface
                                                                         {
                                                                             auto distance = battle.Map.Distance(src, target);
 
-                                                                            if (!spell_book.Ranged && distance != 1)
+                                                                            if (!spellbook.Ranged && distance != 1)
                                                                             {
                                                                                 // must be adjacent
                                                                                 Interface::MessageBox(graphics, scene, messages[6], Color::Background, Color::Highlight, 4, Color::Highlight, true);
@@ -1519,22 +1519,22 @@ namespace BloodSword::Interface
 
                                                                     cast = Spells::Type::NONE;
 
-                                                                    if (spell_book.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Is(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
+                                                                    if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Is(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
                                                                     {
                                                                         Interface::MessageBox(graphics, scene, draw, map_w, map_h, messages[8], Color::Background, Color::Highlight, 4, Color::Highlight, true);
                                                                     }
                                                                     else
                                                                     {
-                                                                        if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell_book.Type, true))
+                                                                        if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spellbook.Type, true))
                                                                         {
                                                                             // spellcasting successful
-                                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spell_book.Type]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+                                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spellbook.Type]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
 
                                                                             // check if spell targets own party
-                                                                            auto my_party = (spell_book.Type == Spells::Type::EYE_OF_THE_TIGER) || (spell_book.Type == Spells::Type::IMMEDIATE_DELIVERANCE);
+                                                                            auto my_party = (spellbook.Type == Spells::Type::EYE_OF_THE_TIGER) || (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE);
 
                                                                             // resolve spell
-                                                                            Interface::ResolveSpell(graphics, battle, scene, character, my_party ? party : battle.Opponents, spell_book.Type);
+                                                                            Interface::ResolveSpell(graphics, battle, scene, character, my_party ? party : battle.Opponents, spellbook.Type);
 
                                                                             // regenerate stats
                                                                             Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
@@ -1556,7 +1556,7 @@ namespace BloodSword::Interface
                                                             else
                                                             {
                                                                 // call to mind
-                                                                character.CallToMind(spell_book.Type);
+                                                                character.CallToMind(spellbook.Type);
 
                                                                 // regenerate stats
                                                                 Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);

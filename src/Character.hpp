@@ -586,40 +586,69 @@ namespace BloodSword::Character
             return quantity;
         }
 
-        // TODO: load character from json
+        BloodSword::IntMapping<Character::Status> LoadStatus(nlohmann::json data)
+        {
+            BloodSword::IntMapping<Character::Status> all_status = {};
+
+            for (auto &[key, value] : data.items())
+            {
+                auto status = Character::MapStatus(std::string(key));
+
+                if (status != Character::Status::NONE)
+                {
+                    all_status[status] = int(value);
+                }
+            }
+
+            return all_status;
+        }
+
         void Load(nlohmann::json data)
         {
             this->Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
-            this->Rank = !data["rank"].is_null() ? (int)data["rank"] : 0;
-            this->Experience = !data["experience"].is_null() ? (int)data["experience"] : 0;
-            this->Moves = !data["moves"].is_null() ? (int)data["moves"] : 0;
-            this->ItemLimit = !data["itemLimit"].is_null() ? (int)data["itemLimit"] : 0;
+
+            this->Rank = !data["rank"].is_null() ? int(data["rank"]) : 1;
+
+            this->Experience = !data["experience"].is_null() ? int(data["experience"]) : 0;
+
+            this->Moves = !data["moves"].is_null() ? int(data["moves"]) : 1000;
+
+            this->ItemLimit = !data["itemLimit"].is_null() ? int(data["itemLimit"]) : 6;
+
             this->Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
+
             this->ControlType = !data["controlType"].is_null() ? Character::MapControlType(std::string(data["controlType"])) : Character::ControlType::NONE;
+
             this->Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::Type::NONE;
 
             if (!data["attributes"].is_null() && data["attributes"].is_array() && data["attributes"].size() > 0)
             {
+                this->Attributes = Attributes::Load(data["attributes"]);
             }
 
             if (!data["skills"].is_null() && data["skills"].is_array() && data["skills"].size() > 0)
             {
+                this->Skills = Skills::Load(data["skills"]);
             }
 
             if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
             {
+                this->Items = Items::Load(data["items"]);
             }
 
             if (!data["spells"].is_null() && data["spells"].is_array() && data["spells"].size() > 0)
             {
+                this->Spells = Spells::Load(data["spells"]);
             }
 
-            if (!data["calledToMind"].is_null() && data["calledToMind"].is_array() && data["calledToMind"].size() > 0)
+            if (!data["called_to_mind"].is_null() && data["called_to_mind"].is_array() && data["called_to_mind"].size() > 0)
             {
+                this->CalledToMind = Spells::Recall(data["called_to_mind"]);
             }
 
-            if (!data["status"].is_null() && data["status"].is_array() && data["status"].size() > 0)
+            if (!data["status"].is_null() && data["status"].is_object() && data["status"].size() > 0)
             {
+                this->Status = this->LoadStatus(data["status"]);
             }
         }
     };

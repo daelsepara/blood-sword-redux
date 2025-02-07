@@ -58,7 +58,7 @@ namespace BloodSword::Party
         // number of characters in the party
         int Count()
         {
-            return (int)(this->Members.size());
+            return int(this->Members.size());
         }
 
         // access party member by index
@@ -177,7 +177,17 @@ namespace BloodSword::Party
                 {
                     auto book = !data["party"]["location"]["book"].is_null() ? Book::MapBook(std::string(data["party"]["location"]["book"])) : Book::Number::NONE;
 
-                    auto number = !data["party"]["location"]["number"].is_null() ? std::stoi(std::string(data["party"]["location"]["number"])) : -1;
+                    auto number = !data["party"]["location"]["number"].is_null() ? int(data["party"]["location"]["number"]) : -1;
+
+                    this->Location = {book, number};
+                }
+
+                // set party previous location
+                if (!data["party"]["previous_location"].is_null())
+                {
+                    auto book = !data["party"]["previous_location"]["book"].is_null() ? Book::MapBook(std::string(data["party"]["previous_location"]["book"])) : Book::Number::NONE;
+
+                    auto number = !data["party"]["previous_location"]["number"].is_null() ? int(data["party"]["previous_location"]["number"]) : -1;
 
                     this->Location = {book, number};
                 }
@@ -185,7 +195,7 @@ namespace BloodSword::Party
                 // load party members
                 if (!data["party"]["members"].is_null() && data["party"]["members"].is_array() && data["party"]["members"].size() > 0)
                 {
-                    for (auto i = 0; i < (int)(data["party"]["members"].size()); i++)
+                    for (auto i = 0; i < int(data["party"]["members"].size()); i++)
                     {
                         auto character = Character::Load(data["party"]["members"][i]);
 
