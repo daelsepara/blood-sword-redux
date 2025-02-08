@@ -2473,20 +2473,23 @@ namespace BloodSword::Interface
         return input_text;
     }
 
+    std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, int input_limit, int box_w, int box_h, bool blur = true)
+    {
+        auto location = (Point(graphics.Width, graphics.Height) - Point(box_w, box_h)) / 2;
+
+        return Interface::TextInput(graphics, background, location, question, "", Color::Inactive, Color::Active, input_limit, box_w, box_h, Color::Active, Color::Background, 4, blur);
+    }
+
+    std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, int box_w, int box_h, bool blur = true)
+    {
+        return Interface::TextInput(graphics, background, question, 20, box_w, box_h, blur);
+    }
+
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, bool blur = true)
     {
-        auto width = graphics.Width;
+        auto box_w = (question.size() > 16) ? int(question.size() * 16) : 320;
 
-        auto height = graphics.Height;
-
-        auto box_w = 320;
-
-        auto box_h = 120;
-
-        // center input box
-        auto location = (Point(width, height) - Point(box_w, box_h)) / 2;
-
-        return Interface::TextInput(graphics, background, location, question, "", Color::Inactive, Color::Active, 20, box_w, box_h, Color::Active, Color::Background, 4, blur);
+        return Interface::TextInput(graphics, background, question, box_w, 120, blur);
     }
 
     std::string TextInput(Graphics::Base &graphics, std::string question, bool blur = true)
