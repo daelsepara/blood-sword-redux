@@ -1827,6 +1827,13 @@ namespace BloodSword::Test
         auto party = Interface::CreateParty(graphics, false);
     }
 
+    void TextInput(Graphics::Base &graphics)
+    {
+        auto input_string = Interface::TextInput(graphics, "INPUT TEXT", true);
+
+        Interface::MessageBox(graphics, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
+    }
+
     void Menu(Graphics::Base &graphics)
     {
         auto width = 640;
@@ -1853,7 +1860,8 @@ namespace BloodSword::Test
                  Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
                  Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting/spells)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+                 Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+                 Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
             return menu;
         };
 
@@ -1971,6 +1979,9 @@ namespace BloodSword::Test
                         break;
                     case 11:
                         Test::Story(graphics);
+                        break;
+                    case 12:
+                        Test::TextInput(graphics);
                         break;
                     default:
                         // do nothing - menu test

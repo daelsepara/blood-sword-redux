@@ -1,6 +1,7 @@
 #ifndef __CONTROLS_HPP__
 #define __CONTROLS_HPP__
 
+#include <string>
 #include <unordered_map>
 #include <vector>
 #include <SDL.h>
@@ -115,6 +116,18 @@ namespace BloodSword::Controls
         // blink curser
         bool Blink = false;
 
+        // text event
+        bool Text = false;
+
+        // flag to indicate a re-render text
+        bool RefreshText = false;
+
+        // input text
+        std::string TextInput = std::string();
+
+        // Character limit
+        int TextLimit = 20;
+
         User(Controls::Type type,
              int current,
              bool selected,
@@ -135,6 +148,21 @@ namespace BloodSword::Controls
         User(int current, bool selected) : Current(current), Selected(selected) {}
 
         User() {}
+
+        void SetText(const char *text)
+        {
+            this->TextInput = std::string(text);
+        }
+
+        void SetText(std::string text)
+        {
+            this->TextInput = text;
+        }
+
+        void ClearText()
+        {
+            this->TextInput.clear();
+        }
     };
 
     // find if control is present in the list

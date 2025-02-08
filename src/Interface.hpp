@@ -1806,6 +1806,21 @@ namespace BloodSword::Interface
         }
     }
 
+    // draws a message box
+    void MessageBox(Graphics::Base &graphics, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        if (texture)
+        {
+            auto scene = Scene::Base();
+
+            Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
+
+            Free(&texture);
+        }
+    }
+
     // draws a confirmation message box on screen
     bool Confirm(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
@@ -2360,6 +2375,103 @@ namespace BloodSword::Interface
         Free(&menu_title);
 
         return party;
+    }
+
+    std::string TextInput(Graphics::Base &graphics, Scene::Base &background, Point location, std::string question, std::string start_text, Uint32 question_color, Uint32 input_color, int input_limit, int box_w, int box_h, Uint32 border = Color::Active, Uint32 box_bg = Color::Background, int border_size = 4, bool blur = true)
+    {
+        auto message = Graphics::CreateText(graphics, question.c_str(), Fonts::Normal, Color::S(question_color), TTF_STYLE_NORMAL, 0);
+
+        std::string input_text = std::string();
+
+        if (message)
+        {
+            SDL_Texture *input_texture = NULL;
+
+            auto pad = 16;
+
+            // setup text input mode
+            auto input = Controls::User();
+
+            input.TextLimit = input_limit;
+
+            input.SetText(start_text);
+
+            input.RefreshText = (input.TextInput.size() > 0);
+
+            if (input.TextInput.size() > 0)
+            {
+                input_texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
+            }
+
+            input.Text = true;
+
+            // enable text input events
+            SDL_StartTextInput();
+
+            while (true)
+            {
+                auto box = Scene::Base();
+
+                box.Add(Scene::Element(location, box_w, box_h, box_bg, border, border_size));
+
+                box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
+
+                if (input_texture)
+                {
+                    box.VerifyAndAdd(Scene::Element(input_texture, location + Point(pad, pad * 4)));
+                }
+
+                input = Input::WaitForInput(graphics, background, box, input, true, blur, 100);
+
+                if (input.RefreshText)
+                {
+                    Free(&input_texture);
+
+                    if (input.TextInput.size() > 0)
+                    {
+                        input_texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
+                    }
+                }
+                else if (input.Selected)
+                {
+                    break;
+                }
+            }
+
+            // disable text input events
+            SDL_StopTextInput();
+
+            Free(&input_texture);
+
+            Free(&message);
+
+            input_text = input.TextInput;
+        }
+
+        return input_text;
+    }
+
+    std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, bool blur = true)
+    {
+        auto width = graphics.Width;
+
+        auto height = graphics.Height;
+
+        auto box_w = 320;
+
+        auto box_h = 120;
+
+        // center input box
+        auto location = (Point(width, height) - Point(box_w, box_h)) / 2;
+
+        return Interface::TextInput(graphics, background, location, question, "", Color::Active, Color::Active, 20, box_w, box_h, Color::Active, Color::Background, 4, blur);
+    }
+
+    std::string TextInput(Graphics::Base &graphics, std::string question, bool blur = true)
+    {
+        auto background = Scene::Base();
+
+        return Interface::TextInput(graphics, background, question, blur);
     }
 }
 

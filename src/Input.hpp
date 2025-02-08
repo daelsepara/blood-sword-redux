@@ -104,13 +104,57 @@ namespace BloodSword::Input
         }
     }
 
-    // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = 100)
+    Controls::User WaitForText(Controls::User input, int delay = 100)
     {
         SDL_Event result;
 
-        auto sensitivity = 32000;
+        if (delay > 0)
+        {
+            SDL_WaitEventTimeout(&result, delay);
+        }
+        else
+        {
+            SDL_PollEvent(&result);
+        }
 
+        input.Selected = false;
+
+        input.RefreshText = false;
+
+        if (result.type == SDL_KEYDOWN)
+        {
+            if (result.key.keysym.sym == SDLK_BACKSPACE && input.TextInput.size() > 0)
+            {
+                input.TextInput.pop_back();
+
+                input.RefreshText = true;
+            }
+            else if (result.key.keysym.sym == SDLK_KP_ENTER || result.key.keysym.sym == SDLK_RETURN || result.key.keysym.sym == SDLK_RETURN2)
+            {
+                input.Selected = true;
+            }
+        }
+        else if (result.type == SDL_TEXTINPUT)
+        {
+            // not copy or pasting
+            if (!(SDL_GetModState() & KMOD_CTRL && (result.text.text[0] == 'c' || result.text.text[0] == 'C' || result.text.text[0] == 'v' || result.text.text[0] == 'V')))
+            {
+                // Append character
+                if (input.TextInput.size() < input.TextLimit)
+                {
+                    input.TextInput += result.text.text;
+
+                    input.RefreshText = true;
+                }
+            }
+        }
+
+        return input;
+    }
+
+    // render scene and overlays then wait for user input
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = 100)
+    {
         if (!is_dialog)
         {
             Graphics::Render(graphics, scene, input);
@@ -129,6 +173,15 @@ namespace BloodSword::Input
         Graphics::Scanlines(graphics);
 
         SDL_RenderPresent(graphics.Renderer);
+
+        if (input.Text)
+        {
+            return Input::WaitForText(input, delay);
+        }
+
+        SDL_Event result;
+
+        auto sensitivity = 32000;
 
         if (delay > 0)
         {
