@@ -2486,7 +2486,7 @@ namespace BloodSword::Interface
         // center input box
         auto location = (Point(width, height) - Point(box_w, box_h)) / 2;
 
-        return Interface::TextInput(graphics, background, location, question, "", Color::Active, Color::Active, 20, box_w, box_h, Color::Active, Color::Background, 4, blur);
+        return Interface::TextInput(graphics, background, location, question, "", Color::Inactive, Color::Active, 20, box_w, box_h, Color::Active, Color::Background, 4, blur);
     }
 
     std::string TextInput(Graphics::Base &graphics, std::string question, bool blur = true)
