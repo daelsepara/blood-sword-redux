@@ -181,5 +181,15 @@ namespace BloodSword
             return str;
         }
     }
+
+    std::string CleanString(std::string text, const char *chars)
+    {
+        for (auto i = 0; i < strlen(chars); ++i)
+        {
+            text.erase(std::remove(text.begin(), text.end(), chars[i]), text.end());
+        }
+
+        return text;
+    }
 }
 #endif

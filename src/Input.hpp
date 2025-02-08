@@ -110,8 +110,33 @@ namespace BloodSword::Input
         }
     }
 
-    Controls::User WaitForText(Controls::User input, int delay = 100)
+    void RenderWhileWaiting(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false)
     {
+        if (!is_dialog)
+        {
+            Graphics::Render(graphics, scene, input);
+
+            Graphics::Overlay(graphics, overlay);
+
+            Graphics::Scanlines(graphics);
+        }
+        else
+        {
+            Graphics::Dialog(graphics, scene, overlay, input, blur);
+        }
+
+        Graphics::DisplayVersion(graphics);
+
+        Graphics::Scanlines(graphics);
+
+        SDL_RenderPresent(graphics.Renderer);
+    }
+
+    // Handler for text input events. Must be called from other handler since it does not render screens
+    Controls::User WaitForText(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = 100)
+    {
+        Input::RenderWhileWaiting(graphics, scene, overlay, input, is_dialog, blur);
+
         SDL_Event result;
 
         if (delay > 0)
@@ -150,13 +175,18 @@ namespace BloodSword::Input
             else if (result.key.keysym.sym == SDLK_v && SDL_GetModState() & CMD_BUTTON)
             {
                 // copy text from clipboard
-                char *clipboard_text = SDL_GetClipboardText();
+                auto clipboard_text = SDL_GetClipboardText();
 
-                input.TextInput = std::string(input.TextInput + clipboard_text).substr(0, input.TextLimit);
+                if (std::strlen(clipboard_text) > 0)
+                {
+                    auto text = BloodSword::CleanString(std::string(clipboard_text), "\n\r");
+
+                    input.TextInput = (input.TextInput + text).substr(0, input.TextLimit);
+
+                    input.RefreshText = true;
+                }
 
                 SDL_free(clipboard_text);
-
-                input.RefreshText = true;
             }
         }
         else if (result.type == SDL_TEXTINPUT)
@@ -180,29 +210,12 @@ namespace BloodSword::Input
     // render scene and overlays then wait for user input
     Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = 100)
     {
-        if (!is_dialog)
-        {
-            Graphics::Render(graphics, scene, input);
-
-            Graphics::Overlay(graphics, overlay);
-
-            Graphics::Scanlines(graphics);
-        }
-        else
-        {
-            Graphics::Dialog(graphics, scene, overlay, input, blur);
-        }
-
-        Graphics::DisplayVersion(graphics);
-
-        Graphics::Scanlines(graphics);
-
-        SDL_RenderPresent(graphics.Renderer);
-
         if (input.Text)
         {
-            return Input::WaitForText(input, delay);
+            return Input::WaitForText(graphics, scene, overlay, input, is_dialog, blur);
         }
+
+        Input::RenderWhileWaiting(graphics, scene, overlay, input, is_dialog, blur);
 
         SDL_Event result;
 

@@ -2441,7 +2441,7 @@ namespace BloodSword::Interface
 
                 blink = !blink;
 
-                input = Input::WaitForInput(graphics, background, box, input, true, blur, 100);
+                input = Input::WaitForText(graphics, background, box, input, true, blur, 100);
 
                 if (input.RefreshText)
                 {
@@ -2452,7 +2452,7 @@ namespace BloodSword::Interface
                         input_texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
                     }
                 }
-                else if (input.Selected)
+                else if (input.Selected && input.TextInput.size() > 0)
                 {
                     break;
                 }
