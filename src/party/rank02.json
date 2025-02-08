@@ -47,7 +47,6 @@
                 "item_limit": 6,
                 "items": [
                     {
-                        "attributes": null,
                         "contains": "NONE",
                         "name": "SWORD",
                         "properties": [
@@ -71,7 +70,6 @@
                         "type": "CHAINMAIL"
                     },
                     {
-                        "attributes": null,
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [
@@ -131,7 +129,6 @@
                 "item_limit": 6,
                 "items": [
                     {
-                        "attributes": null,
                         "contains": "NONE",
                         "name": "SWORD",
                         "properties": [
@@ -142,7 +139,6 @@
                         "type": "SWORD"
                     },
                     {
-                        "attributes": null,
                         "contains": "NONE",
                         "name": "BOW",
                         "properties": [
@@ -153,7 +149,6 @@
                         "type": "BOW"
                     },
                     {
-                        "attributes": null,
                         "contains": "ARROW",
                         "name": "QUIVER",
                         "properties": [
@@ -176,7 +171,6 @@
                         "type": "LEATHER ARMOUR"
                     },
                     {
-                        "attributes": null,
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [
@@ -240,7 +234,6 @@
                 "item_limit": 6,
                 "items": [
                     {
-                        "attributes": null,
                         "contains": "NONE",
                         "name": "QUARTERSTAFF",
                         "properties": [
@@ -251,7 +244,6 @@
                         "type": "QUARTERSTAFF"
                     },
                     {
-                        "attributes": null,
                         "contains": "NONE",
                         "name": "BOW",
                         "properties": [
@@ -262,7 +254,6 @@
                         "type": "BOW"
                     },
                     {
-                        "attributes": null,
                         "contains": "ARROW",
                         "name": "QUIVER",
                         "properties": [
@@ -285,7 +276,6 @@
                         "type": "RINGMAIL"
                     },
                     {
-                        "attributes": null,
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [
@@ -354,7 +344,6 @@
                 "item_limit": 6,
                 "items": [
                     {
-                        "attributes": null,
                         "contains": "NONE",
                         "name": "SWORD",
                         "properties": [
@@ -378,7 +367,6 @@
                         "type": "SILVER ARMOUR"
                     },
                     {
-                        "attributes": null,
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [

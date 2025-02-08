@@ -266,20 +266,30 @@ namespace BloodSword::Items
         {
             nlohmann::json row;
 
-            nlohmann::json attributes;
-
-            nlohmann::json properties;
-
-            for (auto &attribute : item.Attributes)
+            if (item.Attributes.size() > 0)
             {
-                auto attribute_name = std::string(Attribute::TypeMapping[attribute.first]);
+                nlohmann::json attributes;
 
-                attributes.emplace(attribute_name, attribute.second);
+                for (auto &attribute : item.Attributes)
+                {
+                    auto attribute_name = std::string(Attribute::TypeMapping[attribute.first]);
+
+                    attributes.emplace(attribute_name, attribute.second);
+                }
+
+                row["attributes"] = attributes;
             }
 
-            for (auto &property : item.Properties)
+            if (item.Properties.size() > 0)
             {
-                properties.push_back(std::string(Item::PropertyMapping[property]));
+                nlohmann::json properties;
+
+                for (auto &property : item.Properties)
+                {
+                    properties.push_back(std::string(Item::PropertyMapping[property]));
+                }
+
+                row["properties"] = properties;
             }
 
             row["name"] = item.Name;
@@ -289,10 +299,6 @@ namespace BloodSword::Items
             row["type"] = std::string(Item::TypeMapping[item.Type]);
 
             row["quantity"] = item.Quantity;
-
-            row["attributes"] = attributes;
-
-            row["properties"] = properties;
 
             data.push_back(row);
         }
