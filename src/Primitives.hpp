@@ -164,5 +164,22 @@ namespace BloodSword
             }
         }
     }
+
+    // left pad string
+    std::string LeftPad(std::string &str, int n)
+    {
+        if (str.size() < n)
+        {
+            std::ostringstream oss;
+
+            oss << std::setw(n) << std::left << str;
+
+            return oss.str();
+        }
+        else
+        {
+            return str;
+        }
+    }
 }
 #endif

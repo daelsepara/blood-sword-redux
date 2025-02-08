@@ -7,6 +7,12 @@
 #include "Controls.hpp"
 #include "Graphics.hpp"
 
+#if __APPLE__
+#define CMD_BUTTON KMOD_GUI
+#else
+#define CMD_BUTTON KMOD_CTRL
+#endif
+
 // functions for handling user input
 namespace BloodSword::Input
 {
@@ -133,11 +139,27 @@ namespace BloodSword::Input
             {
                 input.Selected = true;
             }
+            else if (result.key.keysym.sym == SDLK_c && SDL_GetModState() & CMD_BUTTON)
+            {
+                // copy text to clipboard
+                SDL_SetClipboardText(input.TextInput.c_str());
+            }
+            else if (result.key.keysym.sym == SDLK_v && SDL_GetModState() & CMD_BUTTON)
+            {
+                // copy text from clipboard
+                char *clipboard_text = SDL_GetClipboardText();
+
+                input.TextInput = std::string(clipboard_text).substr(0, input.TextLimit);
+
+                SDL_free(clipboard_text);
+
+                input.RefreshText = true;
+            }
         }
         else if (result.type == SDL_TEXTINPUT)
         {
             // not copy or pasting
-            if (!(SDL_GetModState() & KMOD_CTRL && (result.text.text[0] == 'c' || result.text.text[0] == 'C' || result.text.text[0] == 'v' || result.text.text[0] == 'V')))
+            if (!(SDL_GetModState() & CMD_BUTTON && (result.text.text[0] == 'c' || result.text.text[0] == 'C' || result.text.text[0] == 'v' || result.text.text[0] == 'V')))
             {
                 // Append character
                 if (input.TextInput.size() < input.TextLimit)

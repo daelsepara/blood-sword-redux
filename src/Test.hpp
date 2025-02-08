@@ -1831,6 +1831,8 @@ namespace BloodSword::Test
     {
         auto input_string = Interface::TextInput(graphics, "INPUT TEXT", true);
 
+        input_string = BloodSword::LeftPad(input_string, 4);
+
         Interface::MessageBox(graphics, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
     }
 
