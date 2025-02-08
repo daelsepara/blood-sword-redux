@@ -141,8 +141,11 @@ namespace BloodSword::Input
             }
             else if (result.key.keysym.sym == SDLK_c && SDL_GetModState() & CMD_BUTTON)
             {
-                // copy text to clipboard
-                SDL_SetClipboardText(input.TextInput.c_str());
+                if (input.TextInput.size() > 0)
+                {
+                    // copy text to clipboard
+                    SDL_SetClipboardText(input.TextInput.c_str());
+                }
             }
             else if (result.key.keysym.sym == SDLK_v && SDL_GetModState() & CMD_BUTTON)
             {
