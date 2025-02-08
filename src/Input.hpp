@@ -152,7 +152,7 @@ namespace BloodSword::Input
                 // copy text from clipboard
                 char *clipboard_text = SDL_GetClipboardText();
 
-                input.TextInput = std::string(clipboard_text).substr(0, input.TextLimit);
+                input.TextInput = std::string(input.TextInput + clipboard_text).substr(0, input.TextLimit);
 
                 SDL_free(clipboard_text);
 
