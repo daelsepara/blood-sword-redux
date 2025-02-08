@@ -1800,7 +1800,7 @@ namespace BloodSword::Test
         auto party = Party::Load("party/rank02.json", "party");
 
         // Load battle from configuration file
-        auto battle = Battle::Load("battles/test.json");
+        auto battle = Battle::Load("battles/test-complete.json");
 
         auto result = Interface::RenderBattle(graphics, battle, party);
 

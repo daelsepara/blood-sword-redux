@@ -102,11 +102,18 @@ namespace BloodSword::Battle
                 // initialize map from file
                 if (!data["map"].is_null())
                 {
-                    auto map = std::string(data["map"]);
-
-                    if (map.size() > 0)
+                    if (data["map"].is_object())
                     {
-                        this->Map.Load(map.c_str());
+                        this->Map.Setup(data["map"]);
+                    }
+                    else
+                    {
+                        auto map = std::string(data["map"]);
+
+                        if (map.size() > 0)
+                        {
+                            this->Map.Load(map.c_str());
+                        }
                     }
                 }
 

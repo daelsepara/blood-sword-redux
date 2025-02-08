@@ -240,7 +240,7 @@ namespace BloodSword::Interface
     }
 
     // add map to the scene
-    Scene::Base Map(Map::Base &map, Party::Base &party, Party::Base &enemies, int bottom)
+    Scene::Base Map(Map::Base &map, Party::Base &party, Party::Base &enemies, int num_bottom_buttons)
     {
         auto scene = Scene::Base();
 
@@ -269,7 +269,8 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    if (ctrl_x < bottom)
+                    // check if there is a button below to refer to
+                    if (ctrl_x < num_bottom_buttons)
                     {
                         dn = num_controls + map.ViewX;
                     }
@@ -400,11 +401,12 @@ namespace BloodSword::Interface
     }
 
     // create map display
-    Scene::Base Map(Map::Base &map, Party::Base &party, int bottom)
+    Scene::Base Map(Map::Base &map, Party::Base &party, int num_bottom_buttons)
     {
         auto enemies = Party::Base();
 
-        return Interface::Map(map, party, enemies, bottom);
+        // num_bottom_buttons is the number of buttons below the map
+        return Interface::Map(map, party, enemies, num_bottom_buttons);
     }
 
     // form attribute score string
