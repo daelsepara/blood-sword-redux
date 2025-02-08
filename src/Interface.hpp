@@ -2381,11 +2381,13 @@ namespace BloodSword::Interface
     {
         auto message = Graphics::CreateText(graphics, question.c_str(), Fonts::Normal, Color::S(question_color), TTF_STYLE_NORMAL, 0);
 
+        auto cursor = Graphics::CreateText(graphics, "_", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, 0);
+
         std::string input_text = std::string();
 
         if (message)
         {
-            SDL_Texture *input_texture = NULL;
+            SDL_Texture *input_texture = nullptr;
 
             auto pad = 16;
 
@@ -2405,6 +2407,9 @@ namespace BloodSword::Interface
 
             input.Text = true;
 
+            // cursor blink
+            auto blink = false;
+
             // enable text input events
             SDL_StartTextInput();
 
@@ -2420,6 +2425,21 @@ namespace BloodSword::Interface
                 {
                     box.VerifyAndAdd(Scene::Element(input_texture, location + Point(pad, pad * 4)));
                 }
+
+                // add cursor blink
+                if (blink && input.TextInput.size() < input.TextLimit)
+                {
+                    auto texture_w = 0;
+
+                    if (input_texture)
+                    {
+                        SDL_QueryTexture(input_texture, nullptr, nullptr, &texture_w, nullptr);
+                    }
+
+                    box.VerifyAndAdd(Scene::Element(cursor, location + Point(pad + texture_w, pad * 4)));
+                }
+
+                blink = !blink;
 
                 input = Input::WaitForInput(graphics, background, box, input, true, blur, 100);
 
@@ -2442,6 +2462,8 @@ namespace BloodSword::Interface
             SDL_StopTextInput();
 
             Free(&input_texture);
+
+            Free(&cursor);
 
             Free(&message);
 
