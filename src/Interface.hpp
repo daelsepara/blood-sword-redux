@@ -253,9 +253,13 @@ namespace BloodSword::Interface
             for (auto x = map.X; x < map.X + map.ViewX; x++)
             {
                 auto ctrl_x = x - map.X;
+
                 auto up = num_controls;
+
                 auto dn = num_controls;
+
                 auto lt = num_controls;
+
                 auto rt = num_controls;
 
                 if (ctrl_y > 0)
@@ -585,8 +589,11 @@ namespace BloodSword::Interface
                 SDL_Rect labels_rect, stats_rect;
 
                 labels_rect.w = surface->w;
+
                 labels_rect.h = surface->h;
+
                 labels_rect.x = 0;
+
                 labels_rect.y = 0;
 
                 auto convertedlabels = SDL_ConvertSurface(surface_labels, surface->format, 0);
@@ -601,8 +608,11 @@ namespace BloodSword::Interface
                 }
 
                 stats_rect.w = surface->w;
+
                 stats_rect.h = surface->h;
+
                 stats_rect.x = surface_labels->w + 8;
+
                 stats_rect.y = 0;
 
                 auto converted_stats = SDL_ConvertSurface(surface_stats, surface->format, 0);
@@ -624,8 +634,11 @@ namespace BloodSword::Interface
                     if (surface_name)
                     {
                         labels_rect.w = surface->w;
+
                         labels_rect.h = surface->h;
+
                         labels_rect.x = 0;
+
                         labels_rect.y = 0;
 
                         auto converted_name = SDL_ConvertSurface(surface_name, surface->format, 0);

@@ -1827,13 +1827,13 @@ namespace BloodSword::Test
         auto party = Interface::CreateParty(graphics, false);
     }
 
-    void TextInput(Graphics::Base &graphics)
+    void TextInput(Graphics::Base &graphics, Scene::Base &background)
     {
-        auto input_string = Interface::TextInput(graphics, "INPUT TEXT", true);
+        auto input_string = Interface::TextInput(graphics, background, "INPUT TEXT", true);
 
         input_string = BloodSword::LeftPad(input_string, 4);
 
-        Interface::MessageBox(graphics, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
+        Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
     }
 
     void Menu(Graphics::Base &graphics)
@@ -1983,7 +1983,7 @@ namespace BloodSword::Test
                         Test::Story(graphics);
                         break;
                     case 12:
-                        Test::TextInput(graphics);
+                        Test::TextInput(graphics, scene);
                         break;
                     default:
                         // do nothing - menu test
