@@ -375,7 +375,7 @@ namespace BloodSword::Graphics
                 {
                     if (!input.Blink || !control.OnMap)
                     {
-                        Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
+                        Graphics::ThickRect(graphics, control.W - BloodSword::SmallPad * control.Pixels, control.H - BloodSword::SmallPad * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
                     }
                 }
             }
@@ -404,7 +404,7 @@ namespace BloodSword::Graphics
                 {
                     if (!input.Blink || !control.OnMap)
                     {
-                        Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
+                        Graphics::ThickRect(graphics, control.W - BloodSword::SmallPad * control.Pixels, control.H - BloodSword::SmallPad * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
                     }
                 }
             }
@@ -483,7 +483,7 @@ namespace BloodSword::Graphics
     {
         TTF_SizeUTF8(font, text, width, height);
 
-        auto pad = 8;
+        auto pad = BloodSword::Pad;
 
         if (width)
         {

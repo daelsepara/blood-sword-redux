@@ -50,7 +50,7 @@ namespace BloodSword::Character
 
         int Experience = 0;
 
-        int Moves = 1000;
+        int Moves = BloodSword::MaximumMoves;
 
         int Rank = 0;
 
@@ -76,19 +76,19 @@ namespace BloodSword::Character
                                       character_class,
                                       attributes,
                                       skills,
-                                      1000,
+                                      BloodSword::MaximumMoves,
                                       2) {}
 
         Base(const char *name,
              Character::Class character_class,
-             Characteristics attributes) : Base(name, character_class, attributes, {}, 1000, 2) {}
+             Characteristics attributes) : Base(name, character_class, attributes, {}, BloodSword::MaximumMoves, 2) {}
 
         Base(const char *name,
-             Character::Class character_class) : Base(name, character_class, {}, {}, 1000, 2) {}
+             Character::Class character_class) : Base(name, character_class, {}, {}, BloodSword::MaximumMoves, 2) {}
 
-        Base(Character::Class character_class, int rank) : Base(Character::ClassMapping[character_class], character_class, {}, {}, 1000, rank) {}
+        Base(Character::Class character_class, int rank) : Base(Character::ClassMapping[character_class], character_class, {}, {}, BloodSword::MaximumMoves, rank) {}
 
-        Base(Character::Class character_class) : Base(Character::ClassMapping[character_class], character_class, {}, {}, 1000, 2) {}
+        Base(Character::Class character_class) : Base(Character::ClassMapping[character_class], character_class, {}, {}, BloodSword::MaximumMoves, 2) {}
 
         Base(const char *name,
              Characteristics attributes,
@@ -611,7 +611,7 @@ namespace BloodSword::Character
 
             this->Experience = !data["experience"].is_null() ? int(data["experience"]) : 0;
 
-            this->Moves = !data["moves"].is_null() ? int(data["moves"]) : 1000;
+            this->Moves = !data["moves"].is_null() ? int(data["moves"]) : BloodSword::MaximumMoves;
 
             this->ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 6;
 
