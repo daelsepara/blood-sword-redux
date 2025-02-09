@@ -178,7 +178,7 @@ namespace BloodSword::Interface
 
                 auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
 
-                if (Interface::Target(graphics, background, fight, fight_w, fight_h, Color::Active, 4, attacker, defender, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::NONE))
+                if (Interface::Target(graphics, background, fight, fight_w, fight_h, Color::Active, 4, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::NONE))
                 {
                     auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, 4, attacker, defender, true, false, knockout, ignore_armor, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::NONE);
 
@@ -254,7 +254,7 @@ namespace BloodSword::Interface
 
                 auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
 
-                if (Interface::Target(graphics, background, fight, shoot_w, shoot_h, Color::Active, 4, attacker, defender, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, asset))
+                if (Interface::Target(graphics, background, fight, shoot_w, shoot_h, Color::Active, 4, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, asset))
                 {
                     auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, 4, attacker, defender, true, true, false, ignore_armor, asset);
 
@@ -1241,7 +1241,9 @@ namespace BloodSword::Interface
                                                             }
                                                             else
                                                             {
-                                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, cast, true))
+                                                                auto target = spellbook->RequiresTarget() ? battle.Opponents[battle.Map[control.Map].Id].Asset : Asset::Type::NONE;
+
+                                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, target, cast, true))
                                                                 {
                                                                     // spellcasting successful
                                                                     auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
@@ -1495,7 +1497,7 @@ namespace BloodSword::Interface
                                                                             }
                                                                             else
                                                                             {
-                                                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, cast, true))
+                                                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[target].Id].Asset, cast, true))
                                                                                 {
                                                                                     // spellcasting successful
                                                                                     Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);

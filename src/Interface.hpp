@@ -1360,7 +1360,7 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check (with target)
-    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Character::Base &target, Attribute::Type attribute, int roll, int modifier, bool in_battle = false, Asset::Type asset = Asset::Type::NONE)
+    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Asset::Type target, Attribute::Type attribute, int roll, int modifier, bool in_battle = false, Asset::Type asset = Asset::Type::NONE)
     {
         auto result = false;
 
@@ -1433,10 +1433,15 @@ namespace BloodSword::Interface
             // draw border
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
 
-            // add target icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(target.Asset), origin + Point(w - pad - BloodSword::TileSize, pad)));
+            auto character_offset = target != Asset::Type::NONE ? 3 : 1;
 
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad * 3 - (3 * BloodSword::TileSize), pad)));
+            if (target != Asset::Type::NONE)
+            {
+                // add target icon
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), origin + Point(w - pad - BloodSword::TileSize, pad)));
+            }
+
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad * character_offset - (character_offset * BloodSword::TileSize), pad)));
 
             // set up icon
             if (in_battle && attribute == Attribute::Type::FIGHTING_PROWESS)
@@ -1542,185 +1547,10 @@ namespace BloodSword::Interface
         return result;
     }
 
-    // attribute difficulty check
+    // attribute difficulty check (no targets / self-targetting)
     bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Attribute::Type attribute, int roll, int modifier, bool in_battle = false, Asset::Type asset = Asset::Type::NONE)
     {
-        auto result = false;
-
-        std::string attribute_string = Attribute::TypeMapping[attribute] + std::string(": ") + Interface::ScoreString(character, attribute, in_battle);
-
-        attribute_string += "\nDIFFICULTY: " + std::to_string(roll) + "D";
-
-        if (modifier != 0)
-        {
-            if (modifier > 0)
-            {
-                attribute_string += "+";
-            }
-
-            attribute_string += std::to_string(modifier);
-        }
-
-        auto attribute_texture = Graphics::CreateText(graphics, attribute_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-
-        auto passed = Graphics::CreateText(graphics, "PASSED", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-
-        auto failed = Graphics::CreateText(graphics, "FAILED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
-
-        auto attribute_w = 0;
-
-        SDL_QueryTexture(attribute_texture, nullptr, nullptr, &attribute_w, nullptr);
-
-        auto start = Graphics::CreateText(graphics, {Graphics::RichText(" ROLL ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
-
-        auto end = Graphics::CreateText(graphics, {Graphics::RichText(" DONE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
-
-        auto score = Engine::Score(character, attribute, in_battle);
-
-        auto stage = Engine::RollStage::START;
-
-        auto input = Controls::User();
-
-        auto done = false;
-
-        auto pad = BloodSword::QuarterTile;
-
-        auto rolled = false;
-
-        auto rolls = Engine::RollResult();
-
-        // Unarmed/Eye of the Tiger effects
-        if (attribute == Attribute::Type::FIGHTING_PROWESS)
-        {
-            if (in_battle && !character.IsArmed())
-            {
-                score -= 2;
-            }
-
-            if (character.Has(Character::Status::FPR_PLUS2))
-            {
-                score += 2;
-            }
-            else if (character.Has(Character::Status::FPR_PLUS1))
-            {
-                score += 1;
-            }
-        }
-
-        score = std::max(0, score);
-
-        while (!done)
-        {
-            auto overlay = Scene::Base();
-
-            // draw border
-            overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
-
-            // add character icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad - BloodSword::TileSize, pad)));
-
-            // set up icon
-            if (in_battle && attribute == Attribute::Type::FIGHTING_PROWESS)
-            {
-                if (asset == Asset::Type::NONE)
-                {
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - (2 * BloodSword::TileSize), pad)));
-                }
-                else
-                {
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - (2 * BloodSword::TileSize), pad)));
-                }
-            }
-            else if (attribute == Attribute::Type::PSYCHIC_ABILITY && asset != Asset::Type::NONE)
-            {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - (2 * BloodSword::TileSize), pad)));
-            }
-
-            // attribute label
-            overlay.VerifyAndAdd(Scene::Element(attribute_texture, origin + Point(pad + BloodSword::SmallPad, pad)));
-
-            if (stage == Engine::RollStage::START)
-            {
-                // initial
-                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin.X + pad + BloodSword::Pad, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
-            }
-            else if (stage == Engine::RollStage::RESULT)
-            {
-                // result
-                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin.X + pad + BloodSword::Pad, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
-            }
-
-            if (rolled)
-            {
-                for (auto dice = 0; dice < roll; dice++)
-                {
-                    // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + BloodSword::TileSize) + pad, pad + BloodSword::TileSize)));
-                }
-
-                if (result)
-                {
-                    // passed
-                    overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(w - pad - BloodSword::TileSize, pad + BloodSword::TileSize)));
-                }
-                else
-                {
-                    // failed
-                    overlay.VerifyAndAdd(Scene::Element(failed, origin + Point(w - pad - BloodSword::TileSize, pad + BloodSword::TileSize)));
-                }
-            }
-            else
-            {
-                for (auto dice = 0; dice < roll; dice++)
-                {
-                    // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + BloodSword::TileSize) + pad, pad + BloodSword::TileSize)));
-                }
-            }
-
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
-
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
-            {
-                if (input.Type == Controls::Type::START)
-                {
-                    if (stage == Engine::RollStage::START)
-                    {
-                        stage = Engine::RollStage::RESULT;
-
-                        // roll dice
-                        if (!rolled)
-                        {
-                            rolls = Engine::Roll(roll, modifier);
-
-                            rolled = true;
-
-                            // check result
-                            result = rolls.Sum <= score;
-                        }
-                    }
-                }
-                else if (input.Type == Controls::Type::EXIT)
-                {
-                    if (stage == Engine::RollStage::RESULT)
-                    {
-                        done = true;
-                    }
-                }
-            }
-        }
-
-        Free(start);
-
-        Free(end);
-
-        Free(&passed);
-
-        Free(&failed);
-
-        Free(&attribute_texture);
-
-        return result;
+        return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, in_battle, asset);
     }
 
     // roll for damage
@@ -2119,8 +1949,8 @@ namespace BloodSword::Interface
         }
     }
 
-    // cast spell
-    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Spells::Type spell, bool in_battle)
+    // cast spell (has target)
+    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Asset::Type target, Spells::Type spell, bool in_battle)
     {
         auto result = false;
 
@@ -2142,7 +1972,7 @@ namespace BloodSword::Interface
 
                     auto modifier = casting->CurrentComplexity;
 
-                    result = Interface::Test(graphics, background, cast, cast_w, cast_h, Color::Active, 4, caster, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, in_battle, Spells::Assets[spell]);
+                    result = Interface::Target(graphics, background, cast, cast_w, cast_h, Color::Active, 4, caster, target, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, in_battle, Spells::Assets[spell]);
 
                     if (!result)
                     {
@@ -2159,6 +1989,12 @@ namespace BloodSword::Interface
         }
 
         return result;
+    }
+
+    // cast spell (no targets)
+    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Spells::Type spell, bool in_battle)
+    {
+        return Interface::Cast(graphics, background, origin, w, h, caster, Asset::Type::NONE, spell, in_battle);
     }
 
     // select from a list of options
