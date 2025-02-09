@@ -1036,7 +1036,7 @@ namespace BloodSword::Interface
 
         auto popup_w = (std::max(int(character.Skills.size()), 2) + (BloodSword::SmallPad / 2)) * BloodSword::TileSize;
 
-        auto popup_h = (5 * BloodSword::HalfTile);
+        auto popup_h = BloodSword::HalfTile * 5;
 
         auto screen = origin + Point(w - popup_w, h - popup_h) / 2;
 
@@ -1112,7 +1112,7 @@ namespace BloodSword::Interface
 
         auto rows = std::max(spells / 6, 1);
 
-        auto popup_w = (19 * BloodSword::HalfTile);
+        auto popup_w = BloodSword::HalfTile * 19;
 
         auto popup_h = (rows + 1) * (BloodSword::TileSize + BloodSword::HalfTile) + BloodSword::TileSize;
 
@@ -1257,7 +1257,7 @@ namespace BloodSword::Interface
 
         auto popup_w = (party.Count() + 1) * BloodSword::TileSize + pad * 2;
 
-        auto popup_h = (2 * BloodSword::TileSize) + pad * 2;
+        auto popup_h = (BloodSword::TileSize + pad) * 2;
 
         return Interface::SelectCharacter(origin, w, h, party, popup_w, popup_h, background, border, border_size, back);
     }
@@ -1426,6 +1426,22 @@ namespace BloodSword::Interface
 
         score = std::max(0, score);
 
+        auto character_offset = (target != Asset::Type::NONE) ? 3 : 1;
+
+        auto origin_character = origin + Point(w - pad * character_offset - (character_offset * BloodSword::TileSize), pad);
+
+        auto origin_type = origin + Point(w - (BloodSword::TileSize + pad) * 2, pad);
+
+        auto origin_x = origin.X + pad + BloodSword::Pad;
+
+        auto origin_y = origin.Y + h - pad * 3;
+
+        auto origin_result = origin + Point(w - pad - BloodSword::TileSize, BloodSword::TileSize + pad);
+
+        auto origin_target = origin + Point(w - pad - BloodSword::TileSize, pad);
+
+        auto origin_attribute = origin + Point(pad + BloodSword::SmallPad, pad);
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -1433,45 +1449,44 @@ namespace BloodSword::Interface
             // draw border
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
 
-            auto character_offset = target != Asset::Type::NONE ? 3 : 1;
-
             if (target != Asset::Type::NONE)
             {
                 // add target icon
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), origin + Point(w - pad - BloodSword::TileSize, pad)));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), origin_target));
             }
 
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin + Point(w - pad * character_offset - (character_offset * BloodSword::TileSize), pad)));
+            // add character icon
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin_character));
 
             // set up icon
             if (in_battle && attribute == Attribute::Type::FIGHTING_PROWESS)
             {
                 if (asset == Asset::Type::NONE)
                 {
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin + Point(w - pad * 2 - (2 * BloodSword::TileSize), pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin_type));
                 }
                 else
                 {
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - (2 * BloodSword::TileSize), pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_type));
                 }
             }
             else if (attribute == Attribute::Type::PSYCHIC_ABILITY && asset != Asset::Type::NONE)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point(w - pad * 2 - (2 * BloodSword::TileSize), pad)));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_type));
             }
 
             // attribute label
-            overlay.VerifyAndAdd(Scene::Element(attribute_texture, origin + Point(pad + BloodSword::SmallPad, pad)));
+            overlay.VerifyAndAdd(Scene::Element(attribute_texture, origin_attribute));
 
             if (stage == Engine::RollStage::START)
             {
                 // initial
-                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin.X + pad + BloodSword::Pad, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin_x, origin_y, Color::Active, Color::Active, Color::Highlight);
             }
             else if (stage == Engine::RollStage::RESULT)
             {
                 // result
-                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin.X + pad + BloodSword::Pad, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin_x, origin_y, Color::Active, Color::Active, Color::Highlight);
             }
 
             if (rolled)
@@ -1479,18 +1494,18 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + BloodSword::TileSize) + pad, pad + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
                 }
 
                 if (result)
                 {
                     // passed
-                    overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(w - pad - BloodSword::TileSize, pad + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(passed, origin_result));
                 }
                 else
                 {
                     // failed
-                    overlay.VerifyAndAdd(Scene::Element(failed, origin + Point(w - pad - BloodSword::TileSize, pad + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(failed, origin_result));
                 }
             }
             else
@@ -1498,7 +1513,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + BloodSword::TileSize) + pad, pad + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
                 }
             }
 
@@ -1614,6 +1629,28 @@ namespace BloodSword::Interface
 
         SDL_QueryTexture(failed, nullptr, nullptr, &text_w, &text_h);
 
+        auto origin_x = origin.X + pad + BloodSword::Pad;
+
+        auto origin_y = origin.Y + h - pad * 3;
+
+        auto damage_x1 = w - text_w - pad;
+
+        auto damage_y1 = text_h * 2 + BloodSword::TileSize + pad;
+
+        auto damage_y2 = BloodSword::TileSize * 2 + pad;
+
+        auto damage_y3 = text_h * 3 + BloodSword::TileSize + pad;
+
+        auto origin_damage = origin + Point((w - BloodSword::TileSize) / 2, pad);
+
+        auto origin_stats = origin + Point(pad, BloodSword::TileSize + pad);
+
+        auto origin_defender = origin + Point(damage_x1, pad);
+
+        auto origin_armor = origin + Point(damage_x1, BloodSword::TileSize + pad);
+
+        auto origin_pad = origin + pad;
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -1622,28 +1659,28 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
 
             // add damage icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin + Point((w - BloodSword::TileSize) / 2, pad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_damage));
 
             // add attacker icon and stats
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin + pad));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin_pad));
 
-            overlay.VerifyAndAdd(Scene::Element(damage_texture, origin + Point(pad, pad + BloodSword::TileSize)));
+            overlay.VerifyAndAdd(Scene::Element(damage_texture, origin_stats));
 
             // add defender icon and stats
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(defender.Asset), origin + Point(w - text_w - pad, pad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(defender.Asset), origin_defender));
 
             // add armour stats
-            overlay.VerifyAndAdd(Scene::Element(armour_texture, origin + Point(w - text_w - pad, pad + BloodSword::TileSize)));
+            overlay.VerifyAndAdd(Scene::Element(armour_texture, origin_armor));
 
             if (stage == Engine::RollStage::START)
             {
                 // initial
-                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin.X + pad + BloodSword::Pad, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin_x, origin_y, Color::Active, Color::Active, Color::Highlight);
             }
             else if (stage == Engine::RollStage::RESULT)
             {
                 // result
-                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin.X + pad + BloodSword::Pad, origin.Y + h - pad * 3, Color::Active, Color::Active, Color::Highlight);
+                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin_x, origin_y, Color::Active, Color::Active, Color::Highlight);
             }
 
             if (rolled)
@@ -1651,20 +1688,20 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (pad + BloodSword::TileSize) + pad, pad + (2 * BloodSword::TileSize))));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, damage_y2)));
                 }
 
                 if (damage > 0)
                 {
                     // damaged
-                    overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(w - text_w - pad, text_h * 2 + pad + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(damage_x1, damage_y1)));
 
-                    overlay.VerifyAndAdd(Scene::Element(damage_value, origin + Point(w - text_w - pad, text_h * 3 + pad + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(damage_value, origin + Point(damage_x1, damage_y3)));
                 }
                 else
                 {
                     // unharmed
-                    overlay.VerifyAndAdd(Scene::Element(failed, origin + Point(w - text_w - pad, text_h * 2 + pad + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(failed, origin + Point(damage_x1, damage_y1)));
                 }
             }
             else
@@ -1672,7 +1709,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (pad + BloodSword::TileSize) + pad, pad + (2 * BloodSword::TileSize))));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, damage_y2)));
                 }
             }
 
@@ -1954,9 +1991,9 @@ namespace BloodSword::Interface
     {
         auto result = false;
 
-        auto cast_w = (8 * BloodSword::TileSize);
+        auto cast_w = BloodSword::TileSize * 8;
 
-        auto cast_h = (13 * BloodSword::QuarterTile);
+        auto cast_h = BloodSword::QuarterTile * 13;
 
         auto cast = origin + (Point(w, h) - Point(cast_w, cast_h)) / 2;
 
@@ -2105,7 +2142,7 @@ namespace BloodSword::Interface
         {
             auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
 
-            characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, (5 * BloodSword::HalfTile)));
+            characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, BloodSword::HalfTile * 5));
         }
 
         return Graphics::CreateText(graphics, characters);
@@ -2134,9 +2171,9 @@ namespace BloodSword::Interface
                                   Generate::Character(Character::Class::SAGE, rank),
                                   Generate::Character(Character::Class::ENCHANTER, rank)});
 
-        auto stats = Interface::GenerateStats(graphics, party, (5 * BloodSword::TileSize), false, true);
+        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
 
-        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, (5 * BloodSword::TileSize));
+        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER TO ADD", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -2209,7 +2246,7 @@ namespace BloodSword::Interface
 
                         overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
 
-                        overlay.Add(Scene::Element(skills_x, popup.Y, (5 * BloodSword::TileSize), popup.H, Color::Transparent, Color::Active, 4));
+                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Transparent, Color::Active, 4));
                     }
                 }
             }
@@ -2218,9 +2255,9 @@ namespace BloodSword::Interface
             {
                 auto &origin = overlay.Elements[0];
 
-                auto screen = Point(origin.X, origin.Y - (5 * BloodSword::HalfTile));
+                auto screen = Point(origin.X, origin.Y - BloodSword::HalfTile * 5);
 
-                overlay.Add(Scene::Element(screen, popup.W, (2 * BloodSword::TileSize), Color::Transparent, Color::Active, 4));
+                overlay.Add(Scene::Element(screen, popup.W, BloodSword::TileSize * 2, Color::Transparent, Color::Active, 4));
 
                 for (auto i = 0; i < current_party.Count(); i++)
                 {
@@ -2276,7 +2313,7 @@ namespace BloodSword::Interface
 
         auto bg_scene = Scene::Base();
 
-        auto width = (4 * BloodSword::TileSize);
+        auto width = BloodSword::TileSize * 4;
 
         auto base_height = BloodSword::HalfTile;
 
@@ -2519,7 +2556,7 @@ namespace BloodSword::Interface
 
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, bool blur = true)
     {
-        auto box_w = (question.size() > BloodSword::QuarterTile) ? int(question.size() * BloodSword::QuarterTile) : (5 * BloodSword::TileSize);
+        auto box_w = (int(question.size()) > BloodSword::QuarterTile) ? (int(question.size()) * BloodSword::QuarterTile) : (BloodSword::TileSize * 5);
 
         return Interface::TextInput(graphics, background, question, box_w, (BloodSword::TileSize * 2 - BloodSword::Pad), blur);
     }

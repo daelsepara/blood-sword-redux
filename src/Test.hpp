@@ -10,7 +10,7 @@ namespace BloodSword::Test
     // user input test
     void Controls(Graphics::Base &graphics)
     {
-        auto x = (2 * BloodSword::TileSize);
+        auto x = BloodSword::TileSize * 2;
 
         auto y = BloodSword::TileSize;
 
@@ -689,7 +689,7 @@ namespace BloodSword::Test
 
         auto draw = Point(map.DrawX, map.DrawY);
 
-        auto caption_w = (5 * BloodSword::TileSize);
+        auto caption_w = BloodSword::TileSize * 5;
 
         // initialize captions
         auto captions = Graphics::CreateText(
@@ -972,6 +972,12 @@ namespace BloodSword::Test
 
                     auto &popup = overlay.Elements[0];
 
+                    auto popup_x1 = popup.X + popup.W - (BloodSword::TileSize + BloodSword::HalfTile);
+
+                    auto popup_x2 = popup.X + BloodSword::QuarterTile;
+
+                    auto popup_y = popup.Y + BloodSword::Pad;
+
                     if (!in_battle)
                     {
                         if (spell.IsBasic() || party[popup_id].HasCalledToMind(spell.Type))
@@ -981,34 +987,34 @@ namespace BloodSword::Test
 
                         if (spell.IsBasic() || (party[popup_id].HasCalledToMind(spell.Type) && !spell.IsBattle))
                         {
-                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::HalfTile), popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup_x1, popup_y));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup_x2, popup_y));
                         }
                         else if (!party[popup_id].HasCalledToMind(spell.Type))
                         {
-                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::HalfTile), popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup_x1, popup_y));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup_x2, popup_y));
                         }
                     }
                     else
                     {
                         if (party[popup_id].HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                         {
-                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::HalfTile), popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup_x1, popup_y));
 
                             overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup_x2, popup_y));
                         }
                         else if (!spell.IsBasic() && spell.IsBattle)
                         {
-                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::HalfTile), popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup_x1, popup_y));
 
                             overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup_x2, popup_y));
                         }
                         else
                         {
@@ -1270,9 +1276,9 @@ namespace BloodSword::Test
 
         Uint32 highlight = Color::Highlight;
 
-        auto width = (10 * BloodSword::TileSize);
+        auto width = BloodSword::TileSize * 10;
 
-        auto height = (2 * BloodSword::TileSize);
+        auto height = BloodSword::TileSize * 2;
 
         for (auto name : Palette::Names)
         {
@@ -1299,9 +1305,11 @@ namespace BloodSword::Test
 
         auto options = int(menu.size());
 
-        auto x_adjust = (BloodSword::TileSize - BloodSword::SmallPad);
+        auto x_adjust = BloodSword::TileSize - BloodSword::SmallPad;
 
-        auto origin = BloodSword::TileSize;
+        auto origin_x = BloodSword::TileSize;
+
+        auto origin_y1 = BloodSword::TileSize;
 
         auto pad = BloodSword::QuarterTile;
 
@@ -1313,11 +1321,11 @@ namespace BloodSword::Test
 
         auto palette = Palette::Current;
 
-        auto box_x = origin + width + dim + pad / 2;
+        auto palette_offset_x = origin_x + width + dim + pad / 2;
 
         while (!done)
         {
-            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, fixed, highlight, true);
+            auto scene = Interface::Menu(menu, origin_x, origin_y1, width, height, start, last, limit, 0, fixed, highlight, true);
 
             scene.VerifyAndAdd(Scene::Element(title, x_adjust, (BloodSword::HalfTile - BloodSword::SmallPad)));
 
@@ -1346,23 +1354,37 @@ namespace BloodSword::Test
             }
 
             // add color boxes
-            scene.Add(Scene::Element(box_x + pad, origin, (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][0], Palette::List[palette][0], 2));
+            auto palette_w = BloodSword::TileSize * 3;
 
-            scene.Add(Scene::Element(box_x + pad * 2 + (3 * BloodSword::TileSize), origin, (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][1], Palette::List[palette][1], 2));
+            auto palette_h = BloodSword::TileSize * 2;
 
-            scene.Add(Scene::Element(box_x + pad, origin + (3 * BloodSword::TileSize), (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][2], Palette::List[palette][2], 2));
+            auto palette_x1 = palette_offset_x + pad;
 
-            scene.Add(Scene::Element(box_x + pad * 2 + (3 * BloodSword::TileSize), origin + (3 * BloodSword::TileSize), (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][3], fixed, 2));
+            auto palette_x2 = palette_offset_x + palette_w + pad * 2;
 
-            scene.VerifyAndAdd(Scene::Element(labels[0], Point(box_x + pad, origin + (BloodSword::TileSize * 2 + BloodSword::Pad))));
+            auto origin_y2 = origin_x + palette_h + BloodSword::TileSize;
 
-            scene.VerifyAndAdd(Scene::Element(labels[1], Point(box_x + pad * 2 + (3 * BloodSword::TileSize), origin + (BloodSword::TileSize * 2 + BloodSword::Pad))));
+            auto palette_y1 = origin_x + palette_h + BloodSword::Pad;
 
-            scene.VerifyAndAdd(Scene::Element(labels[2], Point(box_x + pad, origin + (5 * BloodSword::TileSize + BloodSword::Pad))));
+            auto palette_y2 = origin_y1 + BloodSword::TileSize * 5 + BloodSword::Pad;
 
-            scene.VerifyAndAdd(Scene::Element(labels[3], Point(box_x + pad * 2 + (3 * BloodSword::TileSize), origin + (5 * BloodSword::TileSize + BloodSword::Pad))));
+            scene.Add(Scene::Element(palette_x1, origin_x, palette_w, palette_h, Palette::List[palette][0], Palette::List[palette][0], 2));
 
-            scene.VerifyAndAdd(Scene::Element(menu[palette], box_x + pad, origin + (6 * BloodSword::TileSize + BloodSword::Pad)));
+            scene.Add(Scene::Element(palette_x2, origin_x, palette_w, palette_h, Palette::List[palette][1], Palette::List[palette][1], 2));
+
+            scene.Add(Scene::Element(palette_x1, origin_y2, palette_w, palette_h, Palette::List[palette][2], Palette::List[palette][2], 2));
+
+            scene.Add(Scene::Element(palette_x2, origin_y2, palette_w, palette_h, Palette::List[palette][3], fixed, 2));
+
+            scene.VerifyAndAdd(Scene::Element(labels[0], Point(palette_x1, palette_y1)));
+
+            scene.VerifyAndAdd(Scene::Element(labels[1], Point(palette_x2, palette_y1)));
+
+            scene.VerifyAndAdd(Scene::Element(labels[2], Point(palette_x1, palette_y2)));
+
+            scene.VerifyAndAdd(Scene::Element(labels[3], Point(palette_x2, palette_y2)));
+
+            scene.VerifyAndAdd(Scene::Element(menu[palette], palette_x1, origin_y1 + palette_h * 3 + BloodSword::Pad));
 
             if (input.Up)
             {
@@ -1467,7 +1489,7 @@ namespace BloodSword::Test
         // load party
         auto party = Party::Load("party/rank02.json", "party");
 
-        auto stats = Interface::GenerateStats(graphics, party, (5 * BloodSword::TileSize), false, true);
+        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -1554,9 +1576,9 @@ namespace BloodSword::Test
                 }
                 else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
                 {
-                    auto popup_w = (8 * BloodSword::TileSize);
+                    auto popup_w = BloodSword::TileSize * 8;
 
-                    auto popup_h = (13 * BloodSword::QuarterTile);
+                    auto popup_h = BloodSword::QuarterTile * 13;
 
                     auto &character = party[input.Current];
 
@@ -1842,9 +1864,9 @@ namespace BloodSword::Test
 
     void Menu(Graphics::Base &graphics)
     {
-        auto width = (10 * BloodSword::TileSize);
+        auto width = BloodSword::TileSize * 10;
 
-        auto height = (2 * BloodSword::TileSize);
+        auto height = BloodSword::TileSize * 2;
 
         auto RegenerateTitle = [&]()
         {
@@ -1890,7 +1912,7 @@ namespace BloodSword::Test
 
         auto options = int(menu.size());
 
-        auto x_adjust = (BloodSword::TileSize - BloodSword::SmallPad);
+        auto x_adjust = BloodSword::TileSize - BloodSword::SmallPad;
 
         auto origin = BloodSword::TileSize;
 

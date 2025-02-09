@@ -90,7 +90,7 @@ namespace BloodSword::Interface
 
         auto popup_w = (std::max(int(controls.size()), 2) + (BloodSword::SmallPad / 2)) * BloodSword::TileSize;
 
-        auto popup_h = (5 * BloodSword::HalfTile);
+        auto popup_h = BloodSword::HalfTile * 5;
 
         auto screen = origin + Point(w - popup_w, h - popup_h) / 2;
 
@@ -178,15 +178,15 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto fight_w = (8 * BloodSword::TileSize);
+        auto fight_w = BloodSword::TileSize * 8;
 
-        auto fight_h = (13 * BloodSword::QuarterTile);
+        auto fight_h = BloodSword::QuarterTile * 13;
 
         auto fight = origin + (Point(w, h) - Point(fight_w, fight_h)) / 2;
 
-        auto damage_w = (8 * BloodSword::TileSize);
+        auto damage_w = BloodSword::TileSize * 8;
 
-        auto damage_h = (18 * BloodSword::QuarterTile - BloodSword::Pad);
+        auto damage_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
         auto damage = origin + (Point(w, h) - Point(damage_w, damage_h)) / 2;
 
@@ -258,15 +258,15 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto shoot_w = (8 * BloodSword::TileSize);
+        auto shoot_w = BloodSword::TileSize * 8;
 
-        auto shoot_h = (13 * BloodSword::QuarterTile);
+        auto shoot_h = BloodSword::QuarterTile * 13;
 
         auto fight = origin + (Point(w, h) - Point(shoot_w, shoot_h)) / 2;
 
-        auto damage_w = (8 * BloodSword::TileSize);
+        auto damage_w = BloodSword::TileSize * 8;
 
-        auto damage_h = (18 * BloodSword::QuarterTile - BloodSword::Pad);
+        auto damage_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
         auto damage = origin + (Point(w, h) - Point(damage_w, damage_h)) / 2;
 
@@ -400,9 +400,9 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        auto popup_w = (8 * BloodSword::TileSize);
+        auto popup_w = BloodSword::TileSize * 8;
 
-        auto popup_h = (18 * BloodSword::QuarterTile - BloodSword::Pad);
+        auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
         auto popup = draw + (Point(map_w, map_h) - Point(popup_w, popup_h)) / 2;
 
@@ -554,9 +554,9 @@ namespace BloodSword::Interface
                 {Graphics::RichText("CHARACTER FPR/DMG ROLLS +2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                  Graphics::RichText("    PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
-            auto popup = draw + (Point(map_w, map_h) - Point((8 * BloodSword::TileSize), (BloodSword::TileSize * 2 + BloodSword::QuarterTile - BloodSword::SmallPad))) / 2;
+            auto popup = draw + (Point(map_w, map_h) - Point(BloodSword::TileSize * 8, (BloodSword::TileSize * 2 + BloodSword::QuarterTile - BloodSword::SmallPad))) / 2;
 
-            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, (8 * BloodSword::TileSize), BloodSword::TileSize, 2, Color::Background, Color::Inactive, Color::Active, true);
+            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, BloodSword::TileSize * 8, BloodSword::TileSize, 2, Color::Background, Color::Inactive, Color::Active, true);
 
             if (tiger == 0)
             {
@@ -605,7 +605,7 @@ namespace BloodSword::Interface
             }
 
             // initialize captions
-            auto caption_w = (5 * BloodSword::TileSize);
+            auto caption_w = BloodSword::TileSize * 5;
 
             auto captions = Graphics::CreateText(
                 graphics,
