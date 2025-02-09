@@ -18,6 +18,7 @@ namespace BloodSword::Color
     Uint32 Inactive = 0xFF606060;
     Uint32 Highlight = 0xFFFF0000;
     Uint32 Background = 0xFF000000;
+    Uint32 Transparent = 0x00000000;
 
     SDL_Color S(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {

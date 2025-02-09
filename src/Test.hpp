@@ -10,15 +10,15 @@ namespace BloodSword::Test
     // user input test
     void Controls(Graphics::Base &graphics)
     {
-        auto x = 128;
+        auto x = (2 * BloodSword::TileSize);
 
-        auto y = 64;
+        auto y = BloodSword::TileSize;
 
-        auto w = 64;
+        auto w = BloodSword::TileSize;
 
-        auto h = 64;
+        auto h = BloodSword::TileSize;
 
-        auto s = 16;
+        auto s = BloodSword::QuarterTile;
 
         auto ws = w + s;
 
@@ -689,7 +689,7 @@ namespace BloodSword::Test
 
         auto draw = Point(map.DrawX, map.DrawY);
 
-        auto caption_w = 320;
+        auto caption_w = (5 * BloodSword::TileSize);
 
         // initialize captions
         auto captions = Graphics::CreateText(
@@ -983,13 +983,13 @@ namespace BloodSword::Test
                         {
                             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + 8));
                         }
                         else if (!party[popup_id].HasCalledToMind(spell.Type))
                         {
                             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + 8));
                         }
                     }
                     else
@@ -1000,7 +1000,7 @@ namespace BloodSword::Test
 
                             overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + 8));
                         }
                         else if (!spell.IsBasic() && spell.IsBattle)
                         {
@@ -1008,7 +1008,7 @@ namespace BloodSword::Test
 
                             overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
 
-                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                            overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + 8));
                         }
                         else
                         {
@@ -1266,13 +1266,13 @@ namespace BloodSword::Test
 
         std::vector<Graphics::RichText> collection = {};
 
-        Uint32 fixed = 0xFFFFFFFF;
+        Uint32 fixed = Color::Active;
 
-        Uint32 highlight = 0xFFFF0000;
+        Uint32 highlight = Color::Highlight;
 
-        auto width = 640;
+        auto width = (10 * BloodSword::TileSize);
 
-        auto height = 128;
+        auto height = (2 * BloodSword::TileSize);
 
         for (auto name : Palette::Names)
         {
@@ -1301,11 +1301,11 @@ namespace BloodSword::Test
 
         auto x_adjust = 60;
 
-        auto origin = 64;
+        auto origin = BloodSword::TileSize;
 
-        auto pad = 16;
+        auto pad = BloodSword::QuarterTile;
 
-        auto dim = 64;
+        auto dim = BloodSword::TileSize;
 
         auto input = Controls::User();
 
@@ -1346,21 +1346,21 @@ namespace BloodSword::Test
             }
 
             // add color boxes
-            scene.Add(Scene::Element(box_x + pad, origin, 192, 128, Palette::List[palette][0], Palette::List[palette][0], 2));
+            scene.Add(Scene::Element(box_x + pad, origin, (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][0], Palette::List[palette][0], 2));
 
-            scene.Add(Scene::Element(box_x + pad * 2 + 192, origin, 192, 128, Palette::List[palette][1], Palette::List[palette][1], 2));
+            scene.Add(Scene::Element(box_x + pad * 2 + (3 * BloodSword::TileSize), origin, (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][1], Palette::List[palette][1], 2));
 
-            scene.Add(Scene::Element(box_x + pad, origin + 192, 192, 128, Palette::List[palette][2], Palette::List[palette][2], 2));
+            scene.Add(Scene::Element(box_x + pad, origin + (3 * BloodSword::TileSize), (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][2], Palette::List[palette][2], 2));
 
-            scene.Add(Scene::Element(box_x + pad * 2 + 192, origin + 192, 192, 128, Palette::List[palette][3], fixed, 2));
+            scene.Add(Scene::Element(box_x + pad * 2 + (3 * BloodSword::TileSize), origin + (3 * BloodSword::TileSize), (3 * BloodSword::TileSize), (2 * BloodSword::TileSize), Palette::List[palette][3], fixed, 2));
 
             scene.VerifyAndAdd(Scene::Element(labels[0], Point(box_x + pad, origin + 136)));
 
-            scene.VerifyAndAdd(Scene::Element(labels[1], Point(box_x + pad * 2 + 192, origin + 136)));
+            scene.VerifyAndAdd(Scene::Element(labels[1], Point(box_x + pad * 2 + (3 * BloodSword::TileSize), origin + 136)));
 
             scene.VerifyAndAdd(Scene::Element(labels[2], Point(box_x + pad, origin + 328)));
 
-            scene.VerifyAndAdd(Scene::Element(labels[3], Point(box_x + pad * 2 + 192, origin + 328)));
+            scene.VerifyAndAdd(Scene::Element(labels[3], Point(box_x + pad * 2 + (3 * BloodSword::TileSize), origin + 328)));
 
             scene.VerifyAndAdd(Scene::Element(menu[palette], box_x + pad, origin + 392));
 
@@ -1467,7 +1467,7 @@ namespace BloodSword::Test
         // load party
         auto party = Party::Load("party/rank02.json", "party");
 
-        auto stats = Interface::GenerateStats(graphics, party, 320, false, true);
+        auto stats = Interface::GenerateStats(graphics, party, (5 * BloodSword::TileSize), false, true);
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -1486,9 +1486,9 @@ namespace BloodSword::Test
             Attribute::Type::AWARENESS,
             Attribute::Type::PSYCHIC_ABILITY};
 
-        auto popup_pad = 16;
+        auto popup_pad = BloodSword::QuarterTile;
 
-        auto popup_w = (party.Count() + 1) * 64 + popup_pad * 2;
+        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
 
         auto popup_h = 0;
 
@@ -1507,16 +1507,16 @@ namespace BloodSword::Test
             {
                 if (popup_h > 0)
                 {
-                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, 0, Color::Active, 4);
+                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Transparent, Color::Active, 4);
                 }
                 else
                 {
-                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, 0, Color::Active, 4);
+                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, Color::Transparent, Color::Active, 4);
                 }
 
                 auto &popup = overlay.Elements[0];
 
-                overlay.VerifyAndAdd(Scene::Element(select, popup.X + 16, popup.Y + 8));
+                overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + 8));
             }
 
             if (Input::IsValid(overlay, input))
@@ -1537,7 +1537,7 @@ namespace BloodSword::Test
                         SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &texture_w, nullptr);
                     }
 
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texture_w + pad * 2), popup.Y, 0, Color::Active, 4));
+                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texture_w + pad * 2), popup.Y, Color::Transparent, Color::Active, 4));
                 }
             }
 
@@ -1554,9 +1554,9 @@ namespace BloodSword::Test
                 }
                 else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
                 {
-                    auto popup_w = 512;
+                    auto popup_w = (8 * BloodSword::TileSize);
 
-                    auto popup_h = 208;
+                    auto popup_h = (13 * BloodSword::QuarterTile);
 
                     auto &character = party[input.Current];
 
@@ -1681,11 +1681,11 @@ namespace BloodSword::Test
 
         if (Engine::IsAlive(player))
         {
-            Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " WINS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " WINS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
         }
         else
         {
-            Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " WINS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " WINS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Active, true);
         }
 
         Free(events);
@@ -1783,11 +1783,11 @@ namespace BloodSword::Test
 
         if (Engine::IsAlive(player))
         {
-            Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " WINS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " WINS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
         }
         else
         {
-            Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " WINS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Active, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " WINS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Active, true);
         }
 
         Free(events);
@@ -1809,13 +1809,13 @@ namespace BloodSword::Test
         switch (result)
         {
         case Battle::Result::VICTORY:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY IS VICTORIOUS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY IS VICTORIOUS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
             break;
         case Battle::Result::DEFEAT:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY HAS BEEN DEFEATED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Highlight, 4, Color::Highlight, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY HAS BEEN DEFEATED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Highlight, true);
             break;
         case Battle::Result::FLEE:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY FLEES!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, true);
+            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY FLEES!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
             break;
         default:
             break;
@@ -1838,9 +1838,9 @@ namespace BloodSword::Test
 
     void Menu(Graphics::Base &graphics)
     {
-        auto width = 640;
+        auto width = (10 * BloodSword::TileSize);
 
-        auto height = 128;
+        auto height = (2 * BloodSword::TileSize);
 
         auto RegenerateTitle = [&]()
         {
@@ -1888,11 +1888,11 @@ namespace BloodSword::Test
 
         auto x_adjust = 60;
 
-        auto origin = 64;
+        auto origin = BloodSword::TileSize;
 
-        auto pad = 16;
+        auto pad = BloodSword::QuarterTile;
 
-        auto dim = 64;
+        auto dim = BloodSword::TileSize;
 
         auto input = Controls::User();
 
@@ -1900,7 +1900,7 @@ namespace BloodSword::Test
 
         while (!done)
         {
-            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, 0, Color::Inactive, Color::Highlight, true);
+            auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, Color::Transparent, Color::Inactive, Color::Highlight, true);
 
             scene.VerifyAndAdd(Scene::Element(title, x_adjust, 28));
 

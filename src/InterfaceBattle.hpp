@@ -88,15 +88,15 @@ namespace BloodSword::Interface
 
         controls.push_back(Controls::Type::BACK);
 
-        auto popup_w = (std::max(int(controls.size()), 2) + 2) * 64;
+        auto popup_w = (std::max(int(controls.size()), 2) + 2) * BloodSword::TileSize;
 
-        auto popup_h = 160;
+        auto popup_h = (5 * BloodSword::HalfTile);
 
         auto screen = origin + Point(w - popup_w, h - popup_h) / 2;
 
         overlay.Add(Scene::Element(screen, popup_w, popup_h, background, border, border_size));
 
-        auto pad = 16;
+        auto pad = BloodSword::QuarterTile;
 
         for (auto i = 0; i < controls.size(); i++)
         {
@@ -116,9 +116,9 @@ namespace BloodSword::Interface
 
                 auto rt = i < controls.size() - 1 ? i + 1 : i;
 
-                overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, screen.X + i * texture_w + pad, screen.Y + pad + 32, 64, 64, Color::Highlight));
+                overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
-                overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texture_w + pad, screen.Y + pad + 32));
+                overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile));
             }
         }
 
@@ -152,13 +152,13 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto fight_w = 512;
+        auto fight_w = (8 * BloodSword::TileSize);
 
-        auto fight_h = 208;
+        auto fight_h = (13 * BloodSword::QuarterTile);
 
         auto fight = origin + (Point(w, h) - Point(fight_w, fight_h)) / 2;
 
-        auto damage_w = 512;
+        auto damage_w = (8 * BloodSword::TileSize);
 
         auto damage_h = 280;
 
@@ -232,13 +232,13 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto shoot_w = 512;
+        auto shoot_w = (8 * BloodSword::TileSize);
 
-        auto shoot_h = 208;
+        auto shoot_h = (13 * BloodSword::QuarterTile);
 
         auto fight = origin + (Point(w, h) - Point(shoot_w, shoot_h)) / 2;
 
-        auto damage_w = 512;
+        auto damage_w = (8 * BloodSword::TileSize);
 
         auto damage_h = 280;
 
@@ -374,7 +374,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        auto popup_w = 512;
+        auto popup_w = (8 * BloodSword::TileSize);
 
         auto popup_h = 280;
 
@@ -528,9 +528,9 @@ namespace BloodSword::Interface
                 {Graphics::RichText("CHARACTER FPR/DMG ROLLS +2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                  Graphics::RichText("    PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
-            auto popup = draw + (Point(map_w, map_h) - Point(512, 140)) / 2;
+            auto popup = draw + (Point(map_w, map_h) - Point((8 * BloodSword::TileSize), 140)) / 2;
 
-            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, 512, 64, 2, Color::Background, Color::Inactive, Color::Active, true);
+            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, (8 * BloodSword::TileSize), BloodSword::TileSize, 2, Color::Background, Color::Inactive, Color::Active, true);
 
             if (tiger == 0)
             {
@@ -579,7 +579,7 @@ namespace BloodSword::Interface
             }
 
             // initialize captions
-            auto caption_w = 320;
+            auto caption_w = (5 * BloodSword::TileSize);
 
             auto captions = Graphics::CreateText(
                 graphics,
@@ -966,13 +966,13 @@ namespace BloodSword::Interface
                                                     {
                                                         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - 72, popup.Y + 8));
                                                         overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
-                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + 16, popup.Y + 8));
+                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + 8));
                                                     }
                                                     else if (!spell.IsBasic() && spell.IsBattle)
                                                     {
                                                         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - 72, popup.Y + 8));
                                                         overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
-                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + 16, popup.Y + 8));
+                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + 8));
                                                     }
                                                     else
                                                     {

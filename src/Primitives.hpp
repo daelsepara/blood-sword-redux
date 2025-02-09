@@ -12,6 +12,13 @@
 
 namespace BloodSword
 {
+    // default tile dimensions
+    const int TileSize = 64;
+
+    const int HalfTile = 32;
+
+    const int QuarterTile = 16;
+
     // relative positions
     enum class Position
     {

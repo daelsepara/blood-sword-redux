@@ -15,11 +15,6 @@ namespace BloodSword::Animation
         // texture associated with this frame
         SDL_Texture *Texture = nullptr;
 
-        // duration before switching to the next frame
-        Uint32 Duration = 0;
-
-        Frame(SDL_Texture *texture, Uint32 duration) : Texture(texture), Duration(duration) {}
-
         Frame(SDL_Texture *texture) : Texture(texture) {}
 
         Frame() {}
@@ -74,6 +69,14 @@ namespace BloodSword::Animation
 
         // current frames cycle
         int Cycle = 0;
+
+        // default frame dimensions
+        int FrameW = BloodSword::TileSize;
+
+        int FrameH = BloodSword::TileSize;
+
+        // trail properties
+        int TrailSize = 2;
 
         Base(std::vector<Animation::Frame> frames,
              std::vector<Animation::Type> mode,
@@ -154,6 +157,18 @@ namespace BloodSword::Animation
         void Set(int originx, int originy, int x, int y)
         {
             this->Set(Point(originx, originy), Point(x, y));
+        }
+
+        void SetFrameSize(int width, int height)
+        {
+            this->FrameW = width;
+
+            this->FrameH = height;
+        }
+
+        void SetTrailSize(int size)
+        {
+            this->TrailSize = size;
         }
 
         // check if animation is of type(s)
@@ -309,7 +324,7 @@ namespace BloodSword::Animation
                 {
                     auto trails = animation.Origin + animation.Path[i] * animation.Scale;
 
-                    scene.Add(Scene::Element(trails, 64, 64, Color::Inactive, 0, 0));
+                    scene.Add(Scene::Element(trails, animation.FrameW, animation.FrameH, Color::Inactive, 0, 0));
                 }
             }
 
@@ -320,14 +335,14 @@ namespace BloodSword::Animation
             {
                 auto dst = animation.Origin + animation.Path.back() * animation.Scale;
 
-                scene.Add(Scene::Element(dst + 4, 58, 58, 0, Color::Inactive, 2));
+                scene.Add(Scene::Element(dst + (2 * animation.TrailSize), animation.FrameW - (4 * animation.TrailSize), animation.FrameH - (4 * animation.TrailSize), Color::Transparent, Color::Inactive, animation.TrailSize));
             }
 
             scene.VerifyAndAdd(Scene::Element(animation.Frames[animation.Frame].Texture, location));
 
             if (trail)
             {
-                scene.Add(Scene::Element(location + 4, 58, 58, 0, Color::Inactive, 2));
+                scene.Add(Scene::Element(location + (2 * animation.TrailSize), animation.FrameW - (4 * animation.TrailSize), animation.FrameW - (4 * animation.TrailSize), Color::Transparent, Color::Inactive, animation.TrailSize));
             }
         }
 

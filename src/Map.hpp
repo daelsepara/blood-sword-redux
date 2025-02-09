@@ -109,13 +109,13 @@ namespace BloodSword::Map
         int Y = 0;
 
         // x offset (pixels, drawing)
-        int DrawX = 64;
+        int DrawX = BloodSword::TileSize;
 
         // y offset (pixels, drawing)
-        int DrawY = 64;
+        int DrawY = BloodSword::TileSize;
 
         // size of each tile (pixels)
-        int TileSize = 64;
+        int TileSize = BloodSword::TileSize;
 
         // starting locations of party
         std::vector<BloodSword::Point> Origins = {};
@@ -274,11 +274,11 @@ namespace BloodSword::Map
 
             this->Y = !data["y"].is_null() ? int(data["y"]) : 0;
 
-            this->DrawX = !data["drawx"].is_null() ? int(data["drawx"]) : 64;
+            this->DrawX = !data["drawx"].is_null() ? int(data["drawx"]) : BloodSword::TileSize;
 
-            this->DrawY = !data["drawy"].is_null() ? int(data["drawy"]) : 64;
+            this->DrawY = !data["drawy"].is_null() ? int(data["drawy"]) : BloodSword::TileSize;
 
-            this->TileSize = !data["tilesize"].is_null() ? int(data["tilesize"]) : 64;
+            this->TileSize = !data["tilesize"].is_null() ? int(data["tilesize"]) : BloodSword::TileSize;
 
             if (this->Width > 0 && this->Height > 0)
             {

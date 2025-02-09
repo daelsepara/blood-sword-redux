@@ -7,7 +7,7 @@
 namespace BloodSword
 {
     const int MajorVersion = 0;
-    const int MinorVersion = 0;
+    const int MinorVersion = 1;
     const int BuildNumber = 1;
 
     // version string
