@@ -1833,7 +1833,7 @@ namespace BloodSword::Test
 
         input_string = BloodSword::LeftPad(input_string, 4);
 
-        Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), 0, Color::Active, 4, Color::Highlight, false);
+        Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
     }
 
     void Menu(Graphics::Base &graphics)
