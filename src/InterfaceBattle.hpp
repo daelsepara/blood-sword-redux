@@ -700,7 +700,7 @@ namespace BloodSword::Interface
             // focus/cursor blink variables
             Uint64 blink_start = SDL_GetTicks64();
 
-            Uint64 blink_delay = 100;
+            Uint64 blink_delay = BloodSword::StandardDelay;
 
             auto blinking = false;
 
@@ -1633,7 +1633,7 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            animating = !Graphics::Animate(graphics, scene, movement, BloodSword::StandardDelay);
+                            animating = !Graphics::Animate(graphics, scene, movement, BloodSword::FrameDelay);
 
                             if (!animating)
                             {

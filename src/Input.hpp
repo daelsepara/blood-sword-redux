@@ -75,7 +75,7 @@ namespace BloodSword::Input
 
             SDL_RenderPresent(graphics.Renderer);
 
-            SDL_WaitEventTimeout(&result, 100);
+            SDL_WaitEventTimeout(&result, BloodSword::StandardDelay);
 
             if (result.type == SDL_QUIT)
             {
@@ -133,7 +133,7 @@ namespace BloodSword::Input
     }
 
     // Handler for text input events. Must be called from other handler since it does not render screens
-    Controls::User WaitForText(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = 100)
+    Controls::User WaitForText(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
     {
         Input::RenderWhileWaiting(graphics, scene, overlay, input, is_dialog, blur);
 
@@ -208,7 +208,7 @@ namespace BloodSword::Input
     }
 
     // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = 100)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
     {
         if (input.Text)
         {
@@ -458,7 +458,7 @@ namespace BloodSword::Input
                     input.Down = true;
                 }
 
-                SDL_Delay(100);
+                SDL_Delay(BloodSword::StandardDelay);
             }
         }
 

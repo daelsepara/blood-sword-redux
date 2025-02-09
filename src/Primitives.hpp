@@ -32,7 +32,11 @@ namespace BloodSword
     const int SmallPad = 4;
 
     // Delay Constants
-    const int StandardDelay = 25;
+    const int FrameDelay = 25;
+
+    const int StandardDelay = 100;
+
+    const int OneSecond = 1000;
 
     // relative positions
     enum class Position

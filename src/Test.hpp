@@ -212,7 +212,7 @@ namespace BloodSword::Test
 
         auto scroll_y = map.DrawY + background_h - map.TileSize + pad * 2;
 
-        auto scroll_speed = BloodSword::StandardDelay;
+        auto scroll_speed = BloodSword::FrameDelay;
 
         auto scroll_up = false;
 
@@ -598,7 +598,7 @@ namespace BloodSword::Test
 
                             animations.Add(movement);
 
-                            animations.Delay = BloodSword::StandardDelay;
+                            animations.Delay = BloodSword::FrameDelay;
 
                             done = false;
 
@@ -641,7 +641,7 @@ namespace BloodSword::Test
                     {
                         Free(&fps_texture);
 
-                        fps = (double)(frames * 1000) / (double)msec;
+                        fps = (double)(frames * BloodSword::OneSecond) / (double)msec;
 
                         std::string fpsString = "FPS: " + std::to_string(fps) + "/sec";
 
@@ -1020,7 +1020,7 @@ namespace BloodSword::Test
 
             if (animating)
             {
-                animating = !Graphics::Animate(graphics, scene, movement, BloodSword::StandardDelay);
+                animating = !Graphics::Animate(graphics, scene, movement, BloodSword::FrameDelay);
 
                 if (!animating)
                 {

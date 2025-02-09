@@ -2473,7 +2473,7 @@ namespace BloodSword::Interface
 
                 blink = !blink;
 
-                input = Input::WaitForText(graphics, background, box, input, true, blur, 100);
+                input = Input::WaitForText(graphics, background, box, input, true, blur, BloodSword::StandardDelay);
 
                 if (input.RefreshText)
                 {
