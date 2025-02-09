@@ -125,20 +125,46 @@ namespace BloodSword::Interface
         return overlay;
     }
 
-    // regenerate map
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, std::vector<Scene::Element> &assets, std::vector<Controls::Base> &controls, Point location)
     {
-        auto scene = Interface::Map(battle.Map, party, battle.Opponents, 1);
+        auto num = int(assets.size() == controls.size() ? controls.size() : 0);
 
-        auto id = int(scene.Controls.size());
+        auto scene = Interface::Map(battle.Map, party, battle.Opponents, num);
+
+        if (num > 0)
+        {
+            for (auto &asset : assets)
+            {
+                scene.VerifyAndAdd(asset);
+            }
+
+            for (auto &control : controls)
+            {
+                scene.Add(control);
+            }
+        }
+
+        return scene;
+    }
+
+    // regenerate battle map (starting at point location)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location)
+    {
+        auto id = int(battle.Map.ViewX * battle.Map.ViewY);
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), battle.Map.DrawX, battle.Map.DrawY + map_h));
+        std::vector<Scene::Element> assets = {Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h)};
 
-        scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, battle.Map.DrawX, battle.Map.DrawY + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
+        std::vector<Controls::Base> controls = {Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
-        return scene;
+        return Interface::BattleScene(battle, party, assets, controls, location);
+    }
+
+    // regenerate battle map
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party)
+    {
+        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY));
     }
 
     // generate status
