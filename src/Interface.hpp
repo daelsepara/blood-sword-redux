@@ -1694,7 +1694,7 @@ namespace BloodSword::Interface
                             rolled = true;
 
                             // check damage
-                            damage = std::max(0, rolls.Sum - (!ignore_armor ? 0 : Engine::Score(defender, Attribute::Type::ARMOUR, in_battle)));
+                            damage = std::max(0, rolls.Sum - (ignore_armor ? 0 : Engine::Score(defender, Attribute::Type::ARMOUR, in_battle)));
 
                             if (damage > 0)
                             {
