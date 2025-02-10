@@ -1860,47 +1860,41 @@ namespace BloodSword::Test
         Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
     }
 
+    std::vector<SDL_Texture *> RegenerateMenu(Graphics::Base &graphics, int width)
+    {
+        auto menu = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("00 MENU TEST\n\nDemonstrates the font engine, menu rendering and list box scrolling", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("03 ANIMATION TEST\n\nDemonstrates A* path-finding and animation engine and window clipping", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("04 BATTLE ORDER\n\nDemonstrates battle order/action/turn sequence and pop-up windows", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("05 PALETTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting/spells)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+
+        return menu;
+    }
+
+    SDL_Texture *RegenerateTitle(Graphics::Base &graphics, int width)
+    {
+        return Graphics::CreateText(graphics, "Blood Sword Test Suite", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_UNDERLINE, width);
+    }
+
     void Menu(Graphics::Base &graphics)
     {
         auto width = BloodSword::TileSize * 10;
 
         auto height = BloodSword::TileSize * 2;
 
-        auto RegenerateTitle = [&]()
-        {
-            return Graphics::CreateText(graphics, "Blood Sword Test Suite", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_UNDERLINE, width);
-        };
+        auto menu = RegenerateMenu(graphics, width);
 
-        auto RegenerateMenu = [&]()
-        {
-            auto menu = Graphics::CreateText(
-                graphics,
-                {Graphics::RichText("00 MENU TEST\n\nDemonstrates the font engine, menu rendering and list box scrolling", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("01 CONTROLS TEST\n\nDemonstrates the graphics rendering engine and mouse/keyboard/gamepad controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("02 MAP TEST\n\nDemonstrates map rendering, object info box display, text scrolling, and context-sensitive controls", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("03 ANIMATION TEST\n\nDemonstrates A* path-finding and animation engine and window clipping", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("04 BATTLE ORDER\n\nDemonstrates battle order/action/turn sequence and pop-up windows", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("05 PALETTES\n\n\nDemonstrates palette and color-switching", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("06 SCANLINES\n\n\nToggle horizontal scanlines on/off", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting/spells)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-                 Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
-            return menu;
-        };
-
-        auto title = RegenerateTitle();
-
-        auto menu = RegenerateMenu();
-
-        auto FreeTextures = [&]()
-        {
-            Free(menu);
-
-            Free(&title);
-        };
+        auto title = RegenerateTitle(graphics, width);
 
         auto start = 0;
 
@@ -1984,9 +1978,10 @@ namespace BloodSword::Test
                     case 5:
                         // reset textures and menu
                         Test::Palette(graphics);
-                        FreeTextures();
-                        title = RegenerateTitle();
-                        menu = RegenerateMenu();
+                        Free(menu);
+                        Free(&title);
+                        title = RegenerateTitle(graphics, width);
+                        menu = RegenerateMenu(graphics, width);
                         break;
                     case 6:
                         Graphics::ToggleScanLines();
@@ -2062,7 +2057,9 @@ namespace BloodSword::Test
             }
         }
 
-        FreeTextures();
+        Free(&title);
+
+        Free(menu);
     }
 }
 
