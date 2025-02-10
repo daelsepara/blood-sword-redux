@@ -164,7 +164,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 0}
     };
 
-    BloodSword::IntMapping<Spells::Type> DifficultyModifier = {
+    BloodSword::IntMapping<Spells::Type> DamageModifier = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
         {Spells::Type::NIGHTHOWL, 0},
