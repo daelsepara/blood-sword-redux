@@ -1735,7 +1735,9 @@ namespace BloodSword::Test
 
         auto scene = Scene::Base();
 
-        while (alive)
+        auto empty = false;
+
+        while (alive && !empty)
         {
             scene = Scene::Base();
 
@@ -1760,6 +1762,8 @@ namespace BloodSword::Test
                 {
                     // quiver empty
                     scene.VerifyAndAdd(Scene::Element(events[2], Point(0, scene.Elements[0].H)));
+
+                    empty = true;
                 }
 
                 // enemy turn
@@ -1792,6 +1796,8 @@ namespace BloodSword::Test
                     {
                         // quiver empty
                         scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
+
+                        empty = true;
                     }
                 }
             }
@@ -1803,7 +1809,11 @@ namespace BloodSword::Test
 
         scene.Clear();
 
-        if (Engine::IsAlive(player))
+        if (empty)
+        {
+            Interface::MessageBox(graphics, scene, Graphics::RichText("YOU RAN OUT OF ARROWS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Active, true);
+        }
+        else if (Engine::IsAlive(player))
         {
             Interface::MessageBox(graphics, scene, Graphics::RichText(player.Name + " WINS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
         }

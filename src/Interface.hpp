@@ -1436,7 +1436,7 @@ namespace BloodSword::Interface
 
         auto origin_y = origin.Y + h - pad * 3;
 
-        auto origin_result = origin + Point(w - pad - BloodSword::TileSize, BloodSword::TileSize + pad);
+        auto origin_result = origin + Point(w - pad * character_offset - (character_offset * BloodSword::TileSize), BloodSword::TileSize + pad);
 
         auto origin_target = origin + Point(w - pad - BloodSword::TileSize, pad);
 
