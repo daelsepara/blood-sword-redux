@@ -117,11 +117,11 @@ namespace BloodSword::Graphics
         SDL_Rect rect;
 
         rect.w = w;
-        
+
         rect.h = h;
-        
+
         rect.x = x;
-        
+
         rect.y = y;
 
         if (graphics.Renderer)
@@ -239,23 +239,23 @@ namespace BloodSword::Graphics
         if (graphics.Renderer)
         {
             SDL_Rect src;
-            
+
             src.w = texture_w;
-            
+
             src.h = std::min(texture_h, bounds);
-            
+
             src.y = offset;
-            
+
             src.x = 0;
 
             SDL_Rect dst;
-            
+
             dst.w = w;
-            
+
             dst.h = h;
-            
+
             dst.x = x;
-            
+
             dst.y = y;
 
             if (background != 0)

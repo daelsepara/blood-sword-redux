@@ -43,11 +43,11 @@ namespace BloodSword::Palette
         if (palette >= 0 && palette < List.size())
         {
             Color::Active = List[palette][0];
-            
+
             Color::Inactive = List[palette][1];
-            
+
             Color::Highlight = List[palette][2];
-            
+
             Color::Background = List[palette][3];
 
             if (override)

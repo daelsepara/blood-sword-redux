@@ -10,11 +10,11 @@ namespace Random
 	{
 	private:
 		std::mt19937_64 generator;
-		
+
 		std::normal_distribution<double> normalDistribution;
-		
+
 		std::uniform_real_distribution<double> uniformDistribution;
-		
+
 		std::uniform_int_distribution<int> uniformIntDistribution;
 
 	public:

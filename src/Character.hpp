@@ -17,13 +17,13 @@
 namespace BloodSword::Character
 {
     typedef std::vector<Skills::Type> Abilities;
-    
+
     typedef std::vector<Attribute::Base> Characteristics;
-    
+
     typedef std::vector<Item::Base> Inventory;
-    
+
     typedef std::vector<Spells::Base> Grimoire;
-    
+
     typedef std::vector<Spells::Type> Memorized;
 
     template <typename T>
