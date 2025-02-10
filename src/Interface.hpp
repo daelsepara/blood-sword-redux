@@ -1603,7 +1603,7 @@ namespace BloodSword::Interface
 
         auto armour_texture = Graphics::CreateText(graphics, armour_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
-        auto passed = Graphics::CreateText(graphics, "DAMAGED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
+        auto damaged = Graphics::CreateText(graphics, "DAMAGED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
         auto failed = Graphics::CreateText(graphics, "UNHARMED", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL);
 
@@ -1627,6 +1627,9 @@ namespace BloodSword::Interface
 
         auto text_h = 0;
 
+        // adjust width depending on the number of dice to roll
+        w += (roll > 6 ? BloodSword::TileSize * (roll - 6) : 0);
+
         SDL_QueryTexture(failed, nullptr, nullptr, &text_w, &text_h);
 
         auto origin_x = origin.X + pad + BloodSword::Pad;
@@ -1638,8 +1641,6 @@ namespace BloodSword::Interface
         auto damage_y1 = text_h * 2 + BloodSword::TileSize + pad;
 
         auto damage_y2 = BloodSword::TileSize * 2 + pad;
-
-        auto damage_y3 = text_h * 3 + BloodSword::TileSize + pad;
 
         auto origin_damage = origin + Point((w - BloodSword::TileSize) / 2, pad);
 
@@ -1694,9 +1695,9 @@ namespace BloodSword::Interface
                 if (damage > 0)
                 {
                     // damaged
-                    overlay.VerifyAndAdd(Scene::Element(passed, origin + Point(damage_x1, damage_y1)));
+                    overlay.VerifyAndAdd(Scene::Element(damaged, origin_damage + Point(-pad / 4, text_h + BloodSword::TileSize)));
 
-                    overlay.VerifyAndAdd(Scene::Element(damage_value, origin + Point(damage_x1, damage_y3)));
+                    overlay.VerifyAndAdd(Scene::Element(damage_value, origin_damage + Point(0, BloodSword::TileSize)));
                 }
                 else
                 {
@@ -1756,7 +1757,7 @@ namespace BloodSword::Interface
 
         Free(&failed);
 
-        Free(&passed);
+        Free(&damaged);
 
         Free(&armour_texture);
 
