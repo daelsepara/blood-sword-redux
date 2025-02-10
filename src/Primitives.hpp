@@ -220,5 +220,31 @@ namespace BloodSword
 
         return text;
     }
+
+    void Size(SDL_Texture *texture, int *texture_w, int *texture_h)
+    {
+        if (texture)
+        {
+            SDL_QueryTexture(texture, nullptr, nullptr, texture_w, texture_h);
+        }
+    }
+
+    int Width(SDL_Texture *texture)
+    {
+        auto width = 0;
+
+        BloodSword::Size(texture, &width, nullptr);
+
+        return width;
+    }
+
+    int Height(SDL_Texture *texture)
+    {
+        auto height = 0;
+
+        BloodSword::Size(texture, nullptr, &height);
+
+        return height;
+    }
 }
 #endif
