@@ -291,13 +291,7 @@ namespace BloodSword::Graphics
     {
         if (graphics.Renderer && texture)
         {
-            auto texture_w = 0;
-
-            auto texture_h = 0;
-
-            SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, &texture_h);
-
-            Graphics::Render(graphics, texture, texture_w, texture_h, x, y, bounds, offset, w, h, background);
+            Graphics::Render(graphics, texture, BloodSword::Width(texture), BloodSword::Height(texture), x, y, bounds, offset, w, h, background);
         }
     }
 
@@ -310,7 +304,7 @@ namespace BloodSword::Graphics
 
             auto texture_h = 0;
 
-            SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, &texture_h);
+            BloodSword::Size(texture, &texture_w, &texture_h);
 
             Graphics::Render(graphics, texture, texture_w, texture_h, x, y, std::min(texture_h, bounds), offset, texture_w, std::min(texture_h, bounds), background);
         }
@@ -321,11 +315,7 @@ namespace BloodSword::Graphics
     {
         if (graphics.Renderer && texture)
         {
-            auto texture_h = 0;
-
-            SDL_QueryTexture(texture, nullptr, nullptr, nullptr, &texture_h);
-
-            Graphics::Render(graphics, texture, x, y, texture_h, 0, background);
+            Graphics::Render(graphics, texture, x, y, BloodSword::Height(texture), 0, background);
         }
     }
 
@@ -625,13 +615,7 @@ namespace BloodSword::Graphics
 
         if (VersionOverlay)
         {
-            auto w = 0;
-
-            auto h = 0;
-
-            SDL_QueryTexture(VersionOverlay, nullptr, nullptr, &w, &h);
-
-            VersionCoordinates = Point(graphics.Width - w, graphics.Height - h);
+            VersionCoordinates = Point(graphics.Width - BloodSword::Width(VersionOverlay), graphics.Height - BloodSword::Height(VersionOverlay));
         }
     }
 

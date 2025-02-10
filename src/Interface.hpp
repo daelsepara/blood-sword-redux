@@ -1002,15 +1002,10 @@ namespace BloodSword::Interface
 
                 if (choices[item])
                 {
-                    SDL_QueryTexture(choices[item], nullptr, nullptr, &current_w, &current_h);
+                    BloodSword::Size(choices[item], &current_w, &current_h);
                 }
 
-                auto previous_w = 0;
-
-                if (item > 0 && choices[item - 1])
-                {
-                    SDL_QueryTexture(choices[item - 1], nullptr, nullptr, &previous_w, nullptr);
-                }
+                auto previous_w = (item > 0 && choices[item - 1]) ? BloodSword::Width(choices[item - 1]) : 0;
 
                 auto item_x = x + item * (previous_w + pad);
 
@@ -1075,9 +1070,7 @@ namespace BloodSword::Interface
 
                 if (texture)
                 {
-                    auto texture_w = 0;
-
-                    SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, nullptr);
+                    auto texture_w = BloodSword::Width(texture);
 
                     auto lt = i > 0 ? i - 1 : i;
 
@@ -1145,12 +1138,6 @@ namespace BloodSword::Interface
 
                 if (texture)
                 {
-                    auto texture_w = 0;
-
-                    auto texture_h = 0;
-
-                    SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, &texture_h);
-
                     auto lt = col > 0 ? i - 1 : i;
 
                     auto rt = col < 5 ? i + 1 : i;
@@ -1159,9 +1146,9 @@ namespace BloodSword::Interface
 
                     auto dn = i + 6 < (spells + 1) ? i + 6 : i;
 
-                    auto x = screen.X + col * texture_w + pad;
+                    auto x = screen.X + col * BloodSword::Width(texture) + pad;
 
-                    auto y = screen.Y + row * (texture_h + BloodSword::HalfTile) + pad + BloodSword::HalfTile;
+                    auto y = screen.Y + row * (BloodSword::Width(texture) + BloodSword::HalfTile) + pad + BloodSword::HalfTile;
 
                     overlay.Add(Controls::Base(Interface::SpellControls[character.Spells[i].Type], i, lt, rt, up, dn, x, y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -1215,9 +1202,7 @@ namespace BloodSword::Interface
 
             if (texture)
             {
-                auto texture_w = 0;
-
-                SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, nullptr);
+                auto texture_w = BloodSword::Width(texture);
 
                 auto lt = i > 0 ? i - 1 : i;
 
@@ -1378,15 +1363,11 @@ namespace BloodSword::Interface
             attribute_string += std::to_string(modifier);
         }
 
-        auto attribute_texture = Graphics::CreateText(graphics, attribute_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+        auto texture = Graphics::CreateText(graphics, attribute_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
         auto passed = Graphics::CreateText(graphics, "PASSED", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
         auto failed = Graphics::CreateText(graphics, "FAILED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
-
-        auto attribute_w = 0;
-
-        SDL_QueryTexture(attribute_texture, nullptr, nullptr, &attribute_w, nullptr);
 
         auto start = Graphics::CreateText(graphics, {Graphics::RichText(" ROLL ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
 
@@ -1476,7 +1457,7 @@ namespace BloodSword::Interface
             }
 
             // attribute label
-            overlay.VerifyAndAdd(Scene::Element(attribute_texture, origin_attribute));
+            overlay.VerifyAndAdd(Scene::Element(texture, origin_attribute));
 
             if (stage == Engine::RollStage::START)
             {
@@ -1557,7 +1538,7 @@ namespace BloodSword::Interface
 
         Free(&failed);
 
-        Free(&attribute_texture);
+        Free(&texture);
 
         return result;
     }
@@ -1623,22 +1604,12 @@ namespace BloodSword::Interface
 
         auto rolled = false;
 
-        auto text_w = 0;
-
-        auto text_h = 0;
-
-        auto damaged_w = 0;
-
-        auto damaged_h = 0;
+        auto text_h = BloodSword::Height(unharmed);
 
         // adjust width depending on the number of dice to roll
         w += (roll > 6 ? BloodSword::TileSize * (roll - 6) : 0);
 
         origin.X -= (roll > 6) ? BloodSword::HalfTile * (roll - 6) : 0;
-
-        SDL_QueryTexture(unharmed, nullptr, nullptr, &text_w, &text_h);
-
-        SDL_QueryTexture(damaged, nullptr, nullptr, &damaged_w, &damaged_h);
 
         auto tile_pad = BloodSword::TileSize + pad;
 
@@ -1646,7 +1617,7 @@ namespace BloodSword::Interface
 
         auto origin_y = origin.Y + h - pad * 3;
 
-        auto edge_x = w - text_w - pad;
+        auto edge_x = w - BloodSword::Width(unharmed) - pad;
 
         auto dice_y = BloodSword::TileSize * 2 + pad;
 
@@ -1654,7 +1625,7 @@ namespace BloodSword::Interface
 
         auto origin_icon = origin + Point((w - BloodSword::TileSize) / 2, pad);
 
-        auto origin_damaged = origin + Point((w - damaged_w) / 2, tile_pad + text_h);
+        auto origin_damaged = origin + Point((w - BloodSword::Width(damaged)) / 2, tile_pad + text_h);
 
         auto origin_stats = origin + Point(pad, tile_pad);
 
@@ -1760,7 +1731,7 @@ namespace BloodSword::Interface
 
                                 damage_value = Graphics::CreateText(graphics, ("-" + std::to_string(damage) + " END").c_str(), Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
-                                SDL_QueryTexture(damage_value, nullptr, nullptr, &value_w, nullptr);
+                                value_w = BloodSword::Width(damage_value);
                             }
                         }
                     }
@@ -1827,7 +1798,7 @@ namespace BloodSword::Interface
 
             auto texture_h = 0;
 
-            SDL_QueryTexture(message, nullptr, nullptr, &texture_w, &texture_h);
+            BloodSword::Size(message, &texture_w, &texture_h);
 
             auto box_w = texture_w + pad * 2;
 
@@ -1924,7 +1895,7 @@ namespace BloodSword::Interface
 
             auto texture_h = 0;
 
-            SDL_QueryTexture(message, nullptr, nullptr, &texture_w, &texture_h);
+            BloodSword::Size(message, &texture_w, &texture_h);
 
             auto box_w = texture_w + pad * 2;
 
@@ -2221,12 +2192,7 @@ namespace BloodSword::Interface
 
         auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
 
-        auto popup_h = 0;
-
-        if (stats.size() > 0)
-        {
-            SDL_QueryTexture(stats[0], nullptr, nullptr, nullptr, &popup_h);
-        }
+        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
 
         while (!done)
         {
@@ -2258,11 +2224,7 @@ namespace BloodSword::Interface
 
                     if (stats[input.Current])
                     {
-                        auto stats_w = 0;
-
-                        SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &stats_w, nullptr);
-
-                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (stats_w + pad * 2), popup.Y, Color::Transparent, Color::Active, BloodSword::Border));
+                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Transparent, Color::Active, BloodSword::Border));
                     }
 
                     if (skills[input.Current])
@@ -2290,11 +2252,7 @@ namespace BloodSword::Interface
 
                     if (texture)
                     {
-                        auto texture_w = 0;
-
-                        SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, nullptr);
-
-                        overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile));
+                        overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * BloodSword::Width(texture) + pad, screen.Y + pad + BloodSword::HalfTile));
                     }
                 }
 
@@ -2350,13 +2308,9 @@ namespace BloodSword::Interface
 
         auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
 
-        auto menu_w = 0;
-
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
-        SDL_QueryTexture(menu_title, nullptr, nullptr, &menu_w, nullptr);
-
-        scene.Add(Scene::Element(menu_title, Point((graphics.Width - menu_w) / 2, origin.Y - pad * 6)));
+        scene.Add(Scene::Element(menu_title, Point((graphics.Width - BloodSword::Width(menu_title)) / 2, origin.Y - pad * 6)));
 
         scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, BloodSword::Border));
 
@@ -2370,13 +2324,6 @@ namespace BloodSword::Interface
         };
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
-
-        auto current_w = 0;
-
-        if (current)
-        {
-            SDL_QueryTexture(current, nullptr, nullptr, &current_w, nullptr);
-        }
 
         auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, int(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, blur) + 1;
 
@@ -2442,15 +2389,11 @@ namespace BloodSword::Interface
 
                         if (texture)
                         {
-                            auto texture_w = 0;
-
-                            SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, nullptr);
-
-                            bg_scene.VerifyAndAdd(Scene::Element(texture, party_x + i * texture_w, party_y + pad + BloodSword::HalfTile));
+                            bg_scene.VerifyAndAdd(Scene::Element(texture, party_x + i * BloodSword::Width(texture), party_y + pad + BloodSword::HalfTile));
                         }
                     }
 
-                    bg_scene.VerifyAndAdd(Scene::Element(current, (graphics.Width - current_w) / 2, party_y + pad));
+                    bg_scene.VerifyAndAdd(Scene::Element(current, (graphics.Width - BloodSword::Width(current)) / 2, party_y + pad));
 
                     if (!Interface::Confirm(graphics, bg_scene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, BloodSword::Border, Color::Inactive, false))
                     {
@@ -2521,16 +2464,9 @@ namespace BloodSword::Interface
                 }
 
                 // add cursor blink
-                if (blink && input.TextInput.size() < input.TextLimit)
+                if (blink && input.TextInput.size() < input.TextLimit && input_texture)
                 {
-                    auto texture_w = 0;
-
-                    if (input_texture)
-                    {
-                        SDL_QueryTexture(input_texture, nullptr, nullptr, &texture_w, nullptr);
-                    }
-
-                    box.VerifyAndAdd(Scene::Element(cursor, location + Point(pad + texture_w, pad * 4)));
+                    box.VerifyAndAdd(Scene::Element(cursor, location + Point(pad + BloodSword::Width(input_texture), pad * 4)));
                 }
 
                 blink = !blink;

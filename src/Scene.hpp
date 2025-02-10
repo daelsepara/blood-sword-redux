@@ -70,7 +70,7 @@ namespace BloodSword::Scene
         {
             if (this->Texture)
             {
-                SDL_QueryTexture(this->Texture, nullptr, nullptr, &this->W, &this->H);
+                BloodSword::Size(this->Texture, &this->W, &this->H);
             }
         }
 
@@ -93,7 +93,7 @@ namespace BloodSword::Scene
         {
             if (texture)
             {
-                SDL_QueryTexture(texture, nullptr, nullptr, &this->W, &this->H);
+                BloodSword::Size(texture, &this->W, &this->H);
 
                 this->Bounds = this->H;
             }
@@ -107,7 +107,7 @@ namespace BloodSword::Scene
         {
             if (this->Texture)
             {
-                SDL_QueryTexture(this->Texture, nullptr, nullptr, &this->W, &this->H);
+                BloodSword::Size(this->Texture, &this->W, &this->H);
             }
 
             this->Bounds = this->H;

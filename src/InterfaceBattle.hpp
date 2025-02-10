@@ -108,7 +108,7 @@ namespace BloodSword::Interface
 
                 auto texture_h = 0;
 
-                SDL_QueryTexture(texture, nullptr, nullptr, &texture_w, &texture_h);
+                BloodSword::Size(texture, &texture_w, &texture_h);
 
                 auto lt = i > 0 ? i - 1 : i;
 

@@ -218,7 +218,7 @@ namespace BloodSword::Test
 
         auto scroll_down = false;
 
-        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texture_w, &texture_h);
+        BloodSword::Size(backgrounds[background], &texture_w, &texture_h);
 
         while (true)
         {
@@ -435,7 +435,7 @@ namespace BloodSword::Test
                 {
                     if (change)
                     {
-                        SDL_QueryTexture(backgrounds[background], nullptr, nullptr, &texture_w, &texture_h);
+                        BloodSword::Size(backgrounds[background], &texture_w, &texture_h);
 
                         offset = 0;
 
@@ -1512,12 +1512,7 @@ namespace BloodSword::Test
 
         auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
 
-        auto popup_h = 0;
-
-        if (stats.size() > 0)
-        {
-            SDL_QueryTexture(stats[0], nullptr, nullptr, nullptr, &popup_h);
-        }
+        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
 
         while (!done)
         {
@@ -1552,14 +1547,7 @@ namespace BloodSword::Test
 
                     overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
-                    auto texture_w = 0;
-
-                    if (stats[input.Current])
-                    {
-                        SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &texture_w, nullptr);
-                    }
-
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (texture_w + pad * 2), popup.Y, Color::Transparent, Color::Active, 4));
+                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Transparent, Color::Active, 4));
                 }
             }
 

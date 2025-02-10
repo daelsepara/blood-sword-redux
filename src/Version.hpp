@@ -8,7 +8,7 @@ namespace BloodSword
 {
     const int MajorVersion = 0;
     const int MinorVersion = 1;
-    const int BuildNumber = 10;
+    const int BuildNumber = 12;
 
     // version string
     std::string Version()
