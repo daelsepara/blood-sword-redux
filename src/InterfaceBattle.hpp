@@ -443,31 +443,31 @@ namespace BloodSword::Interface
 
         if (spell == Spells::Type::VOLCANO_SPRAY)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DmgMod[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DifficultyModifier[spell], true, false, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::WHITE_FIRE)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DmgMod[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DifficultyModifier[spell], true, false, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::SWORDTHRUST)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DmgMod[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DifficultyModifier[spell], true, false, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::NEMESIS_BOLT)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DmgMod[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DifficultyModifier[spell], true, false, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::NIGHTHOWL)
         {
-            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DiffMod[spell], true, Spells::Assets[spell]))
+            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], true, Spells::Assets[spell]))
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
@@ -480,7 +480,7 @@ namespace BloodSword::Interface
         }
         else if (spell == Spells::Type::MISTS_OF_DEATH)
         {
-            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DiffMod[spell], true, Spells::Assets[spell]))
+            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], true, Spells::Assets[spell]))
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
@@ -495,11 +495,11 @@ namespace BloodSword::Interface
         }
         else if (spell == Spells::Type::THE_VAMPIRE_SPELL)
         {
-            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DiffMod[spell], true, Spells::Assets[spell]))
+            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], true, Spells::Assets[spell]))
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DmgMod[spell], true, false, Spells::Assets[spell]);
+                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DifficultyModifier[spell], true, false, Spells::Assets[spell]);
 
                 alive &= Engine::GainEndurance(target, hit, true);
 
@@ -513,11 +513,11 @@ namespace BloodSword::Interface
         }
         else if (spell == Spells::Type::GHASTLY_TOUCH)
         {
-            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DiffMod[spell], true, Spells::Assets[spell]))
+            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], true, Spells::Assets[spell]))
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DmgMod[spell], true, true, Spells::Assets[spell]);
+                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DifficultyModifier[spell], true, true, Spells::Assets[spell]);
 
                 alive &= Engine::GainEndurance(target, hit, true);
             }
@@ -525,20 +525,20 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(resisted, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Highlight : Color::Active, BloodSword::Border, Color::Highlight, true);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::DmgAlt[spell], Spells::DmgMod[spell], true, true, Spells::Assets[spell]);
+                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::AlternateDamage[spell], Spells::DifficultyModifier[spell], true, true, Spells::Assets[spell]);
 
                 alive &= Engine::GainEndurance(target, hit, true);
             }
         }
         else if (spell == Spells::Type::SHEET_LIGHTNING)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DmgMod[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DifficultyModifier[spell], true, false, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::SERVILE_ENTHRALMENT)
         {
-            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DiffMod[spell], true, Spells::Assets[spell]))
+            if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], true, Spells::Assets[spell]))
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 

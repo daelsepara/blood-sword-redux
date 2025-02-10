@@ -124,7 +124,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 2}
     };
 
-    BloodSword::IntMapping<Spells::Type> DiffMod = {
+    BloodSword::IntMapping<Spells::Type> DifficultyModifier = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
         {Spells::Type::NIGHTHOWL, 0},
@@ -164,7 +164,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 0}
     };
 
-    BloodSword::IntMapping<Spells::Type> DmgMod = {
+    BloodSword::IntMapping<Spells::Type> DifficultyModifier = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
         {Spells::Type::NIGHTHOWL, 0},
@@ -184,7 +184,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 0}
     };
 
-    BloodSword::IntMapping<Spells::Type> DmgAlt = {
+    BloodSword::IntMapping<Spells::Type> AlternateDamage = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
         {Spells::Type::NIGHTHOWL, 0},
