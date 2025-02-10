@@ -143,7 +143,7 @@ namespace BloodSword::Character
         // add status
         void Add(Character::Status status)
         {
-            this->Add(status, -1);
+            this->Add(status, Character::Duration[status]);
         }
 
         // remove status
@@ -712,7 +712,7 @@ namespace BloodSword::Character
         {
             nlohmann::json row;
 
-            for (auto &status: character.Status)
+            for (auto &status : character.Status)
             {
                 auto status_name = std::string(Character::StatusMapping[status.first]);
 

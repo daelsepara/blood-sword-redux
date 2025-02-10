@@ -121,8 +121,7 @@ namespace BloodSword::Spells
         {Spells::Type::SERVILE_ENTHRALMENT, 2},
         {Spells::Type::SUMMON_FALTYN, 2},
         {Spells::Type::PREDICTION, 2},
-        {Spells::Type::DETECT_ENCHANTMENT, 2}
-    };
+        {Spells::Type::DETECT_ENCHANTMENT, 2}};
 
     BloodSword::IntMapping<Spells::Type> DifficultyModifier = {
         {Spells::Type::NONE, 0},
@@ -141,8 +140,7 @@ namespace BloodSword::Spells
         {Spells::Type::SERVILE_ENTHRALMENT, 0},
         {Spells::Type::SUMMON_FALTYN, 0},
         {Spells::Type::PREDICTION, 0},
-        {Spells::Type::DETECT_ENCHANTMENT, 0}
-    };
+        {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
     BloodSword::IntMapping<Spells::Type> Damage = {
         {Spells::Type::NONE, 0},
@@ -161,8 +159,7 @@ namespace BloodSword::Spells
         {Spells::Type::SERVILE_ENTHRALMENT, 0},
         {Spells::Type::SUMMON_FALTYN, 0},
         {Spells::Type::PREDICTION, 0},
-        {Spells::Type::DETECT_ENCHANTMENT, 0}
-    };
+        {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
     BloodSword::IntMapping<Spells::Type> DamageModifier = {
         {Spells::Type::NONE, 0},
@@ -181,8 +178,7 @@ namespace BloodSword::Spells
         {Spells::Type::SERVILE_ENTHRALMENT, 0},
         {Spells::Type::SUMMON_FALTYN, 0},
         {Spells::Type::PREDICTION, 0},
-        {Spells::Type::DETECT_ENCHANTMENT, 0}
-    };
+        {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
     BloodSword::IntMapping<Spells::Type> AlternateDamage = {
         {Spells::Type::NONE, 0},
@@ -201,8 +197,7 @@ namespace BloodSword::Spells
         {Spells::Type::SERVILE_ENTHRALMENT, 0},
         {Spells::Type::SUMMON_FALTYN, 0},
         {Spells::Type::PREDICTION, 0},
-        {Spells::Type::DETECT_ENCHANTMENT, 0}
-    };
+        {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
     Spells::Type Map(const char *spell)
     {

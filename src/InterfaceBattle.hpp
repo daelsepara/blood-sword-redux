@@ -241,7 +241,7 @@ namespace BloodSword::Interface
 
                     if (knockout && hit > 0)
                     {
-                        defender.Add(Character::Status::KNOCKED_OUT, Character::Duration[Character::Status::KNOCKED_OUT]);
+                        defender.Add(Character::Status::KNOCKED_OUT);
                     }
 
                     alive &= Engine::GainEndurance(defender, hit, true);
@@ -471,7 +471,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
-                target.Add(Character::Status::NIGHTHOWL, Character::Duration[Character::Status::NIGHTHOWL]);
+                target.Add(Character::Status::NIGHTHOWL);
             }
             else
             {
@@ -591,7 +591,7 @@ namespace BloodSword::Interface
 
             if (tiger == 0)
             {
-                caster.Add(Character::Status::FPR_PLUS2, Character::Duration[Character::Status::FPR_PLUS2]);
+                caster.Add(Character::Status::FPR_PLUS2);
             }
             else if (tiger == 1)
             {
@@ -599,7 +599,7 @@ namespace BloodSword::Interface
                 {
                     if (Engine::IsAlive(targets[character]))
                     {
-                        targets[character].Add(Character::Status::FPR_PLUS1, Character::Duration[Character::Status::FPR_PLUS1]);
+                        targets[character].Add(Character::Status::FPR_PLUS1);
                     }
                 }
             }
