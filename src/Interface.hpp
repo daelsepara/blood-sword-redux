@@ -2009,7 +2009,7 @@ namespace BloodSword::Interface
 
                     auto modifier = casting->CurrentComplexity;
 
-                    result = Interface::Target(graphics, background, cast, cast_w, cast_h, Color::Active, 4, caster, target, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, in_battle, Spells::Assets[spell]);
+                    result = Interface::Target(graphics, background, cast, cast_w, cast_h, Color::Active, BloodSword::Border, caster, target, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, in_battle, Spells::Assets[spell]);
 
                     if (!result)
                     {
@@ -2211,11 +2211,11 @@ namespace BloodSword::Interface
 
             if (popup_h > 0)
             {
-                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Transparent, Color::Active, 4, false);
+                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Transparent, Color::Active, BloodSword::Border, false);
             }
             else
             {
-                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, Color::Transparent, Color::Active, 4, false);
+                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, Color::Transparent, Color::Active, BloodSword::Border, false);
             }
 
             auto &popup = overlay.Elements[0];
@@ -2237,7 +2237,7 @@ namespace BloodSword::Interface
 
                         SDL_QueryTexture(stats[input.Current], nullptr, nullptr, &stats_w, nullptr);
 
-                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (stats_w + pad * 2), popup.Y, Color::Transparent, Color::Active, 4));
+                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (stats_w + pad * 2), popup.Y, Color::Transparent, Color::Active, BloodSword::Border));
                     }
 
                     if (skills[input.Current])
@@ -2246,7 +2246,7 @@ namespace BloodSword::Interface
 
                         overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
 
-                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Transparent, Color::Active, 4));
+                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Transparent, Color::Active, BloodSword::Border));
                     }
                 }
             }
@@ -2257,7 +2257,7 @@ namespace BloodSword::Interface
 
                 auto screen = Point(origin.X, origin.Y - BloodSword::HalfTile * 5);
 
-                overlay.Add(Scene::Element(screen, popup.W, BloodSword::TileSize * 2, Color::Transparent, Color::Active, 4));
+                overlay.Add(Scene::Element(screen, popup.W, BloodSword::TileSize * 2, Color::Transparent, Color::Active, BloodSword::Border));
 
                 for (auto i = 0; i < current_party.Count(); i++)
                 {
@@ -2333,7 +2333,7 @@ namespace BloodSword::Interface
 
         scene.Add(Scene::Element(menu_title, Point((graphics.Width - menu_w) / 2, origin.Y - pad * 6)));
 
-        scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, 4));
+        scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, BloodSword::Border));
 
         auto party = Party::Base();
 
@@ -2353,7 +2353,7 @@ namespace BloodSword::Interface
             SDL_QueryTexture(current, nullptr, nullptr, &current_w, nullptr);
         }
 
-        auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, 4, Color::Background, Color::Background, Color::Highlight, blur) + 1;
+        auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, int(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, blur) + 1;
 
         if (party_size > 0 && party_size <= 4)
         {
@@ -2393,13 +2393,13 @@ namespace BloodSword::Interface
 
                         party.Add(character);
 
-                        Interface::MessageBox(graphics, bg_scene, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, false);
+                        Interface::MessageBox(graphics, bg_scene, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, BloodSword::Border, Color::Highlight, false);
                     }
                     else
                     {
                         party.Remove(character_class);
 
-                        Interface::MessageBox(graphics, bg_scene, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Active, false);
+                        Interface::MessageBox(graphics, bg_scene, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, BloodSword::Border, Color::Active, false);
                     }
                 }
 
@@ -2427,7 +2427,7 @@ namespace BloodSword::Interface
 
                     bg_scene.VerifyAndAdd(Scene::Element(current, (graphics.Width - current_w) / 2, party_y + pad));
 
-                    if (!Interface::Confirm(graphics, bg_scene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Inactive, false))
+                    if (!Interface::Confirm(graphics, bg_scene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, BloodSword::Border, Color::Inactive, false))
                     {
                         party.Clear();
                     }
@@ -2436,7 +2436,7 @@ namespace BloodSword::Interface
                 bg_scene = Scene::Base();
             }
 
-            Interface::MessageBox(graphics, bg_scene, Graphics::RichText("Party Complete!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, false);
+            Interface::MessageBox(graphics, bg_scene, Graphics::RichText("Party Complete!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, BloodSword::Border, Color::Highlight, false);
         }
 
         Free(&current);
@@ -2546,7 +2546,7 @@ namespace BloodSword::Interface
     {
         auto location = (Point(graphics.Width, graphics.Height) - Point(box_w, box_h)) / 2;
 
-        return Interface::TextInput(graphics, background, location, question, "", Color::Inactive, Color::Active, input_limit, box_w, box_h, Color::Active, Color::Background, 4, blur);
+        return Interface::TextInput(graphics, background, location, question, "", Color::Inactive, Color::Active, input_limit, box_w, box_h, Color::Active, Color::Background, BloodSword::Border, blur);
     }
 
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, int box_w, int box_h, bool blur = true)

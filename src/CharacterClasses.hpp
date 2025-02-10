@@ -60,6 +60,20 @@ namespace BloodSword::Character
         {Character::Status::FPR_PLUS1, "FPR +1"},
         {Character::Status::FPR_PLUS2, "FPR +2"}};
 
+    BloodSword::IntMapping<Character::Status> Duration = {
+        {Character::Status::NONE, 0},
+        {Character::Status::DEFENDING, 0},
+        {Character::Status::DEFENDED, 1},
+        {Character::Status::FLEEING, 0},
+        {Character::Status::ENTHRALLED, 0},
+        {Character::Status::AWAY, 0},
+        {Character::Status::PARALYZED, 0},
+        {Character::Status::KNOCKED_OUT, 1},
+        {Character::Status::IN_BATTLE, 0},
+        {Character::Status::NIGHTHOWL, 5},
+        {Character::Status::FPR_PLUS1, 5},
+        {Character::Status::FPR_PLUS2, 5}};
+
     Character::Status MapStatus(const char *status)
     {
         return BloodSword::Find(Character::StatusMapping, status);

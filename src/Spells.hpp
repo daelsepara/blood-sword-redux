@@ -104,6 +104,106 @@ namespace BloodSword::Spells
         Spells::Type::MISTS_OF_DEATH,
         Spells::Type::SHEET_LIGHTNING};
 
+    BloodSword::IntMapping<Spells::Type> Difficulty = {
+        {Spells::Type::NONE, 2},
+        {Spells::Type::VOLCANO_SPRAY, 2},
+        {Spells::Type::NIGHTHOWL, 2},
+        {Spells::Type::WHITE_FIRE, 2},
+        {Spells::Type::SWORDTHRUST, 2},
+        {Spells::Type::EYE_OF_THE_TIGER, 2},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, 2},
+        {Spells::Type::MISTS_OF_DEATH, 2},
+        {Spells::Type::THE_VAMPIRE_SPELL, 2},
+        {Spells::Type::PILLAR_OF_SALT, 2},
+        {Spells::Type::SHEET_LIGHTNING, 2},
+        {Spells::Type::GHASTLY_TOUCH, 2},
+        {Spells::Type::NEMESIS_BOLT, 2},
+        {Spells::Type::SERVILE_ENTHRALMENT, 2},
+        {Spells::Type::SUMMON_FALTYN, 2},
+        {Spells::Type::PREDICTION, 2},
+        {Spells::Type::DETECT_ENCHANTMENT, 2}
+    };
+
+    BloodSword::IntMapping<Spells::Type> DiffMod = {
+        {Spells::Type::NONE, 0},
+        {Spells::Type::VOLCANO_SPRAY, 0},
+        {Spells::Type::NIGHTHOWL, 0},
+        {Spells::Type::WHITE_FIRE, 0},
+        {Spells::Type::SWORDTHRUST, 0},
+        {Spells::Type::EYE_OF_THE_TIGER, 0},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, 0},
+        {Spells::Type::MISTS_OF_DEATH, 0},
+        {Spells::Type::THE_VAMPIRE_SPELL, 0},
+        {Spells::Type::PILLAR_OF_SALT, 0},
+        {Spells::Type::SHEET_LIGHTNING, 0},
+        {Spells::Type::GHASTLY_TOUCH, 0},
+        {Spells::Type::NEMESIS_BOLT, 0},
+        {Spells::Type::SERVILE_ENTHRALMENT, 0},
+        {Spells::Type::SUMMON_FALTYN, 0},
+        {Spells::Type::PREDICTION, 0},
+        {Spells::Type::DETECT_ENCHANTMENT, 0}
+    };
+
+    BloodSword::IntMapping<Spells::Type> Damage = {
+        {Spells::Type::NONE, 0},
+        {Spells::Type::VOLCANO_SPRAY, 1},
+        {Spells::Type::NIGHTHOWL, 0},
+        {Spells::Type::WHITE_FIRE, 2},
+        {Spells::Type::SWORDTHRUST, 3},
+        {Spells::Type::EYE_OF_THE_TIGER, 0},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, 0},
+        {Spells::Type::MISTS_OF_DEATH, 2},
+        {Spells::Type::THE_VAMPIRE_SPELL, 4},
+        {Spells::Type::PILLAR_OF_SALT, 0},
+        {Spells::Type::SHEET_LIGHTNING, 2},
+        {Spells::Type::GHASTLY_TOUCH, 7},
+        {Spells::Type::NEMESIS_BOLT, 7},
+        {Spells::Type::SERVILE_ENTHRALMENT, 0},
+        {Spells::Type::SUMMON_FALTYN, 0},
+        {Spells::Type::PREDICTION, 0},
+        {Spells::Type::DETECT_ENCHANTMENT, 0}
+    };
+
+    BloodSword::IntMapping<Spells::Type> DmgMod = {
+        {Spells::Type::NONE, 0},
+        {Spells::Type::VOLCANO_SPRAY, 0},
+        {Spells::Type::NIGHTHOWL, 0},
+        {Spells::Type::WHITE_FIRE, 2},
+        {Spells::Type::SWORDTHRUST, 3},
+        {Spells::Type::EYE_OF_THE_TIGER, 0},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, 0},
+        {Spells::Type::MISTS_OF_DEATH, 0},
+        {Spells::Type::THE_VAMPIRE_SPELL, 0},
+        {Spells::Type::PILLAR_OF_SALT, 0},
+        {Spells::Type::SHEET_LIGHTNING, 2},
+        {Spells::Type::GHASTLY_TOUCH, 0},
+        {Spells::Type::NEMESIS_BOLT, 7},
+        {Spells::Type::SERVILE_ENTHRALMENT, 0},
+        {Spells::Type::SUMMON_FALTYN, 0},
+        {Spells::Type::PREDICTION, 0},
+        {Spells::Type::DETECT_ENCHANTMENT, 0}
+    };
+
+    BloodSword::IntMapping<Spells::Type> DmgAlt = {
+        {Spells::Type::NONE, 0},
+        {Spells::Type::VOLCANO_SPRAY, 0},
+        {Spells::Type::NIGHTHOWL, 0},
+        {Spells::Type::WHITE_FIRE, 0},
+        {Spells::Type::SWORDTHRUST, 0},
+        {Spells::Type::EYE_OF_THE_TIGER, 0},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, 0},
+        {Spells::Type::MISTS_OF_DEATH, 0},
+        {Spells::Type::THE_VAMPIRE_SPELL, 0},
+        {Spells::Type::PILLAR_OF_SALT, 0},
+        {Spells::Type::SHEET_LIGHTNING, 0},
+        {Spells::Type::GHASTLY_TOUCH, 2},
+        {Spells::Type::NEMESIS_BOLT, 0},
+        {Spells::Type::SERVILE_ENTHRALMENT, 0},
+        {Spells::Type::SUMMON_FALTYN, 0},
+        {Spells::Type::PREDICTION, 0},
+        {Spells::Type::DETECT_ENCHANTMENT, 0}
+    };
+
     Spells::Type Map(const char *spell)
     {
         return BloodSword::Find(Spells::TypeMapping, spell);

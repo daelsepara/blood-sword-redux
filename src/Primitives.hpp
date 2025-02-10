@@ -38,6 +38,9 @@ namespace BloodSword
 
     const int OneSecond = 1000;
 
+    // Border Constants
+    const int Border = 4;
+
     // relative positions
     enum class Position
     {
