@@ -51,11 +51,11 @@ namespace BloodSword::Scene
                 Uint32 background,
                 Uint32 border,
                 int border_size) : Texture(texture),
-                                  Background(background), Border(border),
-                                  X(x), Y(y),
-                                  Bounds(bounds), Offset(offset),
-                                  W(w), H(h),
-                                  BorderSize(border_size) {}
+                                   Background(background), Border(border),
+                                   X(x), Y(y),
+                                   Bounds(bounds), Offset(offset),
+                                   W(w), H(h),
+                                   BorderSize(border_size) {}
 
         Element(SDL_Texture *texture,
                 int x, int y,
@@ -63,10 +63,10 @@ namespace BloodSword::Scene
                 Uint32 background,
                 Uint32 border,
                 int border_size) : Texture(texture),
-                                  Background(background), Border(border),
-                                  X(x), Y(y),
-                                  Bounds(bounds), Offset(offset),
-                                  BorderSize(border_size)
+                                   Background(background), Border(border),
+                                   X(x), Y(y),
+                                   Bounds(bounds), Offset(offset),
+                                   BorderSize(border_size)
         {
             if (this->Texture)
             {
@@ -85,11 +85,11 @@ namespace BloodSword::Scene
                 Uint32 background,
                 Uint32 border,
                 int border_size) : Texture(texture),
-                                  Background(background),
-                                  Border(border),
-                                  X(x), Y(y),
-                                  Offset(0),
-                                  BorderSize(border_size)
+                                   Background(background),
+                                   Border(border),
+                                   X(x), Y(y),
+                                   Offset(0),
+                                   BorderSize(border_size)
         {
             if (texture)
             {

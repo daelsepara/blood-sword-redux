@@ -547,7 +547,7 @@ namespace BloodSword::Engine
             // change DEFENDING to DEFENDED
             character.Remove(Character::Status::DEFENDING);
 
-            character.Add(Character::Status::DEFENDED, 1);
+            character.Add(Character::Status::DEFENDED);
 
             update = true;
         }

@@ -102,7 +102,7 @@ namespace BloodSword::Attributes
     {
         nlohmann::json data;
 
-        for (auto &attribute: attributes)
+        for (auto &attribute : attributes)
         {
             nlohmann::json row;
 
