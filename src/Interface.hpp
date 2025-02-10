@@ -1605,7 +1605,7 @@ namespace BloodSword::Interface
 
         auto damaged = Graphics::CreateText(graphics, "DAMAGED", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
-        auto failed = Graphics::CreateText(graphics, "UNHARMED", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL);
+        auto unharmed = Graphics::CreateText(graphics, "UNHARMED", Fonts::Normal, Color::S(Color::Inactive), TTF_STYLE_NORMAL);
 
         auto start = Graphics::CreateText(graphics, {Graphics::RichText(" DAMAGE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
 
@@ -1627,30 +1627,45 @@ namespace BloodSword::Interface
 
         auto text_h = 0;
 
+        auto damaged_w = 0;
+
+        auto damaged_h = 0;
+
         // adjust width depending on the number of dice to roll
         w += (roll > 6 ? BloodSword::TileSize * (roll - 6) : 0);
 
-        SDL_QueryTexture(failed, nullptr, nullptr, &text_w, &text_h);
+        origin.X -= (roll > 6) ? BloodSword::HalfTile * (roll - 6) : 0;
+
+        SDL_QueryTexture(unharmed, nullptr, nullptr, &text_w, &text_h);
+
+        SDL_QueryTexture(damaged, nullptr, nullptr, &damaged_w, &damaged_h);
+
+        auto tile_pad = BloodSword::TileSize + pad;
 
         auto origin_x = origin.X + pad + BloodSword::Pad;
 
         auto origin_y = origin.Y + h - pad * 3;
 
-        auto damage_x1 = w - text_w - pad;
+        auto edge_x = w - text_w - pad;
 
-        auto damage_y1 = text_h * 2 + BloodSword::TileSize + pad;
+        auto dice_y = BloodSword::TileSize * 2 + pad;
 
-        auto damage_y2 = BloodSword::TileSize * 2 + pad;
+        auto origin_unharmed = origin + Point(edge_x, text_h * 2 + tile_pad);
 
-        auto origin_damage = origin + Point((w - BloodSword::TileSize) / 2, pad);
+        auto origin_icon = origin + Point((w - BloodSword::TileSize) / 2, pad);
 
-        auto origin_stats = origin + Point(pad, BloodSword::TileSize + pad);
+        auto origin_damaged = origin + Point((w - damaged_w) / 2, tile_pad + text_h);
 
-        auto origin_defender = origin + Point(damage_x1, pad);
+        auto origin_stats = origin + Point(pad, tile_pad);
 
-        auto origin_armor = origin + Point(damage_x1, BloodSword::TileSize + pad);
+        auto origin_defender = origin + Point(edge_x, pad);
+
+        auto origin_armor = origin + Point(edge_x, tile_pad);
 
         auto origin_pad = origin + pad;
+
+        // width of damage value string
+        auto value_w = 0;
 
         while (!done)
         {
@@ -1660,7 +1675,7 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
 
             // add damage icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_damage));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_icon));
 
             // add attacker icon and stats
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin_pad));
@@ -1689,20 +1704,22 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, damage_y2)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
                 }
 
                 if (damage > 0)
                 {
                     // damaged
-                    overlay.VerifyAndAdd(Scene::Element(damaged, origin_damage + Point(-pad / 4, text_h + BloodSword::TileSize)));
+                    overlay.VerifyAndAdd(Scene::Element(damaged, origin_damaged));
 
-                    overlay.VerifyAndAdd(Scene::Element(damage_value, origin_damage + Point(0, BloodSword::TileSize)));
+                    auto origin_value = origin + Point((w - value_w) / 2, BloodSword::TileSize + pad);
+
+                    overlay.VerifyAndAdd(Scene::Element(damage_value, origin_value));
                 }
                 else
                 {
                     // unharmed
-                    overlay.VerifyAndAdd(Scene::Element(failed, origin + Point(damage_x1, damage_y1)));
+                    overlay.VerifyAndAdd(Scene::Element(unharmed, origin_unharmed));
                 }
             }
             else
@@ -1710,7 +1727,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, damage_y2)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
                 }
             }
 
@@ -1736,7 +1753,14 @@ namespace BloodSword::Interface
 
                             if (damage > 0)
                             {
+                                if (damage_value)
+                                {
+                                    Free(&damage_value);
+                                }
+
                                 damage_value = Graphics::CreateText(graphics, ("-" + std::to_string(damage) + " END").c_str(), Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
+
+                                SDL_QueryTexture(damage_value, nullptr, nullptr, &value_w, nullptr);
                             }
                         }
                     }
@@ -1755,7 +1779,7 @@ namespace BloodSword::Interface
 
         Free(start);
 
-        Free(&failed);
+        Free(&unharmed);
 
         Free(&damaged);
 
