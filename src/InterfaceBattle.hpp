@@ -100,9 +100,7 @@ namespace BloodSword::Interface
 
         for (auto i = 0; i < controls.size(); i++)
         {
-            SDL_Texture *texture = nullptr;
-
-            texture = Asset::Get(Interface::BattleControls[controls[i]]);
+            auto texture = Asset::Get(Interface::BattleControls[controls[i]]);
 
             if (texture)
             {
@@ -991,13 +989,17 @@ namespace BloodSword::Interface
                                                     if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                                                     {
                                                         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                        
                                                         overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                                                        
                                                         overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
                                                     }
                                                     else if (!spell.IsBasic() && spell.IsBattle)
                                                     {
                                                         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                        
                                                         overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                                                        
                                                         overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
                                                     }
                                                     else
