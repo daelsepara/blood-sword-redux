@@ -27,7 +27,7 @@ namespace BloodSword::Skills
         CAST_SPELL,
         SHURIKEN,
         IGNORE_ARMOUR,
-        ENTHRALMENT_IMMUNITY
+        PARALYZING_TOUCH,
     };
 
     template <typename T>
@@ -48,7 +48,7 @@ namespace BloodSword::Skills
         {Skills::Type::CAST_SPELL, "CAST SPELL"},
         {Skills::Type::SHURIKEN, "SHURIKEN"},
         {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
-        {Skills::Type::ENTHRALMENT_IMMUNITY, "ENTHRALMENT IMMUNITY"}};
+        {Skills::Type::PARALYZING_TOUCH, "PARALYZING TOUCH"}};
 
     std::vector<Skills::Type> BattleSkills = {
         Skills::Type::ARCHERY,
@@ -56,8 +56,7 @@ namespace BloodSword::Skills
         Skills::Type::QUARTERSTAFF,
         Skills::Type::SPELLS,
         Skills::Type::SHURIKEN,
-        Skills::Type::IGNORE_ARMOUR,
-        Skills::Type::ENTHRALMENT_IMMUNITY};
+        Skills::Type::IGNORE_ARMOUR};
 
     std::vector<Skills::Type> StorySkills = {
         Skills::Type::HEALING,
@@ -80,6 +79,8 @@ namespace BloodSword::Skills
         {Skills::Type::SPELLS, Asset::Type::SPELLS},
         {Skills::Type::SHURIKEN, Asset::Type::SHURIKEN},
         {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR}};
+
+    typedef std::vector<Skills::Type> Immunity;
 
     Skills::Type Map(const char *skill)
     {

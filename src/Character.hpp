@@ -58,7 +58,11 @@ namespace BloodSword::Character
 
         int Rank = 0;
 
-        int ItemLimit = 6;
+        int ItemLimit = 10;
+
+        Spells::Immunity SpellImmunity = {};
+
+        Skills::Immunity SkillImmunity = {};
 
         Base(const char *name,
              Character::Class character_class,

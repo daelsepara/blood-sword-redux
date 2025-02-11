@@ -172,7 +172,7 @@ namespace BloodSword::Interface
     }
 
     // fight action
-    bool Fight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, bool knockout = false, bool ignore_armor = false)
+    bool Fight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type used = Skills::Type::NONE)
     {
         auto alive = true;
 
@@ -188,6 +188,8 @@ namespace BloodSword::Interface
 
         auto damage = origin + (Point(w, h) - Point(damage_w, damage_h)) / 2;
 
+        auto knockout = (used == Skills::Type::QUARTERSTAFF) && attacker.Has(Skills::Type::QUARTERSTAFF);
+
         if (!attacker.Is(Character::Status::DEFENDING))
         {
             if (Engine::IsAlive(attacker))
@@ -196,7 +198,7 @@ namespace BloodSword::Interface
 
                 roll += defender.Is(Character::Status::DEFENDING) ? 1 : 0;
 
-                roll += knockout ? 1 : 0;
+                roll += (used == Skills::Type::QUARTERSTAFF) ? 1 : 0;
 
                 roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
 
@@ -204,11 +206,17 @@ namespace BloodSword::Interface
 
                 if (Interface::Target(graphics, background, fight, fight_w, fight_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::NONE))
                 {
-                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, BloodSword::Border, attacker, defender, true, false, knockout, ignore_armor, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::NONE);
+                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, BloodSword::Border, attacker, defender, true, used, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::NONE);
 
-                    if (knockout && hit > 0)
+                    auto effect = BloodSword::Find(Engine::SkillEffects, used);
+
+                    if (hit > 0 && knockout)
                     {
                         defender.Add(Character::Status::KNOCKED_OUT);
+                    }
+                    else if (hit > 0 && effect != Character::Status::NONE)
+                    {
+                        defender.Add(effect);
                     }
 
                     alive &= Engine::GainEndurance(defender, hit, true);
@@ -220,7 +228,7 @@ namespace BloodSword::Interface
     }
 
     // Fight helper function
-    void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, bool knockout = false, bool ignore_armor = false)
+    void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, Skills::Type used = Skills::Type::NONE)
     {
         auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
 
@@ -230,7 +238,7 @@ namespace BloodSword::Interface
 
         auto alive = true;
 
-        alive &= Interface::Fight(graphics, background, draw, map_w, map_h, attacker, defender, knockout, ignore_armor);
+        alive &= Interface::Fight(graphics, background, draw, map_w, map_h, attacker, defender, used);
 
         if (!alive)
         {
@@ -240,7 +248,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            alive &= Interface::Fight(graphics, background, draw, map_w, map_h, defender, attacker, false, defender.Has(Skills::Type::IGNORE_ARMOUR));
+            alive &= Interface::Fight(graphics, background, draw, map_w, map_h, defender, attacker, used);
 
             if (!alive)
             {
@@ -252,7 +260,7 @@ namespace BloodSword::Interface
     }
 
     // shoot action
-    bool Shoot(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, bool ignore_armor = false, Asset::Type asset = Asset::Type::ARCHERY)
+    bool Shoot(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type used = Skills::Type::NONE, Asset::Type asset = Asset::Type::ARCHERY)
     {
         auto alive = true;
 
@@ -280,7 +288,7 @@ namespace BloodSword::Interface
 
                 if (Interface::Target(graphics, background, fight, shoot_w, shoot_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, true, asset))
                 {
-                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, BloodSword::Border, attacker, defender, true, true, false, ignore_armor, asset);
+                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, BloodSword::Border, attacker, defender, true, used, asset);
 
                     alive &= Engine::GainEndurance(defender, hit, true);
                 }
@@ -291,22 +299,32 @@ namespace BloodSword::Interface
     }
 
     // shoot helper
-    void Shoot(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, Character::Base &defender, int defenderid, bool ignore_armor = false)
+    void Shoot(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, Character::Base &defender, int defenderid)
     {
-        auto asset = Asset::Type::ARCHERY;
-
         auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
 
         auto map_w = battle.Map.ViewX * battle.Map.TileSize;
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
+        auto asset = Asset::Type::ARCHERY;
+
+        auto used = Skills::Type::NONE;
+
         if (attacker.Has(Skills::Type::SHURIKEN))
         {
+            used = Skills::Type::SHURIKEN;
+
             asset = Asset::Type::SHURIKEN;
         }
+        else if (attacker.Has(Skills::Type::ARCHERY))
+        {
+            used = Skills::Type::ARCHERY;
 
-        auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, ignore_armor, asset);
+            asset = Asset::Type::ARCHERY;
+        }
+
+        auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, used, asset);
 
         if (attacker.Has(Skills::Type::ARCHERY) && !attacker.Has(Skills::Type::SHURIKEN))
         {
@@ -410,25 +428,25 @@ namespace BloodSword::Interface
 
         if (spell == Spells::Type::VOLCANO_SPRAY)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::WHITE_FIRE)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::SWORDTHRUST)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
         else if (spell == Spells::Type::NEMESIS_BOLT)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
@@ -451,7 +469,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], 0, true, true, Spells::Assets[spell]);
+                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], 0, true, Spells::Assets[spell]);
 
                 alive &= Engine::GainEndurance(target, hit, true);
             }
@@ -466,7 +484,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, false, Spells::Assets[spell]);
+                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
                 alive &= Engine::GainEndurance(target, hit, true);
 
@@ -484,7 +502,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(affected, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Active : Color::Highlight, BloodSword::Border, Color::Highlight, true);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, true, Spells::Assets[spell]);
+                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
                 alive &= Engine::GainEndurance(target, hit, true);
             }
@@ -492,14 +510,14 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(resisted, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !target.IsPlayer() ? Color::Highlight : Color::Active, BloodSword::Border, Color::Highlight, true);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::AlternateDamage[spell], Spells::DamageModifier[spell], true, true, Spells::Assets[spell]);
+                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::AlternateDamage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
                 alive &= Engine::GainEndurance(target, hit, true);
             }
         }
         else if (spell == Spells::Type::SHEET_LIGHTNING)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, false, Spells::Assets[spell]);
+            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], true, Spells::Assets[spell]);
 
             alive &= Engine::GainEndurance(target, hit, true);
         }
@@ -682,7 +700,7 @@ namespace BloodSword::Interface
             auto fight = false;
 
             // quarterstaff targetting
-            auto knockout = false;
+            auto knockout = Skills::Type::NONE;
 
             // shoot targetting
             auto shoot = false;
@@ -797,11 +815,8 @@ namespace BloodSword::Interface
                                                 character.ResetSpellComplexities();
                                             }
 
-                                            // check if armor is ignored
-                                            auto ignore_armor = character.Has(Skills::Type::IGNORE_ARMOUR);
-
                                             // fight
-                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, false, ignore_armor);
+                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, Skills::Type::NONE);
 
                                             // regenerate scene
                                             scene = Interface::BattleScene(battle, party);
@@ -818,11 +833,8 @@ namespace BloodSword::Interface
 
                                             if (targets.size() > 0)
                                             {
-                                                // check if armor is ignored
-                                                auto ignore_armor = character.Has(Skills::Type::IGNORE_ARMOUR);
-
                                                 // shoot
-                                                Interface::Shoot(graphics, scene, battle, character, party[targets[0].Id], targets[0].Id, ignore_armor);
+                                                Interface::Shoot(graphics, scene, battle, character, party[targets[0].Id], targets[0].Id);
 
                                                 // regenerate scene
                                                 scene = Interface::BattleScene(battle, party);
@@ -1098,7 +1110,7 @@ namespace BloodSword::Interface
 
                                                     fight = false;
 
-                                                    knockout = false;
+                                                    knockout = Skills::Type::NONE;
 
                                                     shoot = false;
 
@@ -1204,11 +1216,8 @@ namespace BloodSword::Interface
                                                                 character.ResetSpellComplexities();
                                                             }
 
-                                                            // check if armor is ignored
-                                                            auto ignore_armor = character.Has(Skills::Type::IGNORE_ARMOUR);
-
                                                             // fight
-                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, false, ignore_armor);
+                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, Skills::Type::NONE);
 
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
@@ -1225,7 +1234,7 @@ namespace BloodSword::Interface
 
                                                         fight = false;
 
-                                                        knockout = false;
+                                                        knockout = Skills::Type::NONE;
                                                     }
                                                     else if (shoot)
                                                     {
@@ -1244,11 +1253,8 @@ namespace BloodSword::Interface
                                                                 character.Remove(Character::Status::DEFENDED);
                                                             }
 
-                                                            // check if armor is ignored
-                                                            auto ignore_armor = character.Has(Skills::Type::IGNORE_ARMOUR);
-
                                                             // shoot
-                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, ignore_armor);
+                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id);
 
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
@@ -1360,13 +1366,10 @@ namespace BloodSword::Interface
 
                                                         fight = false;
 
-                                                        knockout = input.Type == Controls::Type::QUARTERSTAFF;
-
-                                                        // check if armor is ignored
-                                                        auto ignore_armor = character.Has(Skills::Type::IGNORE_ARMOUR);
+                                                        knockout = ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF)) ? Skills::Type::QUARTERSTAFF : Skills::Type::NONE;
 
                                                         // fight
-                                                        Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout, ignore_armor);
+                                                        Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout);
 
                                                         // regenerate scene
                                                         scene = Interface::BattleScene(battle, party);
@@ -1379,7 +1382,14 @@ namespace BloodSword::Interface
                                                     }
                                                     else if (opponents.size() > 1)
                                                     {
-                                                        knockout = (input.Type == Controls::Type::QUARTERSTAFF);
+                                                        if ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF))
+                                                        {
+                                                            knockout = Skills::Type::QUARTERSTAFF;
+                                                        }
+                                                        else
+                                                        {
+                                                            knockout = Skills::Type::NONE;
+                                                        }
 
                                                         fight = true;
 
@@ -1387,9 +1397,9 @@ namespace BloodSword::Interface
                                                     }
                                                     else
                                                     {
-                                                        fight = false;
+                                                        knockout = Skills::Type::NONE;
 
-                                                        knockout = false;
+                                                        fight = false;
 
                                                         input = previous;
                                                     }
@@ -1417,11 +1427,8 @@ namespace BloodSword::Interface
 
                                                         shoot = false;
 
-                                                        // check if armor is ignored
-                                                        auto ignore_armor = character.Has(Skills::Type::IGNORE_ARMOUR);
-
                                                         // shoot
-                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id, ignore_armor);
+                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
 
                                                         // regenerate scene
                                                         scene = Interface::BattleScene(battle, party);

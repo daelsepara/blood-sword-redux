@@ -1550,7 +1550,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, bool in_battle = false, bool ignore_armor = false, Asset::Type asset = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, bool in_battle = false, Asset::Type asset = Asset::Type::NONE)
     {
         SDL_Texture *damage_value = nullptr;
 
@@ -1720,7 +1720,7 @@ namespace BloodSword::Interface
                             rolled = true;
 
                             // check damage
-                            damage = std::max(0, rolls.Sum - (ignore_armor ? 0 : Engine::Score(defender, Attribute::Type::ARMOUR, in_battle)));
+                            damage = std::max(0, rolls.Sum - (attacker.Has(Skills::Type::IGNORE_ARMOUR) ? 0 : Engine::Score(defender, Attribute::Type::ARMOUR, in_battle)));
 
                             if (damage > 0)
                             {
@@ -1764,8 +1764,12 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, bool in_battle = false, bool shooting = false, bool knockout = false, bool ignore_armor = false, Asset::Type asset = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, bool in_battle = false, Skills::Type used = Skills::Type::NONE, Asset::Type asset = Asset::Type::NONE)
     {
+        auto shooting = ((used == Skills::Type::ARCHERY) && attacker.Has(Skills::Type::ARCHERY)) || ((used == Skills::Type::SHURIKEN) && attacker.Has(Skills::Type::SHURIKEN));
+
+        auto knockout = (used == Skills::Type::QUARTERSTAFF) && attacker.Has(Skills::Type::QUARTERSTAFF);
+
         auto roll = !shooting ? attacker.Value(Attribute::Type::DAMAGE) : 1;
 
         roll += knockout ? 1 : 0;
@@ -1782,7 +1786,7 @@ namespace BloodSword::Interface
             asset = Asset::Type::FIGHT;
         }
 
-        return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, in_battle, ignore_armor, asset);
+        return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, in_battle, asset);
     }
 
     // draws a message box on screen

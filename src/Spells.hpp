@@ -199,6 +199,8 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, 0},
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
+    typedef std::vector<Spells::Type> Immunity;
+
     Spells::Type Map(const char *spell)
     {
         return BloodSword::Find(Spells::TypeMapping, spell);

@@ -30,7 +30,7 @@ namespace BloodSword
 
     // search for a constant string key in a map
     template <typename T>
-    T Find(Mapping<T> &unordered_map, const char *key)
+    T Find(BloodSword::Mapping<T> &unordered_map, const char *key)
     {
         auto result = T::NONE;
 
@@ -67,6 +67,25 @@ namespace BloodSword
     bool Found(std::vector<T> &vector, T &key)
     {
         return BloodSword::Find(vector, key) != vector.end();
+    }
+
+    // search for
+    template <typename T, typename R>
+    R Find(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
+    {
+        auto result = R::NONE;
+
+        for (auto &keys : unordered_map)
+        {
+            if (keys.first == key)
+            {
+                result = keys.second;
+
+                break;
+            }
+        }
+
+        return result;
     }
 }
 

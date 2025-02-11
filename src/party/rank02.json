@@ -44,7 +44,7 @@
                 "class": "WARRIOR",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 6,
+                "item_limit": 10,
                 "items": [
                     {
                         "contains": "NONE",
@@ -126,7 +126,7 @@
                 "class": "TRICKSTER",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 6,
+                "item_limit": 10,
                 "items": [
                     {
                         "contains": "NONE",
@@ -231,7 +231,7 @@
                 "class": "SAGE",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 6,
+                "item_limit": 10,
                 "items": [
                     {
                         "contains": "NONE",
@@ -341,7 +341,7 @@
                 "class": "ENCHANTER",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 6,
+                "item_limit": 10,
                 "items": [
                     {
                         "contains": "NONE",

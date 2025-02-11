@@ -197,8 +197,7 @@ namespace BloodSword::Asset
         {Asset::Type::DICE4, "DICE4"},
         {Asset::Type::DICE5, "DICE5"},
         {Asset::Type::DICE6, "DICE6"},
-        {Asset::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
-        {Asset::Type::ENTHRALMENT_IMMUNITY, "ENTHRALMENT IMMUNITY"}};
+        {Asset::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"}};
 
     Asset::Type Map(const char *asset)
     {
