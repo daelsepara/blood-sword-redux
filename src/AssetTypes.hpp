@@ -101,7 +101,13 @@ namespace BloodSword::Asset
         DICE3,
         DICE4,
         DICE5,
-        DICE6
+        DICE6,
+        AWARENESS,
+        PSYCHIC_ABILITY,
+        ENDURANCE,
+        DAMAGE,
+        ARMOUR,
+        UNARMED_COMBAT
     };
 
     template <typename T>
@@ -197,7 +203,13 @@ namespace BloodSword::Asset
         {Asset::Type::DICE4, "DICE4"},
         {Asset::Type::DICE5, "DICE5"},
         {Asset::Type::DICE6, "DICE6"},
-        {Asset::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"}};
+        {Asset::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
+        {Asset::Type::AWARENESS, "AWARENESS"},
+        {Asset::Type::PSYCHIC_ABILITY, "PSYCHIC ABILITY"},
+        {Asset::Type::ENDURANCE, "ENDURANCE"},
+        {Asset::Type::DAMAGE, "DAMAGE"},
+        {Asset::Type::ARMOUR, "ARMOUR"},
+        {Asset::Type::UNARMED_COMBAT, "UNARMED COMBAT"}};
 
     Asset::Type Map(const char *asset)
     {

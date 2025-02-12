@@ -1574,7 +1574,9 @@ namespace BloodSword::Test
 
                     auto attribute = attributes[random.NextInt()];
 
-                    Interface::Test(graphics, scene, origin, popup_w, popup_h, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), attribute == Attribute::Type::FIGHTING_PROWESS);
+                    auto fight = attribute == Attribute::Type::FIGHTING_PROWESS;
+
+                    Interface::Test(graphics, scene, origin, popup_w, popup_h, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), fight ? Asset::Type::FIGHT : Asset::Type::NONE, false);
                 }
             }
         }
@@ -1767,7 +1769,7 @@ namespace BloodSword::Test
                 // enemy turn
                 scene.VerifyAndAdd(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Skills::Type::ARCHERY, Asset::Type::SHURIKEN);
+                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Skills::Type::SHURIKEN, Asset::Type::SHURIKEN);
 
                 // player turn
                 if (alive)

@@ -1345,7 +1345,7 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check (with target)
-    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Asset::Type target, Attribute::Type attribute, int roll, int modifier, bool in_battle = false, Asset::Type asset = Asset::Type::NONE)
+    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle)
     {
         auto result = false;
 
@@ -1440,18 +1440,11 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin_character));
 
             // set up icon
-            if (in_battle && attribute == Attribute::Type::FIGHTING_PROWESS)
+            if (asset == Asset::Type::NONE)
             {
-                if (asset == Asset::Type::NONE)
-                {
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), origin_type));
-                }
-                else
-                {
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_type));
-                }
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Attribute::Assets[attribute]), origin_type));
             }
-            else if (attribute == Attribute::Type::PSYCHIC_ABILITY && asset != Asset::Type::NONE)
+            else
             {
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_type));
             }
@@ -1544,13 +1537,13 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check (no targets / self-targetting)
-    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Attribute::Type attribute, int roll, int modifier, bool in_battle = false, Asset::Type asset = Asset::Type::NONE)
+    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle)
     {
-        return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, in_battle, asset);
+        return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, asset, in_battle);
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, bool in_battle = false, Asset::Type asset = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle)
     {
         SDL_Texture *damage_value = nullptr;
 
@@ -1631,7 +1624,7 @@ namespace BloodSword::Interface
 
         auto origin_defender = origin + Point(edge_x, pad);
 
-        auto origin_armor = origin + Point(edge_x, tile_pad);
+        auto origin_armour = origin + Point(edge_x, tile_pad);
 
         auto origin_pad = origin + pad;
 
@@ -1657,7 +1650,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(defender.Asset), origin_defender));
 
             // add armour stats
-            overlay.VerifyAndAdd(Scene::Element(armour_texture, origin_armor));
+            overlay.VerifyAndAdd(Scene::Element(armour_texture, origin_armour));
 
             if (stage == Engine::RollStage::START)
             {
@@ -1764,7 +1757,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, bool in_battle = false, Skills::Type used = Skills::Type::NONE, Asset::Type asset = Asset::Type::NONE)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type used, Asset::Type asset, bool in_battle)
     {
         auto shooting = ((used == Skills::Type::ARCHERY) && attacker.Has(Skills::Type::ARCHERY)) || ((used == Skills::Type::SHURIKEN) && attacker.Has(Skills::Type::SHURIKEN));
 
@@ -1781,12 +1774,7 @@ namespace BloodSword::Interface
             modifier -= 2;
         }
 
-        if (!shooting && !knockout)
-        {
-            asset = Asset::Type::FIGHT;
-        }
-
-        return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, in_battle, asset);
+        return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle);
     }
 
     // draws a message box on screen
@@ -2009,7 +1997,7 @@ namespace BloodSword::Interface
 
                     auto modifier = casting->CurrentComplexity;
 
-                    result = Interface::Target(graphics, background, cast, cast_w, cast_h, Color::Active, BloodSword::Border, caster, target, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, in_battle, Spells::Assets[spell]);
+                    result = Interface::Target(graphics, background, cast, cast_w, cast_h, Color::Active, BloodSword::Border, caster, target, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, Spells::Assets[spell], in_battle);
 
                     if (!result)
                     {

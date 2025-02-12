@@ -26,14 +26,12 @@ namespace BloodSword::Choice
         Base() {}
     };
 
-    Choice::Base Parse(nlohmann::json json)
+    Choice::Base Parse(nlohmann::json &data)
     {
         auto choice = Choice::Base();
 
-        if (!json["choice"].is_null())
+        if (!data.is_null())
         {
-            auto data = json["choice"];
-
             if (!data["text"].is_null())
             {
                 // set text
@@ -41,7 +39,10 @@ namespace BloodSword::Choice
             }
 
             // parse condition
-            choice.Condition = Story::Conditions::Parse(data);
+            if (!data["condition"].is_null())
+            {
+                choice.Condition = Story::Conditions::Parse(data["condition"]);
+            }
         }
 
         return choice;

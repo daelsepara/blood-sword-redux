@@ -68,7 +68,7 @@ namespace BloodSword::Story
                 // set book and section number
                 if (!data["section"].is_null())
                 {
-                    auto book = !data["section"]["book"].is_null() ? Book::MapBook(std::string(data["section"]["book"])) : Book::Number::NONE;
+                    auto book = !data["section"]["book"].is_null() ? Book::MapBookNumber(std::string(data["section"]["book"])) : Book::Number::NONE;
 
                     auto number = !data["section"]["number"].is_null() ? std::stoi(std::string(data["section"]["number"])) : -1;
 

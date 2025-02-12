@@ -295,6 +295,30 @@
         {
             "id": "DICE6",
             "path": "images/system/dice-six-faces-six.png"
+        },
+        {
+            "id": "AWARENESS",
+            "path": "images/attributes/sound-waves.png"
+        },
+        {
+            "id": "PSYCHIC ABILITY",
+            "path": "images/attributes/sparkles.png"
+        },
+        {
+            "id": "ENDURANCE",
+            "path": "images/attributes/heart-beats.png"
+        },
+        {
+            "id": "DAMAGE",
+            "path": "images/attributes/heart-minus.png"
+        },
+        {
+            "id": "ARMOUR",
+            "path": "images/attributes/layered-armor.png"
+        },
+        {
+            "id": "UNARMED COMBAT",
+            "path": "images/system/fist.png"
         }
     ]
 }

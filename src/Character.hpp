@@ -594,7 +594,7 @@ namespace BloodSword::Character
             return quantity;
         }
 
-        BloodSword::IntMapping<Character::Status> LoadStatus(nlohmann::json data)
+        BloodSword::IntMapping<Character::Status> LoadStatus(nlohmann::json &data)
         {
             BloodSword::IntMapping<Character::Status> all_status = {};
 
@@ -611,7 +611,7 @@ namespace BloodSword::Character
             return all_status;
         }
 
-        void Load(nlohmann::json data)
+        void Load(nlohmann::json &data)
         {
             this->Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
 
@@ -658,10 +658,20 @@ namespace BloodSword::Character
             {
                 this->Status = this->LoadStatus(data["status"]);
             }
+
+            if (!data["spell_immunity"].is_null() && data["spell_immunity"].is_array() && data["spell_immunity"].size() > 0)
+            {
+                this->SpellImmunity = Spells::Recall(data["spell_immunity"]);
+            }
+
+            if (!data["skill_immunity"].is_null() && data["skill_immunity"].is_array() && data["skill_immunity"].size() > 0)
+            {
+                this->SkillImmunity = Skills::Load(data["skill_immunity"]);
+            }
         }
     };
 
-    Character::Base Load(nlohmann::json data)
+    Character::Base Load(nlohmann::json &data)
     {
         auto character = Character::Base();
 

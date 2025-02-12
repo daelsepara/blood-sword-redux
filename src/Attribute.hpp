@@ -28,6 +28,15 @@ namespace BloodSword::Attribute
         Attribute::Type::DAMAGE,
         Attribute::Type::ARMOUR};
 
+    BloodSword::UnorderedMap<Attribute::Type, Asset::Type> Assets = {
+        {Attribute::Type::NONE, Asset::Type::NONE},
+        {Attribute::Type::FIGHTING_PROWESS, Asset::Type::FIGHT},
+        {Attribute::Type::AWARENESS, Asset::Type::AWARENESS},
+        {Attribute::Type::PSYCHIC_ABILITY, Asset::Type::PSYCHIC_ABILITY},
+        {Attribute::Type::ENDURANCE, Asset::Type::ENDURANCE},
+        {Attribute::Type::DAMAGE, Asset::Type::DAMAGE},
+        {Attribute::Type::ARMOUR, Asset::Type::ARMOUR}};
+
     // attribute case class
     class Base
     {
@@ -73,7 +82,7 @@ namespace BloodSword::Attribute
 
 namespace BloodSword::Attributes
 {
-    std::vector<Attribute::Base> Load(nlohmann::json data)
+    std::vector<Attribute::Base> Load(nlohmann::json &data)
     {
         auto characteristics = std::vector<Attribute::Base>();
 

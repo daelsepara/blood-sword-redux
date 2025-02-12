@@ -191,7 +191,7 @@ namespace BloodSword::Item
         }
     };
 
-    BloodSword::IntMapping<Attribute::Type> LoadAttributes(nlohmann::json data)
+    BloodSword::IntMapping<Attribute::Type> LoadAttributes(nlohmann::json &data)
     {
         BloodSword::IntMapping<Attribute::Type> attributes = {};
 
@@ -208,7 +208,7 @@ namespace BloodSword::Item
         return attributes;
     }
 
-    std::vector<Item::Property> LoadProperties(nlohmann::json data)
+    std::vector<Item::Property> LoadProperties(nlohmann::json &data)
     {
         auto properties = std::vector<Item::Property>();
 
@@ -223,7 +223,7 @@ namespace BloodSword::Item
 
 namespace BloodSword::Items
 {
-    std::vector<Item::Base> Load(nlohmann::json data)
+    std::vector<Item::Base> Load(nlohmann::json &data)
     {
         auto items = std::vector<Item::Base>();
 

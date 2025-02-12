@@ -66,14 +66,14 @@ namespace BloodSword::Book
         return Book::MapTitle(book.c_str());
     }
 
-    Book::Number MapBook(const char *book)
+    Book::Number MapBookNumber(const char *book)
     {
         return BloodSword::Find(Book::BookNumber, book);
     }
 
-    Book::Number MapBook(std::string book)
+    Book::Number MapBookNumber(std::string book)
     {
-        return Book::MapBook(book.c_str());
+        return Book::MapBookNumber(book.c_str());
     }
 
     // compare if the book locations are the same

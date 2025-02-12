@@ -286,7 +286,7 @@ namespace BloodSword::Spells
         }
     };
 
-    std::vector<Spells::Base> Load(nlohmann::json data)
+    std::vector<Spells::Base> Load(nlohmann::json &data)
     {
         auto spells = std::vector<Spells::Base>();
 
@@ -307,23 +307,6 @@ namespace BloodSword::Spells
             if (type != Spells::Type::NONE && spell_class != Spells::Class::NONE)
             {
                 spells.push_back(Spells::Base(type, spell_class, battle, ranged, complexity, duration));
-            }
-        }
-
-        return spells;
-    }
-
-    std::vector<Spells::Type> Recall(nlohmann::json data)
-    {
-        auto spells = std::vector<Spells::Type>();
-
-        for (auto i = 0; i < int(data.size()); i++)
-        {
-            auto spell = !data[i].is_null() ? Spells::Map(std::string(data[i])) : Spells::Type::NONE;
-
-            if (spell != Spells::Type::NONE)
-            {
-                spells.push_back(spell);
             }
         }
 
@@ -354,6 +337,23 @@ namespace BloodSword::Spells
         }
 
         return data;
+    }
+
+    std::vector<Spells::Type> Recall(nlohmann::json &data)
+    {
+        auto spells = std::vector<Spells::Type>();
+
+        for (auto i = 0; i < int(data.size()); i++)
+        {
+            auto spell = !data[i].is_null() ? Spells::Map(std::string(data[i])) : Spells::Type::NONE;
+
+            if (spell != Spells::Type::NONE)
+            {
+                spells.push_back(spell);
+            }
+        }
+
+        return spells;
     }
 
     nlohmann::json Memory(std::vector<Spells::Type> &memorized)

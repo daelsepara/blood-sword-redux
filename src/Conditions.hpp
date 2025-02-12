@@ -88,18 +88,16 @@ namespace BloodSword::Story::Conditions
         Base() {}
     };
 
-    Conditions::Base Parse(nlohmann::json json)
+    Conditions::Base Parse(nlohmann::json &data)
     {
         auto condition = Conditions::Base();
 
-        if (!json["condition"].is_null())
+        if (!data.is_null())
         {
-            auto data = json["condition"];
-
             if (!data["location"].is_null())
             {
                 // set location
-                auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
+                auto book = !data["location"]["book"].is_null() ? Book::MapBookNumber(std::string(data["location"]["book"])) : Book::Number::NONE;
 
                 auto number = !data["location"]["number"].is_null() ? std::stoi(std::string(data["location"]["number"])) : -1;
 

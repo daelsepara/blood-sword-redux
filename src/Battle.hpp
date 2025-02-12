@@ -79,7 +79,7 @@ namespace BloodSword::Battle
         }
 
         // initialize battle from data
-        void Initialize(nlohmann::json data)
+        void Initialize(nlohmann::json &data)
         {
             if (!data.is_null())
             {
