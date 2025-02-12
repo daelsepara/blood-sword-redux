@@ -176,9 +176,9 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto fight_w = BloodSword::TileSize * 8;
+        auto fight_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
-        auto fight_h = BloodSword::QuarterTile * 13;
+        auto fight_h = BloodSword::TileSize * 3 + BloodSword::QuarterTile;
 
         auto fight = origin + (Point(w, h) - Point(fight_w, fight_h)) / 2;
 
