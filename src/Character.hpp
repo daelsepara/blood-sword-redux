@@ -488,6 +488,16 @@ namespace BloodSword::Character
             return this->ControlType == Character::ControlType::PLAYER;
         }
 
+        bool IsImmune(Skills::Type skill)
+        {
+            return this->SkillImmunity.size() > 0 && BloodSword::Found(this->SkillImmunity, skill);
+        }
+
+        bool IsImmune(Spells::Type spell)
+        {
+            return this->SpellImmunity.size() > 0 && BloodSword::Found(this->SpellImmunity, spell);
+        }
+
         // recall the spell that was called to mind
         Memorized::iterator Recall(Spells::Type spell)
         {

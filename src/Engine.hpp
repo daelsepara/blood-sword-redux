@@ -438,8 +438,6 @@ namespace BloodSword::Engine
 
                 if (alive && !away && battle)
                 {
-                    auto distance = -1;
-
                     Point location;
 
                     if (party[i].ControlType == Character::ControlType::PLAYER)
@@ -451,7 +449,7 @@ namespace BloodSword::Engine
                         location = map.Find(Map::Object::ENEMY, i);
                     }
 
-                    distance = map.Distance(src, location);
+                    auto distance = map.Distance(src, location);
 
                     if (distance > 1 && map.IsValid(location) && location != src)
                     {

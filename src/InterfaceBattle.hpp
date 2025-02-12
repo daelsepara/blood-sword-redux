@@ -231,7 +231,7 @@ namespace BloodSword::Interface
                     {
                         defender.Add(Character::Status::KNOCKED_OUT);
                     }
-                    else if (hit > 0 && effect != Character::Status::NONE)
+                    else if (hit > 0 && !defender.IsImmune(used) && effect != Character::Status::NONE)
                     {
                         defender.Add(effect);
                     }
@@ -669,7 +669,9 @@ namespace BloodSword::Interface
                 Graphics::RichText("CANNOT MOVE THERE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("CASTER MUST BE ADJACENT TO TARGET!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                 Graphics::RichText("CASTING ATTEMPT WAS UNSUCCESSFUL!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-                Graphics::RichText("YOU CANNOT FLEE THIS BATTLE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+                Graphics::RichText("YOU CANNOT FLEE THIS BATTLE!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+                Graphics::RichText("TARGET IS IMMUNE TO RANGED ATTACK!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+                Graphics::RichText("TARGET IS IMMUNE TO THIS SPELL!", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
             const int MSG_OPPONENT = 0;
 
@@ -688,6 +690,10 @@ namespace BloodSword::Interface
             const int MSG_CAST = 7;
 
             const int MSG_FLEE = 8;
+
+            const int MSG_RANGED = 9;
+
+            const int MSG_SPELL = 10;
 
             auto messages = Graphics::CreateText(graphics, text);
 
@@ -850,14 +856,23 @@ namespace BloodSword::Interface
 
                                             if (targets.size() > 0)
                                             {
-                                                // shoot
-                                                Interface::Shoot(graphics, scene, battle, character, party[targets[0].Id], targets[0].Id);
+                                                for (auto &target : targets)
+                                                {
+                                                    // shoot first available target
+                                                    if (!(party[target.Id].IsImmune(Skills::Type::ARCHERY) || party[target.Id].IsImmune(Skills::Type::SHURIKEN)))
+                                                    {
+                                                        // shoot
+                                                        Interface::Shoot(graphics, scene, battle, character, party[target.Id], target.Id);
 
-                                                // regenerate scene
-                                                scene = Interface::BattleScene(battle, party);
+                                                        // regenerate scene
+                                                        scene = Interface::BattleScene(battle, party);
 
-                                                // regenerate stats
-                                                Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+                                                        // regenerate stats
+                                                        Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+
+                                                        break;
+                                                    }
+                                                }
                                             }
 
                                             // next character in battle order
@@ -1310,32 +1325,37 @@ namespace BloodSword::Interface
                                                             }
                                                             else
                                                             {
-                                                                auto target = spellbook->RequiresTarget() ? battle.Opponents[battle.Map[control.Map].Id].Asset : Asset::Type::NONE;
-
-                                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, target, cast, true))
+                                                                if (!(battle.Opponents[battle.Map[control.Map].Id].IsImmune(cast)))
                                                                 {
-                                                                    // spellcasting successful
-                                                                    auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
+                                                                    if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[control.Map].Id].Asset, cast, true))
+                                                                    {
+                                                                        // spellcasting successful
+                                                                        auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCESSFULLY CAST";
 
-                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(spell_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(spell_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
 
-                                                                    // resolve spell
-                                                                    Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, cast);
+                                                                        // resolve spell
+                                                                        Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, cast);
 
-                                                                    // regenerate stats
-                                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+                                                                        // regenerate stats
+                                                                        Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        // spellcasting unsuccessful!
+                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, messages[MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                    }
+
+                                                                    // regenerate scene
+                                                                    scene = Interface::BattleScene(battle, party);
+
+                                                                    // next character in battle order
+                                                                    next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                                                 }
                                                                 else
                                                                 {
-                                                                    // spellcasting unsuccessful!
-                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, messages[MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                    Interface::MessageBox(graphics, scene, messages[MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
                                                                 }
-
-                                                                // regenerate scene
-                                                                scene = Interface::BattleScene(battle, party);
-
-                                                                // next character in battle order
-                                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                                             }
                                                         }
 
@@ -1427,37 +1447,44 @@ namespace BloodSword::Interface
 
                                                     if (targets.size() == 1)
                                                     {
-                                                        if (character.Is(Character::Status::FLEEING))
-                                                        {
-                                                            character.Remove(Character::Status::FLEEING);
-                                                        }
-
-                                                        if (character.Is(Character::Status::DEFENDED))
-                                                        {
-                                                            character.Remove(Character::Status::DEFENDED);
-                                                        }
-
-                                                        if (character.Has(Skills::Type::SPELLS))
-                                                        {
-                                                            character.ResetSpellComplexities();
-                                                        }
-
                                                         shoot = false;
 
-                                                        // shoot
-                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
+                                                        if (!(battle.Opponents[targets[0].Id].IsImmune(Skills::Type::ARCHERY) || battle.Opponents[targets[0].Id].IsImmune(Skills::Type::SHURIKEN)))
+                                                        {
+                                                            if (character.Is(Character::Status::FLEEING))
+                                                            {
+                                                                character.Remove(Character::Status::FLEEING);
+                                                            }
 
-                                                        // regenerate scene
-                                                        scene = Interface::BattleScene(battle, party);
+                                                            if (character.Is(Character::Status::DEFENDED))
+                                                            {
+                                                                character.Remove(Character::Status::DEFENDED);
+                                                            }
 
-                                                        // regenerate stats
-                                                        Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+                                                            if (character.Has(Skills::Type::SPELLS))
+                                                            {
+                                                                character.ResetSpellComplexities();
+                                                            }
 
-                                                        // checks if enthrallment is broken
-                                                        Interface::CheckEnthrallment(graphics, battle, scene, character, text[MSG_ENTHRAL]);
+                                                            // shoot
+                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
 
-                                                        // next character in battle order
-                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                                            // regenerate scene
+                                                            scene = Interface::BattleScene(battle, party);
+
+                                                            // regenerate stats
+                                                            Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+
+                                                            // checks if enthrallment is broken
+                                                            Interface::CheckEnthrallment(graphics, battle, scene, character, text[MSG_ENTHRAL]);
+
+                                                            // next character in battle order
+                                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                                        }
+                                                        else
+                                                        {
+                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, messages[MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                        }
                                                     }
                                                     else if (targets.size() > 1)
                                                     {
@@ -1565,7 +1592,7 @@ namespace BloodSword::Interface
                                                                                 // must be adjacent
                                                                                 Interface::MessageBox(graphics, scene, messages[MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
                                                                             }
-                                                                            else
+                                                                            else if (!(battle.Opponents[battle.Map[target].Id].IsImmune(cast) || battle.Opponents[battle.Map[target].Id].IsImmune(cast)))
                                                                             {
                                                                                 if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[target].Id].Asset, cast, true))
                                                                                 {
@@ -1589,6 +1616,10 @@ namespace BloodSword::Interface
 
                                                                                 // next character in battle order
                                                                                 next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, messages[MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
                                                                             }
                                                                         }
 
