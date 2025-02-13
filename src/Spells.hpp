@@ -33,6 +33,8 @@ namespace BloodSword::Spells
     template <typename T>
     using Mapped = std::unordered_map<Spells::Type, T>;
 
+    typedef std::vector<Spells::Type> List;
+
     // spell class (blasting or psychic)
     enum class Class
     {
@@ -84,12 +86,13 @@ namespace BloodSword::Spells
         {Spells::Class::PSYCHIC, "PSYCHIC"}};
 
     // spells that do not need to be called to mind
-    std::vector<Spells::Type> Basic = {
+    Spells::List Basic = {
         Spells::Type::SUMMON_FALTYN,
         Spells::Type::PREDICTION,
         Spells::Type::DETECT_ENCHANTMENT};
 
-    std::vector<Spells::Type> Target = {
+    // spells that target a single opponent
+    Spells::List Target = {
         Spells::Type::NIGHTHOWL,
         Spells::Type::WHITE_FIRE,
         Spells::Type::SWORDTHRUST,
@@ -99,11 +102,13 @@ namespace BloodSword::Spells
         Spells::Type::NEMESIS_BOLT,
         Spells::Type::SERVILE_ENTHRALMENT};
 
-    std::vector<Spells::Type> TargetsParty = {
+    // spells that target entire party
+    Spells::List TargetsParty = {
         Spells::Type::VOLCANO_SPRAY,
         Spells::Type::MISTS_OF_DEATH,
         Spells::Type::SHEET_LIGHTNING};
 
+    // spell difficulty (number of die rolls)
     BloodSword::IntMapping<Spells::Type> Difficulty = {
         {Spells::Type::NONE, 2},
         {Spells::Type::VOLCANO_SPRAY, 2},
@@ -123,6 +128,7 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, 2},
         {Spells::Type::DETECT_ENCHANTMENT, 2}};
 
+    // default spell difficulty modifier
     BloodSword::IntMapping<Spells::Type> DifficultyModifier = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
@@ -142,6 +148,7 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, 0},
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
+    // damage (number of die rolls)
     BloodSword::IntMapping<Spells::Type> Damage = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 1},
@@ -161,6 +168,27 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, 0},
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
+    // alternate damage rolls
+    BloodSword::IntMapping<Spells::Type> AlternateDamage = {
+        {Spells::Type::NONE, 0},
+        {Spells::Type::VOLCANO_SPRAY, 1},
+        {Spells::Type::NIGHTHOWL, 0},
+        {Spells::Type::WHITE_FIRE, 2},
+        {Spells::Type::SWORDTHRUST, 3},
+        {Spells::Type::EYE_OF_THE_TIGER, 0},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, 0},
+        {Spells::Type::MISTS_OF_DEATH, 2},
+        {Spells::Type::THE_VAMPIRE_SPELL, 4},
+        {Spells::Type::PILLAR_OF_SALT, 0},
+        {Spells::Type::SHEET_LIGHTNING, 2},
+        {Spells::Type::GHASTLY_TOUCH, 2},
+        {Spells::Type::NEMESIS_BOLT, 7},
+        {Spells::Type::SERVILE_ENTHRALMENT, 0},
+        {Spells::Type::SUMMON_FALTYN, 0},
+        {Spells::Type::PREDICTION, 0},
+        {Spells::Type::DETECT_ENCHANTMENT, 0}};
+
+    // default damage roll modifier
     BloodSword::IntMapping<Spells::Type> DamageModifier = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
@@ -179,27 +207,6 @@ namespace BloodSword::Spells
         {Spells::Type::SUMMON_FALTYN, 0},
         {Spells::Type::PREDICTION, 0},
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
-
-    BloodSword::IntMapping<Spells::Type> AlternateDamage = {
-        {Spells::Type::NONE, 0},
-        {Spells::Type::VOLCANO_SPRAY, 0},
-        {Spells::Type::NIGHTHOWL, 0},
-        {Spells::Type::WHITE_FIRE, 0},
-        {Spells::Type::SWORDTHRUST, 0},
-        {Spells::Type::EYE_OF_THE_TIGER, 0},
-        {Spells::Type::IMMEDIATE_DELIVERANCE, 0},
-        {Spells::Type::MISTS_OF_DEATH, 0},
-        {Spells::Type::THE_VAMPIRE_SPELL, 0},
-        {Spells::Type::PILLAR_OF_SALT, 0},
-        {Spells::Type::SHEET_LIGHTNING, 0},
-        {Spells::Type::GHASTLY_TOUCH, 2},
-        {Spells::Type::NEMESIS_BOLT, 0},
-        {Spells::Type::SERVILE_ENTHRALMENT, 0},
-        {Spells::Type::SUMMON_FALTYN, 0},
-        {Spells::Type::PREDICTION, 0},
-        {Spells::Type::DETECT_ENCHANTMENT, 0}};
-
-    typedef std::vector<Spells::Type> Immunity;
 
     Spells::Type Map(const char *spell)
     {
@@ -221,7 +228,7 @@ namespace BloodSword::Spells
         return Spells::MapClass(spell.c_str());
     }
 
-    bool In(std::vector<Spells::Type> &list, Spells::Type spell)
+    bool In(Spells::List &list, Spells::Type spell)
     {
         return list.size() > 0 && BloodSword::Find(list, spell) != list.end();
     }
@@ -286,9 +293,11 @@ namespace BloodSword::Spells
         }
     };
 
-    std::vector<Spells::Base> Load(nlohmann::json &data)
+    typedef std::vector<Spells::Base> Grimoire;
+
+    Spells::Grimoire Load(nlohmann::json &data)
     {
-        auto spells = std::vector<Spells::Base>();
+        auto spells = Spells::Grimoire();
 
         for (auto i = 0; i < int(data.size()); i++)
         {
@@ -313,7 +322,24 @@ namespace BloodSword::Spells
         return spells;
     }
 
-    nlohmann::json SpellBook(std::vector<Spells::Base> &spells)
+    Spells::List LoadList(nlohmann::json &data)
+    {
+        auto spells = Spells::List();
+
+        for (auto i = 0; i < int(data.size()); i++)
+        {
+            auto spell = !data[i].is_null() ? Spells::Map(std::string(data[i])) : Spells::Type::NONE;
+
+            if (spell != Spells::Type::NONE)
+            {
+                spells.push_back(spell);
+            }
+        }
+
+        return spells;
+    }
+
+    nlohmann::json Data(Spells::Grimoire &spells)
     {
         nlohmann::json data;
 
@@ -339,24 +365,7 @@ namespace BloodSword::Spells
         return data;
     }
 
-    std::vector<Spells::Type> Recall(nlohmann::json &data)
-    {
-        auto spells = std::vector<Spells::Type>();
-
-        for (auto i = 0; i < int(data.size()); i++)
-        {
-            auto spell = !data[i].is_null() ? Spells::Map(std::string(data[i])) : Spells::Type::NONE;
-
-            if (spell != Spells::Type::NONE)
-            {
-                spells.push_back(spell);
-            }
-        }
-
-        return spells;
-    }
-
-    nlohmann::json Memory(std::vector<Spells::Type> &memorized)
+    nlohmann::json Data(Spells::List &memorized)
     {
         nlohmann::json data;
 

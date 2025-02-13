@@ -1,8 +1,6 @@
 #ifndef __GENERATOR_HPP__
 #define __GENERATOR_HPP__
 
-#include <vector>
-
 #include "Attribute.hpp"
 #include "Book.hpp"
 #include "Character.hpp"
@@ -683,7 +681,7 @@ namespace BloodSword::Generate
     }
 
     // generate NPC
-    Character::Base NPC(const char *name, Character::Abilities skills, Character::Characteristics attributes, int moves, Asset::Type asset)
+    Character::Base NPC(const char *name, Skills::List skills, Attributes::List attributes, int moves, Asset::Type asset)
     {
         auto character = Character::Base(name, attributes, Character::ControlType::NPC, skills, moves);
 
@@ -693,7 +691,7 @@ namespace BloodSword::Generate
     }
 
     // generate NPC
-    Character::Base NPC(const char *name, Character::Abilities skills, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
+    Character::Base NPC(const char *name, Skills::List skills, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
         auto FPR = Attribute::Base(Attribute::Type::FIGHTING_PROWESS, fpr, 0);
 

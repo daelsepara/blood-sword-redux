@@ -1248,7 +1248,7 @@ namespace BloodSword::Interface
     }
 
     // setup movement animation
-    Animation::Base Movement(Map::Base &map, Character::Base &character, std::vector<Point> path, Point start)
+    Animation::Base Movement(Map::Base &map, Character::Base &character, Points path, Point start)
     {
         auto movement = Animation::Base(
             {Animation::Frame(Asset::Get(character.Asset))},
@@ -1294,7 +1294,7 @@ namespace BloodSword::Interface
             auto moves = std::min(valid + (character.IsPlayer() ? 1 : 0), character.Moves);
 
             // setup animation
-            movement = Interface::Movement(map, character, std::vector<Point>(first, first + moves), start);
+            movement = Interface::Movement(map, character, Points(first, first + moves), start);
 
             moving = true;
         }
@@ -1319,7 +1319,7 @@ namespace BloodSword::Interface
 
                 auto moves = std::min(valid + 1, character.Moves);
 
-                auto trajectory = std::vector<Point>(first, first + moves);
+                auto trajectory = Points(first, first + moves);
 
                 for (auto i = 0; i < path.Points.size() - 1; i++)
                 {

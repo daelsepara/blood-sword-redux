@@ -16,16 +16,6 @@
 
 namespace BloodSword::Character
 {
-    typedef std::vector<Skills::Type> Abilities;
-
-    typedef std::vector<Attribute::Base> Characteristics;
-
-    typedef std::vector<Item::Base> Inventory;
-
-    typedef std::vector<Spells::Base> Grimoire;
-
-    typedef std::vector<Spells::Type> Memorized;
-
     template <typename T>
     using Mapped = std::unordered_map<Character::Class, T>;
 
@@ -34,21 +24,21 @@ namespace BloodSword::Character
     public:
         BloodSword::IntMapping<Character::Status> Status = {};
 
-        Characteristics Attributes = {};
+        Attributes::List Attributes = {};
 
-        Abilities Skills = {};
+        Skills::List Skills = {};
 
-        Inventory Items = {};
+        Items::Inventory Items = {};
 
-        Grimoire Spells = {};
+        Spells::Grimoire Spells = {};
 
-        Memorized CalledToMind = {};
+        Spells::List CalledToMind = {};
 
         Character::ControlType ControlType = ControlType::NONE;
 
         Character::Class Class = Character::Class::NONE;
 
-        std::string Name;
+        std::string Name = std::string();
 
         Asset::Type Asset = Asset::Type::NONE;
 
@@ -60,14 +50,14 @@ namespace BloodSword::Character
 
         int ItemLimit = 10;
 
-        Spells::Immunity SpellImmunity = {};
+        Spells::List SpellImmunity = {};
 
-        Skills::Immunity SkillImmunity = {};
+        Skills::List SkillImmunity = {};
 
         Base(const char *name,
              Character::Class character_class,
-             Characteristics attributes,
-             Abilities skills,
+             Attributes::List attributes,
+             Skills::List skills,
              int moves,
              int rank) : Attributes(attributes),
                          Skills(skills),
@@ -79,17 +69,17 @@ namespace BloodSword::Character
 
         Base(const char *name,
              Character::Class character_class,
-             Characteristics attributes,
-             Abilities skills) : Base(name,
-                                      character_class,
-                                      attributes,
-                                      skills,
-                                      BloodSword::MaximumMoves,
-                                      2) {}
+             Attributes::List attributes,
+             Skills::List skills) : Base(name,
+                                         character_class,
+                                         attributes,
+                                         skills,
+                                         BloodSword::MaximumMoves,
+                                         2) {}
 
         Base(const char *name,
              Character::Class character_class,
-             Characteristics attributes) : Base(name, character_class, attributes, {}, BloodSword::MaximumMoves, 2) {}
+             Attributes::List attributes) : Base(name, character_class, attributes, {}, BloodSword::MaximumMoves, 2) {}
 
         Base(const char *name,
              Character::Class character_class) : Base(name, character_class, {}, {}, BloodSword::MaximumMoves, 2) {}
@@ -99,9 +89,9 @@ namespace BloodSword::Character
         Base(Character::Class character_class) : Base(Character::ClassMapping[character_class], character_class, {}, {}, BloodSword::MaximumMoves, 2) {}
 
         Base(const char *name,
-             Characteristics attributes,
+             Attributes::List attributes,
              Character::ControlType control,
-             Abilities skills,
+             Skills::List skills,
              int moves) : Attributes(attributes),
                           Skills(skills),
                           ControlType(control),
@@ -168,12 +158,12 @@ namespace BloodSword::Character
             }
         }
 
-        bool Is(Characteristics::iterator attribute)
+        bool Is(Attributes::List::iterator attribute)
         {
             return attribute != this->Attributes.end();
         }
 
-        Characteristics::iterator Attribute(Attribute::Type type)
+        Attributes::List::iterator Attribute(Attribute::Type type)
         {
             auto result = this->Attributes.end();
 
@@ -270,7 +260,7 @@ namespace BloodSword::Character
         }
 
         // has item of specific type
-        Inventory::const_iterator Find(Item::Type type)
+        Items::Inventory::const_iterator Find(Item::Type type)
         {
             auto result = this->Items.end();
 
@@ -293,7 +283,7 @@ namespace BloodSword::Character
         }
 
         // has a container with a sufficient amount of the item
-        Inventory::const_iterator Find(Item::Type container, Item::Type type, int quantity)
+        Items::Inventory::const_iterator Find(Item::Type container, Item::Type type, int quantity)
         {
             auto result = this->Items.end();
 
@@ -310,7 +300,7 @@ namespace BloodSword::Character
             return result;
         }
 
-        Inventory::const_iterator Find(Item::Type container, Item::Type type)
+        Items::Inventory::const_iterator Find(Item::Type container, Item::Type type)
         {
             auto result = this->Items.end();
 
@@ -338,7 +328,7 @@ namespace BloodSword::Character
         }
 
         // has type of item with specific property
-        Inventory::const_iterator Find(Item::Type type, Item::Property property)
+        Items::Inventory::const_iterator Find(Item::Type type, Item::Property property)
         {
             auto result = this->Items.end();
 
@@ -361,7 +351,7 @@ namespace BloodSword::Character
         }
 
         // has type of item with specific property and attribute
-        Inventory::const_iterator Find(Item::Type type, Item::Property property, Attribute::Type attribute)
+        Items::Inventory::const_iterator Find(Item::Type type, Item::Property property, Attribute::Type attribute)
         {
             auto result = this->Items.end();
 
@@ -384,7 +374,7 @@ namespace BloodSword::Character
         }
 
         // has any item with all the properties
-        Inventory::const_iterator Find(std::vector<Item::Property> properties)
+        Items::Inventory::const_iterator Find(std::vector<Item::Property> properties)
         {
             auto result = this->Items.end();
 
@@ -409,7 +399,7 @@ namespace BloodSword::Character
         }
 
         // has any item with specific property
-        Inventory::const_iterator Find(Item::Property property)
+        Items::Inventory::const_iterator Find(Item::Property property)
         {
             return this->Find(std::vector<Item::Property>{property});
         }
@@ -499,7 +489,7 @@ namespace BloodSword::Character
         }
 
         // recall the spell that was called to mind
-        Memorized::iterator Recall(Spells::Type spell)
+        Spells::List::iterator Recall(Spells::Type spell)
         {
             auto found = this->CalledToMind.end();
 
@@ -517,7 +507,7 @@ namespace BloodSword::Character
         }
 
         // search for spell in grimoire
-        Grimoire::iterator Find(Spells::Type spell)
+        Spells::Grimoire::iterator Find(Spells::Type spell)
         {
             auto found = this->Spells.end();
 
@@ -603,89 +593,84 @@ namespace BloodSword::Character
 
             return quantity;
         }
-
-        BloodSword::IntMapping<Character::Status> LoadStatus(nlohmann::json &data)
-        {
-            BloodSword::IntMapping<Character::Status> all_status = {};
-
-            for (auto &[key, value] : data.items())
-            {
-                auto status = Character::MapStatus(std::string(key));
-
-                if (status != Character::Status::NONE)
-                {
-                    all_status[status] = int(value);
-                }
-            }
-
-            return all_status;
-        }
-
-        void Load(nlohmann::json &data)
-        {
-            this->Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
-
-            this->Rank = !data["rank"].is_null() ? int(data["rank"]) : 1;
-
-            this->Experience = !data["experience"].is_null() ? int(data["experience"]) : 0;
-
-            this->Moves = !data["moves"].is_null() ? int(data["moves"]) : BloodSword::MaximumMoves;
-
-            this->ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 6;
-
-            this->Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
-
-            this->ControlType = !data["control_type"].is_null() ? Character::MapControlType(std::string(data["control_type"])) : Character::ControlType::NONE;
-
-            this->Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::Type::NONE;
-
-            if (!data["attributes"].is_null() && data["attributes"].is_array() && data["attributes"].size() > 0)
-            {
-                this->Attributes = Attributes::Load(data["attributes"]);
-            }
-
-            if (!data["skills"].is_null() && data["skills"].is_array() && data["skills"].size() > 0)
-            {
-                this->Skills = Skills::Load(data["skills"]);
-            }
-
-            if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
-            {
-                this->Items = Items::Load(data["items"]);
-            }
-
-            if (!data["spells"].is_null() && data["spells"].is_array() && data["spells"].size() > 0)
-            {
-                this->Spells = Spells::Load(data["spells"]);
-            }
-
-            if (!data["called_to_mind"].is_null() && data["called_to_mind"].is_array() && data["called_to_mind"].size() > 0)
-            {
-                this->CalledToMind = Spells::Recall(data["called_to_mind"]);
-            }
-
-            if (!data["status"].is_null() && data["status"].is_object() && data["status"].size() > 0)
-            {
-                this->Status = this->LoadStatus(data["status"]);
-            }
-
-            if (!data["spell_immunity"].is_null() && data["spell_immunity"].is_array() && data["spell_immunity"].size() > 0)
-            {
-                this->SpellImmunity = Spells::Recall(data["spell_immunity"]);
-            }
-
-            if (!data["skill_immunity"].is_null() && data["skill_immunity"].is_array() && data["skill_immunity"].size() > 0)
-            {
-                this->SkillImmunity = Skills::Load(data["skill_immunity"]);
-            }
-        }
     };
+
+    BloodSword::IntMapping<Character::Status> LoadStatus(nlohmann::json &data)
+    {
+        BloodSword::IntMapping<Character::Status> all_status = {};
+
+        for (auto &[key, value] : data.items())
+        {
+            auto status = Character::MapStatus(std::string(key));
+
+            if (status != Character::Status::NONE)
+            {
+                all_status[status] = int(value);
+            }
+        }
+
+        return all_status;
+    }
 
     Character::Base Load(nlohmann::json &data)
     {
         auto character = Character::Base();
 
-        character.Load(data);
+        character.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
+
+        character.Rank = !data["rank"].is_null() ? int(data["rank"]) : 1;
+
+        character.Experience = !data["experience"].is_null() ? int(data["experience"]) : 0;
+
+        character.Moves = !data["moves"].is_null() ? int(data["moves"]) : BloodSword::MaximumMoves;
+
+        character.ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 6;
+
+        character.Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
+
+        character.ControlType = !data["control_type"].is_null() ? Character::MapControlType(std::string(data["control_type"])) : Character::ControlType::NONE;
+
+        character.Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::Type::NONE;
+
+        if (!data["attributes"].is_null() && data["attributes"].is_array() && data["attributes"].size() > 0)
+        {
+            character.Attributes = Attributes::Load(data["attributes"]);
+        }
+
+        if (!data["skills"].is_null() && data["skills"].is_array() && data["skills"].size() > 0)
+        {
+            character.Skills = Skills::Load(data["skills"]);
+        }
+
+        if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+        {
+            character.Items = Items::Load(data["items"]);
+        }
+
+        if (!data["spells"].is_null() && data["spells"].is_array() && data["spells"].size() > 0)
+        {
+            character.Spells = Spells::Load(data["spells"]);
+        }
+
+        if (!data["called_to_mind"].is_null() && data["called_to_mind"].is_array() && data["called_to_mind"].size() > 0)
+        {
+            character.CalledToMind = Spells::LoadList(data["called_to_mind"]);
+        }
+
+        if (!data["status"].is_null() && data["status"].is_object() && data["status"].size() > 0)
+        {
+            character.Status = Character::LoadStatus(data["status"]);
+        }
+
+        if (!data["spell_immunity"].is_null() && data["spell_immunity"].is_array() && data["spell_immunity"].size() > 0)
+        {
+            character.SpellImmunity = Spells::LoadList(data["spell_immunity"]);
+        }
+
+        if (!data["skill_immunity"].is_null() && data["skill_immunity"].is_array() && data["skill_immunity"].size() > 0)
+        {
+            character.SkillImmunity = Skills::Load(data["skill_immunity"]);
+        }
 
         return character;
     }
@@ -724,12 +709,12 @@ namespace BloodSword::Character
 
         if (character.Spells.size() > 0)
         {
-            data["spells"] = Spells::SpellBook(character.Spells);
+            data["spells"] = Spells::Data(character.Spells);
         }
 
         if (character.CalledToMind.size() > 0)
         {
-            data["called_to_mind"] = Spells::Memory(character.CalledToMind);
+            data["called_to_mind"] = Spells::Data(character.CalledToMind);
         }
 
         if (character.Status.size() > 0)
@@ -744,6 +729,16 @@ namespace BloodSword::Character
             }
 
             data["status"] = row;
+        }
+
+        if (character.SpellImmunity.size() > 0)
+        {
+            data["spell_immunity"] = Spells::Data(character.SpellImmunity);
+        }
+
+        if (character.SkillImmunity.size() > 0)
+        {
+            data["skill_immunity"] = Skills::Data(character.SkillImmunity);
         }
 
         return data;

@@ -591,7 +591,7 @@ namespace BloodSword::Test
 
                             auto moves = std::min(valid + 1, party[player_class].Moves);
 
-                            movement = Interface::Movement(map, party[player_class], std::vector<Point>(first, first + moves), start);
+                            movement = Interface::Movement(map, party[player_class], Points(first, first + moves), start);
 
                             // add to list
                             animations.Clear();

@@ -19,7 +19,7 @@ namespace BloodSword::Move
     {
     public:
         // List of coordinates of the path
-        std::vector<Point> Points;
+        Points Points;
 
         Path() {}
     };
@@ -303,7 +303,7 @@ namespace BloodSword::Move
     // check if src is not blocked
     bool Available(Map::Base &map, Point src)
     {
-        auto traversable = std::vector<Point>();
+        auto traversable = Points();
 
         if (map.Width > 0 && map.Height > 0)
         {

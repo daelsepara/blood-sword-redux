@@ -82,9 +82,11 @@ namespace BloodSword::Attribute
 
 namespace BloodSword::Attributes
 {
-    std::vector<Attribute::Base> Load(nlohmann::json &data)
+    typedef std::vector<Attribute::Base> List;
+
+    Attributes::List Load(nlohmann::json &data)
     {
-        auto characteristics = std::vector<Attribute::Base>();
+        auto characteristics = Attributes::List();
 
         for (auto i = 0; i < int(data.size()); i++)
         {
@@ -107,7 +109,7 @@ namespace BloodSword::Attributes
         return characteristics;
     }
 
-    nlohmann::json Data(std::vector<Attribute::Base> &attributes)
+    nlohmann::json Data(Attributes::List &attributes)
     {
         nlohmann::json data;
 

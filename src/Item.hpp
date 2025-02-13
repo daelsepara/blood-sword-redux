@@ -223,6 +223,8 @@ namespace BloodSword::Item
 
 namespace BloodSword::Items
 {
+    typedef std::vector<Item::Base> Inventory;
+
     std::vector<Item::Base> Load(nlohmann::json &data)
     {
         auto items = std::vector<Item::Base>();

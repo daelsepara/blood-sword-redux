@@ -1,6 +1,8 @@
 #ifndef __ANIMATION_HPP__
 #define __ANIMATION_HPP__
 
+#include <vector>
+
 #include "Primitives.hpp"
 #include "Scene.hpp"
 #include "Templates.hpp"
@@ -27,18 +29,20 @@ namespace BloodSword::Animation
         FRAME
     };
 
+    typedef std::vector<Animation::Frame> Frames;
+
     // animation base class
     class Base
     {
     public:
         // frame (texture) to render
-        std::vector<Animation::Frame> Frames = {};
+        Animation::Frames Frames = {};
 
         // type of animation(s)
         std::vector<Animation::Type> Mode = {};
 
         // path on-screen (if MOVE type)
-        std::vector<Point> Path = {};
+        Points Path = {};
 
         // origin of graphics cooordinate system, other locations are relative to this
         Point Origin = Point(0, 0);
@@ -78,9 +82,9 @@ namespace BloodSword::Animation
         // trail properties
         int TrailSize = 2;
 
-        Base(std::vector<Animation::Frame> frames,
+        Base(Animation::Frames frames,
              std::vector<Animation::Type> mode,
-             std::vector<Point> path,
+             Points path,
              int cycles,
              bool loop) : Frames(frames), Mode(mode), Path(path), Cycles(cycles), Loop(loop)
         {
@@ -95,22 +99,22 @@ namespace BloodSword::Animation
             }
         }
 
-        Base(std::vector<Animation::Frame> frames,
-             std::vector<Point> path) : Base(frames, {Type::MOVE}, path, 1, false) {}
+        Base(Animation::Frames frames,
+             Points path) : Base(frames, {Type::MOVE}, path, 1, false) {}
 
         Base(SDL_Texture *texture,
-             std::vector<Point> path) : Base({Animation::Frame(texture)}, {Type::MOVE}, path, 1, false) {}
+             Points path) : Base({Animation::Frame(texture)}, {Type::MOVE}, path, 1, false) {}
 
-        Base(std::vector<Animation::Frame> frames, int cycles, bool loop) : Base(frames, {Type::FRAME}, {}, cycles, loop) {}
+        Base(Animation::Frames frames, int cycles, bool loop) : Base(frames, {Type::FRAME}, {}, cycles, loop) {}
 
-        Base(std::vector<Animation::Frame> frames, bool loop) : Base(frames, 1, loop) {}
+        Base(Animation::Frames frames, bool loop) : Base(frames, 1, loop) {}
 
-        Base(std::vector<Animation::Frame> frames) : Base(frames, {Type::FRAME}, {}, 1, false) {}
+        Base(Animation::Frames frames) : Base(frames, {Type::FRAME}, {}, 1, false) {}
 
         Base() {}
 
         // set animation frames and whether they are looping
-        void Set(std::vector<Animation::Frame> frames, bool loop)
+        void Set(Animation::Frames frames, bool loop)
         {
             this->Frames = frames;
 
@@ -120,7 +124,7 @@ namespace BloodSword::Animation
         }
 
         // set path of the object
-        void Set(std::vector<Point> path)
+        void Set(Points path)
         {
             this->Path = path;
 

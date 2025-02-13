@@ -147,6 +147,8 @@ namespace BloodSword
         }
     };
 
+    typedef std::vector<Point> Points;
+
     // load an image as an SDL surface
     SDL_Surface *Load(const char *image)
     {

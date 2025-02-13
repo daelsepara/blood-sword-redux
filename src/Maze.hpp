@@ -8,9 +8,9 @@
 namespace BloodSword::Maze
 {
     // generate list of valid nearby locations
-    std::vector<Point> Neighbors(Map::Base &map, Point &coords)
+    Points Neighbors(Map::Base &map, Point &coords)
     {
-        std::vector<Point> neighbors = {};
+        Points neighbors = {};
 
         for (auto direction : Map::Directions)
         {
@@ -48,7 +48,7 @@ namespace BloodSword::Maze
     // get a random nearby location that has not been visited yet
     Point RandomUnvisited(Random::Base &random, Map::Base &map, Point &coords)
     {
-        std::vector<Point> unvisited = {};
+        Points unvisited = {};
 
         auto neighbors = Maze::Neighbors(map, coords);
 
@@ -72,7 +72,7 @@ namespace BloodSword::Maze
     }
 
     // remove location from the list
-    void Remove(std::vector<Point> &list, Point &coords)
+    void Remove(Points &list, Point &coords)
     {
         for (auto point = list.begin(); point != list.end(); point++)
         {
@@ -88,10 +88,10 @@ namespace BloodSword::Maze
     void Generate(Map::Base &map, int width, int height)
     {
         // locations not yet visited
-        std::vector<Point> unvisited = {};
+        Points unvisited = {};
 
         // locations already visited
-        std::vector<Point> visited = {};
+        Points visited = {};
 
         auto random = Random::Base();
 

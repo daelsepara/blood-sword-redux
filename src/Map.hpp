@@ -10,7 +10,7 @@
 namespace BloodSword::Map
 {
     // Define neighbors (X, Y): Up, Down, Left, Right
-    const std::vector<Point> Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
+    const Points Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
 
     // a single map tile
     class Tile

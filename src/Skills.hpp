@@ -80,7 +80,7 @@ namespace BloodSword::Skills
         {Skills::Type::SHURIKEN, Asset::Type::SHURIKEN},
         {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR}};
 
-    typedef std::vector<Skills::Type> Immunity;
+    typedef std::vector<Skills::Type> List;
 
     Skills::Type Map(const char *skill)
     {
@@ -107,7 +107,7 @@ namespace BloodSword::Skills
         return Skills::In(Skills::StorySkills, skill);
     }
 
-    std::vector<Skills::Type> Load(nlohmann::json &data)
+    Skills::List Load(nlohmann::json &data)
     {
         auto skills = std::vector<Skills::Type>();
 
@@ -121,7 +121,7 @@ namespace BloodSword::Skills
         return skills;
     }
 
-    nlohmann::json Data(std::vector<Skills::Type> &skills)
+    nlohmann::json Data(Skills::List &skills)
     {
         nlohmann::json data;
 
