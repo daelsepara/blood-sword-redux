@@ -11,6 +11,13 @@ namespace BloodSword::Interface
         {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
         {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED}};
 
+    BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
+        {Skills::Type::NONE, Controls::Type::NONE},
+        {Skills::Type::ARCHERY, Controls::Type::SHOOT},
+        {Skills::Type::SHURIKEN, Controls::Type::SHURIKEN},
+        {Skills::Type::QUARTERSTAFF, Controls::Type::QUARTERSTAFF},
+        {Skills::Type::SPELLS, Controls::Type::SPELLS}};
+
     // find map control
     int Find(Map::Base &map, std::vector<Controls::Base> &controls, Controls::Type type, int id)
     {
@@ -27,6 +34,11 @@ namespace BloodSword::Interface
         }
 
         return result;
+    }
+
+    bool CanShoot(Character::Base &character)
+    {
+        return character.Shoot != Skills::Type::NONE && character.Has(character.Shoot);
     }
 
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size)
@@ -57,24 +69,30 @@ namespace BloodSword::Interface
                 // has quarterstaff skill
                 if (character.Has(Skills::Type::QUARTERSTAFF) && character.IsArmed(Item::Type::QUARTERSTAFF))
                 {
-                    controls.push_back(Controls::Type::QUARTERSTAFF);
+                    controls.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                 }
             }
-            else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && character.Has(Skills::Type::ARCHERY) && character.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
+            else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Interface::CanShoot(character) && character.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
             {
-                // can shoot
-                controls.push_back(Controls::Type::SHOOT);
+                if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                {
+                    // can shoot
+                    controls.push_back(Interface::ActionControls[character.Shoot]);
+                }
             }
-            else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && character.Has(Skills::Type::SHURIKEN) && character.IsArmed(Item::Type::SHURIKEN))
+            else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Interface::CanShoot(character))
             {
-                // can shoot shurikien
-                controls.push_back(Controls::Type::SHURIKEN);
+                if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                {
+                    // can shoot
+                    controls.push_back(Interface::ActionControls[character.Shoot]);
+                }
             }
 
             // can cast spells
             if (character.Has(Skills::Type::SPELLS))
             {
-                controls.push_back(Controls::Type::SPELLS);
+                controls.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
             }
 
             // defend
@@ -177,7 +195,7 @@ namespace BloodSword::Interface
     }
 
     // fight action
-    bool Fight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type used = Skills::Type::NONE)
+    bool Fight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type skill)
     {
         auto alive = true;
 
@@ -187,9 +205,9 @@ namespace BloodSword::Interface
 
         auto window = origin + (Point(w, h) - Point(window_w, window_h)) / 2;
 
-        auto knockout = (used == Skills::Type::QUARTERSTAFF) && attacker.Has(Skills::Type::QUARTERSTAFF);
+        auto knockout = (skill == Skills::Type::QUARTERSTAFF) && attacker.Has(Skills::Type::QUARTERSTAFF);
 
-        auto unarmed = (used != Skills::Type::ARCHERY) && attacker.IsPlayer() && !attacker.IsArmed();
+        auto unarmed = (skill != Skills::Type::ARCHERY) && attacker.IsPlayer() && !attacker.IsArmed();
 
         auto asset = Asset::Type::NONE;
 
@@ -222,15 +240,15 @@ namespace BloodSword::Interface
 
                 if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true))
                 {
-                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, used, asset, true);
+                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true);
 
-                    auto effect = BloodSword::Find(Interface::SkillEffects, used);
+                    auto effect = BloodSword::Find(Interface::SkillEffects, skill);
 
                     if (hit > 0)
                     {
                         alive &= Engine::GainEndurance(defender, hit, true);
 
-                        if (!defender.IsImmune(used) && effect != Character::Status::NONE)
+                        if (!defender.IsImmune(skill) && effect != Character::Status::NONE)
                         {
                             defender.Add(effect);
 
@@ -245,7 +263,7 @@ namespace BloodSword::Interface
     }
 
     // Fight helper function
-    void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, Skills::Type used = Skills::Type::NONE)
+    void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, Skills::Type used)
     {
         auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
 
@@ -322,20 +340,11 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        auto asset = Asset::Type::ARCHERY;
-
-        if (attacker.Has(Skills::Type::SHURIKEN))
-        {
-            asset = Asset::Type::SHURIKEN;
-        }
-        else if (attacker.Has(Skills::Type::ARCHERY))
-        {
-            asset = Asset::Type::ARCHERY;
-        }
+        auto asset = Interface::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Type::SHOOT;
 
         auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, attacker.Shoot, asset);
 
-        if (attacker.Has(Skills::Type::ARCHERY) && !attacker.Has(Skills::Type::SHURIKEN))
+        if (Interface::CanShoot(attacker) && attacker.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
         {
             attacker.Remove(Item::Type::ARROW, 1);
         }
@@ -805,7 +814,7 @@ namespace BloodSword::Interface
                                             // next character in battle order
                                             next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
-                                        else if (character.Has(Skills::Type::ARCHERY) || character.Has(Skills::Type::SHURIKEN))
+                                        else if ((character.Has(Skills::Type::ARCHERY) && character.Shoot == Skills::Type::ARCHERY) || (character.Has(Skills::Type::SHURIKEN) && character.Shoot == Skills::Type::SHURIKEN))
                                         {
                                             auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
 

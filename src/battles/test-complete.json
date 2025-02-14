@@ -1118,7 +1118,7 @@
                     "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "item_limit": 6,
+                    "item_limit": 10,
                     "moves": 1000,
                     "name": "BARBARIAN",
                     "rank": 0
@@ -1166,10 +1166,11 @@
                     "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "item_limit": 6,
+                    "item_limit": 10,
                     "moves": 0,
                     "name": "ASSASSIN",
                     "rank": 0,
+                    "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
                     ]
@@ -1217,7 +1218,7 @@
                     "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "item_limit": 6,
+                    "item_limit": 10,
                     "moves": 3,
                     "name": "CORPSE",
                     "rank": 0
