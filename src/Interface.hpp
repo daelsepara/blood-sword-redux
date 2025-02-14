@@ -1979,9 +1979,9 @@ namespace BloodSword::Interface
     {
         auto result = false;
 
-        auto cast_w = BloodSword::TileSize * 8;
+        auto cast_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
-        auto cast_h = BloodSword::QuarterTile * 13;
+        auto cast_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
         auto cast = origin + (Point(w, h) - Point(cast_w, cast_h)) / 2;
 
