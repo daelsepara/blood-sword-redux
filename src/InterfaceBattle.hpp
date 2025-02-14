@@ -176,17 +176,11 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto fight_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
-        auto fight_h = BloodSword::TileSize * 3 + BloodSword::QuarterTile;
+        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
-        auto fight = origin + (Point(w, h) - Point(fight_w, fight_h)) / 2;
-
-        auto damage_w = BloodSword::TileSize * 8;
-
-        auto damage_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
-
-        auto damage = origin + (Point(w, h) - Point(damage_w, damage_h)) / 2;
+        auto window = origin + (Point(w, h) - Point(window_w, window_h)) / 2;
 
         auto knockout = (used == Skills::Type::QUARTERSTAFF) && attacker.Has(Skills::Type::QUARTERSTAFF);
 
@@ -221,9 +215,9 @@ namespace BloodSword::Interface
 
                 auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
 
-                if (Interface::Target(graphics, background, fight, fight_w, fight_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true))
+                if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true))
                 {
-                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, BloodSword::Border, attacker, defender, used, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::FIGHT, true);
+                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, used, knockout ? Asset::Type::QUARTERSTAFF : Asset::Type::FIGHT, true);
 
                     auto effect = BloodSword::Find(Engine::SkillEffects, used);
 
@@ -281,17 +275,11 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto shoot_w = BloodSword::TileSize * 8;
+        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
-        auto shoot_h = BloodSword::QuarterTile * 13;
+        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
-        auto fight = origin + (Point(w, h) - Point(shoot_w, shoot_h)) / 2;
-
-        auto damage_w = BloodSword::TileSize * 8;
-
-        auto damage_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
-
-        auto damage = origin + (Point(w, h) - Point(damage_w, damage_h)) / 2;
+        auto window = origin + (Point(w, h) - Point(window_w, window_h)) / 2;
 
         if (!attacker.Is(Character::Status::DEFENDING))
         {
@@ -303,9 +291,9 @@ namespace BloodSword::Interface
 
                 auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
 
-                if (Interface::Target(graphics, background, fight, shoot_w, shoot_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true))
+                if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true))
                 {
-                    auto hit = Interface::Damage(graphics, background, damage, damage_w, damage_h, Color::Active, BloodSword::Border, attacker, defender, used, asset, true);
+                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, used, asset, true);
 
                     alive &= Engine::GainEndurance(defender, hit, true);
                 }
@@ -433,7 +421,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        auto popup_w = BloodSword::TileSize * 8;
+        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
         auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 

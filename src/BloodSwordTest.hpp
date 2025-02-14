@@ -1564,9 +1564,9 @@ namespace BloodSword::Test
                 }
                 else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
                 {
-                    auto popup_w = BloodSword::TileSize * 8;
+                    auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
-                    auto popup_h = BloodSword::QuarterTile * 13;
+                    auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
                     auto &character = party[input.Current];
 
