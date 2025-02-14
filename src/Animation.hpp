@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Primitives.hpp"
+#include "Color.hpp"
 #include "Scene.hpp"
 #include "Templates.hpp"
 

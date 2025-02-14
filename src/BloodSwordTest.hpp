@@ -1626,14 +1626,14 @@ namespace BloodSword::Test
                 // player turn
                 scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
+                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
 
                 // enemy retaliates
                 if (alive)
                 {
                     scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
                 }
 
                 // enemy turn
@@ -1641,7 +1641,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[1], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
                 }
 
                 // player retaliates
@@ -1649,7 +1649,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
                 }
             }
             else
@@ -1657,14 +1657,14 @@ namespace BloodSword::Test
                 // enemy turn
                 scene.VerifyAndAdd(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
 
                 // player retaliates
                 if (alive)
                 {
                     scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
                 }
 
                 // player turn
@@ -1672,7 +1672,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy);
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
                 }
 
                 // enemy retaliates
@@ -1680,7 +1680,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player);
+                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
                 }
             }
 
@@ -1708,7 +1708,7 @@ namespace BloodSword::Test
     {
         auto player = Generate::Character(Character::Class::TRICKSTER, 2);
 
-        auto enemy = Generate::NPC("ASSASSIN", {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+        auto enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
 
         auto alive = true;
 
@@ -1744,7 +1744,7 @@ namespace BloodSword::Test
                     // player turn
                     scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, Skills::Type::ARCHERY, Asset::Type::ARCHERY);
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
 
                     player.Remove(Item::Type::ARROW, 1);
                 }
@@ -1761,7 +1761,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[1], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Skills::Type::SHURIKEN, Asset::Type::SHURIKEN);
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Shoot, Asset::Type::SHURIKEN);
                 }
             }
             else
@@ -1769,7 +1769,7 @@ namespace BloodSword::Test
                 // enemy turn
                 scene.VerifyAndAdd(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, Skills::Type::SHURIKEN, Asset::Type::SHURIKEN);
+                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Shoot, Asset::Type::SHURIKEN);
 
                 // player turn
                 if (alive)
@@ -1778,7 +1778,7 @@ namespace BloodSword::Test
                     {
                         scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
-                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, Skills::Type::ARCHERY, Asset::Type::ARCHERY);
+                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
 
                         player.Remove(Item::Type::ARROW, 1);
                     }

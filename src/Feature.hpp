@@ -2,7 +2,6 @@
 #define __FEATURE_HPP__
 
 #include "nlohmann/json.hpp"
-
 #include "Templates.hpp"
 
 namespace BloodSword::Feature

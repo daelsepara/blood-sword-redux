@@ -15,11 +15,6 @@
 // functions and classes for handling gameplay logic
 namespace BloodSword::Engine
 {
-    BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
-        {Skills::Type::NONE, Character::Status::NONE},
-        {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
-        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED}};
-
     // queue element
     class ScoreElement
     {

@@ -3,7 +3,9 @@
 
 #include <stdexcept>
 #include <vector>
+#include <fstream>
 
+#include "nlohmann/json.hpp"
 #include "BattleResults.hpp"
 #include "Book.hpp"
 #include "Character.hpp"

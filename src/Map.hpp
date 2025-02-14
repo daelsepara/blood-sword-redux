@@ -1,8 +1,10 @@
 #ifndef __MAP_HPP__
 #define __MAP_HPP__
 
+#include <fstream>
 #include <vector>
 
+#include "nlohmann/json.hpp"
 #include "Asset.hpp"
 #include "MapObjects.hpp"
 #include "Party.hpp"

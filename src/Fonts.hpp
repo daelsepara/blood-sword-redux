@@ -16,6 +16,15 @@ namespace BloodSword::Fonts
 
     TTF_Font *Fixed = nullptr;
 
+    // font IDs
+    enum class ID
+    {
+        NONE = -1,
+        CAPTION,
+        NORMAL,
+        FIXED
+    };
+
     // set up font types
     void Initialize(const char *font_ttf, int caption, int normal, int fixed)
     {
@@ -85,6 +94,29 @@ namespace BloodSword::Fonts
         }
 
         return result;
+    }
+
+    TTF_Font *Set(Fonts::ID id)
+    {
+        TTF_Font *font = nullptr;
+
+        switch (id)
+        {
+        case Fonts::ID::CAPTION:
+            font = Fonts::Caption;
+            break;
+        case Fonts::ID::NORMAL:
+            font = Fonts::Normal;
+            break;
+        case Fonts::ID::FIXED:
+            font = Fonts::Fixed;
+            break;
+        default:
+            font = Fonts::Normal;
+            break;
+        }
+
+        return font;
     }
 }
 #endif

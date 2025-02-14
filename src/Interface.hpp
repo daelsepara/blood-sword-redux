@@ -113,6 +113,43 @@ namespace BloodSword::Interface
         Asset::Type::DICE5,
         Asset::Type::DICE6};
 
+    std::vector<Graphics::RichText> BattleText = {
+        Graphics::RichText("SELECT OPPONENT", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("SELECT TARGET", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("SELECT DESTINATION", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("ENTHRALMENT BROKEN!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("THERE ARE NEARBY ENEMIES!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("CANNOT MOVE THERE!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("CASTER MUST BE ADJACENT TO TARGET!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("CASTING ATTEMPT WAS UNSUCCESSFUL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("YOU CANNOT FLEE THIS BATTLE!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("TARGET IS IMMUNE TO RANGED ATTACK!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("TARGET IS IMMUNE TO THIS SPELL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+
+    std::vector<SDL_Texture *> BattleMessages = {};
+
+    const int MSG_OPPONENT = 0;
+
+    const int MSG_TARGET = 1;
+
+    const int MSG_DEST = 2;
+
+    const int MSG_ENTHRAL = 3;
+
+    const int MSG_NEARBY = 4;
+
+    const int MSG_MOVE = 5;
+
+    const int MSG_ADJACENT = 6;
+
+    const int MSG_CAST = 7;
+
+    const int MSG_FLEE = 8;
+
+    const int MSG_RANGED = 9;
+
+    const int MSG_SPELL = 10;
+
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
     {
@@ -150,6 +187,13 @@ namespace BloodSword::Interface
         {
             BattleControlCaptions[control.first] = Graphics::CreateText(graphics, control.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
         }
+
+        // initialize battle messages
+        Graphics::SetFonts(BattleText);
+
+        Free(BattleMessages);
+
+        BattleMessages = Graphics::CreateText(graphics, BattleText);
     }
 
     // unload all textures allocated by this module
@@ -207,6 +251,8 @@ namespace BloodSword::Interface
         Free(&NoSkills);
 
         Free(&NoSpells);
+
+        Free(BattleMessages);
     }
 
     // unload all textures and assets
@@ -434,20 +480,11 @@ namespace BloodSword::Interface
         {
             if (in_battle && character.IsPlayer())
             {
-                if (!character.IsArmed())
-                {
-                    modifier -= 2;
-                }
+                modifier += !character.IsArmed() ? -2 : 0;
 
-                if (character.Has(Character::Status::FPR_PLUS2))
-                {
-                    modifier += 2;
-                }
+                modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
 
-                if (character.Has(Character::Status::FPR_PLUS1))
-                {
-                    modifier += 1;
-                }
+                modifier += character.Has(Character::Status::FPR_PLUS1) ? 1 : 0;
             }
 
             stats += std::to_string(value) + "D";
@@ -466,20 +503,11 @@ namespace BloodSword::Interface
         {
             if (in_battle && character.IsPlayer() && attribute == Attribute::Type::FIGHTING_PROWESS)
             {
-                if (!character.IsArmed())
-                {
-                    modifier -= 2;
-                }
+                modifier += !character.IsArmed() ? -2 : 0;
 
-                if (character.Has(Character::Status::FPR_PLUS2))
-                {
-                    modifier += 2;
-                }
+                modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
 
-                if (character.Has(Character::Status::FPR_PLUS1))
-                {
-                    modifier += 1;
-                }
+                modifier += character.Has(Character::Status::FPR_PLUS1) ? 1 : 0;
             }
 
             stats += std::to_string(value);
@@ -1769,10 +1797,7 @@ namespace BloodSword::Interface
 
         auto modifier = !shooting ? attacker.Modifier(Attribute::Type::DAMAGE) : 0;
 
-        if (in_battle && attacker.IsPlayer() && !attacker.IsArmed())
-        {
-            modifier -= 2;
-        }
+        modifier += (in_battle && attacker.IsPlayer() && !attacker.IsArmed()) ? -2 : 0;
 
         return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle);
     }

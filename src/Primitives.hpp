@@ -1,6 +1,7 @@
 #ifndef __PRIMITIVES_HPP__
 #define __PRIMITIVES_HPP__
 
+#include <iomanip>
 #include <iostream>
 #include <vector>
 #include <SDL.h>
@@ -193,6 +194,8 @@ namespace BloodSword
             {
                 Free(&texture);
             }
+
+            textures.clear();
         }
     }
 

@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "nlohmann/json.hpp"
 #include "Templates.hpp"
 #include "AssetTypes.hpp"
 

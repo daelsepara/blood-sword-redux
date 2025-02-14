@@ -658,12 +658,30 @@ namespace BloodSword::Generate
         character.Items.clear();
     }
 
+    // set fight / shoot modes
+    void Combat(Character::Base &character)
+    {
+        switch (character.Class)
+        {
+        case Character::Class::TRICKSTER:
+            character.Shoot = Skills::Type::ARCHERY;
+            break;
+        case Character::Class::SAGE:
+            character.Shoot = Skills::Type::ARCHERY;
+            break;
+        default:
+            break;
+        }
+    }
+
     // generate character based on class and rank
     Character::Base Character(Character::Class character_class, int rank)
     {
         auto character = Character::Base(character_class, rank);
 
         Generate::Experience(character);
+
+        Generate::Combat(character);
 
         Generate::Attributes(character);
 
@@ -680,14 +698,23 @@ namespace BloodSword::Generate
         return character;
     }
 
-    // generate NPC
-    Character::Base NPC(const char *name, Skills::List skills, Attributes::List attributes, int moves, Asset::Type asset)
+    Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, Attributes::List attributes, int moves, Asset::Type asset)
     {
         auto character = Character::Base(name, attributes, Character::ControlType::NPC, skills, moves);
+
+        character.Fight = fight;
+
+        character.Fight = shoot;
 
         character.Asset = asset;
 
         return character;
+    }
+
+    // generate NPC
+    Character::Base NPC(const char *name, Skills::List skills, Attributes::List attributes, int moves, Asset::Type asset)
+    {
+        return NPC(name, Skills::Type::NONE, Skills::Type::NONE, skills, attributes, moves, asset);
     }
 
     // generate NPC
@@ -706,6 +733,23 @@ namespace BloodSword::Generate
         auto DMG = Attribute::Base(Attribute::Type::DAMAGE, dmg_v, dmg_m);
 
         return Generate::NPC(name, skills, {FPR, PSY, AWR, END, ARM, DMG}, moves, asset);
+    }
+
+    Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
+    {
+        auto FPR = Attribute::Base(Attribute::Type::FIGHTING_PROWESS, fpr, 0);
+
+        auto PSY = Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, psy, 0);
+
+        auto AWR = Attribute::Base(Attribute::Type::AWARENESS, awr, 0);
+
+        auto END = Attribute::Base(Attribute::Type::ENDURANCE, end, 0);
+
+        auto ARM = Attribute::Base(Attribute::Type::ARMOUR, 0, arm);
+
+        auto DMG = Attribute::Base(Attribute::Type::DAMAGE, dmg_v, dmg_m);
+
+        return Generate::NPC(name, fight, shoot, skills, {FPR, PSY, AWR, END, ARM, DMG}, moves, asset);
     }
 }
 

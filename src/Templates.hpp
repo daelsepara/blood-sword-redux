@@ -4,10 +4,9 @@
 #include <string>
 #include <unordered_map>
 
+// useful templates and classes
 namespace BloodSword
 {
-    // useful templates and classes
-
     // smart pointer
     template <typename T>
     using Smart = std::shared_ptr<T>;

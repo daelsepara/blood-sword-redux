@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "nlohmann/json.hpp"
 #include "BattleResults.hpp"
 #include "Map.hpp"
 #include "Party.hpp"

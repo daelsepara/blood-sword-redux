@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "Color.hpp"
 #include "Fonts.hpp"
 
 namespace BloodSword::Graphics
@@ -17,6 +18,9 @@ namespace BloodSword::Graphics
         // font to render text in
         TTF_Font *Font = nullptr;
 
+        // Font ID to reload fonts once available
+        Fonts::ID ID = Fonts::ID::NONE;
+
         // color
         SDL_Color Color = Color::S(Color::Active);
 
@@ -26,10 +30,31 @@ namespace BloodSword::Graphics
         // line wrap limit (pixels)
         int Wrap = 0;
 
+        RichText(const char *text, Fonts::ID id, SDL_Color color, int style, int wrap) : Text(text), ID(id), Color(color), Style(style), Wrap(wrap) {}
+
         RichText(std::string text, TTF_Font *font, SDL_Color color, int style, int wrap) : Text(text), Font(font), Color(color), Style(style), Wrap(wrap) {}
 
         RichText(std::string text, TTF_Font *font, Uint32 color, int style, int wrap) : Text(text), Font(font), Color(Color::S(color)), Style(style), Wrap(wrap) {}
+
+        void Load()
+        {
+            this->Font = Fonts::Set(this->ID);
+
+            if (this->ID == Fonts::ID::NONE)
+            {
+                this->ID = Fonts::ID::NORMAL;
+            }
+        }
     };
+
+    // reload fonts
+    void SetFonts(std::vector<Graphics::RichText> &collection)
+    {
+        for (auto &text : collection)
+        {
+            text.Load();
+        }
+    }
 }
 
 #endif

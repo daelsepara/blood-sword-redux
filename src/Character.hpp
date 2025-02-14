@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "nlohmann/json.hpp"
+#include "Primitives.hpp"
 #include "AssetTypes.hpp"
 #include "Attribute.hpp"
 #include "CharacterClasses.hpp"
@@ -41,6 +43,10 @@ namespace BloodSword::Character
         std::string Name = std::string();
 
         Asset::Type Asset = Asset::Type::NONE;
+
+        Skills::Type Fight = Skills::Type::NONE;
+
+        Skills::Type Shoot = Skills::Type::NONE;
 
         int Experience = 0;
 
@@ -632,6 +638,10 @@ namespace BloodSword::Character
 
         character.Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::Type::NONE;
 
+        character.Fight = !data["fight"].is_null() ? Skills::Map(std::string(data["fight"])) : Skills::Type::NONE;
+
+        character.Shoot = !data["shoot"].is_null() ? Skills::Map(std::string(data["shoot"])) : Skills::Type::NONE;
+
         if (!data["attributes"].is_null() && data["attributes"].is_array() && data["attributes"].size() > 0)
         {
             character.Attributes = Attributes::Load(data["attributes"]);
@@ -696,6 +706,10 @@ namespace BloodSword::Character
         data["class"] = Character::ClassMapping[character.Class];
 
         data["attributes"] = Attributes::Data(character.Attributes);
+
+        data["fight"] = Skills::TypeMapping[character.Fight];
+
+        data["shoot"] = Skills::TypeMapping[character.Shoot];
 
         if (character.Skills.size() > 0)
         {

@@ -4,6 +4,8 @@
 #include <string>
 #include <vector>
 
+#include "nlohmann/json.hpp"
+#include "AssetTypes.hpp"
 #include "Templates.hpp"
 
 namespace BloodSword::Attribute

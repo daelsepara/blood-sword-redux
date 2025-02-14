@@ -3,6 +3,7 @@
 
 #include <string>
 
+#include "nlohmann/json.hpp"
 #include "Templates.hpp"
 #include "AssetTypes.hpp"
 
