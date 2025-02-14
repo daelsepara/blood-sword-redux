@@ -233,6 +233,8 @@ namespace BloodSword::Interface
                         if (!defender.IsImmune(used) && effect != Character::Status::NONE)
                         {
                             defender.Add(effect);
+
+                            Interface::MessageBox(graphics, background, origin, w, h, Character::StatusMapping[effect], Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
                         }
                     }
                 }
@@ -263,13 +265,17 @@ namespace BloodSword::Interface
         }
         else
         {
-            alive &= Interface::Fight(graphics, background, draw, map_w, map_h, defender, attacker, used);
-
-            if (!alive)
+            // retaliate only if not paralyzed, knocked out, and defending
+            if (!defender.Is(Character::Status::KNOCKED_OUT) && !defender.Is(Character::Status::PARALYZED))
             {
-                battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
+                alive &= Interface::Fight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
 
-                Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(attacker.Name + " KILLED!", Fonts::Normal, attacker.IsPlayer() ? Color::Highlight : Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, attacker.IsPlayer() ? Color::Highlight : Color::Active, BloodSword::Border, Color::Highlight, true);
+                if (!alive)
+                {
+                    battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
+
+                    Interface::MessageBox(graphics, background, draw, map_w, map_h, Graphics::RichText(attacker.Name + " KILLED!", Fonts::Normal, attacker.IsPlayer() ? Color::Highlight : Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, attacker.IsPlayer() ? Color::Highlight : Color::Active, BloodSword::Border, Color::Highlight, true);
+                }
             }
         }
     }
@@ -1091,7 +1097,7 @@ namespace BloodSword::Interface
 
                                                     fight = false;
 
-                                                    knockout = Skills::Type::NONE;
+                                                    knockout = character.Fight;
 
                                                     shoot = false;
 
@@ -1198,7 +1204,7 @@ namespace BloodSword::Interface
                                                             }
 
                                                             // fight
-                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, character.Fight);
+                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout);
 
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);

@@ -183,6 +183,7 @@
                 "moves": 1000,
                 "name": "TRICKSTER",
                 "rank": 2,
+                "shoot": "ARCHERY",
                 "skills": [
                     "DODGING",
                     "ARCHERY"
@@ -288,6 +289,7 @@
                 "moves": 1000,
                 "name": "SAGE",
                 "rank": 2,
+                "shoot": "ARCHERY",
                 "skills": [
                     "HEALING",
                     "QUARTERSTAFF",

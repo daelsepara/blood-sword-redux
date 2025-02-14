@@ -707,9 +707,15 @@ namespace BloodSword::Character
 
         data["attributes"] = Attributes::Data(character.Attributes);
 
-        data["fight"] = Skills::TypeMapping[character.Fight];
+        if (character.Fight != Skills::Type::NONE)
+        {
+            data["fight"] = Skills::TypeMapping[character.Fight];
+        }
 
-        data["shoot"] = Skills::TypeMapping[character.Shoot];
+        if (character.Shoot != Skills::Type::NONE)
+        {
+            data["shoot"] = Skills::TypeMapping[character.Shoot];
+        }
 
         if (character.Skills.size() > 0)
         {

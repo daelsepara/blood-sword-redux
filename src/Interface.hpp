@@ -563,9 +563,9 @@ namespace BloodSword::Interface
         auto stats_w = 0;
 
         // estimate maximum line width
-        Graphics::Estimate(font, "DMGG", &labels_w, nullptr);
+        Graphics::Estimate(font, "DMGG ", &labels_w, nullptr);
 
-        Graphics::Estimate(font, "999D+D999", &stats_w, nullptr);
+        Graphics::Estimate(font, "9999D+D9999", &stats_w, nullptr);
 
         auto surface_labels = Graphics::CreateSurfaceText(labels.c_str(), font, Color::S(labelcolor), style, labels_w);
 
@@ -590,7 +590,7 @@ namespace BloodSword::Interface
         {
             SDL_Surface *surface = nullptr;
 
-            auto surface_width = surface_labels->w + surface_stats->w + (BloodSword::Pad + BloodSword::SmallPad);
+            auto surface_width = labels_w + stats_w;
 
             if (add_name)
             {
@@ -784,7 +784,7 @@ namespace BloodSword::Interface
         // estimate maximum line width
         Graphics::Estimate(font, "DMGG ", &labels_w, nullptr);
 
-        Graphics::Estimate(font, "999D+D999", &stats_w, nullptr);
+        Graphics::Estimate(font, "9999D+D9999", &stats_w, nullptr);
 
         for (auto &status : character.Status)
         {
@@ -1895,6 +1895,12 @@ namespace BloodSword::Interface
 
             Free(&texture);
         }
+    }
+
+    // draws a message box
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, const char *message, TTF_Font *font, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
     }
 
     // draws a confirmation message box on screen
