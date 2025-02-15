@@ -188,41 +188,40 @@ namespace BloodSword::Engine
         }
     }
 
+    void Build(Engine::Queue &queue, Party::Base &party, Attribute::Type attribute, bool in_battle = false)
+    {
+        // add characters in party to queue
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto knocked_out = party[i].Is(Character::Status::KNOCKED_OUT);
+
+            auto paralyzed = party[i].Is(Character::Status::PARALYZED);
+
+            auto away = party[i].Is(Character::Status::AWAY);
+
+            auto is_alive = Engine::IsAlive(party[i]);
+
+            auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
+
+            if (is_alive && !paralyzed && !away && battle)
+            {
+                queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
+            }
+        }
+    }
+
     // creates queue (order sequence of characters ranked according to attribute score)
     Engine::Queue Build(Party::Base &party, Party::Base &other, Attribute::Type attribute, bool in_battle = false, bool descending = true)
     {
         Engine::Queue queue = {};
 
         // add characters in party to queue
-        for (auto i = 0; i < party.Count(); i++)
-        {
-            auto alive = Engine::IsAlive(party[i]);
-            auto paralyzed = party[i].Is(Character::Status::PARALYZED);
-            auto away = party[i].Is(Character::Status::AWAY);
-            auto knockedout = party[i].Is(Character::Status::KNOCKED_OUT);
-            auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-            if (alive && !paralyzed && !away && battle)
-            {
-                queue.push_back(ScoreElement(party[i].ControlType, i, knockedout ? 1 : Engine::Score(party[i], attribute, in_battle)));
-            }
-        }
+        Engine::Build(queue, party, attribute, in_battle);
 
         // add characters from the other party to the queue
-        for (auto i = 0; i < other.Count(); i++)
-        {
-            auto alive = Engine::IsAlive(other[i]);
-            auto paralyzed = other[i].Is(Character::Status::PARALYZED);
-            auto away = other[i].Is(Character::Status::AWAY);
-            auto knockedout = other[i].Is(Character::Status::KNOCKED_OUT);
-            auto battle = (in_battle && other[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
+        Engine::Build(queue, other, attribute, in_battle);
 
-            if (alive && !paralyzed && !away && battle)
-            {
-                queue.push_back(ScoreElement(other[i].ControlType, i, knockedout ? 1 : Engine::Score(other[i], attribute)));
-            }
-        }
-
+        // sort queue
         Engine::Sort(queue, descending);
 
         return queue;
@@ -340,11 +339,13 @@ namespace BloodSword::Engine
 
         for (auto i = 0; i < party.Count(); i++)
         {
-            auto alive = Engine::IsAlive(party[i]);
-            auto away = party[i].Is(Character::Status::AWAY);
+            auto is_away = party[i].Is(Character::Status::AWAY);
+
+            auto is_alive = Engine::IsAlive(party[i]);
+            
             auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
-            if (alive && !away && battle)
+            if (is_alive && !is_away && battle)
             {
                 auto distance = -1;
 
@@ -382,11 +383,13 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto alive = Engine::IsAlive(party[i]);
-                auto away = party[i].Is(Character::Status::AWAY);
+                auto is_away = party[i].Is(Character::Status::AWAY);
+
+                auto is_alive = Engine::IsAlive(party[i]);
+                
                 auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
-                if (alive && !away && battle)
+                if (is_alive && !is_away && battle)
                 {
                     auto distance = -1;
 
@@ -427,11 +430,13 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto alive = Engine::IsAlive(party[i]);
-                auto away = party[i].Is(Character::Status::AWAY);
+                auto is_away = party[i].Is(Character::Status::AWAY);
+
+                auto is_alive = Engine::IsAlive(party[i]);
+                
                 auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
-                if (alive && !away && battle)
+                if (is_alive && !is_away && battle)
                 {
                     Point location;
 
@@ -468,11 +473,13 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto alive = Engine::IsAlive(party[i]);
-                auto away = party[i].Is(Character::Status::AWAY);
+                auto is_away = party[i].Is(Character::Status::AWAY);
+
+                auto is_alive = Engine::IsAlive(party[i]);
+                
                 auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
-                if (alive && !away && battle)
+                if (is_alive && !is_away && battle)
                 {
                     auto distance = -1;
 

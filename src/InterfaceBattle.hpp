@@ -36,16 +36,24 @@ namespace BloodSword::Interface
         return result;
     }
 
+    // checks if a character can shoot and is properly armed
     bool CanShoot(Character::Base &character)
     {
-        return character.Shoot != Skills::Type::NONE && character.Has(character.Shoot);
+        auto can_shoot = character.Shoot != Skills::Type::NONE && character.Has(character.Shoot);
+
+        if (character.Shoot == Skills::Type::ARCHERY)
+        {
+            can_shoot &= character.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW);
+        }
+
+        return can_shoot;
     }
 
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size)
     {
-        auto overlay = Scene::Base();
-
         std::vector<Controls::Type> controls = {};
+
+        auto overlay = Scene::Base();
 
         auto is_player = party[id].IsPlayer();
 
@@ -72,7 +80,7 @@ namespace BloodSword::Interface
                     controls.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                 }
             }
-            else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Interface::CanShoot(character) && character.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
+            else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Interface::CanShoot(character))
             {
                 if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                 {
@@ -344,7 +352,7 @@ namespace BloodSword::Interface
 
         auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, attacker.Shoot, asset);
 
-        if (Interface::CanShoot(attacker) && attacker.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
+        if (Interface::CanShoot(attacker) && attacker.Shoot == Skills::Type::ARCHERY)
         {
             attacker.Remove(Item::Type::ARROW, 1);
         }
@@ -814,7 +822,7 @@ namespace BloodSword::Interface
                                             // next character in battle order
                                             next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
-                                        else if ((character.Has(Skills::Type::ARCHERY) && character.Shoot == Skills::Type::ARCHERY) || (character.Has(Skills::Type::SHURIKEN) && character.Shoot == Skills::Type::SHURIKEN))
+                                        else if (Interface::CanShoot(character))
                                         {
                                             auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
 
