@@ -67,13 +67,7 @@ namespace BloodSword::Input
 
         while (true)
         {
-            Graphics::Render(graphics, scene);
-
-            Graphics::DisplayVersion(graphics);
-
-            Graphics::Scanlines(graphics);
-
-            SDL_RenderPresent(graphics.Renderer);
+            Graphics::RenderNow(graphics, scene);
 
             SDL_WaitEventTimeout(&result, BloodSword::StandardDelay);
 
@@ -110,32 +104,33 @@ namespace BloodSword::Input
         }
     }
 
-    void RenderWhileWaiting(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false)
+    void RenderWhileWaiting(Graphics::Base &graphics, Graphics::Scenery &scenes, Controls::List &controls, Controls::User input, bool blur = false)
     {
+        Graphics::Dialog(graphics, scenes, blur);
+
+        Graphics::Render(graphics, controls, input);
+    }
+
+    void RenderWhileWaiting(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = false)
+    {
+        Graphics::Scenery scenes = {background, scene};
+
         if (!is_dialog)
         {
-            Graphics::Render(graphics, scene, input);
-
-            Graphics::Overlay(graphics, overlay);
-
-            Graphics::Scanlines(graphics);
+            Input::RenderWhileWaiting(graphics, scenes, background.Controls, input);
         }
         else
         {
-            Graphics::Dialog(graphics, scene, overlay, input, blur);
+            Input::RenderWhileWaiting(graphics, scenes, scene.Controls, input, blur);
         }
 
-        Graphics::DisplayVersion(graphics);
-
-        Graphics::Scanlines(graphics);
-
-        SDL_RenderPresent(graphics.Renderer);
+        Graphics::RenderNow(graphics);
     }
 
     // Handler for text input events. Must be called from other handler since it does not render screens
-    Controls::User WaitForText(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForText(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
     {
-        Input::RenderWhileWaiting(graphics, scene, overlay, input, is_dialog, blur);
+        Input::RenderWhileWaiting(graphics, background, scene, input, is_dialog, blur);
 
         SDL_Event result;
 
@@ -208,14 +203,14 @@ namespace BloodSword::Input
     }
 
     // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Scene::Base &overlay, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
     {
         if (input.Text)
         {
-            return Input::WaitForText(graphics, scene, overlay, input, is_dialog, blur);
+            return Input::WaitForText(graphics, background, scene, input, is_dialog, blur);
         }
 
-        Input::RenderWhileWaiting(graphics, scene, overlay, input, is_dialog, blur);
+        Input::RenderWhileWaiting(graphics, background, scene, input, is_dialog, blur);
 
         SDL_Event result;
 
@@ -236,7 +231,7 @@ namespace BloodSword::Input
 
         input.Down = false;
 
-        auto &controls = !is_dialog ? scene.Controls : overlay.Controls;
+        auto &controls = is_dialog ? scene.Controls : background.Controls;
 
         if (result.type == SDL_QUIT)
         {
@@ -477,13 +472,13 @@ namespace BloodSword::Input
     // render scene then wait for user input
     Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &scene, Controls::User input)
     {
-        auto overlay = Scene::Base();
+        auto background = Scene::Base();
 
-        return WaitForInput(graphics, scene, overlay, input);
+        return WaitForInput(graphics, background, scene, input, true);
     }
 
     // check if user input is valid
-    bool IsValid(std::vector<Controls::Base> &controls, Controls::User &input)
+    bool IsValid(Controls::List &controls, Controls::User &input)
     {
         return (input.Current >= 0 && input.Current < controls.size());
     }

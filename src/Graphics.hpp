@@ -12,6 +12,8 @@
 // classes and functions for the graphics rendering engine
 namespace BloodSword::Graphics
 {
+    typedef std::vector<std::reference_wrapper<Scene::Base>> Scenery;
+
     // version string texture overlay
     SDL_Texture *VersionOverlay = nullptr;
 
@@ -354,6 +356,57 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scenes
+    void Render(Base &graphics, Graphics::Scenery &scenes)
+    {
+        if (graphics.Renderer && scenes.size() > 0)
+        {
+            Graphics::FillWindow(graphics, scenes.front().get().Background);
+
+            for (auto &scene : scenes)
+            {
+                Graphics::Overlay(graphics, scene.get());
+            }
+        }
+    }
+
+    // render controls
+    void Render(Graphics::Base &graphics, Controls::List &controls, Controls::User input)
+    {
+        for (auto &control : controls)
+        {
+            if (control.Id == input.Current)
+            {
+                if (!input.Blink || !control.OnMap)
+                {
+                    Graphics::ThickRect(graphics, control.W - BloodSword::SmallPad * control.Pixels, control.H - BloodSword::SmallPad * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
+                }
+            }
+        }
+    }
+
+    void Overlay(Base &graphics, Scene::Base &scene, Controls::User input)
+    {
+        Graphics::Overlay(graphics, scene);
+
+        Graphics::Render(graphics, scene.Controls, input);
+    }
+
+    void Render(Base &graphics, Graphics::Scenery &scenes, Controls::List &controls, Controls::User input)
+    {
+        if (graphics.Renderer && scenes.size() > 0)
+        {
+            Graphics::Render(graphics, scenes);
+
+            Graphics::Render(graphics, controls, input);
+        }
+    }
+
+    void Render(Base &graphics, Graphics::Scenery &scenes, Controls::User input)
+    {
+        Graphics::Render(graphics, scenes, scenes.back().get().Controls, input);
+    }
+
     // render version string on screen
     void DisplayVersion(Base &graphics)
     {
@@ -370,45 +423,57 @@ namespace BloodSword::Graphics
         {
             Graphics::Render(graphics, scene);
 
-            for (auto &control : scene.Controls)
+            Graphics::Render(graphics, scene.Controls, input);
+        }
+    }
+
+    void Dialog(Base &graphics, Graphics::Scenery &scenes, bool blur = false)
+    {
+        if (graphics.Renderer && scenes.size() > 0)
+        {
+            Graphics::FillWindow(graphics, scenes.front().get().Background);
+
+            for (auto it = scenes.begin(); it != scenes.end(); it++)
             {
-                if (control.Id == input.Current)
+                if ((it == (scenes.end() - 1)) && blur)
                 {
-                    if (!input.Blink || !control.OnMap)
-                    {
-                        Graphics::ThickRect(graphics, control.W - BloodSword::SmallPad * control.Pixels, control.H - BloodSword::SmallPad * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
-                    }
+                    auto rect = Graphics::CreateRect(graphics, graphics.Width, graphics.Height, 0, 0, 0xB0000000);
+
+                    SDL_RenderFillRect(graphics.Renderer, &rect);
                 }
+
+                Graphics::Overlay(graphics, (*it).get());
             }
+        }
+    }
+
+    void Dialog(Base &graphics, Graphics::Scenery &scenes, Controls::User input, bool blur = false)
+    {
+        if (graphics.Renderer && scenes.size() > 0)
+        {
+            Graphics::Dialog(graphics, scenes, blur);
+
+            Graphics::Render(graphics, scenes.back().get().Controls, input);
         }
     }
 
     // handle controls on pop-up dialog instead of the background
     void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input, bool blur = false)
     {
+        Graphics::Scenery scenes = {background, dialog};
+
+        Graphics::Dialog(graphics, scenes, input, blur);
+    }
+
+    void RenderNow(Base &graphics)
+    {
         if (graphics.Renderer)
         {
-            Graphics::Render(graphics, background);
+            Graphics::DisplayVersion(graphics);
 
-            if (blur)
-            {
-                auto rect = Graphics::CreateRect(graphics, graphics.Width, graphics.Height, 0, 0, 0xB0000000);
+            Graphics::Scanlines(graphics);
 
-                SDL_RenderFillRect(graphics.Renderer, &rect);
-            }
-
-            Graphics::Overlay(graphics, dialog);
-
-            for (auto &control : dialog.Controls)
-            {
-                if (control.Id == input.Current)
-                {
-                    if (!input.Blink || !control.OnMap)
-                    {
-                        Graphics::ThickRect(graphics, control.W - BloodSword::SmallPad * control.Pixels, control.H - BloodSword::SmallPad * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
-                    }
-                }
-            }
+            SDL_RenderPresent(graphics.Renderer);
         }
     }
 
@@ -420,11 +485,7 @@ namespace BloodSword::Graphics
         {
             Graphics::Render(graphics, scene);
 
-            Graphics::DisplayVersion(graphics);
-
-            Graphics::Scanlines(graphics);
-
-            SDL_RenderPresent(graphics.Renderer);
+            Graphics::RenderNow(graphics);
         }
     }
 
@@ -434,15 +495,11 @@ namespace BloodSword::Graphics
     {
         if (graphics.Renderer)
         {
-            Graphics::Render(graphics, background);
+            Graphics::Scenery scenes = {background, foreground};
 
-            Graphics::Overlay(graphics, foreground);
+            Graphics::Render(graphics, scenes);
 
-            Graphics::DisplayVersion(graphics);
-
-            Graphics::Scanlines(graphics);
-
-            SDL_RenderPresent(graphics.Renderer);
+            Graphics::RenderNow(graphics);
         }
     }
 

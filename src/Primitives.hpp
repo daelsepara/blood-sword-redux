@@ -14,7 +14,7 @@
 namespace BloodSword
 {
     typedef std::vector<SDL_Texture *> Textures;
-    
+
     // default tile dimensions
     const int TileSize = 64;
 

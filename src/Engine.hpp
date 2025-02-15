@@ -342,7 +342,7 @@ namespace BloodSword::Engine
             auto is_away = party[i].Is(Character::Status::AWAY);
 
             auto is_alive = Engine::IsAlive(party[i]);
-            
+
             auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
             if (is_alive && !is_away && battle)
@@ -386,7 +386,7 @@ namespace BloodSword::Engine
                 auto is_away = party[i].Is(Character::Status::AWAY);
 
                 auto is_alive = Engine::IsAlive(party[i]);
-                
+
                 auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
                 if (is_alive && !is_away && battle)
@@ -433,7 +433,7 @@ namespace BloodSword::Engine
                 auto is_away = party[i].Is(Character::Status::AWAY);
 
                 auto is_alive = Engine::IsAlive(party[i]);
-                
+
                 auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
                 if (is_alive && !is_away && battle)
@@ -476,7 +476,7 @@ namespace BloodSword::Engine
                 auto is_away = party[i].Is(Character::Status::AWAY);
 
                 auto is_alive = Engine::IsAlive(party[i]);
-                
+
                 auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
 
                 if (is_alive && !is_away && battle)

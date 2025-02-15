@@ -165,8 +165,10 @@ namespace BloodSword::Controls
         }
     };
 
+    typedef std::vector<Controls::Base> List;
+
     // find if control is present in the list
-    int Find(std::vector<Controls::Base> &controls, Controls::Type type)
+    int Find(Controls::List &controls, Controls::Type type)
     {
         auto result = -1;
 

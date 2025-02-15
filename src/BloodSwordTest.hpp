@@ -62,7 +62,7 @@ namespace BloodSword::Test
         auto enchanter_sprite = Scene::Element(enchanter_text, x + ws * 4, y);
 
         // controls
-        std::vector<Controls::Base> controls = {
+        Controls::List controls = {
             Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 4, x, y, w, h, Color::Highlight),
             Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 5, x + w + s, y, w, h, Color::Highlight),
             Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 6, x + ws * 2, y, w, h, Color::Highlight),
@@ -537,7 +537,7 @@ namespace BloodSword::Test
 
         ResetObjects(map);
 
-        auto background = RegenerateScene(map);
+        auto scene = RegenerateScene(map);
 
         auto done = true;
 
@@ -559,11 +559,11 @@ namespace BloodSword::Test
                 {
                     auto overlay = Scene::Base(fps_texture, map.DrawX, map.TileSize / 2);
 
-                    input = Input::WaitForInput(graphics, background, overlay, input);
+                    input = Input::WaitForInput(graphics, scene, overlay, input);
                 }
                 else
                 {
-                    input = Input::WaitForInput(graphics, background, input);
+                    input = Input::WaitForInput(graphics, scene, input);
                 }
 
                 if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
@@ -583,7 +583,7 @@ namespace BloodSword::Test
                         {
                             map.Put(start, Map::Object::NONE, -1);
 
-                            background = RegenerateScene(map);
+                            scene = RegenerateScene(map);
 
                             Interface::Clip(graphics, map);
 
@@ -618,7 +618,7 @@ namespace BloodSword::Test
 
                         ResetObjects(map);
 
-                        background = RegenerateScene(map);
+                        scene = RegenerateScene(map);
                     }
                 }
             }
@@ -626,7 +626,7 @@ namespace BloodSword::Test
             {
                 while (!done)
                 {
-                    done = Graphics::Animate(graphics, background, animations, true);
+                    done = Graphics::Animate(graphics, scene, animations, true);
 
                     frames++;
                 }
@@ -663,7 +663,7 @@ namespace BloodSword::Test
 
                     input.Selected = false;
 
-                    background = RegenerateScene(map);
+                    scene = RegenerateScene(map);
 
                     Interface::Clip(graphics);
                 }

@@ -20,7 +20,7 @@ namespace BloodSword::Interface
         {Skills::Type::SPELLS, Controls::Type::SPELLS}};
 
     // find map control
-    int Find(Map::Base &map, std::vector<Controls::Base> &controls, Controls::Type type, int id)
+    int Find(Map::Base &map, Controls::List &controls, Controls::Type type, int id)
     {
         auto result = -1;
 
@@ -186,7 +186,7 @@ namespace BloodSword::Interface
         return overlay;
     }
 
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, std::vector<Scene::Element> &assets, std::vector<Controls::Base> &controls, Point location)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, std::vector<Scene::Element> &assets, Controls::List &controls, Point location)
     {
         auto num = int(assets.size() == controls.size() ? controls.size() : 0);
 
@@ -217,7 +217,7 @@ namespace BloodSword::Interface
 
         std::vector<Scene::Element> assets = {Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h)};
 
-        std::vector<Controls::Base> controls = {Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+        Controls::List controls = {Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
@@ -229,7 +229,7 @@ namespace BloodSword::Interface
     }
 
     // generate status
-    BloodSword::Textures GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
+    std::vector<SDL_Texture *> GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
     {
         return Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, in_battle);
     }
@@ -417,7 +417,7 @@ namespace BloodSword::Interface
     }
 
     // generate stats
-    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, BloodSword::Textures &party_stats, BloodSword::Textures &party_status, BloodSword::Textures &enemy_stats, BloodSword::Textures &enemy_status)
+    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, std::vector<SDL_Texture *> &party_stats, std::vector<SDL_Texture *> &party_status, std::vector<SDL_Texture *> &enemy_stats, std::vector<SDL_Texture *> &enemy_status)
     {
         Free(enemy_stats);
 

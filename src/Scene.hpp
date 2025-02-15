@@ -137,7 +137,7 @@ namespace BloodSword::Scene
         std::vector<Scene::Element> Elements = {};
 
         // locations and dimensions of controls hitboxes associated with the scene lement
-        std::vector<Controls::Base> Controls = {};
+        Controls::List Controls = {};
 
         // background color of the entire screen. set before rendering each element
         Uint32 Background = 0;
@@ -172,9 +172,9 @@ namespace BloodSword::Scene
             this->Controls.push_back(control);
         }
 
-        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}
+        Base(std::vector<Scene::Element> elements, Controls::List controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}
 
-        Base(std::vector<Scene::Element> elements, std::vector<Controls::Base> controls) : Elements(elements), Controls(controls) {}
+        Base(std::vector<Scene::Element> elements, Controls::List controls) : Elements(elements), Controls(controls) {}
 
         Base(std::vector<Scene::Element> elements, Uint32 background) : Elements(elements), Background(background) {}
 
