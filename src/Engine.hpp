@@ -532,7 +532,7 @@ namespace BloodSword::Engine
     {
         auto endurance = Engine::Score(character, Attribute::Type::ENDURANCE, in_battle);
 
-        endurance -= gain;
+        endurance += gain;
 
         endurance = std::max(0, endurance);
 

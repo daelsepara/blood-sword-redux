@@ -2,6 +2,7 @@
 #define __INTERFACE_BATTLE_HPP__
 
 #include "Battle.hpp"
+#include "Graphics.hpp"
 #include "Interface.hpp"
 
 namespace BloodSword::Interface
@@ -47,6 +48,37 @@ namespace BloodSword::Interface
         }
 
         return can_shoot;
+    }
+
+    // generic reset
+    void Cancel(Character::Base &character, Character::Status status)
+    {
+        if (character.Is(status))
+        {
+            character.Remove(status);
+        }
+    }
+
+    // reset battle status
+    void ResetStatus(Character::Base &character)
+    {
+        Interface::Cancel(character, Character::Status::FLEEING);
+
+        Interface::Cancel(character, Character::Status::DEFENDED);
+    }
+
+    void ResetSpells(Character::Base &character)
+    {
+        if (character.Has(Skills::Type::SPELLS))
+        {
+            character.ResetSpellComplexities();
+        }
+    }
+    void ResetStatusAndSpells(Character::Base &character)
+    {
+        Interface::ResetStatus(character);
+
+        Interface::ResetSpells(character);
     }
 
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size)
@@ -197,7 +229,7 @@ namespace BloodSword::Interface
     }
 
     // generate status
-    std::vector<SDL_Texture *> GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
+    BloodSword::Textures GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
     {
         return Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, in_battle);
     }
@@ -254,7 +286,7 @@ namespace BloodSword::Interface
 
                     if (hit > 0)
                     {
-                        alive &= Engine::GainEndurance(defender, hit, true);
+                        alive &= Engine::GainEndurance(defender, -hit, true);
 
                         if (!defender.IsImmune(skill) && effect != Character::Status::NONE)
                         {
@@ -331,7 +363,7 @@ namespace BloodSword::Interface
                 {
                     auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, used, asset, true);
 
-                    alive &= Engine::GainEndurance(defender, hit, true);
+                    alive &= Engine::GainEndurance(defender, -hit, true);
                 }
             }
         }
@@ -385,7 +417,7 @@ namespace BloodSword::Interface
     }
 
     // generate stats
-    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, std::vector<SDL_Texture *> &party_stats, std::vector<SDL_Texture *> &party_status, std::vector<SDL_Texture *> &enemy_stats, std::vector<SDL_Texture *> &enemy_status)
+    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, BloodSword::Textures &party_stats, BloodSword::Textures &party_status, BloodSword::Textures &enemy_stats, BloodSword::Textures &enemy_status)
     {
         Free(enemy_stats);
 
@@ -426,7 +458,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, scene, draw, map_w, map_h, text, Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
 
-                character.Remove(Character::Status::ENTHRALLED);
+                Interface::Cancel(character, Character::Status::ENTHRALLED);
             }
         }
     }
@@ -456,25 +488,25 @@ namespace BloodSword::Interface
         {
             auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-            alive &= Engine::GainEndurance(target, hit, true);
+            alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::WHITE_FIRE)
         {
             auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-            alive &= Engine::GainEndurance(target, hit, true);
+            alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::SWORDTHRUST)
         {
             auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-            alive &= Engine::GainEndurance(target, hit, true);
+            alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::NEMESIS_BOLT)
         {
             auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-            alive &= Engine::GainEndurance(target, hit, true);
+            alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::NIGHTHOWL)
         {
@@ -497,7 +529,7 @@ namespace BloodSword::Interface
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-                alive &= Engine::GainEndurance(target, hit, true);
+                alive &= Engine::GainEndurance(target, -hit, true);
             }
             else
             {
@@ -512,10 +544,10 @@ namespace BloodSword::Interface
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-                alive &= Engine::GainEndurance(target, hit, true);
+                alive &= Engine::GainEndurance(target, -hit, true);
 
                 // caster gains endurance
-                Engine::GainEndurance(caster, -std::abs(hit / 2), true);
+                Engine::GainEndurance(caster, std::abs(hit / 2), true);
             }
             else
             {
@@ -530,7 +562,7 @@ namespace BloodSword::Interface
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-                alive &= Engine::GainEndurance(target, hit, true);
+                alive &= Engine::GainEndurance(target, -hit, true);
             }
             else
             {
@@ -538,14 +570,14 @@ namespace BloodSword::Interface
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::AlternateDamage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-                alive &= Engine::GainEndurance(target, hit, true);
+                alive &= Engine::GainEndurance(target, -hit, true);
             }
         }
         else if (spell == Spells::Type::SHEET_LIGHTNING)
         {
             auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
-            alive &= Engine::GainEndurance(target, hit, true);
+            alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::SERVILE_ENTHRALMENT)
         {
@@ -592,7 +624,7 @@ namespace BloodSword::Interface
         }
         else if (spell == Spells::Type::EYE_OF_THE_TIGER)
         {
-            std::vector<Graphics::RichText> tiger_eye =
+            Graphics::TextList tiger_eye =
                 {Graphics::RichText("CHARACTER FPR/DMG ROLLS +2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                  Graphics::RichText("    PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
@@ -805,10 +837,7 @@ namespace BloodSword::Interface
 
                                         if (opponents.size() > 0)
                                         {
-                                            if (character.Has(Skills::Type::SPELLS))
-                                            {
-                                                character.ResetSpellComplexities();
-                                            }
+                                            Interface::ResetSpells(character);
 
                                             // fight
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, character.Fight);
@@ -831,7 +860,7 @@ namespace BloodSword::Interface
                                                 for (auto &target : targets)
                                                 {
                                                     // shoot first available target
-                                                    if (!(party[target.Id].IsImmune(Skills::Type::ARCHERY) || party[target.Id].IsImmune(Skills::Type::SHURIKEN)))
+                                                    if (!party[target.Id].IsImmune(character.Shoot))
                                                     {
                                                         // shoot
                                                         Interface::Shoot(graphics, scene, battle, character, party[target.Id], target.Id);
@@ -1142,10 +1171,7 @@ namespace BloodSword::Interface
 
                                                             if (animating)
                                                             {
-                                                                if (character.Is(Character::Status::FLEEING))
-                                                                {
-                                                                    character.Remove(Character::Status::FLEEING);
-                                                                }
+                                                                Interface::Cancel(character, Character::Status::FLEEING);
 
                                                                 // regenerate scene
                                                                 scene = Interface::BattleScene(battle, party);
@@ -1205,20 +1231,7 @@ namespace BloodSword::Interface
 
                                                         if (distance == 1)
                                                         {
-                                                            if (character.Is(Character::Status::FLEEING))
-                                                            {
-                                                                character.Remove(Character::Status::FLEEING);
-                                                            }
-
-                                                            if (character.Is(Character::Status::DEFENDED))
-                                                            {
-                                                                character.Remove(Character::Status::DEFENDED);
-                                                            }
-
-                                                            if (character.Has(Skills::Type::SPELLS))
-                                                            {
-                                                                character.ResetSpellComplexities();
-                                                            }
+                                                            Interface::ResetStatusAndSpells(character);
 
                                                             // fight
                                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout);
@@ -1247,17 +1260,9 @@ namespace BloodSword::Interface
 
                                                         if (distance > 1)
                                                         {
-                                                            if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(Skills::Type::ARCHERY) && !battle.Opponents[battle.Map[control.Map].Id].IsImmune(Skills::Type::SHURIKEN))
+                                                            if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(character.Shoot))
                                                             {
-                                                                if (character.Is(Character::Status::FLEEING))
-                                                                {
-                                                                    character.Remove(Character::Status::FLEEING);
-                                                                }
-
-                                                                if (character.Is(Character::Status::DEFENDED))
-                                                                {
-                                                                    character.Remove(Character::Status::DEFENDED);
-                                                                }
+                                                                Interface::ResetStatus(character);
 
                                                                 // shoot
                                                                 Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id);
@@ -1304,7 +1309,7 @@ namespace BloodSword::Interface
                                                             }
                                                             else
                                                             {
-                                                                if (!(battle.Opponents[battle.Map[control.Map].Id].IsImmune(cast)))
+                                                                if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(cast))
                                                                 {
                                                                     if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[control.Map].Id].Asset, cast, true))
                                                                     {
@@ -1365,20 +1370,7 @@ namespace BloodSword::Interface
 
                                                     if (opponents.size() == 1)
                                                     {
-                                                        if (character.Is(Character::Status::FLEEING))
-                                                        {
-                                                            character.Remove(Character::Status::FLEEING);
-                                                        }
-
-                                                        if (character.Is(Character::Status::DEFENDED))
-                                                        {
-                                                            character.Remove(Character::Status::DEFENDED);
-                                                        }
-
-                                                        if (character.Has(Skills::Type::SPELLS))
-                                                        {
-                                                            character.ResetSpellComplexities();
-                                                        }
+                                                        Interface::ResetStatusAndSpells(character);
 
                                                         fight = false;
 
@@ -1428,22 +1420,9 @@ namespace BloodSword::Interface
                                                     {
                                                         shoot = false;
 
-                                                        if (!(battle.Opponents[targets[0].Id].IsImmune(Skills::Type::ARCHERY) || battle.Opponents[targets[0].Id].IsImmune(Skills::Type::SHURIKEN)))
+                                                        if (!battle.Opponents[targets[0].Id].IsImmune(character.Shoot))
                                                         {
-                                                            if (character.Is(Character::Status::FLEEING))
-                                                            {
-                                                                character.Remove(Character::Status::FLEEING);
-                                                            }
-
-                                                            if (character.Is(Character::Status::DEFENDED))
-                                                            {
-                                                                character.Remove(Character::Status::DEFENDED);
-                                                            }
-
-                                                            if (character.Has(Skills::Type::SPELLS))
-                                                            {
-                                                                character.ResetSpellComplexities();
-                                                            }
+                                                            Interface::ResetStatusAndSpells(character);
 
                                                             // shoot
                                                             Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
@@ -1484,20 +1463,7 @@ namespace BloodSword::Interface
                                                 }
                                                 else if (input.Type == Controls::Type::DEFEND)
                                                 {
-                                                    if (character.Is(Character::Status::DEFENDED))
-                                                    {
-                                                        character.Remove(Character::Status::DEFENDED);
-                                                    }
-
-                                                    if (!character.Is(Character::Status::DEFENDING))
-                                                    {
-                                                        character.Add(Character::Status::DEFENDING);
-                                                    }
-
-                                                    if (character.Has(Skills::Type::SPELLS))
-                                                    {
-                                                        character.ResetSpellComplexities();
-                                                    }
+                                                    Interface::ResetStatusAndSpells(character);
 
                                                     Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
 
@@ -1511,10 +1477,7 @@ namespace BloodSword::Interface
                                                         character.Add(Character::Status::FLEEING);
                                                     }
 
-                                                    if (character.Has(Skills::Type::SPELLS))
-                                                    {
-                                                        character.ResetSpellComplexities();
-                                                    }
+                                                    Interface::ResetSpells(character);
 
                                                     Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
 
@@ -1571,7 +1534,7 @@ namespace BloodSword::Interface
                                                                                 // must be adjacent
                                                                                 Interface::MessageBox(graphics, scene, Interface::BattleMessages[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
                                                                             }
-                                                                            else if (!(battle.Opponents[battle.Map[target].Id].IsImmune(cast) || battle.Opponents[battle.Map[target].Id].IsImmune(cast)))
+                                                                            else if (!battle.Opponents[battle.Map[target].Id].IsImmune(cast))
                                                                             {
                                                                                 if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[target].Id].Asset, cast, true))
                                                                                 {
@@ -1692,10 +1655,7 @@ namespace BloodSword::Interface
                             if (!animating)
                             {
                                 // cancel fleeing status
-                                if (character.Is(Character::Status::FLEEING))
-                                {
-                                    character.Remove(Character::Status::FLEEING);
-                                }
+                                Interface::Cancel(character, Character::Status::FLEEING);
 
                                 if (is_player)
                                 {
@@ -1755,22 +1715,16 @@ namespace BloodSword::Interface
         // clear "IN BATTLE" status
         for (auto member = 0; member < party.Count(); member++)
         {
-            party[member].Remove(Character::Status::IN_BATTLE);
+            Interface::Cancel(party[member], Character::Status::IN_BATTLE);
 
-            if (party[member].Has(Skills::Type::SPELLS))
-            {
-                party[member].ResetSpellComplexities();
-            }
+            Interface::ResetSpells(party[member]);
         }
 
         for (auto member = 0; member < battle.Opponents.Count(); member++)
         {
-            battle.Opponents[member].Remove(Character::Status::IN_BATTLE);
+            Interface::Cancel(battle.Opponents[member], Character::Status::IN_BATTLE);
 
-            if (battle.Opponents[member].Has(Skills::Type::SPELLS))
-            {
-                battle.Opponents[member].ResetSpellComplexities();
-            }
+            Interface::ResetSpells(battle.Opponents[member]);
         }
 
         // determine results of battle

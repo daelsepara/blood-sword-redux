@@ -587,9 +587,9 @@ namespace BloodSword::Graphics
     }
 
     // create a list of texture representation of a collection of strings
-    std::vector<SDL_Texture *> CreateText(Graphics::Base &graphics, std::vector<Graphics::RichText> collection)
+    BloodSword::Textures CreateText(Graphics::Base &graphics, Graphics::TextList collection)
     {
-        std::vector<SDL_Texture *> textures = {};
+        BloodSword::Textures textures = {};
 
         for (auto &text : collection)
         {

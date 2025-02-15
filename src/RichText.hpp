@@ -47,8 +47,10 @@ namespace BloodSword::Graphics
         }
     };
 
+    typedef std::vector<Graphics::RichText> TextList;
+
     // reload fonts
-    void SetFonts(std::vector<Graphics::RichText> &collection)
+    void SetFonts(Graphics::TextList &collection)
     {
         for (auto &text : collection)
         {

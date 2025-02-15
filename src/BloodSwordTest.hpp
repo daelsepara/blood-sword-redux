@@ -1,6 +1,7 @@
 #ifndef __TEST_HPP__
 #define __TEST_HPP__
 
+#include "Graphics.hpp"
 #include "Interface.hpp"
 #include "InterfaceBattle.hpp"
 
@@ -1270,7 +1271,7 @@ namespace BloodSword::Test
     {
         Interface::ReloadTextures(graphics, 0, false);
 
-        std::vector<Graphics::RichText> collection = {};
+        Graphics::TextList collection = {};
 
         Uint32 fixed = Color::Active;
 
@@ -1285,7 +1286,7 @@ namespace BloodSword::Test
             collection.push_back(Graphics::RichText(name, Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width));
         }
 
-        std::vector<Graphics::RichText> colors = {
+        Graphics::TextList colors = {
             Graphics::RichText("ACTIVE", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width),
             Graphics::RichText("INACTIVE", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width),
             Graphics::RichText("HIGHLIGHT", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width),
@@ -1601,7 +1602,7 @@ namespace BloodSword::Test
 
         auto fixed = Color::Active;
 
-        std::vector<Graphics::RichText> collection = {
+        Graphics::TextList collection = {
             Graphics::RichText("PLAYER TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
             Graphics::RichText("ENEMY TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
             Graphics::RichText("PLAYER RETALIATES", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
@@ -1716,7 +1717,7 @@ namespace BloodSword::Test
 
         auto fixed = Color::Active;
 
-        std::vector<Graphics::RichText> collection = {
+        Graphics::TextList collection = {
             Graphics::RichText("PLAYER TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
             Graphics::RichText("ENEMY TURN", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0),
             Graphics::RichText("QUIVER EMPTY!", Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, 0)};
@@ -1862,7 +1863,7 @@ namespace BloodSword::Test
         Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
     }
 
-    std::vector<SDL_Texture *> RegenerateMenu(Graphics::Base &graphics, int width)
+    BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
             graphics,

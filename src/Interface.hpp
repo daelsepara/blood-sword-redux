@@ -113,7 +113,7 @@ namespace BloodSword::Interface
         Asset::Type::DICE5,
         Asset::Type::DICE6};
 
-    std::vector<Graphics::RichText> BattleText = {
+    Graphics::TextList BattleText = {
         Graphics::RichText("SELECT OPPONENT", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("SELECT TARGET", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("SELECT DESTINATION", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
@@ -126,7 +126,7 @@ namespace BloodSword::Interface
         Graphics::RichText("TARGET IS IMMUNE TO RANGED ATTACK!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("TARGET IS IMMUNE TO THIS SPELL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
-    std::vector<SDL_Texture *> BattleMessages = {};
+    BloodSword::Textures BattleMessages = {};
 
     const int MSG_OPPONENT = 0;
 
@@ -698,9 +698,9 @@ namespace BloodSword::Interface
     }
 
     // create party attributes text box collection
-    std::vector<SDL_Texture *> Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, Uint32 stats_color, int style, int wrap, bool add_name = false, bool in_battle = false)
+    BloodSword::Textures Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, Uint32 stats_color, int style, int wrap, bool add_name = false, bool in_battle = false)
     {
-        std::vector<SDL_Texture *> textures = {};
+        BloodSword::Textures textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -718,7 +718,7 @@ namespace BloodSword::Interface
     }
 
     // generate stats
-    std::vector<SDL_Texture *> GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool in_battle = true)
+    BloodSword::Textures GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool in_battle = true)
     {
         return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, in_battle);
     }
@@ -751,9 +751,9 @@ namespace BloodSword::Interface
     }
 
     // create party skills text box collection
-    std::vector<SDL_Texture *> Skills(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 skills_color, int style, int wrap)
+    BloodSword::Textures Skills(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 skills_color, int style, int wrap)
     {
-        std::vector<SDL_Texture *> textures = {};
+        BloodSword::Textures textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -860,9 +860,9 @@ namespace BloodSword::Interface
     }
 
     // create party status text box collection
-    std::vector<SDL_Texture *> Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style, bool in_battle = false)
+    BloodSword::Textures Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style, bool in_battle = false)
     {
-        std::vector<SDL_Texture *> textures = {};
+        BloodSword::Textures textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -908,7 +908,7 @@ namespace BloodSword::Interface
     }
 
     // add vertical text menu to the scene
-    Scene::Base Menu(std::vector<SDL_Texture *> &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false)
+    Scene::Base Menu(BloodSword::Textures &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false)
     {
         auto scene = Scene::Base();
 
@@ -1006,7 +1006,7 @@ namespace BloodSword::Interface
     }
 
     // add horizontal text menu to existing overlay
-    void HorizontalMenu(Scene::Base &overlay, std::vector<SDL_Texture *> &choices, std::vector<Controls::Type> controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
+    void HorizontalMenu(Scene::Base &overlay, BloodSword::Textures &choices, std::vector<Controls::Type> controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
     {
         if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
         {
@@ -2054,7 +2054,7 @@ namespace BloodSword::Interface
     }
 
     // select from a list of options
-    int Choice(Graphics::Base &graphics, Scene::Base &background, std::vector<Graphics::RichText> &choices, Point origin, int w, int h, int limit, Uint32 bg_color, Uint32 border, Uint32 highlight, bool blur = true)
+    int Choice(Graphics::Base &graphics, Scene::Base &background, Graphics::TextList &choices, Point origin, int w, int h, int limit, Uint32 bg_color, Uint32 border, Uint32 highlight, bool blur = true)
     {
         auto menu = Graphics::CreateText(graphics, choices);
 
@@ -2153,9 +2153,9 @@ namespace BloodSword::Interface
         return choice;
     }
 
-    std::vector<SDL_Texture *> GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
+    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
     {
-        std::vector<Graphics::RichText> characters = {};
+        Graphics::TextList characters = {};
 
         for (auto character = 0; character < party.Count(); character++)
         {
@@ -2167,7 +2167,7 @@ namespace BloodSword::Interface
         return Graphics::CreateText(graphics, characters);
     }
 
-    std::vector<SDL_Texture *> GenerateCharacterClassCaptions(Graphics::Base &graphics, int captionw)
+    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, int captionw)
     {
         auto characters = Graphics::CreateText(
             graphics,
@@ -2339,7 +2339,7 @@ namespace BloodSword::Interface
 
         auto party = Party::Base();
 
-        std::vector<Graphics::RichText> party_sizes = {
+        Graphics::TextList party_sizes = {
             Graphics::RichText(" 1 Starting rank(s): 8", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
             Graphics::RichText(" 2 Starting rank(s): 4", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
             Graphics::RichText(" 3 Starting rank(s): 3", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
