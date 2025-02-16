@@ -16,8 +16,8 @@ namespace BloodSword::Story::Conditions
         NONE = -1,
         NORMAL,
         IN_PARTY,
-        CHOOSE_CHARACTER,
-        CHOSEN_CHARACTER,
+        CHOOSE_PLAYER,
+        CHOSEN_PLAYER,
         BATTLE_VICTORY,
         BATTLE_FLEE,
         BATTLE_ENTHRALMENT,
@@ -39,8 +39,8 @@ namespace BloodSword::Story::Conditions
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
         {Conditions::Type::IN_PARTY, "IN PARTY"},
-        {Conditions::Type::CHOOSE_CHARACTER, "CHOOSE CHARACTER"},
-        {Conditions::Type::CHOSEN_CHARACTER, "CHOSEN CHARACTER"},
+        {Conditions::Type::CHOOSE_PLAYER, "CHOOSE PLAYER"},
+        {Conditions::Type::CHOSEN_PLAYER, "CHOSEN PLAYER"},
         {Conditions::Type::BATTLE_VICTORY, "BATTLE VICTORY"},
         {Conditions::Type::BATTLE_FLEE, "BATTLE FLEE"},
         {Conditions::Type::BATTLE_ENTHRALMENT, "BATTLE ENTHRALMENT"},
@@ -153,7 +153,7 @@ namespace BloodSword::Story::Conditions
 
             result = party.Has(character);
         }
-        else if (condition.Type == Conditions::Type::CHOSEN_CHARACTER)
+        else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
         {
             auto character = Character::Map(condition.Variables[0]);
 

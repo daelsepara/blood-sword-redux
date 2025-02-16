@@ -1,0 +1,520 @@
+{
+    "party": {
+        "members": [
+            {
+                "asset": "WARRIOR",
+                "attributes": [
+                    {
+                        "maximum": 9,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 9
+                    },
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 48,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 48
+                    },
+                    {
+                        "maximum": 3,
+                        "modifier": 1,
+                        "type": "DAMAGE",
+                        "value": 3
+                    },
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 0,
+                        "type": "ARMOUR",
+                        "value": 0
+                    }
+                ],
+                "class": "WARRIOR",
+                "control_type": "PLAYER",
+                "experience": 1750,
+                "item_limit": 10,
+                "items": [
+                    {
+                        "contains": "NONE",
+                        "name": "SWORD",
+                        "properties": [
+                            "WEAPON",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "SWORD"
+                    },
+                    {
+                        "attributes": {
+                            "ARMOUR": 3
+                        },
+                        "contains": "NONE",
+                        "name": "CHAINMAIL",
+                        "properties": [
+                            "ARMOUR",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "CHAINMAIL"
+                    },
+                    {
+                        "contains": "GOLD",
+                        "name": "MONEY POUCH",
+                        "properties": [
+                            "CONTAINER"
+                        ],
+                        "quantity": 40,
+                        "type": "POUCH"
+                    }
+                ],
+                "moves": 1000,
+                "name": "WARRIOR",
+                "rank": 8
+            },
+            {
+                "asset": "TRICKSTER",
+                "attributes": [
+                    {
+                        "maximum": 8,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 8
+                    },
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 48,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 48
+                    },
+                    {
+                        "maximum": 3,
+                        "modifier": 0,
+                        "type": "DAMAGE",
+                        "value": 3
+                    },
+                    {
+                        "maximum": 9,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 9
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 0,
+                        "type": "ARMOUR",
+                        "value": 0
+                    }
+                ],
+                "class": "TRICKSTER",
+                "control_type": "PLAYER",
+                "experience": 1750,
+                "item_limit": 10,
+                "items": [
+                    {
+                        "contains": "NONE",
+                        "name": "SWORD",
+                        "properties": [
+                            "WEAPON",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "SWORD"
+                    },
+                    {
+                        "contains": "NONE",
+                        "name": "BOW",
+                        "properties": [
+                            "WEAPON",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "BOW"
+                    },
+                    {
+                        "contains": "ARROW",
+                        "name": "QUIVER",
+                        "properties": [
+                            "CONTAINER"
+                        ],
+                        "quantity": 6,
+                        "type": "QUIVER"
+                    },
+                    {
+                        "attributes": {
+                            "ARMOUR": 2
+                        },
+                        "contains": "NONE",
+                        "name": "LEATHER ARMOUR",
+                        "properties": [
+                            "ARMOUR",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "LEATHER ARMOUR"
+                    },
+                    {
+                        "contains": "GOLD",
+                        "name": "MONEY POUCH",
+                        "properties": [
+                            "CONTAINER"
+                        ],
+                        "quantity": 40,
+                        "type": "POUCH"
+                    }
+                ],
+                "moves": 1000,
+                "name": "TRICKSTER",
+                "rank": 8,
+                "shoot": "ARCHERY",
+                "skills": [
+                    "DODGING",
+                    "ARCHERY"
+                ]
+            },
+            {
+                "asset": "SAGE",
+                "attributes": [
+                    {
+                        "maximum": 8,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 8
+                    },
+                    {
+                        "maximum": 8,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 8
+                    },
+                    {
+                        "maximum": 40,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 40
+                    },
+                    {
+                        "maximum": 3,
+                        "modifier": 0,
+                        "type": "DAMAGE",
+                        "value": 3
+                    },
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 0,
+                        "type": "ARMOUR",
+                        "value": 0
+                    }
+                ],
+                "class": "SAGE",
+                "control_type": "PLAYER",
+                "experience": 1750,
+                "item_limit": 10,
+                "items": [
+                    {
+                        "contains": "NONE",
+                        "name": "QUARTERSTAFF",
+                        "properties": [
+                            "WEAPON",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "QUARTERSTAFF"
+                    },
+                    {
+                        "contains": "NONE",
+                        "name": "BOW",
+                        "properties": [
+                            "WEAPON",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "BOW"
+                    },
+                    {
+                        "contains": "ARROW",
+                        "name": "QUIVER",
+                        "properties": [
+                            "CONTAINER"
+                        ],
+                        "quantity": 6,
+                        "type": "QUIVER"
+                    },
+                    {
+                        "attributes": {
+                            "ARMOUR": 2
+                        },
+                        "contains": "NONE",
+                        "name": "RINGMAIL",
+                        "properties": [
+                            "ARMOUR",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "RINGMAIL"
+                    },
+                    {
+                        "contains": "GOLD",
+                        "name": "MONEY POUCH",
+                        "properties": [
+                            "CONTAINER"
+                        ],
+                        "quantity": 40,
+                        "type": "POUCH"
+                    }
+                ],
+                "moves": 1000,
+                "name": "SAGE",
+                "rank": 8,
+                "shoot": "ARCHERY",
+                "skills": [
+                    "HEALING",
+                    "QUARTERSTAFF",
+                    "ESP",
+                    "PARANORMAL SIGHT",
+                    "LEVITATION",
+                    "EXORCISM",
+                    "ARCHERY"
+                ]
+            },
+            {
+                "asset": "ENCHANTER",
+                "attributes": [
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 9,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 9
+                    },
+                    {
+                        "maximum": 40,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 40
+                    },
+                    {
+                        "maximum": 2,
+                        "modifier": 2,
+                        "type": "DAMAGE",
+                        "value": 2
+                    },
+                    {
+                        "maximum": 7,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 7
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 0,
+                        "type": "ARMOUR",
+                        "value": 0
+                    }
+                ],
+                "class": "ENCHANTER",
+                "control_type": "PLAYER",
+                "experience": 1750,
+                "item_limit": 10,
+                "items": [
+                    {
+                        "contains": "NONE",
+                        "name": "SWORD",
+                        "properties": [
+                            "WEAPON",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "SWORD"
+                    },
+                    {
+                        "attributes": {
+                            "ARMOUR": 2
+                        },
+                        "contains": "NONE",
+                        "name": "SILVER ARMOUR",
+                        "properties": [
+                            "ARMOUR",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "SILVER ARMOUR"
+                    },
+                    {
+                        "contains": "GOLD",
+                        "name": "MONEY POUCH",
+                        "properties": [
+                            "CONTAINER"
+                        ],
+                        "quantity": 40,
+                        "type": "POUCH"
+                    }
+                ],
+                "moves": 1000,
+                "name": "ENCHANTER",
+                "rank": 8,
+                "skills": [
+                    "SPELLS"
+                ],
+                "spells": [
+                    {
+                        "battle": true,
+                        "class": "BLASTING",
+                        "complexity": 1,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "VOLCANO SPRAY"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 1,
+                        "duration": 5,
+                        "ranged": true,
+                        "type": "NIGHTHOWL"
+                    },
+                    {
+                        "battle": true,
+                        "class": "BLASTING",
+                        "complexity": 1,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "WHITE FIRE"
+                    },
+                    {
+                        "battle": true,
+                        "class": "BLASTING",
+                        "complexity": 2,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "SWORDTHRUST"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 2,
+                        "duration": 5,
+                        "ranged": true,
+                        "type": "EYE OF THE TIGER"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 2,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "IMMEDIATE DELIVERANCE"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 3,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "MISTS OF DEATH"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 3,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "THE VAMPIRE SPELL"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 3,
+                        "duration": 5,
+                        "ranged": true,
+                        "type": "PILLAR OF SALT"
+                    },
+                    {
+                        "battle": true,
+                        "class": "BLASTING",
+                        "complexity": 4,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "SHEET LIGHTNING"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 4,
+                        "duration": -1,
+                        "ranged": false,
+                        "type": "GHASTLY TOUCH"
+                    },
+                    {
+                        "battle": true,
+                        "class": "BLASTING",
+                        "complexity": 5,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "NEMESIS BOLT"
+                    },
+                    {
+                        "battle": true,
+                        "class": "PSYCHIC",
+                        "complexity": 5,
+                        "duration": -1,
+                        "ranged": true,
+                        "type": "SERVILE ENTHRALMENT"
+                    },
+                    {
+                        "battle": false,
+                        "class": "PSYCHIC",
+                        "complexity": 1,
+                        "duration": -1,
+                        "ranged": false,
+                        "type": "SUMMON FALTYN"
+                    },
+                    {
+                        "battle": false,
+                        "class": "PSYCHIC",
+                        "complexity": 1,
+                        "duration": -1,
+                        "ranged": false,
+                        "type": "PREDICTION"
+                    },
+                    {
+                        "battle": false,
+                        "class": "PSYCHIC",
+                        "complexity": 1,
+                        "duration": -1,
+                        "ranged": false,
+                        "type": "DETECT ENCHANTMENT"
+                    }
+                ]
+            }
+        ]
+    }
+}

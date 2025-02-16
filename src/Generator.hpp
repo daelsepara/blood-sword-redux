@@ -101,8 +101,6 @@ namespace BloodSword::Generate
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
-
-        warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // trickster's attributes based on rank
@@ -197,8 +195,6 @@ namespace BloodSword::Generate
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
         }
-
-        trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // sage's attributes based on rank
@@ -293,8 +289,6 @@ namespace BloodSword::Generate
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
-
-        sage.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // enchanter's attributes based on rank
@@ -389,8 +383,6 @@ namespace BloodSword::Generate
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
-
-        enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // set character-specific skills
@@ -475,18 +467,16 @@ namespace BloodSword::Generate
     // set character spells
     void Spells(Character::Base &character)
     {
-        if (!character.Has(Skills::Type::SPELLS))
+        if (character.Has(Skills::Type::SPELLS))
         {
-            return;
-        }
-
-        switch (character.Class)
-        {
-        case Character::Class::ENCHANTER:
-            Generate::EnchanterSpells(character);
-            break;
-        default:
-            break;
+            switch (character.Class)
+            {
+            case Character::Class::ENCHANTER:
+                Generate::EnchanterSpells(character);
+                break;
+            default:
+                break;
+            }
         }
     }
 
@@ -511,6 +501,8 @@ namespace BloodSword::Generate
         default:
             break;
         }
+
+        character.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
     // set character rank based on experience points

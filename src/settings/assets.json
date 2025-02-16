@@ -319,6 +319,10 @@
         {
             "id": "UNARMED COMBAT",
             "path": "images/system/fist.png"
+        },
+        {
+            "id": "HEAL",
+            "path": "images/system/heart-plus.png"
         }
     ]
 }

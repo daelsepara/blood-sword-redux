@@ -6,6 +6,7 @@
 #include "Graphics.hpp"
 #include "Input.hpp"
 #include "Maze.hpp"
+#include "Messages.hpp"
 #include "Palette.hpp"
 
 namespace BloodSword::Interface
@@ -113,43 +114,6 @@ namespace BloodSword::Interface
         Asset::Type::DICE5,
         Asset::Type::DICE6};
 
-    Graphics::TextList BattleText = {
-        Graphics::RichText("SELECT OPPONENT", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("SELECT TARGET", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("SELECT DESTINATION", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("ENTHRALMENT BROKEN!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("THERE ARE NEARBY ENEMIES!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("CANNOT MOVE THERE!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("CASTER MUST BE ADJACENT TO TARGET!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("CASTING ATTEMPT WAS UNSUCCESSFUL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("YOU CANNOT FLEE THIS BATTLE!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("TARGET IS IMMUNE TO RANGED ATTACK!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("TARGET IS IMMUNE TO THIS SPELL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
-
-    BloodSword::Textures BattleMessages = {};
-
-    const int MSG_OPPONENT = 0;
-
-    const int MSG_TARGET = 1;
-
-    const int MSG_DEST = 2;
-
-    const int MSG_ENTHRAL = 3;
-
-    const int MSG_NEARBY = 4;
-
-    const int MSG_MOVE = 5;
-
-    const int MSG_ADJACENT = 6;
-
-    const int MSG_CAST = 7;
-
-    const int MSG_FLEE = 8;
-
-    const int MSG_RANGED = 9;
-
-    const int MSG_SPELL = 10;
-
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
     {
@@ -188,12 +152,8 @@ namespace BloodSword::Interface
             BattleControlCaptions[control.first] = Graphics::CreateText(graphics, control.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
         }
 
-        // initialize battle messages
-        Graphics::SetFonts(BattleText);
-
-        Free(BattleMessages);
-
-        BattleMessages = Graphics::CreateText(graphics, BattleText);
+        // initialize messages
+        Interface::InitializeMessages(graphics);
     }
 
     // unload all textures allocated by this module
@@ -252,7 +212,7 @@ namespace BloodSword::Interface
 
         Free(&NoSpells);
 
-        Free(BattleMessages);
+        Interface::FreeMessages();
     }
 
     // unload all textures and assets
@@ -721,6 +681,46 @@ namespace BloodSword::Interface
     BloodSword::Textures GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool in_battle = true)
     {
         return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, in_battle);
+    }
+
+    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
+    {
+        Graphics::TextList characters = {};
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
+
+            characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, BloodSword::HalfTile * 5));
+        }
+
+        return Graphics::CreateText(graphics, characters);
+    }
+
+    BloodSword::Textures GenerateNameCaptions(Graphics::Base &graphics, Party::Base &party)
+    {
+        Graphics::TextList characters = {};
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
+
+            characters.push_back(Graphics::RichText(party[character].Name.c_str(), Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, BloodSword::HalfTile * 5));
+        }
+
+        return Graphics::CreateText(graphics, characters);
+    }
+
+    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, int captionw)
+    {
+        auto characters = Graphics::CreateText(
+            graphics,
+            {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
+             Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
+
+        return characters;
     }
 
     // generate character skills
@@ -1214,7 +1214,7 @@ namespace BloodSword::Interface
     }
 
     // choose character from a party
-    Scene::Base SelectCharacter(Point origin, int w, int h, Party::Base &party, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, bool back = true)
+    Scene::Base CharacterList(Point origin, int w, int h, Party::Base &party, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, bool back = true)
     {
         auto overlay = Scene::Base();
 
@@ -1264,7 +1264,7 @@ namespace BloodSword::Interface
     }
 
     // choose character from a party
-    Scene::Base SelectCharacter(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int border_size, bool back = true)
+    Scene::Base CharacterList(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int border_size, bool back = true)
     {
         auto pad = BloodSword::QuarterTile;
 
@@ -1272,7 +1272,7 @@ namespace BloodSword::Interface
 
         auto popup_h = (BloodSword::TileSize + pad) * 2;
 
-        return Interface::SelectCharacter(origin, w, h, party, popup_w, popup_h, background, border, border_size, back);
+        return Interface::CharacterList(origin, w, h, party, popup_w, popup_h, background, border, border_size, back);
     }
 
     // setup movement animation
@@ -1370,6 +1370,237 @@ namespace BloodSword::Interface
         }
 
         return overlay;
+    }
+
+    // generic character class selector
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, bool names = false, bool back = false)
+    {
+        auto character_class = Character::Class::NONE;
+
+        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
+
+        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
+
+        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto captions = names ? Interface::GenerateNameCaptions(graphics, party) : Interface::GenerateCharacterClassCaptions(graphics, party);
+
+        auto pad = BloodSword::OddPad;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto popup_pad = BloodSword::QuarterTile;
+
+        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
+
+        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            if (popup_h > 0)
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, back);
+            }
+            else
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, back);
+            }
+
+            auto &popup = overlay.Elements[0];
+
+            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+
+            if (Input::IsValid(overlay, input))
+            {
+                // party popup captions
+                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                {
+                    auto &control = overlay.Controls[input.Current];
+
+                    auto &popup = overlay.Elements[0];
+
+                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+
+                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
+
+                    if (skills[input.Current])
+                    {
+                        auto skills_x = popup.X + (popup.W + pad * 2);
+
+                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Background, Color::Active, BloodSword::Border));
+
+                        overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
+                    }
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    character_class = Character::Class::NONE;
+
+                    done = true;
+                }
+                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
+                {
+                    character_class = party[input.Current].Class;
+
+                    done = true;
+                }
+            }
+        }
+
+        Free(&select);
+
+        Free(skills);
+
+        Free(stats);
+
+        Free(captions);
+
+        return character_class;
+    }
+
+    // Generic die roller
+    int Roll(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Asset::Type actor, Asset::Type action, int roll, int modifier)
+    {
+        int result = 0;
+
+        std::string roll_string = "ROLL: " + std::to_string(roll) + 'D';
+
+        if (modifier != 0)
+        {
+            if (modifier > 0)
+            {
+                roll_string += '+';
+            }
+
+            roll_string += std::to_string(modifier);
+        }
+
+        auto roll_texture = Graphics::CreateText(graphics, roll_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto start = Graphics::CreateText(graphics, {Graphics::RichText(" ROLL ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
+
+        auto end = Graphics::CreateText(graphics, {Graphics::RichText(" DONE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
+
+        auto stage = Engine::RollStage::START;
+
+        auto rolls = Engine::RollResult();
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto pad = BloodSword::QuarterTile;
+
+        auto rolled = false;
+
+        // adjust width depending on the number of dice to roll
+        w += (roll > 6 ? BloodSword::TileSize * (roll - 6) : 0);
+
+        origin.X -= (roll > 6) ? BloodSword::HalfTile * (roll - 6) : 0;
+
+        auto tile_pad = BloodSword::TileSize + pad;
+
+        auto origin_x = origin.X + pad + BloodSword::Pad;
+
+        auto origin_y = origin.Y + h - pad * 3;
+
+        auto dice_y = BloodSword::TileSize * 2 + pad;
+
+        auto origin_pad = origin + pad;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            // draw border
+            overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
+
+            // add actor icon
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(actor), origin_pad));
+
+            // add action icon
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(action), origin_pad + Point(tile_pad, 0)));
+
+            // add roll string
+            overlay.VerifyAndAdd(Scene::Element(roll_texture, origin_pad + Point(pad, tile_pad)));
+
+            if (stage == Engine::RollStage::START)
+            {
+                // initial
+                Interface::HorizontalMenu(overlay, start, {Controls::Type::START}, origin_x, origin_y, Color::Active, Color::Active, Color::Highlight);
+            }
+            else if (stage == Engine::RollStage::RESULT)
+            {
+                // result
+                Interface::HorizontalMenu(overlay, end, {Controls::Type::EXIT}, origin_x, origin_y, Color::Active, Color::Active, Color::Highlight);
+            }
+
+            if (rolled)
+            {
+                for (auto dice = 0; dice < roll; dice++)
+                {
+                    // dice rolled
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
+                }
+            }
+            else
+            {
+                for (auto dice = 0; dice < roll; dice++)
+                {
+                    // random dice/rolling
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
+
+            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            {
+                if (input.Type == Controls::Type::START)
+                {
+                    if (stage == Engine::RollStage::START)
+                    {
+                        stage = Engine::RollStage::RESULT;
+
+                        // roll dice
+                        if (!rolled)
+                        {
+                            rolls = Engine::Roll(roll, modifier);
+
+                            rolled = true;
+
+                            // check roll
+                            result = std::max(0, rolls.Sum);
+                        }
+                    }
+                }
+                else if (input.Type == Controls::Type::EXIT)
+                {
+                    if (stage == Engine::RollStage::RESULT)
+                    {
+                        done = true;
+                    }
+                }
+            }
+        }
+
+        Free(end);
+
+        Free(start);
+
+        Free(&roll_texture);
+
+        return result;
     }
 
     // attribute difficulty check (with target)
@@ -2153,34 +2384,8 @@ namespace BloodSword::Interface
         return choice;
     }
 
-    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
-    {
-        Graphics::TextList characters = {};
-
-        for (auto character = 0; character < party.Count(); character++)
-        {
-            auto alive = Engine::Score(party[character], Attribute::Type::ENDURANCE) > 0;
-
-            characters.push_back(Graphics::RichText(Character::ClassMapping[party[character].Class], Fonts::Caption, alive ? Color::Active : Color::Inactive, TTF_STYLE_NORMAL, BloodSword::HalfTile * 5));
-        }
-
-        return Graphics::CreateText(graphics, characters);
-    }
-
-    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, int captionw)
-    {
-        auto characters = Graphics::CreateText(
-            graphics,
-            {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
-
-        return characters;
-    }
-
     // choose a character
-    Character::Class SelectCharacter(Graphics::Base &graphics, int rank, Party::Base &current_party)
+    Character::Class SelectRankedCharcter(Graphics::Base &graphics, int rank, Party::Base &current_party)
     {
         auto character_class = Character::Class::NONE;
 
@@ -2194,7 +2399,7 @@ namespace BloodSword::Interface
 
         auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
 
-        auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER TO ADD", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+        auto select = Graphics::CreateText(graphics, "CHOOSE A PLAYER TO ADD", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -2205,11 +2410,6 @@ namespace BloodSword::Interface
         auto input = Controls::User();
 
         auto done = false;
-
-        std::vector<Attribute::Type> attributes = {
-            Attribute::Type::FIGHTING_PROWESS,
-            Attribute::Type::AWARENESS,
-            Attribute::Type::PSYCHIC_ABILITY};
 
         auto popup_pad = BloodSword::QuarterTile;
 
@@ -2225,11 +2425,11 @@ namespace BloodSword::Interface
 
             if (popup_h > 0)
             {
-                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Transparent, Color::Active, BloodSword::Border, false);
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Transparent, Color::Active, BloodSword::Border, false);
             }
             else
             {
-                overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, Color::Transparent, Color::Active, BloodSword::Border, false);
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Transparent, Color::Active, BloodSword::Border, false);
             }
 
             auto &popup = overlay.Elements[0];
@@ -2254,9 +2454,9 @@ namespace BloodSword::Interface
                     {
                         auto skills_x = popup.X + (popup.W + pad * 2);
 
-                        overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
+                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Background, Color::Active, BloodSword::Border));
 
-                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Transparent, Color::Active, BloodSword::Border));
+                        overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
                     }
                 }
             }
@@ -2378,7 +2578,7 @@ namespace BloodSword::Interface
             {
                 bg_scene = Scene::Base();
 
-                auto character_class = Interface::SelectCharacter(graphics, rank, party);
+                auto character_class = Interface::SelectRankedCharcter(graphics, rank, party);
 
                 if (character_class != Character::Class::NONE)
                 {
@@ -2437,22 +2637,21 @@ namespace BloodSword::Interface
         return party;
     }
 
-    std::string TextInput(Graphics::Base &graphics, Scene::Base &background, Point location, std::string question, std::string start_text, Uint32 question_color, Uint32 input_color, int input_limit, int box_w, int box_h, Uint32 border = Color::Active, Uint32 box_bg = Color::Background, int border_size = 4, bool blur = true)
+    std::string TextInput(Graphics::Base &graphics, Scene::Base &background, Point location, std::string question, std::string start_text, Uint32 question_color, Uint32 input_color, int input_limit, int box_w, int box_h, Uint32 border = Color::Active, Uint32 box_bg = Color::Background, int border_size = BloodSword::Border, bool blur = true)
     {
         auto message = Graphics::CreateText(graphics, question.c_str(), Fonts::Normal, Color::S(question_color), TTF_STYLE_NORMAL, 0);
 
-        auto cursor = Graphics::CreateText(graphics, "_", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, 0);
-
-        std::string input_text = std::string();
+        auto input_text = std::string();
 
         if (message)
         {
-            SDL_Texture *input_texture = nullptr;
+            auto cursor = Graphics::CreateText(graphics, "_", Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL, 0);
+
+            SDL_Texture *texture = nullptr;
+
+            auto input = Controls::User();
 
             auto pad = BloodSword::QuarterTile;
-
-            // setup text input mode
-            auto input = Controls::User();
 
             input.TextLimit = input_limit;
 
@@ -2462,16 +2661,17 @@ namespace BloodSword::Interface
 
             if (input.TextInput.size() > 0)
             {
-                input_texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
+                texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
             }
 
+            // setup text input mode
             input.Text = true;
 
             // cursor blink
             auto blink = false;
 
             // enable text input events
-            SDL_StartTextInput();
+            Input::StartTextInput();
 
             while (true)
             {
@@ -2481,15 +2681,17 @@ namespace BloodSword::Interface
 
                 box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
 
-                if (input_texture)
+                if (texture)
                 {
-                    box.VerifyAndAdd(Scene::Element(input_texture, location + Point(pad, pad * 4)));
+                    box.VerifyAndAdd(Scene::Element(texture, location + Point(pad, BloodSword::TileSize)));
                 }
 
-                // add cursor blink
-                if (blink && input.TextInput.size() < input.TextLimit && input_texture)
+                // add blinking cursor
+                if (blink && input.TextInput.size() < input.TextLimit)
                 {
-                    box.VerifyAndAdd(Scene::Element(cursor, location + Point(pad + BloodSword::Width(input_texture), pad * 4)));
+                    auto pad_cursor = texture ? BloodSword::Width(texture) : 0;
+
+                    box.VerifyAndAdd(Scene::Element(cursor, location + Point(pad + pad_cursor, BloodSword::TileSize)));
                 }
 
                 blink = !blink;
@@ -2498,11 +2700,11 @@ namespace BloodSword::Interface
 
                 if (input.RefreshText)
                 {
-                    Free(&input_texture);
+                    Free(&texture);
 
                     if (input.TextInput.size() > 0)
                     {
-                        input_texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
+                        texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
                     }
                 }
                 else if (input.Selected && input.TextInput.size() > 0)
@@ -2512,9 +2714,9 @@ namespace BloodSword::Interface
             }
 
             // disable text input events
-            SDL_StopTextInput();
+            Input::StopTextInput();
 
-            Free(&input_texture);
+            Free(&texture);
 
             Free(&cursor);
 
@@ -2550,6 +2752,250 @@ namespace BloodSword::Interface
         auto background = Scene::Base();
 
         return Interface::TextInput(graphics, background, question, blur);
+    }
+
+    // generic error message box
+    void ErrorMessage(Graphics::Base &graphics, Scene::Base &background, int message)
+    {
+        Interface::MessageBox(graphics, background, Point(0, 0), graphics.Width, graphics.Height, Interface::Text[message], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+    }
+
+    // generic notify message box
+    void Notify(Graphics::Base &graphics, Scene::Base &background, int message)
+    {
+        Interface::MessageBox(graphics, background, Point(0, 0), graphics.Width, graphics.Height, Interface::Text[message], Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+    }
+
+    // get number popup
+    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease)
+    {
+        std::string string_min = "MIN: " + std::to_string(minimum);
+
+        std::string string_max = "MAX: " + std::to_string(maximum);
+
+        auto texture = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto texture_min = Graphics::CreateText(graphics, string_min.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto texture_max = Graphics::CreateText(graphics, string_max.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto texture_height = BloodSword::Height(texture_min);
+
+        auto texture_width = BloodSword::Width(texture_max);
+
+        auto number = 0;
+
+        auto max_row = 16;
+
+        auto pad = BloodSword::Pad;
+
+        auto boxsize = BloodSword::QuarterTile;
+
+        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+
+        auto popup_h = ((maximum / max_row) + 2) * BloodSword::HalfTile + BloodSword::TileSize + pad * 4;
+
+        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
+        auto offset = BloodSword::TileSize + pad;
+
+        auto button = popup + Point(pad, popup_h - BloodSword::TileSize - pad * 2);
+
+        auto texture_x = popup_w - texture_width - pad;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            // draw border
+            overlay.Add(Scene::Element(popup, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border));
+
+            // add message
+            overlay.VerifyAndAdd(Scene::Element(texture, popup + pad));
+
+            auto asset_location = popup + Point(popup_w - BloodSword::TileSize - pad, pad);
+
+            auto limit_offset = pad;
+
+            if (target != Asset::Type::NONE)
+            {
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), asset_location));
+
+                limit_offset += BloodSword::TileSize + pad;
+            }
+
+            overlay.VerifyAndAdd(Scene::Element(texture_min, popup + Point(texture_x, limit_offset)));
+
+            overlay.VerifyAndAdd(Scene::Element(texture_max, popup + Point(texture_x, limit_offset + texture_height + pad)));
+
+            // increase number (icon)
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(increase), button));
+
+            // decrease number (icon)
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(decrease), Point(button.X + offset, button.Y)));
+
+            // confirm (icon)
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(button.X + offset * 2, button.Y)));
+
+            // cancel (icon)
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CANCEL), Point(button.X + offset * 3, button.Y)));
+
+            auto id = 0;
+
+            // add boxes
+            auto row = 0;
+
+            auto col = 0;
+
+            for (auto box = 0; box < number; box++)
+            {
+                if (box % max_row == 0)
+                {
+                    col = 0;
+
+                    row++;
+                }
+                else
+                {
+                    col++;
+                }
+
+                overlay.Add(Scene::Element(popup + Point(col * (boxsize + pad) + pad * 2, row * (boxsize + BloodSword::SmallPad * 2) + pad * 3), boxsize, boxsize, Color::Highlight, Color::Active, BloodSword::Border));
+            }
+
+            // increase number
+            overlay.Add(Controls::Base(Controls::Type::PLUS, id, id, id + 1, id, id, button.X, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+            // decrease number
+            overlay.Add(Controls::Base(Controls::Type::MINUS, id + 1, id, id + 2, id + 1, id + 1, button.X + offset, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+            // confirm
+            overlay.Add(Controls::Base(Controls::Type::CONFIRM, id + 2, id + 1, id + 3, id + 2, id + 2, button.X + offset * 2, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+            // cancel
+            overlay.Add(Controls::Base(Controls::Type::CANCEL, id + 3, id + 2, id + 3, id + 3, id + 3, button.X + offset * 3, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+            // get input
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold))
+            {
+                if (input.Type == Controls::Type::CONFIRM)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::CANCEL)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::PLUS)
+                {
+                    number += (number < maximum) ? 1 : 0;
+                }
+                else if (input.Type == Controls::Type::MINUS)
+                {
+                    number -= (number > minimum) ? 1 : 0;
+                }
+            }
+        }
+
+        Free(&texture_max);
+
+        Free(&texture_min);
+
+        Free(&texture);
+
+        return number;
+    }
+
+    void Heal(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
+    {
+        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+
+        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+
+        auto origin = Point(graphics.Width - window_w, graphics.Height - window_h) / 2;
+
+        if (character.Has(Skills::Type::HEALING))
+        {
+            if (Engine::IsAlive(party) && Engine::IsAlive(character))
+            {
+                if (!character.Has(Character::Status::IN_BATTLE))
+                {
+                    if (Engine::Score(character, Attribute::Type::ENDURANCE) > 1)
+                    {
+                        auto done = false;
+
+                        while (!done)
+                        {
+                            auto endurance = Engine::Score(character, Attribute::Type::ENDURANCE);
+
+                            if (endurance > 1)
+                            {
+                                auto cost = Interface::GetNumber(graphics, background, "HOW MANY ENDURANCE TO SPEND?", 0, endurance - 1, character.Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+
+                                Engine::GainEndurance(character, -cost, false);
+
+                                auto score = cost * Interface::Roll(graphics, background, origin, window_w, window_h, Color::Active, BloodSword::Border, character.Asset, Asset::Type::HEALING, 1, -2);
+
+                                done = !(score > 0);
+
+                                if (score == 0)
+                                {
+                                    // healing attempt failed
+                                    Interface::ErrorMessage(graphics, background, MSG_HEALING);
+                                }
+
+                                while (!done)
+                                {
+                                    // distribute healing
+                                    auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false);
+
+                                    std::string heal_string = "HEAL " + party[target].Name;
+
+                                    // heal
+                                    auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, score, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+
+                                    if (heal > 0)
+                                    {
+                                        // heal selected character
+                                        Engine::GainEndurance(party[target], heal, false);
+
+                                        Interface::Notify(graphics, background, MSG_HEALED);
+                                    }
+
+                                    score -= heal;
+
+                                    done = !(score > 0);
+                                }
+                            }
+
+                            done = !(endurance > 1) || done;
+                        }
+                    }
+                    else
+                    {
+                        Interface::ErrorMessage(graphics, background, MSG_ENDURANCE);
+                    }
+                }
+                else
+                {
+                    Interface::ErrorMessage(graphics, background, MSG_BATTLE);
+                }
+            }
+            else
+            {
+                Interface::ErrorMessage(graphics, background, MSG_ACTION);
+            }
+        }
+        else
+        {
+            Interface::ErrorMessage(graphics, background, MSG_SKILL);
+        }
     }
 }
 

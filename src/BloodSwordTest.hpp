@@ -1490,18 +1490,6 @@ namespace BloodSword::Test
         // load party
         auto party = Party::Load("party/rank02.json", "party");
 
-        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
-
-        auto select = Graphics::CreateText(graphics, "CHOOSE A CHARACTER", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
-
-        auto captions = Interface::GenerateCharacterClassCaptions(graphics, party);
-
-        auto pad = BloodSword::OddPad;
-
-        auto input = Controls::User();
-
-        auto characters = true;
-
         auto done = false;
 
         std::vector<Attribute::Type> attributes = {
@@ -1509,84 +1497,31 @@ namespace BloodSword::Test
             Attribute::Type::AWARENESS,
             Attribute::Type::PSYCHIC_ABILITY};
 
-        auto popup_pad = BloodSword::QuarterTile;
+        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
-        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
-
-        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+        auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
         while (!done)
         {
             auto scene = Scene::Base();
 
-            auto overlay = Scene::Base();
+            auto character_class = Interface::SelectCharacter(graphics, scene, party, "CHOOSE A PLAYER", false, true);
 
-            if (characters)
+            if (character_class != Character::Class::NONE)
             {
-                if (popup_h > 0)
-                {
-                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Transparent, Color::Active, 4);
-                }
-                else
-                {
-                    overlay = Interface::SelectCharacter(Point(0, 0), graphics.Width, graphics.Height, party, Color::Transparent, Color::Active, 4);
-                }
+                auto &character = party[character_class];
 
-                auto &popup = overlay.Elements[0];
+                auto origin = (Point(graphics.Width, graphics.Height) - Point(popup_w, popup_h)) / 2;
 
-                overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                auto attribute = attributes[random.NextInt()];
+
+                auto fight = attribute == Attribute::Type::FIGHTING_PROWESS;
+
+                Interface::Test(graphics, scene, origin, popup_w, popup_h, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), fight ? Asset::Type::FIGHT : Asset::Type::NONE, false);
             }
 
-            if (Input::IsValid(overlay, input))
-            {
-                // party popup captions
-                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
-                {
-                    auto &control = overlay.Controls[input.Current];
-
-                    auto &popup = overlay.Elements[0];
-
-                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
-
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Transparent, Color::Active, 4));
-                }
-            }
-
-            input = Input::WaitForInput(graphics, scene, overlay, input, characters, !characters);
-
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
-            {
-                if (input.Type == Controls::Type::BACK)
-                {
-                    if (characters)
-                    {
-                        done = true;
-                    }
-                }
-                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
-                {
-                    auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
-
-                    auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
-
-                    auto &character = party[input.Current];
-
-                    auto origin = (Point(graphics.Width, graphics.Height) - Point(popup_w, popup_h)) / 2;
-
-                    auto attribute = attributes[random.NextInt()];
-
-                    auto fight = attribute == Attribute::Type::FIGHTING_PROWESS;
-
-                    Interface::Test(graphics, scene, origin, popup_w, popup_h, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), fight ? Asset::Type::FIGHT : Asset::Type::NONE, false);
-                }
-            }
+            done = (character_class == Character::Class::NONE);
         }
-
-        Free(&select);
-
-        Free(stats);
-
-        Free(captions);
     }
 
     // fight and damage resolution
@@ -1863,6 +1798,22 @@ namespace BloodSword::Test
         Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
     }
 
+    void Heal(Graphics::Base &graphics, Scene::Base &background)
+    {
+        // load party from file
+        auto party = Party::Load("party/rank08.json", "party");
+
+        for (auto i = 0; i < party.Count();i++)
+        {
+            // add sample damage
+            Engine::GainEndurance(party[i], -8, false);
+        }
+        
+        auto &character = party[Character::Class::SAGE];
+
+        Interface::Heal(graphics, background, party, character, true);
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1879,7 +1830,8 @@ namespace BloodSword::Test
              Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting/spells)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("13 HEALING\n\n\nHealing ability", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -2006,6 +1958,9 @@ namespace BloodSword::Test
                         break;
                     case 12:
                         Test::TextInput(graphics, scene);
+                        break;
+                    case 13:
+                        Test::Heal(graphics, scene);
                         break;
                     default:
                         // do nothing - menu test

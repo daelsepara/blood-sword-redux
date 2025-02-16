@@ -125,6 +125,18 @@ namespace BloodSword::Input
         }
     }
 
+    // enable text input events
+    void StartTextInput()
+    {
+        SDL_StartTextInput();
+    }
+
+    // disable text input events
+    void StopTextInput()
+    {
+        SDL_StopTextInput();
+    }
+
     Controls::User WaitForText(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = false, int delay = BloodSword::StandardDelay)
     {
         Input::RenderWhileWaiting(graphics, scenes, controls, input, blur);

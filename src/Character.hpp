@@ -622,8 +622,6 @@ namespace BloodSword::Character
     {
         auto character = Character::Base();
 
-        character.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
-
         character.Rank = !data["rank"].is_null() ? int(data["rank"]) : 1;
 
         character.Experience = !data["experience"].is_null() ? int(data["experience"]) : 0;
@@ -633,6 +631,8 @@ namespace BloodSword::Character
         character.ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 6;
 
         character.Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
+
+        character.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string(Character::ClassMapping[character.Class]);
 
         character.ControlType = !data["control_type"].is_null() ? Character::MapControlType(std::string(data["control_type"])) : Character::ControlType::NONE;
 
