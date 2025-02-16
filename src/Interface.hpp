@@ -1,6 +1,8 @@
 #ifndef __INTERFACE_HPP__
 #define __INTERFACE_HPP__
 
+#include <utility>
+
 #include "Animation.hpp"
 #include "Engine.hpp"
 #include "Graphics.hpp"
@@ -113,6 +115,10 @@ namespace BloodSword::Interface
         Asset::Type::DICE4,
         Asset::Type::DICE5,
         Asset::Type::DICE6};
+
+    const int BoxSize = 16;
+
+    const int MaxBoxRow = 16;
 
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
@@ -2772,9 +2778,16 @@ namespace BloodSword::Interface
         Interface::MessageBox(graphics, background, Point(0, 0), graphics.Width, graphics.Height, Interface::Text[message], Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
     }
 
-    // get number popup
-    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease)
+    // generic get number popup (arbitrary location)
+    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, Point origin, int popup_w, int popup_h, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease)
     {
+        auto number = 0;
+
+        if (maximum < minimum)
+        {
+            std::swap(minimum, maximum);
+        }
+
         std::string string_min = "MIN: " + std::to_string(minimum);
 
         std::string string_max = "MAX: " + std::to_string(maximum);
@@ -2789,23 +2802,11 @@ namespace BloodSword::Interface
 
         auto texture_width = BloodSword::Width(texture_max);
 
-        auto number = 0;
-
-        auto max_row = 16;
-
         auto pad = BloodSword::Pad;
-
-        auto boxsize = BloodSword::QuarterTile;
-
-        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
-
-        auto popup_h = ((maximum / max_row) + 2) * BloodSword::HalfTile + BloodSword::TileSize + pad * 4;
-
-        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
         auto offset = BloodSword::TileSize + pad;
 
-        auto button = popup + Point(pad, popup_h - BloodSword::TileSize - pad * 2);
+        auto button = origin + Point(pad, popup_h - BloodSword::TileSize - pad * 2);
 
         auto texture_x = popup_w - texture_width - pad;
 
@@ -2818,12 +2819,12 @@ namespace BloodSword::Interface
             auto overlay = Scene::Base();
 
             // draw border
-            overlay.Add(Scene::Element(popup, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border));
+            overlay.Add(Scene::Element(origin, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border));
 
             // add message
-            overlay.VerifyAndAdd(Scene::Element(texture, popup + pad));
+            overlay.VerifyAndAdd(Scene::Element(texture, origin + pad));
 
-            auto asset_location = popup + Point(popup_w - BloodSword::TileSize - pad, pad);
+            auto asset_location = origin + Point(popup_w - BloodSword::TileSize - pad, pad);
 
             auto limit_offset = pad;
 
@@ -2834,9 +2835,9 @@ namespace BloodSword::Interface
                 limit_offset += BloodSword::TileSize + pad;
             }
 
-            overlay.VerifyAndAdd(Scene::Element(texture_min, popup + Point(texture_x, limit_offset)));
+            overlay.VerifyAndAdd(Scene::Element(texture_min, origin + Point(texture_x, limit_offset)));
 
-            overlay.VerifyAndAdd(Scene::Element(texture_max, popup + Point(texture_x, limit_offset + texture_height + pad)));
+            overlay.VerifyAndAdd(Scene::Element(texture_max, origin + Point(texture_x, limit_offset + texture_height + pad)));
 
             // increase number (icon)
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(increase), button));
@@ -2859,7 +2860,7 @@ namespace BloodSword::Interface
 
             for (auto box = 0; box < number; box++)
             {
-                if (box % max_row == 0)
+                if (box % Interface::MaxBoxRow == 0)
                 {
                     col = 0;
 
@@ -2870,7 +2871,7 @@ namespace BloodSword::Interface
                     col++;
                 }
 
-                overlay.Add(Scene::Element(popup + Point(col * (boxsize + pad) + pad * 2, row * (boxsize + BloodSword::SmallPad * 2) + pad * 3), boxsize, boxsize, Color::Highlight, Color::Active, BloodSword::Border));
+                overlay.Add(Scene::Element(origin + Point(col * (Interface::BoxSize + pad) + pad * 2, row * (Interface::BoxSize + BloodSword::SmallPad * 2) + pad * 3), Interface::BoxSize, Interface::BoxSize, Color::Highlight, Color::Active, BloodSword::Border));
             }
 
             // increase number
@@ -2916,6 +2917,18 @@ namespace BloodSword::Interface
         Free(&texture);
 
         return number;
+    }
+
+    // generic get number popup (centered)
+    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease)
+    {
+        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+
+        auto popup_h = ((maximum / Interface::MaxBoxRow) + 2) * BloodSword::HalfTile + BloodSword::TileSize + BloodSword::Pad * 4;
+
+        auto origin = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
+        return Interface::GetNumber(graphics, background, message, origin, popup_w, popup_h, minimum, maximum, target, increase, decrease);
     }
 
     void Heal(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
