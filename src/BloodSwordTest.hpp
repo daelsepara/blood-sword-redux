@@ -1786,7 +1786,7 @@ namespace BloodSword::Test
 
     void Story(Graphics::Base &graphics)
     {
-        auto party = Interface::CreateParty(graphics, false);
+        auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
     }
 
     void TextInput(Graphics::Base &graphics, Scene::Base &background)
@@ -1803,12 +1803,12 @@ namespace BloodSword::Test
         // load party from file
         auto party = Party::Load("party/rank08.json", "party");
 
-        for (auto i = 0; i < party.Count();i++)
+        for (auto i = 0; i < party.Count(); i++)
         {
             // add sample damage
             Engine::GainEndurance(party[i], -8, false);
         }
-        
+
         auto &character = party[Character::Class::SAGE];
 
         Interface::Heal(graphics, background, party, character, true);

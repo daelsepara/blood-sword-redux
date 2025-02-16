@@ -1397,6 +1397,8 @@ namespace BloodSword::Interface
 
         auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
 
+        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -1410,8 +1412,6 @@ namespace BloodSword::Interface
                 overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, back);
             }
 
-            auto &popup = overlay.Elements[0];
-
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
 
             if (Input::IsValid(overlay, input))
@@ -1421,17 +1421,15 @@ namespace BloodSword::Interface
                 {
                     auto &control = overlay.Controls[input.Current];
 
-                    auto &popup = overlay.Elements[0];
-
                     overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
                     overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
 
                     if (skills[input.Current])
                     {
-                        auto skills_x = popup.X + (popup.W + pad * 2);
+                        auto skills_x = popup.X + (popup_w + pad * 2);
 
-                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Background, Color::Active, BloodSword::Border));
+                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
 
                         overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
                     }
@@ -1468,7 +1466,7 @@ namespace BloodSword::Interface
         return character_class;
     }
 
-    // Generic die roller
+    // generic dice roller
     int Roll(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Asset::Type actor, Asset::Type action, int roll, int modifier)
     {
         int result = 0;
@@ -2417,6 +2415,8 @@ namespace BloodSword::Interface
 
         auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
 
+        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
         while (!done)
         {
             auto scene = Scene::Base();
@@ -2431,8 +2431,6 @@ namespace BloodSword::Interface
             {
                 overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Transparent, Color::Active, BloodSword::Border, false);
             }
-
-            auto &popup = overlay.Elements[0];
 
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
 
@@ -2452,9 +2450,9 @@ namespace BloodSword::Interface
 
                     if (skills[input.Current])
                     {
-                        auto skills_x = popup.X + (popup.W + pad * 2);
+                        auto skills_x = popup.X + (popup_w + pad * 2);
 
-                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup.H, Color::Background, Color::Active, BloodSword::Border));
+                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
 
                         overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
                     }
@@ -2463,11 +2461,9 @@ namespace BloodSword::Interface
 
             if (current_party.Count() > 0)
             {
-                auto &origin = overlay.Elements[0];
+                auto screen = Point(popup.X, popup.Y - BloodSword::HalfTile * 5);
 
-                auto screen = Point(origin.X, origin.Y - BloodSword::HalfTile * 5);
-
-                overlay.Add(Scene::Element(screen, popup.W, BloodSword::TileSize * 2, Color::Transparent, Color::Active, BloodSword::Border));
+                overlay.Add(Scene::Element(screen, popup_w, BloodSword::TileSize * 2, Color::Transparent, Color::Active, BloodSword::Border));
 
                 for (auto i = 0; i < current_party.Count(); i++)
                 {
@@ -2513,11 +2509,11 @@ namespace BloodSword::Interface
     }
 
     // create a party
-    Party::Base CreateParty(Graphics::Base &graphics, bool blur = true)
+    Party::Base CreateParty(Graphics::Base &graphics, Book::Number book, bool blur = true)
     {
-        auto scene = Scene::Base();
+        auto menu = Scene::Base();
 
-        auto bg_scene = Scene::Base();
+        auto overlay = Scene::Base();
 
         auto width = BloodSword::TileSize * 4;
 
@@ -2533,38 +2529,50 @@ namespace BloodSword::Interface
 
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
-        scene.Add(Scene::Element(menu_title, Point((graphics.Width - BloodSword::Width(menu_title)) / 2, origin.Y - pad * 6)));
+        menu.Add(Scene::Element(menu_title, Point((graphics.Width - BloodSword::Width(menu_title)) / 2, origin.Y - pad * 6)));
 
-        scene.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, BloodSword::Border));
+        menu.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, BloodSword::Border));
 
         auto party = Party::Base();
 
+        auto ranks = Book::Ranks[book];
+
+        auto starting_ranks = std::string(" Starting ranks(s): ");
+
+        auto rank1 = " 1" + starting_ranks + std::to_string(ranks[0]) + " ";
+
+        auto rank2 = " 2" + starting_ranks + std::to_string(ranks[1]) + " ";
+
+        auto rank3 = " 3" + starting_ranks + std::to_string(ranks[2]) + " ";
+
+        auto rank4 = " 4" + starting_ranks + std::to_string(ranks[3]) + " ";
+
         Graphics::TextList party_sizes = {
-            Graphics::RichText(" 1 Starting rank(s): 8", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText(" 2 Starting rank(s): 4", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText(" 3 Starting rank(s): 3", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText(" 4 Starting rank(s): 2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(rank1.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(rank2.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(rank3.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+            Graphics::RichText(rank4.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         };
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto party_size = Interface::Choice(graphics, scene, party_sizes, origin, width, base_height, int(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, blur) + 1;
+        auto party_size = Interface::Choice(graphics, menu, party_sizes, origin, width, base_height, int(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, blur) + 1;
 
         if (party_size > 0 && party_size <= 4)
         {
-            auto rank = 8;
+            auto rank = ranks[0];
 
             if (party_size == 2)
             {
-                rank = 4;
+                rank = ranks[1];
             }
             else if (party_size == 3)
             {
-                rank = 3;
+                rank = ranks[2];
             }
             else if (party_size == 4)
             {
-                rank = 2;
+                rank = ranks[3];
 
                 for (auto &character_class : Character::All)
                 {
@@ -2576,7 +2584,7 @@ namespace BloodSword::Interface
 
             while (party.Count() != party_size)
             {
-                bg_scene = Scene::Base();
+                overlay = Scene::Base();
 
                 auto character_class = Interface::SelectRankedCharcter(graphics, rank, party);
 
@@ -2588,13 +2596,13 @@ namespace BloodSword::Interface
 
                         party.Add(character);
 
-                        Interface::MessageBox(graphics, bg_scene, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, BloodSword::Border, Color::Highlight, false);
+                        Interface::MessageBox(graphics, overlay, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur);
                     }
                     else
                     {
                         party.Remove(character_class);
 
-                        Interface::MessageBox(graphics, bg_scene, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, BloodSword::Border, Color::Active, false);
+                        Interface::MessageBox(graphics, overlay, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, blur);
                     }
                 }
 
@@ -2604,7 +2612,7 @@ namespace BloodSword::Interface
 
                     auto party_y = (graphics.Height - (BloodSword::TileSize * 6 + BloodSword::HalfTile + BloodSword::QuarterTile)) / 2;
 
-                    bg_scene = Scene::Base();
+                    overlay = Scene::Base();
 
                     for (auto i = 0; i < party_size; i++)
                     {
@@ -2612,22 +2620,20 @@ namespace BloodSword::Interface
 
                         if (texture)
                         {
-                            bg_scene.VerifyAndAdd(Scene::Element(texture, party_x + i * BloodSword::Width(texture), party_y + pad + BloodSword::HalfTile));
+                            overlay.VerifyAndAdd(Scene::Element(texture, party_x + i * BloodSword::Width(texture), party_y + pad + BloodSword::HalfTile));
                         }
                     }
 
-                    bg_scene.VerifyAndAdd(Scene::Element(current, (graphics.Width - BloodSword::Width(current)) / 2, party_y + pad));
+                    overlay.VerifyAndAdd(Scene::Element(current, (graphics.Width - BloodSword::Width(current)) / 2, party_y + pad));
 
-                    if (!Interface::Confirm(graphics, bg_scene, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, BloodSword::Border, Color::Inactive, false))
+                    if (!Interface::Confirm(graphics, overlay, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Inactive, blur))
                     {
                         party.Clear();
                     }
                 }
-
-                bg_scene = Scene::Base();
             }
 
-            Interface::MessageBox(graphics, bg_scene, Graphics::RichText("Party Complete!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, BloodSword::Border, Color::Highlight, false);
+            Interface::MessageBox(graphics, overlay, Graphics::RichText("Party Complete!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur);
         }
 
         Free(&current);

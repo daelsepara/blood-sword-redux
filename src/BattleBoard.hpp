@@ -9,7 +9,7 @@ namespace BloodSword::BattleBoard
 {
     void Menu(Graphics::Base &graphics)
     {
-        auto party = Interface::CreateParty(graphics, false);
+        auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
     }
 }
 
