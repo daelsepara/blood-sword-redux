@@ -102,6 +102,7 @@
                     "moves": 0,
                     "name": "ASSASSIN",
                     "rank": 0,
+                    "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
                     ]
