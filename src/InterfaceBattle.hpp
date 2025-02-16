@@ -1111,7 +1111,7 @@ namespace BloodSword::Interface
                                         }
 
                                         // wait for input
-                                        input = Input::WaitForInput(graphics, scene, overlay, input, actions || spells, true, 0);
+                                        input = Input::WaitForInput(graphics, scene, overlay, input, (actions || spells), (actions || spells), 0);
 
                                         if (!actions && !spells)
                                         {

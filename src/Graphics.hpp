@@ -357,7 +357,7 @@ namespace BloodSword::Graphics
     }
 
     // render scenes
-    void Render(Base &graphics, Graphics::Scenery &scenes)
+    void Render(Base &graphics, Graphics::Scenery scenes)
     {
         if (graphics.Renderer && scenes.size() > 0)
         {
@@ -392,7 +392,7 @@ namespace BloodSword::Graphics
         Graphics::Render(graphics, scene.Controls, input);
     }
 
-    void Render(Base &graphics, Graphics::Scenery &scenes, Controls::List &controls, Controls::User input)
+    void Render(Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input)
     {
         if (graphics.Renderer && scenes.size() > 0)
         {
@@ -402,7 +402,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    void Render(Base &graphics, Graphics::Scenery &scenes, Controls::User input)
+    void Render(Base &graphics, Graphics::Scenery scenes, Controls::User input)
     {
         Graphics::Render(graphics, scenes, scenes.back().get().Controls, input);
     }
@@ -427,7 +427,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    void Dialog(Base &graphics, Graphics::Scenery &scenes, bool blur = false)
+    void Dialog(Base &graphics, Graphics::Scenery scenes, bool blur = false)
     {
         if (graphics.Renderer && scenes.size() > 0)
         {
@@ -447,7 +447,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    void Dialog(Base &graphics, Graphics::Scenery &scenes, Controls::User input, bool blur = false)
+    void Dialog(Base &graphics, Graphics::Scenery scenes, Controls::User input, bool blur = false)
     {
         if (graphics.Renderer && scenes.size() > 0)
         {
@@ -460,9 +460,7 @@ namespace BloodSword::Graphics
     // handle controls on pop-up dialog instead of the background
     void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input, bool blur = false)
     {
-        Graphics::Scenery scenes = {background, dialog};
-
-        Graphics::Dialog(graphics, scenes, input, blur);
+        Graphics::Dialog(graphics, {background, dialog}, input, blur);
     }
 
     void RenderNow(Base &graphics)
@@ -495,9 +493,7 @@ namespace BloodSword::Graphics
     {
         if (graphics.Renderer)
         {
-            Graphics::Scenery scenes = {background, foreground};
-
-            Graphics::Render(graphics, scenes);
+            Graphics::Render(graphics, {background, foreground});
 
             Graphics::RenderNow(graphics);
         }

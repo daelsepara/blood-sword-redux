@@ -1078,7 +1078,7 @@ namespace BloodSword::Test
                     }
                 }
 
-                input = Input::WaitForInput(graphics, scene, overlay, input, skill || spell, true);
+                input = Input::WaitForInput(graphics, scene, overlay, input, (skill || spell), (skill || spell));
 
                 if (!skill && !spell)
                 {
@@ -1552,7 +1552,7 @@ namespace BloodSword::Test
                 }
             }
 
-            input = Input::WaitForInput(graphics, scene, overlay, input, characters);
+            input = Input::WaitForInput(graphics, scene, overlay, input, characters, !characters);
 
             if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
             {
