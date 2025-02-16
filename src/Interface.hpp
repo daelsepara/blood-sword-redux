@@ -2788,6 +2788,8 @@ namespace BloodSword::Interface
             std::swap(minimum, maximum);
         }
 
+        std::string string_current = "CUR: ";
+
         std::string string_min = "MIN: " + std::to_string(minimum);
 
         std::string string_max = "MAX: " + std::to_string(maximum);
@@ -2798,13 +2800,15 @@ namespace BloodSword::Interface
 
         auto texture_max = Graphics::CreateText(graphics, string_max.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
+        auto current = Graphics::CreateText(graphics, (string_current + std::to_string(number)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
         auto texture_height = BloodSword::Height(texture_min);
 
         auto texture_width = BloodSword::Width(texture_max);
 
         auto pad = BloodSword::Pad;
 
-        auto offset = BloodSword::TileSize + pad;
+        auto asset = origin + Point(popup_w - BloodSword::TileSize - pad, pad);
 
         auto button = origin + Point(pad, popup_h - BloodSword::TileSize - pad * 2);
 
@@ -2814,8 +2818,32 @@ namespace BloodSword::Interface
 
         auto done = false;
 
+        auto update = false;
+
+        // set up overlay controls
+        auto controls = Controls::List();
+
+        // button offset
+        auto offset = BloodSword::TileSize + pad;
+
+        // starting id
+        auto id = 0;
+
+        // increase number
+        controls.push_back(Controls::Base(Controls::Type::PLUS, id, id, id + 1, id, id, button.X, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+        // decrease number
+        controls.push_back(Controls::Base(Controls::Type::MINUS, id + 1, id, id + 2, id + 1, id + 1, button.X + (offset), button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+        // confirm
+        controls.push_back(Controls::Base(Controls::Type::CONFIRM, id + 2, id + 1, id + 3, id + 2, id + 2, button.X + offset * 2, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+        // cancel
+        controls.push_back(Controls::Base(Controls::Type::CANCEL, id + 3, id + 2, id + 3, id + 3, id + 3, button.X + offset * 3, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
         while (!done)
         {
+            // initialize overlay
             auto overlay = Scene::Base();
 
             // draw border
@@ -2824,20 +2852,34 @@ namespace BloodSword::Interface
             // add message
             overlay.VerifyAndAdd(Scene::Element(texture, origin + pad));
 
-            auto asset_location = origin + Point(popup_w - BloodSword::TileSize - pad, pad);
-
-            auto limit_offset = pad;
+            // stats location
+            auto line = pad;
 
             if (target != Asset::Type::NONE)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), asset_location));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), asset));
 
-                limit_offset += BloodSword::TileSize + pad;
+                line += BloodSword::TileSize + pad;
             }
 
-            overlay.VerifyAndAdd(Scene::Element(texture_min, origin + Point(texture_x, limit_offset)));
+            // add minimum
+            overlay.VerifyAndAdd(Scene::Element(texture_min, origin + Point(texture_x, line)));
 
-            overlay.VerifyAndAdd(Scene::Element(texture_max, origin + Point(texture_x, limit_offset + texture_height + pad)));
+            // add maximum
+            overlay.VerifyAndAdd(Scene::Element(texture_max, origin + Point(texture_x, line + texture_height)));
+
+            // update texture
+            if (update)
+            {
+                Free(&current);
+
+                current = Graphics::CreateText(graphics, (string_current + std::to_string(number)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+                update = false;
+            }
+
+            // add current number
+            overlay.VerifyAndAdd(Scene::Element(current, origin + Point(texture_x, line + texture_height * 2)));
 
             // increase number (icon)
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(increase), button));
@@ -2851,8 +2893,6 @@ namespace BloodSword::Interface
             // cancel (icon)
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CANCEL), Point(button.X + offset * 3, button.Y)));
 
-            auto id = 0;
-
             // add boxes
             auto row = 0;
 
@@ -2860,31 +2900,25 @@ namespace BloodSword::Interface
 
             for (auto box = 0; box < number; box++)
             {
+                // break long lines into the next row
                 if (box % Interface::MaxBoxRow == 0)
                 {
+                    // reset column
                     col = 0;
 
                     row++;
                 }
                 else
                 {
+                    // fill the line
                     col++;
                 }
 
                 overlay.Add(Scene::Element(origin + Point(col * (Interface::BoxSize + pad) + pad * 2, row * (Interface::BoxSize + BloodSword::SmallPad * 2) + pad * 3), Interface::BoxSize, Interface::BoxSize, Color::Highlight, Color::Active, BloodSword::Border));
             }
 
-            // increase number
-            overlay.Add(Controls::Base(Controls::Type::PLUS, id, id, id + 1, id, id, button.X, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
-
-            // decrease number
-            overlay.Add(Controls::Base(Controls::Type::MINUS, id + 1, id, id + 2, id + 1, id + 1, button.X + offset, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
-
-            // confirm
-            overlay.Add(Controls::Base(Controls::Type::CONFIRM, id + 2, id + 1, id + 3, id + 2, id + 2, button.X + offset * 2, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
-
-            // cancel
-            overlay.Add(Controls::Base(Controls::Type::CANCEL, id + 3, id + 2, id + 3, id + 3, id + 3, button.X + offset * 3, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+            // set overlay controls
+            overlay.Controls = controls;
 
             // get input
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
@@ -2901,14 +2935,26 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::PLUS)
                 {
-                    number += (number < maximum) ? 1 : 0;
+                    if (number < maximum)
+                    {
+                        number++;
+
+                        update = true;
+                    }
                 }
                 else if (input.Type == Controls::Type::MINUS)
                 {
-                    number -= (number > minimum) ? 1 : 0;
+                    if (number > minimum)
+                    {
+                        number--;
+
+                        update = true;
+                    }
                 }
             }
         }
+
+        Free(&current);
 
         Free(&texture_max);
 
