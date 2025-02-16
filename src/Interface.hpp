@@ -2938,40 +2938,45 @@ namespace BloodSword::Interface
                             {
                                 auto cost = Interface::GetNumber(graphics, background, "HOW MANY ENDURANCE TO SPEND?", 0, endurance - 1, character.Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
 
-                                Engine::GainEndurance(character, -cost, false);
-
-                                auto score = cost * Interface::Roll(graphics, background, origin, window_w, window_h, Color::Active, BloodSword::Border, character.Asset, Asset::Type::HEALING, 1, -2);
-
-                                done = !(score > 0);
-
-                                if (score == 0)
+                                if (cost > 0)
                                 {
-                                    // healing attempt failed
-                                    Interface::ErrorMessage(graphics, background, MSG_HEALING);
-                                }
+                                    Engine::GainEndurance(character, -cost, false);
 
-                                while (!done)
-                                {
-                                    // distribute healing
-                                    auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false);
-
-                                    std::string heal_string = "HEAL " + party[target].Name;
-
-                                    // heal
-                                    auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, score, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
-
-                                    if (heal > 0)
-                                    {
-                                        // heal selected character
-                                        Engine::GainEndurance(party[target], heal, false);
-
-                                        Interface::Notify(graphics, background, MSG_HEALED);
-                                    }
-
-                                    score -= heal;
+                                    auto score = cost * Interface::Roll(graphics, background, origin, window_w, window_h, Color::Active, BloodSword::Border, character.Asset, Asset::Type::HEALING, 1, -2);
 
                                     done = !(score > 0);
+
+                                    if (score == 0)
+                                    {
+                                        // healing attempt failed
+                                        Interface::ErrorMessage(graphics, background, MSG_HEALING);
+                                    }
+
+                                    while (!done)
+                                    {
+                                        // distribute healing
+                                        auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false);
+
+                                        std::string heal_string = "HEAL " + party[target].Name;
+
+                                        // heal
+                                        auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, score, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+
+                                        if (heal > 0)
+                                        {
+                                            // heal selected character
+                                            Engine::GainEndurance(party[target], heal, false);
+
+                                            Interface::Notify(graphics, background, MSG_HEALED);
+                                        }
+
+                                        score -= heal;
+
+                                        done = !(score > 0);
+                                    }
                                 }
+
+                                done = !(cost > 0) || done;
                             }
 
                             done = !(endurance > 1) || done;
