@@ -159,11 +159,12 @@ namespace BloodSword::Graphics
     // draw a rectangle with thich borders on screen
     void ThickRect(Graphics::Base &graphics, int w, int h, int x, int y, int color, int pts)
     {
-        auto space = 2 * pts;
-
-        for (auto size = pts * 2 - 1; size >= 0; size--)
+        for (auto size = 0; size < pts; size++)
         {
-            Graphics::DrawRect(graphics, w + 2 * (space - size), h + 2 * (space - size), x - space + size, y - space + size, color);
+            auto p = (pts - size);
+
+            // grow outward
+            Graphics::DrawRect(graphics, w + p * 2, h + p * 2, x - p, y - p, color);
         }
     }
 
@@ -379,7 +380,7 @@ namespace BloodSword::Graphics
             {
                 if (!input.Blink || !control.OnMap)
                 {
-                    Graphics::ThickRect(graphics, control.W - BloodSword::SmallPad * control.Pixels, control.H - BloodSword::SmallPad * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
+                    Graphics::ThickRect(graphics, control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels, control.Highlight, control.Pixels);
                 }
             }
         }

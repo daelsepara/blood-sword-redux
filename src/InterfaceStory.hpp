@@ -110,21 +110,26 @@ namespace BloodSword::Interface
         // texture for left panel (either party stats, or specific images)
         SDL_Texture *panel = nullptr;
 
-        auto action = Controls::User();
+        auto input = Controls::User();
+
+        // total size of all dividers
+        auto space = BloodSword::TileSize * 3 + BloodSword::Pad * 4;
 
         // includes tile-sized borders on left, right, and middle (divider)
-        auto panel_w = (graphics.Width - BloodSword::TileSize * 3) / 2;
+        auto panel_w = (graphics.Width - space) / 2;
 
         // includes tile-sized top, bottom borders and one row of buttons
-        auto panel_h = (graphics.Height - BloodSword::TileSize * 3);
+        auto panel_h = (graphics.Height - space);
 
         // maximum size of viewable text
         auto text_w = panel_w - BloodSword::Pad * 2;
 
         auto text_h = panel_h - BloodSword::Pad * 2;
 
-        // location where both panels are rendered
-        auto origin = Point(graphics.Width - (panel_w * 2 + BloodSword::TileSize * 3), graphics.Height - (panel_h + BloodSword::TileSize * 3)) / 2;
+        // location where left-most panel is rendered
+        auto origin = Point((graphics.Width - (panel_w * 2 + BloodSword::TileSize + BloodSword::Pad * 2)) / 2, BloodSword::TileSize + BloodSword::Pad * 2);
+
+        auto origin_text = origin + Point(panel_w + BloodSword::TileSize + BloodSword::Pad * 3, BloodSword::Pad);
 
         if (text.length() > 0)
         {
@@ -135,10 +140,35 @@ namespace BloodSword::Interface
             texture = Graphics::CreateText(graphics, "You decide what to do next.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w);
         }
 
+        // texture dimensions
+        auto texture_w = 0;
+
+        auto texture_h = 0;
+
+        // get actual dimension
+        BloodSword::Size(texture, &texture_w, &texture_h);
+
         if (section.ImageAsset.length() > 0)
         {
             panel = Asset::Create(graphics.Renderer, section.ImageAsset.c_str());
         }
+
+        // location of scroll arrows
+        auto scroll_top = origin + Point(panel_w * 2 + BloodSword::TileSize + BloodSword::SmallPad * 5, -BloodSword::SmallPad / 2);
+
+        auto scroll_bot = origin + Point(panel_w * 2 + BloodSword::TileSize + BloodSword::SmallPad * 5, panel_h - BloodSword::TileSize + BloodSword::SmallPad / 2);
+
+        auto scroll_speed = BloodSword::FrameDelay;
+
+        auto scroll_up = false;
+
+        auto scroll_down = false;
+
+        // location of buttons
+        auto buttons = origin + Point(panel_w + BloodSword::TileSize + BloodSword::Pad * 3, panel_h + BloodSword::Pad);
+
+        // text offset
+        auto offset = 0;
 
         auto done = false;
 
@@ -146,25 +176,128 @@ namespace BloodSword::Interface
         {
             auto overlay = Scene::Base();
 
+            // left panel border
+            overlay.Add(Scene::Element(origin.X, origin.Y, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+
             if (panel)
             {
                 // add left panel
                 overlay.VerifyAndAdd(Scene::Element(panel, origin + Point(BloodSword::Pad, BloodSword::Pad)));
             }
 
+            // text panel border
+            overlay.Add(Scene::Element(origin.X + panel_w + BloodSword::TileSize + BloodSword::Pad * 2, origin.Y, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+
+            // text panel
             if (texture)
             {
-                // add text
+                // text
+                overlay.VerifyAndAdd(Scene::Element(texture, origin_text.X, origin_text.Y, text_h, offset));
             }
 
-            action = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, action, true);
+            auto id = 0;
+
+            auto arrow_up = offset > 0;
+
+            auto arrow_down = text_h < texture_h && offset < (texture_h - text_h);
+
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), buttons.X, buttons.Y));
+
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y));
+
+            if (arrow_up)
+            {
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scroll_top.X, scroll_top.Y));
+            }
+
+            if (arrow_down)
+            {
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scroll_bot.X, scroll_bot.Y));
+            }
+
+            if (arrow_up || arrow_down)
+            {
+                overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                overlay.Add(Controls::Base(Controls::Type::EXIT, id + 1, id, id + 2, id + 1, id + 1, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            }
+
+            if (arrow_up && arrow_down)
+            {
+                overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 2, id + 1, id + 2, id + 2, id + 3, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 3, id + 1, id + 3, id + 2, id + 3, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            }
+            else if (arrow_up)
+            {
+                overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 2, id + 1, id + 2, id + 2, id + 3, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            }
+            else if (arrow_down)
+            {
+                overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id + 1, id + 2, id + 2, id + 2, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            }
+
+            if (scroll_up)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
+
+                scroll_up = false;
+            }
+            else if (scroll_down)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
+
+                scroll_down = false;
+            }
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::NEXT)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::EXIT)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (text_h < texture_h)
+                    {
+                        offset -= scroll_speed;
+
+                        if (offset < 0)
+                        {
+                            offset = 0;
+                        }
+
+                        scroll_up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (text_h < texture_h)
+                    {
+                        offset += scroll_speed;
+
+                        if (offset > (texture_h - text_h))
+                        {
+                            offset = texture_h - text_h;
+                        }
+
+                        scroll_down = true;
+                    }
+                }
+            }
         }
 
         Free(&panel);
 
         Free(&texture);
 
-        return action;
+        return input;
     }
 
     Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)

@@ -1798,6 +1798,9 @@ namespace BloodSword::Test
             auto section_string = std::string("LOADED: ") + std::string(Book::Title[section.Location.first]) + std::string(" ") + std::to_string(section.Location.second);
 
             Interface::MessageBox(graphics, background, Graphics::RichText(section_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+
+            // render section
+            auto input = Interface::RenderSection(graphics, background, section, party, section.Text);
         }
         else
         {
