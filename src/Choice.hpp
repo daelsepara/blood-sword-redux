@@ -34,8 +34,6 @@ namespace BloodSword::Choice
         {
             if (!data["text"].is_null())
             {
-                std::cerr << "Choice::Parse: Loading text ..." << std::endl;
-
                 // set text
                 choice.Text = std::string(data["text"]);
             }
@@ -43,8 +41,6 @@ namespace BloodSword::Choice
             // parse condition
             if (!data["condition"].is_null())
             {
-                std::cerr << "Choice::Parse: Loading conditions ..." << std::endl;
-
                 choice.Condition = Section::Conditions::Parse(data["condition"]);
             }
         }
