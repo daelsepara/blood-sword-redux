@@ -30,7 +30,7 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, "Doomwalk"},
         {Book::Number::BOOK5, "The Walls of Spyte"}};
 
-    BloodSword::Mapping<Book::Number> BookNumber = {
+    BloodSword::Mapping<Book::Number> Mapping = {
         {Book::Number::NONE, "NONE"},
         {Book::Number::BOOK1, "BOOK1"},
         {Book::Number::BOOK2, "BOOK2"},
@@ -68,7 +68,7 @@ namespace BloodSword::Book
 
     Book::Number MapBook(const char *book)
     {
-        return BloodSword::Find(Book::BookNumber, book);
+        return BloodSword::Find(Book::Mapping, book);
     }
 
     Book::Number MapBook(std::string book)

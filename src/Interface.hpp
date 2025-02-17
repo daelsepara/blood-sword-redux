@@ -1023,7 +1023,7 @@ namespace BloodSword::Interface
 
         return texture;
     }
-        
+
     // clip rendering outside of map area
     void Clip(Graphics::Base &graphics, Map::Base &map)
     {
