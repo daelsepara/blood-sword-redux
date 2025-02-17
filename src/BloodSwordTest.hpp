@@ -1800,7 +1800,7 @@ namespace BloodSword::Test
             Interface::MessageBox(graphics, background, Graphics::RichText(section_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
 
             // render section
-            Interface::RenderSection(graphics, background, section, party, section.Text);
+            Interface::ProcessSection(graphics, background, section, party);
         }
         else
         {

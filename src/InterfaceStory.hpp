@@ -310,7 +310,8 @@ namespace BloodSword::Interface
     {
         Book::Location next = Interface::ProcessBackground(graphics, background, section, party);
 
-        if (!Book::IsUndefined(next))
+        // skip this section if background events redirect to another location
+        if (Book::IsUndefined(next))
         {
             auto once = false;
 
