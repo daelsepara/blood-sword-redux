@@ -1795,7 +1795,9 @@ namespace BloodSword::Test
 
         if (!Book::IsUndefined(section.Location))
         {
-            Interface::MessageBox(graphics, background, Graphics::RichText("SECTION LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+            auto section_string = std::string("LOADED: ") + std::string(Book::Title[section.Location.first]) + std::string(" ") + std::to_string(section.Location.second);
+
+            Interface::MessageBox(graphics, background, Graphics::RichText(section_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
         }
         else
         {
