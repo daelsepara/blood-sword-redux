@@ -2670,13 +2670,7 @@ namespace BloodSword::Interface
 
         auto height = (base_height + pad * 2) * items - pad * 7 / 2;
 
-        auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
-
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
-
-        menu.Add(Scene::Element(menu_title, Point((graphics.Width - BloodSword::Width(menu_title)) / 2, origin.Y - pad * 6)));
-
-        menu.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, BloodSword::Border));
 
         auto party = Party::Base();
 
@@ -2692,6 +2686,19 @@ namespace BloodSword::Interface
 
         auto rank4 = " 4" + starting_ranks + std::to_string(ranks[3]) + " ";
 
+        // adjust width
+        auto item_w = 0;
+
+        Graphics::Estimate(Fonts::Caption, rank1.c_str(), &item_w, nullptr);
+        
+        width = std::max(item_w, width);
+
+        auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
+
+        menu.Add(Scene::Element(menu_title, Point((graphics.Width - BloodSword::Width(menu_title)) / 2, origin.Y - pad * 6)));
+
+        menu.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, BloodSword::Border));
+        
         Graphics::TextList party_sizes = {
             Graphics::RichText(rank1.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
             Graphics::RichText(rank2.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),

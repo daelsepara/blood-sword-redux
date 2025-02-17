@@ -36,7 +36,7 @@ namespace BloodSword::Fonts
 
         Fonts::Fixed = TTF_OpenFont(font_ttf, fixed);
 
-        TTF_SetFontKerning(Fonts::Fixed, 0);
+        TTF_SetFontKerning(Fonts::Fixed, 1);
     }
 
     // cleanup fonts used
