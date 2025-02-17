@@ -104,7 +104,65 @@ namespace BloodSword::Interface
 
     Controls::User RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, std::string &text)
     {
+        // texture for section text / default text
+        SDL_Texture *texture = nullptr;
+
+        // texture for left panel (either party stats, or specific images)
+        SDL_Texture *panel = nullptr;
+
         auto action = Controls::User();
+
+        // includes tile-sized borders on left, right, and middle (divider)
+        auto panel_w = (graphics.Width - BloodSword::TileSize * 3) / 2;
+
+        // includes tile-sized top, bottom borders and one row of buttons
+        auto panel_h = (graphics.Height - BloodSword::TileSize * 3);
+
+        // maximum size of viewable text
+        auto text_w = panel_w - BloodSword::Pad * 2;
+
+        auto text_h = panel_h - BloodSword::Pad * 2;
+
+        // location where both panels are rendered
+        auto origin = Point(graphics.Width - (panel_w * 2 + BloodSword::TileSize * 3), graphics.Height - (panel_h + BloodSword::TileSize * 3)) / 2;
+
+        if (text.length() > 0)
+        {
+            texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w);
+        }
+        else
+        {
+            texture = Graphics::CreateText(graphics, "You decide what to do next.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, text_w);
+        }
+
+        if (section.ImageAsset.length() > 0)
+        {
+            panel = Asset::Create(graphics.Renderer, section.ImageAsset.c_str());
+        }
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            if (panel)
+            {
+                // add left panel
+                overlay.VerifyAndAdd(Scene::Element(panel, origin + Point(BloodSword::Pad, BloodSword::Pad)));
+            }
+
+            if (texture)
+            {
+                // add text
+            }
+
+            action = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, action, true);
+        }
+
+        Free(&panel);
+
+        Free(&texture);
 
         return action;
     }
@@ -147,6 +205,13 @@ namespace BloodSword::Interface
                         next = Interface::NextSection(graphics, background, section, party);
 
                         if (Book::IsDefined(next) || !Engine::IsAlive(party))
+                        {
+                            done = true;
+                        }
+                    }
+                    else
+                    {
+                        if (input.Type == Controls::Type::EXIT)
                         {
                             done = true;
                         }
