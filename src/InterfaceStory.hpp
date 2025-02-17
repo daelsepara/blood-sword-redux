@@ -102,11 +102,16 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Book::Location RenderSection(Graphics::Base &graphics, Section::Base &section, Party::Base &party)
+    Controls::User RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, std::string &text)
     {
-        auto scene = Scene::Base();
+        auto action = Controls::User();
 
-        Book::Location next = Interface::ProcessBackground(graphics, scene, section, party);
+        return action;
+    }
+
+    Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
+    {
+        Book::Location next = Interface::ProcessBackground(graphics, background, section, party);
 
         if (!Book::IsUndefined(next))
         {
@@ -121,7 +126,7 @@ namespace BloodSword::Interface
                 // TODO: Process events
                 if (!once)
                 {
-                    auto results = Interface::ProcessEvents(graphics, scene, section, party);
+                    auto results = Interface::ProcessEvents(graphics, background, section, party);
 
                     for (auto result : results)
                     {
@@ -134,14 +139,12 @@ namespace BloodSword::Interface
                 // TODO: Render section text
                 if (Engine::IsAlive(party))
                 {
-                    Controls::User input;
-
-                    Input::WaitForInput(graphics, scene, input);
+                    auto input = Interface::RenderSection(graphics, background, section, party, section_text);
 
                     if (input.Type == Controls::Type::NEXT)
                     {
                         // get next location
-                        next = Interface::NextSection(graphics, scene, section, party);
+                        next = Interface::NextSection(graphics, background, section, party);
 
                         if (Book::IsDefined(next) || !Engine::IsAlive(party))
                         {
