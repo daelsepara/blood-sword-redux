@@ -32,6 +32,8 @@ namespace BloodSword
 
     const int Pad = 8;
 
+    const int MidPad = 6;
+
     const int SmallPad = 4;
 
     // Delay Constants
