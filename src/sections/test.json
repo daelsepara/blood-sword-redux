@@ -1,14 +1,12 @@
 {
-    "story": {
-        "section": {},
-        "features": [],
-        "choices": [],
-        "battle": {},
-        "text": "",
-        "imageAsset": "",
-        "imagePosition": "",
-        "background": [],
-        "events": [],
-        "next": []
-    }
+    "section": {},
+    "features": [],
+    "choices": [],
+    "battle": {},
+    "text": "",
+    "imageAsset": "",
+    "imagePosition": "",
+    "background": [],
+    "events": [],
+    "next": []
 }

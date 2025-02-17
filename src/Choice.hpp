@@ -21,7 +21,7 @@ namespace BloodSword::Choice
         // Text to display
         std::string Text;
 
-        BloodSword::Story::Conditions::Base Condition;
+        BloodSword::Section::Conditions::Base Condition;
 
         Base() {}
     };
@@ -34,6 +34,8 @@ namespace BloodSword::Choice
         {
             if (!data["text"].is_null())
             {
+                std::cerr << "Choice::Parse: Loading text ..." << std::endl;
+
                 // set text
                 choice.Text = std::string(data["text"]);
             }
@@ -41,7 +43,9 @@ namespace BloodSword::Choice
             // parse condition
             if (!data["condition"].is_null())
             {
-                choice.Condition = Story::Conditions::Parse(data["condition"]);
+                std::cerr << "Choice::Parse: Loading conditions ..." << std::endl;
+
+                choice.Condition = Section::Conditions::Parse(data["condition"]);
             }
         }
 

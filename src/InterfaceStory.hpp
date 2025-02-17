@@ -3,7 +3,7 @@
 
 #include "Choice.hpp"
 #include "Conditions.hpp"
-#include "Story.hpp"
+#include "Section.hpp"
 #include "Interface.hpp"
 
 namespace BloodSword::Interface
@@ -18,15 +18,15 @@ namespace BloodSword::Interface
     }
 
     // process background events
-    Book::Location ProcessBackground(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
+    Book::Location ProcessBackground(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
-        if (story.Background.size() > 0)
+        if (section.Background.size() > 0)
         {
-            for (auto &condition : story.Background)
+            for (auto &condition : section.Background)
             {
-                if (Story::Conditions::Process(graphics, background, party, condition))
+                if (Section::Conditions::Process(graphics, background, party, condition))
                 {
                     next = condition.Location;
 
@@ -39,46 +39,46 @@ namespace BloodSword::Interface
     }
 
     // process real-time events
-    void ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
+    void ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
     {
-        if (story.Events.size() > 0)
+        if (section.Events.size() > 0)
         {
-            for (auto &condition : story.Events)
+            for (auto &condition : section.Events)
             {
                 if (Engine::IsAlive(party))
                 {
-                    Story::Conditions::Process(graphics, background, party, condition);
+                    Section::Conditions::Process(graphics, background, party, condition);
                 }
             }
         }
     }
 
     // get next location
-    Book::Location NextSection(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
+    Book::Location NextSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
-        if (story.Next.size() > 0)
+        if (section.Next.size() > 0)
         {
-            if (story.Battle.IsDefined())
+            if (section.Battle.IsDefined())
             {
                 // fight battle
-                party.LastBattle = Interface::RenderBattle(graphics, story.Battle, party);
+                party.LastBattle = Interface::RenderBattle(graphics, section.Battle, party);
             }
 
             if (Engine::IsAlive(party))
             {
                 // process choices if any
-                if (story.Choices.size() > 0)
+                if (section.Choices.size() > 0)
                 {
-                    next = Interface::RenderChoices(graphics, background, party, story.Choices);
+                    next = Interface::RenderChoices(graphics, background, party, section.Choices);
                 }
-                else if (story.Next.size() > 0)
+                else if (section.Next.size() > 0)
                 {
                     // process through each condition
-                    for (auto &condition : story.Next)
+                    for (auto &condition : section.Next)
                     {
-                        if (Story::Conditions::Process(graphics, background, party, condition))
+                        if (Section::Conditions::Process(graphics, background, party, condition))
                         {
                             next = condition.Location;
 
@@ -92,11 +92,11 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Book::Location RenderStory(Graphics::Base &graphics, Story::Base &story, Party::Base &party)
+    Book::Location RenderSection(Graphics::Base &graphics, Section::Base &section, Party::Base &party)
     {
         auto scene = Scene::Base();
 
-        Book::Location next = Interface::ProcessBackground(graphics, scene, story, party);
+        Book::Location next = Interface::ProcessBackground(graphics, scene, section, party);
 
         if (!Book::IsUndefined(next))
         {
@@ -106,10 +106,10 @@ namespace BloodSword::Interface
 
             while (!done)
             {
-                // TODO: render story
+                // TODO: Process events
                 if (!once)
                 {
-                    Interface::ProcessEvents(graphics, scene, story, party);
+                    Interface::ProcessEvents(graphics, scene, section, party);
 
                     once = true;
                 }
@@ -123,7 +123,7 @@ namespace BloodSword::Interface
                     if (input.Type == Controls::Type::NEXT)
                     {
                         // get next location
-                        next = Interface::NextSection(graphics, scene, story, party);
+                        next = Interface::NextSection(graphics, scene, section, party);
 
                         if (Book::IsDefined(next) || !Engine::IsAlive(party))
                         {

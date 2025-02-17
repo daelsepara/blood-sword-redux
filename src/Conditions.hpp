@@ -9,7 +9,7 @@
 #include "Scene.hpp"
 #include "Templates.hpp"
 
-namespace BloodSword::Story::Conditions
+namespace BloodSword::Section::Conditions
 {
     enum class Type
     {
@@ -73,9 +73,6 @@ namespace BloodSword::Story::Conditions
         // condition type
         Conditions::Type Type = Type::NONE;
 
-        // text to display
-        std::string Text;
-
         // destination (book, section)
         Book::Location Location = {Book::Number::NONE, -1};
 
@@ -86,6 +83,27 @@ namespace BloodSword::Story::Conditions
         bool Invert = false;
 
         Base() {}
+
+        Base(Conditions::Type type,
+             Book::Location location,
+             std::vector<std::string> variables,
+             bool invert) : Type(type),
+                            Variables(variables),
+                            Invert(invert) {}
+
+        Base(Conditions::Type type,
+             Book::Location location,
+             std::vector<std::string> variables) : Type(type),
+                                                   Variables(variables) {}
+
+        Base(const char *type, Book::Location location, std::vector<std::string> variables, bool invert = false)
+        {
+            this->Type = Conditions::Map(type);
+
+            this->Variables = variables;
+
+            this->Invert = invert;
+        }
     };
 
     Conditions::Base Parse(nlohmann::json &data)
@@ -97,30 +115,21 @@ namespace BloodSword::Story::Conditions
             if (!data["location"].is_null())
             {
                 // set location
-                auto book = !data["location"]["book"].is_null() ? Book::MapBookNumber(std::string(data["location"]["book"])) : Book::Number::NONE;
+                auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
 
-                auto number = !data["location"]["number"].is_null() ? std::stoi(std::string(data["location"]["number"])) : -1;
+                auto number = !data["location"]["number"].is_null() ? int(data["location"]["number"]) : -1;
 
                 condition.Location = {book, number};
             }
 
-            if (!data["type"].is_null())
-            {
-                // set condition type
-                condition.Type = Conditions::Map(std::string(data["type"]));
-            }
+            // set condition type
+            condition.Type = !data["type"].is_null() ? Conditions::Map(std::string(data["type"])) : Conditions::Type::NONE;
 
-            if (!data["text"].is_null())
-            {
-                // set text
-                condition.Text = std::string(data["text"]);
-            }
-
+            // set variables
             if (!data["variables"].is_null() && data["variables"].is_array() && data["variables"].size() > 0)
             {
-                std::vector<std::string> variables = {};
+                auto variables = std::vector<std::string>();
 
-                // set variables
                 for (auto i = 0; i < data["variables"].size(); i++)
                 {
                     variables.push_back(std::string(data["variables"][i]));
@@ -129,10 +138,8 @@ namespace BloodSword::Story::Conditions
                 condition.Variables = variables;
             }
 
-            if (!data["invert"].is_null() && data["invert"].is_boolean())
-            {
-                condition.Invert = bool(!data["invert"]);
-            }
+            // set invert condition
+            condition.Invert = (!data["invert"].is_null() && data["invert"].is_boolean()) ? bool(!data["invert"]) : false;
         }
 
         return condition;

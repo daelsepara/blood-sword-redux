@@ -1444,7 +1444,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, background, overlay, input, true, true);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
                 if (input.Type == Controls::Type::BACK)
                 {
@@ -1568,7 +1568,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
 
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
                 if (input.Type == Controls::Type::START)
                 {
@@ -1756,7 +1756,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
 
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
                 if (input.Type == Controls::Type::START)
                 {
@@ -1960,7 +1960,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
 
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
                 if (input.Type == Controls::Type::START)
                 {
@@ -2074,7 +2074,7 @@ namespace BloodSword::Interface
             {
                 input = Input::WaitForInput(graphics, scene, box, input, true, blur);
 
-                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
                 {
                     if (input.Type == Controls::Type::CONFIRM)
                     {
@@ -2181,7 +2181,7 @@ namespace BloodSword::Interface
             {
                 input = Input::WaitForInput(graphics, scene, box, input, true, blur);
 
-                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
                 {
                     if (input.Type == Controls::Type::CONFIRM)
                     {
@@ -2324,7 +2324,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, background, overlay, input, true, blur);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if ((input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold) || input.Up || input.Down)
             {
                 if (input.Type == Controls::Type::CHOICE)
                 {
@@ -2486,7 +2486,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, scene, overlay, input, true);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
                 if (input.Type == Controls::Type::BACK)
                 {
@@ -2923,7 +2923,7 @@ namespace BloodSword::Interface
             // get input
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold))
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
                 if (input.Type == Controls::Type::CONFIRM)
                 {

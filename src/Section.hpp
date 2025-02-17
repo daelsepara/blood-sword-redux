@@ -1,0 +1,179 @@
+#ifndef __SECTION_HPP__
+#define __SECTION_HPP__
+
+#include <string>
+
+#include "nlohmann/json.hpp"
+#include "Book.hpp"
+#include "Choice.hpp"
+#include "Conditions.hpp"
+#include "Feature.hpp"
+#include "Primitives.hpp"
+#include "InterfaceBattle.hpp"
+#include "InterfaceStory.hpp"
+#include "Templates.hpp"
+#include "Position.hpp"
+
+// classes and functions for managing story sections
+namespace BloodSword::Section
+{
+    class Base
+    {
+    public:
+        Book::Location Location = {Book::Number::NONE, -1};
+
+        std::vector<Feature::Type> Features = {};
+
+        std::vector<Choice::Base> Choices = {};
+
+        Position ImagePosition = Position::NONE;
+
+        Battle::Base Battle;
+
+        std::string ImageAsset;
+
+        std::string Text;
+
+        std::vector<Section::Conditions::Base> Background = {};
+
+        std::vector<Section::Conditions::Base> Events = {};
+
+        std::vector<Section::Conditions::Base> Next = {};
+
+        Base() {}
+
+        bool Has(Feature::Type feature)
+        {
+            auto search = BloodSword::Find(this->Features, feature);
+
+            return (search != this->Features.end()) && (*search != Feature::Type::NONE);
+        }
+    };
+
+    Section::Base Load(nlohmann::json &data)
+    {
+        auto section = Section::Base();
+
+        // set book and section number
+        if (!data["location"].is_null())
+        {
+            auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
+
+            auto number = !data["location"]["number"].is_null() ? int(data["location"]["number"]) : -1;
+
+            section.Location = {book, number};
+        }
+
+        // set features
+        if (!data["features"].is_null() && data["features"].is_array() && data["features"].size() > 0)
+        {
+            auto features = std::vector<Feature::Type>();
+
+            for (auto i = 0; i < data["features"].size(); i++)
+            {
+                auto feature = !data["features"][i].is_null() ? Feature::Map(std::string(data["features"][i])) : Feature::Type::NONE;
+
+                features.push_back(feature);
+            }
+
+            section.Features = features;
+        }
+
+        // read choices
+        if (!data["choices"].is_null() && data["choices"].is_array() && data["choices"].size() > 0)
+        {
+            auto choices = std::vector<Choice::Base>();
+
+            for (auto i = 0; i < data["choices"].size(); i++)
+            {
+                auto choice = Choice::Parse(data["choices"][i]);
+
+                choices.push_back(choice);
+            }
+
+            section.Choices = choices;
+        }
+
+        // load battle
+        if (!data["battle"].is_null())
+        {
+            section.Battle.Initialize(data["battle"]);
+        }
+
+        // image asset and position
+        section.ImagePosition = !data["imagePosition"].is_null() ? BloodSword::MapPosition(std::string(data["imagePosition"])) : Position::NONE;
+
+        section.ImageAsset = !data["imageAsset"].is_null() ? std::string(data["imageAsset"]) : std::string();
+
+        // story section text
+        section.Text = !data["text"].is_null() ? std::string(data["text"]) : std::string();
+
+        // load background events conditions
+        if (!data["background"].is_null() && data["background"].is_array() && data["background"].size() > 0)
+        {
+            auto background = std::vector<Section::Conditions::Base>();
+
+            for (auto i = 0; i < data["background"].size(); i++)
+            {
+                auto condition = Conditions::Parse(data["background"][i]);
+
+                background.push_back(condition);
+            }
+
+            section.Background = background;
+        }
+
+        // load real-time/run-once events conditions
+        if (!data["events"].is_null() && data["events"].is_array() && data["events"].size() > 0)
+        {
+            auto events = std::vector<Section::Conditions::Base>();
+
+            for (auto i = 0; i < data["events"].size(); i++)
+            {
+                auto condition = Conditions::Parse(data["events"][i]);
+
+                events.push_back(condition);
+            }
+
+            section.Events = events;
+        }
+
+        // load "next section" conditions
+        if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
+        {
+            auto next = std::vector<Section::Conditions::Base>();
+
+            for (auto i = 0; i < data["next"].size(); i++)
+            {
+                auto condition = Conditions::Parse(data["next"][i]);
+
+                next.push_back(condition);
+            }
+
+            section.Next = next;
+        }
+
+        return section;
+    }
+
+    Section::Base Load(const char *filename)
+    {
+        auto section = Section::Base();
+
+        std::ifstream ifs(filename);
+
+        if (ifs.good())
+        {
+            auto data = nlohmann::json::parse(ifs);
+
+            if (!data.is_null())
+            {
+                section = Section::Load(data);
+            }
+        }
+
+        return section;
+    }
+}
+
+#endif

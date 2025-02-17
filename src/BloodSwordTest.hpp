@@ -4,6 +4,7 @@
 #include "Graphics.hpp"
 #include "Interface.hpp"
 #include "InterfaceBattle.hpp"
+#include "InterfaceStory.hpp"
 
 // framework for testing game subsystems
 namespace BloodSword::Test
@@ -1786,7 +1787,20 @@ namespace BloodSword::Test
 
     void Story(Graphics::Base &graphics)
     {
+        auto background = Scene::Base();
+
         auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
+
+        auto section = Section::Load("sections/book1/section001.json");
+
+        if (!Book::IsUndefined(section.Location))
+        {
+            Interface::MessageBox(graphics, background, Graphics::RichText("SECTION LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, Graphics::RichText("SECTION NOT LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Active, true);
+        }
     }
 
     void TextInput(Graphics::Base &graphics, Scene::Base &background)

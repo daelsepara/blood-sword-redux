@@ -1125,7 +1125,7 @@ namespace BloodSword::Interface
                                             }
                                         }
 
-                                        if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                                        if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
                                         {
                                             if (Input::IsValid(scene, input) && !actions && !spells)
                                             {
