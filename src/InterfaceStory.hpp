@@ -66,34 +66,31 @@ namespace BloodSword::Interface
     {
         Book::Location next = {Book::Number::NONE, -1};
 
-        if (section.Next.size() > 0)
+        // fight battle
+        if (section.Battle.IsDefined())
         {
-            if (section.Battle.IsDefined())
+            party.LastBattle = Interface::RenderBattle(graphics, section.Battle, party);
+        }
+
+        if (Engine::IsAlive(party))
+        {
+            // process through any choices
+            if (section.Choices.size() > 0)
             {
-                // fight battle
-                party.LastBattle = Interface::RenderBattle(graphics, section.Battle, party);
+                next = Interface::RenderChoices(graphics, background, party, section.Choices);
             }
-
-            if (Engine::IsAlive(party))
+            else if (section.Next.size() > 0)
             {
-                // process choices if any
-                if (section.Choices.size() > 0)
+                // process through each condition
+                for (auto &condition : section.Next)
                 {
-                    next = Interface::RenderChoices(graphics, background, party, section.Choices);
-                }
-                else if (section.Next.size() > 0)
-                {
-                    // process through each condition
-                    for (auto &condition : section.Next)
+                    auto eval = Section::Conditions::Process(graphics, background, party, condition);
+
+                    if (eval.Result)
                     {
-                        auto eval = Section::Conditions::Process(graphics, background, party, condition);
+                        next = condition.Location;
 
-                        if (eval.Result)
-                        {
-                            next = condition.Location;
-
-                            break;
-                        }
+                        break;
                     }
                 }
             }
@@ -262,7 +259,16 @@ namespace BloodSword::Interface
             {
                 if (input.Type == Controls::Type::NEXT)
                 {
-                    done = true;
+                    next = Interface::NextSection(graphics, overlay, section, party);
+
+                    if (Book::IsDefined(next) || !Engine::IsAlive(party))
+                    {
+                        done = true;
+                    }
+                    else
+                    {
+                        Interface::MessageBox(graphics, overlay, Graphics::RichText("NOT YET IMPLEMENTED", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Inactive, true);
+                    }
                 }
                 else if (input.Type == Controls::Type::EXIT)
                 {
@@ -303,6 +309,11 @@ namespace BloodSword::Interface
 
         Free(&texture);
 
+        if (!Engine::IsAlive(party))
+        {
+            Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Active, true);
+        }
+
         return next;
     }
 
@@ -332,7 +343,6 @@ namespace BloodSword::Interface
                     once = true;
                 }
 
-                // TODO: Render section text
                 if (Engine::IsAlive(party))
                 {
                     next = Interface::RenderSection(graphics, background, section, party, section_text);
