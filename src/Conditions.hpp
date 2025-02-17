@@ -145,10 +145,27 @@ namespace BloodSword::Section::Conditions
         return condition;
     }
 
+    // results of evaluating a condition
+    class Evaluation
+    {
+    public:
+        bool Result = false;
+
+        std::string Text = std::string();
+
+        Evaluation() {}
+
+        Evaluation(bool result) : Result(result) {}
+
+        Evaluation(bool result, std::string text) : Result(result), Text(text) {}
+    };
+
     // routine to validate "condition"
-    bool Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
+    Conditions::Evaluation Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {
         auto result = false;
+
+        auto text = std::string();
 
         if (condition.Type == Conditions::Type::NORMAL)
         {
@@ -159,27 +176,49 @@ namespace BloodSword::Section::Conditions
             auto character = Character::Map(condition.Variables[0]);
 
             result = party.Has(character);
+
+            if (!result)
+            {
+                text = std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!";
+            }
         }
         else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
         {
             auto character = Character::Map(condition.Variables[0]);
 
-            result = party.ChosenCharacter == character;
+            result = (party.ChosenCharacter == character);
+
+            if (!result)
+            {
+                text = std::string("YOU HAVE CHOSEN A DIFFERENT PLAYER!");
+            }
         }
         else if (condition.Type == Conditions::Type::CHOSEN_NUMBER)
         {
             auto number = std::stoi(condition.Variables[0], nullptr, 10);
 
-            result = party.ChosenNumber == number;
+            result = (party.ChosenNumber == number);
+
+            if (!result)
+            {
+                text = std::string("YOU HAVE CHOSEN A DIFFERENT NUMBER!");
+            }
         }
         else if (condition.Type == Conditions::Type::HAS_ITEM)
         {
             auto item = Item::Map(condition.Variables[0]);
 
             result = party.Has(item);
+
+            if (!result)
+            {
+                text = std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]);
+            }
         }
 
-        return condition.Invert ? !result : result;
+        result = condition.Invert ? !result : result;
+
+        return Conditions::Evaluation(result, text);
     }
 }
 #endif

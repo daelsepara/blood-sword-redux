@@ -26,7 +26,9 @@ namespace BloodSword::Interface
         {
             for (auto &condition : section.Background)
             {
-                if (Section::Conditions::Process(graphics, background, party, condition))
+                auto eval = Section::Conditions::Process(graphics, background, party, condition);
+
+                if (eval.Result)
                 {
                     next = condition.Location;
 
@@ -39,18 +41,24 @@ namespace BloodSword::Interface
     }
 
     // process real-time events
-    void ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
+    std::vector<Section::Conditions::Evaluation> ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
     {
+        auto results = std::vector<Section::Conditions::Evaluation>();
+
         if (section.Events.size() > 0)
         {
             for (auto &condition : section.Events)
             {
                 if (Engine::IsAlive(party))
                 {
-                    Section::Conditions::Process(graphics, background, party, condition);
+                    auto eval = Section::Conditions::Process(graphics, background, party, condition);
+
+                    results.push_back(eval);
                 }
             }
         }
+
+        return results;
     }
 
     // get next location
@@ -78,7 +86,9 @@ namespace BloodSword::Interface
                     // process through each condition
                     for (auto &condition : section.Next)
                     {
-                        if (Section::Conditions::Process(graphics, background, party, condition))
+                        auto eval = Section::Conditions::Process(graphics, background, party, condition);
+
+                        if (eval.Result)
                         {
                             next = condition.Location;
 
@@ -104,16 +114,24 @@ namespace BloodSword::Interface
 
             auto done = false;
 
+            auto section_text = section.Text;
+
             while (!done)
             {
                 // TODO: Process events
                 if (!once)
                 {
-                    Interface::ProcessEvents(graphics, scene, section, party);
+                    auto results = Interface::ProcessEvents(graphics, scene, section, party);
+
+                    for (auto result : results)
+                    {
+                        section_text += result.Text;
+                    }
 
                     once = true;
                 }
 
+                // TODO: Render section text
                 if (Engine::IsAlive(party))
                 {
                     Controls::User input;
