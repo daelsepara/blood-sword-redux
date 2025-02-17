@@ -22,10 +22,10 @@ namespace BloodSword
 
     const int QuarterTile = 16;
 
-    // Max Moves
+    // max moves
     const int MaximumMoves = 1000;
 
-    // Padding Sizes
+    // padding sizes
     const int LargePad = 16;
 
     const int OddPad = 10;
@@ -36,15 +36,18 @@ namespace BloodSword
 
     const int SmallPad = 4;
 
-    // Delay Constants
+    // delay constants
     const int FrameDelay = 25;
 
     const int StandardDelay = 100;
 
     const int OneSecond = 1000;
 
-    // Border Constants
+    // border constants
     const int Border = 4;
+
+    // scroll speed (pixels)
+    const int ScrollSpeed = 50;
 
     // relative positions
     enum class Position

@@ -214,7 +214,7 @@ namespace BloodSword::Test
 
         auto scroll_y = map.DrawY + background_h - map.TileSize + pad * 2;
 
-        auto scroll_speed = BloodSword::FrameDelay;
+        auto scroll_speed = BloodSword::ScrollSpeed;
 
         auto scroll_up = false;
 
@@ -1800,7 +1800,7 @@ namespace BloodSword::Test
             Interface::MessageBox(graphics, background, Graphics::RichText(section_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
 
             // render section
-            auto input = Interface::RenderSection(graphics, background, section, party, section.Text);
+            Interface::RenderSection(graphics, background, section, party, section.Text);
         }
         else
         {

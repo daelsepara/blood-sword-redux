@@ -102,21 +102,21 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Controls::User RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, std::string &text)
+    Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, std::string &text)
     {
+        Book::Location next = {Book::Number::NONE, -1};
+
         // texture for section text / default text
         SDL_Texture *texture = nullptr;
 
         // texture for left panel (either party stats, or specific images)
-        SDL_Texture *panel = nullptr;
-
-        auto input = Controls::User();
+        SDL_Texture *image = nullptr;
 
         // total size of all dividers
         auto space = BloodSword::TileSize * 3 + BloodSword::Pad * 4;
 
         // includes tile-sized borders on left, right, and middle (divider)
-        auto panel_w = (graphics.Width - space) / 2;
+        auto panel_w = (graphics.Width - BloodSword::TileSize * 2 - space) / 2;
 
         // includes tile-sized top, bottom borders and one row of buttons
         auto panel_h = (graphics.Height - space);
@@ -150,7 +150,11 @@ namespace BloodSword::Interface
 
         if (section.ImageAsset.length() > 0)
         {
-            panel = Asset::Create(graphics.Renderer, section.ImageAsset.c_str());
+            image = Asset::Create(graphics.Renderer, section.ImageAsset.c_str());
+        }
+        else
+        {
+            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::Pad * 2, panel_h - BloodSword::Pad * 2);
         }
 
         // location of scroll arrows
@@ -158,17 +162,19 @@ namespace BloodSword::Interface
 
         auto scroll_bot = origin + Point(panel_w * 2 + BloodSword::TileSize + BloodSword::SmallPad * 5, panel_h - BloodSword::TileSize + BloodSword::MidPad);
 
-        auto scroll_speed = BloodSword::FrameDelay;
+        auto scroll_speed = BloodSword::ScrollSpeed;
 
         auto scroll_up = false;
 
-        auto scroll_down = false;
+        auto scroll_dn = false;
 
         // location of buttons
-        auto buttons = origin + Point(panel_w + BloodSword::TileSize + BloodSword::Pad * 3, panel_h + BloodSword::Pad);
+        auto buttons = origin + Point(panel_w + BloodSword::TileSize + BloodSword::MidPad + BloodSword::SmallPad, panel_h + BloodSword::Pad);
 
         // text offset
         auto offset = 0;
+
+        auto input = Controls::User();
 
         auto done = false;
 
@@ -179,10 +185,10 @@ namespace BloodSword::Interface
             // left panel border
             overlay.Add(Scene::Element(origin.X, origin.Y, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
 
-            if (panel)
+            if (image)
             {
                 // add left panel
-                overlay.VerifyAndAdd(Scene::Element(panel, origin + Point(BloodSword::Pad, BloodSword::Pad)));
+                overlay.VerifyAndAdd(Scene::Element(image, origin + Point(BloodSword::Pad, BloodSword::Pad)));
             }
 
             // text panel border
@@ -199,7 +205,7 @@ namespace BloodSword::Interface
 
             auto arrow_up = offset > 0;
 
-            auto arrow_down = text_h < texture_h && offset < (texture_h - text_h);
+            auto arrow_dn = text_h < texture_h && offset < (texture_h - text_h);
 
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), buttons.X, buttons.Y));
 
@@ -210,19 +216,19 @@ namespace BloodSword::Interface
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scroll_top.X, scroll_top.Y));
             }
 
-            if (arrow_down)
+            if (arrow_dn)
             {
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scroll_bot.X, scroll_bot.Y));
             }
 
-            if (arrow_up || arrow_down)
+            if (arrow_up || arrow_dn)
             {
                 overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
                 overlay.Add(Controls::Base(Controls::Type::EXIT, id + 1, id, id + 2, id + 1, id + 1, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
 
-            if (arrow_up && arrow_down)
+            if (arrow_up && arrow_dn)
             {
                 overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 2, id + 1, id + 2, id + 2, id + 3, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -232,7 +238,7 @@ namespace BloodSword::Interface
             {
                 overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id + 2, id + 1, id + 2, id + 2, id + 3, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
-            else if (arrow_down)
+            else if (arrow_dn)
             {
                 overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id + 1, id + 2, id + 2, id + 2, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
@@ -243,11 +249,11 @@ namespace BloodSword::Interface
 
                 scroll_up = false;
             }
-            else if (scroll_down)
+            else if (scroll_dn)
             {
                 input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
 
-                scroll_down = false;
+                scroll_dn = false;
             }
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
@@ -287,17 +293,17 @@ namespace BloodSword::Interface
                             offset = texture_h - text_h;
                         }
 
-                        scroll_down = true;
+                        scroll_dn = true;
                     }
                 }
             }
         }
 
-        Free(&panel);
+        Free(&image);
 
         Free(&texture);
 
-        return input;
+        return next;
     }
 
     Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
@@ -308,11 +314,9 @@ namespace BloodSword::Interface
         {
             auto once = false;
 
-            auto done = false;
-
             auto section_text = section.Text;
 
-            while (!done)
+            while (true)
             {
                 // TODO: Process events
                 if (!once)
@@ -330,29 +334,15 @@ namespace BloodSword::Interface
                 // TODO: Render section text
                 if (Engine::IsAlive(party))
                 {
-                    auto input = Interface::RenderSection(graphics, background, section, party, section_text);
+                    next = Interface::RenderSection(graphics, background, section, party, section_text);
 
-                    if (input.Type == Controls::Type::NEXT)
-                    {
-                        // get next location
-                        next = Interface::NextSection(graphics, background, section, party);
-
-                        if (Book::IsDefined(next) || !Engine::IsAlive(party))
-                        {
-                            done = true;
-                        }
-                    }
-                    else
-                    {
-                        if (input.Type == Controls::Type::EXIT)
-                        {
-                            done = true;
-                        }
-                    }
+                    break;
                 }
                 else
                 {
-                    done = true;
+                    Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Active, true);
+
+                    break;
                 }
             }
         }
