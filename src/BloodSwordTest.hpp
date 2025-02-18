@@ -1797,14 +1797,14 @@ namespace BloodSword::Test
         {
             auto section_string = std::string("LOADED: ") + std::string(Book::Title[section.Location.first]) + std::string(" ") + std::to_string(section.Location.second);
 
-            Interface::MessageBox(graphics, background, Graphics::RichText(section_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+            Interface::MessageBox(graphics, background, Graphics::RichText(section_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
 
             // render section
             Interface::ProcessSection(graphics, background, section, party);
         }
         else
         {
-            Interface::MessageBox(graphics, background, Graphics::RichText("SECTION NOT LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Active, true);
+            Interface::MessageBox(graphics, background, Graphics::RichText("SECTION NOT LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
         }
     }
 
@@ -1814,7 +1814,7 @@ namespace BloodSword::Test
 
         input_string = BloodSword::LeftPad(input_string, 4);
 
-        Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Highlight, true);
+        Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
     }
 
     void Heal(Graphics::Base &graphics, Scene::Base &background)

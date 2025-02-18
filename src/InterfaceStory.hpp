@@ -8,11 +8,178 @@
 
 namespace BloodSword::Interface
 {
-    Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::vector<Choice::Base> &choices)
+    typedef std::vector<Choice::Base> Choices;
+
+    Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choices &choices, bool after_battle = false)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
-        // TODO: render choices
+        auto limit = 4;
+
+        auto start = 0;
+
+        auto last = start + limit;
+
+        auto options = int(choices.size());
+
+        // wrap length
+        auto wrap = BloodSword::TileSize * 6;
+
+        auto text_list = Graphics::TextList();
+
+        for (auto &choice : choices)
+        {
+            text_list.push_back(Graphics::RichText(choice.Text, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
+        }
+
+        auto menu = Graphics::CreateText(graphics, text_list);
+
+        // default width
+        auto w = wrap;
+
+        // default width
+        auto h = BloodSword::TileSize;
+
+        // padding
+        auto pads = BloodSword::Pad * 2;
+
+        for (auto &item : menu)
+        {
+            w = std::max(BloodSword::Width(item) + pads, wrap);
+
+            h = std::max(BloodSword::Height(item) + pads, h);
+        }
+
+        auto x = (graphics.Width - w) / 2;
+
+        auto y = (graphics.Height - h * (limit + (after_battle ? 0 : 1))) / 2 - BloodSword::QuarterTile * (after_battle ? 1 : 2);
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto frame_x = x - BloodSword::HalfTile;
+
+        auto frame_y = y - BloodSword::HalfTile;
+
+        auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+
+        auto frame_h = (limit * h) + (BloodSword::HalfTile * (!after_battle ? 5 : 3)) + BloodSword::OddPad;
+
+        while (!done)
+        {
+            auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
+
+            // add frame at the back
+            overlay.Elements.insert(overlay.Elements.begin(), Scene::Element(frame_x, frame_y, frame_w, frame_h, Color::Background, Color::Active, BloodSword::Border));
+
+            auto &lastControl = overlay.Controls.back();
+
+            auto id = lastControl.Id + 1;
+
+            auto first = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+            auto bottom_y = overlay.Controls[first + limit - 1].Y + h + BloodSword::Pad;
+
+            if (!after_battle)
+            {
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, bottom_y));
+
+                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x, bottom_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            }
+
+            if (input.Up)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
+
+                input.Up = false;
+            }
+            else if (input.Down)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
+
+                input.Down = false;
+            }
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (start > 0)
+                    {
+                        start -= 1;
+
+                        if (start < 0)
+                        {
+                            start = 0;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (options - last > 0)
+                    {
+                        if (start < options - limit)
+                        {
+                            start += 1;
+                        }
+
+                        if (start > options - limit)
+                        {
+                            start = options - limit;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Down = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::CHOICE)
+                {
+                    auto list = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                    auto choice = start + (input.Current - list);
+
+                    if (choice >= 0 && choice < choices.size())
+                    {
+                        auto eval = Section::Conditions::Process(graphics, background, party, choices[choice].Condition);
+
+                        if (!eval.Result)
+                        {
+                            Interface::MessageBox(graphics, background, Graphics::RichText(eval.Text.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                        }
+                        else
+                        {
+                            next = choices[choice].Condition.Location;
+
+                            done = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        Free(menu);
 
         return next;
     }
@@ -51,9 +218,7 @@ namespace BloodSword::Interface
             {
                 if (Engine::IsAlive(party))
                 {
-                    auto eval = Section::Conditions::Process(graphics, background, party, condition);
-
-                    results.push_back(eval);
+                    results.push_back(Section::Conditions::Process(graphics, background, party, condition));
                 }
             }
         }
@@ -66,20 +231,19 @@ namespace BloodSword::Interface
     {
         Book::Location next = {Book::Number::NONE, -1};
 
+        auto after_battle = false;
+
         // fight battle
         if (section.Battle.IsDefined())
         {
             party.LastBattle = Interface::RenderBattle(graphics, section.Battle, party);
+
+            after_battle = true;
         }
 
         if (Engine::IsAlive(party))
         {
-            // process through any choices
-            if (section.Choices.size() > 0)
-            {
-                next = Interface::RenderChoices(graphics, background, party, section.Choices);
-            }
-            else if (section.Next.size() > 0)
+            if (section.Next.size() > 0)
             {
                 // process through each condition
                 for (auto &condition : section.Next)
@@ -90,6 +254,19 @@ namespace BloodSword::Interface
                     {
                         next = condition.Location;
 
+                        break;
+                    }
+                }
+            }
+            else if (section.Choices.size() > 0)
+            {
+                // process through any choices
+                while (true)
+                {
+                    next = Interface::RenderChoices(graphics, background, party, section.Choices, after_battle);
+
+                    if (!after_battle || Book::IsDefined(next))
+                    {
                         break;
                     }
                 }
@@ -265,10 +442,6 @@ namespace BloodSword::Interface
                     {
                         done = true;
                     }
-                    else
-                    {
-                        Interface::MessageBox(graphics, overlay, Graphics::RichText("NOT YET IMPLEMENTED", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Inactive, true);
-                    }
                 }
                 else if (input.Type == Controls::Type::EXIT)
                 {
@@ -311,7 +484,7 @@ namespace BloodSword::Interface
 
         if (!Engine::IsAlive(party))
         {
-            Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Active, true);
+            Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
         }
 
         return next;
@@ -351,7 +524,7 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Active, true);
+                    Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
 
                     break;
                 }
