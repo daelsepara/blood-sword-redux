@@ -830,7 +830,7 @@ namespace BloodSword::Interface
                                 if (is_enemy && !character.Is(Character::Status::ENTHRALLED))
                                 {
                                     // enemy combatant is not paralyzed
-                                    if (!character.Is(Character::Status::PARALYZED) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character))
+                                    if (!character.Is(Character::Status::PARALYZED) && !character.Is(Character::Status::AWAY) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character))
                                     {
                                         // check if there are adjacent combatants to fight
                                         auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
@@ -932,7 +932,7 @@ namespace BloodSword::Interface
                                 else
                                 {
                                     // player-controlled characters including enthralled enemies
-                                    if (!character.Is(Character::Status::PARALYZED) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character))
+                                    if (!character.Is(Character::Status::PARALYZED) && !character.Is(Character::Status::AWAY) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character))
                                     {
                                         // captions and overlays
                                         if (!spells && !actions)

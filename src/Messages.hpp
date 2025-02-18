@@ -24,7 +24,9 @@ namespace BloodSword::Interface
         Graphics::RichText("INVALID TARGET!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("YOU CANNOT DO THAT WHILE IN BATTLE!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("YOU CANNOT PERFORM THIS ACTION!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("HEALING ATTEMPT FAILED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+        Graphics::RichText("HEALING ATTEMPT FAILED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("EVERYONE IS AT MAXIMUM ENDURANCE!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("THAT PLAYER IS NOT WOUNDED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     BloodSword::Textures Message = {};
 
@@ -63,6 +65,10 @@ namespace BloodSword::Interface
     const int MSG_ACTION = 16;
 
     const int MSG_HEALING = 17;
+
+    const int MSG_MAX = 18;
+
+    const int MSG_WOUND = 19;
 
     void InitializeMessages(Graphics::Base &graphics)
     {

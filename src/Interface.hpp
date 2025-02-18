@@ -3071,6 +3071,8 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::CANCEL)
                 {
+                    number = 0;
+
                     done = true;
                 }
                 else if (input.Type == Controls::Type::PLUS)
@@ -3156,28 +3158,59 @@ namespace BloodSword::Interface
                                         // healing attempt failed
                                         Interface::ErrorMessage(graphics, background, MSG_HEALING);
                                     }
-
-                                    while (!done)
+                                    else
                                     {
-                                        // distribute healing
-                                        auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false);
+                                        auto all_healed = true;
 
-                                        std::string heal_string = "HEAL " + party[target].Name;
-
-                                        // heal
-                                        auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, score, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
-
-                                        if (heal > 0)
+                                        while (!done)
                                         {
-                                            // heal selected character
-                                            Engine::GainEndurance(party[target], heal, false);
+                                            // distribute healing
+                                            auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false);
 
-                                            Interface::Notify(graphics, background, MSG_HEALED);
+                                            if (party[target].Value(Attribute::Type::ENDURANCE) < party[target].Maximum(Attribute::Type::ENDURANCE))
+                                            {
+                                                std::string heal_string = "HEAL " + party[target].Name;
+
+                                                auto max_healing = std::min(score, party[target].Maximum(Attribute::Type::ENDURANCE) - party[target].Value(Attribute::Type::ENDURANCE));
+
+                                                // heal
+                                                auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, max_healing, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+
+                                                if (heal > 0)
+                                                {
+                                                    // heal selected character
+                                                    Engine::GainEndurance(party[target], heal, false);
+
+                                                    Interface::Notify(graphics, background, MSG_HEALED);
+                                                }
+
+                                                score -= heal;
+                                            }
+                                            else
+                                            {
+                                                // target is not wounded
+                                                Interface::ErrorMessage(graphics, background, MSG_WOUND);
+                                            }
+
+                                            all_healed = true;
+
+                                            // check if everyone is healed
+                                            for (auto i = 0; i < party.Count(); i++)
+                                            {
+                                                if (Engine::IsAlive(party[i]))
+                                                {
+                                                    all_healed &= (Engine::Score(party[i], Attribute::Type::ENDURANCE) >= party[i].Maximum(Attribute::Type::ENDURANCE));
+                                                }
+                                            }
+
+                                            done = !(score > 0) || all_healed;
                                         }
 
-                                        score -= heal;
-
-                                        done = !(score > 0);
+                                        if (all_healed)
+                                        {
+                                            // everyone is at maximum endurance
+                                            Interface::Notify(graphics, background, MSG_MAX);
+                                        }
                                     }
                                 }
 
