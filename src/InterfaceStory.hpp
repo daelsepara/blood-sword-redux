@@ -79,13 +79,13 @@ namespace BloodSword::Interface
 
             auto first = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
 
-            auto bottom_y = overlay.Controls[first + limit - 1].Y + h + BloodSword::Pad;
+            auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
             if (!after_battle)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, bottom_y));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, bottom));
 
-                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x, bottom_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
 
             if (input.Up)
