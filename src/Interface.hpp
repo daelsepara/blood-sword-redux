@@ -570,11 +570,8 @@ namespace BloodSword::Interface
                 }
             }
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-            surface = SDL_CreateRGBSurface(0, surface_width, std::max(surface_labels->h, surface_stats->h), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
-#else
-            surface = SDL_CreateRGBSurface(0, surface_width, std::max(surface_labels->h, surface_stats->h), 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
-#endif
+            // create surface to combine labels and stats
+            surface = Graphics::CreateSurface(surface_width, std::max(surface_labels->h, surface_stats->h));
 
             if (surface)
             {
@@ -908,11 +905,8 @@ namespace BloodSword::Interface
         {
             auto labels_h = std::max(BloodSword::TileSize, surface_labels->h + BloodSword::Pad);
 
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-            surface = SDL_CreateRGBSurface(0, w, labels_h * party.Count(), 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
-#else
-            surface = SDL_CreateRGBSurface(0, w, labels_h * party.Count(), 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
-#endif
+            surface = Graphics::CreateSurface(w, labels_h * party.Count());
+
             if (surface)
             {
                 SDL_Rect stats_rect;
@@ -2690,7 +2684,7 @@ namespace BloodSword::Interface
         auto item_w = 0;
 
         Graphics::Estimate(Fonts::Caption, rank1.c_str(), &item_w, nullptr);
-        
+
         width = std::max(item_w, width);
 
         auto origin = Point(graphics.Width - width, graphics.Height - height) / 2;
@@ -2698,7 +2692,7 @@ namespace BloodSword::Interface
         menu.Add(Scene::Element(menu_title, Point((graphics.Width - BloodSword::Width(menu_title)) / 2, origin.Y - pad * 6)));
 
         menu.Add(Scene::Element(origin - Point(pad, pad), width + pad * 2, height + pad * 2, Color::Background, Color::Active, BloodSword::Border));
-        
+
         Graphics::TextList party_sizes = {
             Graphics::RichText(rank1.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
             Graphics::RichText(rank2.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
@@ -3116,7 +3110,7 @@ namespace BloodSword::Interface
     {
         auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
-        auto popup_h = ((maximum / Interface::MaxBoxRow) + 2) * BloodSword::HalfTile + BloodSword::TileSize + BloodSword::Pad * 4;
+        auto popup_h = ((maximum / Interface::MaxBoxRow) + 2) * BloodSword::HalfTile + BloodSword::TileSize + BloodSword::HugePad;
 
         auto origin = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 

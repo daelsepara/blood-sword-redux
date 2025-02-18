@@ -110,7 +110,7 @@ namespace BloodSword::Interface
         SDL_Texture *image = nullptr;
 
         // total size of all dividers
-        auto space = BloodSword::TileSize * 3 + BloodSword::Pad * 4;
+        auto space = BloodSword::TileSize * 3 + BloodSword::HugePad;
 
         // includes tile-sized borders on left, right, and middle (divider)
         auto panel_w = (graphics.Width - BloodSword::TileSize * 2 - space) / 2;
@@ -119,12 +119,12 @@ namespace BloodSword::Interface
         auto panel_h = (graphics.Height - space);
 
         // maximum size of viewable text
-        auto text_w = panel_w - BloodSword::Pad * 2;
+        auto text_w = panel_w - BloodSword::LargePad;
 
-        auto text_h = panel_h - BloodSword::Pad * 2;
+        auto text_h = panel_h - BloodSword::LargePad;
 
         // location where left-most panel is rendered
-        auto origin = Point((graphics.Width - (panel_w * 2 + BloodSword::TileSize + BloodSword::Pad * 2)) / 2, BloodSword::TileSize + BloodSword::Pad * 2);
+        auto origin = Point((graphics.Width - (panel_w * 2 + BloodSword::TileSize + BloodSword::LargePad)) / 2, BloodSword::TileSize + BloodSword::LargePad);
 
         auto origin_text = origin + Point(panel_w + BloodSword::TileSize + BloodSword::Pad * 3, BloodSword::Pad);
 
@@ -151,7 +151,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::Pad * 2, panel_h - BloodSword::Pad * 2);
+            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
         }
 
         // location of scroll arrows
@@ -189,7 +189,7 @@ namespace BloodSword::Interface
             }
 
             // text panel border
-            overlay.Add(Scene::Element(origin.X + panel_w + BloodSword::TileSize + BloodSword::Pad * 2, origin.Y, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+            overlay.Add(Scene::Element(origin.X + panel_w + BloodSword::TileSize + BloodSword::LargePad, origin.Y, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
 
             // text panel
             if (texture)

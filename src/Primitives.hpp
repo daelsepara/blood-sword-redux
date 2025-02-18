@@ -26,6 +26,8 @@ namespace BloodSword
     const int MaximumMoves = 1000;
 
     // padding sizes
+    const int HugePad = 32;
+    
     const int LargePad = 16;
 
     const int OddPad = 10;

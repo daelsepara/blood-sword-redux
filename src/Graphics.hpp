@@ -145,6 +145,19 @@ namespace BloodSword::Graphics
         }
     }
 
+    // create blank RGB (32-bit) surface
+    SDL_Surface *CreateSurface(int w, int h)
+    {
+        SDL_Surface *surface = nullptr;
+
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        surface = SDL_CreateRGBSurface(0, w, h, 32, 0xFF000000, 0x00FF0000, 0x0000FF00, 0x000000FF);
+#else
+        surface = SDL_CreateRGBSurface(0, w, h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
+#endif
+        return surface;
+    }
+
     // draw a filled rectangle on screen
     void FillRect(Graphics::Base &graphics, int w, int h, int x, int y, int color)
     {
