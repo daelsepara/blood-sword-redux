@@ -170,10 +170,100 @@ namespace BloodSword::Section
             {
                 section = Section::Load(data);
             }
+
+            ifs.close();
         }
 
         return section;
     }
 }
 
+namespace BloodSword::Story
+{
+    typedef std::vector<Section::Base> Sections;
+
+    class Base
+    {
+    public:
+        std::string Title = std::string();
+
+        std::string Description = std::string();
+
+        Story::Sections Sections = Story::Sections();
+
+        Base() {}
+
+        Section::Base Find(Book::Location location)
+        {
+            auto section = Section::Base();
+
+            for (auto &item : this->Sections)
+            {
+                if (Book::Equal(location, section.Location))
+                {
+                    section = item;
+
+                    break;
+                }
+            }
+
+            return section;
+        }
+    };
+
+    Story::Base Load(const char *filename)
+    {
+        auto story = Story::Base();
+
+        std::ifstream ifs(filename);
+
+        if (ifs.good())
+        {
+            auto data = nlohmann::json::parse(ifs);
+
+            if (!data.is_null() && data.is_object())
+            {
+                story.Title = !data["title"].is_null() ? std::string(data["title"]) : "Blood Sword";
+
+                story.Title = !data["description"].is_null() ? std::string(data["description"]) : "Blood Sword gamebook";
+
+                if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
+                {
+                    auto sections = Story::Sections();
+
+                    if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
+                    {
+                        for (auto i = 0; i < int(data["sections"].size()); i++)
+                        {
+                            auto section = Section::Base();
+
+                            if (!data["sections"][i].is_null() && data["sections"][i].is_object())
+                            {
+                                section = Section::Load(data["sections"][i]);
+                            }
+                            else if (!data["sections"][i].is_null() && data["sections"][i].is_string())
+                            {
+                                section = Section::Load(std::string(data["sections"][i]).c_str());
+                            }
+
+                            if (Book::IsDefined(section.Location))
+                            {
+                                sections.push_back(section);
+                            }
+                        }
+                    }
+
+                    if (sections.size() > 0)
+                    {
+                        story.Sections = sections;
+                    }
+                }
+            }
+
+            ifs.close();
+        }
+
+        return story;
+    }
+}
 #endif

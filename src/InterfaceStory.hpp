@@ -236,9 +236,12 @@ namespace BloodSword::Interface
         // fight battle
         if (section.Battle.IsDefined())
         {
-            party.LastBattle = Interface::RenderBattle(graphics, section.Battle, party);
+            auto result = Interface::RenderBattle(graphics, section.Battle, party);
 
-            after_battle = true;
+            if (result != Battle::Result::NONE)
+            {
+                after_battle = true;
+            }
         }
 
         if (Engine::IsAlive(party))
@@ -532,6 +535,38 @@ namespace BloodSword::Interface
         }
 
         return next;
+    }
+
+    void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
+    {
+        auto done = false;
+
+        auto current = story.Sections[0];
+
+        while (!done)
+        {
+            auto location = Interface::ProcessSection(graphics, background, current, party);
+
+            if (Book::IsDefined(location))
+            {
+                auto section = story.Find(location);
+
+                if (Book::IsDefined(section.Location))
+                {
+                    current = section;
+                }
+                else
+                {
+                    Interface::MessageBox(graphics, background, Graphics::RichText("NOT YET IMPLEMENTED", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Inactive, true);
+
+                    done = true;
+                }
+            }
+            else
+            {
+                done = true;
+            }
+        }
     }
 }
 

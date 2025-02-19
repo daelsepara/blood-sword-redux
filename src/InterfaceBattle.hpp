@@ -662,6 +662,10 @@ namespace BloodSword::Interface
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
+        auto copy_battle = battle;
+
+        auto copy_party = party;
+
         auto result = Battle::Result::DETERMINE;
 
         if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents) && Engine::IsAlive(party))
@@ -1749,6 +1753,12 @@ namespace BloodSword::Interface
             {
                 result = Battle::Result::DEFEAT;
             }
+        }
+        else if (result == Battle::Result::NONE)
+        {
+            party = copy_party;
+
+            battle = copy_battle;
         }
 
         return result;

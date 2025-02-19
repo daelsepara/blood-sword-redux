@@ -259,6 +259,8 @@ namespace BloodSword::Party
             auto data = nlohmann::json::parse(file);
 
             party = Party::Initialize(data[std::string(name)]);
+
+            file.close();
         }
 
         return party;
