@@ -696,7 +696,7 @@ namespace BloodSword::Generate
 
         character.Fight = fight;
 
-        character.Fight = shoot;
+        character.Shoot = shoot;
 
         character.Asset = asset;
 
