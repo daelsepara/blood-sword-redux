@@ -663,6 +663,24 @@ namespace BloodSword::Engine
 
         return flee;
     }
+
+    bool CanShoot(Character::Base &character, Skills::Type shot)
+    {
+        auto can_shoot = shot != Skills::Type::NONE && character.Has(shot);
+
+        if (shot == Skills::Type::ARCHERY)
+        {
+            can_shoot &= character.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW);
+        }
+
+        return can_shoot;
+    }
+
+    // checks if a character can shoot and is properly armed
+    bool CanShoot(Character::Base &character)
+    {
+        return Engine::CanShoot(character, character.Shoot);
+    }
 }
 
 #endif

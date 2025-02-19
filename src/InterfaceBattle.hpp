@@ -37,19 +37,6 @@ namespace BloodSword::Interface
         return result;
     }
 
-    // checks if a character can shoot and is properly armed
-    bool CanShoot(Character::Base &character)
-    {
-        auto can_shoot = character.Shoot != Skills::Type::NONE && character.Has(character.Shoot);
-
-        if (character.Shoot == Skills::Type::ARCHERY)
-        {
-            can_shoot &= character.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW);
-        }
-
-        return can_shoot;
-    }
-
     // generic reset
     void Cancel(Character::Base &character, Character::Status status)
     {
@@ -112,7 +99,7 @@ namespace BloodSword::Interface
                     controls.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                 }
             }
-            else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Interface::CanShoot(character))
+            else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
             {
                 if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                 {
@@ -120,7 +107,7 @@ namespace BloodSword::Interface
                     controls.push_back(Interface::ActionControls[character.Shoot]);
                 }
             }
-            else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Interface::CanShoot(character))
+            else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
             {
                 if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                 {
@@ -303,7 +290,7 @@ namespace BloodSword::Interface
     }
 
     // Fight helper function
-    void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, Skills::Type used)
+    void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, Skills::Type melee)
     {
         auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
 
@@ -313,7 +300,7 @@ namespace BloodSword::Interface
 
         auto alive = true;
 
-        alive &= Interface::Fight(graphics, background, draw, map_w, map_h, attacker, defender, used);
+        alive &= Interface::Fight(graphics, background, draw, map_w, map_h, attacker, defender, melee);
 
         if (!alive)
         {
@@ -339,7 +326,7 @@ namespace BloodSword::Interface
     }
 
     // shoot action
-    bool Shoot(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type used, Asset::Type asset)
+    bool Shoot(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type shot, Asset::Type asset)
     {
         auto alive = true;
 
@@ -361,7 +348,7 @@ namespace BloodSword::Interface
 
                 if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true))
                 {
-                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, used, asset, true);
+                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true);
 
                     alive &= Engine::GainEndurance(defender, -hit, true);
                 }
@@ -380,11 +367,11 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        auto asset = Interface::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Type::SHOOT;
+        auto asset = Engine::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Type::SHOOT;
 
         auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, attacker.Shoot, asset);
 
-        if (Interface::CanShoot(attacker) && attacker.Shoot == Skills::Type::ARCHERY)
+        if (Engine::CanShoot(attacker) && attacker.Shoot == Skills::Type::ARCHERY)
         {
             attacker.Remove(Item::Type::ARROW, 1);
         }
@@ -855,7 +842,7 @@ namespace BloodSword::Interface
                                             // next character in battle order
                                             next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
-                                        else if (Interface::CanShoot(character))
+                                        else if (Engine::CanShoot(character))
                                         {
                                             auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
 

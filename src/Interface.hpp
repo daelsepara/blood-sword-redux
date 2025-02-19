@@ -2153,11 +2153,11 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type used, Asset::Type asset, bool in_battle)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type skill, Asset::Type asset, bool in_battle)
     {
-        auto shooting = ((used == Skills::Type::ARCHERY) && attacker.Has(Skills::Type::ARCHERY)) || ((used == Skills::Type::SHURIKEN) && attacker.Has(Skills::Type::SHURIKEN));
+        auto shooting = Engine::CanShoot(attacker, skill);
 
-        auto knockout = (used == Skills::Type::QUARTERSTAFF) && attacker.Has(Skills::Type::QUARTERSTAFF);
+        auto knockout = (skill == Skills::Type::QUARTERSTAFF) && attacker.Has(Skills::Type::QUARTERSTAFF);
 
         auto roll = !shooting ? attacker.Value(Attribute::Type::DAMAGE) : 1;
 
@@ -2166,6 +2166,8 @@ namespace BloodSword::Interface
         auto modifier = !shooting ? attacker.Modifier(Attribute::Type::DAMAGE) : 0;
 
         modifier += (in_battle && attacker.IsPlayer() && !attacker.IsArmed()) ? -2 : 0;
+
+        modifier -= (shooting && (skill == Skills::Type::SHURIKEN)) ? 1 : 0;
 
         return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle);
     }
