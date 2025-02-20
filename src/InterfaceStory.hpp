@@ -14,7 +14,7 @@ namespace BloodSword::Interface
     {
         Book::Location next = {Book::Number::NONE, -1};
 
-        auto limit = 4;
+        auto limit = std::min(4, int(choices.size()));
 
         auto start = 0;
 
@@ -164,7 +164,17 @@ namespace BloodSword::Interface
                     {
                         auto eval = Section::Conditions::Process(graphics, background, party, choices[choice].Condition);
 
-                        if (!eval.Result)
+                        if (eval.Failed)
+                        {
+                            // fails test
+                            Interface::MessageBox(graphics, background, Graphics::RichText(eval.Text.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+
+                            // jumps to next destination
+                            next = eval.Location;
+
+                            done = true;
+                        }
+                        else if (!eval.Result)
                         {
                             Interface::MessageBox(graphics, background, Graphics::RichText(eval.Text.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
                         }
@@ -419,6 +429,12 @@ namespace BloodSword::Interface
             {
                 overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 2, id + 1, id + 2, id + 2, id + 2, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
+            else
+            {
+                overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                overlay.Add(Controls::Base(Controls::Type::EXIT, id + 1, id, id + 1, id + 1, id + 1, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            }
 
             if (scroll_up)
             {
@@ -549,7 +565,7 @@ namespace BloodSword::Interface
     {
         auto done = false;
 
-        auto current = story.Sections[start];
+        auto &current = story.Sections[start];
 
         while (!done)
         {
@@ -559,9 +575,9 @@ namespace BloodSword::Interface
             {
                 auto section = story.Find(location);
 
-                if (Book::IsDefined(section.Location))
+                if (section != -1 && Book::IsDefined(story.Sections[section].Location))
                 {
-                    current = section;
+                    current = story.Sections[section];
                 }
                 else
                 {

@@ -8,6 +8,7 @@
 #include "Party.hpp"
 #include "Scene.hpp"
 #include "Templates.hpp"
+#include "Interface.hpp"
 
 namespace BloodSword::Section::Conditions
 {
@@ -32,7 +33,9 @@ namespace BloodSword::Section::Conditions
         CHOOSE_NUMBER,
         CHOSEN_NUMBER,
         PARTY_WOUNDED,
-        PREVIOUS_LOCATION
+        PREVIOUS_LOCATION,
+        TEST_ATTRIBUTE,
+        ITEM_QUANTITY
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -55,7 +58,9 @@ namespace BloodSword::Section::Conditions
         {Conditions::Type::CHOOSE_NUMBER, "CHOOSE NUMBER"},
         {Conditions::Type::CHOSEN_NUMBER, "CHOSEN NUMBER"},
         {Conditions::Type::PARTY_WOUNDED, "PARTY WOUNDED"},
-        {Conditions::Type::PREVIOUS_LOCATION, "PREVIOUS LOCATION"}};
+        {Conditions::Type::PREVIOUS_LOCATION, "PREVIOUS LOCATION"},
+        {Conditions::Type::TEST_ATTRIBUTE, "TEST ATTRIBUTE"},
+        {Conditions::Type::ITEM_QUANTITY, "ITEM QUANTITY"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -151,13 +156,21 @@ namespace BloodSword::Section::Conditions
     public:
         bool Result = false;
 
+        bool Failed = false;
+
+        // destination on failure
+        Book::Location Location = {Book::Number::NONE, -1};
+
+        // text (usually on failure)
         std::string Text = std::string();
 
         Evaluation() {}
 
-        Evaluation(bool result) : Result(result) {}
+        Evaluation(bool result, bool failed, Book::Location location, std::string text) : Result(result), Failed(failed), Location(location), Text(text) {}
 
         Evaluation(bool result, std::string text) : Result(result), Text(text) {}
+
+        Evaluation(bool result) : Result(result) {}
     };
 
     // routine to validate "condition"
@@ -165,7 +178,11 @@ namespace BloodSword::Section::Conditions
     {
         auto result = false;
 
+        auto failed = false;
+
         auto text = std::string();
+
+        Book::Location location = {Book::Number::NONE, -1};
 
         if (condition.Type == Conditions::Type::NORMAL)
         {
@@ -215,10 +232,62 @@ namespace BloodSword::Section::Conditions
                 text = std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]);
             }
         }
+        else if (condition.Type == Conditions::Type::TEST_ATTRIBUTE)
+        {
+            // variables
+            // 0 - Player character doing the test
+            // 1 - Attribute being tested
+            // 2, 3 - Destination upon failure
+            // 4 - Message upon failure
+            if (condition.Variables.size() < 5)
+            {
+                text = std::string("UNABLE TO PERFORM THIS ACTION!");
+            }
+            else
+            {
+                auto character_class = Character::Map(std::string(condition.Variables[0]));
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                auto book = Book::MapBook(condition.Variables[2]);
+
+                auto section = std::stoi(condition.Variables[3], nullptr, 10);
+
+                if (character_class != Character::Class::NONE && !party.Has(character_class))
+                {
+                    text = std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character_class]) + " IN YOUR PARTY!";
+                }
+                else if (attribute == Attribute::Type::NONE)
+                {
+                    text = std::string("UNABLE TO PERFORM THIS ACTION!");
+                }
+                else if (character_class != Character::Class::NONE && party.Has(character_class))
+                {
+                    std::cerr << "Test" << std::endl;
+
+                    auto test = Interface::Test(graphics, background, party[character_class], attribute);
+
+                    result = true;
+
+                    if (!test)
+                    {
+                        failed = true;
+
+                        location = {book, section};
+
+                        text = condition.Variables[4];
+                    }
+                }
+                else
+                {
+                    Interface::InternalError(graphics, background, "Internal Error: TEST_ATTRIBUTE");
+                }
+            }
+        }
 
         result = condition.Invert ? !result : result;
 
-        return Conditions::Evaluation(result, text);
+        return failed ? Conditions::Evaluation(result, failed, location, text) : Conditions::Evaluation(result, text);
     }
 }
 #endif

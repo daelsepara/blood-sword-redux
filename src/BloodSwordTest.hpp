@@ -1301,7 +1301,7 @@ namespace BloodSword::Test
 
         auto start = 0;
 
-        auto limit = 4;
+        auto limit = std::min(4, int(menu.size()));
 
         auto last = start + limit;
 

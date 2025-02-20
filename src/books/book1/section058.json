@@ -1,0 +1,36 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 58
+    },
+    "text": "(TRICKSTER) Under the merchant's beer-stained fur jacket you notice a bulging money-pouch. Being a Trickster, your thoughts naturally turn to theft.",
+    "choices": [
+        {
+            "text": "Try to rob the merchant",
+            "condition": {
+                "type": "TEST ATTRIBUTE",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 121
+                },
+                "variables": [
+                    "TRICKSTER",
+                    "AWARENESS",
+                    "BOOK1",
+                    "181",
+                    "YOUR ATTEMPT AT THEFT FAILED!"
+                ]
+            }
+        },
+        {
+            "text": "Don't try to rob the merchant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 1
+                }
+            }
+        }
+    ]
+}

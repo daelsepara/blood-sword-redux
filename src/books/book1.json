@@ -2,6 +2,11 @@
     "title": "THE BATTLEPITS OF KRARTH",
     "description": "Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.",
     "sections": [
-        "books/book1/section001.json"
+        "books/book1/section001.json",
+        "books/book1/section018.json",
+        "books/book1/section058.json",
+        "books/book1/section069.json",
+        "books/book1/section398.json",
+        "books/book1/section452.json"
     ]
 }

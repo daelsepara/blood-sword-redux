@@ -94,6 +94,20 @@ namespace BloodSword::Section
             section.Choices = choices;
         }
 
+        if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
+        {
+            auto conditions = std::vector<Conditions::Base>();
+
+            for (auto i = 0; i < data["next"].size(); i++)
+            {
+                auto choice = Conditions::Parse(data["next"][i]);
+
+                conditions.push_back(choice);
+            }
+
+            section.Next = conditions;
+        }
+
         // load battle
         if (!data["battle"].is_null())
         {
@@ -193,15 +207,15 @@ namespace BloodSword::Story
 
         Base() {}
 
-        Section::Base Find(Book::Location location)
+        int Find(Book::Location location)
         {
-            auto section = Section::Base();
+            auto section = -1;
 
-            for (auto &item : this->Sections)
+            for (auto i = 0; i < this->Sections.size(); i++)
             {
-                if (Book::Equal(location, section.Location))
+                if (Book::Equal(location, this->Sections[i].Location))
                 {
-                    section = item;
+                    section = i;
 
                     break;
                 }

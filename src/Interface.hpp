@@ -1938,6 +1938,17 @@ namespace BloodSword::Interface
         return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, asset, in_battle);
     }
 
+    bool Test(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Attribute::Type attribute)
+    {
+        auto w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+
+        auto h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+
+        auto origin = Point(graphics.Width - w, graphics.Height - h) / 2;
+
+        return Interface::Test(graphics, background, origin, w, h, Color::Active, BloodSword::Border, character, attribute, 2, 0, Asset::Type::NONE, false);
+    }
+
     // roll for damage
     int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle)
     {
@@ -2918,6 +2929,11 @@ namespace BloodSword::Interface
     void Notify(Graphics::Base &graphics, Scene::Base &background, int message)
     {
         Interface::MessageBox(graphics, background, Point(0, 0), graphics.Width, graphics.Height, Interface::Text[message], Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+    }
+
+    void InternalError(Graphics::Base &graphics, Scene::Base &background, std::string message)
+    {
+        Interface::MessageBox(graphics, background, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Highlight, true);
     }
 
     // generic get number popup (arbitrary location)
