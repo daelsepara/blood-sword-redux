@@ -263,8 +263,6 @@ namespace BloodSword::Section::Conditions
                 }
                 else if (character_class != Character::Class::NONE && party.Has(character_class))
                 {
-                    std::cerr << "Test" << std::endl;
-
                     auto test = Interface::Test(graphics, background, party[character_class], attribute);
 
                     result = true;
