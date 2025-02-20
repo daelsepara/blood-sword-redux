@@ -279,7 +279,7 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, std::string &text)
+    Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, Party::Base &saved_party, std::string &text)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
@@ -495,6 +495,14 @@ namespace BloodSword::Interface
 
     Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
     {
+        // save a copy party prior to background and events (for save game functionality)
+        auto saved_party = party;
+
+        // set party location (previous, current)
+        party.PreviousLocation = party.Location;
+
+        party.Location = section.Location;
+
         Book::Location next = Interface::ProcessBackground(graphics, background, section, party);
 
         // skip this section if background events redirect to another location
@@ -506,7 +514,7 @@ namespace BloodSword::Interface
 
             while (true)
             {
-                // TODO: Process events
+                // process events
                 if (!once)
                 {
                     auto results = Interface::ProcessEvents(graphics, background, section, party);
@@ -521,7 +529,7 @@ namespace BloodSword::Interface
 
                 if (Engine::IsAlive(party))
                 {
-                    next = Interface::RenderSection(graphics, background, section, party, section_text);
+                    next = Interface::RenderSection(graphics, background, section, party, saved_party, section_text);
 
                     break;
                 }
@@ -537,11 +545,11 @@ namespace BloodSword::Interface
         return next;
     }
 
-    void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party)
+    void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, int start = 0)
     {
         auto done = false;
 
-        auto current = story.Sections[0];
+        auto current = story.Sections[start];
 
         while (!done)
         {
