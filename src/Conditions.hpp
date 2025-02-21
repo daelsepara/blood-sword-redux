@@ -359,19 +359,19 @@ namespace BloodSword::Section::Conditions
         // debug info
         std::cerr << "Condition: "
                   << std::string(Conditions::TypeMapping[condition.Type])
-                  << " ("
+                  << " (RESULT: "
                   << (result ? "true" : "false")
-                  << ", "
+                  << ", FAILED: "
                   << (failed ? "true" : "false");
 
         if (text.size() > 0)
         {
-            std::cerr << ", " << text;
+            std::cerr << ", TEXT: " << text;
         }
 
         if (Book::IsDefined(location))
         {
-            std::cerr << ", [" << Book::Mapping[location.first]
+            std::cerr << ", LOCATION: [" << Book::Mapping[location.first]
                       << ": " << std::to_string(location.second) << "]";
         }
 
