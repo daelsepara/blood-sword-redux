@@ -2278,10 +2278,8 @@ namespace BloodSword::Interface
         }
     }
 
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, int wrap, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
-        auto wrap = graphics.Width - BloodSword::TileSize * 6;
-
         auto texture = Graphics::CreateText(graphics, message, font, color, style, wrap);
 
         if (texture)
@@ -2299,7 +2297,7 @@ namespace BloodSword::Interface
             auto origin = Point(graphics.Width - text_w, graphics.Height - text_h) / 2;
 
             Interface::MessageBox(graphics, scene, origin, text_w, text_h, texture, background, border, border_size, highlight, blur);
-            
+
             BloodSword::Free(&texture);
         }
     }

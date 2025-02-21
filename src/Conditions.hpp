@@ -357,12 +357,19 @@ namespace BloodSword::Section::Conditions
         result = condition.Invert ? !result : result;
 
         // debug info
-        std::cerr << "Condition: ("
+        std::cerr << "Condition: "
+                  << std::string(Conditions::TypeMapping[condition.Type])
+                  << " ("
                   << (result ? "true" : "false")
                   << ", "
-                  << (failed ? "true" : "false")
-                  << ", " << text
-                  << "[" << Book::Mapping[location.first]
+                  << (failed ? "true" : "false");
+        
+        if (text.size() >0)
+        {
+            std::cerr << ", " << text;
+        }
+                  
+        std::cerr << ", [" << Book::Mapping[location.first]
                   << ": " << std::to_string(location.second) << "]"
                   << ")" << std::endl;
 

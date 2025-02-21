@@ -575,11 +575,15 @@ namespace BloodSword::Interface
 
     void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, int start = 0)
     {
-        if (story.Description.size() > 0)
+        if (story.Title.size() > 0 && story.Description.size() > 0)
         {
-            Interface::TextBox(graphics, background, Fonts::Normal, story.Description.c_str(), Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+            auto message = story.Title + "\n\n" + story.Description;
+
+            auto wrap = graphics.Width - BloodSword::TileSize * 6;
+
+            Interface::TextBox(graphics, background, Fonts::Normal, message.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
         }
-        
+
         auto done = false;
 
         auto &current = story.Sections[start];

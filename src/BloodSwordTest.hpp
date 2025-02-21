@@ -1795,18 +1795,12 @@ namespace BloodSword::Test
 
         if (story.Sections.size() > 0 && Book::IsDefined(story.Sections.front().Location))
         {
-            auto &section = story.Sections[0];
-
-            auto section_string = std::string("LOADED: ") + story.Title + std::string(" ") + std::to_string(section.Location.second);
-
-            Interface::MessageBox(graphics, background, Graphics::RichText(section_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
-
             // render section
             Interface::ProcessStory(graphics, background, story, party);
         }
         else
         {
-            Interface::MessageBox(graphics, background, Graphics::RichText("SECTION NOT LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+            Interface::MessageBox(graphics, background, Graphics::RichText("STORY NOT LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
         }
     }
 
