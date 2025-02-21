@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 292
+    },
+    "text": "(TRICKSTER) \"By coincidence,\" he says, biting each coin  as he takes it. \"it is my own liege-lord, Magus Kalugen, who is the most generous to his champions. His is the olive-green banner. Now, turn away as though you have not spoken to me. A city guard is strutting past, and the penalties for giving and accepting bribes are harsh.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 332
+            }
+        }
+    ]
+}

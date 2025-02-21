@@ -1,0 +1,41 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 381
+    },
+    "text": "As soon as you choose the pennant, two of the stewards give a grunt of disinterest and retreat beyond the curtain of the booth. The third scuttles forwards almost rubbing his hands in glee. \"Oh, an excellent choice!\" he cries. \"Our patron -- if he deems you worthy -- will be the great Magus Vyl. Go now to meet him at the Blue Tower by the River Delicti. Take the pennant and wait by the gargoyle trough.\"\n\nFollowing the steward's directions, you make your way through the bustling streets. It is now dark, and lantern-bearers scurry to and fro lighting the way for shoppers and merrymakers. Turning off the main streat, you walk along a distance. You pass over a narrow bridge spanning the river and approach the darkened spire of the Blue Tower. A stone trough carved with capering gargoyles stands by the tower door, and you decide that this is where you are meant to wait.",
+    "choices": [
+        {
+            "text": "Investigate the trough",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 204
+                }
+            }
+        },
+        {
+            "text": "Wait as instructed",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 399
+                }
+            }
+        }
+    ],
+    "next": [
+        {
+            "type": "IN PARTY",
+            "location": {
+                "book": "BOOK1",
+                "number": 346
+            },
+            "variables": [
+                "SAGE"
+            ]
+        }
+    ]
+}

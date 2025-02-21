@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 434
+    },
+    "text": "(WARRIOR) You rather botch your attempt at a grand display of swordsmanship. The hilt slips slightly in your grasp, sending you lurching off-balance against one of the poles supporting the booth. \"The magi rarely employ drunkards in any case,\" murmurs the insolent steward. Disgruntled, you sheathe your sword.\n\nYou turn your attention to the three pennants once more.",
+    "choices": [
+        {
+            "text": "Take the olive-green pennant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 52
+                }
+            }
+        },
+        {
+            "text": "Take the red pennant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 28
+                }
+            }
+        },
+        {
+            "text": "Take the black and purple pennant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 381
+                }
+            }
+        }
+    ]
+}

@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 398
     },
-    "text": "(ENCHANTER) You consider your various spells. Two non-combat spells might be of use to you now. But which?",
+    "text": "(ENCHANTER) You consider your various spells. Two non-combat spells might be of use to you now.\n\nBut which?",
     "choices": [
         {
             "text": "Cast the PREDICTION spell",
@@ -25,19 +25,6 @@
                 "location": {
                     "book": "BOOK1",
                     "number": 242
-                },
-                "variables": [
-                    "ENCHANTER"
-                ]
-            }
-        },
-        {
-            "text": "An ENCHANTER wishes to try something",
-            "condition": {
-                "type": "IN PARTY",
-                "location": {
-                    "book": "BOOK1",
-                    "number": 18
                 },
                 "variables": [
                     "ENCHANTER"

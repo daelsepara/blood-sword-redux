@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 217
+    },
+    "text": "(ENCHANTER) [Reluctantly you agree to the faltyn's price. The gold vanishes from your money-puch and the faltyn says: \"Choose the scarlet pennant of Magus Balhazar. Of these three, he will equip you best for your ordeal. He will devise a test for you, however, and my advice is to watch for the flapping of a domino cape. But now, I have spoken more clearly than is my wont. I must trouble you for further payment.\"]\n\n\"I have none,\" you snap sourly, attracting some bemused glances from passers-by who believe you to be talking to yourself. Silently you dismiss the fractious faltyn. Armed with what it told you, your return to make another choice.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 1
+            }
+        }
+    ]
+}

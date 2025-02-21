@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 242
+    },
+    "text": "(ENCHANTER) You weave your spell with a few quick gestures and a muttered incantation.\n\n[A voice that only you can hear comes from a barrel nearby. It is the high, piping voice of a faltyn, an ethereal spirit summoned by your spell. \"Well, I'll tell you which pennant to go for,\" snickers the faltyn. \"but you'll have to give me all your gold. Is that a deal?\"]",
+    "choices": [
+        {
+            "text": "Pay all your gold to the faltyn",
+            "condition": {
+                "type": "LOSE ALL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 217
+                },
+                "variables": [
+                    "ENCHANTER",
+                    "GOLD"
+                ]
+            }
+        },
+        {
+            "text": "You won't part with your gold",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 1
+                }
+            }
+        }
+    ]
+}

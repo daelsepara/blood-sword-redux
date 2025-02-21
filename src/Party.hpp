@@ -177,7 +177,7 @@ namespace BloodSword::Party
 
                 auto number = !data["previous_location"]["number"].is_null() ? int(data["previous_location"]["number"]) : -1;
 
-                this->Location = {book, number};
+                this->PreviousLocation = {book, number};
             }
 
             this->ChosenNumber = !data["chosen_number"].is_null() ? int(data["chosen_number"]) : -1;
@@ -214,6 +214,51 @@ namespace BloodSword::Party
     nlohmann::json Data(Party::Base &party)
     {
         nlohmann::json data;
+
+        if (Book::IsDefined(party.Location))
+        {
+            auto book = Book::Mapping[party.Location.first];
+
+            auto number = int(party.Location.second);
+
+            nlohmann::json location;
+
+            location["book"] = book;
+
+            location["number"] = number;
+
+            data["location"] = location;
+        }
+
+        if (Book::IsDefined(party.PreviousLocation))
+        {
+            auto book = Book::Mapping[party.PreviousLocation.first];
+
+            auto number = int(party.PreviousLocation.second);
+
+            nlohmann::json location;
+
+            location["book"] = book;
+
+            location["number"] = number;
+
+            data["previous_location"] = location;
+        }
+
+        if (party.LastBattle != Battle::Result::NONE)
+        {
+            data["last_battle"] = Battle::ResultMapping[party.LastBattle];
+        }
+
+        if (party.ChosenCharacter != Character::Class::NONE)
+        {
+            data["chosen_character"] = Character::ClassMapping[party.ChosenCharacter];
+        }
+
+        if (party.ChosenNumber != -1)
+        {
+            data["chosen_number"] = party.ChosenNumber;
+        }
 
         if (party.Count() > 0)
         {

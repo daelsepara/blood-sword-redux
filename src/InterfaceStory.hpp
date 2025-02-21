@@ -257,6 +257,8 @@ namespace BloodSword::Interface
 
             if (result != Battle::Result::NONE)
             {
+                party.LastBattle = result;
+
                 after_battle = true;
             }
         }
@@ -283,7 +285,8 @@ namespace BloodSword::Interface
                     }
                 }
             }
-            else if (section.Choices.size() > 0)
+
+            if (!Book::IsDefined(next) && section.Choices.size() > 0)
             {
                 // process through any choices
                 while (true)

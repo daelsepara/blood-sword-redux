@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 346
+    },
+    "text": "(SAGE) A strange, pungent smell wafts up from the stone trough, and you immediately recognise it to be the stench of charred bones. The bed of ash in the trough contains the remains of some kind of burnt offering.\n\n[You take a closer look and begin to suspect that the remnants of bone you can see amid the ashes are human.]",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 515
+            }
+        }
+    ]
+}

@@ -35,7 +35,8 @@ namespace BloodSword::Section::Conditions
         PARTY_WOUNDED,
         PREVIOUS_LOCATION,
         TEST_ATTRIBUTE,
-        ITEM_QUANTITY
+        ITEM_QUANTITY,
+        LOSE_ALL
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -60,7 +61,8 @@ namespace BloodSword::Section::Conditions
         {Conditions::Type::PARTY_WOUNDED, "PARTY WOUNDED"},
         {Conditions::Type::PREVIOUS_LOCATION, "PREVIOUS LOCATION"},
         {Conditions::Type::TEST_ATTRIBUTE, "TEST ATTRIBUTE"},
-        {Conditions::Type::ITEM_QUANTITY, "ITEM QUANTITY"}};
+        {Conditions::Type::ITEM_QUANTITY, "ITEM QUANTITY"},
+        {Conditions::Type::LOSE_ALL, "LOSE ALL"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -350,6 +352,43 @@ namespace BloodSword::Section::Conditions
                 else
                 {
                     Conditions::InternalError(graphics, background, condition.Type);
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::LOSE_ALL)
+        {
+            // variables
+            // 0 - player
+            // 1 - item
+            if (condition.Variables.size() < 2)
+            {
+                text = std::string("UNABLE TO PERFORM THIS ACTION!");
+            }
+            else
+            {
+                auto character = Character::Map(std::string(condition.Variables[0]));
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                if (character != Character::Class::NONE && !party.Has(character))
+                {
+                    text = Conditions::NotInParty(character);
+                }
+                else if (item == Item::Type::NONE)
+                {
+                    Conditions::InternalError(graphics, background, condition.Type);
+                }
+                else if (party[character].Quantity(item) > 0)
+                {
+                    result = true;
+
+                    party[character].Remove(item, party[character].Quantity(item));
+
+                    text = std::string("YOU LOSE ALL ") + std::string(Item::TypeMapping[item]) + "!";
+                }
+                else
+                {
+                    text = std::string("YOU DO NOT HAVE ANY ") + Item::TypeMapping[item] + "!";
                 }
             }
         }

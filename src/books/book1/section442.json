@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 442
+    },
+    "text": "(ENCHANTER) You use your magic power to peer into the future -- or rather, one of the many possible futures that await you depending on your decisions and actions.\n\n[For an instant you see yourself holding aloft the Emblem of Victory, cheered by the crowds as you emerge triumphant from the Battlepits. But no -- you are looking too far forward into the future, to a fate that depends upon countless variables. You attune your perception, concentrating on the next few hours. You glimpse a pallid man in black and purple standing over you with blood on his lips. The scene flickers and you glimpse another possible future. You now see yourself at a masquerade, searching for someone among the disguised guests: you approach a figure in a domino cape, and he removes his mask and claps you on the shoulder. You strive to see yet another version of events, but you cannot maintain the spell any longer.]\n\nDrained by your massive effort, you cannot attempt another spell immediately.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 1
+            }
+        }
+    ]
+}

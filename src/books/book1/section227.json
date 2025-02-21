@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 227
+    },
+    "text": "They shrug and exchange amused glances. \"Regrettably we can offer nothing in the way of advice,\" says one, spreading his hands. \"It would be against the terms of the contest, and in any case we lowly servants are unworthy to criticise and compare the magi of Krarth. You understand, I am sure.\" He smirks openly and indicates the three pennants. \"Perhaps the Fates will guide your choice.\"",
+    "choices": [
+        {
+            "text": "(WARRIOR) Teach this churl a lesson",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 288
+                },
+                "variables": [
+                    "WARRIOR"
+                ]
+            }
+        },
+        {
+            "text": "Select the green pennant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 52
+                }
+            }
+        },
+        {
+            "text": "Select the scarlet pennant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 28
+                }
+            }
+        },
+        {
+            "text": "Select the black and purple pennant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 381
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 166
+    },
+    "text": "(TRICKSTER) \"Five now, five then,\" you tell him. You produce ten large gold coins and put five of them in his hand. You still keep your own hand closed around them.\n\nHe looks eagerly at the five coins in your other hand. \"The scarlet banner is the symbol of Magus Balhazar, who is noted for an almost human compassion at times. This quality sets him apart from the other magi, who have hearts of cold rock.\"\n\n\"Thanks for the advice,\" you say with a smile. You whip the first five coins out of his hand and give him the other five instead. \"Five before, and five after.\"\n\n\"You scurvy scum! You sly wretch! You pustule of gangrenous venom!\" he screams. \"Well, I lied, see. The scarlet banner's the worst one to take, in fact.\" Flushed with anger, he slopes back to where the other two stewards sit chortling gleefully.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 332
+            }
+        }
+    ]
+}

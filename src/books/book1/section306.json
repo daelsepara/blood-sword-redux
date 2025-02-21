@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 306
+    },
+    "text": "(WARRIOR) Your sword slices through the air, makes three deft cuts almost faster than the eye can see, then slides back into its scabbard with a metallic whisper. The three stewards say nothing for a moment. In fact they don't even draw breath. Then one clutches at his beard where you have shaved through it. Another grabs for his trousers, no longer supported by the belt your sword-blade sliced in two. The third -- the one who was so loudly smirking a moment ago -- is horrified to see that you have cut through his jerkin and inflicted a precise scratch in the skin over his heart.\n\n\"Be thankful you still live,\" you tell him. \"An hopefully this will teach you to be more civil to your betters in future. Now, which of these magi do you recommend as an employer?\"\n\nTwo of the stewards back off. \"That would be Magus Balhazar,\" says the third, indicating the scarlet pennant. You reach out and take it.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 28
+            }
+        }
+    ]
+}

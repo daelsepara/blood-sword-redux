@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 454
+    },
+    "text": "(TRICKSTER) \"Bah,\" he says, taking what you hand to him with bad grace. \"Still, while not enriching me, you have at least pad for a night's drinking in the Globlin's Gullet. Take the black and purple banner, that is my advice. Say nothing of further of this, because the city militia would liely impale you for bribing an official of the contest.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 332
+            }
+        }
+    ]
+}

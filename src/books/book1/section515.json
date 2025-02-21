@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 515
+    },
+    "text": "The moon glimmers behind dark clouds, and the echoes of revelry in the far-off main streets sound like mournful ghosts. You are becoming increasingly uneasy about this rendezvous.",
+    "choices": [
+        {
+            "text": "(TRICKSTER) Try something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 520
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Wait here for Magus Vyl to arrive",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 399
+                }
+            }
+        },
+        {
+            "text": "You think it would be wiser just to leave",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 443
+                }
+            }
+        }
+    ]
+}
