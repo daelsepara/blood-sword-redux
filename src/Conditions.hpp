@@ -173,6 +173,23 @@ namespace BloodSword::Section::Conditions
         Evaluation(bool result) : Result(result) {}
     };
 
+    void InternalError(Graphics::Base &graphics, Scene::Base &background, Conditions::Type condition)
+    {
+        std::string message = "Internal Error: " + std::string(Conditions::TypeMapping[condition]) + "!";
+
+        Interface::InternalError(graphics, background, message);
+    }
+
+    std::string NotInParty(Character::Class &character)
+    {
+        return (std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!");
+    }
+
+    std::string NoItem(Item::Type &item)
+    {
+        return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
+    }
+
     // routine to validate "condition"
     Conditions::Evaluation Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {
@@ -196,7 +213,7 @@ namespace BloodSword::Section::Conditions
 
             if (!result)
             {
-                text = std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!";
+                text = Conditions::NotInParty(character);
             }
         }
         else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
@@ -229,23 +246,23 @@ namespace BloodSword::Section::Conditions
 
             if (!result)
             {
-                text = std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]);
+                text = Conditions::NoItem(item);
             }
         }
         else if (condition.Type == Conditions::Type::TEST_ATTRIBUTE)
         {
             // variables
-            // 0 - Player character doing the test
-            // 1 - Attribute being tested
-            // 2, 3 - Destination upon failure
-            // 4 - Message upon failure
+            // 0 - player
+            // 1 - attribute
+            // 2, 3 - bestination upon failure
+            // 4 - failure message
             if (condition.Variables.size() < 5)
             {
                 text = std::string("UNABLE TO PERFORM THIS ACTION!");
             }
             else
             {
-                auto character_class = Character::Map(std::string(condition.Variables[0]));
+                auto character = Character::Map(std::string(condition.Variables[0]));
 
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
@@ -253,17 +270,17 @@ namespace BloodSword::Section::Conditions
 
                 auto section = std::stoi(condition.Variables[3], nullptr, 10);
 
-                if (character_class != Character::Class::NONE && !party.Has(character_class))
+                if (character != Character::Class::NONE && !party.Has(character))
                 {
-                    text = std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character_class]) + " IN YOUR PARTY!";
+                    text = Conditions::NotInParty(character);
                 }
                 else if (attribute == Attribute::Type::NONE)
                 {
                     text = std::string("UNABLE TO PERFORM THIS ACTION!");
                 }
-                else if (character_class != Character::Class::NONE && party.Has(character_class))
+                else if (character != Character::Class::NONE && party.Has(character))
                 {
-                    auto test = Interface::Test(graphics, background, party[character_class], attribute);
+                    auto test = Interface::Test(graphics, background, party[character], attribute);
 
                     result = true;
 
@@ -278,12 +295,76 @@ namespace BloodSword::Section::Conditions
                 }
                 else
                 {
-                    Interface::InternalError(graphics, background, "Internal Error: TEST_ATTRIBUTE");
+                    Conditions::InternalError(graphics, background, condition.Type);
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::ITEM_QUANTITY)
+        {
+            // variables
+            // 0 - player
+            // 1 - item
+            // 2 - quantity
+            if (condition.Variables.size() < 3)
+            {
+                text = std::string("UNABLE TO PERFORM THIS ACTION!");
+            }
+            else
+            {
+                auto character = Character::Map(std::string(condition.Variables[0]));
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                auto quantity = std::stoi(condition.Variables[2], nullptr, 10);
+
+                if (character != Character::Class::NONE && !party.Has(character))
+                {
+                    text = Conditions::NotInParty(character);
+                }
+                else if (item == Item::Type::NONE)
+                {
+                    Conditions::InternalError(graphics, background, condition.Type);
+                }
+                else if (quantity != 0)
+                {
+                    if ((party[character].Quantity(item) + quantity) >= 0)
+                    {
+                        result = true;
+
+                        party[character].Add(item, quantity);
+
+                        if (quantity > 0)
+                        {
+                            text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                        }
+                        else
+                        {
+                            text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                        }
+                    }
+                    else
+                    {
+                        text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                    }
+                }
+                else
+                {
+                    Conditions::InternalError(graphics, background, condition.Type);
                 }
             }
         }
 
         result = condition.Invert ? !result : result;
+
+        // debug info
+        std::cerr << "Condition: ("
+                  << (result ? "true" : "false")
+                  << ", "
+                  << (failed ? "true" : "false")
+                  << ", " << text
+                  << "[" << Book::Mapping[location.first]
+                  << ": " << std::to_string(location.second) << "]"
+                  << ")" << std::endl;
 
         return failed ? Conditions::Evaluation(result, failed, location, text) : Conditions::Evaluation(result, text);
     }

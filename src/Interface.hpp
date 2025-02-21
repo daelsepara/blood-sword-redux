@@ -2278,6 +2278,32 @@ namespace BloodSword::Interface
         }
     }
 
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto wrap = graphics.Width - BloodSword::TileSize * 6;
+
+        auto texture = Graphics::CreateText(graphics, message, font, color, style, wrap);
+
+        if (texture)
+        {
+            auto text_w = 0;
+
+            auto text_h = 0;
+
+            BloodSword::Size(texture, &text_w, &text_h);
+
+            text_w += BloodSword::Pad * 2;
+
+            text_h += BloodSword::Pad * 3 + BloodSword::TileSize;
+
+            auto origin = Point(graphics.Width - text_w, graphics.Height - text_h) / 2;
+
+            Interface::MessageBox(graphics, scene, origin, text_w, text_h, texture, background, border, border_size, highlight, blur);
+            
+            BloodSword::Free(&texture);
+        }
+    }
+
     // draws a message box
     void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, const char *message, TTF_Font *font, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {

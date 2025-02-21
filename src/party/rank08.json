@@ -150,6 +150,7 @@
                     },
                     {
                         "contains": "ARROW",
+                        "limit": 6,
                         "name": "QUIVER",
                         "properties": [
                             "CONTAINER"
@@ -256,6 +257,7 @@
                     },
                     {
                         "contains": "ARROW",
+                        "limit": 6,
                         "name": "QUIVER",
                         "properties": [
                             "CONTAINER"

@@ -60,6 +60,9 @@ namespace BloodSword::Character
 
         Skills::List SkillImmunity = {};
 
+        // additional targets
+        Character::Targets Targets = {};
+
         Base(const char *name,
              Character::Class character_class,
              Attributes::List attributes,
@@ -574,14 +577,23 @@ namespace BloodSword::Character
             }
         }
 
+        void Add(Item::Type ammo, int quantity)
+        {
+            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
+            {
+                if (item->Add(ammo, quantity))
+                {
+                    break;
+                }
+            }
+        }
+
         void Remove(Item::Type ammo, int quantity)
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if (item->Has(ammo, quantity))
+                if (item->Remove(ammo, quantity))
                 {
-                    item->Quantity -= quantity;
-
                     break;
                 }
             }
@@ -682,6 +694,11 @@ namespace BloodSword::Character
             character.SkillImmunity = Skills::Load(data["skill_immunity"]);
         }
 
+        if (!data["targets"].is_null() && data["targets"].is_array() && data["targets"].size() > 0)
+        {
+            character.Targets = Character::LoadTargets(data["targets"]);
+        }
+
         return character;
     }
 
@@ -756,9 +773,9 @@ namespace BloodSword::Character
             data["spell_immunity"] = Spells::Data(character.SpellImmunity);
         }
 
-        if (character.SkillImmunity.size() > 0)
+        if (character.Targets.size() > 0)
         {
-            data["skill_immunity"] = Skills::Data(character.SkillImmunity);
+            data["targets"] = Character::TargetData(character.Targets);
         }
 
         return data;

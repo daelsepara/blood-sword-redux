@@ -39,6 +39,20 @@ namespace BloodSword::Item
         Base() {}
 
         Base(const char *name,
+            Item::Type type,
+            BloodSword::IntMapping<Attribute::Type> attributes,
+            std::vector<Item::Property> properties,
+            Item::Type contains,
+            int quantity,
+            int limit) : Attributes(attributes),
+                            Properties(properties),
+                            Type(type),
+                            Contains(contains),
+                            Quantity(quantity),
+                            Limit(limit),
+                            Name(name) {}
+
+        Base(const char *name,
              Item::Type type,
              BloodSword::IntMapping<Attribute::Type> attributes,
              std::vector<Item::Property> properties,
@@ -55,6 +69,13 @@ namespace BloodSword::Item
              std::vector<Item::Property> properties,
              Item::Type contains,
              int quantity) : Base(name, type, {}, properties, contains, quantity) {}
+
+        Base(const char *name,
+             Item::Type type,
+             std::vector<Item::Property> properties,
+             Item::Type contains,
+             int quantity,
+             int limit) : Base(name, type, {}, properties, contains, quantity, limit) {}
 
         Base(const char *name,
              Item::Type type,
@@ -84,7 +105,7 @@ namespace BloodSword::Item
         // this item contains a type of item and of sufficient quanity
         bool Has(Item::Type type, int quantity)
         {
-            return (this->Is(Property::CONTAINER) && this->Contains == type && this->Quantity >= quantity && (this->Limit != -1 && quantity >= 1 || this->Limit == -1));
+            return (this->Is(Property::CONTAINER) && (this->Contains == type) && (this->Quantity >= quantity) && ((this->Limit != -1 && quantity >= 1) || this->Limit == -1));
         }
 
         // check if item has this attribute
@@ -104,9 +125,18 @@ namespace BloodSword::Item
         {
             auto result = false;
 
-            if (this->Is(Property::CONTAINER) && (this->Contains == item) && (quantity >= 1) && ((this->Limit == -1) || ((this->Quantity + quantity) <= this->Limit)))
+            if (this->Is(Property::CONTAINER) && (this->Contains == item) && ((this->Limit == -1) || (((this->Quantity + quantity) <= this->Limit) && ((this->Quantity + quantity) >= 0))))
             {
                 this->Quantity += quantity;
+
+                // minimum
+                this->Quantity = std::max(0, this->Quantity);
+
+                if (this->Limit != -1)
+                {
+                    // maximum
+                    this->Quantity = std::min(this->Quantity, this->Limit);
+                }
 
                 result = true;
             }
@@ -147,9 +177,7 @@ namespace BloodSword::Item
 
             if (this->Has(type, quantity))
             {
-                this->Quantity -= quantity;
-
-                result = true;
+                result = this->Add(type, -quantity);
             }
 
             return result;
@@ -251,6 +279,8 @@ namespace BloodSword::Items
             item.Contains = !data[i]["contains"].is_null() ? Item::Map(std::string(data[i]["contains"])) : Item::Type::NONE;
 
             item.Quantity = !data[i]["quantity"].is_null() ? int(data[i]["quantity"]) : 0;
+
+            item.Limit = !data[i]["limiy"].is_null() ? int(data[i]["limit"]) : -1;
 
             item.Name = !data[i]["name"].is_null() ? std::string(data[i]["name"]) : std::string();
 

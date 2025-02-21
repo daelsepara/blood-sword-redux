@@ -226,9 +226,16 @@ namespace BloodSword::Interface
         {
             for (auto &condition : section.Events)
             {
+                std::cerr << "Event: "
+                          << "[" << Book::Mapping[section.Location.first]
+                          << ": " << std::to_string(section.Location.second) << "]"
+                          << std::endl;
+
                 if (Engine::IsAlive(party))
                 {
-                    results.push_back(Section::Conditions::Process(graphics, background, party, condition));
+                    auto eval = Section::Conditions::Process(graphics, background, party, condition);
+
+                    results.push_back(eval);
                 }
             }
         }
@@ -276,6 +283,11 @@ namespace BloodSword::Interface
                 // process through any choices
                 while (true)
                 {
+                    std::cerr << "Choice: "
+                              << "[" << Book::Mapping[section.Location.first]
+                              << ": " << std::to_string(section.Location.second) << "]"
+                              << std::endl;
+
                     next = Interface::RenderChoices(graphics, background, party, section.Choices, after_battle);
 
                     if (!after_battle || Book::IsDefined(next))
@@ -537,7 +549,7 @@ namespace BloodSword::Interface
 
                     for (auto result : results)
                     {
-                        section_text += result.Text;
+                        section_text += "\n\n" + result.Text;
                     }
 
                     once = true;
@@ -563,6 +575,11 @@ namespace BloodSword::Interface
 
     void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, int start = 0)
     {
+        if (story.Description.size() > 0)
+        {
+            Interface::TextBox(graphics, background, Fonts::Normal, story.Description.c_str(), Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+        }
+        
         auto done = false;
 
         auto &current = story.Sections[start];

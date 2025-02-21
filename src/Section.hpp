@@ -239,7 +239,7 @@ namespace BloodSword::Story
             {
                 story.Title = !data["title"].is_null() ? std::string(data["title"]) : "Blood Sword";
 
-                story.Title = !data["description"].is_null() ? std::string(data["description"]) : "Blood Sword gamebook";
+                story.Description = !data["description"].is_null() ? std::string(data["description"]) : "Blood Sword gamebook";
 
                 if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
                 {

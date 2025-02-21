@@ -116,7 +116,10 @@ namespace BloodSword::Skills
         {
             auto skill = !data[i].is_null() ? Skills::Map(std::string(data[i])) : Skills::Type::NONE;
 
-            skills.push_back(skill);
+            if (skill != Skills::Type::NONE)
+            {
+                skills.push_back(skill);
+            }
         }
 
         return skills;
