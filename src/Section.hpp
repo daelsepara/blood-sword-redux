@@ -94,20 +94,6 @@ namespace BloodSword::Section
             section.Choices = choices;
         }
 
-        if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
-        {
-            auto conditions = std::vector<Conditions::Base>();
-
-            for (auto i = 0; i < data["next"].size(); i++)
-            {
-                auto choice = Conditions::Parse(data["next"][i]);
-
-                conditions.push_back(choice);
-            }
-
-            section.Next = conditions;
-        }
-
         // load battle
         if (!data["battle"].is_null())
         {
@@ -127,7 +113,6 @@ namespace BloodSword::Section
         {
             auto background = std::vector<Section::Conditions::Base>();
 
-            for (auto i = 0; i < data["background"].size(); i++)
             {
                 auto condition = Conditions::Parse(data["background"][i]);
 
@@ -142,7 +127,6 @@ namespace BloodSword::Section
         {
             auto events = std::vector<Section::Conditions::Base>();
 
-            for (auto i = 0; i < data["events"].size(); i++)
             {
                 auto condition = Conditions::Parse(data["events"][i]);
 
@@ -155,17 +139,23 @@ namespace BloodSword::Section
         // load "next section" conditions
         if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
         {
-            auto next = std::vector<Section::Conditions::Base>();
+            auto conditions = std::vector<Conditions::Base>();
 
-            for (auto i = 0; i < data["next"].size(); i++)
             {
                 auto condition = Conditions::Parse(data["next"][i]);
 
-                next.push_back(condition);
+                conditions.push_back(condition);
             }
 
-            section.Next = next;
+            section.Next = conditions;
         }
+
+        std::cerr << "Loaded: ["
+                  << Book::Mapping[section.Location.first]
+                  << ", "
+                  << std::to_string(section.Location.second)
+                  << "]"
+                  << std::endl;
 
         return section;
     }

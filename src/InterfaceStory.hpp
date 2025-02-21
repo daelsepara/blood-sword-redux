@@ -268,6 +268,11 @@ namespace BloodSword::Interface
                 // process through each condition
                 for (auto &condition : section.Next)
                 {
+                    std::cerr << "Next: "
+                              << "[" << Book::Mapping[condition.Location.first]
+                              << ": " << std::to_string(condition.Location.second) << "]"
+                              << std::endl;
+
                     auto eval = Section::Conditions::Process(graphics, background, party, condition);
 
                     if (eval.Result)
@@ -573,7 +578,7 @@ namespace BloodSword::Interface
         return next;
     }
 
-    void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, int start = 0)
+    void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, int section = 0)
     {
         if (story.Title.size() > 0 && story.Description.size() > 0)
         {
@@ -586,21 +591,23 @@ namespace BloodSword::Interface
 
         auto done = false;
 
-        auto &current = story.Sections[start];
-
         while (!done)
         {
+            auto &current = story.Sections[section];
+
             auto location = Interface::ProcessSection(graphics, background, current, party);
 
             if (Book::IsDefined(location))
             {
-                auto section = story.Find(location);
+                section = story.Find(location);
 
-                if (section != -1 && Book::IsDefined(story.Sections[section].Location))
-                {
-                    current = story.Sections[section];
-                }
-                else
+                std::cerr << "Find: "
+                << "[" << Book::Mapping[location.first]
+                << ": " << std::to_string(location.second) << "]"
+                << " == " << std::to_string(section)
+                << std::endl;
+
+                if (!(section != -1 && Book::IsDefined(story.Sections[section].Location)))
                 {
                     Interface::MessageBox(graphics, background, Graphics::RichText("NOT YET IMPLEMENTED", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Inactive, true);
 
