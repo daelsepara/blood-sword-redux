@@ -369,9 +369,13 @@ namespace BloodSword::Section::Conditions
             std::cerr << ", " << text;
         }
 
-        std::cerr << ", [" << Book::Mapping[location.first]
-                  << ": " << std::to_string(location.second) << "]"
-                  << ")" << std::endl;
+        if (Book::IsDefined(location))
+        {
+            std::cerr << ", [" << Book::Mapping[location.first]
+                      << ": " << std::to_string(location.second) << "]";
+        }
+
+        std::cerr << ")" << std::endl;
 
         return failed ? Conditions::Evaluation(result, failed, location, text) : Conditions::Evaluation(result, text);
     }
