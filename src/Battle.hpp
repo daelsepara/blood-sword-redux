@@ -17,7 +17,8 @@ namespace BloodSword::Battle
         AMBUSH_PLAYER,
         AMBUSH_NPC,
         CANNOT_FLEE,
-        SURVIVORS
+        SURVIVORS,
+        AMBUSH_RANGED
     };
 
     const int Unlimited = -1;
@@ -26,7 +27,8 @@ namespace BloodSword::Battle
         {Battle::Condition::AMBUSH_PLAYER, "AMBUSH PLAYER"},
         {Battle::Condition::AMBUSH_NPC, "AMBUSH NPC"},
         {Battle::Condition::CANNOT_FLEE, "CANNOT FLEE"},
-        {Battle::Condition::SURVIVORS, "SURVIVORS"}};
+        {Battle::Condition::SURVIVORS, "SURVIVORS"},
+        {Battle::Condition::AMBUSH_RANGED, "AMBUSH RANGED"}};
 
     Battle::Condition MapCondition(const char *condition)
     {
@@ -53,11 +55,13 @@ namespace BloodSword::Battle
         // round limit (-1 if unlimited)
         int Duration = Battle::Unlimited;
 
+        Book::Location Survivors = {Book::Number::NONE, -1};
+
         Base(std::vector<Battle::Condition> conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}
 
-        bool Is(Battle::Condition condition)
+        bool Has(Battle::Condition condition)
         {
             auto result = false;
 
@@ -121,6 +125,16 @@ namespace BloodSword::Battle
                 if (!data["opponents"].is_null() && data["opponents"].is_object() && data["opponents"].size() > 0)
                 {
                     this->Opponents = Party::Initialize(data["opponents"]);
+                }
+
+                // get survivors from previous books
+                if (!data["survivors"].is_null())
+                {
+                    auto book = !data["survivors"]["book"].is_null() ? Book::MapBook(std::string(data["survivors"]["book"])) : Book::Number::NONE;
+
+                    auto number = !data["survivors"]["number"].is_null() ? int(data["survivors"]["number"]) : -1;
+
+                    this->Survivors = {book, number};
                 }
             }
         }

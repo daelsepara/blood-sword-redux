@@ -210,6 +210,33 @@ namespace BloodSword::Engine
         }
     }
 
+    Engine::Queue Build(Party::Base &party, Attribute::Type attribute, Skills::Type skill, bool in_battle = false, bool descending = true)
+    {
+        Engine::Queue queue = {};
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto knocked_out = party[i].Is(Character::Status::KNOCKED_OUT);
+
+            auto paralyzed = party[i].Is(Character::Status::PARALYZED);
+
+            auto away = party[i].Is(Character::Status::AWAY);
+
+            auto is_alive = Engine::IsAlive(party[i]);
+
+            auto skilled = party[i].Has(skill);
+
+            auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
+
+            if (is_alive && !paralyzed && !away && skilled && battle)
+            {
+                queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
+            }
+        }
+
+        return queue;
+    }
+
     // creates queue (order sequence of characters ranked according to attribute score)
     Engine::Queue Build(Party::Base &party, Party::Base &other, Attribute::Type attribute, bool in_battle = false, bool descending = true)
     {
@@ -541,19 +568,30 @@ namespace BloodSword::Engine
         return Engine::IsAlive(character);
     }
 
+    bool Transition(Character::Base &character, Character::Status from, Character::Status to)
+    {
+        auto update = false;
+
+        if (character.Is(from))
+        {
+            character.Remove(from);
+
+            character.Add(to);
+
+            update = true;
+        }
+
+        return update;
+    }
+
     // cooldown status effects
     bool CoolDown(Character::Base &character)
     {
         auto update = false;
 
         // cool down status effects
-        if (character.Is(Character::Status::DEFENDING))
+        if (Engine::Transition(character, Character::Status::DEFENDING, Character::Status::DEFENDED))
         {
-            // change DEFENDING to DEFENDED
-            character.Remove(Character::Status::DEFENDING);
-
-            character.Add(Character::Status::DEFENDED);
-
             update = true;
         }
         else

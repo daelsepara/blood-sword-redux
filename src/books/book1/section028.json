@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 28
+    },
+    "text": "You snatch up the red pennant and hold it aloft. Two of the stewards look at each other barely concealing their frustration, and stomp off the booth. The third rushes up to you excitedly. \"You have chosen the pennant of the esteemed and generous Magus Balhazar!\" he cries.\n\nJust at this moment a tall man dressed in scarlet robes sweeps magestically across the square towards you. The steward bows abjectly to him.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 397
+            }
+        }
+    ]
+}

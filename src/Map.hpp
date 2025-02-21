@@ -111,10 +111,10 @@ namespace BloodSword::Map
         int Y = 0;
 
         // x offset (pixels, drawing)
-        int DrawX = BloodSword::TileSize;
+        int DrawX = BloodSword::TileSize + BloodSword::HalfTile;
 
         // y offset (pixels, drawing)
-        int DrawY = BloodSword::TileSize;
+        int DrawY = BloodSword::TileSize + BloodSword::HalfTile;
 
         // size of each tile (pixels)
         int TileSize = BloodSword::TileSize;
@@ -124,6 +124,9 @@ namespace BloodSword::Map
 
         // starting locations of opponents
         std::vector<BloodSword::Point> Spawn = {};
+
+        // starting locations of survivors
+        std::vector<BloodSword::Point> Survivors = {};
 
         // initialize the map
         void Initialize(int width, int height)
@@ -260,6 +263,29 @@ namespace BloodSword::Map
             this->Put(Point(x, y), type, asset);
         }
 
+        void CheckBounds()
+        {
+            if (this->X < 0)
+            {
+                this->X = 0;
+            }
+
+            if (this->X > this->Width - this->ViewX)
+            {
+                this->X = this->Width - this->ViewX;
+            }
+
+            if (this->Y < 0)
+            {
+                this->Y = 0;
+            }
+
+            if (this->Y > this->Height - this->ViewY)
+            {
+                this->Y = this->Height - this->ViewY;
+            }
+        }
+
         bool Setup(nlohmann::json &data)
         {
             auto load_error = false;
@@ -357,6 +383,23 @@ namespace BloodSword::Map
                         }
                     }
                 }
+
+                if (!data["survivors"].is_null() && data["survivors"].is_array() && data["survivors"].size() > 0)
+                {
+                    this->Survivors.clear();
+
+                    for (auto i = 0; i < data["survivors"].size(); i++)
+                    {
+                        auto x = !data["survivors"][i]["x"].is_null() ? int(data["survivors"][i]["x"]) : -1;
+
+                        auto y = !data["survivors"][i]["y"].is_null() ? int(data["survivors"][i]["y"]) : -1;
+
+                        if (x >= 0 && x < this->Width && y >= 0 && y < this->Height)
+                        {
+                            this->Survivors.push_back(BloodSword::Point(x, y));
+                        }
+                    }
+                }
             }
             else
             {
@@ -404,6 +447,10 @@ namespace BloodSword::Map
             map["drawx"] = this->DrawX;
 
             map["drawy"] = this->DrawY;
+
+            map["x"] = this->X;
+
+            map["y"] = this->Y;
 
             map["tilesize"] = this->TileSize;
 
@@ -469,6 +516,24 @@ namespace BloodSword::Map
                 }
 
                 map["spawn"] = spawn_sites;
+            }
+
+            if (this->Survivors.size() > 0)
+            {
+                nlohmann::json survivor_sites;
+
+                for (auto &survivor : this->Survivors)
+                {
+                    nlohmann::json point;
+
+                    point.emplace("x", survivor.X);
+
+                    point.emplace("y", survivor.Y);
+
+                    survivor_sites.push_back(point);
+                }
+
+                map["survivors"] = survivor_sites;
             }
 
             std::ofstream file(filename);

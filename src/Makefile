@@ -2,6 +2,8 @@ BSWORD_TEST=BloodSwordTest.cpp
 BSWORD_TEST_OUTPUT=BloodSwordTest.exe
 BSWORD_BATTLES=BattleBoard.cpp
 BSWORD_BATTLES_OUTPUT=BattleBoard.exe
+BSWORD_MAP=MapTemplate.cpp
+BSWORD_MAP_OUTPUT=MapTemplate.exe
 
 LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 INCLUDES=-I/usr/include/SDL2
@@ -18,6 +20,9 @@ else
 endif
 
 all: clean blood-sword battle-board
+
+map:
+	$(CC) -Wall $(BSWORD_MAP) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
 
 blood-sword:
 	$(CC) -Wall $(BSWORD_TEST) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT)

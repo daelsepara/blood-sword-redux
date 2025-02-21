@@ -4,9 +4,12 @@
     "sections": [
         "books/book1/section001.json",
         "books/book1/section018.json",
+        "books/book1/section028.json",
+        "books/book1/section052.json",
         "books/book1/section058.json",
         "books/book1/section069.json",
         "books/book1/section121.json",
+        "books/book1/section161.json",
         "books/book1/section166.json",
         "books/book1/section217.json",
         "books/book1/section227.json",
@@ -20,8 +23,11 @@
         "books/book1/section398.json",
         "books/book1/section434.json",
         "books/book1/section442.json",
+        "books/book1/section443.json",
         "books/book1/section452.json",
         "books/book1/section454.json",
-        "books/book1/section515.json"
+        "books/book1/section471.json",
+        "books/book1/section515.json",
+        "books/book1/section520.json"
     ]
 }

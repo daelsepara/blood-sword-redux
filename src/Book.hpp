@@ -1,6 +1,7 @@
 #ifndef __BOOK_HPP__
 #define __BOOK_HPP__
 
+#include <iostream>
 #include <unordered_map>
 #include <vector>
 

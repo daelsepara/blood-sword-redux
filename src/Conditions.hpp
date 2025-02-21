@@ -392,6 +392,42 @@ namespace BloodSword::Section::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::BATTLE_VICTORY)
+        {
+            result = (party.LastBattle == Battle::Result::VICTORY);
+
+            if (!result)
+            {
+                text = "YOU WERE NOT VICTORIOUS IN THE LAST BATTLE!";
+            }
+        }
+        else if (condition.Type == Conditions::Type::BATTLE_FLEE)
+        {
+            result = (party.LastBattle == Battle::Result::FLEE);
+
+            if (!result)
+            {
+                text = "YOU DID NOT FLEE IN YOUR LAST BATTLE!";
+            }
+        }
+        else if (condition.Type == Conditions::Type::BATTLE_ENTHRALMENT)
+        {
+            result = (party.LastBattle == Battle::Result::ENTHRALLED);
+
+            if (!result)
+            {
+                text = "YOU HAVE NOT SUBDUED YOUR OPPONENTS!";
+            }
+        }
+        else if (condition.Type == Conditions::Type::BATTLE_VICTORY_OR_ENTHRALMENT)
+        {
+            result = (party.LastBattle == Battle::Result::ENTHRALLED || party.LastBattle == Battle::Result::VICTORY);
+
+            if (!result)
+            {
+                text = "YOU WERE NOT VICTORIOUS IN THE LAST BATTLE!";
+            }
+        }
 
         result = condition.Invert ? !result : result;
 

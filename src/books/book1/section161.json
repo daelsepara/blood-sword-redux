@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 161
+    },
+    "text": "The bargemen's jubilation is short-lived. After a few minutes you hear a rustling in the bushes around the Blue Tower. Suddenly six assassins swathed in black launch themselves from the shadows. Steel swords flash momentarily in the moonlight, cutting the unfortunate bargement down. The one with the banner starts to cry out, but an assassin silences him with a deadly finger-strike to the throat. All are dead in seconds, except for one whome you see fleeing for the bridge. A shuriken slices through the air and strikes him in the back, and you hear a dull splash as his body hits the murky water.",
+    "choices": [
+        {
+            "text": "Ambush the assassins now",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 430
+                }
+            }
+        },
+        {
+            "text": "Creep away unnoticed",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 443
+                }
+            }
+        }
+    ]
+}

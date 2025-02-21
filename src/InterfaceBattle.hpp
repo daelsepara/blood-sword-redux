@@ -61,6 +61,7 @@ namespace BloodSword::Interface
             character.ResetSpellComplexities();
         }
     }
+
     void ResetStatusAndSpells(Character::Base &character)
     {
         Interface::ResetStatus(character);
@@ -125,7 +126,7 @@ namespace BloodSword::Interface
             // defend
             controls.push_back(Controls::Type::DEFEND);
 
-            if (is_player && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Is(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
+            if (is_player && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
             {
                 controls.push_back(Controls::Type::FLEE);
             }
@@ -212,7 +213,60 @@ namespace BloodSword::Interface
     // regenerate battle map
     Scene::Base BattleScene(Battle::Base &battle, Party::Base &party)
     {
-        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY));
+        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad));
+    }
+
+    void MapControls(Scene::Base &scene, Battle::Base &battle)
+    {
+        auto mid_y = battle.Map.DrawY + (battle.Map.ViewY) * BloodSword::HalfTile;
+
+        auto mid_x = battle.Map.DrawX + (battle.Map.ViewX) * BloodSword::HalfTile;
+
+        auto left_x = battle.Map.DrawX - BloodSword::TileSize - BloodSword::Pad;
+
+        auto right_x = battle.Map.DrawX + battle.Map.ViewX * BloodSword::TileSize + BloodSword::Pad;
+
+        auto top_y = battle.Map.DrawY - BloodSword::TileSize - BloodSword::Pad;
+
+        auto bottom_y = battle.Map.DrawY + battle.Map.ViewY * BloodSword::TileSize + BloodSword::Pad;
+
+        auto id = scene.Controls.size();
+
+        if (battle.Map.X > 0)
+        {
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::LEFT), Point(left_x, mid_y - BloodSword::HalfTile)));
+
+            scene.Add(Controls::Base(Controls::Type::MAP_LEFT, id, id, id, id, id, left_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            id++;
+        }
+
+        if (battle.Map.Y > 0)
+        {
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), Point(mid_x - BloodSword::HalfTile, top_y)));
+
+            scene.Add(Controls::Base(Controls::Type::MAP_UP, id, id, id, id, id, mid_x - BloodSword::HalfTile, top_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            id++;
+        }
+
+        if (battle.Map.X + battle.Map.ViewX < battle.Map.Width)
+        {
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), Point(right_x, mid_y - BloodSword::HalfTile)));
+
+            scene.Add(Controls::Base(Controls::Type::MAP_RIGHT, id, id, id, id, id, right_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            id++;
+        }
+
+        if (battle.Map.Y + battle.Map.ViewY < battle.Map.Height)
+        {
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), Point(mid_x - BloodSword::HalfTile, bottom_y)));
+
+            scene.Add(Controls::Base(Controls::Type::MAP_DOWN, id, id, id, id, id, mid_x - BloodSword::HalfTile, bottom_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            id++;
+        }
     }
 
     // generate status
@@ -646,6 +700,17 @@ namespace BloodSword::Interface
         }
     }
 
+    void Center(Battle::Base &battle, int id)
+    {
+        auto src = battle.Map.Find(Map::Object::PLAYER, id);
+
+        battle.Map.X = src.X - (battle.Map.ViewX / 2);
+
+        battle.Map.Y = src.Y - (battle.Map.ViewY / 2);
+
+        battle.Map.CheckBounds();
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -654,6 +719,23 @@ namespace BloodSword::Interface
         auto copy_party = party;
 
         auto result = Battle::Result::DETERMINE;
+
+        // adjust battle UI
+        auto total_w = graphics.Width - 6 * BloodSword::TileSize;
+
+        auto total_h = graphics.Height - 6 * BloodSword::TileSize;
+
+        battle.Map.ViewX = std::min(battle.Map.Width, (total_w / BloodSword::TileSize));
+
+        battle.Map.ViewY = std::min(battle.Map.Height, (total_h / BloodSword::TileSize));
+
+        battle.Map.DrawX = (graphics.Width - battle.Map.ViewX * battle.Map.TileSize) / 2;
+
+        battle.Map.DrawY = (graphics.Height - battle.Map.ViewY * battle.Map.TileSize) / 2;
+
+        battle.Map.X = 0;
+
+        battle.Map.Y = 0;
 
         if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents) && Engine::IsAlive(party))
         {
@@ -666,7 +748,42 @@ namespace BloodSword::Interface
             // set opponents starting locations
             for (auto i = 0; i < battle.Opponents.Count(); i++)
             {
+                // set opponent location
+                battle.Opponents[i].Location = party.Location;
+
                 battle.Map.Put(battle.Map.Spawn[i], Map::Object::ENEMY, i);
+            }
+
+            if (Book::IsDefined(battle.Survivors))
+            {
+                // gather list of survivors
+                auto survivors = Party::Base();
+
+                // look for the survivors in the previous battle
+                for (auto &survivor : party.Survivors)
+                {
+                    if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, battle.Survivors))
+                    {
+                        survivors.Add(survivor);
+                    }
+                }
+
+                if (battle.Map.Survivors.size() <= survivors.Count())
+                {
+                    auto id = battle.Opponents.Count();
+
+                    for (auto i = 0; i < battle.Map.Survivors.size(); i++)
+                    {
+                        // set current location
+                        survivors.Location = party.Location;
+
+                        // add to opponent party
+                        battle.Opponents.Add(survivors[i]);
+
+                        // add to map
+                        battle.Map.Put(battle.Map.Survivors[i], Map::Object::ENEMY, id + i);
+                    }
+                }
             }
 
             // initialize captions
@@ -730,7 +847,7 @@ namespace BloodSword::Interface
 
             auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
 
-            auto info_x = battle.Map.DrawX + (battle.Map.ViewX * 2 + 1) * battle.Map.TileSize / 2 + pad;
+            auto info_x = battle.Map.DrawX + (battle.Map.ViewX * 2 + 1) * battle.Map.TileSize / 2 + BloodSword::TileSize + pad;
 
             auto info_y = battle.Map.DrawY + pad;
 
@@ -761,12 +878,17 @@ namespace BloodSword::Interface
                 // battle order
                 Engine::Queue order = {};
 
-                if (round == 0 && battle.Is(Battle::Condition::AMBUSH_PLAYER))
+                if (round == 0 && battle.Has(Battle::Condition::AMBUSH_PLAYER))
                 {
                     // players get a free initial turn
                     order = Engine::Build(party, Attribute::Type::AWARENESS, true, true);
                 }
-                else if (round == 0 && battle.Is(Battle::Condition::AMBUSH_NPC))
+                else if (round == 0 && battle.Has(Battle::Condition::AMBUSH_RANGED))
+                {
+                    // enemies get a free ranged attack
+                    order = Engine::Build(battle.Opponents, Attribute::Type::AWARENESS, Skills::Type::SHURIKEN, true, true);
+                }
+                else if (round == 0 && battle.Has(Battle::Condition::AMBUSH_NPC))
                 {
                     // enemy combatants get a free initial turn
                     order = Engine::Build(battle.Opponents, Attribute::Type::AWARENESS, true, true);
@@ -786,11 +908,19 @@ namespace BloodSword::Interface
                 // end of round effects
                 battle.Map.CoolDown();
 
-                // regenerate scene
-                auto scene = Interface::BattleScene(battle, party);
-
                 while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && !Engine::IsFleeing(party) && !exit)
                 {
+                    // center map on player
+                    if (Engine::IsPlayer(order, combatant))
+                    {
+                        Interface::Center(battle, order[combatant].Id);
+                    }
+
+                    // regenerate scene
+                    auto scene = Interface::BattleScene(battle, party);
+
+                    Interface::MapControls(scene, battle);
+
                     auto is_enemy = Engine::IsEnemy(order, combatant);
 
                     auto is_player = Engine::IsPlayer(order, combatant);
@@ -826,7 +956,7 @@ namespace BloodSword::Interface
                                         // check if there are adjacent combatants to fight
                                         auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
 
-                                        if (opponents.size() > 0)
+                                        if (opponents.size() > 0 && !(round == 0 && battle.Has(Battle::Condition::AMBUSH_RANGED)))
                                         {
                                             Interface::ResetSpells(character);
 
@@ -836,6 +966,8 @@ namespace BloodSword::Interface
                                             // regenerate scene
                                             scene = Interface::BattleScene(battle, party);
 
+                                            Interface::MapControls(scene, battle);
+
                                             // regenerate stats
                                             Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
 
@@ -844,9 +976,12 @@ namespace BloodSword::Interface
                                         }
                                         else if (Engine::CanShoot(character))
                                         {
+                                            auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
+
                                             auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
 
-                                            if (targets.size() > 0)
+                                            // shoot only when there are no nearby player enemies
+                                            if (targets.size() > 0 && opponents.size() == 0)
                                             {
                                                 for (auto &target : targets)
                                                 {
@@ -858,6 +993,8 @@ namespace BloodSword::Interface
 
                                                         // regenerate scene
                                                         scene = Interface::BattleScene(battle, party);
+
+                                                        Interface::MapControls(scene, battle);
 
                                                         // regenerate stats
                                                         Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
@@ -888,7 +1025,7 @@ namespace BloodSword::Interface
 
                                                 if (!end.IsNone())
                                                 {
-                                                    valid_target = Interface::Move(battle.Map, character, movement, src, end);
+                                                    valid_target = Interface::Move(battle.Map, character, movement, src - Point(battle.Map.X, battle.Map.Y), end - Point(battle.Map.X, battle.Map.Y));
 
                                                     if (valid_target)
                                                     {
@@ -1198,6 +1335,8 @@ namespace BloodSword::Interface
 
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
+
+                                                            Interface::MapControls(scene, battle);
                                                         }
                                                         else
                                                         {
@@ -1230,6 +1369,8 @@ namespace BloodSword::Interface
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
 
+                                                            Interface::MapControls(scene, battle);
+
                                                             // regenerate stats
                                                             Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
 
@@ -1260,6 +1401,8 @@ namespace BloodSword::Interface
 
                                                                 // regenerate scene
                                                                 scene = Interface::BattleScene(battle, party);
+
+                                                                Interface::MapControls(scene, battle);
 
                                                                 // regenerate stats
                                                                 Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
@@ -1324,6 +1467,8 @@ namespace BloodSword::Interface
                                                                     // regenerate scene
                                                                     scene = Interface::BattleScene(battle, party);
 
+                                                                    Interface::MapControls(scene, battle);
+
                                                                     // next character in battle order
                                                                     next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                                                 }
@@ -1346,6 +1491,66 @@ namespace BloodSword::Interface
                                                     exit = true;
 
                                                     result = Battle::Result::NONE;
+                                                }
+                                                else if (input.Type == Controls::Type::MAP_DOWN)
+                                                {
+                                                    if (battle.Map.Y < (battle.Map.Height - battle.Map.ViewY))
+                                                    {
+                                                        battle.Map.Y++;
+
+                                                        scene = Interface::BattleScene(battle, party);
+
+                                                        Interface::MapControls(scene, battle);
+
+                                                        input.Current = -1;
+
+                                                        input.Selected = false;
+                                                    }
+                                                }
+                                                else if (input.Type == Controls::Type::MAP_UP)
+                                                {
+                                                    if (battle.Map.Y > 0)
+                                                    {
+                                                        battle.Map.Y--;
+
+                                                        scene = Interface::BattleScene(battle, party);
+
+                                                        Interface::MapControls(scene, battle);
+
+                                                        input.Current = -1;
+
+                                                        input.Selected = false;
+                                                    }
+                                                }
+                                                else if (input.Type == Controls::Type::MAP_LEFT)
+                                                {
+                                                    if (battle.Map.X > 0)
+                                                    {
+                                                        battle.Map.X--;
+
+                                                        scene = Interface::BattleScene(battle, party);
+
+                                                        Interface::MapControls(scene, battle);
+
+                                                        input.Current = -1;
+
+                                                        input.Selected = false;
+                                                    }
+                                                }
+                                                else if (input.Type == Controls::Type::MAP_RIGHT)
+                                                {
+                                                    if (battle.Map.X < (battle.Map.Width - battle.Map.ViewX))
+                                                    {
+                                                        battle.Map.X++;
+
+                                                        scene = Interface::BattleScene(battle, party);
+
+                                                        Interface::MapControls(scene, battle);
+
+                                                        input.Current = -1;
+
+                                                        input.Selected = false;
+                                                    }
                                                 }
                                             }
                                             else if (actions && Input::IsValid(overlay, input))
@@ -1372,6 +1577,8 @@ namespace BloodSword::Interface
 
                                                         // regenerate scene
                                                         scene = Interface::BattleScene(battle, party);
+
+                                                        Interface::MapControls(scene, battle);
 
                                                         // regenerate stats
                                                         Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
@@ -1421,6 +1628,8 @@ namespace BloodSword::Interface
                                                             // regenerate scene
                                                             scene = Interface::BattleScene(battle, party);
 
+                                                            Interface::MapControls(scene, battle);
+
                                                             // regenerate stats
                                                             Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
 
@@ -1454,6 +1663,8 @@ namespace BloodSword::Interface
                                                 }
                                                 else if (input.Type == Controls::Type::DEFEND)
                                                 {
+                                                    character.Add(Character::Status::DEFENDING);
+
                                                     Interface::ResetStatusAndSpells(character);
 
                                                     Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
@@ -1547,6 +1758,8 @@ namespace BloodSword::Interface
                                                                                 // regenerate scene
                                                                                 scene = Interface::BattleScene(battle, party);
 
+                                                                                Interface::MapControls(scene, battle);
+
                                                                                 // next character in battle order
                                                                                 next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                                                             }
@@ -1567,7 +1780,7 @@ namespace BloodSword::Interface
 
                                                                     cast = Spells::Type::NONE;
 
-                                                                    if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Is(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
+                                                                    if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Has(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
                                                                     {
                                                                         Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_FLEE], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
                                                                     }
@@ -1589,6 +1802,8 @@ namespace BloodSword::Interface
 
                                                                             // regenerate scene
                                                                             scene = Interface::BattleScene(battle, party);
+
+                                                                            Interface::MapControls(scene, battle);
                                                                         }
                                                                         else
                                                                         {
@@ -1666,6 +1881,8 @@ namespace BloodSword::Interface
                                 // regenerate scene
                                 scene = Interface::BattleScene(battle, party);
 
+                                Interface::MapControls(scene, battle);
+
                                 // next character in battle order
                                 next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                             }
@@ -1734,6 +1951,18 @@ namespace BloodSword::Interface
                 else
                 {
                     result = Battle::Result::VICTORY;
+                }
+
+                // add survivors
+                if (battle.Has(Battle::Condition::SURVIVORS))
+                {
+                    for (auto i = 0; i < battle.Opponents.Count(); i++)
+                    {
+                        if (Engine::IsAlive(battle.Opponents[i]))
+                        {
+                            party.Survivors.push_back(battle.Opponents[i]);
+                        }
+                    }
                 }
             }
             else

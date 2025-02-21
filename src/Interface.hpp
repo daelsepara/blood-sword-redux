@@ -258,6 +258,9 @@ namespace BloodSword::Interface
 
         auto num_controls = 0;
 
+        // add background frame
+        scene.Add(Scene::Element(map.DrawX, map.DrawY, map.ViewX * map.TileSize, map.ViewY * map.TileSize, Color::Background, Color::Inactive, 1));
+
         for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {
             auto ctrl_y = y - map.Y;
@@ -1025,9 +1028,9 @@ namespace BloodSword::Interface
         {
             SDL_Rect view;
 
-            view.w = map.Width * map.TileSize;
+            view.w = map.ViewX * map.TileSize;
 
-            view.h = map.Height * map.TileSize;
+            view.h = map.ViewY * map.TileSize;
 
             view.x = map.DrawX;
 
@@ -1429,7 +1432,7 @@ namespace BloodSword::Interface
 
         movement.Delta = Point(8, 8);
 
-        movement.Set(Point(map.DrawX, map.DrawY), start);
+        movement.Set(Point(map.DrawX - map.X * map.TileSize, map.DrawY - map.Y * map.TileSize), start);
 
         movement.Reset();
 
@@ -1437,7 +1440,7 @@ namespace BloodSword::Interface
     }
 
     // setup movement animation
-    bool Move(Map::Base &map, Character::Base &character, Animation::Base &movement, Point &start, Point &end)
+    bool Move(Map::Base &map, Character::Base &character, Animation::Base &movement, Point start, Point end)
     {
         auto moving = false;
 
@@ -1492,17 +1495,24 @@ namespace BloodSword::Interface
                 {
                     auto &point = path.Points[i];
 
-                    auto x = map.DrawX + point.X * map.TileSize;
+                    auto adjust_x = point.X - map.X;
 
-                    auto y = map.DrawY + point.Y * map.TileSize;
+                    auto adjust_y = point.Y - map.Y;
 
-                    if (i == 0)
+                    if (adjust_x >= 0 && adjust_x < map.ViewX && adjust_y >= 0 && adjust_y < map.ViewY)
                     {
-                        overlay.Add(Scene::Element(x + BloodSword::SmallPad, y + BloodSword::SmallPad, map.TileSize - BloodSword::Pad, map.TileSize - BloodSword::Pad, Color::Transparent, Color::Inactive, 2));
-                    }
-                    else
-                    {
-                        overlay.Add(Scene::Element(x, y, map.TileSize, map.TileSize, Color::Inactive));
+                        auto x = map.DrawX + adjust_x * map.TileSize;
+
+                        auto y = map.DrawY + adjust_y * map.TileSize;
+
+                        if (i == 0)
+                        {
+                            overlay.Add(Scene::Element(x + BloodSword::SmallPad, y + BloodSword::SmallPad, map.TileSize - BloodSword::Pad, map.TileSize - BloodSword::Pad, Color::Transparent, Color::Inactive, 2));
+                        }
+                        else
+                        {
+                            overlay.Add(Scene::Element(x, y, map.TileSize, map.TileSize, Color::Inactive));
+                        }
                     }
                 }
             }
@@ -2404,7 +2414,7 @@ namespace BloodSword::Interface
 
         if (map.IsVisible(focus))
         {
-            auto screen = (draw + focus * map.TileSize) + BloodSword::SmallPad;
+            auto screen = (draw + (focus - Point(map.X, map.Y)) * map.TileSize) + BloodSword::SmallPad;
 
             overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - BloodSword::Pad, map.TileSize - BloodSword::Pad, Color::Transparent, Color::Active, 2));
         }

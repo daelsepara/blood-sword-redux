@@ -9,6 +9,7 @@
 #include "Primitives.hpp"
 #include "AssetTypes.hpp"
 #include "Attribute.hpp"
+#include "Book.hpp"
 #include "CharacterClasses.hpp"
 #include "ControlTypes.hpp"
 #include "Item.hpp"
@@ -63,6 +64,9 @@ namespace BloodSword::Character
         // additional targets
         Character::Targets Targets = {};
 
+        // location (survivor tracking in a battle)
+        Book::Location Location = {Book::Number::NONE, -1};
+
         Base(const char *name,
              Character::Class character_class,
              Attributes::List attributes,
@@ -112,6 +116,18 @@ namespace BloodSword::Character
         bool Has(Skills::Type skill)
         {
             return this->Skills.size() > 0 && BloodSword::Found(this->Skills, skill);
+        }
+
+        bool HasAny(Skills::List skills)
+        {
+            auto result = false;
+
+            for (auto &skill : skills)
+            {
+                result |= this->Has(skill);
+            }
+
+            return result;
         }
 
         void Add(Skills::Type skill)

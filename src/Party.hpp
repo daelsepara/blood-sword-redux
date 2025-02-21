@@ -33,6 +33,9 @@ namespace BloodSword::Party
         // for choices / conditions requiring a chosen number (1-6)
         int ChosenNumber = -1;
 
+        // holds survivors from previous battles
+        std::vector<Character::Base> Survivors = {};
+
         Base() {}
 
         Base(std::vector<Character::Base> members) : Members(members) {}
@@ -186,7 +189,9 @@ namespace BloodSword::Party
 
             this->LastBattle = !data["last_battle"].is_null() ? Battle::MapResult(std::string(data["last_battle"])) : Battle::Result::NONE;
 
-            // load party members
+            // load party
+            this->Clear();
+
             if (!data["members"].is_null() && data["members"].is_array() && data["members"].size() > 0)
             {
                 for (auto i = 0; i < data["members"].size(); i++)
@@ -194,6 +199,19 @@ namespace BloodSword::Party
                     auto character = Character::Load(data["members"][i]);
 
                     this->Add(character);
+                }
+            }
+
+            // load survivors
+            this->Survivors.clear();
+
+            if (!data["survivors"].is_null() && data["survivors"].is_array() && data["survivors"].size() > 0)
+            {
+                for (auto i = 0; i < data["survivors"].size(); i++)
+                {
+                    auto character = Character::Load(data["survivors"][i]);
+
+                    this->Survivors.push_back(character);
                 }
             }
         }
