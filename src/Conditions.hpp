@@ -363,12 +363,12 @@ namespace BloodSword::Section::Conditions
                   << (result ? "true" : "false")
                   << ", "
                   << (failed ? "true" : "false");
-        
-        if (text.size() >0)
+
+        if (text.size() > 0)
         {
             std::cerr << ", " << text;
         }
-                  
+
         std::cerr << ", [" << Book::Mapping[location.first]
                   << ": " << std::to_string(location.second) << "]"
                   << ")" << std::endl;
