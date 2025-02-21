@@ -328,7 +328,7 @@ namespace BloodSword::Map
                 {
                     this->Origins.clear();
 
-                    for (auto i = 0; i < int(data["origins"].size()); i++)
+                    for (auto i = 0; i < data["origins"].size(); i++)
                     {
                         auto x = !data["origins"][i]["x"].is_null() ? int(data["origins"][i]["x"]) : -1;
 
@@ -345,7 +345,7 @@ namespace BloodSword::Map
                 {
                     this->Spawn.clear();
 
-                    for (auto i = 0; i < int(data["spawn"].size()); i++)
+                    for (auto i = 0; i < data["spawn"].size(); i++)
                     {
                         auto x = !data["spawn"][i]["x"].is_null() ? int(data["spawn"][i]["x"]) : -1;
 

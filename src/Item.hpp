@@ -243,7 +243,7 @@ namespace BloodSword::Item
     {
         auto properties = std::vector<Item::Property>();
 
-        for (auto i = 0; i < int(data.size()); i++)
+        for (auto i = 0; i < data.size(); i++)
         {
             properties.push_back(Item::MapProperty(std::string(data[i])));
         }
@@ -260,7 +260,7 @@ namespace BloodSword::Items
     {
         auto items = std::vector<Item::Base>();
 
-        for (auto i = 0; i < int(data.size()); i++)
+        for (auto i = 0; i < data.size(); i++)
         {
             auto item = Item::Base();
 

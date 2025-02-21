@@ -150,7 +150,7 @@ namespace BloodSword::Character
     {
         auto targets = Character::Targets();
 
-        for (auto i = 0; i < int(data.size()); i++)
+        for (auto i = 0; i < data.size(); i++)
         {
             auto target = !data[i].is_null() ? Character::MapTarget(std::string(data[i])) : Character::Target::NONE;
 

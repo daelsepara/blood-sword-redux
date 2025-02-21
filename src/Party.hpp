@@ -189,7 +189,7 @@ namespace BloodSword::Party
             // load party members
             if (!data["members"].is_null() && data["members"].is_array() && data["members"].size() > 0)
             {
-                for (auto i = 0; i < int(data["members"].size()); i++)
+                for (auto i = 0; i < data["members"].size(); i++)
                 {
                     auto character = Character::Load(data["members"][i]);
 

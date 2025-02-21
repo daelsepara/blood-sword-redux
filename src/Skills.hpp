@@ -112,7 +112,7 @@ namespace BloodSword::Skills
     {
         auto skills = std::vector<Skills::Type>();
 
-        for (auto i = 0; i < int(data.size()); i++)
+        for (auto i = 0; i < data.size(); i++)
         {
             auto skill = !data[i].is_null() ? Skills::Map(std::string(data[i])) : Skills::Type::NONE;
 

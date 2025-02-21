@@ -113,6 +113,7 @@ namespace BloodSword::Section
         {
             auto background = std::vector<Section::Conditions::Base>();
 
+            for (auto i = 0; i < data["background"].size(); i++)
             {
                 auto condition = Conditions::Parse(data["background"][i]);
 
@@ -127,6 +128,7 @@ namespace BloodSword::Section
         {
             auto events = std::vector<Section::Conditions::Base>();
 
+            for (auto i = 0; i < data["events"].size(); i++)
             {
                 auto condition = Conditions::Parse(data["events"][i]);
 
@@ -141,6 +143,7 @@ namespace BloodSword::Section
         {
             auto conditions = std::vector<Conditions::Base>();
 
+            for (auto i = 0; i < data["next"].size(); i++)
             {
                 auto condition = Conditions::Parse(data["next"][i]);
 
@@ -237,7 +240,7 @@ namespace BloodSword::Story
 
                     if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
                     {
-                        for (auto i = 0; i < int(data["sections"].size()); i++)
+                        for (auto i = 0; i < data["sections"].size(); i++)
                         {
                             auto section = Section::Base();
 

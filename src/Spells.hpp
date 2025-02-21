@@ -300,7 +300,7 @@ namespace BloodSword::Spells
     {
         auto spells = Spells::Grimoire();
 
-        for (auto i = 0; i < int(data.size()); i++)
+        for (auto i = 0; i < data.size(); i++)
         {
             auto type = !data[i]["type"].is_null() ? Spells::Map(std::string(data[i]["type"])) : Spells::Type::NONE;
 
@@ -327,7 +327,7 @@ namespace BloodSword::Spells
     {
         auto spells = Spells::List();
 
-        for (auto i = 0; i < int(data.size()); i++)
+        for (auto i = 0; i < data.size(); i++)
         {
             auto spell = !data[i].is_null() ? Spells::Map(std::string(data[i])) : Spells::Type::NONE;
 

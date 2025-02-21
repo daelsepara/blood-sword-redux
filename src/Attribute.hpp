@@ -90,7 +90,7 @@ namespace BloodSword::Attributes
     {
         auto characteristics = Attributes::List();
 
-        for (auto i = 0; i < int(data.size()); i++)
+        for (auto i = 0; i < data.size(); i++)
         {
             auto attribute = Attribute::Base();
 
