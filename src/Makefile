@@ -19,7 +19,7 @@ else
 	LINKER_FLAGS += -lstdc++fs
 endif
 
-all: clean blood-sword battle-board
+all: clean blood-sword battle-board map
 
 map:
 	$(CC) -Wall $(BSWORD_MAP) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
