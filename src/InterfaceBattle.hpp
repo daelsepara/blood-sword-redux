@@ -700,9 +700,9 @@ namespace BloodSword::Interface
         }
     }
 
-    void Center(Battle::Base &battle, int id)
+    void Center(Battle::Base &battle, Map::Object character, int id)
     {
-        auto src = battle.Map.Find(Map::Object::PLAYER, id);
+        auto src = battle.Map.Find(character, id);
 
         battle.Map.X = src.X - (battle.Map.ViewX / 2);
 
@@ -910,22 +910,19 @@ namespace BloodSword::Interface
 
                 while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && !Engine::IsFleeing(party) && !exit)
                 {
-                    // center map on player
-                    if (Engine::IsPlayer(order, combatant))
-                    {
-                        Interface::Center(battle, order[combatant].Id);
-                    }
-
-                    // regenerate scene
-                    auto scene = Interface::BattleScene(battle, party);
-
-                    Interface::MapControls(scene, battle);
-
                     auto is_enemy = Engine::IsEnemy(order, combatant);
 
                     auto is_player = Engine::IsPlayer(order, combatant);
 
                     auto &character = is_player ? party[order[combatant].Id] : battle.Opponents[order[combatant].Id];
+
+                    // center map on player
+                    Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
+
+                    // regenerate scene
+                    auto scene = Interface::BattleScene(battle, party);
+
+                    Interface::MapControls(scene, battle);
 
                     // start of character turn
                     if (round > 0 && Engine::CoolDown(character))
@@ -1025,7 +1022,7 @@ namespace BloodSword::Interface
 
                                                 if (!end.IsNone())
                                                 {
-                                                    valid_target = Interface::Move(battle.Map, character, movement, src - Point(battle.Map.X, battle.Map.Y), end - Point(battle.Map.X, battle.Map.Y));
+                                                    valid_target = Interface::Move(battle.Map, character, movement, src, end);
 
                                                     if (valid_target)
                                                     {

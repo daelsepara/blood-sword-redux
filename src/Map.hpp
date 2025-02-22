@@ -677,13 +677,20 @@ namespace BloodSword::Map
         // remove occupant from map
         void Remove(Map::Object occupant, int id)
         {
-            auto remove = this->Find(occupant, id);
-
-            if (!remove.IsNone())
+            while (true)
             {
-                (*this)[remove].Occupant = Map::Object::NONE;
+                auto remove = this->Find(occupant, id);
 
-                (*this)[remove].Id = -1;
+                if (!remove.IsNone())
+                {
+                    (*this)[remove].Occupant = Map::Object::NONE;
+
+                    (*this)[remove].Id = -1;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
 
