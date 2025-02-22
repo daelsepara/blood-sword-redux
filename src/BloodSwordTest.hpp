@@ -493,23 +493,25 @@ namespace BloodSword::Test
 
         auto draw = Point(map.DrawX, map.DrawY);
 
+        auto pad = BloodSword::Pad;
+
         auto RegenerateScene = [&](Map::Base &map)
         {
             auto scene = Interface::Map(map, party, enemies, 3);
 
             auto id = int(scene.Controls.size());
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad));
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize + pad));
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize + pad));
 
-            scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad, map.TileSize, map.TileSize, Color::Active));
 
-            scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::MOVE, id + 1, id, id + 2, id - map.ViewX + 1, id + 1, map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize + pad, map.TileSize, map.TileSize, Color::Active));
 
-            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize, map.TileSize, map.TileSize, Color::Active));
+            scene.Add(Controls::Base(Controls::Type::EXIT, id + 2, id + 1, id + 2, id - map.ViewX + 2, id + 2, map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize + pad, map.TileSize, map.TileSize, Color::Active));
 
             return scene;
         };

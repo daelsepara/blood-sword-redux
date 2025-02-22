@@ -259,7 +259,7 @@ namespace BloodSword::Interface
         auto num_controls = 0;
 
         // add background frame
-        scene.Add(Scene::Element(map.DrawX, map.DrawY, map.ViewX * map.TileSize, map.ViewY * map.TileSize, Color::Background, Color::Inactive, 1));
+        scene.Add(Scene::Element(map.DrawX, map.DrawY, map.ViewX * map.TileSize, map.ViewY * map.TileSize, Color::Background, Color::Active, 1));
 
         for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {
@@ -1028,13 +1028,13 @@ namespace BloodSword::Interface
         {
             SDL_Rect view;
 
-            view.w = map.ViewX * map.TileSize;
+            view.w = map.ViewX * map.TileSize + 2;
 
-            view.h = map.ViewY * map.TileSize;
+            view.h = map.ViewY * map.TileSize + 2;
 
-            view.x = map.DrawX;
+            view.x = map.DrawX - 1;
 
-            view.y = map.DrawY;
+            view.y = map.DrawY - 1;
 
             SDL_RenderSetClipRect(graphics.Renderer, &view);
         }
@@ -1432,9 +1432,8 @@ namespace BloodSword::Interface
 
         movement.Delta = Point(8, 8);
 
+        // set offsets
         movement.Set(Point(map.DrawX - map.X * map.TileSize, map.DrawY - map.Y * map.TileSize), start);
-
-        movement.Reset();
 
         return movement;
     }

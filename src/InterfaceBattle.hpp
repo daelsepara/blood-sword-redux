@@ -721,13 +721,13 @@ namespace BloodSword::Interface
         auto result = Battle::Result::DETERMINE;
 
         // adjust battle UI
-        auto total_w = graphics.Width - 6 * BloodSword::TileSize;
+        auto total_w = graphics.Width - 12 * BloodSword::TileSize;
 
         auto total_h = graphics.Height - 6 * BloodSword::TileSize;
 
-        battle.Map.ViewX = std::min(battle.Map.Width, (total_w / BloodSword::TileSize));
+        battle.Map.ViewX = std::min(battle.Map.ViewX, (total_w / BloodSword::TileSize));
 
-        battle.Map.ViewY = std::min(battle.Map.Height, (total_h / BloodSword::TileSize));
+        battle.Map.ViewY = std::min(battle.Map.ViewY, (total_h / BloodSword::TileSize));
 
         battle.Map.DrawX = (graphics.Width - battle.Map.ViewX * battle.Map.TileSize) / 2;
 
@@ -1856,7 +1856,11 @@ namespace BloodSword::Interface
                         }
                         else
                         {
+                            Interface::Clip(graphics, battle.Map);
+
                             animating = !Graphics::Animate(graphics, scene, movement, BloodSword::FrameDelay);
+
+                            Interface::Clip(graphics);
 
                             if (!animating)
                             {
