@@ -184,6 +184,15 @@ namespace BloodSword::Party
             }
         }
 
+        // add status to entire party
+        void Add(Character::Status status)
+        {
+            for (auto i = 0; i < this->Count(); i++)
+            {
+                this->Members[i].Add(status);
+            }
+        }
+
         // Load party from json data
         void Load(nlohmann::json &data)
         {

@@ -890,15 +890,9 @@ namespace BloodSword::Interface
             auto text_y = battle.Map.DrawY - (BloodSword::TileSize + BloodSword::HalfTile);
 
             // set "IN BATTLE" status
-            for (auto member = 0; member < party.Count(); member++)
-            {
-                party[member].Add(Character::Status::IN_BATTLE);
-            }
+            party.Add(Character::Status::IN_BATTLE);
 
-            for (auto member = 0; member < battle.Opponents.Count(); member++)
-            {
-                battle.Opponents[member].Add(Character::Status::IN_BATTLE);
-            }
+            battle.Opponents.Add(Character::Status::IN_BATTLE);
 
             // focus/cursor blink variables
             Uint64 blink_start = SDL_GetTicks64();
