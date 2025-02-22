@@ -1146,6 +1146,19 @@ namespace BloodSword::Interface
                                                         overlay.VerifyAndAdd(Scene::Element(enemy_status[battle.Map[control.Map].Id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
                                                     }
                                                 }
+                                                else if (battle.Map[control.Map].IsExit())
+                                                {
+                                                    if (asset != battle.Map[control.Map].Asset)
+                                                    {
+                                                        asset = battle.Map[control.Map].Asset;
+
+                                                        Free(&texture);
+
+                                                        texture = Graphics::CreateText(graphics, "EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                                                    }
+
+                                                    overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
+                                                }
                                                 else if (battle.Map[control.Map].IsTemporarilyBlocked())
                                                 {
                                                     if (asset != battle.Map[control.Map].TemporaryAsset || lifetime != battle.Map[control.Map].Lifetime)
