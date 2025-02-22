@@ -887,7 +887,7 @@ namespace BloodSword::Interface
 
             auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-            auto text_y = battle.Map.DrawY - battle.Map.TileSize - BloodSword::Pad * 2;
+            auto text_y = battle.Map.DrawY - (BloodSword::TileSize + BloodSword::HalfTile);
 
             // set "IN BATTLE" status
             for (auto member = 0; member < party.Count(); member++)
@@ -1118,7 +1118,7 @@ namespace BloodSword::Interface
                                                 else
                                                 {
                                                     // round number
-                                                    overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
                                                 }
 
                                                 // show character stats
@@ -1203,7 +1203,7 @@ namespace BloodSword::Interface
                                             overlay = Interface::Spells(draw, map_w, map_h, character, Color::Background, Color::Active, BloodSword::Border, true);
 
                                             // round number
-                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
 
                                             if (Input::IsValid(overlay, input))
                                             {
@@ -1244,7 +1244,7 @@ namespace BloodSword::Interface
                                             overlay = Interface::BattleActions(draw, map_w, map_h, battle, is_player ? party : battle.Opponents, order[combatant].Id, Color::Background, Color::Active, BloodSword::Border);
 
                                             // round number
-                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
 
                                             if (Input::IsValid(overlay, input))
                                             {
