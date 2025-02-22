@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     {
         std::cerr << "To run:" << std::endl
                   << std::endl
-                  << argv[0] << " [map.json]"
+                  << argv[0] << " [battle.json]"
                   << std::endl;
 
         return 1;
