@@ -1,6 +1,8 @@
 #ifndef __ENGINE_HPP__
 #define __ENGINE_HPP__
 
+#include <vector>
+
 #include "Attribute.hpp"
 #include "Book.hpp"
 #include "Character.hpp"
@@ -188,6 +190,17 @@ namespace BloodSword::Engine
         }
     }
 
+    bool CanTarget(Character::Base &character, bool in_battle)
+    {
+        auto is_away = character.Is(Character::Status::AWAY);
+
+        auto is_alive = Engine::IsAlive(character);
+
+        auto battle = (in_battle && character.Is(Character::Status::IN_BATTLE)) || !in_battle;
+
+        return (is_alive && !is_away && battle);
+    }
+
     void Build(Engine::Queue &queue, Party::Base &party, Attribute::Type attribute, bool in_battle = false)
     {
         // add characters in party to queue
@@ -197,13 +210,7 @@ namespace BloodSword::Engine
 
             auto paralyzed = party[i].Is(Character::Status::PARALYZED);
 
-            auto away = party[i].Is(Character::Status::AWAY);
-
-            auto is_alive = Engine::IsAlive(party[i]);
-
-            auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-            if (is_alive && !paralyzed && !away && battle)
+            if (Engine::CanTarget(party[i], in_battle) && !paralyzed)
             {
                 queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
             }
@@ -220,15 +227,9 @@ namespace BloodSword::Engine
 
             auto paralyzed = party[i].Is(Character::Status::PARALYZED);
 
-            auto away = party[i].Is(Character::Status::AWAY);
-
-            auto is_alive = Engine::IsAlive(party[i]);
-
             auto skilled = party[i].Has(skill);
 
-            auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-            if (is_alive && !paralyzed && !away && skilled && battle)
+            if (Engine::CanTarget(party[i], in_battle) && !paralyzed && skilled)
             {
                 queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
             }
@@ -375,19 +376,8 @@ namespace BloodSword::Engine
         return location;
     }
 
-    bool CanTarget(Character::Base &character, bool in_battle)
-    {
-        auto is_away = character.Is(Character::Status::AWAY);
-
-        auto is_alive = Engine::IsAlive(character);
-
-        auto battle = (in_battle && character.Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-        return (is_alive && !is_away && battle);
-    }
-
-    // build distance queue
-    Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
+    // generic queue builder (based on distance / endurance)
+    Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool ranged = false, bool move = false, bool descending = false)
     {
         Engine::Queue queue = {};
 
@@ -397,11 +387,29 @@ namespace BloodSword::Engine
             {
                 auto location = Engine::Location(map, party[i], i);
 
-                auto distance = map.Distance(src, location);
+                auto distance = -1;
 
-                if (distance >= 0 && map.IsValid(location) && location != src)
+                if (move)
                 {
-                    queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+                    auto path = Move::FindPath(map, src, location, map[src].IsEnemy());
+
+                    distance = Move::Count(map, path, map[src].IsEnemy());
+                }
+                else
+                {
+                    distance = map.Distance(src, location);
+                }
+
+                if (map.IsValid(location) && location != src)
+                {
+                    if ((move && distance > 0) || (ranged && distance > 1))
+                    {
+                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+                    }
+                    else if (!move && !ranged && distance == 1)
+                    {
+                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, in_battle)));
+                    }
                 }
             }
         }
@@ -414,87 +422,19 @@ namespace BloodSword::Engine
     // build queue based on path to target (alternative to the distance-based (between src and dst) approach
     Engine::Queue MoveTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
-        Engine::Queue queue = {};
-
-        if (map.IsValid(src))
-        {
-            for (auto i = 0; i < party.Count(); i++)
-            {
-                if (Engine::CanTarget(party[i], in_battle))
-                {
-                    auto location = Engine::Location(map, party[i], i);
-
-                    auto path = Move::FindPath(map, src, location, map[src].IsEnemy());
-
-                    auto distance = Move::Count(map, path, map[src].IsEnemy());
-
-                    if (distance > 0 && map.IsValid(location) && location != src)
-                    {
-                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
-                    }
-                }
-            }
-        }
-
-        Engine::Sort(queue, descending);
-
-        return queue;
+        return Engine::Build(map, party, src, in_battle, false, true, descending);
     }
 
     // build shot targets
     Engine::Queue RangedTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
-        Engine::Queue queue = {};
-
-        if (map.IsValid(src))
-        {
-            for (auto i = 0; i < party.Count(); i++)
-            {
-                if (Engine::CanTarget(party[i], in_battle))
-                {
-                    auto location = Engine::Location(map, party[i], i);
-
-                    auto distance = map.Distance(src, location);
-
-                    if (distance > 1 && map.IsValid(location) && location != src)
-                    {
-                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
-                    }
-                }
-            }
-        }
-
-        Engine::Sort(queue, descending);
-
-        return queue;
+        return Engine::Build(map, party, src, in_battle, true, false, descending);
     }
 
-    // build queue endurance score for adjacent opponents
+    // build fight targets (adjacent opponents)
     Engine::Queue FightTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
-        Engine::Queue queue = {};
-
-        if (map.IsValid(src))
-        {
-            for (auto i = 0; i < party.Count(); i++)
-            {
-                if (Engine::CanTarget(party[i], in_battle))
-                {
-                    auto location = Engine::Location(map, party[i], i);
-
-                    auto distance = map.Distance(src, location);
-
-                    if (distance == 1 && map.IsValid(location) && location != src)
-                    {
-                        queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, in_battle)));
-                    }
-                }
-            }
-        }
-
-        Engine::Sort(queue, descending);
-
-        return queue;
+        return Engine::Build(map, party, src, in_battle, false, false, descending);
     }
 
     // build queue of preferred targets
@@ -827,18 +767,12 @@ namespace BloodSword::Engine
     // resets all status except enthralment and fleeing
     void ResetAll(Party::Base &party)
     {
-        for (auto i = 0; i < party.Count(); i++)
-        {
-            Engine::Cancel(party[i], Character::Status::DEFENDING);
+        party.Remove({Character::Status::DEFENDING,
+                      Character::Status::DEFENDED,
+                      Character::Status::PARALYZED,
+                      Character::Status::IN_BATTLE});
 
-            Engine::Cancel(party[i], Character::Status::DEFENDED);
-
-            Engine::Cancel(party[i], Character::Status::PARALYZED);
-
-            Engine::Cancel(party[i], Character::Status::IN_BATTLE);
-
-            Engine::ResetSpells(party[i]);
-        }
+        party.ResetSpells();
     }
 }
 

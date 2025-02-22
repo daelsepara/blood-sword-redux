@@ -202,6 +202,28 @@ namespace BloodSword::Party
             }
         }
 
+        void Remove(std::vector<Character::Status> statuses)
+        {
+            for (auto i = 0; i < this->Count(); i++)
+            {
+                for (auto status : statuses)
+                {
+                    this->Members[i].Remove(status);
+                }
+            }
+        }
+
+        void ResetSpells()
+        {
+            for (auto i = 0; i < this->Count(); i++)
+            {
+                if (this->Members[i].Has(Skills::Type::SPELLS))
+                {
+                    this->Members[i].ResetSpellComplexities();
+                }
+            }
+        }
+
         // Load party from json data
         void Load(nlohmann::json &data)
         {
