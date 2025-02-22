@@ -707,9 +707,9 @@ namespace BloodSword::Interface
     {
         auto src = battle.Map.Find(character, id);
 
-        battle.Map.X = src.X - (battle.Map.ViewX / 2);
+        battle.Map.X = src.X - (battle.Map.ViewX) / 2 + 1;
 
-        battle.Map.Y = src.Y - (battle.Map.ViewY / 2);
+        battle.Map.Y = src.Y - (battle.Map.ViewY) / 2 + 1;
 
         battle.Map.CheckBounds();
     }

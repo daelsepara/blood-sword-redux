@@ -57,7 +57,8 @@
                     "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
-                    ]
+                    ],
+                    "type": "ASSASSIN"
                 },
                 {
                     "asset": "ASSASSIN",
@@ -109,7 +110,8 @@
                     "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
-                    ]
+                    ],
+                    "type": "ASSASSIN"
                 },
                 {
                     "asset": "ASSASSIN",
@@ -161,7 +163,8 @@
                     "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
-                    ]
+                    ],
+                    "type": "ASSASSIN"
                 },
                 {
                     "asset": "ASSASSIN",
@@ -213,7 +216,8 @@
                     "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
-                    ]
+                    ],
+                    "type": "ASSASSIN"
                 },
                 {
                     "asset": "ASSASSIN",
@@ -265,7 +269,8 @@
                     "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
-                    ]
+                    ],
+                    "type": "ASSASSIN"
                 },
                 {
                     "asset": "ASSASSIN",
@@ -317,7 +322,8 @@
                     "shoot": "SHURIKEN",
                     "skills": [
                         "SHURIKEN"
-                    ]
+                    ],
+                    "type": "ASSASSIN"
                 }
             ]
         }

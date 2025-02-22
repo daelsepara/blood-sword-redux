@@ -62,6 +62,9 @@ namespace BloodSword::Character
 
         Skills::List SkillImmunity = {};
 
+        // target type (self)
+        Target::Type Type = Target::Type::NONE;
+
         // additional targets
         Target::List Targets = {};
 
@@ -671,6 +674,8 @@ namespace BloodSword::Character
 
         character.Shoot = !data["shoot"].is_null() ? Skills::Map(std::string(data["shoot"])) : Skills::Type::NONE;
 
+        character.Type = !data["type"].is_null() ? Target::Map(std::string(data["type"])) : Target::Type::NONE;
+
         if (!data["attributes"].is_null() && data["attributes"].is_array() && data["attributes"].size() > 0)
         {
             character.Attributes = Attributes::Load(data["attributes"]);
@@ -740,6 +745,11 @@ namespace BloodSword::Character
         data["class"] = Character::ClassMapping[character.Class];
 
         data["attributes"] = Attributes::Data(character.Attributes);
+
+        if (character.Type != Target::Type::NONE)
+        {
+            data["type"] = Target::Mapping[character.Type];
+        }
 
         if (character.Fight != Skills::Type::NONE)
         {

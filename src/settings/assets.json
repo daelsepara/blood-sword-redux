@@ -323,6 +323,14 @@
         {
             "id": "HEAL",
             "path": "images/system/heart-plus.png"
+        },
+        {
+            "id": "DOOR",
+            "path": "images/map/door.png"
+        },
+        {
+            "id": "WOODEN DOOR",
+            "path": "images/map/wooden-door.png"
         }
     ]
 }

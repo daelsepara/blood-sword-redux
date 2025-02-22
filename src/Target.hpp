@@ -14,7 +14,8 @@ namespace BloodSword::Target
         NONE = -1,
         PLAYER,
         ASSASSIN,
-        BARBARIAN
+        BARBARIAN,
+        CORPSE
     };
 
     typedef std::vector<Target::Type> List;
@@ -23,7 +24,8 @@ namespace BloodSword::Target
         {Target::Type::NONE, "NONE"},
         {Target::Type::PLAYER, "PLAYER"},
         {Target::Type::ASSASSIN, "ASSASSIN"},
-        {Target::Type::BARBARIAN, "BARBARIAN"}};
+        {Target::Type::BARBARIAN, "BARBARIAN"},
+        {Target::Type::CORPSE, "CORPSE"}};
 
     Target::Type Map(const char *target)
     {

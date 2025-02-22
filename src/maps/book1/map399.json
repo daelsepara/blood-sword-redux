@@ -197,15 +197,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "NONE",
+                "asset": "WOODEN DOOR",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -243,64 +235,6 @@
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
                 "type": "PASSABLE"
-            }
-        ],
-        [
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
             },
             {
                 "asset": "NONE",
@@ -313,36 +247,36 @@
         ],
         [
             {
-                "asset": "NONE",
+                "asset": "WALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
                 "asset": "NONE",
@@ -577,6 +511,80 @@
         ],
         [
             {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
                 "asset": "WALL",
                 "id": -1,
                 "lifetime": -1,
@@ -594,6 +602,64 @@
             },
             {
                 "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -610,72 +676,6 @@
             },
             {
                 "asset": "BRIDGE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "EXIT"
-            },
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            }
-        ],
-        [
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "WALL",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "OBSTACLE"
-            },
-            {
-                "asset": "NONE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -709,7 +709,7 @@
         ]
     ],
     "tilesize": 64,
-    "viewx": 7,
+    "viewx": 8,
     "viewy": 8,
     "width": 8,
     "x": 0,

@@ -650,6 +650,14 @@ namespace BloodSword::Generate
         character.Status.clear();
 
         character.Items.clear();
+
+        character.Targets.clear();
+
+        character.CalledToMind.clear();
+
+        character.SkillImmunity.clear();
+
+        character.SpellImmunity.clear();
     }
 
     // set fight / shoot modes
@@ -688,6 +696,8 @@ namespace BloodSword::Generate
         Generate::Money(character);
 
         Generate::Assets(character);
+
+        character.Type = Target::Type::PLAYER;
 
         return character;
     }
@@ -743,6 +753,17 @@ namespace BloodSword::Generate
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
         auto npc = Generate::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
+
+        npc.Targets = targets;
+
+        return npc;
+    }
+
+    Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Target::Type type, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
+    {
+        auto npc = Generate::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
+
+        npc.Type = type;
 
         npc.Targets = targets;
 
