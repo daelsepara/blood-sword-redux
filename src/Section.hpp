@@ -97,9 +97,9 @@ namespace BloodSword::Section
         }
 
         // image asset and position
-        section.ImagePosition = !data["imagePosition"].is_null() ? BloodSword::MapPosition(std::string(data["imagePosition"])) : Position::NONE;
+        section.ImagePosition = !data["image_position"].is_null() ? BloodSword::MapPosition(std::string(data["image_position"])) : Position::NONE;
 
-        section.ImageAsset = !data["imageAsset"].is_null() ? std::string(data["imageAsset"]) : std::string();
+        section.ImageAsset = !data["image_asset"].is_null() ? std::string(data["image_asset"]) : std::string();
 
         // story section text
         section.Text = !data["text"].is_null() ? std::string(data["text"]) : std::string();
