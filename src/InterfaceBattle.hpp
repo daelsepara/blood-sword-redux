@@ -887,6 +887,8 @@ namespace BloodSword::Interface
 
             auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
+            auto text_y = battle.Map.DrawY - battle.Map.TileSize - BloodSword::Pad * 2;
+
             // set "IN BATTLE" status
             for (auto member = 0; member < party.Count(); member++)
             {
@@ -1101,17 +1103,17 @@ namespace BloodSword::Interface
 
                                                     overlay = Interface::Path(battle.Map, character, src, dst);
 
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_DEST], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_DEST], battle.Map.DrawX, text_y));
                                                 }
                                                 else if (fight)
                                                 {
                                                     // fight mode
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_OPPONENT], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_OPPONENT], battle.Map.DrawX, text_y));
                                                 }
                                                 else if (shoot || spell)
                                                 {
                                                     // shoot mode
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_TARGET], battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_TARGET], battle.Map.DrawX, text_y));
                                                 }
                                                 else
                                                 {
@@ -1180,7 +1182,7 @@ namespace BloodSword::Interface
                                             else
                                             {
                                                 // round number
-                                                overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, battle.Map.TileSize / 2));
+                                                overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
 
                                                 // captions for other controls
                                                 auto exit_id = Controls::Find(scene.Controls, Controls::Type::EXIT);
