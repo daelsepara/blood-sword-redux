@@ -721,6 +721,11 @@ namespace BloodSword::Character
             character.Targets = Target::Load(data["targets"]);
         }
 
+        if (!data["location"].is_null())
+        {
+            character.Location = Book::Load(data["location"]);
+        }
+
         return character;
     }
 
@@ -803,6 +808,11 @@ namespace BloodSword::Character
         if (character.Targets.size() > 0)
         {
             data["targets"] = Target::Data(character.Targets);
+        }
+
+        if (Book::IsDefined(character.Location))
+        {
+            data["location"] = Book::Data(character.Location);
         }
 
         return data;

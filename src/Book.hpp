@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <vector>
 
+#include "nlohmann/json.hpp"
 #include "Templates.hpp"
 
 namespace BloodSword::Book
@@ -49,7 +50,7 @@ namespace BloodSword::Book
 
     bool IsUndefined(Location location)
     {
-        return (location.first == Book::Number::NONE && location.second == -1);
+        return (location.first == Book::Number::NONE || location.second == -1);
     }
 
     bool IsDefined(Location location)
@@ -87,6 +88,30 @@ namespace BloodSword::Book
                   << std::endl;
 
         return ((current.first == next.first) && (current.second == next.second));
+    }
+
+    nlohmann::json Data(Book::Location &location)
+    {
+        nlohmann::json data;
+
+        auto book = Book::Mapping[location.first];
+
+        auto number = int(location.second);
+
+        data["book"] = book;
+
+        data["number"] = number;
+
+        return data;
+    }
+
+    Book::Location Load(nlohmann::json &data)
+    {
+        auto book = !data["book"].is_null() ? Book::MapBook(std::string(data["book"])) : Book::Number::NONE;
+
+        auto number = !data["number"].is_null() ? int(data["number"]) : -1;
+
+        return {book, number};
     }
 }
 #endif

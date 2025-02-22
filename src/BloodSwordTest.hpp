@@ -1565,14 +1565,14 @@ namespace BloodSword::Test
                 // player turn
                 scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
+                alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
 
                 // enemy retaliates
                 if (alive)
                 {
                     scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
+                    alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
                 }
 
                 // enemy turn
@@ -1580,7 +1580,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[1], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
+                    alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
                 }
 
                 // player retaliates
@@ -1588,7 +1588,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
+                    alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
                 }
             }
             else
@@ -1596,14 +1596,14 @@ namespace BloodSword::Test
                 // enemy turn
                 scene.VerifyAndAdd(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
+                alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
 
                 // player retaliates
                 if (alive)
                 {
                     scene.Elements[1] = Scene::Element(events[2], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
+                    alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
                 }
 
                 // player turn
@@ -1611,7 +1611,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
+                    alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Fight);
                 }
 
                 // enemy retaliates
@@ -1619,7 +1619,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[3], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Fight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
+                    alive &= Interface::ResolveFight(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Fight);
                 }
             }
 

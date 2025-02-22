@@ -57,11 +57,7 @@ namespace BloodSword::Section
         // set book and section number
         if (!data["location"].is_null())
         {
-            auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
-
-            auto number = !data["location"]["number"].is_null() ? int(data["location"]["number"]) : -1;
-
-            section.Location = {book, number};
+            section.Location = Book::Load(data["location"]);
         }
 
         // set features

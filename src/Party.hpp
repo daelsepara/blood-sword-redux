@@ -190,21 +190,13 @@ namespace BloodSword::Party
             // set party location
             if (!data["location"].is_null())
             {
-                auto book = !data["location"]["book"].is_null() ? Book::MapBook(std::string(data["location"]["book"])) : Book::Number::NONE;
-
-                auto number = !data["location"]["number"].is_null() ? int(data["location"]["number"]) : -1;
-
-                this->Location = {book, number};
+                this->Location = Book::Load(data["location"]);
             }
 
             // set party previous location
             if (!data["previous_location"].is_null())
             {
-                auto book = !data["previous_location"]["book"].is_null() ? Book::MapBook(std::string(data["previous_location"]["book"])) : Book::Number::NONE;
-
-                auto number = !data["previous_location"]["number"].is_null() ? int(data["previous_location"]["number"]) : -1;
-
-                this->PreviousLocation = {book, number};
+                this->PreviousLocation = Book::Load(data["previous_location"]);
             }
 
             this->ChosenNumber = !data["chosen_number"].is_null() ? int(data["chosen_number"]) : -1;
@@ -259,32 +251,12 @@ namespace BloodSword::Party
 
         if (Book::IsDefined(party.Location))
         {
-            auto book = Book::Mapping[party.Location.first];
-
-            auto number = int(party.Location.second);
-
-            nlohmann::json location;
-
-            location["book"] = book;
-
-            location["number"] = number;
-
-            data["location"] = location;
+            data["location"] = Book::Data(party.Location);
         }
 
         if (Book::IsDefined(party.PreviousLocation))
         {
-            auto book = Book::Mapping[party.PreviousLocation.first];
-
-            auto number = int(party.PreviousLocation.second);
-
-            nlohmann::json location;
-
-            location["book"] = book;
-
-            location["number"] = number;
-
-            data["previous_location"] = location;
+            data["previous_location"] = Book::Data(party.PreviousLocation);
         }
 
         if (party.LastBattle != Battle::Result::NONE)

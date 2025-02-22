@@ -130,11 +130,7 @@ namespace BloodSword::Battle
                 // get survivors from previous books
                 if (!data["survivors"].is_null())
                 {
-                    auto book = !data["survivors"]["book"].is_null() ? Book::MapBook(std::string(data["survivors"]["book"])) : Book::Number::NONE;
-
-                    auto number = !data["survivors"]["number"].is_null() ? int(data["survivors"]["number"]) : -1;
-
-                    this->Survivors = {book, number};
+                    this->Survivors = Book::Load(data["survivors"]);
                 }
             }
         }

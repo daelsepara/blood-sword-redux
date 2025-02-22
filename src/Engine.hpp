@@ -791,6 +791,55 @@ namespace BloodSword::Engine
     {
         return Engine::CanShoot(character, character.Shoot);
     }
+
+    // generic reset
+    void Cancel(Character::Base &character, Character::Status status)
+    {
+        if (character.Is(status))
+        {
+            character.Remove(status);
+        }
+    }
+
+    // reset battle status
+    void ResetStatus(Character::Base &character)
+    {
+        Engine::Cancel(character, Character::Status::FLEEING);
+
+        Engine::Cancel(character, Character::Status::DEFENDED);
+    }
+
+    void ResetSpells(Character::Base &character)
+    {
+        if (character.Has(Skills::Type::SPELLS))
+        {
+            character.ResetSpellComplexities();
+        }
+    }
+
+    void ResetStatusAndSpells(Character::Base &character)
+    {
+        Engine::ResetStatus(character);
+
+        Engine::ResetSpells(character);
+    }
+
+    // resets all status except enthralment and fleeing
+    void ResetAll(Party::Base &party)
+    {
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            Engine::Cancel(party[i], Character::Status::DEFENDING);
+
+            Engine::Cancel(party[i], Character::Status::DEFENDED);
+
+            Engine::Cancel(party[i], Character::Status::PARALYZED);
+
+            Engine::Cancel(party[i], Character::Status::IN_BATTLE);
+
+            Engine::ResetSpells(party[i]);
+        }
+    }
 }
 
 #endif

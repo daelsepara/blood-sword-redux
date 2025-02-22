@@ -37,38 +37,6 @@ namespace BloodSword::Interface
         return result;
     }
 
-    // generic reset
-    void Cancel(Character::Base &character, Character::Status status)
-    {
-        if (character.Is(status))
-        {
-            character.Remove(status);
-        }
-    }
-
-    // reset battle status
-    void ResetStatus(Character::Base &character)
-    {
-        Interface::Cancel(character, Character::Status::FLEEING);
-
-        Interface::Cancel(character, Character::Status::DEFENDED);
-    }
-
-    void ResetSpells(Character::Base &character)
-    {
-        if (character.Has(Skills::Type::SPELLS))
-        {
-            character.ResetSpellComplexities();
-        }
-    }
-
-    void ResetStatusAndSpells(Character::Base &character)
-    {
-        Interface::ResetStatus(character);
-
-        Interface::ResetSpells(character);
-    }
-
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size)
     {
         std::vector<Controls::Type> controls = {};
@@ -339,7 +307,7 @@ namespace BloodSword::Interface
     }
 
     // fight action
-    bool Fight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type skill)
+    bool ResolveFight(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &attacker, Character::Base &defender, Skills::Type skill)
     {
         auto alive = true;
 
@@ -417,7 +385,7 @@ namespace BloodSword::Interface
 
         auto alive = true;
 
-        alive &= Interface::Fight(graphics, background, draw, map_w, map_h, attacker, defender, melee);
+        alive &= Interface::ResolveFight(graphics, background, draw, map_w, map_h, attacker, defender, melee);
 
         if (!alive)
         {
@@ -430,7 +398,7 @@ namespace BloodSword::Interface
             // retaliate only if not paralyzed, knocked out, and defending
             if (!defender.Is(Character::Status::KNOCKED_OUT) && !defender.Is(Character::Status::PARALYZED))
             {
-                alive &= Interface::Fight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
+                alive &= Interface::ResolveFight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
 
                 if (!alive)
                 {
@@ -562,7 +530,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, scene, draw, map_w, map_h, text, Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
 
-                Interface::Cancel(character, Character::Status::ENTHRALLED);
+                Engine::Cancel(character, Character::Status::ENTHRALLED);
             }
         }
     }
@@ -1017,7 +985,7 @@ namespace BloodSword::Interface
 
                                         if (opponents.size() > 0 && !(round == 0 && battle.Has(Battle::Condition::AMBUSH_RANGED)))
                                         {
-                                            Interface::ResetSpells(character);
+                                            Engine::ResetSpells(character);
 
                                             // fight
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, character.Fight);
@@ -1354,7 +1322,7 @@ namespace BloodSword::Interface
 
                                                             if (animating)
                                                             {
-                                                                Interface::Cancel(character, Character::Status::FLEEING);
+                                                                Engine::Cancel(character, Character::Status::FLEEING);
 
                                                                 // regenerate scene
                                                                 scene = Interface::BattleScene(battle, party);
@@ -1414,7 +1382,7 @@ namespace BloodSword::Interface
 
                                                         if (distance == 1)
                                                         {
-                                                            Interface::ResetStatusAndSpells(character);
+                                                            Engine::ResetStatusAndSpells(character);
 
                                                             // fight
                                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout);
@@ -1445,7 +1413,7 @@ namespace BloodSword::Interface
                                                         {
                                                             if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(character.Shoot))
                                                             {
-                                                                Interface::ResetStatus(character);
+                                                                Engine::ResetStatus(character);
 
                                                                 // shoot
                                                                 Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id);
@@ -1615,7 +1583,7 @@ namespace BloodSword::Interface
 
                                                     if (opponents.size() == 1)
                                                     {
-                                                        Interface::ResetStatusAndSpells(character);
+                                                        Engine::ResetStatusAndSpells(character);
 
                                                         fight = false;
 
@@ -1667,7 +1635,7 @@ namespace BloodSword::Interface
 
                                                         if (!battle.Opponents[targets[0].Id].IsImmune(character.Shoot))
                                                         {
-                                                            Interface::ResetStatusAndSpells(character);
+                                                            Engine::ResetStatusAndSpells(character);
 
                                                             // shoot
                                                             Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
@@ -1710,7 +1678,7 @@ namespace BloodSword::Interface
                                                 {
                                                     character.Add(Character::Status::DEFENDING);
 
-                                                    Interface::ResetStatusAndSpells(character);
+                                                    Engine::ResetStatusAndSpells(character);
 
                                                     Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
 
@@ -1724,7 +1692,7 @@ namespace BloodSword::Interface
                                                         character.Add(Character::Status::FLEEING);
                                                     }
 
-                                                    Interface::ResetSpells(character);
+                                                    Engine::ResetSpells(character);
 
                                                     Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
 
@@ -1906,7 +1874,7 @@ namespace BloodSword::Interface
                             if (!animating)
                             {
                                 // cancel fleeing status
-                                Interface::Cancel(character, Character::Status::FLEEING);
+                                Engine::Cancel(character, Character::Status::FLEEING);
 
                                 if (is_player)
                                 {
@@ -1964,19 +1932,9 @@ namespace BloodSword::Interface
         }
 
         // clear "IN BATTLE" status
-        for (auto member = 0; member < party.Count(); member++)
-        {
-            Interface::Cancel(party[member], Character::Status::IN_BATTLE);
+        Engine::ResetAll(party);
 
-            Interface::ResetSpells(party[member]);
-        }
-
-        for (auto member = 0; member < battle.Opponents.Count(); member++)
-        {
-            Interface::Cancel(battle.Opponents[member], Character::Status::IN_BATTLE);
-
-            Interface::ResetSpells(battle.Opponents[member]);
-        }
+        Engine::ResetAll(battle.Opponents);
 
         // determine results of battle
         if (result == Battle::Result::DETERMINE)
