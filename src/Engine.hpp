@@ -399,7 +399,7 @@ namespace BloodSword::Engine
 
                 auto distance = map.Distance(src, location);
 
-                if (distance >= 0 && map.IsValid(location))
+                if (distance >= 0 && map.IsValid(location) && location != src)
                 {
                     queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
                 }
@@ -497,13 +497,12 @@ namespace BloodSword::Engine
         return queue;
     }
 
-    void Targets(Engine::Queue &queue, Map::Base &map, Party::Base &party, Point &src, bool in_party = true, bool in_battle = false, bool ranged = false)
+    // build queue of preferred targets
+    void Targets(Engine::Queue &queue, Map::Base &map, Party::Base &party, Character::Base &character, Point &src, bool in_party = true, bool in_battle = false, bool ranged = false, bool move = false, bool spell = false)
     {
         if (map.IsValid(src))
         {
             auto id = map[src].Id;
-
-            auto &character = party[id];
 
             for (auto &target : character.Targets)
             {
@@ -515,18 +514,29 @@ namespace BloodSword::Engine
                     {
                         auto location = Engine::Location(map, party[i], i);
 
-                        auto distance = map.Distance(src, location);
-    
+                        auto distance = -1;
+
+                        if (move)
+                        {
+                            auto path = Move::FindPath(map, src, location, map[src].IsEnemy());
+
+                            distance = Move::Count(map, path, map[src].IsEnemy());
+                        }
+                        else
+                        {
+                            distance = map.Distance(src, location);
+                        }
+
                         if (map.IsValid(location) && location != src)
                         {
                             // preserve scoring for future uses
-                            if (ranged && distance > 1)
-                            {
-                                queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
-                            }
-                            else if (!ranged && distance == 1)
+                            if (spell || (!ranged && !move && distance == 1))
                             {
                                 queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, in_battle)));
+                            }
+                            else if ((ranged && distance > 1) || (move && distance > 0))
+                            {
+                                queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
                             }
                         }
                     }
@@ -535,16 +545,65 @@ namespace BloodSword::Engine
         }
     }
 
-    // search among the preferred targets
-    Engine::Queue Targets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false, bool ranged = false)
+    // search preferred fight targets
+    Engine::Queue FightTargets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false)
     {
         Engine::Queue queue = {};
 
-        // search within party (e.g. opponents in battle)
-        Engine::Targets(queue, map, party, src, true, ranged, in_battle);
+        if (map.IsValid(src))
+        {
+            auto id = map[src].Id;
 
-        // search within the other party (e.g. opponents in battle)
-        Engine::Targets(queue, map, opponents, src, false, ranged, in_battle);
+            auto &character = party[id];
+
+            // search within party
+            Engine::Targets(queue, map, party, character, src, true, in_battle);
+
+            // search within the other party
+            Engine::Targets(queue, map, opponents, character, src, false, in_battle);
+        }
+
+        return queue;
+    }
+
+    // search preferred ranged targets
+    Engine::Queue RangedTargets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false)
+    {
+        Engine::Queue queue = {};
+
+        if (map.IsValid(src))
+        {
+            auto id = map[src].Id;
+
+            auto &character = party[id];
+
+            // search within party
+            Engine::Targets(queue, map, party, character, src, true, in_battle, true);
+
+            // search within the other party
+            Engine::Targets(queue, map, opponents, character, src, false, in_battle, true);
+        }
+
+        return queue;
+    }
+
+    // search preferred move targets
+    Engine::Queue MoveTargets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false)
+    {
+        Engine::Queue queue = {};
+
+        if (map.IsValid(src))
+        {
+            auto id = map[src].Id;
+
+            auto &character = party[id];
+
+            // search within party
+            Engine::Targets(queue, map, party, character, src, true, in_battle, false, true);
+
+            // search within the other party
+            Engine::Targets(queue, map, opponents, character, src, false, in_battle, false, true);
+        }
 
         return queue;
     }
