@@ -191,7 +191,18 @@ namespace BloodSword::Interface
 
         auto id = scene.Controls.size();
 
-        if (battle.Map.X > 0)
+        auto left = (battle.Map.X > 0);
+
+        auto up = (battle.Map.Y > 0);
+
+        auto right = (battle.Map.X + battle.Map.ViewX < battle.Map.Width);
+
+        auto down = (battle.Map.Y + battle.Map.ViewY < battle.Map.Height);
+
+        auto id_default = id - 1;
+
+        // add controls to scene
+        if (left)
         {
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::LEFT), Point(left_x, mid_y - BloodSword::HalfTile)));
 
@@ -200,7 +211,7 @@ namespace BloodSword::Interface
             id++;
         }
 
-        if (battle.Map.Y > 0)
+        if (up)
         {
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), Point(mid_x - BloodSword::HalfTile, top_y)));
 
@@ -209,7 +220,7 @@ namespace BloodSword::Interface
             id++;
         }
 
-        if (battle.Map.X + battle.Map.ViewX < battle.Map.Width)
+        if (right)
         {
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), Point(right_x, mid_y - BloodSword::HalfTile)));
 
@@ -218,13 +229,58 @@ namespace BloodSword::Interface
             id++;
         }
 
-        if (battle.Map.Y + battle.Map.ViewY < battle.Map.Height)
+        if (down)
         {
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), Point(mid_x - BloodSword::HalfTile, bottom_y)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_DOWN, id, id, id, id, id, mid_x - BloodSword::HalfTile, bottom_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             id++;
+        }
+
+        // fix control switching
+        if (left)
+        {
+            auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_LEFT);
+
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : id_default;
+
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : id_default;
+
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : id_default;
+        }
+
+        if (up)
+        {
+            auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_UP);
+
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : id_default;
+
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : id_default;
+
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : id_default;
+        }
+
+        if (right)
+        {
+            auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT);
+
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : id_default;
+
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : id_default;
+
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : id_default;
+        }
+
+        if (down)
+        {
+            auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_DOWN);
+
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : id_default;
+
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : id_default;
+
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : id_default;
         }
     }
 
@@ -259,9 +315,13 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        std::vector<Scene::Element> assets = {Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h)};
+        std::vector<Scene::Element> assets = {
+            Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h),
+            Scene::Element(Asset::Get(Asset::Type::CENTER), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
-        Controls::List controls = {Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+        Controls::List controls = {
+            Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
+            Controls::Base(Controls::Type::CENTER, id + 1, id, id + 1, (id + 1) - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
@@ -794,7 +854,8 @@ namespace BloodSword::Interface
 
             auto captions = Graphics::CreateText(
                 graphics,
-                {Graphics::RichText("EXIT", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w)});
+                {Graphics::RichText("EXIT", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w),
+                 Graphics::RichText("CENTER ON COMBATANT", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w)});
 
             auto infow = battle.Map.TileSize * 5;
 
@@ -1477,6 +1538,16 @@ namespace BloodSword::Interface
                                                     exit = true;
 
                                                     result = Battle::Result::NONE;
+                                                }
+                                                else if (input.Type == Controls::Type::CENTER)
+                                                {
+                                                    Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
+
+                                                    scene = Interface::BattleScene(battle, party);
+
+                                                    input.Current = -1;
+
+                                                    input.Selected = false;
                                                 }
                                                 else if (input.Type == Controls::Type::MAP_DOWN)
                                                 {

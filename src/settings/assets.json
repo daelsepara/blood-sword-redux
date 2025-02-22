@@ -331,6 +331,10 @@
         {
             "id": "WOODEN DOOR",
             "path": "images/map/wooden-door.png"
+        },
+        {
+            "id": "CENTER",
+            "path": "images/map/convergence-target.png"
         }
     ]
 }

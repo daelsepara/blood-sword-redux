@@ -109,7 +109,8 @@ namespace BloodSword::Asset
         ARMOUR,
         UNARMED_COMBAT,
         HEAL,
-        WOODEN_DOOR
+        WOODEN_DOOR,
+        CENTER
     };
 
     template <typename T>
@@ -213,7 +214,8 @@ namespace BloodSword::Asset
         {Asset::Type::ARMOUR, "ARMOUR"},
         {Asset::Type::UNARMED_COMBAT, "UNARMED COMBAT"},
         {Asset::Type::HEAL, "HEAL"},
-        {Asset::Type::WOODEN_DOOR, "WOODEN DOOR"}};
+        {Asset::Type::WOODEN_DOOR, "WOODEN DOOR"},
+        {Asset::Type::CENTER, "CENTER"}};
 
     Asset::Type Map(const char *asset)
     {
