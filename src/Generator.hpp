@@ -731,19 +731,13 @@ namespace BloodSword::Generate
 
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
-        auto FPR = Attribute::Base(Attribute::Type::FIGHTING_PROWESS, fpr, 0);
+        auto npc = Generate::NPC(name, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
 
-        auto PSY = Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, psy, 0);
+        npc.Fight = fight;
 
-        auto AWR = Attribute::Base(Attribute::Type::AWARENESS, awr, 0);
+        npc.Shoot = shoot;
 
-        auto END = Attribute::Base(Attribute::Type::ENDURANCE, end, 0);
-
-        auto ARM = Attribute::Base(Attribute::Type::ARMOUR, 0, arm);
-
-        auto DMG = Attribute::Base(Attribute::Type::DAMAGE, dmg_v, dmg_m);
-
-        return Generate::NPC(name, fight, shoot, skills, {FPR, PSY, AWR, END, ARM, DMG}, moves, asset);
+        return npc;
     }
 
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
@@ -751,6 +745,8 @@ namespace BloodSword::Generate
         auto npc = Generate::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
 
         npc.Targets = targets;
+
+        return npc;
     }
 }
 
