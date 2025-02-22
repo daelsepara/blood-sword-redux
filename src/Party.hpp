@@ -193,6 +193,15 @@ namespace BloodSword::Party
             }
         }
 
+        // remove status from the entire party
+        void Remove(Character::Status status)
+        {
+            for (auto i = 0; i < this->Count(); i++)
+            {
+                this->Members[i].Remove(status);
+            }
+        }
+
         // Load party from json data
         void Load(nlohmann::json &data)
         {
