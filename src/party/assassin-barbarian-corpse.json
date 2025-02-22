@@ -47,7 +47,8 @@
                 "item_limit": 10,
                 "moves": 1000,
                 "name": "BARBARIAN",
-                "rank": 0
+                "rank": 0,
+                "target": "BARBARIAN"
             },
             {
                 "asset": "ASSASSIN",
@@ -99,7 +100,8 @@
                 "shoot": "SHURIKEN",
                 "skills": [
                     "SHURIKEN"
-                ]
+                ],
+                "target": "ASSASSIN"
             },
             {
                 "asset": "CORPSE",
@@ -147,7 +149,8 @@
                 "item_limit": 10,
                 "moves": 3,
                 "name": "CORPSE",
-                "rank": 0
+                "rank": 0,
+                "target": "CORPSE"
             }
         ]
     }

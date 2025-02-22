@@ -676,6 +676,27 @@ namespace BloodSword::Generate
         }
     }
 
+    void Target(Character::Base &character)
+    {
+        switch (character.Class)
+        {
+        case Character::Class::WARRIOR:
+            character.Target = Target::Type::WARRIOR;
+            break;
+        case Character::Class::TRICKSTER:
+            character.Target = Target::Type::TRICKSTER;
+            break;
+        case Character::Class::SAGE:
+            character.Target = Target::Type::SAGE;
+            break;
+        case Character::Class::ENCHANTER:
+            character.Target = Target::Type::ENCHANTER;
+            break;
+        default:
+            break;
+        }
+    }
+
     // generate character based on class and rank
     Character::Base Character(Character::Class character_class, int rank)
     {
@@ -697,7 +718,7 @@ namespace BloodSword::Generate
 
         Generate::Assets(character);
 
-        character.Type = Target::Type::PLAYER;
+        Generate::Target(character);
 
         return character;
     }
@@ -759,11 +780,11 @@ namespace BloodSword::Generate
         return npc;
     }
 
-    Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Target::Type type, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
+    Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Target::Type target, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
         auto npc = Generate::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
 
-        npc.Type = type;
+        npc.Target = target;
 
         npc.Targets = targets;
 

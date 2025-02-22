@@ -359,6 +359,33 @@ namespace BloodSword::Engine
         }
     }
 
+    Point Location(Map::Base &map, Character::Base &character, int id)
+    {
+        Point location;
+
+        if (character.ControlType == Character::ControlType::PLAYER)
+        {
+            location = map.Find(Map::Object::PLAYER, id);
+        }
+        else if (character.ControlType == Character::ControlType::NPC)
+        {
+            location = map.Find(Map::Object::ENEMY, id);
+        }
+
+        return location;
+    }
+
+    bool CanTarget(Character::Base &character, bool in_battle)
+    {
+        auto is_away = character.Is(Character::Status::AWAY);
+
+        auto is_alive = Engine::IsAlive(character);
+
+        auto battle = (in_battle && character.Is(Character::Status::IN_BATTLE)) || !in_battle;
+
+        return (is_alive && !is_away && battle);
+    }
+
     // build distance queue
     Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
@@ -366,28 +393,11 @@ namespace BloodSword::Engine
 
         for (auto i = 0; i < party.Count(); i++)
         {
-            auto is_away = party[i].Is(Character::Status::AWAY);
-
-            auto is_alive = Engine::IsAlive(party[i]);
-
-            auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-            if (is_alive && !is_away && battle)
+            if (Engine::CanTarget(party[i], in_battle))
             {
-                auto distance = -1;
+                auto location = Engine::Location(map, party[i], i);
 
-                Point location;
-
-                if (party[i].ControlType == Character::ControlType::PLAYER)
-                {
-                    location = map.Find(Map::Object::PLAYER, i);
-                }
-                else if (party[i].ControlType == Character::ControlType::NPC)
-                {
-                    location = map.Find(Map::Object::ENEMY, i);
-                }
-
-                distance = map.Distance(src, location);
+                auto distance = map.Distance(src, location);
 
                 if (distance >= 0 && map.IsValid(location))
                 {
@@ -410,30 +420,13 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto is_away = party[i].Is(Character::Status::AWAY);
-
-                auto is_alive = Engine::IsAlive(party[i]);
-
-                auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-                if (is_alive && !is_away && battle)
+                if (Engine::CanTarget(party[i], in_battle))
                 {
-                    auto distance = -1;
-
-                    Point location;
-
-                    if (party[i].ControlType == Character::ControlType::PLAYER)
-                    {
-                        location = map.Find(Map::Object::PLAYER, i);
-                    }
-                    else if (party[i].ControlType == Character::ControlType::NPC)
-                    {
-                        location = map.Find(Map::Object::ENEMY, i);
-                    }
+                    auto location = Engine::Location(map, party[i], i);
 
                     auto path = Move::FindPath(map, src, location, map[src].IsEnemy());
 
-                    distance = Move::Count(map, path, map[src].IsEnemy());
+                    auto distance = Move::Count(map, path, map[src].IsEnemy());
 
                     if (distance > 0 && map.IsValid(location) && location != src)
                     {
@@ -457,24 +450,9 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto is_away = party[i].Is(Character::Status::AWAY);
-
-                auto is_alive = Engine::IsAlive(party[i]);
-
-                auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-                if (is_alive && !is_away && battle)
+                if (Engine::CanTarget(party[i], in_battle))
                 {
-                    Point location;
-
-                    if (party[i].ControlType == Character::ControlType::PLAYER)
-                    {
-                        location = map.Find(Map::Object::PLAYER, i);
-                    }
-                    else if (party[i].ControlType == Character::ControlType::NPC)
-                    {
-                        location = map.Find(Map::Object::ENEMY, i);
-                    }
+                    auto location = Engine::Location(map, party[i], i);
 
                     auto distance = map.Distance(src, location);
 
@@ -500,28 +478,11 @@ namespace BloodSword::Engine
         {
             for (auto i = 0; i < party.Count(); i++)
             {
-                auto is_away = party[i].Is(Character::Status::AWAY);
-
-                auto is_alive = Engine::IsAlive(party[i]);
-
-                auto battle = (in_battle && party[i].Is(Character::Status::IN_BATTLE)) || !in_battle;
-
-                if (is_alive && !is_away && battle)
+                if (Engine::CanTarget(party[i], in_battle))
                 {
-                    auto distance = -1;
+                    auto location = Engine::Location(map, party[i], i);
 
-                    Point location;
-
-                    if (party[i].ControlType == Character::ControlType::PLAYER)
-                    {
-                        location = map.Find(Map::Object::PLAYER, i);
-                    }
-                    else if (party[i].ControlType == Character::ControlType::NPC)
-                    {
-                        location = map.Find(Map::Object::ENEMY, i);
-                    }
-
-                    distance = map.Distance(src, location);
+                    auto distance = map.Distance(src, location);
 
                     if (distance == 1 && map.IsValid(location) && location != src)
                     {
@@ -532,6 +493,58 @@ namespace BloodSword::Engine
         }
 
         Engine::Sort(queue, descending);
+
+        return queue;
+    }
+
+    void Targets(Engine::Queue &queue, Map::Base &map, Party::Base &party, Point &src, bool in_party = true, bool in_battle = false, bool ranged = false)
+    {
+        if (map.IsValid(src))
+        {
+            auto id = map[src].Id;
+
+            auto &character = party[id];
+
+            for (auto &target : character.Targets)
+            {
+                if (party.Has(target))
+                {
+                    auto i = party.Find(target);
+
+                    if ((i != -1) && (((in_party && id != i) || !in_party) && Engine::CanTarget(party[i], in_battle)))
+                    {
+                        auto location = Engine::Location(map, party[i], i);
+
+                        auto distance = map.Distance(src, location);
+    
+                        if (map.IsValid(location) && location != src)
+                        {
+                            // preserve scoring for future uses
+                            if (ranged && distance > 1)
+                            {
+                                queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+                            }
+                            else if (!ranged && distance == 1)
+                            {
+                                queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, in_battle)));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // search among the preferred targets
+    Engine::Queue Targets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false, bool ranged = false)
+    {
+        Engine::Queue queue = {};
+
+        // search within party (e.g. opponents in battle)
+        Engine::Targets(queue, map, party, src, true, ranged, in_battle);
+
+        // search within the other party (e.g. opponents in battle)
+        Engine::Targets(queue, map, opponents, src, false, ranged, in_battle);
 
         return queue;
     }

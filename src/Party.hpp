@@ -89,6 +89,30 @@ namespace BloodSword::Party
             return this->Find(character_class) != this->Members.end();
         }
 
+        // find index of party member that is a valid target
+        int Find(Target::Type target)
+        {
+            auto found = -1;
+
+            for (auto i = 0; i < this->Members.size(); i++)
+            {
+                if (this->Members[i].Target == target)
+                {
+                    found = i;
+
+                    break;
+                }
+            }
+
+            return found;
+        }
+
+        // check if party has valid target
+        bool Has(Target::Type target)
+        {
+            return (this->Find(target) != -1);
+        }
+
         // check if party has an item of type
         bool Has(Item::Type item)
         {

@@ -81,7 +81,8 @@
                 ],
                 "moves": 1000,
                 "name": "WARRIOR",
-                "rank": 2
+                "rank": 2,
+                "target": "WARRIOR"
             },
             {
                 "asset": "TRICKSTER",
@@ -188,7 +189,8 @@
                 "skills": [
                     "DODGING",
                     "ARCHERY"
-                ]
+                ],
+                "target": "TRICKSTER"
             },
             {
                 "asset": "SAGE",
@@ -300,7 +302,8 @@
                     "LEVITATION",
                     "EXORCISM",
                     "ARCHERY"
-                ]
+                ],
+                "target": "SAGE"
             },
             {
                 "asset": "ENCHANTER",
@@ -515,7 +518,8 @@
                         "ranged": false,
                         "type": "DETECT ENCHANTMENT"
                     }
-                ]
+                ],
+                "target": "ENCHANTER"
             }
         ]
     }

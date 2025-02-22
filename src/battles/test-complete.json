@@ -1122,7 +1122,7 @@
                     "moves": 1000,
                     "name": "BARBARIAN",
                     "rank": 0,
-                    "type": "BARBARIAN"
+                    "target": "BARBARIAN"
                 },
                 {
                     "asset": "ASSASSIN",
@@ -1175,7 +1175,7 @@
                     "skills": [
                         "SHURIKEN"
                     ],
-                    "type": "ASSASSIN"
+                    "target": "ASSASSIN"
                 },
                 {
                     "asset": "CORPSE",
@@ -1224,7 +1224,7 @@
                     "moves": 3,
                     "name": "CORPSE",
                     "rank": 0,
-                    "type": "CORPSE"
+                    "target": "CORPSE"
                 }
             ]
         }
