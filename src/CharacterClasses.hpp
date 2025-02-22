@@ -6,6 +6,7 @@
 
 #include "nlohmann/json.hpp"
 #include "Templates.hpp"
+#include "Target.hpp"
 
 namespace BloodSword::Character
 {
@@ -98,14 +99,6 @@ namespace BloodSword::Character
 
     typedef std::vector<Character::Class> Classes;
 
-    // for additional targetting in combat
-    enum class Target
-    {
-        NONE = -1,
-        ASSASSIN,
-        BARBARIAN
-    };
-
     BloodSword::Mapping<Character::Class> ClassMapping = {
         {Character::Class::NONE, "NONE"},
         {Character::Class::WARRIOR, "WARRIOR"},
@@ -119,12 +112,6 @@ namespace BloodSword::Character
         Character::Class::SAGE,
         Character::Class::ENCHANTER};
 
-    BloodSword::Mapping<Character::Target> TargetMapping = {
-        {Character::Target::NONE, "NONE"},
-        {Character::Target::ASSASSIN, "ASSASSIN"},
-        {Character::Target::BARBARIAN, "BARBARIAN"}};
-
-    typedef std::vector<Character::Target> Targets;
 
     Character::Class Map(const char *character_class)
     {
@@ -134,48 +121,6 @@ namespace BloodSword::Character
     Character::Class Map(std::string character_class)
     {
         return Character::Map(character_class.c_str());
-    }
-
-    Character::Target MapTarget(const char *target)
-    {
-        return BloodSword::Find(Character::TargetMapping, target);
-    }
-
-    Character::Target MapTarget(std::string target)
-    {
-        return Character::MapTarget(target.c_str());
-    }
-
-    Character::Targets LoadTargets(nlohmann::json &data)
-    {
-        auto targets = Character::Targets();
-
-        for (auto i = 0; i < data.size(); i++)
-        {
-            auto target = !data[i].is_null() ? Character::MapTarget(std::string(data[i])) : Character::Target::NONE;
-
-            if (target != Character::Target::NONE)
-            {
-                targets.push_back(target);
-            }
-        }
-
-        return targets;
-    }
-
-    nlohmann::json TargetData(Character::Targets &targets)
-    {
-        nlohmann::json data;
-
-        for (auto &target : targets)
-        {
-            if (target != Character::Target::NONE)
-            {
-                data.push_back(Character::TargetMapping[target]);
-            }
-        }
-
-        return data;
     }
 }
 

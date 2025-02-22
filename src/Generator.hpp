@@ -3,6 +3,8 @@
 
 #include "Attribute.hpp"
 #include "Book.hpp"
+#include "Target.hpp"
+#include "CharacterClasses.hpp"
 #include "Character.hpp"
 #include "Skills.hpp"
 
@@ -742,6 +744,13 @@ namespace BloodSword::Generate
         auto DMG = Attribute::Base(Attribute::Type::DAMAGE, dmg_v, dmg_m);
 
         return Generate::NPC(name, fight, shoot, skills, {FPR, PSY, AWR, END, ARM, DMG}, moves, asset);
+    }
+
+    Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
+    {
+        auto npc = Generate::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
+
+        npc.Targets = targets;
     }
 }
 

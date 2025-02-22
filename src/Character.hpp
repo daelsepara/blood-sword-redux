@@ -10,6 +10,7 @@
 #include "AssetTypes.hpp"
 #include "Attribute.hpp"
 #include "Book.hpp"
+#include "Target.hpp"
 #include "CharacterClasses.hpp"
 #include "ControlTypes.hpp"
 #include "Item.hpp"
@@ -62,7 +63,7 @@ namespace BloodSword::Character
         Skills::List SkillImmunity = {};
 
         // additional targets
-        Character::Targets Targets = {};
+        Target::List Targets = {};
 
         // location (survivor tracking in a battle)
         Book::Location Location = {Book::Number::NONE, -1};
@@ -712,7 +713,7 @@ namespace BloodSword::Character
 
         if (!data["targets"].is_null() && data["targets"].is_array() && data["targets"].size() > 0)
         {
-            character.Targets = Character::LoadTargets(data["targets"]);
+            character.Targets = Target::Load(data["targets"]);
         }
 
         return character;
@@ -791,7 +792,7 @@ namespace BloodSword::Character
 
         if (character.Targets.size() > 0)
         {
-            data["targets"] = Character::TargetData(character.Targets);
+            data["targets"] = Target::Data(character.Targets);
         }
 
         return data;
