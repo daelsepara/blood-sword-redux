@@ -51,7 +51,9 @@ namespace BloodSword::Skills
         {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
         {Skills::Type::PARALYZING_TOUCH, "PARALYZING TOUCH"}};
 
-    std::vector<Skills::Type> BattleSkills = {
+    typedef std::vector<Skills::Type> List;
+
+    Skills::List BattleSkills = {
         Skills::Type::ARCHERY,
         Skills::Type::DODGING,
         Skills::Type::QUARTERSTAFF,
@@ -59,7 +61,7 @@ namespace BloodSword::Skills
         Skills::Type::SHURIKEN,
         Skills::Type::IGNORE_ARMOUR};
 
-    std::vector<Skills::Type> StorySkills = {
+    Skills::List StorySkills = {
         Skills::Type::HEALING,
         Skills::Type::ESP,
         Skills::Type::PARANORMAL_SIGHT,
@@ -81,8 +83,6 @@ namespace BloodSword::Skills
         {Skills::Type::SHURIKEN, Asset::Type::SHURIKEN},
         {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR}};
 
-    typedef std::vector<Skills::Type> List;
-
     Skills::Type Map(const char *skill)
     {
         return BloodSword::Find(Skills::TypeMapping, skill);
@@ -93,7 +93,7 @@ namespace BloodSword::Skills
         return Skills::Map(skill.c_str());
     }
 
-    bool In(std::vector<Skills::Type> &list, Skills::Type skill)
+    bool In(Skills::List &list, Skills::Type skill)
     {
         return list.size() > 0 && BloodSword::Find(list, skill) != list.end();
     }
@@ -110,7 +110,7 @@ namespace BloodSword::Skills
 
     Skills::List Load(nlohmann::json &data)
     {
-        auto skills = std::vector<Skills::Type>();
+        auto skills = Skills::List();
 
         for (auto i = 0; i < data.size(); i++)
         {

@@ -22,7 +22,9 @@ namespace BloodSword::Attribute
         ARMOUR
     };
 
-    std::vector<Attribute::Type> All = {
+    typedef std::vector<Attribute::Type> Types;
+
+    Attribute::Types All = {
         Attribute::Type::FIGHTING_PROWESS,
         Attribute::Type::AWARENESS,
         Attribute::Type::PSYCHIC_ABILITY,

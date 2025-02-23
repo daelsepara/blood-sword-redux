@@ -1,6 +1,8 @@
 #ifndef __CONDITIONS_HPP__
 #define __CONDITIONS_HPP__
 
+#include <vector>
+
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
 #include "Graphics.hpp"
@@ -10,7 +12,7 @@
 #include "Templates.hpp"
 #include "Interface.hpp"
 
-namespace BloodSword::Section::Conditions
+namespace BloodSword::Conditions
 {
     enum class Type
     {
@@ -112,6 +114,8 @@ namespace BloodSword::Section::Conditions
             this->Invert = invert;
         }
     };
+
+    typedef std::vector<Conditions::Base> List;
 
     Conditions::Base Parse(nlohmann::json &data)
     {

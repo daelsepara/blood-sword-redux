@@ -20,7 +20,7 @@ namespace BloodSword::Item
         BloodSword::IntMapping<Attribute::Type> Attributes = {};
 
         // item properties
-        std::vector<Item::Property> Properties = {};
+        Item::Properties Properties = {};
 
         // item type
         Item::Type Type = Item::Type::NONE;
@@ -39,23 +39,23 @@ namespace BloodSword::Item
         Base() {}
 
         Base(const char *name,
-            Item::Type type,
-            BloodSword::IntMapping<Attribute::Type> attributes,
-            std::vector<Item::Property> properties,
-            Item::Type contains,
-            int quantity,
-            int limit) : Attributes(attributes),
-                            Properties(properties),
-                            Type(type),
-                            Contains(contains),
-                            Quantity(quantity),
-                            Limit(limit),
-                            Name(name) {}
+             Item::Type type,
+             BloodSword::IntMapping<Attribute::Type> attributes,
+             Item::Properties properties,
+             Item::Type contains,
+             int quantity,
+             int limit) : Attributes(attributes),
+                          Properties(properties),
+                          Type(type),
+                          Contains(contains),
+                          Quantity(quantity),
+                          Limit(limit),
+                          Name(name) {}
 
         Base(const char *name,
              Item::Type type,
              BloodSword::IntMapping<Attribute::Type> attributes,
-             std::vector<Item::Property> properties,
+             Item::Properties properties,
              Item::Type contains,
              int quantity) : Attributes(attributes),
                              Properties(properties),
@@ -66,13 +66,13 @@ namespace BloodSword::Item
 
         Base(const char *name,
              Item::Type type,
-             std::vector<Item::Property> properties,
+             Item::Properties properties,
              Item::Type contains,
              int quantity) : Base(name, type, {}, properties, contains, quantity) {}
 
         Base(const char *name,
              Item::Type type,
-             std::vector<Item::Property> properties,
+             Item::Properties properties,
              Item::Type contains,
              int quantity,
              int limit) : Base(name, type, {}, properties, contains, quantity, limit) {}
@@ -80,15 +80,15 @@ namespace BloodSword::Item
         Base(const char *name,
              Item::Type type,
              BloodSword::IntMapping<Attribute::Type> attributes,
-             std::vector<Item::Property> properties) : Base(name,
-                                                            type,
-                                                            attributes,
-                                                            properties,
-                                                            Item::Type::NONE, 1) {}
+             Item::Properties properties) : Base(name,
+                                                 type,
+                                                 attributes,
+                                                 properties,
+                                                 Item::Type::NONE, 1) {}
 
         Base(const char *name,
              Item::Type type,
-             std::vector<Item::Property> properties) : Base(name, type, {}, properties, Item::Type::NONE, 1) {}
+             Item::Properties properties) : Base(name, type, {}, properties, Item::Type::NONE, 1) {}
 
         // check if item has this property
         bool Has(Item::Property property)
@@ -239,9 +239,9 @@ namespace BloodSword::Item
         return attributes;
     }
 
-    std::vector<Item::Property> LoadProperties(nlohmann::json &data)
+    Item::Properties LoadProperties(nlohmann::json &data)
     {
-        auto properties = std::vector<Item::Property>();
+        auto properties = Item::Properties();
 
         for (auto i = 0; i < data.size(); i++)
         {
@@ -256,9 +256,9 @@ namespace BloodSword::Items
 {
     typedef std::vector<Item::Base> Inventory;
 
-    std::vector<Item::Base> Load(nlohmann::json &data)
+    Items::Inventory Load(nlohmann::json &data)
     {
-        auto items = std::vector<Item::Base>();
+        auto items = Items::Inventory();
 
         for (auto i = 0; i < data.size(); i++)
         {
@@ -293,7 +293,7 @@ namespace BloodSword::Items
         return items;
     }
 
-    nlohmann::json Data(std::vector<Item::Base> &items)
+    nlohmann::json Data(Items::Inventory &items)
     {
         nlohmann::json data;
 

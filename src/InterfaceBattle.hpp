@@ -39,7 +39,7 @@ namespace BloodSword::Interface
 
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size)
     {
-        std::vector<Controls::Type> controls = {};
+        Controls::Collection controls = {};
 
         auto overlay = Scene::Base();
 
@@ -252,7 +252,7 @@ namespace BloodSword::Interface
         }
     }
 
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, std::vector<Scene::Element> &assets, Controls::List &controls, Point location)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Scene::Elements &assets, Controls::List &controls, Point location)
     {
         auto num = int(assets.size() == controls.size() ? controls.size() : 0);
 
@@ -283,7 +283,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        std::vector<Scene::Element> assets = {
+        Scene::Elements assets = {
             Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h),
             Scene::Element(Asset::Get(Asset::Type::CENTER), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
@@ -301,7 +301,7 @@ namespace BloodSword::Interface
     }
 
     // generate status
-    std::vector<SDL_Texture *> GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
+    BloodSword::Textures GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
     {
         return Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, in_battle);
     }
@@ -489,7 +489,7 @@ namespace BloodSword::Interface
     }
 
     // generate stats
-    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, std::vector<SDL_Texture *> &party_stats, std::vector<SDL_Texture *> &party_status, std::vector<SDL_Texture *> &enemy_stats, std::vector<SDL_Texture *> &enemy_status)
+    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, BloodSword::Textures &party_stats, BloodSword::Textures &party_status, BloodSword::Textures &enemy_stats, BloodSword::Textures &enemy_status)
     {
         Free(enemy_stats);
 

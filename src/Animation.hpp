@@ -32,6 +32,8 @@ namespace BloodSword::Animation
 
     typedef std::vector<Animation::Frame> Frames;
 
+    typedef std::vector<Animation::Type> Types;
+
     // animation base class
     class Base
     {
@@ -40,7 +42,7 @@ namespace BloodSword::Animation
         Animation::Frames Frames = {};
 
         // type of animation(s)
-        std::vector<Animation::Type> Mode = {};
+        Animation::Types Mode = {};
 
         // path on-screen (if MOVE type)
         Points Path = {};
@@ -84,7 +86,7 @@ namespace BloodSword::Animation
         int TrailSize = 2;
 
         Base(Animation::Frames frames,
-             std::vector<Animation::Type> mode,
+             Animation::Types mode,
              Points path,
              int cycles,
              bool loop) : Frames(frames), Mode(mode), Path(path), Cycles(cycles), Loop(loop)
@@ -133,7 +135,7 @@ namespace BloodSword::Animation
         }
 
         // set animation types
-        void Set(std::vector<Animation::Type> modes)
+        void Set(Animation::Types modes)
         {
             this->Mode = modes;
         }
@@ -177,7 +179,7 @@ namespace BloodSword::Animation
         }
 
         // check if animation is of type(s)
-        bool Is(std::vector<Animation::Type> types)
+        bool Is(Animation::Types types)
         {
             auto result = true;
 
@@ -192,7 +194,7 @@ namespace BloodSword::Animation
         // check if animation is of type
         bool Is(Animation::Type type)
         {
-            return this->Is(std::vector<Animation::Type>{type});
+            return this->Is(Animation::Types{type});
         }
 
         // add a frame to animation
@@ -357,12 +359,14 @@ namespace BloodSword::Animation
 
 namespace BloodSword::Animations
 {
+    typedef std::vector<Animation::Base> List;
+
     // collection of objects to animate on screen
     class Base
     {
     public:
         // objects to animate
-        std::vector<Animation::Base> List = {};
+        Animations::List List = {};
 
         // global delay (speed)
         Uint64 Delay = 0;
@@ -371,7 +375,7 @@ namespace BloodSword::Animations
         Uint64 TimeStamp = 0;
 
         // set objects to animate
-        void Set(std::vector<Animation::Base> list)
+        void Set(Animations::List list)
         {
             this->List = list;
         }
@@ -382,11 +386,11 @@ namespace BloodSword::Animations
             this->Delay = delay;
         }
 
-        Base(std::vector<Animation::Base> list, Uint32 delay) : List(list), Delay(delay) {}
+        Base(Animations::List list, Uint32 delay) : List(list), Delay(delay) {}
 
-        Base(std::vector<Animation::Base> list) : List(list) {}
+        Base(Animations::List list) : List(list) {}
 
-        Base(Animation::Base animation) : List(std::vector<Animation::Base>{animation}) {}
+        Base(Animation::Base animation) : List(Animations::List{animation}) {}
 
         Base() {}
 

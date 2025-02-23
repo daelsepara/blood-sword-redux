@@ -40,11 +40,13 @@ namespace BloodSword::Battle
         return BloodSword::Find(Battle::ConditionMapping, condition.c_str());
     }
 
+    typedef std::vector<Battle::Condition> Conditions;
+
     class Base
     {
     public:
         // battle conditions (see Battle::Condition types)
-        std::vector<Battle::Condition> Conditions = {};
+        Battle::Conditions Conditions = {};
 
         // battle map
         Map::Base Map;
@@ -57,7 +59,7 @@ namespace BloodSword::Battle
 
         Book::Location Survivors = {Book::Number::NONE, -1};
 
-        Base(std::vector<Battle::Condition> conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
+        Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}
 
@@ -90,7 +92,7 @@ namespace BloodSword::Battle
             {
                 if (!data["conditions"].is_null() && data["conditions"].is_array() && data["conditions"].size() > 0)
                 {
-                    auto conditions = std::vector<Battle::Condition>();
+                    auto conditions = Battle::Conditions();
 
                     for (auto i = 0; i < data["conditions"].size(); i++)
                     {

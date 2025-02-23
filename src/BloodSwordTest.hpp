@@ -73,7 +73,7 @@ namespace BloodSword::Test
             Controls::Base(Controls::Type::MAP_LEFT, 6, 5, 7, 2, 6, x + ws * 2, y + ws, w, h, Color::Highlight),
             Controls::Base(Controls::Type::MAP_RIGHT, 7, 6, 7, 3, 7, x + ws * 3, y + ws, w, h, Color::Highlight)};
 
-        auto sprites = std::vector<Scene::Element>();
+        auto sprites = Scene::Elements();
 
         auto input = Controls::User();
 
@@ -1495,7 +1495,7 @@ namespace BloodSword::Test
 
         auto done = false;
 
-        std::vector<Attribute::Type> attributes = {
+        Attribute::Types attributes = {
             Attribute::Type::FIGHTING_PROWESS,
             Attribute::Type::AWARENESS,
             Attribute::Type::PSYCHIC_ABILITY};

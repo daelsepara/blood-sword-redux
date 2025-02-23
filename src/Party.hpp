@@ -12,11 +12,13 @@
 
 namespace BloodSword::Party
 {
+    typedef std::vector<Character::Base> List;
+
     class Base
     {
     private:
         // members in the party
-        std::vector<Character::Base> Members = {};
+        Party::List Members = {};
 
     public:
         // current book and section number
@@ -34,13 +36,13 @@ namespace BloodSword::Party
         int ChosenNumber = -1;
 
         // holds survivors from previous battles
-        std::vector<Character::Base> Survivors = {};
+        Party::List Survivors = {};
 
         Base() {}
 
-        Base(std::vector<Character::Base> members) : Members(members) {}
+        Base(Party::List members) : Members(members) {}
 
-        Base(Character::Base character) : Members(std::vector<Character::Base>({character})) {}
+        Base(Character::Base character) : Members(Party::List({character})) {}
 
         // add character to party
         void Add(Character::Base &character)
@@ -66,7 +68,7 @@ namespace BloodSword::Party
         }
 
         // check if a specific character class is present in party
-        std::vector<Character::Base>::const_iterator Find(Character::Class character_class)
+        Party::List::const_iterator Find(Character::Class character_class)
         {
             auto found = this->Members.end();
 

@@ -90,7 +90,9 @@ namespace BloodSword::Controls
         CENTER
     };
 
-    std::vector<Controls::Type> Spells = {
+    typedef std::vector<Controls::Type> Collection;
+
+    Controls::Collection Spells = {
         Controls::Type::VOLCANO_SPRAY,
         Controls::Type::NIGHTHOWL,
         Controls::Type::WHITE_FIRE,

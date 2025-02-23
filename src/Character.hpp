@@ -403,7 +403,7 @@ namespace BloodSword::Character
         }
 
         // has any item with all the properties
-        Items::Inventory::const_iterator Find(std::vector<Item::Property> properties)
+        Items::Inventory::const_iterator Find(Item::Properties properties)
         {
             auto result = this->Items.end();
 
@@ -430,7 +430,7 @@ namespace BloodSword::Character
         // has any item with specific property
         Items::Inventory::const_iterator Find(Item::Property property)
         {
-            return this->Find(std::vector<Item::Property>{property});
+            return this->Find(Item::Properties{property});
         }
 
         bool Has(Item::Property property)

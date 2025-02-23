@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <vector>
 
 #include "Templates.hpp"
 
@@ -19,6 +20,8 @@ namespace BloodSword::Item
         EQUIPPED,
         POISONED
     };
+
+    typedef std::vector<Item::Property> Properties;
 
     BloodSword::Mapping<Item::Property> PropertyMapping = {
         {Item::Property::NONE, "NONE"},

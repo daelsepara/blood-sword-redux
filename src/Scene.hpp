@@ -129,12 +129,14 @@ namespace BloodSword::Scene
                 Uint32 background) : Element(nullptr, x, y, h, 0, w, h, background, 0, 0) {}
     };
 
+    typedef std::vector<Scene::Element> Elements;
+
     // Scene base clas
     class Base
     {
     public:
         // objects to be rendered on screen
-        std::vector<Scene::Element> Elements = {};
+        Scene::Elements Elements = {};
 
         // locations and dimensions of controls hitboxes associated with the scene lement
         Controls::List Controls = {};
@@ -172,17 +174,17 @@ namespace BloodSword::Scene
             this->Controls.push_back(control);
         }
 
-        Base(std::vector<Scene::Element> elements, Controls::List controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}
+        Base(Scene::Elements elements, Controls::List controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}
 
-        Base(std::vector<Scene::Element> elements, Controls::List controls) : Elements(elements), Controls(controls) {}
+        Base(Scene::Elements elements, Controls::List controls) : Elements(elements), Controls(controls) {}
 
-        Base(std::vector<Scene::Element> elements, Uint32 background) : Elements(elements), Background(background) {}
+        Base(Scene::Elements elements, Uint32 background) : Elements(elements), Background(background) {}
 
-        Base(std::vector<Scene::Element> elements) : Elements(elements) {}
+        Base(Scene::Elements elements) : Elements(elements) {}
 
         Base(Uint32 background) : Background(background) {}
 
-        Base(SDL_Texture *texture, int x, int y) : Base(std::vector<Scene::Element>({Scene::Element(texture, x, y)})) {}
+        Base(SDL_Texture *texture, int x, int y) : Base(Scene::Elements({Scene::Element(texture, x, y)})) {}
 
         Base(SDL_Texture *texture, Point point) : Base(texture, point.X, point.Y) {}
 

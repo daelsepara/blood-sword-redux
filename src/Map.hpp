@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "nlohmann/json.hpp"
+#include "Primitives.hpp"
 #include "Asset.hpp"
 #include "MapObjects.hpp"
 #include "Party.hpp"
@@ -85,6 +86,8 @@ namespace BloodSword::Map
         }
     };
 
+    typedef std::vector<Map::Tile> Tiles;
+
     class Base
     {
     private:
@@ -120,13 +123,13 @@ namespace BloodSword::Map
         int TileSize = BloodSword::TileSize;
 
         // starting locations of party
-        std::vector<BloodSword::Point> Origins = {};
+        BloodSword::Points Origins = {};
 
         // starting locations of opponents
-        std::vector<BloodSword::Point> Spawn = {};
+        BloodSword::Points Spawn = {};
 
         // starting locations of survivors
-        std::vector<BloodSword::Point> Survivors = {};
+        BloodSword::Points Survivors = {};
 
         // initialize the map
         void Initialize(int width, int height)
@@ -141,7 +144,7 @@ namespace BloodSword::Map
 
             for (auto i = 0; i < height; i++)
             {
-                this->Tiles[i] = std::vector<Map::Tile>(width);
+                this->Tiles[i] = Map::Tiles(width);
             }
         }
 
@@ -721,7 +724,7 @@ namespace BloodSword::Map
             }
         }
 
-        void ResetLocations(Party::Base &party, Map::Object type, std::vector<BloodSword::Point> origins)
+        void ResetLocations(Party::Base &party, Map::Object type, BloodSword::Points origins)
         {
             for (auto i = 0; i < party.Count(); i++)
             {

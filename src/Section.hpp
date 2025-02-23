@@ -34,11 +34,11 @@ namespace BloodSword::Section
 
         std::string Text;
 
-        std::vector<Section::Conditions::Base> Background = {};
+        Conditions::List Background = {};
 
-        std::vector<Section::Conditions::Base> Events = {};
+        Conditions::List Events = {};
 
-        std::vector<Section::Conditions::Base> Next = {};
+        Conditions::List Next = {};
 
         Base() {}
 
@@ -114,7 +114,7 @@ namespace BloodSword::Section
         // load background events conditions
         if (!data["background"].is_null() && data["background"].is_array() && data["background"].size() > 0)
         {
-            auto background = std::vector<Section::Conditions::Base>();
+            auto background = Conditions::List();
 
             for (auto i = 0; i < data["background"].size(); i++)
             {
@@ -129,7 +129,7 @@ namespace BloodSword::Section
         // load real-time/run-once events conditions
         if (!data["events"].is_null() && data["events"].is_array() && data["events"].size() > 0)
         {
-            auto events = std::vector<Section::Conditions::Base>();
+            auto events = Conditions::List();
 
             for (auto i = 0; i < data["events"].size(); i++)
             {
@@ -144,7 +144,7 @@ namespace BloodSword::Section
         // load "next section" conditions
         if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
         {
-            auto conditions = std::vector<Conditions::Base>();
+            auto conditions = Conditions::List();
 
             for (auto i = 0; i < data["next"].size(); i++)
             {

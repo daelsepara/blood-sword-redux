@@ -1148,7 +1148,7 @@ namespace BloodSword::Interface
     }
 
     // add horizontal text menu to existing overlay
-    void HorizontalMenu(Scene::Base &overlay, BloodSword::Textures &choices, std::vector<Controls::Type> controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
+    void HorizontalMenu(Scene::Base &overlay, BloodSword::Textures &choices, Controls::Collection controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
     {
         if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
         {

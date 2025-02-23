@@ -162,7 +162,7 @@ namespace BloodSword::Interface
 
                     if (choice >= 0 && choice < choices.size())
                     {
-                        auto eval = Section::Conditions::Process(graphics, background, party, choices[choice].Condition);
+                        auto eval = Conditions::Process(graphics, background, party, choices[choice].Condition);
 
                         if (eval.Failed)
                         {
@@ -203,7 +203,7 @@ namespace BloodSword::Interface
         {
             for (auto &condition : section.Background)
             {
-                auto eval = Section::Conditions::Process(graphics, background, party, condition);
+                auto eval = Conditions::Process(graphics, background, party, condition);
 
                 if (eval.Result)
                 {
@@ -218,9 +218,9 @@ namespace BloodSword::Interface
     }
 
     // process real-time events
-    std::vector<Section::Conditions::Evaluation> ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
+    std::vector<Conditions::Evaluation> ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
     {
-        auto results = std::vector<Section::Conditions::Evaluation>();
+        auto results = std::vector<Conditions::Evaluation>();
 
         if (section.Events.size() > 0)
         {
@@ -233,7 +233,7 @@ namespace BloodSword::Interface
 
                 if (Engine::IsAlive(party))
                 {
-                    auto eval = Section::Conditions::Process(graphics, background, party, condition);
+                    auto eval = Conditions::Process(graphics, background, party, condition);
 
                     results.push_back(eval);
                 }
@@ -275,7 +275,7 @@ namespace BloodSword::Interface
                               << ": " << std::to_string(condition.Location.second) << "]"
                               << std::endl;
 
-                    auto eval = Section::Conditions::Process(graphics, background, party, condition);
+                    auto eval = Conditions::Process(graphics, background, party, condition);
 
                     if (eval.Result)
                     {
