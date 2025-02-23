@@ -80,7 +80,7 @@ namespace BloodSword::Battle
 
         bool IsDefined()
         {
-            return this->Opponents.Count() > 0 && Map.IsValid();
+            return (this->Opponents.Count() > 0 || Book::IsDefined(this->Survivors)) && Map.IsValid();
         }
 
         // initialize battle from data
