@@ -201,6 +201,8 @@ namespace BloodSword::Interface
 
         if (section.Background.size() > 0)
         {
+            std::cerr << "Background: " << Book::String(section.Location) << std::endl;
+
             for (auto &condition : section.Background)
             {
                 auto eval = Conditions::Process(graphics, background, party, condition);
@@ -224,13 +226,10 @@ namespace BloodSword::Interface
 
         if (section.Events.size() > 0)
         {
+            std::cerr << "Event: " << Book::String(section.Location) << std::endl;
+
             for (auto &condition : section.Events)
             {
-                std::cerr << "Event: "
-                          << "[" << Book::Mapping[section.Location.first]
-                          << ": " << std::to_string(section.Location.second) << "]"
-                          << std::endl;
-
                 if (Engine::IsAlive(party))
                 {
                     auto eval = Conditions::Process(graphics, background, party, condition);
@@ -253,6 +252,8 @@ namespace BloodSword::Interface
         // fight battle
         if (section.Battle.IsDefined())
         {
+            std::cerr << "Battle: " << Book::String(section.Location) << std::endl;
+
             auto result = Interface::RenderBattle(graphics, section.Battle, party);
 
             if (result != Battle::Result::NONE)
@@ -267,14 +268,11 @@ namespace BloodSword::Interface
         {
             if (section.Next.size() > 0)
             {
+                std::cerr << "Next: " << Book::String(section.Location) << std::endl;
+
                 // process through each condition
                 for (auto &condition : section.Next)
                 {
-                    std::cerr << "Next: "
-                              << "[" << Book::Mapping[condition.Location.first]
-                              << ": " << std::to_string(condition.Location.second) << "]"
-                              << std::endl;
-
                     auto eval = Conditions::Process(graphics, background, party, condition);
 
                     if (eval.Result)
@@ -291,10 +289,7 @@ namespace BloodSword::Interface
                 // process through any choices
                 while (true)
                 {
-                    std::cerr << "Choice: "
-                              << "[" << Book::Mapping[section.Location.first]
-                              << ": " << std::to_string(section.Location.second) << "]"
-                              << std::endl;
+                    std::cerr << "Choice: " << Book::String(section.Location) << std::endl;
 
                     next = Interface::RenderChoices(graphics, background, party, section.Choices, after_battle);
 
@@ -531,6 +526,8 @@ namespace BloodSword::Interface
 
     Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
     {
+        std::cerr << "Section: " << Book::String(section.Location) << std::endl;
+
         // save a copy party prior to background and events (for save game functionality)
         auto saved_party = party;
 
@@ -588,11 +585,8 @@ namespace BloodSword::Interface
             {
                 section = story.Find(location);
 
-                std::cerr << "Find: "
-                          << "[" << Book::Mapping[location.first]
-                          << ": " << std::to_string(location.second) << "]"
-                          << " == " << std::to_string(section)
-                          << std::endl;
+                // log missing items
+                std::cerr << "Find: " << Book::String(location) << " == " << (section != -1 ? "FOUND" : "NOT FOUND") << std::endl;
 
                 if (!(section != -1 && Book::IsDefined(story.Sections[section].Location)))
                 {

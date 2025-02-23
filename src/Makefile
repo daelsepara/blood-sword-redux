@@ -36,4 +36,7 @@ clean-blood-sword:
 clean-battle-board:
 	rm -f $(BSWORD_BATTLES_OUTPUT) *.o
 
-clean: clean-blood-sword clean-battle-board
+clean-map:
+	rm -f $(BSWORD_MAP_OUTPUT) *.o
+
+clean: clean-blood-sword clean-battle-board clean-map

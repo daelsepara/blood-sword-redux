@@ -255,7 +255,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - attribute
-            // 2, 3 - bestination upon failure
+            // 2, 3 - destination upon failure
             // 4 - failure message
             if (condition.Variables.size() < 5)
             {
@@ -445,8 +445,7 @@ namespace BloodSword::Conditions
 
         if (Book::IsDefined(location))
         {
-            std::cerr << ", LOCATION: [" << Book::Mapping[location.first]
-                      << ": " << std::to_string(location.second) << "]";
+            std::cerr << ", LOCATION: " << Book::String(location);
         }
 
         std::cerr << ")" << std::endl;

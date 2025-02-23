@@ -2,6 +2,7 @@
 #define __BOOK_HPP__
 
 #include <iostream>
+#include <sstream>
 #include <unordered_map>
 #include <vector>
 
@@ -106,6 +107,19 @@ namespace BloodSword::Book
         auto number = !data["number"].is_null() ? int(data["number"]) : -1;
 
         return {book, number};
+    }
+
+    std::string String(Book::Location location)
+    {
+        std::stringstream book;
+
+        book << "["
+             << Book::Mapping[location.first]
+             << ": "
+             << std::to_string(location.second)
+             << "]";
+
+        return book.str();
     }
 }
 #endif
