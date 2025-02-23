@@ -435,6 +435,24 @@ namespace BloodSword::Map
             return !LoadError;
         }
 
+        nlohmann::json Points(BloodSword::Points &points)
+        {
+            nlohmann::json data;
+
+            for (auto &point : points)
+            {
+                nlohmann::json item;
+
+                item.emplace("x", point.X);
+
+                item.emplace("y", point.Y);
+
+                data.push_back(item);
+            }
+
+            return data;
+        }
+
         void Save(const char *filename)
         {
             nlohmann::json map;
@@ -487,56 +505,17 @@ namespace BloodSword::Map
 
             if (this->Origins.size() > 0)
             {
-                nlohmann::json origins;
-
-                for (auto &origin : this->Origins)
-                {
-                    nlohmann::json point;
-
-                    point.emplace("x", origin.X);
-
-                    point.emplace("y", origin.Y);
-
-                    origins.push_back(point);
-                }
-
-                map["origins"] = origins;
+                map["origins"] = this->Points(this->Origins);
             }
 
             if (this->Spawn.size() > 0)
             {
-                nlohmann::json spawn_sites;
-
-                for (auto &spawn : this->Spawn)
-                {
-                    nlohmann::json point;
-
-                    point.emplace("x", spawn.X);
-
-                    point.emplace("y", spawn.Y);
-
-                    spawn_sites.push_back(point);
-                }
-
-                map["spawn"] = spawn_sites;
+                map["spawn"] = this->Points(this->Spawn);
             }
 
             if (this->Survivors.size() > 0)
             {
-                nlohmann::json survivor_sites;
-
-                for (auto &survivor : this->Survivors)
-                {
-                    nlohmann::json point;
-
-                    point.emplace("x", survivor.X);
-
-                    point.emplace("y", survivor.Y);
-
-                    survivor_sites.push_back(point);
-                }
-
-                map["survivors"] = survivor_sites;
+                map["survivors"] = this->Points(this->Survivors);
             }
 
             std::ofstream file(filename);

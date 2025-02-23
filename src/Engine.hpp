@@ -660,52 +660,20 @@ namespace BloodSword::Engine
                 {
                     auto neighbor = src + direction;
 
-                    if (map.IsValid(neighbor) && map[neighbor].Type == Map::Object::EXIT)
+                    auto adjacent = false;
+
+                    if (map.IsValid(neighbor) && map[neighbor].IsPlayer())
+                    {
+                        auto id = map[neighbor].Id;
+
+                        adjacent = (Engine::IsAlive(party[id]) && party[id].Is(Character::Status::FLEEING));
+                    }
+
+                    if ((map.IsValid(neighbor) && map[neighbor].Type == Map::Object::EXIT) || adjacent)
                     {
                         flee = true;
 
                         break;
-                    }
-                }
-            }
-
-            // check if character is adjacent to a team mate who can flee
-            if (!flee && party.Count() > 1)
-            {
-                for (auto other = 0; other < party.Count(); other++)
-                {
-                    if (character != other)
-                    {
-                        auto next = map.Find(Map::Object::PLAYER, other);
-
-                        if (!next.IsNone() && map.Distance(src, next) == 1)
-                        {
-                            if (map[next].Type == Map::Object::EXIT)
-                            {
-                                flee = true;
-
-                                break;
-                            }
-                            else
-                            {
-                                for (auto &direction : Map::Directions)
-                                {
-                                    auto neighbor = next + direction;
-
-                                    if (map.IsValid(neighbor) && map[neighbor].Type == Map::Object::EXIT)
-                                    {
-                                        flee = true;
-
-                                        break;
-                                    }
-                                }
-
-                                if (flee)
-                                {
-                                    break;
-                                }
-                            }
-                        }
                     }
                 }
             }
@@ -741,12 +709,18 @@ namespace BloodSword::Engine
         }
     }
 
-    // reset battle status
+    void Cancel(Character::Base &character, std::vector<Character::Status> statuses)
+    {
+        for (auto status : statuses)
+        {
+            Engine::Cancel(character, status);
+        }
+    }
+
+    // reset all battle status
     void ResetStatus(Character::Base &character)
     {
-        Engine::Cancel(character, Character::Status::FLEEING);
-
-        Engine::Cancel(character, Character::Status::DEFENDED);
+        Engine::Cancel(character, {Character::Status::FLEEING, Character::Status::DEFENDED});
     }
 
     void ResetSpells(Character::Base &character)
