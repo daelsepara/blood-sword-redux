@@ -742,6 +742,48 @@ namespace BloodSword::Interface
         battle.Map.CheckBounds();
     }
 
+    void RenderAmbushRangedAttack(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
+    {
+        // initialize random number generator
+        auto random = Random::Base();
+
+        // generate battle scene
+        auto scene = Interface::BattleScene(battle, party);
+
+        for (auto i = 0; i < battle.Opponents.Count(); i++)
+        {
+            // current attacker
+            auto &attacker = battle.Opponents[i];
+
+            if (Engine::IsAlive(attacker) && Engine::CanShoot(attacker))
+            {
+                // list of targets
+                auto targets = std::vector<int>();
+
+                for (auto j = 0; j < party.Count(); j++)
+                {
+                    if (Engine::CanTarget(party[j], true))
+                    {
+                        targets.push_back(j);
+                    }
+                }
+
+                if (targets.size() > 0)
+                {
+                    // center map on attacker
+                    Interface::Center(battle, Map::Object::ENEMY, i);
+
+                    // select target
+                    auto selected = targets[random.NextInt() % targets.size()];
+
+                    auto &defender = party[selected];
+
+                    Interface::Shoot(graphics, scene, battle, attacker, defender, selected);
+                }
+            }
+        }
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -911,11 +953,6 @@ namespace BloodSword::Interface
                     // players get a free initial turn
                     order = Engine::Build(party, Attribute::Type::AWARENESS, true, true);
                 }
-                else if (round == 0 && battle.Has(Battle::Condition::AMBUSH_RANGED))
-                {
-                    // enemies get a free ranged attack
-                    order = Engine::Build(battle.Opponents, Attribute::Type::AWARENESS, Skills::Type::SHURIKEN, true, true);
-                }
                 else if (round == 0 && battle.Has(Battle::Condition::AMBUSH_NPC))
                 {
                     // enemy combatants get a free initial turn
@@ -925,6 +962,12 @@ namespace BloodSword::Interface
                 {
                     // otherwise create battle order (default)
                     order = Engine::Build(party, battle.Opponents, Attribute::Type::AWARENESS, true, true);
+                }
+
+                // enemies get a free ranged attack
+                if (round == 0 && battle.Has(Battle::Condition::AMBUSH_RANGED))
+                {
+                    Interface::RenderAmbushRangedAttack(graphics, battle, party);
                 }
 
                 // start of round effects
@@ -979,7 +1022,7 @@ namespace BloodSword::Interface
                                         // check if there are adjacent combatants to fight
                                         auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
 
-                                        if (opponents.size() > 0 && !(round == 0 && battle.Has(Battle::Condition::AMBUSH_RANGED)))
+                                        if (opponents.size() > 0)
                                         {
                                             Engine::ResetSpells(character);
 
