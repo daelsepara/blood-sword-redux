@@ -96,7 +96,10 @@ namespace BloodSword::Battle
                     {
                         auto condition = !data["conditions"][i].is_null() ? Battle::MapCondition(std::string(data["conditions"][i])) : Battle::Condition::NONE;
 
-                        conditions.push_back(condition);
+                        if (condition != Battle::Condition::NONE)
+                        {
+                            conditions.push_back(condition);
+                        }
                     }
 
                     this->Conditions = conditions;

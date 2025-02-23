@@ -605,10 +605,10 @@ namespace BloodSword::Interface
                 section = story.Find(location);
 
                 std::cerr << "Find: "
-                << "[" << Book::Mapping[location.first]
-                << ": " << std::to_string(location.second) << "]"
-                << " == " << std::to_string(section)
-                << std::endl;
+                          << "[" << Book::Mapping[location.first]
+                          << ": " << std::to_string(location.second) << "]"
+                          << " == " << std::to_string(section)
+                          << std::endl;
 
                 if (!(section != -1 && Book::IsDefined(story.Sections[section].Location)))
                 {

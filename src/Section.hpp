@@ -93,7 +93,14 @@ namespace BloodSword::Section
         // load battle
         if (!data["battle"].is_null())
         {
-            section.Battle.Initialize(data["battle"]);
+            if (data["battle"].is_object())
+            {
+                section.Battle.Initialize(data["battle"]);
+            }
+            else if (data["battle"].is_string())
+            {
+                section.Battle = Battle::Load(std::string(data["battle"]).c_str());
+            }
         }
 
         // image asset and position

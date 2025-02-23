@@ -1,7 +1,8 @@
 {
     "battle": {
         "conditions": [
-            "AMBUSH RANGED"
+            "AMBUSH RANGED",
+            "SURVIVORS"
         ],
         "duration": -1,
         "map": "maps/book1/map399.json",

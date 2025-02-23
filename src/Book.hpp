@@ -81,12 +81,6 @@ namespace BloodSword::Book
     // compare if the book locations are the same
     bool Equal(Book::Location &current, Book::Location &next)
     {
-        std::cerr << "Equal ["
-                  << Book::Mapping[current.first] << ", " << std::to_string(current.second) << "]"
-                  << " == "
-                  << Book::Mapping[next.first] << ", " << std::to_string(next.second) << "]"
-                  << std::endl;
-
         return ((current.first == next.first) && (current.second == next.second));
     }
 
