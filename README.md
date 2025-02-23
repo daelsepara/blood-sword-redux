@@ -64,6 +64,21 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Cast Spell](/screenshots/cast-spell.png)
 
+## Story Mode
+
+### Introduction
+
+![Introduction](/screenshots/story-mode-1.png)
+
+### Story / Section Screen
+
+![Section](/screenshots/story-mode-2.png)
+
+### Choices
+
+![Choices](/screenshots/story-mode-choices.png)
+
+
 # Copyright Information
 ```
             Originally published 1987 by Knight Books
