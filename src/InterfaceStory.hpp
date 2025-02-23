@@ -523,7 +523,7 @@ namespace BloodSword::Interface
 
         if (!Engine::IsAlive(party))
         {
-            Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+            Interface::ErrorMessage(graphics, background, MSG_OVER);
         }
 
         return next;
@@ -539,7 +539,7 @@ namespace BloodSword::Interface
 
         party.Location = section.Location;
 
-        Book::Location next = Interface::ProcessBackground(graphics, background, section, party);
+        auto next = Interface::ProcessBackground(graphics, background, section, party);
 
         // skip this section if background events redirect to another location
         if (Book::IsUndefined(next))
@@ -571,7 +571,7 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    Interface::MessageBox(graphics, background, Graphics::RichText("GAME OVER!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                    Interface::ErrorMessage(graphics, background, MSG_OVER);
 
                     break;
                 }
@@ -592,15 +592,13 @@ namespace BloodSword::Interface
             Interface::TextBox(graphics, background, Fonts::Normal, message.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
         }
 
-        auto done = false;
-
-        while (!done)
+        while (true)
         {
             auto &current = story.Sections[section];
 
             auto location = Interface::ProcessSection(graphics, background, current, party);
 
-            if (Book::IsDefined(location))
+            if (Book::IsDefined(location) && Engine::IsAlive(party))
             {
                 section = story.Find(location);
 
@@ -612,15 +610,20 @@ namespace BloodSword::Interface
 
                 if (!(section != -1 && Book::IsDefined(story.Sections[section].Location)))
                 {
-                    Interface::MessageBox(graphics, background, Graphics::RichText("NOT YET IMPLEMENTED", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, 4, Color::Inactive, true);
+                    Interface::Notify(graphics, background, MSG_IMPLEMENT);
 
-                    done = true;
+                    break;
                 }
             }
             else
             {
-                done = true;
+                break;
             }
+        }
+
+        if (Engine::IsAlive(party))
+        {
+            Interface::ErrorMessage(graphics, background, MSG_OVER);
         }
     }
 }
