@@ -747,9 +747,6 @@ namespace BloodSword::Interface
         // initialize random number generator
         auto random = Random::Base();
 
-        // generate battle scene
-        auto scene = Interface::BattleScene(battle, party);
-
         for (auto i = 0; i < battle.Opponents.Count(); i++)
         {
             // current attacker
@@ -772,6 +769,9 @@ namespace BloodSword::Interface
                 {
                     // center map on attacker
                     Interface::Center(battle, Map::Object::ENEMY, i);
+
+                    // generate battle scene
+                    auto scene = Interface::BattleScene(battle, party);
 
                     // select target
                     auto selected = targets[random.NextInt() % targets.size()];
