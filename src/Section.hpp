@@ -156,13 +156,6 @@ namespace BloodSword::Section
             section.Next = conditions;
         }
 
-        std::cerr << "Loaded: ["
-                  << Book::Mapping[section.Location.first]
-                  << ", "
-                  << std::to_string(section.Location.second)
-                  << "]"
-                  << std::endl;
-
         return section;
     }
 
@@ -272,6 +265,8 @@ namespace BloodSword::Story
 
             ifs.close();
         }
+
+        std::cerr << "Loaded: " << story.Sections.size() << " sections" << std::endl;
 
         return story;
     }
