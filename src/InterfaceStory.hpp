@@ -544,37 +544,23 @@ namespace BloodSword::Interface
         // skip this section if background events redirect to another location
         if (Book::IsUndefined(next))
         {
-            auto once = false;
-
+            // process events
             auto section_text = section.Text;
 
-            while (true)
+            auto results = Interface::ProcessEvents(graphics, background, section, party);
+
+            for (auto result : results)
             {
-                // process events
-                if (!once)
-                {
-                    auto results = Interface::ProcessEvents(graphics, background, section, party);
+                section_text += "\n\n" + result.Text;
+            }
 
-                    for (auto result : results)
-                    {
-                        section_text += "\n\n" + result.Text;
-                    }
-
-                    once = true;
-                }
-
-                if (Engine::IsAlive(party))
-                {
-                    next = Interface::RenderSection(graphics, background, section, party, saved_party, section_text);
-
-                    break;
-                }
-                else
-                {
-                    Interface::ErrorMessage(graphics, background, MSG_OVER);
-
-                    break;
-                }
+            if (Engine::IsAlive(party))
+            {
+                next = Interface::RenderSection(graphics, background, section, party, saved_party, section_text);
+            }
+            else
+            {
+                Interface::ErrorMessage(graphics, background, MSG_OVER);
             }
         }
 
@@ -615,15 +601,18 @@ namespace BloodSword::Interface
                     break;
                 }
             }
-            else
+            else if (!Engine::IsAlive(party))
             {
+                Interface::ErrorMessage(graphics, background, MSG_OVER);
+
                 break;
             }
-        }
+            else
+            {
+                Interface::Notify(graphics, background, MSG_PLAY);
 
-        if (Engine::IsAlive(party))
-        {
-            Interface::ErrorMessage(graphics, background, MSG_OVER);
+                break;
+            }
         }
     }
 }
