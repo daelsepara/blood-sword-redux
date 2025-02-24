@@ -339,6 +339,10 @@
         {
             "id": "CENTER",
             "path": "images/map/convergence-target.png"
+        },
+        {
+            "id": "CHESSBOARD",
+            "path": "images/map/empty-chessboard.png"
         }
     ]
 }
