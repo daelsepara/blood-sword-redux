@@ -370,7 +370,7 @@ namespace BloodSword::Interface
         {
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scroll_bot.X, scroll_bot.Y));
         }
-        
+
         if (arrow_up && arrow_dn)
         {
             // exit hotspot when both scroll buttons are present
@@ -389,7 +389,7 @@ namespace BloodSword::Interface
             overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             id++;
-            
+
             // scroll up hotspot
             overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
@@ -408,6 +408,104 @@ namespace BloodSword::Interface
             // exit hotspot when there are no scroll buttons
             overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
+    }
+
+    bool RenderGrimoire(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
+    {
+        auto update = false;
+
+        auto done = false;
+
+        auto input = Controls::User();
+
+        auto pad = BloodSword::OddPad;
+
+        auto text = Graphics::CreateText(graphics, "UNCALL FROM MIND", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        auto psy = Engine::Score(character, Attribute::Type::PSYCHIC_ABILITY);
+
+        while (!done)
+        {
+            auto overlay = Interface::Spells(Point(0, 0), graphics.Width, graphics.Height, character, Color::Background, Color::Active, BloodSword::Border);
+
+            auto &popup = overlay.Elements[0];
+
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+
+            if (Input::IsValid(overlay, input) && Engine::IsSpell(input.Type))
+            {
+                // add spell captions
+                auto &control = overlay.Controls[input.Current];
+
+                // assumes that spell controls are listed first in the pop-up window
+                auto spell_id = control.Id;
+
+                if (spell_id >= 0 && spell_id < character.Spells.size())
+                {
+                    auto &spell = character.Spells[spell_id];
+
+                    if (character.HasCalledToMind(spell.Type) || Spells::In(Spells::Basic, spell.Type))
+                    {
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+
+                        if (!Spells::In(Spells::Basic, spell.Type))
+                        {
+                            overlay.VerifyAndAdd(Scene::Element(text, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                        }
+                    }
+                    else
+                    {
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                    }
+                }
+            }
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if (Input::IsValid(overlay, input) && input.Selected)
+            {
+                if (input.Type != Controls::Type::BACK)
+                {
+                    // call/uncall to/from mind
+                    auto ptr = Interface::ControlSpellMapping.find(input.Type);
+
+                    if (Engine::IsSpell(input.Type) && ptr != Interface::ControlSpellMapping.end())
+                    {
+                        auto &type = ptr->second;
+
+                        auto search = character.Find(type);
+
+                        if (search != character.Spells.end())
+                        {
+                            auto &spellbook = *search;
+
+                            if (character.HasCalledToMind(spellbook.Type))
+                            {
+                                // uncall from mind
+                                character.Forget(spellbook.Type);
+                            }
+                            else if (!spellbook.IsBasic())
+                            {
+                                // call to mind
+                                character.CallToMind(spellbook.Type);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    update = (psy != Engine::Score(character, Attribute::Type::PSYCHIC_ABILITY));
+
+                    done = true;
+                }
+            }
+        }
+
+        Free(&text);
+
+        return update;
     }
 
     Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, Party::Base &saved_party, std::string &text)
@@ -540,6 +638,34 @@ namespace BloodSword::Interface
                     if (Book::IsDefined(next) || !Engine::IsAlive(party))
                     {
                         done = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SPELLS)
+                {
+                    if (party.Has(Character::Class::ENCHANTER))
+                    {
+                        auto update = Interface::RenderGrimoire(graphics, overlay, party[Character::Class::ENCHANTER]);
+
+                        if (update && section.ImageAsset.empty())
+                        {
+                            Free(&image);
+
+                            // regenerate party stats
+                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                        }
+                    }
+
+                    input.Selected = false;
+                }
+                else if (input.Type == Controls::Type::HEAL)
+                {
+                    if (party.Has(Character::Class::SAGE))
+                    {
+                        Interface::Heal(graphics, overlay, party, party[Character::Class::SAGE], true);
+
+                        input.Current = input.Current = Controls::Find(overlay.Controls, Controls::Type::HEAL);
+
+                        input.Selected = false;
                     }
                 }
                 else if (input.Type == Controls::Type::EXIT)
