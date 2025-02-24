@@ -4,23 +4,23 @@
 #include "Primitives.hpp"
 #include "Templates.hpp"
 
-namespace BloodSword
+namespace BloodSword::Positions
 {
-    BloodSword::Mapping<BloodSword::Position> PositionMapping = {
+    BloodSword::Mapping<BloodSword::Position> Mapping = {
         {Position::NONE, "NONE"},
         {Position::TOP, "TOP"},
         {Position::LEFT, "LEFT"},
         {Position::RIGHT, "RIGHT"},
         {Position::BOTTOM, "BOTTOM"}};
 
-    BloodSword::Position MapPosition(const char *position)
+    BloodSword::Position Map(const char *position)
     {
-        return BloodSword::Find(BloodSword::PositionMapping, position);
+        return BloodSword::Find(Positions::Mapping, position);
     }
 
-    BloodSword::Position MapPosition(std::string position)
+    BloodSword::Position Map(std::string position)
     {
-        return BloodSword::MapPosition(position.c_str());
+        return Positions::Map(position.c_str());
     }
 }
 

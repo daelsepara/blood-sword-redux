@@ -1,0 +1,49 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 446
+    },
+    "text": "You look around for guests of distinctive height. There is a very short man wearing a feathered cap. Nearby, pouring wine into his mouth from a long-stemmed glass, there is a short fat man in grey furs. You notice one fellow in a green wig who seems to be tall, but this may be because he's very thin. A large man dressed in a bear costume sweeps past swinging a bell, and he seems to be the tallest person present.\n\nWhom will you approach?",
+    "choices": [
+        {
+            "text": "... the man with the feathered cap",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 527
+                }
+            }
+        },
+        {
+            "text": "... the man in the green wig",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 417
+                }
+            }
+        },
+        {
+            "text": "... the man wearing grey furs",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 123
+                }
+            }
+        },
+        {
+            "text": "... or the man dressed as a bear",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 277
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 527
+    },
+    "text": "\"You are Balhazar,\" you announce as you approach the man. He turns with a half smile, then fades away into thin air. You look around to see all the other guests disappearing as well. Only one remains, a man in a domino cape. When he stands up you recognise the imposing height and imperious stance of Magus Balhazar.\n\n\"You have failed my test,\" says Balhazar as he unmasks. \"Regrettable, as I had hoped you would do better. Now, it is time for you to leave.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 119
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 331
+    },
+    "text": "You stride up to the man in brown fustian. \"You are Magus Balhazar!\" you exclaim. \"Your disguise is transparent, sir.\"\n\nThe man removes his mask. It is not Balhazar. \"Your wits, however, must be opaque,\" he laughs. \"I am Magus Tor.\"\n\n\"And it is I who am your host,\" says a familiar voice behind you. You turn to see Balhazar removing the hood of his domino cape. \"Regrettably you have failed my test, and so I have no choice but to turn you down. To represent me properly in the Battlepits calls for more than nerve and raw daring. Return to the main square, where I wish you luck finding another patron.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 119
+            }
+        }
+    ]
+}

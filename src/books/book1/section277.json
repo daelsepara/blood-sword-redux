@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 277
+    },
+    "text": "You walk up to the man and touch his arm. \"Balhazar?\" you say tentatively. He turns and watches you for a moment with a half smile. A man in a domino cape rises languorously from a couch and walks over to you . As he approaches, he waves his hand and all the partygoers disappear like bursting bubbles. The man you thought was Balhazar disappears with them, a mere illusion along with the rest.\n\n\"You have failed my test,\" says Balhazar as he removes the hood of his domino cape. \"Regrettable, as I had hoped you would do better. Now it is time for you to leave.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 119
+            }
+        }
+    ]
+}

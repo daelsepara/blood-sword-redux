@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 401
+    },
+    "text": "A man standing on the patio is wearing a bright green wig. Just passing him as you look is a burly bare-chested fellow dressed in bright scarlet pantaloons. A gaunt man disguised by violet face-paint sweeps his purple robe past you as he walks to the window. Hearing a bray of laughter, you turn to see a fat man in brown fustian telling jokes to several young women.\n\nWhom will you approach?",
+    "choices": [
+        {
+            "text": "... the man in the green wig",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 417
+                }
+            }
+        },
+        {
+            "text": "... the bare-chested man",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 527
+                }
+            }
+        },
+        {
+            "text": "... the man in violet",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 123
+                }
+            }
+        },
+        {
+            "text": "... the fat man",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 331
+                }
+            }
+        },
+        {
+            "text": "... or the man in the domino cape",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 487
+                }
+            }
+        }
+    ]
+}

@@ -221,11 +221,24 @@ namespace BloodSword::Conditions
         {
             auto character = Character::Map(condition.Variables[0]);
 
-            result = party.Has(character);
-
-            if (!result)
+            if (character != Character::Class::NONE)
             {
-                text = Conditions::NotInParty(character);
+                result = party.Has(character);
+
+                if (!result)
+                {
+                    text = Conditions::NotInParty(character);
+                }
+                else if (!Engine::IsAlive(party[character]))
+                {
+                    text = party[character].Name + " IS DEAD!";
+
+                    result = false;
+                }
+            }
+            else
+            {
+                Conditions::InternalError(graphics, background, condition.Type);
             }
         }
         else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
@@ -292,17 +305,26 @@ namespace BloodSword::Conditions
                 }
                 else if (character != Character::Class::NONE && party.Has(character))
                 {
-                    auto test = Interface::Test(graphics, background, party[character], attribute);
-
-                    result = true;
-
-                    if (!test)
+                    if (!Engine::IsAlive(party[character]))
                     {
-                        failed = true;
+                        text = party[character].Name + " IS DEAD!";
 
-                        location = {book, section};
+                        result = false;
+                    }
+                    else
+                    {
+                        auto test = Interface::Test(graphics, background, party[character], attribute);
 
-                        text = condition.Variables[4];
+                        result = true;
+
+                        if (!test)
+                        {
+                            failed = true;
+
+                            location = {book, section};
+
+                            text = condition.Variables[4];
+                        }
                     }
                 }
                 else
@@ -337,26 +359,33 @@ namespace BloodSword::Conditions
                 {
                     Conditions::InternalError(graphics, background, condition.Type);
                 }
-                else if (quantity != 0)
+                else if (character != Character::Class::NONE && party.Has(character) && quantity != 0)
                 {
-                    if ((party[character].Quantity(item) + quantity) >= 0)
+                    if (!Engine::IsAlive(party[character]))
                     {
-                        result = true;
-
-                        party[character].Add(item, quantity);
-
-                        if (quantity > 0)
-                        {
-                            text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
-                        }
-                        else
-                        {
-                            text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
-                        }
+                        text = party[character].Name + " IS DEAD!";
                     }
                     else
                     {
-                        text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                        if ((party[character].Quantity(item) + quantity) >= 0)
+                        {
+                            result = true;
+
+                            party[character].Add(item, quantity);
+
+                            if (quantity > 0)
+                            {
+                                text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                            }
+                            else
+                            {
+                                text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                            }
+                        }
+                        else
+                        {
+                            text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                        }
                     }
                 }
                 else
@@ -388,17 +417,27 @@ namespace BloodSword::Conditions
                 {
                     Conditions::InternalError(graphics, background, condition.Type);
                 }
-                else if (party[character].Quantity(item) > 0)
+                else if (character != Character::Class::NONE && party.Has(character))
                 {
-                    result = true;
+                    if (!Engine::IsAlive(party[character]))
+                    {
+                        if (party[character].Quantity(item) > 0)
+                        {
+                            result = true;
 
-                    party[character].Remove(item, party[character].Quantity(item));
+                            party[character].Remove(item, party[character].Quantity(item));
 
-                    text = std::string("YOU LOSE ALL ") + std::string(Item::TypeMapping[item]) + "!";
-                }
-                else
-                {
-                    text = std::string("YOU DO NOT HAVE ANY ") + Item::TypeMapping[item] + "!";
+                            text = std::string("YOU LOSE ALL ") + std::string(Item::TypeMapping[item]) + "!";
+                        }
+                        else
+                        {
+                            text = std::string("YOU DO NOT HAVE ANY ") + Item::TypeMapping[item] + "!";
+                        }
+                    }
+                    else
+                    {
+                        text = party[character].Name + " IS DEAD!";
+                    }
                 }
             }
         }
@@ -482,7 +521,7 @@ namespace BloodSword::Conditions
                 }
             }
         }
-        
+
         result = condition.Invert ? !result : result;
 
         // debug info

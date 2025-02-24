@@ -633,11 +633,18 @@ namespace BloodSword::Interface
             {
                 if (input.Type == Controls::Type::NEXT)
                 {
-                    next = Interface::NextSection(graphics, overlay, section, party);
-
-                    if (Book::IsDefined(next) || !Engine::IsAlive(party))
+                    if (Engine::IsAlive(party))
                     {
-                        done = true;
+                        next = Interface::NextSection(graphics, overlay, section, party);
+
+                        if (Book::IsDefined(next) || !Engine::IsAlive(party))
+                        {
+                            done = true;
+                        }
+                    }
+                    else
+                    {
+                        Interface::ErrorMessage(graphics, overlay, MSG_OVER);
                     }
                 }
                 else if (input.Type == Controls::Type::SPELLS)
@@ -707,11 +714,6 @@ namespace BloodSword::Interface
 
         Free(&texture);
 
-        if (!Engine::IsAlive(party))
-        {
-            Interface::ErrorMessage(graphics, background, MSG_OVER);
-        }
-
         return next;
     }
 
@@ -745,14 +747,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            if (Engine::IsAlive(party))
-            {
-                next = Interface::RenderSection(graphics, background, section, party, saved_party, section_text);
-            }
-            else
-            {
-                Interface::ErrorMessage(graphics, background, MSG_OVER);
-            }
+            next = Interface::RenderSection(graphics, background, section, party, saved_party, section_text);
         }
 
         return next;
@@ -788,12 +783,6 @@ namespace BloodSword::Interface
 
                     break;
                 }
-            }
-            else if (!Engine::IsAlive(party))
-            {
-                Interface::ErrorMessage(graphics, background, MSG_OVER);
-
-                break;
             }
             else
             {

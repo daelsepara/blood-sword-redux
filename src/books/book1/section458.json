@@ -1,37 +1,47 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 348
+        "number": 458
     },
-    "text": "ESP indicates thoughts from only one of the revellers.",
+    "text": "How will you identify Balhazar?",
     "choices": [
         {
-            "text": "Approach this man and declare him to be Balhazar",
+            "text": "... by his height",
             "condition": {
                 "type": "NORMAL",
                 "location": {
                     "book": "BOOK1",
-                    "number": 382
+                    "number": 446
                 }
             }
         },
         {
-            "text": "Attack the man",
+            "text": "... by his mannerisms",
             "condition": {
                 "type": "NORMAL",
                 "location": {
                     "book": "BOOK1",
-                    "number": 29
+                    "number": 291
                 }
             }
         },
         {
-            "text": "You don't trust ESP and would rather rely on your ingenuity",
+            "text": "... by the colour he is wearing",
             "condition": {
                 "type": "NORMAL",
                 "location": {
                     "book": "BOOK1",
-                    "number": 458
+                    "number": 401
+                }
+            }
+        },
+        {
+            "text": "... or by his clothing",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 94
                 }
             }
         }

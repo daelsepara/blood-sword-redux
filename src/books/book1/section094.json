@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 94
+    },
+    "text": "There is a profusion of different costumes all around you. A man in a sequined mask capers about the room in jester's motely. A blond-wigged man dressed like a Marcanian reaver enters from the garden with a slim young lady on his arm. You notice two men standing beside a fountain in earnest conversation: one is dressed like a torturer, the other like a perfumed dandy. On a chaise-longue, you notice a fellow in a domino cape romancing a girl in black velvet.\n\nWhom will you approach?",
+    "choices": [
+        {
+            "text": "... the jester",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 527
+                }
+            }
+        },
+        {
+            "text": "... the reaver",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 417
+                }
+            }
+        },
+        {
+            "text": "... the torturer",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 123
+                }
+            }
+        },
+        {
+            "text": "... the dandy",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 277
+                }
+            }
+        },
+        {
+            "text": "... or the domino",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 487
+                }
+            }
+        }
+    ]
+}

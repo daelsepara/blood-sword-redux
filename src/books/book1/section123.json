@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 123
+    },
+    "text": "You stride up to the man, saying, \"Balhazar, you are discovered!\" He turns with a kind of half smile, then shimmers and fades away. You look around to see all the other guests disappearing as well. Only one remains -- a man in a domino cape. When he stands up, you recognise the imposing height and imperious stance of Magus Balhazar.\n\n\"You have failed my test,\" says Balhazar as he unmasks. \"You could not identify me among my retinue of illusions. This is regrettable, as I had hoped you would do better. Now it is time for you to leave.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 119
+            }
+        }
+    ]
+}

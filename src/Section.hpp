@@ -26,7 +26,7 @@ namespace BloodSword::Section
 
         std::vector<Choice::Base> Choices = {};
 
-        Position ImagePosition = Position::NONE;
+        BloodSword::Position ImagePosition = BloodSword::Position::NONE;
 
         Battle::Base Battle;
 
@@ -104,7 +104,7 @@ namespace BloodSword::Section
         }
 
         // image asset and position
-        section.ImagePosition = !data["image_position"].is_null() ? BloodSword::MapPosition(std::string(data["image_position"])) : Position::NONE;
+        section.ImagePosition = !data["image_position"].is_null() ? Positions::Map(std::string(data["image_position"])) : Position::NONE;
 
         section.ImageAsset = !data["image_asset"].is_null() ? std::string(data["image_asset"]) : std::string();
 

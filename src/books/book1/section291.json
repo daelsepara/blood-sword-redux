@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 291
+    },
+    "text": "You look around the room for distinctive mannerisms. You notice a portly man caressing his wine glass. In the frame of the doorway to the lawn, a thin fellow in a green wig is licking his lips as he talks to two servants. There is a man nearby who has the habit of tugging at his earlobe while holding forth about the current political situation in Kurland. Another man, dressed in a long blue robe, rubs his hands silently while contemplating the many delicious snacks laid out on the table. On a chaise-longue in the corner, a man in a domino cape strokes his moustache as he talks quietly to a velvet-clad woman in a feline mask.\n\nWhom will you approach?",
+    "choices": [
+        {
+            "text": "... the portly man",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 527
+                }
+            }
+        },
+        {
+            "text": "... the man in the green wig",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 417
+                }
+            }
+        },
+        {
+            "text": "... the politician",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 123
+                }
+            }
+        },
+        {
+            "text": "... the man in the blue robe",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 277
+                }
+            }
+        },
+        {
+            "text": "... or the man in the domino cape",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 487
+                }
+            }
+        }
+    ]
+}

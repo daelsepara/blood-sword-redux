@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 487
+    },
+    "text": "Balhazar is unmistakable. You approach him and bow. \"My lord Magus,\" you say confidently, \"you should devise a more difficult test in the future.\"\n\nHe looks up smiling. \"Few have passed this one as you have. Now, let us dispense with the charade.\" With a wave of his hand he dispels the illusion of party goers. You stand beside him in an empty ballroom.\n\nBalhazar is about to accept you formally to champion him in the Battlepits. Suddenly he looks around, startled. A figure in a dark blue cloak lurks in the shadows behind a pillar. He is creeping towards you with a long steel dagger in his hand.\n\n\"An assassin!\" bellows Balhazar as the mysterious figure jumps toward him.\n\nThe assassin sees that you are blocking his route to Balhazar. He stops short and raises the dagger as though he is about to throw it. Balhazar is frantically preparing a spell.\n\nWhat about you?",
+    "choices": [
+        {
+            "text": "Charge to attack the assassin",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 366
+                }
+            }
+        },
+        {
+            "text": "Hang back and see what Balhazar does",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 149
+                }
+            }
+        }
+    ]
+}
