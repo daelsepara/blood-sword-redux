@@ -1013,7 +1013,7 @@ namespace BloodSword::Interface
 
                             if (!src.IsNone())
                             {
-                                // if enemy, move to/fight/shoot at nearest target
+                                // enemy action (fight/shoot/cast/move)
                                 if (is_enemy && !character.Is(Character::Status::ENTHRALLED))
                                 {
                                     // enemy combatant is not paralyzed
@@ -1071,16 +1071,79 @@ namespace BloodSword::Interface
                                         }
                                         else if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)))
                                         {
+                                            // TODO: improve enemy casting strategy
                                             if (character.CalledToMind.size() > 0)
                                             {
+                                                auto spell = character.CalledToMind[0];
+
                                                 // cast spell
+                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
+                                                {
+                                                    // spellcasting successful
+                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spell]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+
+                                                    Spells::CastSpell(character.SpellStrategy, spell);
+
+                                                    auto search = character.Find(spell);
+
+                                                    if (search != character.Spells.end())
+                                                    {
+                                                        auto &spellbook = *search;
+
+                                                        if (!spellbook.IsBasic() && spellbook.IsBattle)
+                                                        {
+                                                            if (!spellbook.RequiresTarget())
+                                                            {
+                                                                // resolve spell
+                                                                Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
+                                                            }
+                                                            else
+                                                            {
+                                                                // find spell targets. prioritize targets with low endurance
+                                                                auto targets = Engine::Queue();
+
+                                                                if (spell != Spells::Type::GHASTLY_TOUCH)
+                                                                {
+                                                                    targets = Engine::Build(battle.Map, party, src, true, false, false, false);
+                                                                }
+                                                                else
+                                                                {
+                                                                    // spell needs adjacent targets
+                                                                    targets = Engine::FightTargets(battle.Map, party, src, true, false);
+                                                                }
+
+                                                                if (targets.size() > 0)
+                                                                {
+                                                                    Interface::ResolveSpell(graphics, battle, scene, character, party[targets[0].Id], targets[0].Id, spell);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // regenerate stats
+                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+
+                                                    // regenerate scene
+                                                    scene = Interface::BattleScene(battle, party);
+                                                }
+                                                else
+                                                {
+                                                    // spellcasting unsuccessful!
+                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                }
                                             }
                                             else if (character.Spells.size() > 0)
                                             {
-
+                                                // call to mind
+                                                for (auto &strategy : character.SpellStrategy)
+                                                {
+                                                    if (strategy.Uses > 0 && Engine::Count(party) > strategy.Threshold && !character.HasCalledToMind(strategy.Spell))
+                                                    {
+                                                        character.CallToMind(strategy.Spell);
+                                                    }
+                                                }
                                             }
 
-                                            // TODO: enemy cast spells
                                             next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
                                         else if (character.Moves > 0 && Move::Available(battle.Map, src))
