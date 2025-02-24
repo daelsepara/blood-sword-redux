@@ -26,7 +26,7 @@
             }
         },
         {
-            "text": "A TRICKSTER in the party wishes to act",
+            "text": "(TRICKSTER) You wish to act",
             "condition": {
                 "type": "IN PARTY",
                 "location": {
@@ -39,7 +39,7 @@
             }
         },
         {
-            "text": "A SAGE wishes to try something",
+            "text": "(SAGE) Try something",
             "condition": {
                 "type": "IN PARTY",
                 "location": {
@@ -52,7 +52,7 @@
             }
         },
         {
-            "text": "An ENCHANTER wishes to try something",
+            "text": "(ENCHANTER) Try something",
             "condition": {
                 "type": "IN PARTY",
                 "location": {
