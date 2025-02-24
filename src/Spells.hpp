@@ -294,6 +294,26 @@ namespace BloodSword::Spells
         }
     };
 
+    // class to determine how opponent casts spell
+    class Usage
+    {
+    public:
+        Spells::Type Spell = Spells::Type::NONE;
+
+        int Uses = 0;
+
+        // number of opponents before it is used (0 - used for any number of opponents)
+        int Threshold = 0;
+
+        Usage(Spells::Type spell, int uses, int threshold) : Spell(spell), Uses(uses), Threshold(threshold) {}
+
+        Usage(Spells::Type spell, int threshold) : Spell(spell), Uses(1), Threshold(threshold) {}
+
+        Usage() {}
+    };
+
+    typedef std::vector<Spells::Usage> Strategy;
+
     typedef std::vector<Spells::Base> Grimoire;
 
     Spells::Grimoire Load(nlohmann::json &data)
@@ -340,6 +360,27 @@ namespace BloodSword::Spells
         return spells;
     }
 
+    Spells::Strategy LoadStrategy(nlohmann::json &data)
+    {
+        auto strategies = Spells::Strategy();
+
+        for (auto i = 0; i < data.size(); i++)
+        {
+            auto spell = !data[i]["spell"].is_null() ? Spells::Map(std::string(data[i]["spell"])) : Spells::Type::NONE;
+
+            auto uses = !data[i]["uses"].is_null() ? int(data[i]["uses"]) : 0;
+
+            auto threshold = !data[i]["threshold"].is_null() ? int(data[i]["threshold"]) : 0;
+
+            if (spell != Spells::Type::NONE)
+            {
+                strategies.push_back(Spells::Usage(spell, uses, threshold));
+            }
+        }
+
+        return strategies;
+    }
+
     nlohmann::json Data(Spells::Grimoire &spells)
     {
         nlohmann::json data;
@@ -376,6 +417,58 @@ namespace BloodSword::Spells
         }
 
         return data;
+    }
+
+    nlohmann::json Data(Spells::Strategy &strategies)
+    {
+        nlohmann::json data;
+
+        for (auto &strategy : strategies)
+        {
+            nlohmann::json spell;
+
+            spell["spell"] = std::string(Spells::TypeMapping[strategy.Spell]);
+
+            spell["uses"] = strategy.Uses;
+
+            spell["threshold"] = strategy.Threshold;
+
+            data.push_back(spell);
+        }
+
+        return data;
+    }
+
+    // NPC will try to cast spell
+    bool CanCastSpells(Spells::Strategy &strategies, int opponents)
+    {
+        bool cast = false;
+
+        for (auto &strategy : strategies)
+        {
+            if (strategy.Uses > 0 && opponents > strategy.Threshold)
+            {
+                cast = true;
+
+                break;
+            }
+        }
+
+        return cast;
+    }
+
+    // NPC casts spell (updates strategy)
+    void CastSpell(Spells::Strategy &strategies, Spells::Type spell)
+    {
+        for (auto &strategy : strategies)
+        {
+            if (strategy.Uses > 0 && strategy.Spell == spell)
+            {
+                strategy.Uses--;
+
+                break;
+            }
+        }
     }
 }
 

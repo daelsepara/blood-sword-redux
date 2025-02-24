@@ -38,6 +38,8 @@ namespace BloodSword::Character
 
         Spells::List CalledToMind = {};
 
+        Spells::Strategy SpellStrategy = {};
+
         Character::ControlType ControlType = ControlType::NONE;
 
         Character::Class Class = Character::Class::NONE;
@@ -721,6 +723,11 @@ namespace BloodSword::Character
             character.Targets = Target::Load(data["targets"]);
         }
 
+        if (!data["spell_strategy"].is_null() && data["spell_strategy"].is_array() && data["spell_strategy"].size() > 0)
+        {
+            character.SpellStrategy = Spells::LoadStrategy(data["spell_strategy"]);
+        }
+
         if (!data["location"].is_null())
         {
             character.Location = Book::Load(data["location"]);
@@ -813,6 +820,11 @@ namespace BloodSword::Character
         if (Book::IsDefined(character.Location))
         {
             data["location"] = Book::Data(character.Location);
+        }
+
+        if (character.SpellStrategy.size() > 0)
+        {
+            data["spell_strategy"] = Spells::Data(character.SpellStrategy);
         }
 
         return data;

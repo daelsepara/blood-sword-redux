@@ -1069,8 +1069,17 @@ namespace BloodSword::Interface
                                             // next character in battle order
                                             next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
-                                        else if (character.Has(Skills::Type::SPELLS))
+                                        else if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)))
                                         {
+                                            if (character.CalledToMind.size() > 0)
+                                            {
+                                                // cast spell
+                                            }
+                                            else if (character.Spells.size() > 0)
+                                            {
+
+                                            }
+
                                             // TODO: enemy cast spells
                                             next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
