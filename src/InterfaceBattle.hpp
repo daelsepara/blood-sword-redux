@@ -2082,6 +2082,31 @@ namespace BloodSword::Interface
                             }
                         }
                     }
+
+                    // check if within endurance limit
+                    if (battle.Endurance != Battle::Unlimited)
+                    {
+                        if (Engine::Min(battle.Opponents, Attribute::Type::ENDURANCE, true) <= battle.Endurance)
+                        {
+                            result = Battle::Result::VICTORY;
+
+                            exit = true;
+
+                            next = true;
+
+                            end_turn = true;
+                        }
+                        else if (Engine::Min(party, Attribute::Type::ENDURANCE, true) <= battle.Endurance)
+                        {
+                            result = Battle::Result::DEFEAT;
+
+                            exit = true;
+
+                            next = true;
+
+                            end_turn = true;
+                        }
+                    }
                 }
 
                 // move to next round

@@ -201,6 +201,46 @@ namespace BloodSword::Engine
         return (is_alive && !is_away && battle);
     }
 
+    int Min(Party::Base &party, Attribute::Type attribute, bool in_battle = false)
+    {
+        auto min_value = 255;
+
+        if (attribute != Attribute::Type::NONE)
+        {
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                if (Engine::CanTarget(party[character], in_battle))
+                {
+                    min_value = std::min(Engine::Score(party[character], attribute, in_battle), min_value);
+                }
+            }
+        }
+        else
+        {
+            min_value = 0;
+        }
+
+        return min_value;
+    }
+
+    int Max(Party::Base &party, Attribute::Type attribute, bool in_battle = false)
+    {
+        auto max_value = 0;
+
+        if (attribute != Attribute::Type::NONE)
+        {
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                if (Engine::CanTarget(party[character], in_battle))
+                {
+                    max_value = std::max(Engine::Score(party[character], attribute, in_battle), max_value);
+                }
+            }
+        }
+
+        return max_value;
+    }
+
     void Build(Engine::Queue &queue, Party::Base &party, Attribute::Type attribute, bool in_battle = false)
     {
         // add characters in party to queue

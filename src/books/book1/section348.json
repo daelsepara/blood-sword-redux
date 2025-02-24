@@ -8,31 +8,40 @@
         {
             "text": "Approach this man and declare him to be Balhazar",
             "condition": {
-                "type": "NORMAL",
+                "type": "IN PARTY",
                 "location": {
                     "book": "BOOK1",
                     "number": 382
-                }
+                },
+                "variables": [
+                    "SAGE"
+                ]
             }
         },
         {
             "text": "Attack the man",
             "condition": {
-                "type": "NORMAL",
+                "type": "IN PARTY",
                 "location": {
                     "book": "BOOK1",
                     "number": 29
-                }
+                },
+                "variables": [
+                    "SAGE"
+                ]
             }
         },
         {
             "text": "You don't trust ESP and would rather rely on your ingenuity",
             "condition": {
-                "type": "NORMAL",
+                "type": "IN PARTY",
                 "location": {
                     "book": "BOOK1",
                     "number": 458
-                }
+                },
+                "variables": [
+                    "SAGE"
+                ]
             }
         }
     ]

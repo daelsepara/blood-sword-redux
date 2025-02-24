@@ -5,6 +5,7 @@
             "SURVIVORS"
         ],
         "duration": -1,
+        "endurance": -1,
         "map": "maps/book1/map399.json",
         "opponents": {
             "members": [

@@ -65,6 +65,9 @@ namespace BloodSword::Battle
         // round limit (-1 if unlimited)
         int Duration = Battle::Unlimited;
 
+        // endurance limit (-1 if fighting to death)
+        int Endurance = -1;
+
         Book::Location Survivors = {Book::Number::NONE, -1};
 
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
@@ -116,6 +119,8 @@ namespace BloodSword::Battle
                 }
 
                 this->Duration = !data["duration"].is_null() ? int(data["duration"]) : Battle::Unlimited;
+
+                this->Endurance = !data["endurance"].is_null() ? int(data["endurance"]) : Battle::Unlimited;
 
                 // initialize map from file
                 if (!data["map"].is_null())

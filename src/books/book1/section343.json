@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 343
+    },
+    "text": "(TRICKSTER) [You are not one to panic easily. Rather than fleeing like a scoundrel, you simply step quickly behind a stall and pull a piece of sackcloth from a carton of fruit.\n\nWrapping yourself ini the sackcloth, you lie down in the gutter and begin to snore. The guard, rushing in pursuit, steps right over you -- mistaking you for one of the many beggars and drunkards that infest the alleys of Kalugen's Keep. He looks to and fro, baffled at your disappearance, then plods off down the street calling for his comrades to join the hunt.]\n\nAs you return to the square, a tall man in scarlet robes steps from the booth. You notice that one of the pennants of the magi has the same scarlet hue. The man beckons you over. \"An artful ruse,\" he says with a faint smile. \"I am impressed by one who uses luck and cunning as you do.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 397
+            }
+        }
+    ]
+}

@@ -25,11 +25,14 @@
         {
             "text": "Don't try to rob the merchant",
             "condition": {
-                "type": "NORMAL",
+                "type": "IN PARTY",
                 "location": {
                     "book": "BOOK1",
                     "number": 1
-                }
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
             }
         }
     ]
