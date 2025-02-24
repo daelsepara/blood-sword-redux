@@ -1,0 +1,96 @@
+{
+    "battle": {
+        "duration": -1,
+        "map": "maps/book1/map473.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "ENCHANTER",
+                    "attributes": [
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 35,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 35
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 1
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "called_to_mind": [
+                        "MISTS OF DEATH"
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "item_limit": 10,
+                    "moves": 1000,
+                    "name": "QUEL",
+                    "rank": 0,
+                    "shoot": "NONE",
+                    "skills": [
+                        "SPELLS"
+                    ],
+                    "spell_strategy": [
+                        {
+                            "spell": "MISTS OF DEATH",
+                            "uses": 2,
+                            "threshold": 3
+                        },
+                        {
+                            "spell": "THE VAMPIRE SPELL",
+                            "uses": 2,
+                            "threshold": 1
+                        }
+                    ],
+                    "spells": [
+                        {
+                            "battle": true,
+                            "class": "PSYCHIC",
+                            "complexity": 3,
+                            "duration": -1,
+                            "ranged": true,
+                            "type": "MISTS OF DEATH"
+                        },
+                        {
+                            "battle": true,
+                            "class": "PSYCHIC",
+                            "complexity": 3,
+                            "duration": -1,
+                            "ranged": true,
+                            "type": "THE VAMPIRE SPELL"
+                        }
+                    ],
+                    "type": "ENEMY"
+                }
+            ]
+        }
+    }
+}

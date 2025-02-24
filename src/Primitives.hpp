@@ -51,16 +51,6 @@ namespace BloodSword
     // scroll speed (pixels)
     const int ScrollSpeed = 50;
 
-    // relative positions
-    enum class Position
-    {
-        NONE = -1,
-        TOP,
-        LEFT,
-        RIGHT,
-        BOTTOM
-    };
-
     // cartesian coordinates
     class Point
     {

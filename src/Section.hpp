@@ -9,10 +9,10 @@
 #include "Conditions.hpp"
 #include "Feature.hpp"
 #include "Primitives.hpp"
-#include "InterfaceBattle.hpp"
-#include "InterfaceStory.hpp"
 #include "Templates.hpp"
 #include "Position.hpp"
+#include "InterfaceBattle.hpp"
+#include "InterfaceStory.hpp"
 
 // classes and functions for managing story sections
 namespace BloodSword::Section
@@ -26,7 +26,7 @@ namespace BloodSword::Section
 
         std::vector<Choice::Base> Choices = {};
 
-        BloodSword::Position ImagePosition = BloodSword::Position::NONE;
+        Position::Type ImagePosition = Position::Type::NONE;
 
         Battle::Base Battle;
 
@@ -104,7 +104,7 @@ namespace BloodSword::Section
         }
 
         // image asset and position
-        section.ImagePosition = !data["image_position"].is_null() ? Positions::Map(std::string(data["image_position"])) : Position::NONE;
+        section.ImagePosition = !data["image_position"].is_null() ? Position::Map(data["image_position"]) : Position::Type::NONE;
 
         section.ImageAsset = !data["image_asset"].is_null() ? std::string(data["image_asset"]) : std::string();
 

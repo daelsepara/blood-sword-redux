@@ -1137,9 +1137,11 @@ namespace BloodSword::Interface
                                                 // call to mind
                                                 for (auto &strategy : character.SpellStrategy)
                                                 {
-                                                    if (strategy.Uses > 0 && Engine::Count(party) > strategy.Threshold && !character.HasCalledToMind(strategy.Spell))
+                                                    if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Threshold && !character.HasCalledToMind(strategy.Spell))
                                                     {
                                                         character.CallToMind(strategy.Spell);
+
+                                                        break;
                                                     }
                                                 }
                                             }

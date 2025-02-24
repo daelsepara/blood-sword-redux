@@ -446,7 +446,7 @@ namespace BloodSword::Spells
 
         for (auto &strategy : strategies)
         {
-            if (strategy.Uses > 0 && opponents > strategy.Threshold)
+            if (strategy.Uses > 0 && opponents >= strategy.Threshold)
             {
                 cast = true;
 

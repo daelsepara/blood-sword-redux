@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 119
+    },
+    "text": "Dejectedly you return to the square. The black and purple pennant has gone. You are relieved to see that one pennant remains, however: the olive-green banner of Magus Kalugen, who rules this city. The steward is huddle beside a brazier, trying to draw what warmth he can from the glimmering coals. As you stride over, he looks up. \"The hour is late and I am cold,\" he says. \"Take this banner and let me go home.\"\n\nYou are just about to do so when another hand, velvet-gloved and bearing many white gold rings, reqches out to snatch it.\n\n\"I shall be Kalugen's champion,\" states the newcomer. He appears to be an Enchanter. He turns to smile at you, a very cold and sinister smile. \"I am Dominus Quel. And you -- you are dust if you try to oppose me.\"",
+    "choices": [
+        {
+            "text": "Oppose him",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 473
+                }
+            }
+        },
+        {
+            "text": "Let him take the pennant",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 164
+                }
+            }
+        }
+    ]
+}

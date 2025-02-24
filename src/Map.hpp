@@ -138,6 +138,11 @@ namespace BloodSword::Map
 
             this->Height = height;
 
+            // make sure that ViewX and ViewY are within map dimensions
+            this->ViewX = std::min(this->Width, width);
+
+            this->ViewY = std::min(this->Height, height);
+
             this->Tiles.clear();
 
             this->Tiles.resize(height);
@@ -297,9 +302,9 @@ namespace BloodSword::Map
 
             this->Height = !data["height"].is_null() ? int(data["height"]) : 0;
 
-            this->ViewX = !data["viewx"].is_null() ? int(data["viewx"]) : 8;
+            this->ViewX = !data["viewx"].is_null() ? int(data["viewx"]) : 7;
 
-            this->ViewY = !data["viewy"].is_null() ? int(data["viewy"]) : 8;
+            this->ViewY = !data["viewy"].is_null() ? int(data["viewy"]) : 7;
 
             this->X = !data["x"].is_null() ? int(data["x"]) : 0;
 

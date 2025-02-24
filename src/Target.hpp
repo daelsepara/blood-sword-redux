@@ -12,6 +12,8 @@ namespace BloodSword::Target
     enum class Type
     {
         NONE = -1,
+        PLAYER,
+        ENEMY,
         WARRIOR,
         TRICKSTER,
         SAGE,
@@ -25,6 +27,8 @@ namespace BloodSword::Target
 
     BloodSword::Mapping<Target::Type> Mapping = {
         {Target::Type::NONE, "NONE"},
+        {Target::Type::PLAYER, "PLAYER"},
+        {Target::Type::ENEMY, "ENEMY"},
         {Target::Type::WARRIOR, "WARRIOR"},
         {Target::Type::TRICKSTER, "TRICKSTER"},
         {Target::Type::SAGE, "SAGE"},

@@ -4,23 +4,33 @@
 #include "Primitives.hpp"
 #include "Templates.hpp"
 
-namespace BloodSword::Positions
+namespace BloodSword::Position
 {
-    BloodSword::Mapping<BloodSword::Position> Mapping = {
-        {Position::NONE, "NONE"},
-        {Position::TOP, "TOP"},
-        {Position::LEFT, "LEFT"},
-        {Position::RIGHT, "RIGHT"},
-        {Position::BOTTOM, "BOTTOM"}};
-
-    BloodSword::Position Map(const char *position)
+    // relative positions
+    enum class Type
     {
-        return BloodSword::Find(Positions::Mapping, position);
+        NONE = -1,
+        TOP,
+        LEFT,
+        RIGHT,
+        BOTTOM
+    };
+
+    BloodSword::Mapping<Position::Type> TypeMapping = {
+        {Position::Type::NONE, "NONE"},
+        {Position::Type::TOP, "TOP"},
+        {Position::Type::LEFT, "LEFT"},
+        {Position::Type::RIGHT, "RIGHT"},
+        {Position::Type::BOTTOM, "BOTTOM"}};
+
+    Position::Type Map(const char *position)
+    {
+        return BloodSword::Find(Position::TypeMapping, position);
     }
 
-    BloodSword::Position Map(std::string position)
+    Position::Type Map(std::string position)
     {
-        return Positions::Map(position.c_str());
+        return Position::Map(position.c_str());
     }
 }
 

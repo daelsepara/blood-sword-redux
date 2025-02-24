@@ -410,6 +410,63 @@ namespace BloodSword::Interface
         }
     }
 
+    void EndingControls(Section::Base &section, Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
+    {
+        auto id = 0;
+
+        // exit button icon
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X, buttons.Y));
+
+        // scroll button icons
+        if (arrow_up)
+        {
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scroll_top.X, scroll_top.Y));
+        }
+
+        if (arrow_dn)
+        {
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scroll_bot.X, scroll_bot.Y));
+        }
+
+        if (arrow_up && arrow_dn)
+        {
+            // exit hotspot when both scroll buttons are present
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id + 2, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            // scroll buttons hotspots
+            id++;
+
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id + 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 2, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
+        else if (arrow_up)
+        {
+            // exit hotspot when scroll up is present
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            id++;
+
+            // scroll up hotspot
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
+        else if (arrow_dn)
+        {
+            // exit hotspot when scroll down is present
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id, id + 1, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            id++;
+
+            // scroll down hotspot
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
+        else
+        {
+            // exit hotspot when there are no scroll buttons
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
+    }
+
     bool RenderGrimoire(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         auto update = false;
@@ -612,7 +669,14 @@ namespace BloodSword::Interface
             auto arrow_dn = text_h < texture_h && offset < (texture_h - text_h);
 
             // add story controls
-            Interface::StoryControls(section, party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+            if (section.Has(Feature::Type::ENDING))
+            {
+                Interface::EndingControls(section, party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+            }
+            else
+            {
+                Interface::StoryControls(section, party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+            }
 
             if (scroll_up)
             {
