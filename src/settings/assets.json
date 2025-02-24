@@ -113,6 +113,10 @@
             "path": "images/enemies/elf-helmet.png"
         },
         {
+            "id": "QUEL",
+            "path": "images/enemies/hood.png"
+        },
+        {
             "id": "MAGUS VYL",
             "path": "images/enemies/vampire-dracula.png"
         },

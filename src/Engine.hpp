@@ -377,7 +377,7 @@ namespace BloodSword::Engine
     }
 
     // generic queue builder (based on distance / endurance)
-    Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool ranged = false, bool move = false, bool descending = false)
+    Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle, bool fight, bool ranged, bool move, bool spell, bool descending = false)
     {
         Engine::Queue queue = {};
 
@@ -406,7 +406,7 @@ namespace BloodSword::Engine
                     {
                         queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
                     }
-                    else if (!move && !ranged && distance == 1)
+                    else if ((!move && !ranged && fight && distance == 1) || (!move && !ranged && !fight && spell))
                     {
                         queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, in_battle)));
                     }
@@ -420,21 +420,21 @@ namespace BloodSword::Engine
     }
 
     // build queue based on path to target (alternative to the distance-based (between src and dst) approach
-    Engine::Queue MoveTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
+    Engine::Queue MoveTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle, bool descending = false)
     {
-        return Engine::Build(map, party, src, in_battle, false, true, descending);
+        return Engine::Build(map, party, src, in_battle, false, false, true, false, descending);
     }
 
     // build shot targets
     Engine::Queue RangedTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
-        return Engine::Build(map, party, src, in_battle, true, false, descending);
+        return Engine::Build(map, party, src, in_battle, false, true, false, false, descending);
     }
 
     // build fight targets (adjacent opponents)
     Engine::Queue FightTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
-        return Engine::Build(map, party, src, in_battle, false, false, descending);
+        return Engine::Build(map, party, src, in_battle, true, false, false, false, descending);
     }
 
     // build queue of preferred targets

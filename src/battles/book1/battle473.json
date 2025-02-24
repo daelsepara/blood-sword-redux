@@ -5,7 +5,7 @@
         "opponents": {
             "members": [
                 {
-                    "asset": "ENCHANTER",
+                    "asset": "QUEL",
                     "attributes": [
                         {
                             "maximum": 6,
@@ -61,7 +61,7 @@
                     "spell_strategy": [
                         {
                             "spell": "MISTS OF DEATH",
-                            "uses": 2,
+                            "uses": 1,
                             "threshold": 3
                         },
                         {

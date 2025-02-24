@@ -812,7 +812,7 @@ namespace BloodSword::Test
                         // if enemy, move to nearest target
                         if (!Engine::IsPlayer(order, character))
                         {
-                            auto targets = Engine::MoveTargets(map, party, src);
+                            auto targets = Engine::MoveTargets(map, party, src, false, true);
 
                             if (targets.size() > 0)
                             {

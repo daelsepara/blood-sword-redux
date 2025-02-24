@@ -812,50 +812,74 @@ namespace BloodSword::Interface
 
         if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents) && Engine::IsAlive(party))
         {
-            // set party starting locations
-            for (auto i = 0; i < party.Count(); i++)
+            if (battle.Map.Origins.size() > 0 && battle.Map.Origins.size() >= party.Count())
             {
-                battle.Map.Put(battle.Map.Origins[i], Map::Object::PLAYER, i);
+                // set party starting locations
+                for (auto i = 0; i < party.Count(); i++)
+                {
+                    battle.Map.Put(battle.Map.Origins[i], Map::Object::PLAYER, i);
+                }
+            }
+            else
+            {
+                throw std::invalid_argument("MAP: Cannot place players on the battlefield!");
             }
 
-            // set opponents starting locations
-            for (auto i = 0; i < battle.Opponents.Count(); i++)
+            if (battle.Opponents.Count() > 0)
             {
-                // set opponent location
-                battle.Opponents[i].Location = party.Location;
+                if (battle.Map.Spawn.size() >= battle.Opponents.Count())
+                {
+                    // set opponents starting locations
+                    for (auto i = 0; i < battle.Opponents.Count(); i++)
+                    {
+                        // set opponent location
+                        battle.Opponents[i].Location = party.Location;
 
-                battle.Map.Put(battle.Map.Spawn[i], Map::Object::ENEMY, i);
+                        battle.Map.Put(battle.Map.Spawn[i], Map::Object::ENEMY, i);
+                    }
+                }
+                else
+                {
+                    throw std::invalid_argument("MAP: Cannot place opponents on the battlefield!");
+                }
             }
 
             if (Book::IsDefined(battle.Survivors))
             {
-                // gather list of survivors
-                auto survivors = Party::Base();
-
-                // look for the survivors in the previous battle
-                for (auto &survivor : party.Survivors)
+                if (battle.Map.Survivors.size() > 0)
                 {
-                    if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, battle.Survivors))
+                    // gather list of survivors
+                    auto survivors = Party::Base();
+
+                    // look for the survivors in the previous battle
+                    for (auto &survivor : party.Survivors)
                     {
-                        survivors.Add(survivor);
+                        if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, battle.Survivors))
+                        {
+                            survivors.Add(survivor);
+                        }
+                    }
+
+                    if (battle.Map.Survivors.size() <= survivors.Count())
+                    {
+                        auto id = battle.Opponents.Count();
+
+                        for (auto i = 0; i < battle.Map.Survivors.size(); i++)
+                        {
+                            // set current location
+                            survivors.Location = party.Location;
+
+                            // add to opponent party
+                            battle.Opponents.Add(survivors[i]);
+
+                            // add to map
+                            battle.Map.Put(battle.Map.Survivors[i], Map::Object::ENEMY, id + i);
+                        }
                     }
                 }
-
-                if (battle.Map.Survivors.size() <= survivors.Count())
+                else
                 {
-                    auto id = battle.Opponents.Count();
-
-                    for (auto i = 0; i < battle.Map.Survivors.size(); i++)
-                    {
-                        // set current location
-                        survivors.Location = party.Location;
-
-                        // add to opponent party
-                        battle.Opponents.Add(survivors[i]);
-
-                        // add to map
-                        battle.Map.Put(battle.Map.Survivors[i], Map::Object::ENEMY, id + i);
-                    }
+                    throw std::invalid_argument("MAP: Survivor spawn points are undefined!");
                 }
             }
 
@@ -1022,7 +1046,90 @@ namespace BloodSword::Interface
                                         // check if there are adjacent combatants to fight
                                         auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
 
-                                        if (opponents.size() > 0)
+                                        if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)))
+                                        {
+                                            // TODO: improve enemy casting strategy
+                                            if (character.CalledToMind.size() > 0)
+                                            {
+                                                auto spell = character.CalledToMind[0];
+
+                                                // cast spell
+                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
+                                                {
+                                                    // spellcasting successful
+                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spell]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+
+                                                    Spells::CastSpell(character.SpellStrategy, spell);
+
+                                                    auto search = character.Find(spell);
+
+                                                    if (search != character.Spells.end())
+                                                    {
+                                                        auto &spellbook = *search;
+
+                                                        if (!spellbook.IsBasic() && spellbook.IsBattle)
+                                                        {
+                                                            if (!spellbook.RequiresTarget())
+                                                            {
+                                                                // resolve spell
+                                                                Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
+                                                            }
+                                                            else
+                                                            {
+                                                                // find spell targets. prioritize targets with low endurance
+                                                                auto targets = Engine::Queue();
+
+                                                                if (spell != Spells::Type::GHASTLY_TOUCH)
+                                                                {
+                                                                    targets = Engine::Build(battle.Map, party, src, true, false, false, false, true, true);
+                                                                }
+                                                                else
+                                                                {
+                                                                    // spell needs adjacent targets
+                                                                    targets = Engine::FightTargets(battle.Map, party, src, true, false);
+                                                                }
+
+                                                                if (targets.size() > 0)
+                                                                {
+                                                                    Interface::ResolveSpell(graphics, battle, scene, character, party[targets[0].Id], targets[0].Id, spell);
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    // regenerate stats
+                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+
+                                                    // regenerate scene
+                                                    scene = Interface::BattleScene(battle, party);
+                                                }
+                                                else
+                                                {
+                                                    // spellcasting unsuccessful!
+                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                }
+                                            }
+                                            else if (character.Spells.size() > 0)
+                                            {
+                                                // call to mind
+                                                for (auto &strategy : character.SpellStrategy)
+                                                {
+                                                    if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Threshold && !character.HasCalledToMind(strategy.Spell))
+                                                    {
+                                                        character.CallToMind(strategy.Spell);
+
+                                                        auto spell_string = std::string(Spells::TypeMapping[strategy.Spell]) + " CALLED TO MIND!";
+
+                                                        Interface::MessageBox(graphics, scene, Graphics::RichText(spell_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+
+                                                        break;
+                                                    }
+                                                }
+                                            }
+
+                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                        }
+                                        else if (opponents.size() > 0)
                                         {
                                             Engine::ResetSpells(character);
 
@@ -1067,85 +1174,6 @@ namespace BloodSword::Interface
                                             }
 
                                             // next character in battle order
-                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                        }
-                                        else if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)))
-                                        {
-                                            // TODO: improve enemy casting strategy
-                                            if (character.CalledToMind.size() > 0)
-                                            {
-                                                auto spell = character.CalledToMind[0];
-
-                                                // cast spell
-                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
-                                                {
-                                                    // spellcasting successful
-                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spell]) + " SUCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-
-                                                    Spells::CastSpell(character.SpellStrategy, spell);
-
-                                                    auto search = character.Find(spell);
-
-                                                    if (search != character.Spells.end())
-                                                    {
-                                                        auto &spellbook = *search;
-
-                                                        if (!spellbook.IsBasic() && spellbook.IsBattle)
-                                                        {
-                                                            if (!spellbook.RequiresTarget())
-                                                            {
-                                                                // resolve spell
-                                                                Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
-                                                            }
-                                                            else
-                                                            {
-                                                                // find spell targets. prioritize targets with low endurance
-                                                                auto targets = Engine::Queue();
-
-                                                                if (spell != Spells::Type::GHASTLY_TOUCH)
-                                                                {
-                                                                    targets = Engine::Build(battle.Map, party, src, true, false, false, false);
-                                                                }
-                                                                else
-                                                                {
-                                                                    // spell needs adjacent targets
-                                                                    targets = Engine::FightTargets(battle.Map, party, src, true, false);
-                                                                }
-
-                                                                if (targets.size() > 0)
-                                                                {
-                                                                    Interface::ResolveSpell(graphics, battle, scene, character, party[targets[0].Id], targets[0].Id, spell);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                    // regenerate stats
-                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                    // regenerate scene
-                                                    scene = Interface::BattleScene(battle, party);
-                                                }
-                                                else
-                                                {
-                                                    // spellcasting unsuccessful!
-                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
-                                                }
-                                            }
-                                            else if (character.Spells.size() > 0)
-                                            {
-                                                // call to mind
-                                                for (auto &strategy : character.SpellStrategy)
-                                                {
-                                                    if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Threshold && !character.HasCalledToMind(strategy.Spell))
-                                                    {
-                                                        character.CallToMind(strategy.Spell);
-
-                                                        break;
-                                                    }
-                                                }
-                                            }
-
                                             next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
                                         else if (character.Moves > 0 && Move::Available(battle.Map, src))

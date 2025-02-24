@@ -4,7 +4,7 @@ BSWORD_BATTLES=BattleBoard.cpp
 BSWORD_BATTLES_OUTPUT=BattleBoard.exe
 BSWORD_MAP=MapTemplate.cpp
 BSWORD_MAP_OUTPUT=MapTemplate.exe
-
+DEBUG=-g -O0
 LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 INCLUDES=-I/usr/include/SDL2
 

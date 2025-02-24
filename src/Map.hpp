@@ -316,6 +316,11 @@ namespace BloodSword::Map
 
             this->TileSize = !data["tilesize"].is_null() ? int(data["tilesize"]) : BloodSword::TileSize;
 
+            // ensure that view is within map dimensions
+            this->ViewX = std::min(this->Width, this->ViewX);
+
+            this->ViewY = std::min(this->Height, this->ViewY);
+
             if (this->Width > 0 && this->Height > 0)
             {
                 this->Initialize(this->Width, this->Height);
