@@ -739,7 +739,10 @@ namespace BloodSword::Interface
 
             for (auto result : results)
             {
-                section_text += "\n\n" + result.Text;
+                if (!result.Text.empty())
+                {
+                    section_text += "\n\n" + result.Text;
+                }
             }
 
             if (Engine::IsAlive(party))

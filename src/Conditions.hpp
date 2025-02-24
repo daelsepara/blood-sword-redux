@@ -38,7 +38,9 @@ namespace BloodSword::Conditions
         PREVIOUS_LOCATION,
         TEST_ATTRIBUTE,
         ITEM_QUANTITY,
-        LOSE_ALL
+        LOSE_ALL,
+        HAVE_COLLEAGUES,
+        SOLO
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -64,7 +66,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::PREVIOUS_LOCATION, "PREVIOUS LOCATION"},
         {Conditions::Type::TEST_ATTRIBUTE, "TEST ATTRIBUTE"},
         {Conditions::Type::ITEM_QUANTITY, "ITEM QUANTITY"},
-        {Conditions::Type::LOSE_ALL, "LOSE ALL"}};
+        {Conditions::Type::LOSE_ALL, "LOSE ALL"},
+        {Conditions::Type::HAVE_COLLEAGUES, "HAVE COLLEAGUES"},
+        {Conditions::Type::SOLO, "SOLO"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -205,6 +209,13 @@ namespace BloodSword::Conditions
         if (condition.Type == Conditions::Type::NORMAL)
         {
             result = true;
+
+            // variables
+            // 0 - text to display (when used in an event)
+            if (condition.Variables.size() > 0)
+            {
+                text = condition.Variables[0];
+            }
         }
         else if (condition.Type == Conditions::Type::IN_PARTY)
         {
@@ -427,7 +438,51 @@ namespace BloodSword::Conditions
                 text = "YOU WERE NOT VICTORIOUS IN THE LAST BATTLE!";
             }
         }
+        else if (condition.Type == Conditions::Type::HAVE_COLLEAGUES)
+        {
+            result = (party.Count() > 1);
 
+            if (result)
+            {
+                // variables (when used in an event):
+                // 0 - text to display on success
+                if (condition.Variables.size() > 0)
+                {
+                    text = condition.Variables[0];
+                }
+            }
+            else
+            {
+                // when used in a choice
+                if (condition.Variables.empty())
+                {
+                    text = "YOU ARE ALONE!";
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::SOLO)
+        {
+            result = (party.Count() == 1);
+
+            if (result)
+            {
+                // variables (when used in an event):
+                // 0 - text to display on success
+                if (condition.Variables.size() > 0)
+                {
+                    text = condition.Variables[0];
+                }
+            }
+            else
+            {
+                // when used in a choice
+                if (condition.Variables.empty())
+                {
+                    text = "YOU ARE NOT ALONE!";
+                }
+            }
+        }
+        
         result = condition.Invert ? !result : result;
 
         // debug info

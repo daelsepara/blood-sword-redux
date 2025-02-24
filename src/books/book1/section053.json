@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 53
+    },
+    "text": "(TRICKSTER) The usher looks shoked. \"I assure you,\" he says, spluttering with indignation, \"my loyalty to my master is beyond price.\"\n\nWell -- perhaps beyond the price you can afford, you think wryly.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 458
+            }
+        }
+    ]
+}

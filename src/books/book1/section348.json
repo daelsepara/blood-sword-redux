@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 348
+    },
+    "text": "ESP indicates thoughts from only one of the revellers.\n\n",
+    "choices": [
+        {
+            "text": "Approach this man and declare him to be Balhazar",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 382
+                }
+            }
+        },
+        {
+            "text": "Attack the man",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 29
+                }
+            }
+        },
+        {
+            "text": "You don't trust ESP and would rather rely on your ingenuity",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 458
+                }
+            }
+        }
+    ]
+}

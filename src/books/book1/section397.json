@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 397
+    },
+    "text": "\"I am Balhazar,\" says the man in red, stroking his moustache. \"I will be pleased to engage you to represent me in tomorrow's contest. First, however, I must test your worthiness. Regardless of your strength and courage, you will require great cunning if you are to win for me tomorrow, and several promising candidates have already been rejected because they lacked the necessary intelligence. Therefore, come to my mansion tonight. When you arrive there, you will know the nature of the test.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 64
+            }
+        }
+    ]
+}
