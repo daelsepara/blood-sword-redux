@@ -302,12 +302,15 @@ namespace BloodSword::Spells
 
         int Uses = 0;
 
-        // number of opponents before it is used (0 - used for any number of opponents)
-        int Threshold = 0;
+        // min number of opponents before it is used
+        int Min = 0;
 
-        Usage(Spells::Type spell, int uses, int threshold) : Spell(spell), Uses(uses), Threshold(threshold) {}
+        // max number of opponents before it is used
+        int Max = 4;
 
-        Usage(Spells::Type spell, int threshold) : Spell(spell), Uses(1), Threshold(threshold) {}
+        Usage(Spells::Type spell, int uses, int min, int max) : Spell(spell), Uses(uses), Max(max) {}
+
+        Usage(Spells::Type spell, int min, int max) : Spell(spell), Uses(1), Min(min), Max(max) {}
 
         Usage() {}
     };
@@ -370,11 +373,13 @@ namespace BloodSword::Spells
 
             auto uses = !data[i]["uses"].is_null() ? int(data[i]["uses"]) : 0;
 
-            auto threshold = !data[i]["threshold"].is_null() ? int(data[i]["threshold"]) : 0;
+            auto min = !data[i]["min"].is_null() ? int(data[i]["min"]) : 0;
+
+            auto max = !data[i]["max"].is_null() ? int(data[i]["max"]) : 0;
 
             if (spell != Spells::Type::NONE)
             {
-                strategies.push_back(Spells::Usage(spell, uses, threshold));
+                strategies.push_back(Spells::Usage(spell, uses, min, max));
             }
         }
 
@@ -431,7 +436,9 @@ namespace BloodSword::Spells
 
             spell["uses"] = strategy.Uses;
 
-            spell["threshold"] = strategy.Threshold;
+            spell["min"] = strategy.Min;
+
+            spell["max"] = strategy.Max;
 
             data.push_back(spell);
         }
@@ -446,7 +453,7 @@ namespace BloodSword::Spells
 
         for (auto &strategy : strategies)
         {
-            if (strategy.Uses > 0 && opponents >= strategy.Threshold)
+            if (strategy.Uses > 0 && opponents >= strategy.Min && opponents <= strategy.Max)
             {
                 cast = true;
 

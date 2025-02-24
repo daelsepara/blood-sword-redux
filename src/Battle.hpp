@@ -18,7 +18,11 @@ namespace BloodSword::Battle
         AMBUSH_NPC,
         CANNOT_FLEE,
         SURVIVORS,
-        AMBUSH_RANGED
+        AMBUSH_RANGED,
+        WARRIOR_AWAY,
+        TRICKSTER_AWAY,
+        SAGE_AWAY,
+        ENCHANTER_AWAY
     };
 
     const int Unlimited = -1;
@@ -28,7 +32,11 @@ namespace BloodSword::Battle
         {Battle::Condition::AMBUSH_NPC, "AMBUSH NPC"},
         {Battle::Condition::CANNOT_FLEE, "CANNOT FLEE"},
         {Battle::Condition::SURVIVORS, "SURVIVORS"},
-        {Battle::Condition::AMBUSH_RANGED, "AMBUSH RANGED"}};
+        {Battle::Condition::AMBUSH_RANGED, "AMBUSH RANGED"},
+        {Battle::Condition::WARRIOR_AWAY, "WARRIOR AWAY"},
+        {Battle::Condition::TRICKSTER_AWAY, "TRICKSTER AWAY"},
+        {Battle::Condition::SAGE_AWAY, "SAGE AWAY"},
+        {Battle::Condition::ENCHANTER_AWAY, "ENCHANTER AWAY"}};
 
     Battle::Condition MapCondition(const char *condition)
     {

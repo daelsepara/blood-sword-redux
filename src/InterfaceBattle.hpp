@@ -364,7 +364,7 @@ namespace BloodSword::Interface
                         {
                             defender.Add(effect);
 
-                            Interface::MessageBox(graphics, background, origin, w, h, Character::StatusMapping[effect], Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+                            Interface::MessageBox(graphics, background, origin, w, h, Character::StatusMapping[effect], Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
                         }
                     }
                 }
@@ -810,14 +810,43 @@ namespace BloodSword::Interface
 
         battle.Map.Y = 0;
 
+        // set AWAY status of players not participating in the battle
+        if (battle.Has(Battle::Condition::WARRIOR_AWAY) && party.Has(Character::Class::WARRIOR))
+        {
+            party[Character::Class::WARRIOR].Add(Character::Status::AWAY);
+        }
+
+        if (battle.Has(Battle::Condition::TRICKSTER_AWAY) && party.Has(Character::Class::TRICKSTER))
+        {
+            party[Character::Class::TRICKSTER].Add(Character::Status::AWAY);
+        }
+
+        if (battle.Has(Battle::Condition::SAGE_AWAY) && party.Has(Character::Class::SAGE))
+        {
+            party[Character::Class::SAGE].Add(Character::Status::AWAY);
+        }
+
+        if (battle.Has(Battle::Condition::ENCHANTER_AWAY) && party.Has(Character::Class::ENCHANTER))
+        {
+            party[Character::Class::ENCHANTER].Add(Character::Status::AWAY);
+        }
+
+        // put player combatants in starting positions (unless they are away)
         if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents) && Engine::IsAlive(party))
         {
             if (battle.Map.Origins.size() > 0 && battle.Map.Origins.size() >= party.Count())
             {
+                auto origin = 0;
+
                 // set party starting locations
                 for (auto i = 0; i < party.Count(); i++)
                 {
-                    battle.Map.Put(battle.Map.Origins[i], Map::Object::PLAYER, i);
+                    if (!party[i].Is(Character::Status::AWAY))
+                    {
+                        battle.Map.Put(battle.Map.Origins[origin], Map::Object::PLAYER, i);
+
+                        origin++;
+                    }
                 }
             }
             else
@@ -1106,7 +1135,7 @@ namespace BloodSword::Interface
                                                 else
                                                 {
                                                     // spellcasting unsuccessful!
-                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                 }
                                             }
                                             else if (character.Spells.size() > 0)
@@ -1114,13 +1143,13 @@ namespace BloodSword::Interface
                                                 // call to mind
                                                 for (auto &strategy : character.SpellStrategy)
                                                 {
-                                                    if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Threshold && !character.HasCalledToMind(strategy.Spell))
+                                                    if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Min && Engine::Count(party) <= strategy.Max && !character.HasCalledToMind(strategy.Spell))
                                                     {
                                                         character.CallToMind(strategy.Spell);
 
                                                         auto spell_string = std::string(Spells::TypeMapping[strategy.Spell]) + " CALLED TO MIND!";
 
-                                                        Interface::MessageBox(graphics, scene, Graphics::RichText(spell_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                        Interface::MessageBox(graphics, scene, spell_string, Color::Highlight);
 
                                                         break;
                                                     }
@@ -1516,7 +1545,7 @@ namespace BloodSword::Interface
                                                         else
                                                         {
                                                             // spellcasting unsuccessful!
-                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                         }
 
                                                         // next character in battle order
@@ -1586,7 +1615,7 @@ namespace BloodSword::Interface
                                                             }
                                                             else
                                                             {
-                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                             }
                                                         }
                                                         else
@@ -1610,7 +1639,7 @@ namespace BloodSword::Interface
                                                             if (!spellbook->Ranged && distance != 1)
                                                             {
                                                                 // must be adjacent
-                                                                Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                             }
                                                             else
                                                             {
@@ -1632,7 +1661,7 @@ namespace BloodSword::Interface
                                                                     else
                                                                     {
                                                                         // spellcasting unsuccessful!
-                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                     }
 
                                                                     // regenerate scene
@@ -1643,7 +1672,7 @@ namespace BloodSword::Interface
                                                                 }
                                                                 else
                                                                 {
-                                                                    Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                    Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                 }
                                                             }
                                                         }
@@ -1808,7 +1837,7 @@ namespace BloodSword::Interface
                                                         }
                                                         else
                                                         {
-                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                         }
                                                     }
                                                     else if (targets.size() > 1)
@@ -1901,7 +1930,7 @@ namespace BloodSword::Interface
                                                                             if (!spellbook.Ranged && distance != 1)
                                                                             {
                                                                                 // must be adjacent
-                                                                                Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                                Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                             }
                                                                             else if (!battle.Opponents[battle.Map[target].Id].IsImmune(cast))
                                                                             {
@@ -1919,7 +1948,7 @@ namespace BloodSword::Interface
                                                                                 else
                                                                                 {
                                                                                     // spellcasting unsuccessful!
-                                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                                 }
 
                                                                                 // regenerate scene
@@ -1930,7 +1959,7 @@ namespace BloodSword::Interface
                                                                             }
                                                                             else
                                                                             {
-                                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                             }
                                                                         }
 
@@ -1947,7 +1976,7 @@ namespace BloodSword::Interface
 
                                                                     if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Has(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
                                                                     {
-                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_FLEE], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_FLEE], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                     }
                                                                     else
                                                                     {
@@ -1971,7 +2000,7 @@ namespace BloodSword::Interface
                                                                         else
                                                                         {
                                                                             // spellcasting unsuccessful!
-                                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                         }
 
                                                                         // next character in battle order

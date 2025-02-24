@@ -2272,6 +2272,19 @@ namespace BloodSword::Interface
         }
     }
 
+    // generic message box
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border)
+    {
+        auto texture = Graphics::CreateText(graphics, message.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        if (texture)
+        {
+            Interface::MessageBox(graphics, scene, texture, Color::Background, border, BloodSword::Border, border == Color::Active ? Color::Highlight : Color::Active, true);
+
+            Free(&texture);
+        }
+    }
+
     // draws a message box
     void MessageBox(Graphics::Base &graphics, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
