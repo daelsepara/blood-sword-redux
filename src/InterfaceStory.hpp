@@ -249,6 +249,8 @@ namespace BloodSword::Interface
 
         auto after_battle = false;
 
+        auto exit_battle = false;
+
         // fight battle
         if (section.Battle.IsDefined())
         {
@@ -262,9 +264,13 @@ namespace BloodSword::Interface
 
                 after_battle = true;
             }
+            else
+            {
+                exit_battle = true;
+            }
         }
 
-        if (Engine::IsAlive(party))
+        if (Engine::IsAlive(party) && !exit_battle)
         {
             if (section.Next.size() > 0)
             {
@@ -284,7 +290,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            if (!Book::IsDefined(next) && section.Choices.size() > 0)
+            if ((!Book::IsDefined(next) && section.Choices.size() > 0))
             {
                 // process through any choices
                 while (true)

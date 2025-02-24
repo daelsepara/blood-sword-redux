@@ -33,9 +33,9 @@
                         },
                         {
                             "maximum": 0,
-                            "modifier": 0,
+                            "modifier": 1,
                             "type": "ARMOUR",
-                            "value": 1
+                            "value": 0
                         },
                         {
                             "maximum": 1,
