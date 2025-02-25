@@ -128,6 +128,12 @@ namespace BloodSword::Map
         // starting locations of opponents
         BloodSword::Points Spawn = {};
 
+        // starting locations of players who are temporarily away
+        BloodSword::Points AwayPlayers = {};
+
+        // starting locations of opponents who are temporarily away
+        BloodSword::Points AwayOpponents = {};
+
         // starting locations of survivors
         BloodSword::Points Survivors = {};
 
@@ -294,6 +300,29 @@ namespace BloodSword::Map
             }
         }
 
+        BloodSword::Points LoadPoints(nlohmann::json &data)
+        {
+            auto points = BloodSword::Points();
+
+            if (!data.is_null() && data.is_array() && data.size() > 0)
+            {
+
+                for (auto i = 0; i < data.size(); i++)
+                {
+                    auto x = !data[i]["x"].is_null() ? int(data[i]["x"]) : -1;
+
+                    auto y = !data[i]["y"].is_null() ? int(data[i]["y"]) : -1;
+
+                    if (x >= 0 && x < this->Width && y >= 0 && y < this->Height)
+                    {
+                        points.push_back(BloodSword::Point(x, y));
+                    }
+                }
+            }
+
+            return points;
+        }
+
         bool Setup(nlohmann::json &data)
         {
             auto load_error = false;
@@ -365,53 +394,27 @@ namespace BloodSword::Map
 
                 if (!data["origins"].is_null() && data["origins"].is_array() && data["origins"].size() > 0)
                 {
-                    this->Origins.clear();
-
-                    for (auto i = 0; i < data["origins"].size(); i++)
-                    {
-                        auto x = !data["origins"][i]["x"].is_null() ? int(data["origins"][i]["x"]) : -1;
-
-                        auto y = !data["origins"][i]["y"].is_null() ? int(data["origins"][i]["y"]) : -1;
-
-                        if (x >= 0 && x < this->Width && y >= 0 && y < this->Height)
-                        {
-                            this->Origins.push_back(BloodSword::Point(x, y));
-                        }
-                    }
+                    this->Origins = this->LoadPoints(data["origins"]);
                 }
 
                 if (!data["spawn"].is_null() && data["spawn"].is_array() && data["spawn"].size() > 0)
                 {
-                    this->Spawn.clear();
-
-                    for (auto i = 0; i < data["spawn"].size(); i++)
-                    {
-                        auto x = !data["spawn"][i]["x"].is_null() ? int(data["spawn"][i]["x"]) : -1;
-
-                        auto y = !data["spawn"][i]["y"].is_null() ? int(data["spawn"][i]["y"]) : -1;
-
-                        if (x >= 0 && x < this->Width && y >= 0 && y < this->Height)
-                        {
-                            this->Spawn.push_back(BloodSword::Point(x, y));
-                        }
-                    }
+                    this->Spawn = this->LoadPoints(data["spawn"]);
                 }
 
                 if (!data["survivors"].is_null() && data["survivors"].is_array() && data["survivors"].size() > 0)
                 {
-                    this->Survivors.clear();
+                    this->Survivors = this->LoadPoints(data["survivors"]);
+                }
 
-                    for (auto i = 0; i < data["survivors"].size(); i++)
-                    {
-                        auto x = !data["survivors"][i]["x"].is_null() ? int(data["survivors"][i]["x"]) : -1;
+                if (!data["away_players"].is_null() && data["away_players"].is_array() && data["away_players"].size() > 0)
+                {
+                    this->AwayPlayers = this->LoadPoints(data["away_players"]);
+                }
 
-                        auto y = !data["survivors"][i]["y"].is_null() ? int(data["survivors"][i]["y"]) : -1;
-
-                        if (x >= 0 && x < this->Width && y >= 0 && y < this->Height)
-                        {
-                            this->Survivors.push_back(BloodSword::Point(x, y));
-                        }
-                    }
+                if (!data["away_opponents"].is_null() && data["away_opponents"].is_array() && data["away_opponents"].size() > 0)
+                {
+                    this->AwayOpponents = this->LoadPoints(data["away_opponents"]);
                 }
             }
             else
@@ -526,6 +529,16 @@ namespace BloodSword::Map
             if (this->Survivors.size() > 0)
             {
                 map["survivors"] = this->Points(this->Survivors);
+            }
+
+            if (this->AwayPlayers.size() > 0)
+            {
+                map["away_playes"] = this->Points(this->AwayPlayers);
+            }
+
+            if (this->AwayOpponents.size() > 0)
+            {
+                map["away_opponents"] = this->Points(this->AwayOpponents);
             }
 
             std::ofstream file(filename);

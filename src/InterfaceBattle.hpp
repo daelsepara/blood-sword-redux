@@ -784,6 +784,219 @@ namespace BloodSword::Interface
         }
     }
 
+    // set player (indefinite) AWAY status
+    void CheckPartyAwayStatus(Battle::Base &battle, Party::Base &party)
+    {
+        // set (indefinite) AWAY status of players not participating in the battle
+        if (battle.Has(Battle::Condition::WARRIOR_AWAY) && party.Has(Character::Class::WARRIOR))
+        {
+            party[Character::Class::WARRIOR].Add(Character::Status::AWAY);
+        }
+
+        if (battle.Has(Battle::Condition::TRICKSTER_AWAY) && party.Has(Character::Class::TRICKSTER))
+        {
+            party[Character::Class::TRICKSTER].Add(Character::Status::AWAY);
+        }
+
+        if (battle.Has(Battle::Condition::SAGE_AWAY) && party.Has(Character::Class::SAGE))
+        {
+            party[Character::Class::SAGE].Add(Character::Status::AWAY);
+        }
+
+        if (battle.Has(Battle::Condition::ENCHANTER_AWAY) && party.Has(Character::Class::ENCHANTER))
+        {
+            party[Character::Class::ENCHANTER].Add(Character::Status::AWAY);
+        }
+    }
+
+    // set players' starting locations
+    void SetPlayerLocations(Battle::Base &battle, Party::Base &party)
+    {
+        auto player_away = 0;
+
+        auto origin = 0;
+
+        if (battle.Map.Origins.size() > 0 && battle.Map.Origins.size() >= party.Count())
+        {
+            // set party starting locations
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                if (Engine::IsAlive(party[i]))
+                {
+                    if (!party[i].Is(Character::Status::AWAY))
+                    {
+                        if (origin < battle.Map.Origins.size())
+                        {
+                            battle.Map.Put(battle.Map.Origins[origin], Map::Object::PLAYER, i);
+
+                            origin++;
+                        }
+                        else
+                        {
+                            throw std::invalid_argument("BATTLE: Player ORIGIN locations insufficient!");
+                        }
+                    }
+                    else if (party[i].Status[Character::Status::AWAY] > 0)
+                    {
+                        if (player_away < battle.Map.AwayPlayers.size())
+                        {
+                            battle.Map.Put(battle.Map.AwayPlayers[player_away], Map::Object::PLAYER, i);
+
+                            player_away++;
+                        }
+                        else
+                        {
+                            throw std::invalid_argument("BATTLE: Player AWAY locations insufficient!");
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            throw std::invalid_argument("BATTLE: Player ORIGIN locations insufficient!");
+        }
+    }
+
+    void SetEnemyLocations(Battle::Base &battle, Party::Base &party)
+    {
+        auto spawn = 0;
+
+        auto enemy_away = 0;
+
+        auto reinforce = 0;
+
+        if (battle.Opponents.Count() > 0)
+        {
+            if (battle.Map.Spawn.size() >= battle.Opponents.Count())
+            {
+                // set opponents starting locations
+                for (auto i = 0; i < battle.Opponents.Count(); i++)
+                {
+                    if (Engine::IsAlive(battle.Opponents[i]))
+                    {
+                        // set opponent location
+                        battle.Opponents[i].Location = party.Location;
+
+                        if (!battle.Opponents[i].Is(Character::Status::AWAY))
+                        {
+                            if (spawn < battle.Map.Spawn.size())
+                            {
+                                battle.Map.Put(battle.Map.Spawn[spawn], Map::Object::ENEMY, i);
+
+                                spawn++;
+                            }
+                            else
+                            {
+                                throw std::invalid_argument("BATTLE: Enemy SPAWN locations insufficient!");
+                            }
+                        }
+                        else if (battle.Opponents[i].Status[Character::Status::AWAY] > 0)
+                        {
+                            // place opponents that arrive at later rounds
+                            if (enemy_away < battle.Map.AwayOpponents.size())
+                            {
+                                battle.Map.Put(battle.Map.AwayOpponents[enemy_away], Map::Object::ENEMY, i);
+
+                                enemy_away++;
+                            }
+                            else
+                            {
+                                throw std::invalid_argument("BATTLE: Enemy AWAY locations insufficient!");
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw std::invalid_argument("BATTLE: Enemy SPAWN locations insufficient!");
+            }
+        }
+
+        // place survivors on the battlefield
+        if (Book::IsDefined(battle.Survivors))
+        {
+            if (battle.Map.Survivors.size() > 0)
+            {
+                // gather list of survivors
+                auto survivors = Party::Base();
+
+                // look for the survivors in the previous battle
+                for (auto &survivor : party.Survivors)
+                {
+                    if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, battle.Survivors))
+                    {
+                        survivors.Add(survivor);
+                    }
+                }
+
+                if (battle.Map.Survivors.size() >= survivors.Count())
+                {
+                    auto id = battle.Opponents.Count();
+
+                    for (auto i = 0; i < survivors.Count(); i++)
+                    {
+                        if (Engine::IsAlive(survivors[i]))
+                        {
+                            // set current location
+                            survivors[i].Location = party.Location;
+
+                            if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
+                            {
+                                // heal survivors
+                                auto gain = survivors[i].Maximum(Attribute::Type::ENDURANCE) - survivors[i].Value(Attribute::Type::ENDURANCE);
+
+                                Engine::GainEndurance(survivors[i], std::min(0, gain), true);
+                            }
+
+                            if (battle.SurvivorStart > 0)
+                            {
+                                survivors[i].Add(Character::Status::AWAY, battle.SurvivorStart);
+                            }
+
+                            // add to opponent party
+                            battle.Opponents.Add(survivors[i]);
+
+                            if (!survivors[i].Is(Character::Status::AWAY))
+                            {
+                                if (reinforce < battle.Map.Survivors.size())
+                                {
+                                    // add to map
+                                    battle.Map.Put(battle.Map.Survivors[reinforce], Map::Object::ENEMY, id + i);
+
+                                    reinforce++;
+                                }
+                                else
+                                {
+                                    throw std::invalid_argument("BATTLE: Enemy SURVIVOR locations insufficient!");
+                                }
+                            }
+                            else if (survivors[i].Status[Character::Status::AWAY] > 0)
+                            {
+                                // place opponents that arrive at later rounds
+                                if (enemy_away < battle.Map.AwayOpponents.size())
+                                {
+                                    battle.Map.Put(battle.Map.AwayOpponents[enemy_away], Map::Object::ENEMY, id + i);
+
+                                    enemy_away++;
+                                }
+                                else
+                                {
+                                    throw std::invalid_argument("BATTLE: Enemy AWAY locations insufficient!");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw std::invalid_argument("BATTLE: Enemy SURVIVOR locations undefined!");
+            }
+        }
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -810,107 +1023,17 @@ namespace BloodSword::Interface
 
         battle.Map.Y = 0;
 
-        // set AWAY status of players not participating in the battle
-        if (battle.Has(Battle::Condition::WARRIOR_AWAY) && party.Has(Character::Class::WARRIOR))
-        {
-            party[Character::Class::WARRIOR].Add(Character::Status::AWAY);
-        }
-
-        if (battle.Has(Battle::Condition::TRICKSTER_AWAY) && party.Has(Character::Class::TRICKSTER))
-        {
-            party[Character::Class::TRICKSTER].Add(Character::Status::AWAY);
-        }
-
-        if (battle.Has(Battle::Condition::SAGE_AWAY) && party.Has(Character::Class::SAGE))
-        {
-            party[Character::Class::SAGE].Add(Character::Status::AWAY);
-        }
-
-        if (battle.Has(Battle::Condition::ENCHANTER_AWAY) && party.Has(Character::Class::ENCHANTER))
-        {
-            party[Character::Class::ENCHANTER].Add(Character::Status::AWAY);
-        }
-
         // put player combatants in starting positions (unless they are away)
         if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents) && Engine::IsAlive(party))
         {
-            if (battle.Map.Origins.size() > 0 && battle.Map.Origins.size() >= party.Count())
-            {
-                auto origin = 0;
+            // Check if any players in the party are AWAY / not participating
+            Interface::CheckPartyAwayStatus(battle, party);
 
-                // set party starting locations
-                for (auto i = 0; i < party.Count(); i++)
-                {
-                    if (!party[i].Is(Character::Status::AWAY))
-                    {
-                        battle.Map.Put(battle.Map.Origins[origin], Map::Object::PLAYER, i);
+            // set player starting locations
+            Interface::SetPlayerLocations(battle, party);
 
-                        origin++;
-                    }
-                }
-            }
-            else
-            {
-                throw std::invalid_argument("MAP: Cannot place players on the battlefield!");
-            }
-
-            if (battle.Opponents.Count() > 0)
-            {
-                if (battle.Map.Spawn.size() >= battle.Opponents.Count())
-                {
-                    // set opponents starting locations
-                    for (auto i = 0; i < battle.Opponents.Count(); i++)
-                    {
-                        // set opponent location
-                        battle.Opponents[i].Location = party.Location;
-
-                        battle.Map.Put(battle.Map.Spawn[i], Map::Object::ENEMY, i);
-                    }
-                }
-                else
-                {
-                    throw std::invalid_argument("MAP: Cannot place opponents on the battlefield!");
-                }
-            }
-
-            if (Book::IsDefined(battle.Survivors))
-            {
-                if (battle.Map.Survivors.size() > 0)
-                {
-                    // gather list of survivors
-                    auto survivors = Party::Base();
-
-                    // look for the survivors in the previous battle
-                    for (auto &survivor : party.Survivors)
-                    {
-                        if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, battle.Survivors))
-                        {
-                            survivors.Add(survivor);
-                        }
-                    }
-
-                    if (battle.Map.Survivors.size() <= survivors.Count())
-                    {
-                        auto id = battle.Opponents.Count();
-
-                        for (auto i = 0; i < battle.Map.Survivors.size(); i++)
-                        {
-                            // set current location
-                            survivors.Location = party.Location;
-
-                            // add to opponent party
-                            battle.Opponents.Add(survivors[i]);
-
-                            // add to map
-                            battle.Map.Put(battle.Map.Survivors[i], Map::Object::ENEMY, id + i);
-                        }
-                    }
-                }
-                else
-                {
-                    throw std::invalid_argument("MAP: Survivor spawn points are undefined!");
-                }
-            }
+            // set enemy starting locations
+            Interface::SetEnemyLocations(battle, party);
 
             // initialize captions
             auto caption_w = BloodSword::TileSize * 5;

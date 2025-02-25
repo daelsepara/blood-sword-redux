@@ -22,7 +22,8 @@ namespace BloodSword::Battle
         WARRIOR_AWAY,
         TRICKSTER_AWAY,
         SAGE_AWAY,
-        ENCHANTER_AWAY
+        ENCHANTER_AWAY,
+        HEAL_SURVIVORS
     };
 
     const int Unlimited = -1;
@@ -36,7 +37,8 @@ namespace BloodSword::Battle
         {Battle::Condition::WARRIOR_AWAY, "WARRIOR AWAY"},
         {Battle::Condition::TRICKSTER_AWAY, "TRICKSTER AWAY"},
         {Battle::Condition::SAGE_AWAY, "SAGE AWAY"},
-        {Battle::Condition::ENCHANTER_AWAY, "ENCHANTER AWAY"}};
+        {Battle::Condition::ENCHANTER_AWAY, "ENCHANTER AWAY"},
+        {Battle::Condition::ENCHANTER_AWAY, "HEAL SURVIVORS"}};
 
     Battle::Condition MapCondition(const char *condition)
     {
@@ -67,6 +69,9 @@ namespace BloodSword::Battle
 
         // endurance limit (-1 if fighting to death)
         int Endurance = -1;
+
+        // surviving opponents start at this round (starts at 0)
+        int SurvivorStart = -1;
 
         Book::Location Survivors = {Book::Number::NONE, -1};
 
@@ -150,6 +155,8 @@ namespace BloodSword::Battle
                 {
                     this->Survivors = Book::Load(data["survivors"]);
                 }
+
+                this->SurvivorStart = !data["survivor_start"].is_null() ? int(data["survivor_start"]) : Battle::Unlimited;
             }
         }
     };
