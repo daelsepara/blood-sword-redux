@@ -1788,6 +1788,8 @@ namespace BloodSword::Interface
                                                 input.Current = -1;
 
                                                 input.Selected = false;
+
+                                                scene = Interface::BattleScene(battle, party);
                                             }
                                             else if (input.Type == Controls::Type::MAP_DOWN)
                                             {
@@ -1798,6 +1800,8 @@ namespace BloodSword::Interface
                                                     input.Current = -1;
 
                                                     input.Selected = false;
+
+                                                    scene = Interface::BattleScene(battle, party);
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::MAP_UP)
@@ -1809,6 +1813,8 @@ namespace BloodSword::Interface
                                                     input.Current = -1;
 
                                                     input.Selected = false;
+
+                                                    scene = Interface::BattleScene(battle, party);
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::MAP_LEFT)
@@ -1820,6 +1826,8 @@ namespace BloodSword::Interface
                                                     input.Current = -1;
 
                                                     input.Selected = false;
+
+                                                    scene = Interface::BattleScene(battle, party);
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::MAP_RIGHT)
@@ -1831,6 +1839,8 @@ namespace BloodSword::Interface
                                                     input.Current = -1;
 
                                                     input.Selected = false;
+
+                                                    scene = Interface::BattleScene(battle, party);
                                                 }
                                             }
                                         }
