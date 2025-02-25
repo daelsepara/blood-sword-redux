@@ -997,6 +997,137 @@ namespace BloodSword::Interface
         }
     }
 
+    // enemy casts spells
+    void EnemyCastSpells(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
+    {
+        auto map_w = battle.Map.ViewX * battle.Map.TileSize;
+
+        auto map_h = battle.Map.ViewY * battle.Map.TileSize;
+
+        auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
+
+        // TODO: improve enemy casting strategy
+        if (character.CalledToMind.size() > 0)
+        {
+            auto spell = character.CalledToMind[0];
+
+            // cast spell
+            if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
+            {
+                // spellcasting successful
+                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+
+                Spells::CastSpell(character.SpellStrategy, spell);
+
+                auto search = character.Find(spell);
+
+                if (search != character.Spells.end())
+                {
+                    auto &spellbook = *search;
+
+                    if (!spellbook.IsBasic() && spellbook.IsBattle)
+                    {
+                        if (!spellbook.RequiresTarget())
+                        {
+                            // resolve spell
+                            Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
+                        }
+                        else
+                        {
+                            // find spell targets. prioritize targets with low endurance
+                            auto targets = Engine::Queue();
+
+                            if (spell != Spells::Type::GHASTLY_TOUCH)
+                            {
+                                targets = Engine::Build(battle.Map, party, src, true, false, false, false, true, true);
+                            }
+                            else
+                            {
+                                // spell needs adjacent targets
+                                targets = Engine::FightTargets(battle.Map, party, src, true, false);
+                            }
+
+                            if (targets.size() > 0)
+                            {
+                                Interface::ResolveSpell(graphics, battle, scene, character, party[targets[0].Id], targets[0].Id, spell);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // spellcasting unsuccessful!
+                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+            }
+        }
+        else if (character.Spells.size() > 0)
+        {
+            // call to mind
+            for (auto &strategy : character.SpellStrategy)
+            {
+                if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Min && Engine::Count(party) <= strategy.Max && !character.HasCalledToMind(strategy.Spell))
+                {
+                    character.CallToMind(strategy.Spell);
+
+                    auto spell_string = std::string(Spells::TypeMapping[strategy.Spell]) + " CALLED TO MIND!";
+
+                    Interface::MessageBox(graphics, scene, spell_string, Color::Highlight);
+
+                    break;
+                }
+            }
+        }
+    }
+
+    // enemy does ranged attacks
+    void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Engine::Queue &opponents, Point &src)
+    {
+        auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
+
+        // shoot only when there are no nearby player enemies
+        if (targets.size() > 0 && opponents.size() == 0)
+        {
+            for (auto &target : targets)
+            {
+                // shoot first available target
+                if (!party[target.Id].IsImmune(character.Shoot))
+                {
+                    // shoot
+                    Interface::Shoot(graphics, scene, battle, character, party[target.Id], target.Id);
+
+                    break;
+                }
+            }
+        }
+    }
+
+    // enemy moves to target
+    bool EnemyMoves(Scene::Base &scene, Animation::Base &movement, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
+    {
+        // check if enemy can move towards the player-controlled characters
+        auto targets = Engine::MoveTargets(battle.Map, party, src, true, false);
+
+        auto valid_target = false;
+
+        for (auto &target : targets)
+        {
+            auto end = battle.Map.Find(Map::Object::PLAYER, target.Id);
+
+            if (!end.IsNone())
+            {
+                valid_target = Interface::Move(battle.Map, character, movement, src, end);
+
+                if (valid_target)
+                {
+                    break;
+                }
+            }
+        }
+
+        return valid_target;
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -1152,9 +1283,6 @@ namespace BloodSword::Interface
                 // start with current character
                 auto combatant = 0;
 
-                // end of round effects
-                battle.Map.CoolDown();
-
                 while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && !Engine::IsFleeing(party) && !exit)
                 {
                     auto is_enemy = Engine::IsEnemy(order, combatant);
@@ -1187,99 +1315,28 @@ namespace BloodSword::Interface
                         {
                             auto src = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
 
+                            auto refresh_textures = false;
+
+                            auto performed_action = false;
+
                             if (!src.IsNone())
                             {
+                                // can perform action
+                                auto can_act = !character.Is(Character::Status::PARALYZED) && !character.Is(Character::Status::AWAY) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character);
+
                                 // enemy action (fight/shoot/cast/move)
                                 if (is_enemy && !character.Is(Character::Status::ENTHRALLED))
                                 {
                                     // enemy combatant is not paralyzed
-                                    if (!character.Is(Character::Status::PARALYZED) && !character.Is(Character::Status::AWAY) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character))
+                                    if (can_act)
                                     {
-                                        // check if there are adjacent combatants to fight
+                                        // check if there are adjacent player combatants
                                         auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
 
                                         if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)))
                                         {
-                                            // TODO: improve enemy casting strategy
-                                            if (character.CalledToMind.size() > 0)
-                                            {
-                                                auto spell = character.CalledToMind[0];
-
-                                                // cast spell
-                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
-                                                {
-                                                    // spellcasting successful
-                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-
-                                                    Spells::CastSpell(character.SpellStrategy, spell);
-
-                                                    auto search = character.Find(spell);
-
-                                                    if (search != character.Spells.end())
-                                                    {
-                                                        auto &spellbook = *search;
-
-                                                        if (!spellbook.IsBasic() && spellbook.IsBattle)
-                                                        {
-                                                            if (!spellbook.RequiresTarget())
-                                                            {
-                                                                // resolve spell
-                                                                Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
-                                                            }
-                                                            else
-                                                            {
-                                                                // find spell targets. prioritize targets with low endurance
-                                                                auto targets = Engine::Queue();
-
-                                                                if (spell != Spells::Type::GHASTLY_TOUCH)
-                                                                {
-                                                                    targets = Engine::Build(battle.Map, party, src, true, false, false, false, true, true);
-                                                                }
-                                                                else
-                                                                {
-                                                                    // spell needs adjacent targets
-                                                                    targets = Engine::FightTargets(battle.Map, party, src, true, false);
-                                                                }
-
-                                                                if (targets.size() > 0)
-                                                                {
-                                                                    Interface::ResolveSpell(graphics, battle, scene, character, party[targets[0].Id], targets[0].Id, spell);
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                    // regenerate stats
-                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                    // regenerate scene
-                                                    scene = Interface::BattleScene(battle, party);
-                                                }
-                                                else
-                                                {
-                                                    // spellcasting unsuccessful!
-                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                }
-                                            }
-                                            else if (character.Spells.size() > 0)
-                                            {
-                                                // call to mind
-                                                for (auto &strategy : character.SpellStrategy)
-                                                {
-                                                    if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Min && Engine::Count(party) <= strategy.Max && !character.HasCalledToMind(strategy.Spell))
-                                                    {
-                                                        character.CallToMind(strategy.Spell);
-
-                                                        auto spell_string = std::string(Spells::TypeMapping[strategy.Spell]) + " CALLED TO MIND!";
-
-                                                        Interface::MessageBox(graphics, scene, spell_string, Color::Highlight);
-
-                                                        break;
-                                                    }
-                                                }
-                                            }
-
-                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                            // cast or call to mind spell
+                                            Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);
                                         }
                                         else if (opponents.size() > 0)
                                         {
@@ -1287,499 +1344,718 @@ namespace BloodSword::Interface
 
                                             // fight
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, character.Fight);
-
-                                            // regenerate scene
-                                            scene = Interface::BattleScene(battle, party);
-
-                                            // regenerate stats
-                                            Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                            // next character in battle order
-                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
                                         }
                                         else if (Engine::CanShoot(character))
                                         {
-                                            auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
-
-                                            auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
-
-                                            // shoot only when there are no nearby player enemies
-                                            if (targets.size() > 0 && opponents.size() == 0)
-                                            {
-                                                for (auto &target : targets)
-                                                {
-                                                    // shoot first available target
-                                                    if (!party[target.Id].IsImmune(character.Shoot))
-                                                    {
-                                                        // shoot
-                                                        Interface::Shoot(graphics, scene, battle, character, party[target.Id], target.Id);
-
-                                                        // regenerate scene
-                                                        scene = Interface::BattleScene(battle, party);
-
-                                                        // regenerate stats
-                                                        Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                        break;
-                                                    }
-                                                }
-                                            }
-
-                                            // next character in battle order
-                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                            // do ranged attacks
+                                            Interface::EnemyShoots(graphics, scene, battle, party, character, opponents, src);
                                         }
                                         else if (character.Moves > 0 && Move::Available(battle.Map, src))
                                         {
-                                            // check if enemy can move towards the player-controlled characters
-                                            auto targets = Engine::MoveTargets(battle.Map, party, src, true, false);
-
-                                            auto valid_target = false;
-
-                                            for (auto &target : targets)
-                                            {
-                                                auto end = battle.Map.Find(Map::Object::PLAYER, target.Id);
-
-                                                if (!end.IsNone())
-                                                {
-                                                    valid_target = Interface::Move(battle.Map, character, movement, src, end);
-
-                                                    if (valid_target)
-                                                    {
-                                                        // regenerate scene
-                                                        scene = Interface::BattleScene(battle, party);
-
-                                                        animating = true;
-
-                                                        break;
-                                                    }
-                                                }
-                                            }
-
-                                            if (!valid_target)
-                                            {
-                                                // next character in battle order
-                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // no valid moves
-                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                            animating = Interface::EnemyMoves(scene, movement, battle, party, character, src);
                                         }
                                     }
-                                    else
+
+                                    refresh_textures = true;
+
+                                    if (!animating)
                                     {
-                                        // next character in battle order
-                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                                        performed_action = true;
                                     }
                                 }
-                                else
+                                else if (can_act)
                                 {
                                     // player-controlled characters including enthralled enemies
-                                    if (!character.Is(Character::Status::PARALYZED) && !character.Is(Character::Status::AWAY) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character))
+
+                                    if (!spells && !actions)
                                     {
                                         // captions and overlays
-                                        if (!spells && !actions)
+                                        auto &control = scene.Controls[input.Current];
+
+                                        if (control.OnMap && battle.Map.IsValid(control.Map))
                                         {
-                                            auto &control = scene.Controls[input.Current];
-
-                                            if (control.OnMap && battle.Map.IsValid(control.Map))
+                                            // draw path to destination
+                                            if (move)
                                             {
-                                                // draw path to destination
-                                                if (move)
-                                                {
-                                                    auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, order[combatant].Id) : battle.Map.Find(Map::Object::ENEMY, order[combatant].Id);
+                                                auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, order[combatant].Id) : battle.Map.Find(Map::Object::ENEMY, order[combatant].Id);
 
-                                                    auto dst = control.Map;
+                                                auto dst = control.Map;
 
-                                                    overlay = Interface::Path(battle.Map, character, src, dst);
+                                                overlay = Interface::Path(battle.Map, character, src, dst);
 
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_DEST], battle.Map.DrawX, text_y));
-                                                }
-                                                else if (fight)
-                                                {
-                                                    // fight mode
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_OPPONENT], battle.Map.DrawX, text_y));
-                                                }
-                                                else if (shoot || spell)
-                                                {
-                                                    // shoot mode
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_TARGET], battle.Map.DrawX, text_y));
-                                                }
-                                                else
-                                                {
-                                                    // round number
-                                                    overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
-                                                }
-
-                                                // show character stats
-                                                if (battle.Map[control.Map].Occupant == Map::Object::PLAYER)
-                                                {
-                                                    if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < party.Count())
-                                                    {
-                                                        // stats
-                                                        overlay.VerifyAndAdd(Scene::Element(party_stats[battle.Map[control.Map].Id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
-
-                                                        auto &stats = overlay.Elements.back();
-
-                                                        // status
-                                                        overlay.VerifyAndAdd(Scene::Element(party_status[battle.Map[control.Map].Id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
-                                                    }
-                                                }
-                                                else if (battle.Map[control.Map].Occupant == Map::Object::ENEMY)
-                                                {
-                                                    if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < battle.Opponents.Count())
-                                                    {
-                                                        // enemy stats
-                                                        overlay.VerifyAndAdd(Scene::Element(enemy_stats[battle.Map[control.Map].Id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
-
-                                                        auto &stats = overlay.Elements.back();
-
-                                                        // status
-                                                        overlay.VerifyAndAdd(Scene::Element(enemy_status[battle.Map[control.Map].Id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
-                                                    }
-                                                }
-                                                else if (battle.Map[control.Map].IsExit())
-                                                {
-                                                    if (asset != battle.Map[control.Map].Asset)
-                                                    {
-                                                        asset = battle.Map[control.Map].Asset;
-
-                                                        Free(&texture);
-
-                                                        texture = Graphics::CreateText(graphics, "EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-                                                    }
-
-                                                    overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
-                                                }
-                                                else if (battle.Map[control.Map].IsTemporarilyBlocked())
-                                                {
-                                                    if (asset != battle.Map[control.Map].TemporaryAsset || lifetime != battle.Map[control.Map].Lifetime)
-                                                    {
-                                                        asset = battle.Map[control.Map].TemporaryAsset;
-
-                                                        lifetime = battle.Map[control.Map].Lifetime;
-
-                                                        std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
-
-                                                        Free(&texture);
-
-                                                        texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-                                                    }
-
-                                                    overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
-                                                }
+                                                overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_DEST], battle.Map.DrawX, text_y));
+                                            }
+                                            else if (fight)
+                                            {
+                                                // fight mode
+                                                overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_OPPONENT], battle.Map.DrawX, text_y));
+                                            }
+                                            else if (shoot || spell)
+                                            {
+                                                // shoot mode
+                                                overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_TARGET], battle.Map.DrawX, text_y));
                                             }
                                             else
                                             {
                                                 // round number
                                                 overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
+                                            }
 
-                                                // captions for other controls
-                                                auto exit_id = Controls::Find(scene.Controls, Controls::Type::EXIT);
-
-                                                auto caption = control.Id - exit_id;
-
-                                                if (caption >= 0 && caption < captions.size())
+                                            // show character stats
+                                            if (battle.Map[control.Map].Occupant == Map::Object::PLAYER)
+                                            {
+                                                if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < party.Count())
                                                 {
-                                                    auto control = exit_id + caption;
+                                                    // stats
+                                                    overlay.VerifyAndAdd(Scene::Element(party_stats[battle.Map[control.Map].Id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
 
-                                                    overlay.VerifyAndAdd(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + BloodSword::Pad));
+                                                    auto &stats = overlay.Elements.back();
+
+                                                    // status
+                                                    overlay.VerifyAndAdd(Scene::Element(party_status[battle.Map[control.Map].Id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
                                                 }
                                             }
-                                        }
-                                        else if (spells)
-                                        {
-                                            // spells popup
-                                            overlay = Interface::Spells(draw, map_w, map_h, character, Color::Background, Color::Active, BloodSword::Border, true);
-
-                                            // round number
-                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
-
-                                            if (Input::IsValid(overlay, input))
+                                            else if (battle.Map[control.Map].Occupant == Map::Object::ENEMY)
                                             {
-                                                if (input.Type != Controls::Type::BACK)
+                                                if (battle.Map[control.Map].Id >= 0 && battle.Map[control.Map].Id < battle.Opponents.Count())
                                                 {
-                                                    auto &control = overlay.Controls[input.Current];
+                                                    // enemy stats
+                                                    overlay.VerifyAndAdd(Scene::Element(enemy_stats[battle.Map[control.Map].Id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
 
-                                                    auto &spell = character.Spells[control.Id];
+                                                    auto &stats = overlay.Elements.back();
 
-                                                    auto &popup = overlay.Elements[0];
-
-                                                    if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
-                                                    {
-                                                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
-
-                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
-
-                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
-                                                    }
-                                                    else if (!spell.IsBasic() && spell.IsBattle)
-                                                    {
-                                                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
-
-                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
-
-                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
-                                                    }
-                                                    else
-                                                    {
-                                                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
-                                                    }
+                                                    // status
+                                                    overlay.VerifyAndAdd(Scene::Element(enemy_status[battle.Map[control.Map].Id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
                                                 }
                                             }
-                                        }
-                                        else if (actions)
-                                        {
-                                            // actions popup
-                                            overlay = Interface::BattleActions(draw, map_w, map_h, battle, is_player ? party : battle.Opponents, order[combatant].Id, Color::Background, Color::Active, BloodSword::Border);
-
-                                            // round number
-                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
-
-                                            if (Input::IsValid(overlay, input))
+                                            else if (battle.Map[control.Map].IsExit())
                                             {
-                                                // actions popup captions
-                                                auto &control = overlay.Controls[input.Current];
-
-                                                auto ptr = Interface::BattleControlCaptions.find(control.Type);
-
-                                                if (ptr != Interface::BattleControlCaptions.end())
+                                                if (asset != battle.Map[control.Map].Asset)
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(ptr->second, control.X, control.Y + control.H + pad));
+                                                    asset = battle.Map[control.Map].Asset;
+
+                                                    Free(&texture);
+
+                                                    texture = Graphics::CreateText(graphics, "EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                                                 }
-                                            }
-                                        }
 
-                                        // focus cursor
-                                        if (!actions && !spells)
-                                        {
-                                            if (blinking)
+                                                overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
+                                            }
+                                            else if (battle.Map[control.Map].IsTemporarilyBlocked())
                                             {
-                                                // focus cursor
-                                                Interface::Focus(battle.Map, order, combatant, overlay);
-                                            }
+                                                if (asset != battle.Map[control.Map].TemporaryAsset || lifetime != battle.Map[control.Map].Lifetime)
+                                                {
+                                                    asset = battle.Map[control.Map].TemporaryAsset;
 
-                                            input.Blink = false;
+                                                    lifetime = battle.Map[control.Map].Lifetime;
+
+                                                    std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
+
+                                                    Free(&texture);
+
+                                                    texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                                                }
+
+                                                overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
+                                            }
                                         }
                                         else
                                         {
-                                            input.Blink = !input.Blink;
-                                        }
+                                            // round number
+                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
 
-                                        // wait for input
-                                        input = Input::WaitForInput(graphics, scene, overlay, input, (actions || spells), (actions || spells), 0);
+                                            // captions for other controls
+                                            auto exit_id = Controls::Find(scene.Controls, Controls::Type::EXIT);
 
-                                        if (!actions && !spells)
-                                        {
-                                            auto blink_end = SDL_GetTicks64();
+                                            auto caption = control.Id - exit_id;
 
-                                            if (blink_end - blink_start >= blink_delay)
+                                            if (caption >= 0 && caption < captions.size())
                                             {
-                                                blinking = !blinking;
+                                                auto control = exit_id + caption;
 
-                                                blink_start = blink_end;
+                                                overlay.VerifyAndAdd(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + BloodSword::Pad));
                                             }
                                         }
+                                    }
+                                    else if (spells)
+                                    {
+                                        // spells popup
+                                        overlay = Interface::Spells(draw, map_w, map_h, character, Color::Background, Color::Active, BloodSword::Border, true);
 
-                                        if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+                                        // round number
+                                        overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
+
+                                        if (Input::IsValid(overlay, input))
                                         {
-                                            if (Input::IsValid(scene, input) && !actions && !spells)
+                                            if (input.Type != Controls::Type::BACK)
                                             {
-                                                auto &control = scene.Controls[input.Current];
+                                                auto &control = overlay.Controls[input.Current];
 
-                                                if (control.OnMap && battle.Map[scene.Controls[input.Current].Map].Id == order[combatant].Id && ((is_player && battle.Map[scene.Controls[input.Current].Map].IsPlayer()) || (is_enemy && battle.Map[scene.Controls[input.Current].Map].IsEnemy())))
+                                                auto &spell = character.Spells[control.Id];
+
+                                                auto &popup = overlay.Elements[0];
+
+                                                if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                                                 {
-                                                    previous = input;
+                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
-                                                    actions = true;
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
 
-                                                    spells = false;
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                                                }
+                                                else if (!spell.IsBasic() && spell.IsBattle)
+                                                {
+                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
-                                                    move = false;
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
 
-                                                    fight = false;
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                                                }
+                                                else
+                                                {
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if (actions)
+                                    {
+                                        // actions popup
+                                        overlay = Interface::BattleActions(draw, map_w, map_h, battle, is_player ? party : battle.Opponents, order[combatant].Id, Color::Background, Color::Active, BloodSword::Border);
 
-                                                    knockout = character.Fight;
+                                        // round number
+                                        overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
 
-                                                    shoot = false;
+                                        if (Input::IsValid(overlay, input))
+                                        {
+                                            // actions popup captions
+                                            auto &control = overlay.Controls[input.Current];
+
+                                            auto ptr = Interface::BattleControlCaptions.find(control.Type);
+
+                                            if (ptr != Interface::BattleControlCaptions.end())
+                                            {
+                                                overlay.VerifyAndAdd(Scene::Element(ptr->second, control.X, control.Y + control.H + pad));
+                                            }
+                                        }
+                                    }
+
+                                    // focus cursor
+                                    if (!actions && !spells)
+                                    {
+                                        if (blinking)
+                                        {
+                                            // focus cursor
+                                            Interface::Focus(battle.Map, order, combatant, overlay);
+                                        }
+
+                                        input.Blink = false;
+                                    }
+                                    else
+                                    {
+                                        input.Blink = !input.Blink;
+                                    }
+
+                                    // wait for input
+                                    input = Input::WaitForInput(graphics, scene, overlay, input, (actions || spells), (actions || spells), 0);
+
+                                    if (!actions && !spells)
+                                    {
+                                        auto blink_end = SDL_GetTicks64();
+
+                                        if (blink_end - blink_start >= blink_delay)
+                                        {
+                                            blinking = !blinking;
+
+                                            blink_start = blink_end;
+                                        }
+                                    }
+
+                                    if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+                                    {
+                                        if (Input::IsValid(scene, input) && !actions && !spells)
+                                        {
+                                            auto &control = scene.Controls[input.Current];
+
+                                            if (control.OnMap && battle.Map[scene.Controls[input.Current].Map].Id == order[combatant].Id && ((is_player && battle.Map[scene.Controls[input.Current].Map].IsPlayer()) || (is_enemy && battle.Map[scene.Controls[input.Current].Map].IsEnemy())))
+                                            {
+                                                previous = input;
+
+                                                actions = true;
+
+                                                spells = false;
+
+                                                move = false;
+
+                                                fight = false;
+
+                                                knockout = character.Fight;
+
+                                                shoot = false;
+
+                                                spell = false;
+
+                                                input.Current = -1;
+                                            }
+                                            else if (control.OnMap && battle.Map.IsValid(control.Map) && (input.Type == Controls::Type::LOCATION || input.Type == Controls::Type::MAP_EXIT))
+                                            {
+                                                // setup animation
+                                                if (move)
+                                                {
+                                                    auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
+
+                                                    auto &control = scene.Controls[input.Current];
+
+                                                    if (opponents.size() == 0 || (opponents.size() > 0 && (is_enemy || (is_player && character.Is(Character::Status::DEFENDED)))))
+                                                    {
+                                                        auto start = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
+
+                                                        auto end = control.Map;
+
+                                                        // find a path to the destination and animate
+                                                        animating = Interface::Move(battle.Map, character, movement, start, end);
+
+                                                        if (animating)
+                                                        {
+                                                            Engine::Cancel(character, Character::Status::FLEEING);
+
+                                                            refresh_textures = true;
+                                                        }
+                                                        else
+                                                        {
+                                                            // no route to destination
+                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_MOVE], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        // enemies nearby
+                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_NEARBY], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                    }
+
+                                                    move = !move;
+                                                }
+                                                else if (spell && cast == Spells::Type::PILLAR_OF_SALT)
+                                                {
+                                                    if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, cast, true))
+                                                    {
+                                                        // spellcasting successful
+                                                        auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST";
+
+                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(spell_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+
+                                                        // resolve spell
+                                                        battle.Map.Put(control.Map, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 5);
+
+                                                        refresh_textures = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        // spellcasting unsuccessful!
+                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                    }
 
                                                     spell = false;
 
-                                                    input.Current = -1;
+                                                    cast = Spells::Type::NONE;
+
+                                                    performed_action = true;
                                                 }
-                                                else if (control.OnMap && battle.Map.IsValid(control.Map) && (input.Type == Controls::Type::LOCATION || input.Type == Controls::Type::MAP_EXIT))
+                                            }
+                                            else if (control.OnMap && battle.Map.IsValid(control.Map) && input.Type == Controls::Type::ENEMY)
+                                            {
+                                                if (fight)
                                                 {
-                                                    // setup animation
-                                                    if (move)
+                                                    // opponent chosen
+                                                    auto distance = battle.Map.Distance(src, control.Map);
+
+                                                    if (distance == 1)
                                                     {
-                                                        auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
+                                                        Engine::ResetStatusAndSpells(character);
 
-                                                        auto &control = scene.Controls[input.Current];
+                                                        // fight
+                                                        Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout);
 
-                                                        if (opponents.size() == 0 || (opponents.size() > 0 && (is_enemy || (is_player && character.Is(Character::Status::DEFENDED)))))
-                                                        {
-                                                            auto start = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
+                                                        // checks if enthrallment is broken
+                                                        Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
 
-                                                            auto end = control.Map;
+                                                        refresh_textures = true;
 
-                                                            // find a path to the destination and animate
-                                                            animating = Interface::Move(battle.Map, character, movement, start, end);
-
-                                                            if (animating)
-                                                            {
-                                                                Engine::Cancel(character, Character::Status::FLEEING);
-
-                                                                // regenerate scene
-                                                                scene = Interface::BattleScene(battle, party);
-                                                            }
-                                                            else
-                                                            {
-                                                                // no route to destination
-                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_MOVE], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                            }
-                                                        }
-                                                        else
-                                                        {
-                                                            // enemies nearby
-                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_NEARBY], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                        }
-
-                                                        move = !move;
+                                                        performed_action = true;
                                                     }
-                                                    else if (spell && cast == Spells::Type::PILLAR_OF_SALT)
-                                                    {
-                                                        if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, cast, true))
-                                                        {
-                                                            // spellcasting successful
-                                                            auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST";
 
-                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(spell_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                                                    fight = false;
 
-                                                            // resolve spell
-                                                            battle.Map.Put(control.Map, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 5);
-
-                                                            // regenerate stats
-                                                            Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                            // regenerate scene
-                                                            scene = Interface::BattleScene(battle, party);
-                                                        }
-                                                        else
-                                                        {
-                                                            // spellcasting unsuccessful!
-                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                        }
-
-                                                        // next character in battle order
-                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-
-                                                        spell = false;
-
-                                                        cast = Spells::Type::NONE;
-                                                    }
+                                                    knockout = Skills::Type::NONE;
                                                 }
-                                                else if (control.OnMap && battle.Map.IsValid(control.Map) && input.Type == Controls::Type::ENEMY)
+                                                else if (shoot)
                                                 {
-                                                    if (fight)
+                                                    // target chosen
+                                                    auto distance = battle.Map.Distance(src, control.Map);
+
+                                                    if (distance > 1)
                                                     {
-                                                        // opponent chosen
-                                                        auto distance = battle.Map.Distance(src, control.Map);
-
-                                                        if (distance == 1)
+                                                        if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(character.Shoot))
                                                         {
-                                                            Engine::ResetStatusAndSpells(character);
+                                                            Engine::ResetStatus(character);
 
-                                                            // fight
-                                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, knockout);
-
-                                                            // regenerate scene
-                                                            scene = Interface::BattleScene(battle, party);
-
-                                                            // regenerate stats
-                                                            Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+                                                            // shoot
+                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id);
 
                                                             // checks if enthrallment is broken
                                                             Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
 
-                                                            // next character in battle order
-                                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                        }
+                                                            refresh_textures = true;
 
-                                                        fight = false;
-
-                                                        knockout = Skills::Type::NONE;
-                                                    }
-                                                    else if (shoot)
-                                                    {
-                                                        // target chosen
-                                                        auto distance = battle.Map.Distance(src, control.Map);
-
-                                                        if (distance > 1)
-                                                        {
-                                                            if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(character.Shoot))
-                                                            {
-                                                                Engine::ResetStatus(character);
-
-                                                                // shoot
-                                                                Interface::Shoot(graphics, scene, battle, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id);
-
-                                                                // regenerate scene
-                                                                scene = Interface::BattleScene(battle, party);
-
-                                                                // regenerate stats
-                                                                Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                                // checks if enthrallment is broken
-                                                                Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
-
-                                                                // next character in battle order
-                                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                            }
-                                                            else
-                                                            {
-                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                            }
+                                                            performed_action = true;
                                                         }
                                                         else
                                                         {
-                                                            // enemies nearby
-                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_NEARBY], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                         }
-
-                                                        shoot = false;
                                                     }
-                                                    else if (spell && cast != Spells::Type::NONE && cast != Spells::Type::PILLAR_OF_SALT)
+                                                    else
                                                     {
-                                                        spell = false;
+                                                        // enemies nearby
+                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_NEARBY], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                    }
 
-                                                        auto spellbook = character.Find(cast);
+                                                    shoot = false;
+                                                }
+                                                else if (spell && cast != Spells::Type::NONE && cast != Spells::Type::PILLAR_OF_SALT)
+                                                {
+                                                    spell = false;
 
-                                                        if (spellbook != character.Spells.end())
+                                                    auto spellbook = character.Find(cast);
+
+                                                    if (spellbook != character.Spells.end())
+                                                    {
+                                                        auto distance = battle.Map.Distance(src, control.Map);
+
+                                                        if (!spellbook->Ranged && distance != 1)
                                                         {
-                                                            auto distance = battle.Map.Distance(src, control.Map);
-
-                                                            if (!spellbook->Ranged && distance != 1)
+                                                            // must be adjacent
+                                                            Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                        }
+                                                        else
+                                                        {
+                                                            if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(cast))
                                                             {
-                                                                // must be adjacent
-                                                                Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[control.Map].Id].Asset, cast, true))
+                                                                {
+                                                                    // spellcasting successful
+                                                                    auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST";
+
+                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(spell_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+
+                                                                    // resolve spell
+                                                                    Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, cast);
+
+                                                                    refresh_textures = true;
+                                                                }
+                                                                else
+                                                                {
+                                                                    // spellcasting unsuccessful!
+                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                                }
+
+                                                                performed_action = true;
                                                             }
                                                             else
                                                             {
-                                                                if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(cast))
+                                                                Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                            }
+                                                        }
+                                                    }
+
+                                                    cast = Spells::Type::NONE;
+                                                }
+                                            }
+                                            else if (input.Type == Controls::Type::EXIT)
+                                            {
+                                                next = true;
+
+                                                end_turn = true;
+
+                                                exit = true;
+
+                                                result = Battle::Result::NONE;
+                                            }
+                                            else if (input.Type == Controls::Type::CENTER)
+                                            {
+                                                Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
+
+                                                input.Current = -1;
+
+                                                input.Selected = false;
+                                            }
+                                            else if (input.Type == Controls::Type::MAP_DOWN)
+                                            {
+                                                if (battle.Map.Y < (battle.Map.Height - battle.Map.ViewY))
+                                                {
+                                                    battle.Map.Y++;
+
+                                                    input.Current = -1;
+
+                                                    input.Selected = false;
+                                                }
+                                            }
+                                            else if (input.Type == Controls::Type::MAP_UP)
+                                            {
+                                                if (battle.Map.Y > 0)
+                                                {
+                                                    battle.Map.Y--;
+
+                                                    input.Current = -1;
+
+                                                    input.Selected = false;
+                                                }
+                                            }
+                                            else if (input.Type == Controls::Type::MAP_LEFT)
+                                            {
+                                                if (battle.Map.X > 0)
+                                                {
+                                                    battle.Map.X--;
+
+                                                    input.Current = -1;
+
+                                                    input.Selected = false;
+                                                }
+                                            }
+                                            else if (input.Type == Controls::Type::MAP_RIGHT)
+                                            {
+                                                if (battle.Map.X < (battle.Map.Width - battle.Map.ViewX))
+                                                {
+                                                    battle.Map.X++;
+
+                                                    input.Current = -1;
+
+                                                    input.Selected = false;
+                                                }
+                                            }
+                                        }
+                                        else if (actions && Input::IsValid(overlay, input))
+                                        {
+                                            if (input.Type == Controls::Type::MOVE)
+                                            {
+                                                // toggles between move/hover mode
+                                                move = !move;
+                                            }
+                                            else if (input.Type == Controls::Type::FIGHT || input.Type == Controls::Type::QUARTERSTAFF)
+                                            {
+                                                auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
+
+                                                if (opponents.size() == 1)
+                                                {
+                                                    Engine::ResetStatusAndSpells(character);
+
+                                                    fight = false;
+
+                                                    knockout = ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF)) ? Skills::Type::QUARTERSTAFF : character.Fight;
+
+                                                    // fight
+                                                    Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout);
+
+                                                    refresh_textures = true;
+
+                                                    performed_action = true;
+                                                }
+                                                else if (opponents.size() > 1)
+                                                {
+                                                    if ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF))
+                                                    {
+                                                        knockout = Skills::Type::QUARTERSTAFF;
+                                                    }
+                                                    else
+                                                    {
+                                                        knockout = character.Fight;
+                                                    }
+
+                                                    fight = true;
+
+                                                    input = previous;
+                                                }
+                                                else
+                                                {
+                                                    knockout = Skills::Type::NONE;
+
+                                                    fight = false;
+
+                                                    input = previous;
+                                                }
+                                            }
+                                            else if (input.Type == Controls::Type::SHOOT || input.Type == Controls::Type::SHURIKEN)
+                                            {
+                                                auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+
+                                                if (targets.size() == 1)
+                                                {
+                                                    shoot = false;
+
+                                                    if (!battle.Opponents[targets[0].Id].IsImmune(character.Shoot))
+                                                    {
+                                                        Engine::ResetStatusAndSpells(character);
+
+                                                        // shoot
+                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
+
+                                                        // checks if enthrallment is broken
+                                                        Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
+
+                                                        refresh_textures = true;
+
+                                                        performed_action = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                    }
+                                                }
+                                                else if (targets.size() > 1)
+                                                {
+                                                    shoot = true;
+
+                                                    input = previous;
+                                                }
+                                                else
+                                                {
+                                                    shoot = false;
+
+                                                    input = previous;
+                                                }
+                                            }
+                                            else if (input.Type == Controls::Type::SPELLS)
+                                            {
+                                                spells = true;
+                                            }
+                                            else if (input.Type == Controls::Type::DEFEND)
+                                            {
+                                                character.Add(Character::Status::DEFENDING);
+
+                                                Engine::ResetStatusAndSpells(character);
+
+                                                refresh_textures = true;
+
+                                                performed_action = true;
+                                            }
+                                            else if (input.Type == Controls::Type::FLEE)
+                                            {
+                                                if (!character.Is(Character::Status::FLEEING))
+                                                {
+                                                    character.Add(Character::Status::FLEEING);
+                                                }
+
+                                                Engine::ResetSpells(character);
+
+                                                refresh_textures = true;
+
+                                                performed_action = true;
+                                            }
+                                            else if (input.Type == Controls::Type::BACK)
+                                            {
+                                                input = previous;
+                                            }
+
+                                            actions = false;
+                                        }
+                                        else if (spells && Input::IsValid(overlay, input))
+                                        {
+                                            auto ptr = Interface::ControlSpellMapping.find(input.Type);
+
+                                            spells = false;
+
+                                            if (Engine::IsSpell(input.Type) && ptr != Interface::ControlSpellMapping.end())
+                                            {
+                                                auto &type = ptr->second;
+
+                                                auto search = character.Find(type);
+
+                                                if (search != character.Spells.end())
+                                                {
+                                                    auto &spellbook = *search;
+
+                                                    if (!spellbook.IsBasic() && spellbook.IsBattle)
+                                                    {
+                                                        if (character.HasCalledToMind(spellbook.Type))
+                                                        {
+                                                            if (spellbook.RequiresTarget())
+                                                            {
+                                                                // select target
+                                                                spell = true;
+
+                                                                cast = spellbook.Type;
+
+                                                                // unless there is only one valid target
+                                                                auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+
+                                                                if (targets.size() == 1 && cast != Spells::Type::PILLAR_OF_SALT)
                                                                 {
-                                                                    if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[control.Map].Id].Asset, cast, true))
+                                                                    auto target = battle.Map.Find(Map::Object::ENEMY, targets[0].Id);
+
+                                                                    if (battle.Map.IsValid(target))
+                                                                    {
+                                                                        auto distance = battle.Map.Distance(src, target);
+
+                                                                        if (!spellbook.Ranged && distance != 1)
+                                                                        {
+                                                                            // must be adjacent
+                                                                            Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                                        }
+                                                                        else if (!battle.Opponents[battle.Map[target].Id].IsImmune(cast))
+                                                                        {
+                                                                            if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[target].Id].Asset, cast, true))
+                                                                            {
+                                                                                // spellcasting successful
+                                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+
+                                                                                // resolve spell
+                                                                                Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[target].Id], battle.Map[target].Id, cast);
+
+                                                                                refresh_textures = true;
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                // spellcasting unsuccessful!
+                                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                                            }
+
+                                                                            performed_action = true;
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                                        }
+                                                                    }
+
+                                                                    spell = false;
+
+                                                                    cast = Spells::Type::NONE;
+                                                                }
+                                                            }
+                                                            else
+                                                            {
+                                                                spell = false;
+
+                                                                cast = Spells::Type::NONE;
+
+                                                                if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Has(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
+                                                                {
+                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_FLEE], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                                }
+                                                                else
+                                                                {
+                                                                    if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spellbook.Type, true))
                                                                     {
                                                                         // spellcasting successful
-                                                                        auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST";
+                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spellbook.Type]) + " SUCCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
 
-                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(spell_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                                                                        // check if spell targets own party
+                                                                        auto my_party = (spellbook.Type == Spells::Type::EYE_OF_THE_TIGER) || (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE);
 
                                                                         // resolve spell
-                                                                        Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[control.Map].Id], battle.Map[control.Map].Id, cast);
+                                                                        Interface::ResolveSpell(graphics, battle, scene, character, my_party ? party : battle.Opponents, spellbook.Type);
 
-                                                                        // regenerate stats
-                                                                        Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+                                                                        refresh_textures = true;
                                                                     }
                                                                     else
                                                                     {
@@ -1787,366 +2063,19 @@ namespace BloodSword::Interface
                                                                         Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                                                                     }
 
-                                                                    // regenerate scene
-                                                                    scene = Interface::BattleScene(battle, party);
-
-                                                                    // next character in battle order
-                                                                    next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                                }
-                                                                else
-                                                                {
-                                                                    Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                                                                    performed_action = true;
                                                                 }
                                                             }
-                                                        }
-
-                                                        cast = Spells::Type::NONE;
-                                                    }
-                                                }
-                                                else if (input.Type == Controls::Type::EXIT)
-                                                {
-                                                    next = true;
-
-                                                    end_turn = true;
-
-                                                    exit = true;
-
-                                                    result = Battle::Result::NONE;
-                                                }
-                                                else if (input.Type == Controls::Type::CENTER)
-                                                {
-                                                    Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
-
-                                                    scene = Interface::BattleScene(battle, party);
-
-                                                    input.Current = -1;
-
-                                                    input.Selected = false;
-                                                }
-                                                else if (input.Type == Controls::Type::MAP_DOWN)
-                                                {
-                                                    if (battle.Map.Y < (battle.Map.Height - battle.Map.ViewY))
-                                                    {
-                                                        battle.Map.Y++;
-
-                                                        scene = Interface::BattleScene(battle, party);
-
-                                                        input.Current = -1;
-
-                                                        input.Selected = false;
-                                                    }
-                                                }
-                                                else if (input.Type == Controls::Type::MAP_UP)
-                                                {
-                                                    if (battle.Map.Y > 0)
-                                                    {
-                                                        battle.Map.Y--;
-
-                                                        scene = Interface::BattleScene(battle, party);
-
-                                                        input.Current = -1;
-
-                                                        input.Selected = false;
-                                                    }
-                                                }
-                                                else if (input.Type == Controls::Type::MAP_LEFT)
-                                                {
-                                                    if (battle.Map.X > 0)
-                                                    {
-                                                        battle.Map.X--;
-
-                                                        scene = Interface::BattleScene(battle, party);
-
-                                                        input.Current = -1;
-
-                                                        input.Selected = false;
-                                                    }
-                                                }
-                                                else if (input.Type == Controls::Type::MAP_RIGHT)
-                                                {
-                                                    if (battle.Map.X < (battle.Map.Width - battle.Map.ViewX))
-                                                    {
-                                                        battle.Map.X++;
-
-                                                        scene = Interface::BattleScene(battle, party);
-
-                                                        input.Current = -1;
-
-                                                        input.Selected = false;
-                                                    }
-                                                }
-                                            }
-                                            else if (actions && Input::IsValid(overlay, input))
-                                            {
-                                                if (input.Type == Controls::Type::MOVE)
-                                                {
-                                                    // toggles between move/hover mode
-                                                    move = !move;
-                                                }
-                                                else if (input.Type == Controls::Type::FIGHT || input.Type == Controls::Type::QUARTERSTAFF)
-                                                {
-                                                    auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
-
-                                                    if (opponents.size() == 1)
-                                                    {
-                                                        Engine::ResetStatusAndSpells(character);
-
-                                                        fight = false;
-
-                                                        knockout = ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF)) ? Skills::Type::QUARTERSTAFF : character.Fight;
-
-                                                        // fight
-                                                        Interface::Fight(graphics, scene, battle, character, order[combatant].Id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout);
-
-                                                        // regenerate scene
-                                                        scene = Interface::BattleScene(battle, party);
-
-                                                        // regenerate stats
-                                                        Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                        // next character in battle order
-                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                    }
-                                                    else if (opponents.size() > 1)
-                                                    {
-                                                        if ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF))
-                                                        {
-                                                            knockout = Skills::Type::QUARTERSTAFF;
                                                         }
                                                         else
                                                         {
-                                                            knockout = character.Fight;
+                                                            // call to mind
+                                                            character.CallToMind(spellbook.Type);
+
+                                                            refresh_textures = true;
+
+                                                            performed_action = true;
                                                         }
-
-                                                        fight = true;
-
-                                                        input = previous;
-                                                    }
-                                                    else
-                                                    {
-                                                        knockout = Skills::Type::NONE;
-
-                                                        fight = false;
-
-                                                        input = previous;
-                                                    }
-                                                }
-                                                else if (input.Type == Controls::Type::SHOOT || input.Type == Controls::Type::SHURIKEN)
-                                                {
-                                                    auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
-
-                                                    if (targets.size() == 1)
-                                                    {
-                                                        shoot = false;
-
-                                                        if (!battle.Opponents[targets[0].Id].IsImmune(character.Shoot))
-                                                        {
-                                                            Engine::ResetStatusAndSpells(character);
-
-                                                            // shoot
-                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
-
-                                                            // regenerate scene
-                                                            scene = Interface::BattleScene(battle, party);
-
-                                                            // regenerate stats
-                                                            Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                            // checks if enthrallment is broken
-                                                            Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
-
-                                                            // next character in battle order
-                                                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                        }
-                                                        else
-                                                        {
-                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_RANGED], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                        }
-                                                    }
-                                                    else if (targets.size() > 1)
-                                                    {
-                                                        shoot = true;
-
-                                                        input = previous;
-                                                    }
-                                                    else
-                                                    {
-                                                        shoot = false;
-
-                                                        input = previous;
-                                                    }
-                                                }
-                                                else if (input.Type == Controls::Type::SPELLS)
-                                                {
-                                                    spells = true;
-                                                }
-                                                else if (input.Type == Controls::Type::DEFEND)
-                                                {
-                                                    character.Add(Character::Status::DEFENDING);
-
-                                                    Engine::ResetStatusAndSpells(character);
-
-                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                    // next character in battle order
-                                                    next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                }
-                                                else if (input.Type == Controls::Type::FLEE)
-                                                {
-                                                    if (!character.Is(Character::Status::FLEEING))
-                                                    {
-                                                        character.Add(Character::Status::FLEEING);
-                                                    }
-
-                                                    Engine::ResetSpells(character);
-
-                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                    // next character in battle order
-                                                    next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                }
-                                                else if (input.Type == Controls::Type::BACK)
-                                                {
-                                                    input = previous;
-                                                }
-
-                                                actions = false;
-                                            }
-                                            else if (spells && Input::IsValid(overlay, input))
-                                            {
-                                                auto ptr = Interface::ControlSpellMapping.find(input.Type);
-
-                                                spells = false;
-
-                                                if (Engine::IsSpell(input.Type) && ptr != Interface::ControlSpellMapping.end())
-                                                {
-                                                    auto &type = ptr->second;
-
-                                                    auto search = character.Find(type);
-
-                                                    if (search != character.Spells.end())
-                                                    {
-                                                        auto &spellbook = *search;
-
-                                                        if (!spellbook.IsBasic() && spellbook.IsBattle)
-                                                        {
-                                                            if (character.HasCalledToMind(spellbook.Type))
-                                                            {
-                                                                if (spellbook.RequiresTarget())
-                                                                {
-                                                                    // select target
-                                                                    spell = true;
-
-                                                                    cast = spellbook.Type;
-
-                                                                    // unless there is only one valid target
-                                                                    auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
-
-                                                                    if (targets.size() == 1 && cast != Spells::Type::PILLAR_OF_SALT)
-                                                                    {
-                                                                        auto target = battle.Map.Find(Map::Object::ENEMY, targets[0].Id);
-
-                                                                        if (battle.Map.IsValid(target))
-                                                                        {
-                                                                            auto distance = battle.Map.Distance(src, target);
-
-                                                                            if (!spellbook.Ranged && distance != 1)
-                                                                            {
-                                                                                // must be adjacent
-                                                                                Interface::MessageBox(graphics, scene, Interface::Message[Interface::MSG_ADJACENT], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                                            }
-                                                                            else if (!battle.Opponents[battle.Map[target].Id].IsImmune(cast))
-                                                                            {
-                                                                                if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[target].Id].Asset, cast, true))
-                                                                                {
-                                                                                    // spellcasting successful
-                                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
-
-                                                                                    // resolve spell
-                                                                                    Interface::ResolveSpell(graphics, battle, scene, character, battle.Opponents[battle.Map[target].Id], battle.Map[target].Id, cast);
-
-                                                                                    // regenerate stats
-                                                                                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-                                                                                }
-                                                                                else
-                                                                                {
-                                                                                    // spellcasting unsuccessful!
-                                                                                    Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                                                }
-
-                                                                                // regenerate scene
-                                                                                scene = Interface::BattleScene(battle, party);
-
-                                                                                // next character in battle order
-                                                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                                            }
-                                                                            else
-                                                                            {
-                                                                                Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_SPELL], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                                            }
-                                                                        }
-
-                                                                        spell = false;
-
-                                                                        cast = Spells::Type::NONE;
-                                                                    }
-                                                                }
-                                                                else
-                                                                {
-                                                                    spell = false;
-
-                                                                    cast = Spells::Type::NONE;
-
-                                                                    if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Has(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
-                                                                    {
-                                                                        Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_FLEE], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spellbook.Type, true))
-                                                                        {
-                                                                            // spellcasting successful
-                                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Graphics::RichText(std::string(Spells::TypeMapping[spellbook.Type]) + " SUCCESSFULLY CAST", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
-
-                                                                            // check if spell targets own party
-                                                                            auto my_party = (spellbook.Type == Spells::Type::EYE_OF_THE_TIGER) || (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE);
-
-                                                                            // resolve spell
-                                                                            Interface::ResolveSpell(graphics, battle, scene, character, my_party ? party : battle.Opponents, spellbook.Type);
-
-                                                                            // regenerate stats
-                                                                            Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                                            // regenerate scene
-                                                                            scene = Interface::BattleScene(battle, party);
-                                                                        }
-                                                                        else
-                                                                        {
-                                                                            // spellcasting unsuccessful!
-                                                                            Interface::MessageBox(graphics, scene, draw, map_w, map_h, Interface::Message[Interface::MSG_CAST], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
-                                                                        }
-
-                                                                        // next character in battle order
-                                                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                                    }
-                                                                }
-                                                            }
-                                                            else
-                                                            {
-                                                                // call to mind
-                                                                character.CallToMind(spellbook.Type);
-
-                                                                // regenerate stats
-                                                                Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
-
-                                                                // next character in battle order
-                                                                next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                                            }
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                                        input = previous;
                                                     }
                                                 }
                                                 else
@@ -2154,16 +2083,32 @@ namespace BloodSword::Interface
                                                     input = previous;
                                                 }
                                             }
+                                            else
+                                            {
+                                                input = previous;
+                                            }
                                         }
                                     }
-                                    else
-                                    {
-                                        // next character in battle order
-                                        next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
-                                    }
+                                }
+                                else
+                                {
+                                    // next character in battle order
+                                    performed_action = true;
                                 }
                             }
                             else
+                            {
+                                // next character in battle order
+                                performed_action = true;
+                            }
+
+                            if (refresh_textures)
+                            {
+                                // regenerate stats
+                                Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
+                            }
+
+                            if (performed_action)
                             {
                                 // next character in battle order
                                 next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
@@ -2171,10 +2116,15 @@ namespace BloodSword::Interface
                         }
                         else
                         {
+                            // animate movement
+
+                            // clip rendering outside of current map view
                             Interface::Clip(graphics, battle.Map);
 
+                            // animate
                             animating = !Graphics::Animate(graphics, scene, movement, BloodSword::FrameDelay);
 
+                            // disable clipping
                             Interface::Clip(graphics);
 
                             if (!animating)
@@ -2196,9 +2146,6 @@ namespace BloodSword::Interface
                                 input.Current = -1;
 
                                 input.Selected = false;
-
-                                // regenerate scene
-                                scene = Interface::BattleScene(battle, party);
 
                                 // next character in battle order
                                 next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
@@ -2231,6 +2178,9 @@ namespace BloodSword::Interface
                         }
                     }
                 }
+
+                // end of round effects
+                battle.Map.CoolDown();
 
                 // move to next round
                 round++;
