@@ -145,7 +145,7 @@ namespace BloodSword::Battle
                     }
                 }
 
-                if (!data["opponents"].is_null() && data["opponents"].is_array() && data["opponents"].size() > 0)
+                if (!data["opponents"].is_null() && data["opponents"].is_object() && data["opponents"].size() > 0)
                 {
                     this->Opponents = Party::Initialize(data["opponents"]);
                 }
