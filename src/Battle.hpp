@@ -14,6 +14,7 @@ namespace BloodSword::Battle
     enum class Condition
     {
         NONE = -1,
+        NO_COMBAT,
         AMBUSH_PLAYER,
         AMBUSH_NPC,
         CANNOT_FLEE,
@@ -29,6 +30,8 @@ namespace BloodSword::Battle
     const int Unlimited = -1;
 
     BloodSword::Mapping<Battle::Condition> ConditionMapping = {
+        {Battle::Condition::NONE, "NONE"},
+        {Battle::Condition::NO_COMBAT, "NO COMBAT"},
         {Battle::Condition::AMBUSH_PLAYER, "AMBUSH PLAYER"},
         {Battle::Condition::AMBUSH_NPC, "AMBUSH NPC"},
         {Battle::Condition::CANNOT_FLEE, "CANNOT FLEE"},
