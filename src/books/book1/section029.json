@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 29
+    },
+    "text": "You saunter over while the man is selecting a pastry from a tray. He was not expecting your attack. For some reason, no one else at the party comes to your aid.",
+    "battle": "battles/book1/battle029.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 184
+            }
+        },
+        {
+            "type": "BATTLE FLEE",
+            "location": {
+                "book": "BOOK1",
+                "number": 119
+            }
+        }
+    ]
+}

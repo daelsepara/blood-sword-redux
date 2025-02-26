@@ -121,6 +121,10 @@
             "path": "images/enemies/vampire-dracula.png"
         },
         {
+            "id": "MAN IN BLUE",
+            "path": "images/enemies/cloak-dagger.png"
+        },
+        {
             "id": "MOVE",
             "path": "images/actions/boot-prints.png"
         },
