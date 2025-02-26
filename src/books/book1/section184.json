@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 184
+    },
+    "text": "Spurting blood, the man slides to the floor. Clawing at the tablecloth as he falls, he pulls dozens of china plates and goblets down on top of him with a crash. Strangely, no one in the room seems to take any notice except for a fellow in a black domino cape. You gaze around in astonishment. A hunched man in a gold tunic is pouring himself a glass of wine, oblivious of the disturbance. A man in a green wig goes on laughing at a friend's joke as though he had not noticed the battle at all. A masquerade jester proceeds with his antics, and a man adorned in the laurel wreath of a Sage of Ancient Selentium has eyes only for the serving-girls.\n\nOne of these men is Balhazar. Which one?",
+    "choices": [
+        {
+            "text": "... the man wearing the domino cape",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 178
+                }
+            }
+        },
+        {
+            "text": "... the hunched man",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 527
+                }
+            }
+        },
+        {
+            "text": "... the man in the green wig",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 417
+                }
+            }
+        },
+        {
+            "text": "... the jester",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 123
+                }
+            }
+        },
+        {
+            "text": "... or the Selentine Sage",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 277
+                }
+            }
+        }
+    ]
+}
