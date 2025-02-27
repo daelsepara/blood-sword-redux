@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 7
+    },
+    "text": "(TRICKSTER) A commanding voice rings out over the clash of swords and the screams of the crowd. A majestic, scarlet-robed figure sweeps forwards through the mob, which parts and shrinks away. The wounded guard lowers his sword. \"My lord,\" he says, \"I was about to apprehend this common thief.\"\n\n\"Be silent,\" commands the robed man. \"You were about to lose your life, you clumsy wretch. If you were in my service, I'd feed you to the nightgaunts. Begone!\"\n\nThe red-robed man turns to you as the guard blanches, bows stiffly and is gone. He smiles coldly at you. \"Your fencing technique is passable, and may be more rewarding to you than your thievery.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 397
+            }
+        }
+    ]
+}

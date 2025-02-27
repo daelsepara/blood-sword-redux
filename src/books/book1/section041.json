@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 41
+    },
+    "text": "(TRICKSTER) You are now out of breath and your sword arm aches from parrying the crude blows of the guard. You begin to feel you were overconfident in taking him on. He has delayed you long enough for his companions to arrive. A spear prods into your back and a voice rings out: \"Drop your sword or I'll stick you like a pig.\"\n\nYou don't wait to be told twice, but drop your sword on to the cobblestones at your feet. You are frog-marched to the bleak dungeon of Magus Kalugen.",
+    "events": [
+        {
+            "type": "HAVE COLLEAGUES",
+            "variables": [
+                "Your companions are rounded up and taken there as well."
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 508
+            }
+        }
+    ]
+}

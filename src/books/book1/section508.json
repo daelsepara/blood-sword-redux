@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 508
+    },
+    "text": "Things have come to a pretty pass. You are now languishing in a slimy vault below the citadel with only rats for company. Not for nothing is Magus Kalugen called the Jailer. Many of his subjects rot away their lives in dungeons such as this, often for the pettiest of offences, while he and his wealthy courtiers commit any injustice or crime they like without fear of reprisal.\n\nWhile you reflect angrily on this turn of events, you hear footsteps echoing down the passage outside. Keys jangle in the lock and the door creaks open. Six tall guards in green cloaks tand there.\n\n\"Your lucky day,\" grunts one. \"Magus Kalugen has decided you can represent him in the Battlepits tomorrow. On your feet. He doesn't like to be kept waiting.\"\n\nYou are taken upstairs and through a maze of vast corridors until you reach Kalugen's audience chamber.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 471
+            }
+        }
+    ]
+}

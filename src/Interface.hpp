@@ -1959,7 +1959,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle, bool ignore_armour = false)
     {
         SDL_Texture *damage_value = nullptr;
 
@@ -2129,7 +2129,7 @@ namespace BloodSword::Interface
                             rolled = true;
 
                             // check damage
-                            damage = std::max(0, rolls.Sum - (attacker.Has(Skills::Type::IGNORE_ARMOUR) ? 0 : Engine::Score(defender, Attribute::Type::ARMOUR, in_battle)));
+                            damage = std::max(0, rolls.Sum - (ignore_armour ? 0 : Engine::Score(defender, Attribute::Type::ARMOUR, in_battle)));
 
                             if (damage > 0)
                             {
@@ -2173,7 +2173,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type skill, Asset::Type asset, bool in_battle)
+    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type skill, Asset::Type asset, bool in_battle, bool ignore_armour = false)
     {
         auto shooting = Engine::CanShoot(attacker, skill);
 
@@ -2189,7 +2189,7 @@ namespace BloodSword::Interface
 
         modifier -= (shooting && (skill == Skills::Type::SHURIKEN)) ? 1 : 0;
 
-        return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle);
+        return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle, ignore_armour);
     }
 
     // draws a message box on screen

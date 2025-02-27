@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 241
+    },
+    "text": "(TRICKSTER) The guard is upon you as you draw your sword. \"Pah, so you fancy yourself in a fight, do you?\" he says, sneering. The crowds gather round as the combat begins, eager to see blood spilt.",
+    "battle": "battles/book1/battle241.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 7
+            }
+        },
+        {
+            "type": "BATTLE DEFEAT",
+            "location": {
+                "book": "BOOK1",
+                "number": 41
+            }
+        }
+    ]
+}
