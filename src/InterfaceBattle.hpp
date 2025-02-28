@@ -906,6 +906,17 @@ namespace BloodSword::Interface
         }
     }
 
+    void KillAllParalyzed(Party::Base &party)
+    {
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (Engine::IsAlive(party[i]) && party[i].Is(Character::Status::PARALYZED))
+            {
+                party[i].Value(Attribute::Type::ENDURANCE, 0);
+            }
+        }
+    }
+
     // enemy does ranged attacks
     void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Engine::Queue &opponents, Point &src)
     {
@@ -2273,6 +2284,9 @@ namespace BloodSword::Interface
             // check if party flees
             if (Engine::IsFleeing(party))
             {
+                // kill abandonned players
+                Interface::KillAllParalyzed(party);
+
                 result = Battle::Result::FLEE;
             }
 
@@ -2313,18 +2327,6 @@ namespace BloodSword::Interface
                 Engine::ResetAll(party);
 
                 Engine::ResetAll(battle.Opponents);
-
-                // add survivors
-                if (battle.Has(Battle::Condition::SURVIVORS))
-                {
-                    for (auto i = 0; i < battle.Opponents.Count(); i++)
-                    {
-                        if (Engine::IsAlive(battle.Opponents[i]))
-                        {
-                            party.Survivors.push_back(battle.Opponents[i]);
-                        }
-                    }
-                }
             }
             else
             {
@@ -2336,6 +2338,21 @@ namespace BloodSword::Interface
             party = copy_party;
 
             battle = copy_battle;
+        }
+
+        if (result != Battle::Result::NONE)
+        {
+            // add survivors
+            if (battle.Has(Battle::Condition::SURVIVORS))
+            {
+                for (auto i = 0; i < battle.Opponents.Count(); i++)
+                {
+                    if (Engine::IsAlive(battle.Opponents[i]))
+                    {
+                        party.Survivors.push_back(battle.Opponents[i]);
+                    }
+                }
+            }
         }
 
         return result;

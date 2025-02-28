@@ -174,11 +174,12 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            if (party[character].ControlType == Character::ControlType::PLAYER)
+            if (party[character].ControlType == Character::ControlType::PLAYER && Engine::IsAlive(party[character]))
             {
-                live += Engine::IsAlive(party[character]) ? 1 : 0;
+                fleeing += party[character].Is(Character::Status::FLEEING) ? 1 : 0;
 
-                fleeing += Engine::IsAlive(party[character]) && party[character].Is(Character::Status::FLEEING) ? 1 : 0;
+                // paralyzed players are "dead"
+                live += !party[character].Is(Character::Status::PARALYZED) ? 1 : 0;
             }
         }
 
