@@ -114,7 +114,8 @@ namespace BloodSword::Asset
         CHESSBOARD,
         STAIRS,
         DUNGEON_EXIT,
-        GATE
+        GATE,
+        SELECT
     };
 
     template <typename T>
@@ -223,7 +224,8 @@ namespace BloodSword::Asset
         {Asset::Type::CHESSBOARD, "CHESSBOARD"},
         {Asset::Type::STAIRS, "STAIRS"},
         {Asset::Type::DUNGEON_EXIT, "DUNGEON EXIT"},
-        {Asset::Type::GATE, "GATE"}};
+        {Asset::Type::GATE, "GATE"},
+        {Asset::Type::SELECT, "SELECT"}};
 
     Asset::Type Map(const char *asset)
     {

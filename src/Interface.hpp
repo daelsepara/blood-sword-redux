@@ -2757,8 +2757,7 @@ namespace BloodSword::Interface
             Graphics::RichText(rank1.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
             Graphics::RichText(rank2.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
             Graphics::RichText(rank3.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-            Graphics::RichText(rank4.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        };
+            Graphics::RichText(rank4.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -2832,7 +2831,7 @@ namespace BloodSword::Interface
 
                     overlay.VerifyAndAdd(Scene::Element(current, (graphics.Width - BloodSword::Width(current)) / 2, party_y + pad));
 
-                    if (!Interface::Confirm(graphics, overlay, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Inactive, blur))
+                    if (!Interface::Confirm(graphics, overlay, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur))
                     {
                         party.Clear();
                     }

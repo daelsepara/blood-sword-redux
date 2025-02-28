@@ -24,7 +24,8 @@ namespace BloodSword::Battle
         TRICKSTER_AWAY,
         SAGE_AWAY,
         ENCHANTER_AWAY,
-        HEAL_SURVIVORS
+        HEAL_SURVIVORS,
+        TACTICS
     };
 
     const int Unlimited = -1;
@@ -41,7 +42,8 @@ namespace BloodSword::Battle
         {Battle::Condition::TRICKSTER_AWAY, "TRICKSTER AWAY"},
         {Battle::Condition::SAGE_AWAY, "SAGE AWAY"},
         {Battle::Condition::ENCHANTER_AWAY, "ENCHANTER AWAY"},
-        {Battle::Condition::ENCHANTER_AWAY, "HEAL SURVIVORS"}};
+        {Battle::Condition::ENCHANTER_AWAY, "HEAL SURVIVORS"},
+        {Battle::Condition::TACTICS, "TACTICS"}};
 
     Battle::Condition MapCondition(const char *condition)
     {
