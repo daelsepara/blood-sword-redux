@@ -80,8 +80,11 @@ namespace BloodSword::Skills
         {Skills::Type::LEVITATION, Asset::Type::LEVITATION},
         {Skills::Type::EXORCISM, Asset::Type::EXORCISM},
         {Skills::Type::SPELLS, Asset::Type::SPELLS},
+        {Skills::Type::CALL_TO_MIND, Asset::Type::CALL_TO_MIND},
+        {Skills::Type::CAST_SPELL, Asset::Type::CAST_SPELL},
         {Skills::Type::SHURIKEN, Asset::Type::SHURIKEN},
-        {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR}};
+        {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR},
+        {Skills::Type::PARALYZING_TOUCH, Asset::Type::GHASTLY_TOUCH}};
 
     Skills::Type Map(const char *skill)
     {
