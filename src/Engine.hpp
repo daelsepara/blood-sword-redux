@@ -809,6 +809,17 @@ namespace BloodSword::Engine
 
         party.ResetSpells();
     }
+
+    void KillAllParalyzed(Party::Base &party)
+    {
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (Engine::IsAlive(party[i]) && party[i].Is(Character::Status::PARALYZED))
+            {
+                party[i].Value(Attribute::Type::ENDURANCE, 0);
+            }
+        }
+    }
 }
 
 #endif

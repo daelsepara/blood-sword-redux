@@ -225,6 +225,8 @@ namespace BloodSword::Character
             if (this->Is(attribute))
             {
                 attribute->Value = value;
+
+                attribute->Value = std::min(attribute->Value, attribute->Maximum);
             }
         }
 
