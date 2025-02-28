@@ -145,13 +145,24 @@ namespace BloodSword::Engine
     }
 
     // check if there is at least one character in the party still alive
-    bool IsAlive(Party::Base &party)
+    bool IsAlive(Party::Base &party, Character::ControlType control_type = Character::ControlType::PLAYER)
     {
         auto live = Engine::Count(party);
 
-        auto enthralled = Engine::Count(party, Character::ControlType::NPC, Character::Status::ENTHRALLED);
+        auto enthralled = 0;
 
-        return live > 0 && live > enthralled;
+        if (control_type == Character::ControlType::PLAYER)
+        {
+            enthralled = Engine::Count(party, Character::ControlType::NPC, Character::Status::ENTHRALLED);
+        }
+        else
+        {
+            enthralled = Engine::Count(party, Character::ControlType::PLAYER, Character::Status::ENTHRALLED);
+        }
+
+        auto paralyzed = Engine::Count(party, control_type, Character::Status::PARALYZED);
+
+        return live > 0 && live > enthralled && (paralyzed < live);
     }
 
     // check if the entire party is fleeing
@@ -194,11 +205,13 @@ namespace BloodSword::Engine
     {
         auto is_away = character.Is(Character::Status::AWAY);
 
+        auto is_paralyzed = character.Is(Character::Status::PARALYZED);
+
         auto is_alive = Engine::IsAlive(character);
 
         auto battle = (in_battle && character.Is(Character::Status::IN_BATTLE)) || !in_battle;
 
-        return (is_alive && !is_away && battle);
+        return (is_alive && !is_away && !is_paralyzed && battle);
     }
 
     int Min(Party::Base &party, Attribute::Type attribute, bool in_battle = false)

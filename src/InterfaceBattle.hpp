@@ -1208,7 +1208,7 @@ namespace BloodSword::Interface
         battle.Map.Y = 0;
 
         // put player combatants in starting positions (unless they are away)
-        if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents) && Engine::IsAlive(party))
+        if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && Engine::IsAlive(party))
         {
             // Check if any players in the party are AWAY / not participating
             Interface::CheckPartyAwayStatus(battle, party);
@@ -1306,7 +1306,7 @@ namespace BloodSword::Interface
 
             auto blinking = false;
 
-            while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && !Engine::IsFleeing(party) && !exit)
+            while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
             {
                 // battle order
                 Engine::Queue order = {};
@@ -1339,7 +1339,7 @@ namespace BloodSword::Interface
                 // start with current character
                 auto combatant = 0;
 
-                while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && !Engine::IsFleeing(party) && !exit)
+                while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
                 {
                     auto is_enemy = Engine::IsEnemy(order, combatant);
 
@@ -1362,7 +1362,7 @@ namespace BloodSword::Interface
 
                     auto end_turn = false;
 
-                    while (!end_turn && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents) && !Engine::IsFleeing(party) && !exit)
+                    while (!end_turn && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
                     {
                         auto overlay = Scene::Base();
 
@@ -2291,11 +2291,6 @@ namespace BloodSword::Interface
             Free(enemy_stats);
         }
 
-        // clear "IN BATTLE" status
-        Engine::ResetAll(party);
-
-        Engine::ResetAll(battle.Opponents);
-
         // determine results of battle
         if (result == Battle::Result::DETERMINE)
         {
@@ -2337,6 +2332,11 @@ namespace BloodSword::Interface
 
             battle = copy_battle;
         }
+
+        // clear "IN BATTLE" status
+        Engine::ResetAll(party);
+
+        Engine::ResetAll(battle.Opponents);
 
         return result;
     }

@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 261
+    },
+    "text": "Magus Vyl prepares to attack. The gate slams shut as soon as Vyl moves forwards.",
+    "battle": "battles/book1/battle261.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 81
+            }
+        },
+        {
+            "type": "BATTLE FLEE",
+            "location": {
+                "book": "BOOK1",
+                "number": 3
+            }
+        }
+    ]
+}
