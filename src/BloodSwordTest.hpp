@@ -1297,7 +1297,7 @@ namespace BloodSword::Test
 
             auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
 
-            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::LargePad + BloodSword::SmallPad;
+            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::LargePad + BloodSword::MidPad;
 
             auto title = Graphics::CreateText(graphics, "SELECT BOOK SECTION", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_UNDERLINE, 0);
 
@@ -1324,9 +1324,9 @@ namespace BloodSword::Test
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
 
-                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
                 if (input.Up)
                 {

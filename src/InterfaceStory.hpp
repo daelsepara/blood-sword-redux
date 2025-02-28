@@ -83,9 +83,9 @@ namespace BloodSword::Interface
 
             if (!after_battle)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
 
-                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
 
             if (input.Up)
