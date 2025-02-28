@@ -57,51 +57,54 @@ namespace BloodSword::Interface
                 controls.push_back(Controls::Type::MOVE);
             }
 
-            if (battle.Map.Adjacent(src, Map::Object::ENEMY))
+            if (!battle.Has(Battle::Condition::NO_COMBAT))
             {
-                // can fight
-                controls.push_back(Controls::Type::FIGHT);
-
-                // has quarterstaff skill
-                if (character.Has(Skills::Type::QUARTERSTAFF) && character.IsArmed(Item::Type::QUARTERSTAFF))
+                if (battle.Map.Adjacent(src, Map::Object::ENEMY))
                 {
-                    controls.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
+                    // can fight
+                    controls.push_back(Controls::Type::FIGHT);
+
+                    // has quarterstaff skill
+                    if (character.Has(Skills::Type::QUARTERSTAFF) && character.IsArmed(Item::Type::QUARTERSTAFF))
+                    {
+                        controls.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
+                    }
                 }
-            }
-            else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
-            {
-                if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
                 {
-                    // can shoot
-                    controls.push_back(Interface::ActionControls[character.Shoot]);
+                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                    {
+                        // can shoot
+                        controls.push_back(Interface::ActionControls[character.Shoot]);
+                    }
                 }
-            }
-            else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
-            {
-                if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
                 {
-                    // can shoot
-                    controls.push_back(Interface::ActionControls[character.Shoot]);
+                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                    {
+                        // can shoot
+                        controls.push_back(Interface::ActionControls[character.Shoot]);
+                    }
                 }
-            }
 
-            // can cast spells
-            if (character.Has(Skills::Type::SPELLS))
-            {
-                controls.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
-            }
+                // can cast spells
+                if (character.Has(Skills::Type::SPELLS))
+                {
+                    controls.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
+                }
 
-            // defend
-            controls.push_back(Controls::Type::DEFEND);
+                // defend
+                controls.push_back(Controls::Type::DEFEND);
 
-            if (is_player && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
-            {
-                controls.push_back(Controls::Type::FLEE);
-            }
+                if (is_player && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
+                {
+                    controls.push_back(Controls::Type::FLEE);
+                }
 
-            if (is_player && character.Items.size() > 0)
-            {
-                controls.push_back(Controls::Type::ITEMS);
+                if (is_player && character.Items.size() > 0)
+                {
+                    controls.push_back(Controls::Type::ITEMS);
+                }
             }
         }
 
@@ -1095,10 +1098,7 @@ namespace BloodSword::Interface
 
                             if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
                             {
-                                // heal survivors
-                                auto gain = survivors[i].Maximum(Attribute::Type::ENDURANCE) - survivors[i].Value(Attribute::Type::ENDURANCE);
-
-                                Engine::GainEndurance(survivors[i], std::min(0, gain), true);
+                                survivors[i].Value(Attribute::Type::ENDURANCE, survivors[i].Maximum(Attribute::Type::ENDURANCE));
                             }
 
                             if (battle.SurvivorStart > 0)
@@ -1391,19 +1391,19 @@ namespace BloodSword::Interface
                                         // check if there are adjacent player combatants
                                         auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
 
-                                        if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)))
+                                        if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             // cast or call to mind spell
                                             Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);
                                         }
-                                        else if (opponents.size() > 0)
+                                        else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             Engine::ResetSpells(character);
 
                                             // fight
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, character.Fight);
                                         }
-                                        else if (Engine::CanShoot(character))
+                                        else if (Engine::CanShoot(character) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             // do ranged attacks
                                             Interface::EnemyShoots(graphics, scene, battle, party, character, opponents, src);
@@ -1669,7 +1669,7 @@ namespace BloodSword::Interface
 
                                                     auto &control = scene.Controls[input.Current];
 
-                                                    if (opponents.size() == 0 || (opponents.size() > 0 && (is_enemy || (is_player && character.Is(Character::Status::DEFENDED)))))
+                                                    if (opponents.size() == 0 || (opponents.size() > 0 && (is_enemy || (is_player && character.Is(Character::Status::DEFENDED)))) || battle.Has(Battle::Condition::NO_COMBAT))
                                                     {
                                                         auto start = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
 
@@ -1915,6 +1915,8 @@ namespace BloodSword::Interface
                                             {
                                                 // toggles between move/hover mode
                                                 move = !move;
+
+                                                input = previous;
                                             }
                                             else if (input.Type == Controls::Type::FIGHT || input.Type == Controls::Type::QUARTERSTAFF)
                                             {
