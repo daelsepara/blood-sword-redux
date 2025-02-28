@@ -724,7 +724,7 @@ namespace BloodSword::Engine
 
     bool CanShoot(Character::Base &character, Skills::Type shot)
     {
-        auto can_shoot = shot != Skills::Type::NONE && character.Has(shot);
+        auto can_shoot = shot != Skills::Type::NONE && character.Has(shot) && Skills::IsRangedAttack(shot);
 
         if (shot == Skills::Type::ARCHERY)
         {

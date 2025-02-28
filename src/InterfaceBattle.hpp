@@ -365,7 +365,7 @@ namespace BloodSword::Interface
                         alive &= Engine::GainEndurance(defender, -hit, true);
 
                         // do not stack up effects
-                        if (effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
+                        if (alive && effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
                         {
                             auto resisted = false;
 

@@ -62,6 +62,11 @@ namespace BloodSword::Skills
         Skills::Type::IGNORE_ARMOUR,
         Skills::Type::PARALYZING_TOUCH};
 
+    Skills::List RangedAttack = {
+        Skills::Type::ARCHERY,
+        Skills::Type::SHURIKEN
+    };
+
     Skills::List StorySkills = {
         Skills::Type::HEALING,
         Skills::Type::ESP,
@@ -105,6 +110,11 @@ namespace BloodSword::Skills
     bool IsBattleSkill(Skills::Type skill)
     {
         return Skills::In(Skills::BattleSkills, skill);
+    }
+
+    bool IsRangedAttack(Skills::Type skill)
+    {
+        return Skills::In(Skills::RangedAttack, skill);
     }
 
     bool IsStorySkill(Skills::Type skill)
