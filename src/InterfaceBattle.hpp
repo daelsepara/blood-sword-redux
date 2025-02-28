@@ -2309,6 +2309,11 @@ namespace BloodSword::Interface
                     result = Battle::Result::VICTORY;
                 }
 
+                // clear "IN BATTLE" status
+                Engine::ResetAll(party);
+
+                Engine::ResetAll(battle.Opponents);
+
                 // add survivors
                 if (battle.Has(Battle::Condition::SURVIVORS))
                 {
@@ -2332,11 +2337,6 @@ namespace BloodSword::Interface
 
             battle = copy_battle;
         }
-
-        // clear "IN BATTLE" status
-        Engine::ResetAll(party);
-
-        Engine::ResetAll(battle.Opponents);
 
         return result;
     }

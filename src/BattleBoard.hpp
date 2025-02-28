@@ -28,22 +28,39 @@ namespace BloodSword::BattleBoard
             switch (result)
             {
             case Battle::Result::VICTORY:
+
                 message = Graphics::RichText("YOUR PARTY IS VICTORIOUS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
+
                 break;
+
             case Battle::Result::DEFEAT:
+
                 message = party.Count() > 1 ? Interface::Text[Interface::MSG_DEAD] : Interface::Text[Interface::MSG_DIED];
+
                 border = Color::Highlight;
+
                 break;
+
             case Battle::Result::ENTHRALLED:
+
                 message = Graphics::RichText("ENEMIES HAVE BEEN SUBDUED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
+
                 break;
+
             case Battle::Result::FLEE:
+
                 message = Graphics::RichText("YOUR PARTY FLEES!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
+
                 border = Color::Inactive;
+
                 break;
+
             default:
+
                 message = Graphics::RichText("THE OUTCOME WAS INCONCLUSIVE!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
+
                 border = Color::Inactive;
+
                 break;
             }
 

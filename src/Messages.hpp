@@ -30,8 +30,8 @@ namespace BloodSword::Interface
         Graphics::RichText("GAME OVER!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("NOT IMPLEMENTED YET", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("THANKS FOR PLAYING!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("EVERYONE IS DEAD", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("YOU HAVE DIED", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+        Graphics::RichText("EVERYONE IS INCAPACITATED", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("YOU WERE INCAPACITATED", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     BloodSword::Textures Message = {};
 
