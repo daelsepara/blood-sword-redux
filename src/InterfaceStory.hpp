@@ -306,6 +306,12 @@ namespace BloodSword::Interface
                 }
             }
         }
+        else if (!Engine::IsAlive(party))
+        {
+            auto message = party.Count() > 0 ? Interface::Text[MSG_DEAD] : Interface::Text[MSG_DIED];
+
+            Interface::MessageBox(graphics, background, message, Color::Background, Color::Highlight, 4, Color::Highlight, true);
+        }
 
         return next;
     }

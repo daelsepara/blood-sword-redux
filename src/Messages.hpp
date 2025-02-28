@@ -29,7 +29,9 @@ namespace BloodSword::Interface
         Graphics::RichText("THAT PLAYER IS NOT WOUNDED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("GAME OVER!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("NOT IMPLEMENTED YET", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("THANKS FOR PLAYING!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+        Graphics::RichText("THANKS FOR PLAYING!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("EVERYONE IS DEAD", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("YOU HAVE DIED", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     BloodSword::Textures Message = {};
 
@@ -78,6 +80,10 @@ namespace BloodSword::Interface
     const int MSG_IMPLEMENT = 21;
 
     const int MSG_PLAY = 22;
+
+    const int MSG_DEAD = 23;
+
+    const int MSG_DIED = 24;
 
     void InitializeMessages(Graphics::Base &graphics)
     {
