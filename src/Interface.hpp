@@ -320,7 +320,7 @@ namespace BloodSword::Interface
                     switch (tile.Occupant)
                     {
                     case Map::Object::PLAYER:
-                        if (tile.Id >= 0 && tile.Id < party.Count())
+                        if (tile.Id >= 0 && tile.Id < party.Count() && party.Count() > 0)
                         {
                             if (Engine::IsAlive(party[tile.Id]))
                             {
@@ -349,7 +349,7 @@ namespace BloodSword::Interface
                         }
                         break;
                     case Map::Object::ENEMY:
-                        if (tile.Id >= 0 && tile.Id < enemies.Count())
+                        if (tile.Id >= 0 && tile.Id < enemies.Count() && enemies.Count() > 0)
                         {
                             if (Engine::IsAlive(enemies[tile.Id]))
                             {
@@ -422,6 +422,16 @@ namespace BloodSword::Interface
     // create map display
     Scene::Base Map(Map::Base &map, Party::Base &party, int num_bottom_buttons)
     {
+        auto enemies = Party::Base();
+
+        // num_bottom_buttons is the number of buttons below the map
+        return Interface::Map(map, party, enemies, num_bottom_buttons);
+    }
+
+    Scene::Base Map(Map::Base &map, int num_bottom_buttons)
+    {
+        auto party = Party::Base();
+
         auto enemies = Party::Base();
 
         // num_bottom_buttons is the number of buttons below the map
