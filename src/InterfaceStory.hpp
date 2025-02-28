@@ -37,7 +37,7 @@ namespace BloodSword::Interface
         // default width
         auto w = wrap;
 
-        // default width
+        // default height
         auto h = BloodSword::TileSize;
 
         // padding

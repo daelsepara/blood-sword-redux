@@ -1241,8 +1241,156 @@ namespace BloodSword::Test
 
         if (story.Sections.size() > 0 && Book::IsDefined(story.Sections.front().Location))
         {
-            // render section
-            Interface::ProcessStory(graphics, background, story, party);
+            auto story_list = Graphics::TextList();
+
+            auto limit = std::min(4, int(story.Sections.size()) + 1);
+
+            auto start = 0;
+
+            auto last = start + limit;
+
+            auto options = int(story.Sections.size()) + 1;
+
+            // wrap length
+            auto wrap = BloodSword::TileSize * 6;
+
+            for (auto i = 0; i < story.Sections.size(); i++)
+            {
+                story_list.push_back(Graphics::RichText(Book::String(story.Sections[i].Location), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
+            }
+
+            auto menu = Graphics::CreateText(graphics, story_list);
+
+            // default width
+            auto w = wrap;
+
+            // default height
+            auto h = BloodSword::QuarterTile;
+
+            // padding
+            auto pads = BloodSword::Pad * 2;
+
+            for (auto &item : menu)
+            {
+                w = std::max(BloodSword::Width(item) + pads, wrap);
+
+                h = std::max(BloodSword::Height(item) + pads, h);
+            }
+
+            auto x = (graphics.Width - w) / 2;
+
+            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::QuarterTile * 2;
+
+            auto input = Controls::User();
+
+            auto done = false;
+
+            auto frame_x = x - BloodSword::HalfTile;
+
+            auto frame_y = y - BloodSword::HalfTile;
+
+            auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+
+            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+
+            while (!done)
+            {
+                auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
+
+                // add frame at the back
+                overlay.Elements.insert(overlay.Elements.begin(), Scene::Element(frame_x, frame_y, frame_w, frame_h, Color::Background, Color::Active, BloodSword::Border));
+
+                auto &lastControl = overlay.Controls.back();
+
+                auto id = lastControl.Id + 1;
+
+                auto first = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
+
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, bottom));
+
+                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                if (input.Up)
+                {
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
+
+                    input.Up = false;
+                }
+                else if (input.Down)
+                {
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
+
+                    input.Down = false;
+                }
+
+                input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                {
+                    if (input.Type == Controls::Type::BACK)
+                    {
+                        done = true;
+                    }
+                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                    {
+                        if (start > 0)
+                        {
+                            start -= 1;
+
+                            if (start < 0)
+                            {
+                                start = 0;
+                            }
+
+                            last = start + limit;
+
+                            if (last > options)
+                            {
+                                last = options;
+                            }
+
+                            input.Up = true;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                    {
+                        if (options - last > 0)
+                        {
+                            if (start < options - limit)
+                            {
+                                start += 1;
+                            }
+
+                            if (start > options - limit)
+                            {
+                                start = options - limit;
+                            }
+
+                            last = start + limit;
+
+                            if (last > options)
+                            {
+                                last = options;
+                            }
+
+                            input.Down = true;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::CHOICE)
+                    {
+                        auto list = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                        auto choice = start + (input.Current - list);
+
+                        if (choice >= 0 && choice < story.Sections.size())
+                        {
+                            Interface::ProcessStory(graphics, background, story, party, choice);
+                        }
+                    }
+                }
+            }
         }
         else
         {
