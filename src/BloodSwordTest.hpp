@@ -1243,7 +1243,7 @@ namespace BloodSword::Test
         {
             auto story_list = Graphics::TextList();
 
-            auto limit = std::min(4, int(story.Sections.size()) + 1);
+            auto limit = std::min(6, int(story.Sections.size()));
 
             auto start = 0;
 
@@ -1252,14 +1252,19 @@ namespace BloodSword::Test
             auto options = int(story.Sections.size()) + 1;
 
             // wrap length
-            auto wrap = BloodSword::TileSize * 6;
+            auto wrap = BloodSword::TileSize * 3;
 
             for (auto i = 0; i < story.Sections.size(); i++)
             {
-                story_list.push_back(Graphics::RichText(Book::String(story.Sections[i].Location), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
+                auto number = std::to_string(story.Sections[i].Location.second);
+
+                auto section = std::string(Book::Mapping[story.Sections[i].Location.first]) + " " + std::string(3 - number.length(), '0') + number;
+
+                story_list.push_back(Graphics::RichText(section, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
             }
 
-            auto menu = Graphics::CreateText(graphics, story_list);
+            // create menu
+            auto story_menu = Graphics::CreateText(graphics, story_list);
 
             // default width
             auto w = wrap;
@@ -1270,7 +1275,8 @@ namespace BloodSword::Test
             // padding
             auto pads = BloodSword::Pad * 2;
 
-            for (auto &item : menu)
+            // adjust size
+            for (auto &item : story_menu)
             {
                 w = std::max(BloodSword::Width(item) + pads, wrap);
 
@@ -1291,11 +1297,21 @@ namespace BloodSword::Test
 
             auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
 
-            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::LargePad + BloodSword::SmallPad;
+
+            auto title = Graphics::CreateText(graphics, "SELECT BOOK SECTION", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_UNDERLINE, 0);
+
+            auto title_x = (graphics.Width - BloodSword::Width(title)) / 2 + BloodSword::HalfTile;
+
+            auto title_y = frame_y - BloodSword::HalfTile - BloodSword::Pad;
 
             while (!done)
             {
-                auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
+                // render menu
+                auto overlay = Interface::Menu(story_menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
+
+                // add menu title
+                overlay.VerifyAndAdd(Scene::Element(title, Point(title_x, title_y)));
 
                 // add frame at the back
                 overlay.Elements.insert(overlay.Elements.begin(), Scene::Element(frame_x, frame_y, frame_w, frame_h, Color::Background, Color::Active, BloodSword::Border));
@@ -1391,6 +1407,10 @@ namespace BloodSword::Test
                     }
                 }
             }
+
+            Free(story_menu);
+
+            Free(&title);
         }
         else
         {
