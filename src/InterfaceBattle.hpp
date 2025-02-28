@@ -968,7 +968,7 @@ namespace BloodSword::Interface
             {
                 if (Engine::IsAlive(party[i]))
                 {
-                    if (!party[i].Is(Character::Status::AWAY))
+                    if (!party[i].Is(Character::Status::AWAY) && !party[i].Is(Character::Status::EXCLUDED))
                     {
                         if (origin < battle.Map.Origins.size())
                         {
@@ -981,11 +981,17 @@ namespace BloodSword::Interface
                             throw std::invalid_argument("BATTLE: Player ORIGIN locations insufficient!");
                         }
                     }
-                    else if (party[i].Status[Character::Status::AWAY] > 0)
+                    else if (party[i].Status[Character::Status::AWAY] > 0 || party[i].Is(Character::Status::EXCLUDED))
                     {
                         if (player_away < battle.Map.AwayPlayers.size())
                         {
                             battle.Map.Put(battle.Map.AwayPlayers[player_away], Map::Object::PLAYER, i);
+
+                            // remove EXCLUDED status (assumes that they are placed in an isolated location)
+                            if (party[i].Is(Character::Status::EXCLUDED))
+                            {
+                                party[i].Remove(Character::Status::EXCLUDED);
+                            }
 
                             player_away++;
                         }
