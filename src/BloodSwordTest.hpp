@@ -2,6 +2,7 @@
 #define __TEST_HPP__
 
 #include "Graphics.hpp"
+#include "Messages.hpp"
 #include "Interface.hpp"
 #include "InterfaceBattle.hpp"
 #include "InterfaceStory.hpp"
@@ -1767,24 +1768,33 @@ namespace BloodSword::Test
 
         auto scene = Scene::Base();
 
+        Graphics::RichText message;
+
+        auto border = Color::Active;
+
         switch (result)
         {
         case Battle::Result::VICTORY:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY IS VICTORIOUS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
+            message = Graphics::RichText("YOUR PARTY IS VICTORIOUS!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
             break;
         case Battle::Result::DEFEAT:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY HAS BEEN DEFEATED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Highlight, true);
+            message = party.Count() > 1 ? Interface::Text[Interface::MSG_DEAD] : Interface::Text[Interface::MSG_DIED];
+            border = Color::Highlight;
             break;
         case Battle::Result::ENTHRALLED:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("ENEMIES HAVE BEEN SUBDUED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
+            message = Graphics::RichText("ENEMIES HAVE BEEN SUBDUED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
             break;
         case Battle::Result::FLEE:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("YOUR PARTY FLEES!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Active, 4, Color::Highlight, true);
+            message = Graphics::RichText("YOUR PARTY FLEES!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
+            border = Color::Inactive;
             break;
         default:
-            Interface::MessageBox(graphics, scene, Graphics::RichText("THE OUTCOME WAS INCONCLUSIVE!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Inactive, 4, Color::Highlight, true);
+            message = Graphics::RichText("THE OUTCOME WAS INCONCLUSIVE!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0);
+            border = Color::Inactive;
             break;
         }
+
+        Interface::MessageBox(graphics, scene, message, Color::Background, border, 4, Color::Highlight, true);
     }
 
     void Story(Graphics::Base &graphics)

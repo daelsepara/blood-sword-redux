@@ -865,7 +865,7 @@ namespace BloodSword::Interface
 
                             if (spell != Spells::Type::GHASTLY_TOUCH)
                             {
-                                targets = Engine::Build(battle.Map, party, src, true, false, false, false, true, true);
+                                targets = Engine::SpellTargets(battle.Map, party, src, true, false);
                             }
                             else
                             {
@@ -2061,7 +2061,7 @@ namespace BloodSword::Interface
                                                                 cast = spellbook.Type;
 
                                                                 // unless there is only one valid target
-                                                                auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+                                                                auto targets = Engine::SpellTargets(battle.Map, battle.Opponents, src, true, false);
 
                                                                 if (targets.size() == 1 && cast != Spells::Type::PILLAR_OF_SALT)
                                                                 {

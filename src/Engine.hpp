@@ -471,10 +471,16 @@ namespace BloodSword::Engine
         return Engine::Build(map, party, src, in_battle, false, true, false, false, descending);
     }
 
-    // build fight targets (adjacent opponents)
+    // build fight targets (adjacent)
     Engine::Queue FightTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
         return Engine::Build(map, party, src, in_battle, true, false, false, false, descending);
+    }
+
+    // build spell targets
+    Engine::Queue SpellTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
+    {
+        return Engine::Build(map, party, src, in_battle, false, false, false, true, descending);
     }
 
     // build queue of preferred targets

@@ -36,6 +36,8 @@ namespace BloodSword::Graphics
 
         RichText(std::string text, TTF_Font *font, Uint32 color, int style, int wrap) : Text(text), Font(font), Color(Color::S(color)), Style(style), Wrap(wrap) {}
 
+        RichText() {}
+
         void Load()
         {
             this->Font = Fonts::Set(this->ID);
