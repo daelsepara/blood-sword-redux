@@ -823,6 +823,137 @@ namespace BloodSword::Interface
         }
     }
 
+    // enemy casts spells
+    void EnemyCastSpells(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
+    {
+        auto map_w = battle.Map.ViewX * battle.Map.TileSize;
+
+        auto map_h = battle.Map.ViewY * battle.Map.TileSize;
+
+        auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
+
+        // TODO: improve enemy casting strategy
+        if (character.CalledToMind.size() > 0)
+        {
+            auto spell = character.CalledToMind[0];
+
+            // cast spell
+            if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
+            {
+                // spellcasting successful
+                Interface::MessageBox(graphics, scene, std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Color::Highlight);
+
+                Spells::CastSpell(character.SpellStrategy, spell);
+
+                auto search = character.Find(spell);
+
+                if (search != character.Spells.end())
+                {
+                    auto &spellbook = *search;
+
+                    if (!spellbook.IsBasic() && spellbook.IsBattle)
+                    {
+                        if (!spellbook.RequiresTarget())
+                        {
+                            // resolve spell
+                            Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
+                        }
+                        else
+                        {
+                            // find spell targets. prioritize targets with low endurance
+                            auto targets = Engine::Queue();
+
+                            if (spell != Spells::Type::GHASTLY_TOUCH)
+                            {
+                                targets = Engine::Build(battle.Map, party, src, true, false, false, false, true, true);
+                            }
+                            else
+                            {
+                                // spell needs adjacent targets
+                                targets = Engine::FightTargets(battle.Map, party, src, true, false);
+                            }
+
+                            if (targets.size() > 0)
+                            {
+                                Interface::ResolveSpell(graphics, battle, scene, character, party[targets[0].Id], targets[0].Id, spell);
+                            }
+                        }
+                    }
+                }
+            }
+            else
+            {
+                // spellcasting unsuccessful!
+                Interface::MessageBox(graphics, scene, Interface::Text[Interface::MSG_CAST].Text, Color::Highlight);
+            }
+        }
+        else if (character.Spells.size() > 0)
+        {
+            // call to mind
+            for (auto &strategy : character.SpellStrategy)
+            {
+                if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Min && Engine::Count(party) <= strategy.Max && !character.HasCalledToMind(strategy.Spell))
+                {
+                    character.CallToMind(strategy.Spell);
+
+                    auto spell_string = std::string(Spells::TypeMapping[strategy.Spell]) + " CALLED TO MIND!";
+
+                    Interface::MessageBox(graphics, scene, spell_string, Color::Highlight);
+
+                    break;
+                }
+            }
+        }
+    }
+
+    // enemy does ranged attacks
+    void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Engine::Queue &opponents, Point &src)
+    {
+        auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
+
+        // shoot only when there are no nearby player enemies
+        if (targets.size() > 0 && opponents.size() == 0)
+        {
+            for (auto &target : targets)
+            {
+                // shoot first available target
+                if (!party[target.Id].IsImmune(character.Shoot))
+                {
+                    // shoot
+                    Interface::Shoot(graphics, scene, battle, character, party[target.Id], target.Id);
+
+                    break;
+                }
+            }
+        }
+    }
+
+    // enemy moves to target
+    bool EnemyMoves(Scene::Base &scene, Animation::Base &movement, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
+    {
+        // check if enemy can move towards the player-controlled characters
+        auto targets = Engine::MoveTargets(battle.Map, party, src, true, false);
+
+        auto valid_target = false;
+
+        for (auto &target : targets)
+        {
+            auto end = battle.Map.Find(Map::Object::PLAYER, target.Id);
+
+            if (!end.IsNone())
+            {
+                valid_target = Interface::Move(battle.Map, character, movement, src, end);
+
+                if (valid_target)
+                {
+                    break;
+                }
+            }
+        }
+
+        return valid_target;
+    }
+
     // set players' starting locations
     void SetPlayerLocations(Battle::Base &battle, Party::Base &party)
     {
@@ -1011,147 +1142,49 @@ namespace BloodSword::Interface
         }
     }
 
-    // enemy casts spells
-    void EnemyCastSpells(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
+    void FinalLocationChecks(Battle::Base &battle, Party::Base &party)
     {
-        auto map_w = battle.Map.ViewX * battle.Map.TileSize;
+        int players = 0;
 
-        auto map_h = battle.Map.ViewY * battle.Map.TileSize;
+        int opponents = 0;
 
-        auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
-
-        // TODO: improve enemy casting strategy
-        if (character.CalledToMind.size() > 0)
+        // count number of players on the battlefield
+        for (auto i = 0; i < party.Count(); i++)
         {
-            auto spell = character.CalledToMind[0];
-
-            // cast spell
-            if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
+            if (!battle.Map.Find(Map::Object::PLAYER, i).IsNone())
             {
-                // spellcasting successful
-                Interface::MessageBox(graphics, scene, std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Color::Highlight);
-
-                Spells::CastSpell(character.SpellStrategy, spell);
-
-                auto search = character.Find(spell);
-
-                if (search != character.Spells.end())
-                {
-                    auto &spellbook = *search;
-
-                    if (!spellbook.IsBasic() && spellbook.IsBattle)
-                    {
-                        if (!spellbook.RequiresTarget())
-                        {
-                            // resolve spell
-                            Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
-                        }
-                        else
-                        {
-                            // find spell targets. prioritize targets with low endurance
-                            auto targets = Engine::Queue();
-
-                            if (spell != Spells::Type::GHASTLY_TOUCH)
-                            {
-                                targets = Engine::Build(battle.Map, party, src, true, false, false, false, true, true);
-                            }
-                            else
-                            {
-                                // spell needs adjacent targets
-                                targets = Engine::FightTargets(battle.Map, party, src, true, false);
-                            }
-
-                            if (targets.size() > 0)
-                            {
-                                Interface::ResolveSpell(graphics, battle, scene, character, party[targets[0].Id], targets[0].Id, spell);
-                            }
-                        }
-                    }
-                }
-            }
-            else
-            {
-                // spellcasting unsuccessful!
-                Interface::MessageBox(graphics, scene, Interface::Text[Interface::MSG_CAST].Text, Color::Highlight);
-            }
-        }
-        else if (character.Spells.size() > 0)
-        {
-            // call to mind
-            for (auto &strategy : character.SpellStrategy)
-            {
-                if (strategy.Uses > 0 && Engine::Count(party) >= strategy.Min && Engine::Count(party) <= strategy.Max && !character.HasCalledToMind(strategy.Spell))
-                {
-                    character.CallToMind(strategy.Spell);
-
-                    auto spell_string = std::string(Spells::TypeMapping[strategy.Spell]) + " CALLED TO MIND!";
-
-                    Interface::MessageBox(graphics, scene, spell_string, Color::Highlight);
-
-                    break;
-                }
-            }
-        }
-    }
-
-    // enemy does ranged attacks
-    void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Engine::Queue &opponents, Point &src)
-    {
-        auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
-
-        // shoot only when there are no nearby player enemies
-        if (targets.size() > 0 && opponents.size() == 0)
-        {
-            for (auto &target : targets)
-            {
-                // shoot first available target
-                if (!party[target.Id].IsImmune(character.Shoot))
-                {
-                    // shoot
-                    Interface::Shoot(graphics, scene, battle, character, party[target.Id], target.Id);
-
-                    break;
-                }
-            }
-        }
-    }
-
-    // enemy moves to target
-    bool EnemyMoves(Scene::Base &scene, Animation::Base &movement, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
-    {
-        // check if enemy can move towards the player-controlled characters
-        auto targets = Engine::MoveTargets(battle.Map, party, src, true, false);
-
-        auto valid_target = false;
-
-        for (auto &target : targets)
-        {
-            auto end = battle.Map.Find(Map::Object::PLAYER, target.Id);
-
-            if (!end.IsNone())
-            {
-                valid_target = Interface::Move(battle.Map, character, movement, src, end);
-
-                if (valid_target)
-                {
-                    break;
-                }
+                players++;
             }
         }
 
-        return valid_target;
+        // count number of opponents on the battlefield
+        for (auto i = 0; i < battle.Opponents.Count(); i++)
+        {
+            if (!battle.Map.Find(Map::Object::ENEMY, i).IsNone())
+            {
+                opponents++;
+            }
+        }
+
+        // all combatants must be placed
+        if (players == 0 || opponents == 0)
+        {
+            throw std::invalid_argument("BATTLE: Unable to render battle!");
+        }
     }
 
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
+        // set initial result (DETERMINE = battle result to be determined)
+        auto result = Battle::Result::DETERMINE;
+
+        // save original battle and party
         auto copy_battle = battle;
 
         auto copy_party = party;
 
-        auto result = Battle::Result::DETERMINE;
-
-        // adjust battle UI
+        // adjust battle UI dimensions and locations
         auto total_w = graphics.Width - 12 * BloodSword::TileSize;
 
         auto total_h = graphics.Height - 6 * BloodSword::TileSize;
@@ -1179,6 +1212,9 @@ namespace BloodSword::Interface
 
             // set enemy starting locations
             Interface::SetEnemyLocations(battle, party);
+
+            // final checks on placement of all combatants
+            Interface::FinalLocationChecks(battle, party);
 
             // initialize captions
             auto caption_w = BloodSword::TileSize * 5;
