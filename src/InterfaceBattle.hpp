@@ -331,6 +331,10 @@ namespace BloodSword::Interface
         {
             asset = Asset::Type::UNARMED_COMBAT;
         }
+        else if (skill != Skills::Type::NONE)
+        {
+            asset = Skills::Assets[skill];
+        }
         else
         {
             asset = Asset::Type::FIGHT;

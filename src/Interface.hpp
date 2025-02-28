@@ -1795,7 +1795,8 @@ namespace BloodSword::Interface
         // Unarmed/Eye of the Tiger effects
         if (attribute == Attribute::Type::FIGHTING_PROWESS)
         {
-            if (in_battle && !character.IsArmed())
+            // handle cases where player fights with certain skills instead of being armed
+            if (in_battle && !character.IsArmed() && character.Fight == Skills::Type::NONE)
             {
                 score -= 2;
             }

@@ -347,6 +347,18 @@
         {
             "id": "CHESSBOARD",
             "path": "images/map/empty-chessboard.png"
+        },
+        {
+            "id": "STAIRS",
+            "path": "images/map/3d-stairs.png"
+        },
+        {
+            "id": "DUNGEON EXIT",
+            "path": "images/map/dungeon-gate.png"
+        },
+        {
+            "id": "GATE",
+            "path": "images/map/wooden-fence.png"
         }
     ]
 }

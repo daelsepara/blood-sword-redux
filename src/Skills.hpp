@@ -59,7 +59,8 @@ namespace BloodSword::Skills
         Skills::Type::QUARTERSTAFF,
         Skills::Type::SPELLS,
         Skills::Type::SHURIKEN,
-        Skills::Type::IGNORE_ARMOUR};
+        Skills::Type::IGNORE_ARMOUR,
+        Skills::Type::PARALYZING_TOUCH};
 
     Skills::List StorySkills = {
         Skills::Type::HEALING,

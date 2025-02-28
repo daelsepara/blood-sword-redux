@@ -111,7 +111,10 @@ namespace BloodSword::Asset
         HEAL,
         WOODEN_DOOR,
         CENTER,
-        CHESSBOARD
+        CHESSBOARD,
+        STAIRS,
+        DUNGEON_EXIT,
+        GATE
     };
 
     template <typename T>
@@ -217,7 +220,10 @@ namespace BloodSword::Asset
         {Asset::Type::HEAL, "HEAL"},
         {Asset::Type::WOODEN_DOOR, "WOODEN DOOR"},
         {Asset::Type::CENTER, "CENTER"},
-        {Asset::Type::CHESSBOARD, "CHESSBOARD"}};
+        {Asset::Type::CHESSBOARD, "CHESSBOARD"},
+        {Asset::Type::STAIRS, "STAIRS"},
+        {Asset::Type::DUNGEON_EXIT, "DUNGEON EXIT"},
+        {Asset::Type::GATE, "GATE"}};
 
     Asset::Type Map(const char *asset)
     {

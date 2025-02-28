@@ -415,6 +415,8 @@ namespace BloodSword::Generate
             character.Skills.push_back(Skills::Type::EXORCISM);
 
             character.Skills.push_back(Skills::Type::ARCHERY);
+
+            character.SkillImmunity.push_back(Skills::Type::PARALYZING_TOUCH);
             break;
         case Character::Class::ENCHANTER:
             character.Skills.push_back(Skills::Type::SPELLS);
