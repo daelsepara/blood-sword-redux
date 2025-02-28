@@ -7,6 +7,7 @@
         "books/book1/section018.json",
         "books/book1/section028.json",
         "books/book1/section029.json",
+        "books/book1/section036.json",
         "books/book1/section041.json",
         "books/book1/section052.json",
         "books/book1/section053.json",
@@ -56,6 +57,7 @@
         "books/book1/section508.json",
         "books/book1/section515.json",
         "books/book1/section520.json",
-        "books/book1/section527.json"
+        "books/book1/section527.json",
+        "books/book1/section535.json"
     ]
 }

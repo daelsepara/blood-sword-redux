@@ -362,9 +362,24 @@ namespace BloodSword::Interface
 
                         if (!defender.IsImmune(skill) && effect != Character::Status::NONE)
                         {
-                            defender.Add(effect);
+                            auto resisted = false;
 
-                            Interface::MessageBox(graphics, background, origin, w, h, Character::StatusMapping[effect], Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                            if (skill == Skills::Type::PARALYZING_TOUCH)
+                            {
+                                if (Interface::Test(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, defender, Attribute::Type::PSYCHIC_ABILITY, 2, 0, Attribute::Assets[Attribute::Type::PSYCHIC_ABILITY], true))
+                                {
+                                    Interface::MessageBox(graphics, background, window, window_w, window_h, Graphics::RichText("PARALYZING TOUCH RESISTED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, !defender.IsPlayer() ? Color::Highlight : Color::Active, BloodSword::Border, Color::Highlight, true);
+
+                                    resisted = true;
+                                }
+                            }
+
+                            if (!resisted)
+                            {
+                                defender.Add(effect);
+
+                                Interface::MessageBox(graphics, background, origin, w, h, Character::StatusMapping[effect], Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                            }
                         }
                     }
                 }

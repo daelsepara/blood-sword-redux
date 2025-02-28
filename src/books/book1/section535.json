@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 535
+    },
+    "text": "You scramble through the portico and bar the door behind you. There is a soft thunk-thunk as two lethal shuriken embed themselves in the stout oak door. You listen, but there is no further sound from outside.\n\nLooking around, you see a bare vestibule with a spiral staircase winding up towards the parapets. You cautiously edge up the stairs, alert to the possibility that more of the assassins may be concealed here. You are beginning to suspect that the mysterious Magus Vyl is not all that interested in employing you.\n\nYou come to a doorway.",
+    "choices": [
+        {
+            "text": "Go through the doorway",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 36
+                }
+            }
+        },
+        {
+            "text": "Carry on up the stairs",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 3
+                }
+            }
+        }
+    ]
+}
