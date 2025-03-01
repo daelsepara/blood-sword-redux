@@ -150,7 +150,7 @@ namespace BloodSword::Scene
         int ClipW = 0;
 
         int ClipH = 0;
-        
+
         // clear the scene
         void Clear()
         {

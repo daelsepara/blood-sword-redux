@@ -986,7 +986,7 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            throw std::invalid_argument("BATTLE: Player ORIGIN locations insufficient!");
+                            throw std::invalid_argument("BATTLE: PLAYER ORIGIN LOCATIONS INSUFFICIENT!");
                         }
                     }
                     else if (party[i].Status[Character::Status::AWAY] > 0 || party[i].Is(Character::Status::EXCLUDED))
@@ -1005,7 +1005,7 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            throw std::invalid_argument("BATTLE: Player AWAY locations insufficient!");
+                            throw std::invalid_argument("BATTLE: PLAYER AWAY LOCATIONS INSUFFICIENT!");
                         }
                     }
                 }
@@ -1013,7 +1013,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            throw std::invalid_argument("BATTLE: Player ORIGIN locations insufficient!");
+            throw std::invalid_argument("BATTLE: PLAYER ORIGIN LOCATIONS INSUFFICIENT!");
         }
 
         std::cerr << "PLAYERS: "
@@ -1056,7 +1056,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                throw std::invalid_argument("BATTLE: Enemy SPAWN locations insufficient!");
+                                throw std::invalid_argument("BATTLE: ENEMY SPAWN LOCATIONS INSUFFICIENT!");
                             }
                         }
                         else if (battle.Opponents[i].Status[Character::Status::AWAY] > 0)
@@ -1070,7 +1070,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                throw std::invalid_argument("BATTLE: Enemy AWAY locations insufficient!");
+                                throw std::invalid_argument("BATTLE: ENEMY AWAY LOCATIONS INSUFFICIENT!");
                             }
                         }
                     }
@@ -1078,7 +1078,7 @@ namespace BloodSword::Interface
             }
             else
             {
-                throw std::invalid_argument("BATTLE: Enemy SPAWN locations insufficient!");
+                throw std::invalid_argument("BATTLE: ENEMY SPAWN LOCATIONS INSUFFICIENT!");
             }
         }
 
@@ -1102,7 +1102,7 @@ namespace BloodSword::Interface
                 }
 
                 std::cerr << Book::String(source)
-                          << " Survivors: "
+                          << " SURVIVORS: "
                           << std::to_string(survivors.Count())
                           << std::endl;
 
@@ -1117,6 +1117,10 @@ namespace BloodSword::Interface
 
                         if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
                         {
+                            std::cerr << "SURVIVOR "
+                                      << std::to_string(i)
+                                      << " HEAL: " << std::to_string(survivors[i].Maximum(Attribute::Type::ENDURANCE)) << std::endl;
+
                             survivors[i].Value(Attribute::Type::ENDURANCE, survivors[i].Maximum(Attribute::Type::ENDURANCE));
                         }
 
@@ -1139,7 +1143,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                throw std::invalid_argument("BATTLE: Enemy SURVIVOR locations insufficient!");
+                                throw std::invalid_argument("BATTLE: ENEMY SURVIVOR LOCATIONS INSUFFICIENT!");
                             }
                         }
                         else if (survivors[i].Status[Character::Status::AWAY] > 0)
@@ -1153,7 +1157,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                throw std::invalid_argument("BATTLE: Enemy AWAY locations insufficient!");
+                                throw std::invalid_argument("BATTLE: ENEMY AWAY LOCATIONS INSUFFICIENT!");
                             }
                         }
                     }
@@ -1161,7 +1165,7 @@ namespace BloodSword::Interface
             }
             else
             {
-                throw std::invalid_argument("BATTLE: Enemy SURVIVOR locations undefined!");
+                throw std::invalid_argument("BATTLE: ENEMY SURVIVOR LOCATIONS UNDEFINED!");
             }
         }
 
@@ -1199,7 +1203,7 @@ namespace BloodSword::Interface
         // all combatants must be placed
         if (players == 0 || opponents == 0)
         {
-            throw std::invalid_argument("BATTLE: Unable to render battle!");
+            throw std::invalid_argument("BATTLE: UNABLE TO RENDER BATTLE!");
         }
     }
 
@@ -2604,9 +2608,9 @@ namespace BloodSword::Interface
             }
 
             std::cerr << Book::String(battle.Opponents.Location)
-                      << " Survivors: "
+                      << " SURVIVORS: "
                       << std::to_string(survivors)
-                      << " (In Party): "
+                      << " (IN PARTY): "
                       << std::to_string(party.Survivors.size())
                       << std::endl;
         }

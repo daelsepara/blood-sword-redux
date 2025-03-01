@@ -43,7 +43,7 @@ namespace BloodSword::Battle
         {Battle::Condition::TRICKSTER_AWAY, "TRICKSTER AWAY"},
         {Battle::Condition::SAGE_AWAY, "SAGE AWAY"},
         {Battle::Condition::ENCHANTER_AWAY, "ENCHANTER AWAY"},
-        {Battle::Condition::ENCHANTER_AWAY, "HEAL SURVIVORS"},
+        {Battle::Condition::HEAL_SURVIVORS, "HEAL SURVIVORS"},
         {Battle::Condition::TACTICS, "TACTICS"},
         {Battle::Condition::LAST_BATTLE, "LAST BATTLE"}};
 

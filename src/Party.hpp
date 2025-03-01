@@ -64,7 +64,7 @@ namespace BloodSword::Party
         {
             if (index < 0 || index > this->Count() - 1)
             {
-                throw std::invalid_argument("Character not in party!");
+                throw std::invalid_argument("CHARACTER NOT IN PARTY!");
             }
 
             return this->Members[index];
@@ -164,7 +164,7 @@ namespace BloodSword::Party
         {
             if (!this->Has(character_class))
             {
-                throw std::invalid_argument("Character not in party!");
+                throw std::invalid_argument("CHARACTER NOT IN PARTY!");
             }
 
             return (*this)[this->Find(character_class) - this->Members.begin()];
@@ -191,7 +191,7 @@ namespace BloodSword::Party
 
             if (!this->Has(character_class))
             {
-                throw std::invalid_argument("Character not in party!");
+                throw std::invalid_argument("CHARACTER NOT IN PARTY!");
             }
 
             for (auto i = 0; i < this->Count(); i++)
