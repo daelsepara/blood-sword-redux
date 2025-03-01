@@ -407,9 +407,9 @@ namespace BloodSword::Animations
                 if (!this->List[i].Clip.IsNone())
                 {
                     // get max clipping area
-                    this->Clip.X = std::min(std::min(0, this->Clip.X), this->List[i].Clip.X);
+                    this->Clip.X = this->Clip.X == -1 ? this->List[i].Clip.X : std::min(this->Clip.X, this->List[i].Clip.X);
 
-                    this->Clip.Y = std::min(std::min(0, this->Clip.Y), this->List[i].Clip.Y);
+                    this->Clip.Y = this->Clip.Y == -1 ? this->List[i].Clip.Y : std::min(this->Clip.Y, this->List[i].Clip.Y);
 
                     this->ClipW = std::max(this->ClipW, this->List[i].ClipW);
 
@@ -490,7 +490,9 @@ namespace BloodSword::Animations
 
                 if (!animation.Clip.IsNone())
                 {
-                    clip.X = std::min(std::min(0, clip.X), animation.Clip.X);
+                    clip.X = clip.X == -1 ? animation.Clip.X : std::min(clip.X, animation.Clip.X);
+
+                    clip.Y = clip.Y == -1 ? animation.Clip.Y : std::min(clip.Y, animation.Clip.Y);
 
                     clip.Y = std::min(std::min(0, clip.Y), animation.Clip.Y);
 
