@@ -1249,7 +1249,7 @@ namespace BloodSword::Test
 
             auto last = start + limit;
 
-            auto options = int(story.Sections.size()) + 1;
+            auto options = int(story.Sections.size());
 
             // wrap length
             auto wrap = BloodSword::TileSize * 3;

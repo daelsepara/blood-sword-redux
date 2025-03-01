@@ -2563,17 +2563,14 @@ namespace BloodSword::Interface
             battle = copy_battle;
         }
 
-        if (result != Battle::Result::NONE)
+        if (result != Battle::Result::NONE && battle.Has(Battle::Condition::SURVIVORS))
         {
             // add survivors
-            if (battle.Has(Battle::Condition::SURVIVORS))
+            for (auto i = 0; i < battle.Opponents.Count(); i++)
             {
-                for (auto i = 0; i < battle.Opponents.Count(); i++)
+                if (Engine::IsAlive(battle.Opponents[i]))
                 {
-                    if (Engine::IsAlive(battle.Opponents[i]))
-                    {
-                        party.Survivors.push_back(battle.Opponents[i]);
-                    }
+                    party.Survivors.push_back(battle.Opponents[i]);
                 }
             }
         }
