@@ -429,6 +429,11 @@ namespace BloodSword::Interface
 
                     Interface::MessageBox(graphics, background, attacker.Name + " KILLED!", attacker.IsPlayer() ? Color::Highlight : Color::Active);
                 }
+                else if (alive && defender.Is(Character::Status::PARALYZED))
+                {
+                    // paralyzed combatants are removed from combat
+                    battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
+                }
             }
         }
     }
@@ -2419,13 +2424,13 @@ namespace BloodSword::Interface
                             // animate movement
 
                             // clip rendering outside of current map view
-                            Interface::Clip(graphics, battle.Map);
+                            //Interface::Clip(graphics, battle.Map);
 
                             // animate
                             animating = !Graphics::Animate(graphics, scene, movement, BloodSword::FrameDelay);
 
                             // disable clipping
-                            Interface::Clip(graphics);
+                            //Interface::Clip(graphics);
 
                             if (!animating)
                             {

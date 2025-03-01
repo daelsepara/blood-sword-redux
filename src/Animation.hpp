@@ -85,6 +85,13 @@ namespace BloodSword::Animation
         // trail properties
         int TrailSize = 2;
 
+        // Clipping
+        Point Clip = Point(-1, -1);
+
+        int ClipW = -1;
+
+        int ClipH = -1;
+
         Base(Animation::Frames frames,
              Animation::Types mode,
              Points path,
@@ -386,11 +393,39 @@ namespace BloodSword::Animations
             this->Delay = delay;
         }
 
+        // Clip Area
+        Point Clip = Point(-1, -1);
+
+        int ClipW = -1;
+
+        int ClipH = -1;
+
+        void SetupClipping()
+        {
+            for (auto i = 0; i < List.size(); i++)
+            {
+                if (!this->List[i].Clip.IsNone())
+                {
+                    // get max clipping area
+                    this->Clip.X = std::min(std::min(0, this->Clip.X), this->List[i].Clip.X);
+
+                    this->Clip.Y = std::min(std::min(0, this->Clip.Y), this->List[i].Clip.Y);
+
+                    this->ClipW = std::max(this->ClipW, this->List[i].ClipW);
+
+                    this->ClipH = std::max(this->ClipH, this->List[i].ClipH);
+                }
+            }
+        }
+
         Base(Animations::List list, Uint32 delay) : List(list), Delay(delay) {}
 
-        Base(Animations::List list) : List(list) {}
+        Base(Animations::List list) : List(list)
+        {
+            this->SetupClipping();
+        }
 
-        Base(Animation::Base animation) : List(Animations::List{animation}) {}
+        Base(Animation::Base animation) : Base(Animations::List{animation}) {}
 
         Base() {}
 

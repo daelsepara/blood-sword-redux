@@ -1445,6 +1445,13 @@ namespace BloodSword::Interface
         // set offsets
         movement.Set(Point(map.DrawX - map.X * map.TileSize, map.DrawY - map.Y * map.TileSize), start);
 
+        // clip area outside of animation
+        movement.Clip = Point(map.DrawX, map.DrawY);
+
+        movement.ClipW = map.ViewX * map.TileSize;
+
+        movement.ClipH = map.ViewY * map.TileSize;
+
         return movement;
     }
 

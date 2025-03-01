@@ -589,7 +589,7 @@ namespace BloodSword::Test
 
                             scene = RegenerateScene(map);
 
-                            Interface::Clip(graphics, map);
+                            //Interface::Clip(graphics, map);
 
                             // add destination to the count
                             auto first = path.Points.begin();
@@ -604,6 +604,9 @@ namespace BloodSword::Test
                             animations.Add(movement);
 
                             animations.Delay = BloodSword::FrameDelay;
+
+                            // setup clipping
+                            animations.SetupClipping();
 
                             done = false;
 
@@ -669,7 +672,7 @@ namespace BloodSword::Test
 
                     scene = RegenerateScene(map);
 
-                    Interface::Clip(graphics);
+                    //Interface::Clip(graphics);
                 }
             }
         }

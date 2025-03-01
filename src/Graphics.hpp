@@ -249,6 +249,34 @@ namespace BloodSword::Graphics
         }
     }
 
+    // clip rendering outside of specified area
+    void Clip(Graphics::Base &graphics, Point clip, int w, int h)
+    {
+        if (graphics.Renderer)
+        {
+            SDL_Rect view;
+
+            view.w = w;
+
+            view.h = h;
+
+            view.x = clip.X;
+
+            view.y = clip.Y;
+
+            SDL_RenderSetClipRect(graphics.Renderer, &view);
+        }
+    }
+
+    // reset clipping area
+    void Clip(Graphics::Base &graphics)
+    {
+        if (graphics.Renderer)
+        {
+            SDL_RenderSetClipRect(graphics.Renderer, nullptr);
+        }
+    }
+
     // base render texture function
     void Render(Base &graphics, SDL_Texture *texture, int texture_w, int texture_h, int x, int y, int bounds, int offset, int w, int h, Uint32 background)
     {
@@ -352,6 +380,11 @@ namespace BloodSword::Graphics
     {
         if (graphics.Renderer)
         {
+            if (!scene.Clip.IsNone())
+            {
+                Graphics::Clip(graphics, scene.Clip, scene.ClipW, scene.ClipH);
+            }
+
             for (auto &element : scene.Elements)
             {
                 Graphics::Render(graphics, element.Texture, element.W, element.H, element.X, element.Y, element.Bounds, element.Offset, element.W, std::min(element.Bounds, element.H), element.Background, element.Border, element.BorderSize);
@@ -381,6 +414,8 @@ namespace BloodSword::Graphics
             {
                 Graphics::Overlay(graphics, scene.get());
             }
+
+            Graphics::Clip(graphics);
         }
     }
 
@@ -531,6 +566,8 @@ namespace BloodSword::Graphics
     bool Animate(Base &graphics, Scene::Base &background, Animation::Base &movement, Uint64 delay, bool trail = false)
     {
         auto animations = Animations::Base(movement);
+
+        animations.SetupClipping();
 
         animations.Delay = delay;
 
