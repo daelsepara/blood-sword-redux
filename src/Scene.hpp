@@ -131,7 +131,7 @@ namespace BloodSword::Scene
 
     typedef std::vector<Scene::Element> Elements;
 
-    // Scene base clas
+    // Scene base class
     class Base
     {
     public:
@@ -147,9 +147,9 @@ namespace BloodSword::Scene
         // Clipping
         Point Clip = Point(-1, -1);
 
-        int ClipW = -1;
+        int ClipW = 0;
 
-        int ClipH = -1;
+        int ClipH = 0;
         
         // clear the scene
         void Clear()
@@ -179,18 +179,6 @@ namespace BloodSword::Scene
         void Add(Controls::Base control)
         {
             this->Controls.push_back(control);
-        }
-
-        void SetupClipping(Point clip, int clip_w, int clip_h)
-        {
-            if (!clip.IsNone() && clip_w > 0 && clip_h > 0)
-            {
-                this->Clip = clip;
-
-                this->ClipW = clip_w;
-
-                this->ClipH = clip_h;
-            }
         }
 
         Base(Scene::Elements elements, Controls::List controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}

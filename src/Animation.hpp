@@ -88,9 +88,9 @@ namespace BloodSword::Animation
         // Clipping
         Point Clip = Point(-1, -1);
 
-        int ClipW = -1;
+        int ClipW = 0;
 
-        int ClipH = -1;
+        int ClipH = 0;
 
         Base(Animation::Frames frames,
              Animation::Types mode,
@@ -396,20 +396,20 @@ namespace BloodSword::Animations
         // Clip Area
         Point Clip = Point(-1, -1);
 
-        int ClipW = -1;
+        int ClipW = 0;
 
-        int ClipH = -1;
+        int ClipH = 0;
 
         void SetupClipping()
         {
-            for (auto i = 0; i < List.size(); i++)
+            for (auto i = 0; i < this->List.size(); i++)
             {
                 if (!this->List[i].Clip.IsNone())
                 {
                     // get max clipping area
-                    this->Clip.X = this->Clip.X == -1 ? this->List[i].Clip.X : std::min(this->Clip.X, this->List[i].Clip.X);
+                    this->Clip.X = (i == 0) ? this->List[i].Clip.X : std::min(this->Clip.X, this->List[i].Clip.X);
 
-                    this->Clip.Y = this->Clip.Y == -1 ? this->List[i].Clip.Y : std::min(this->Clip.Y, this->List[i].Clip.Y);
+                    this->Clip.Y = (i == 0) ? this->List[i].Clip.Y : std::min(this->Clip.Y, this->List[i].Clip.Y);
 
                     this->ClipW = std::max(this->ClipW, this->List[i].ClipW);
 
@@ -490,11 +490,9 @@ namespace BloodSword::Animations
 
                 if (!animation.Clip.IsNone())
                 {
-                    clip.X = clip.X == -1 ? animation.Clip.X : std::min(clip.X, animation.Clip.X);
+                    clip.X = (clip.X == -1) ? animation.Clip.X : std::min(clip.X, animation.Clip.X);
 
-                    clip.Y = clip.Y == -1 ? animation.Clip.Y : std::min(clip.Y, animation.Clip.Y);
-
-                    clip.Y = std::min(std::min(0, clip.Y), animation.Clip.Y);
+                    clip.Y = (clip.Y == -1) ? animation.Clip.Y : std::min(clip.Y, animation.Clip.Y);
 
                     clip_w = std::max(clip_w, animation.ClipW);
 
@@ -525,7 +523,7 @@ namespace BloodSword::Animations
 
             scene.ClipW = clip_w;
 
-            scene.ClipW = clip_h;
+            scene.ClipH = clip_h;
         }
 
         if (done)

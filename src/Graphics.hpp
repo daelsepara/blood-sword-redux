@@ -555,6 +555,13 @@ namespace BloodSword::Graphics
 
         auto done = Animations::Step(foreground, animations, trail);
 
+        if (done)        
+        {
+            std::cerr << "Clip: (" << foreground.Clip.X << ", " << foreground.Clip.Y << ")" << std::endl;
+        
+            std::cerr << "Clip W: " << foreground.ClipW << " H: " << foreground.ClipH << ")" << std::endl;
+        }
+
         Graphics::RenderNow(graphics, background, foreground);
 
         Graphics::WaitForWindowEvent(graphics);
@@ -572,10 +579,6 @@ namespace BloodSword::Graphics
         animations.Delay = delay;
 
         auto done = false;
-
-        std::cerr << "Clip: (" << animations.Clip.X << ", " << animations.Clip.Y << ")" << std::endl;
-        
-        std::cerr << "Clip W: " << animations.ClipW << " H: " << animations.ClipH << ")" << std::endl;
 
         while (!done)
         {
