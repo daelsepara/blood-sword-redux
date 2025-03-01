@@ -382,7 +382,13 @@ namespace BloodSword::Graphics
         {
             if (!scene.Clip.IsNone())
             {
+                // render only in visible areas
                 Graphics::Clip(graphics, scene.Clip, scene.ClipW, scene.ClipH);
+            }
+            else
+            {
+                // reset clipping
+                Graphics::Clip(graphics);
             }
 
             for (auto &element : scene.Elements)
@@ -414,8 +420,6 @@ namespace BloodSword::Graphics
             {
                 Graphics::Overlay(graphics, scene.get());
             }
-
-            Graphics::Clip(graphics);
         }
     }
 
@@ -554,13 +558,6 @@ namespace BloodSword::Graphics
         auto foreground = Scene::Base();
 
         auto done = Animations::Step(foreground, animations, trail);
-
-        if (done)        
-        {
-            std::cerr << "Clip: (" << foreground.Clip.X << ", " << foreground.Clip.Y << ")" << std::endl;
-        
-            std::cerr << "Clip W: " << foreground.ClipW << " H: " << foreground.ClipH << ")" << std::endl;
-        }
 
         Graphics::RenderNow(graphics, background, foreground);
 

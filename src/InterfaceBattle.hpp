@@ -2422,15 +2422,7 @@ namespace BloodSword::Interface
                         else
                         {
                             // animate movement
-
-                            // clip rendering outside of current map view
-                            //Interface::Clip(graphics, battle.Map);
-
-                            // animate
                             animating = !Graphics::Animate(graphics, scene, movement, BloodSword::FrameDelay);
-
-                            // disable clipping
-                            //Interface::Clip(graphics);
 
                             if (!animating)
                             {

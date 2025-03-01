@@ -1031,34 +1031,6 @@ namespace BloodSword::Interface
         return texture;
     }
 
-    // clip rendering outside of map area
-    void Clip(Graphics::Base &graphics, Map::Base &map)
-    {
-        if (graphics.Renderer)
-        {
-            SDL_Rect view;
-
-            view.w = map.ViewX * map.TileSize + 2;
-
-            view.h = map.ViewY * map.TileSize + 2;
-
-            view.x = map.DrawX - 1;
-
-            view.y = map.DrawY - 1;
-
-            SDL_RenderSetClipRect(graphics.Renderer, &view);
-        }
-    }
-
-    // reset clipping area
-    void Clip(Graphics::Base &graphics)
-    {
-        if (graphics.Renderer)
-        {
-            SDL_RenderSetClipRect(graphics.Renderer, nullptr);
-        }
-    }
-
     // add vertical text menu to the scene
     Scene::Base Menu(BloodSword::Textures &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false)
     {
