@@ -144,7 +144,7 @@ namespace BloodSword::Scene
         // background color of the entire screen. set before rendering each element
         Uint32 Background = 0;
 
-        // Clipping
+        // clipping area
         Point Clip = Point(-1, -1);
 
         int ClipW = 0;

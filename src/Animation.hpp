@@ -85,7 +85,7 @@ namespace BloodSword::Animation
         // trail properties
         int TrailSize = 2;
 
-        // Clipping
+        // clipping area
         Point Clip = Point(-1, -1);
 
         int ClipW = 0;
