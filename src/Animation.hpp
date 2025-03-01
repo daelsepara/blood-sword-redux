@@ -447,6 +447,12 @@ namespace BloodSword::Animations
     // process all animations in the list
     bool Step(Scene::Base &scene, Animations::Base &animations, bool trail = false)
     {
+        auto clip = Point(-1, -1);
+
+        auto clip_w = 0;
+
+        auto clip_h = 0;
+
         auto done = false;
 
         if (!animations.List.empty())
@@ -481,6 +487,17 @@ namespace BloodSword::Animations
 
                     frame &= Animation::Step(scene, animation, update, trail);
                 }
+
+                if (!animation.Clip.IsNone())
+                {
+                    clip.X = std::min(std::min(0, clip.X), animation.Clip.X);
+
+                    clip.Y = std::min(std::min(0, clip.Y), animation.Clip.Y);
+
+                    clip_w = std::max(clip_w, animation.ClipW);
+
+                    clip_h = std::max(clip_h, animation.ClipH);
+                }
             }
 
             // movement takes precendence
@@ -498,6 +515,15 @@ namespace BloodSword::Animations
             {
                 animations.TimeStamp = SDL_GetTicks64();
             }
+        }
+
+        if (!clip.IsNone())
+        {
+            scene.Clip = clip;
+
+            scene.ClipW = clip_w;
+
+            scene.ClipW = clip_h;
         }
 
         if (done)
