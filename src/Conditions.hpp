@@ -660,7 +660,7 @@ namespace BloodSword::Conditions
         result = condition.Invert ? !result : result;
 
         // debug info
-        std::cerr << "Condition: "
+        std::cerr << "CONDITION: "
                   << std::string(Conditions::TypeMapping[condition.Type])
                   << " (RESULT: "
                   << (result ? "true" : "false")

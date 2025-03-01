@@ -1092,18 +1092,36 @@ namespace BloodSword::Interface
                 // gather list of survivors
                 auto survivors = Party::Base();
 
+                auto remove = std::vector<int>();
+
                 // look for the survivors in the previous battle
-                for (auto survivor : party.Survivors)
+                for (auto i = 0; i < party.Survivors.size(); i++)
                 {
-                    if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, source))
+                    if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source))
                     {
-                        survivors.Add(survivor);
+                        survivors.Add(party.Survivors[i]);
+
+                        // get a list of survivors to be removed
+                        remove.push_back(i);
                     }
+                }
+
+                // reverse index to survivor list
+                std::reverse(remove.begin(), remove.end());
+
+                for (auto i = 0; i < remove.size(); i++)
+                {
+                    // reverse index to survivor list
+                    party.Survivors.erase(party.Survivors.begin() + i);
                 }
 
                 std::cerr << Book::String(source)
                           << " SURVIVORS: "
                           << std::to_string(survivors.Count())
+                          << std::endl;
+
+                std::cerr << "SURVIVORS (IN PARTY): "
+                          << std::to_string(party.Survivors.size())
                           << std::endl;
 
                 if (battle.Map.Survivors.size() >= survivors.Count())

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 513
+    },
+    "text": "You race down the winding stairway of the Blue Tower, heave the door-bolt up and rush out into the night. The assassins give up the chase when you reach the main avenues of the city.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 443
+            }
+        }
+    ]
+}
