@@ -1,0 +1,58 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 243
+    },
+    "text": "You lift the gory pelt with a sword-point and let it drop to the dusty floor. The black altar stone is rust-red with the congealed blood of countless sacrifices. You notice a tracing of tarnished silver filigree behind the altar. It marks out a symbol three interlocking triangles -- and perhaps indicates a secret door. You bend closer to inspect it.",
+    "choices": [
+        {
+            "text": "(SAGE) Do something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 19
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "(ENCHANTER) Do something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 347
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "(TRICKSTER) Do something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 111
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Try another way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 444
+                }
+            }
+        }
+    ]
+}

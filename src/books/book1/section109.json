@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 109
+    },
+    "text": "(ENCHANTER) You aare used to the wiles and evasive cunning of feckless faltyns. \"No,\" you correct is sharply. \"Not any magus. Locate Magus Balhazar.\"\n\nThe faltyn flickers across the edge of your vision a shimmering blue figure. A moment later it is back at your side.\n\n[\"Balhazar has instructed me not to point him out,\" it murmurs. \"He prefers that you use your initiative for this test. Still, under the circumstances, I will levy no charge.\"]\n\n\"Get you gone, vile creature!\" you snap, alarming it into dematerialising at once.",
+    "choices": [
+        {
+            "text": "(SAGE) Try ESP",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 309
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Try another way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 458
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 436
+    },
+    "text": "(ENCHANTER) The faltyn titters oddly and then flits across the ceiling of the ballroom. It is just visible as a faint flickering shadow against the white marble. [\"Here is a magus, dressed in brown fustian!\" ut cakks iyt ti tiym oiubtubg diwb, \"I have enjoyed the sweet music of Balhazar's orchestra, so I shall waive the usual fee. Farewell!\"]\n\nThe faltyn departs.",
+    "choices": [
+        {
+            "text": "Approach the man in brown fustian and declare that he is Balhazar",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 331
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Ignore the faltyn's advice and try to identify Balhazar in another way",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 458
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        }
+    ]
+}

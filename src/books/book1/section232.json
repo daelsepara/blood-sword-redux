@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 232
+    },
+    "text": "(ENCHANTER) As you casually pluck a few grapes from a bunch offered by one of Balhazar's slaves, you murmur the runes of the spell. The faltyn imposes its voice tunefully over the music of the harps and flutes, but only you can hear what it is saying.\n\n[\"I arrive at a moment of merriment,\" it sings. \"Have you invited me here to share the food and wine? Of course not, for I am ethereal and need no earthly sustenance. To entertain you with my rarefied and beautiful songs, then? No, for you are a loutish mortal with no appreciation of beauty. Ah, now I understand -- you wish me to locate a magus among these masked revellers.\"]",
+    "choices": [
+        {
+            "text": "Tell the faltyn that this is what you require",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 436
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Say that is not what you want",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 109
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        }
+    ]
+}
