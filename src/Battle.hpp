@@ -25,7 +25,8 @@ namespace BloodSword::Battle
         SAGE_AWAY,
         ENCHANTER_AWAY,
         HEAL_SURVIVORS,
-        TACTICS
+        TACTICS,
+        LAST_BATTLE
     };
 
     const int Unlimited = -1;
@@ -43,7 +44,8 @@ namespace BloodSword::Battle
         {Battle::Condition::SAGE_AWAY, "SAGE AWAY"},
         {Battle::Condition::ENCHANTER_AWAY, "ENCHANTER AWAY"},
         {Battle::Condition::ENCHANTER_AWAY, "HEAL SURVIVORS"},
-        {Battle::Condition::TACTICS, "TACTICS"}};
+        {Battle::Condition::TACTICS, "TACTICS"},
+        {Battle::Condition::LAST_BATTLE, "LAST BATTLE"}};
 
     Battle::Condition MapCondition(const char *condition)
     {
@@ -75,8 +77,11 @@ namespace BloodSword::Battle
         // endurance limit (-1 if fighting to death)
         int Endurance = -1;
 
-        // surviving opponents start at this round (starts at 0)
+        // surviving opponents start at this round (0 - start immediately)
         int SurvivorStart = -1;
+
+        // limit of survivors carried over into the next battle (0 - no one survives)
+        int SurvivorLimit = 0;
 
         Book::Location Survivors = {Book::Number::NONE, -1};
 
@@ -103,7 +108,7 @@ namespace BloodSword::Battle
 
         bool IsDefined()
         {
-            return (this->Opponents.Count() > 0 || Book::IsDefined(this->Survivors)) && Map.IsValid();
+            return (this->Opponents.Count() > 0 || Book::IsDefined(this->Survivors) || this->Has(Battle::Condition::LAST_BATTLE)) && Map.IsValid();
         }
 
         // initialize battle from data
@@ -155,13 +160,15 @@ namespace BloodSword::Battle
                     this->Opponents = Party::Initialize(data["opponents"]);
                 }
 
-                // get survivors from previous books
+                // get survivors from previous battles
                 if (!data["survivors"].is_null())
                 {
                     this->Survivors = Book::Load(data["survivors"]);
                 }
 
                 this->SurvivorStart = !data["survivor_start"].is_null() ? int(data["survivor_start"]) : Battle::Unlimited;
+
+                this->SurvivorLimit = !data["survivor_limit"].is_null() ? int(data["survivor_limit"]) : 0;
             }
         }
     };

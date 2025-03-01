@@ -329,6 +329,7 @@
                     "type": "ASSASSIN"
                 }
             ]
-        }
+        },
+        "survivor_limit": 4
     }
 }

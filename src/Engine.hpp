@@ -801,11 +801,13 @@ namespace BloodSword::Engine
     // resets all status except enthralment and fleeing
     void ResetAll(Party::Base &party)
     {
-        party.Remove({Character::Status::AWAY,
-                      Character::Status::DEFENDING,
-                      Character::Status::DEFENDED,
-                      Character::Status::PARALYZED,
-                      Character::Status::IN_BATTLE});
+        party.Remove({
+            Character::Status::AWAY,
+            Character::Status::FLEEING,
+            Character::Status::DEFENDING,
+            Character::Status::DEFENDED,
+            Character::Status::PARALYZED,
+            Character::Status::IN_BATTLE});
 
         party.ResetSpells();
     }

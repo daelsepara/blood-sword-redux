@@ -363,6 +363,10 @@
         {
             "id": "SELECT",
             "path": "images/map/select.png"
+        },
+        {
+            "id": "WINDOW",
+            "path": "images/map/window-bars.png"
         }
     ]
 }

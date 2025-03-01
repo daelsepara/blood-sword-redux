@@ -32,6 +32,9 @@ namespace BloodSword::Party
         // for choices / conditions requiring the result of the last battle
         Battle::Result LastBattle = Battle::Result::NONE;
 
+        // location of last battle
+        Book::Location BattleLocation = {Book::Number::NONE, -1};
+
         // for choices / conditions requiring a chosen number (1-6)
         int ChosenNumber = -1;
 
@@ -270,6 +273,11 @@ namespace BloodSword::Party
 
             this->LastBattle = !data["last_battle"].is_null() ? Battle::MapResult(std::string(data["last_battle"])) : Battle::Result::NONE;
 
+            if (!data["battle_location"].is_null())
+            {
+                this->BattleLocation = Book::Load(data["battle_location"]);
+            }
+
             // load party
             this->Clear();
 
@@ -327,6 +335,11 @@ namespace BloodSword::Party
         if (party.LastBattle != Battle::Result::NONE)
         {
             data["last_battle"] = Battle::ResultMapping[party.LastBattle];
+        }
+
+        if (Book::IsDefined(party.BattleLocation))
+        {
+            data["battle_location"] = Book::Data(party.BattleLocation);
         }
 
         if (party.ChosenCharacter != Character::Class::NONE)

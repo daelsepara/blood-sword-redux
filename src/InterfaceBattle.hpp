@@ -1015,6 +1015,12 @@ namespace BloodSword::Interface
         {
             throw std::invalid_argument("BATTLE: Player ORIGIN locations insufficient!");
         }
+
+        std::cerr << "PLAYERS: "
+                  << std::to_string(party.Count())
+                  << " LIVE: "
+                  << std::to_string(Engine::Count(party))
+                  << std::endl;
     }
 
     void SetEnemyLocations(Battle::Base &battle, Party::Base &party)
@@ -1027,6 +1033,9 @@ namespace BloodSword::Interface
 
         if (battle.Opponents.Count() > 0)
         {
+            // set opposing party's location
+            battle.Opponents.Location = party.Location;
+
             if (battle.Map.Spawn.size() >= battle.Opponents.Count())
             {
                 // set opponents starting locations
@@ -1074,21 +1083,28 @@ namespace BloodSword::Interface
         }
 
         // place survivors on the battlefield
-        if (Book::IsDefined(battle.Survivors))
+        if (Book::IsDefined(battle.Survivors) || (battle.Has(Battle::Condition::LAST_BATTLE) && Book::IsDefined(party.BattleLocation)))
         {
+            auto source = (battle.Has(Battle::Condition::LAST_BATTLE) && Book::IsDefined(party.BattleLocation)) ? party.BattleLocation : battle.Survivors;
+
             if (battle.Map.Survivors.size() > 0)
             {
                 // gather list of survivors
                 auto survivors = Party::Base();
 
                 // look for the survivors in the previous battle
-                for (auto &survivor : party.Survivors)
+                for (auto survivor : party.Survivors)
                 {
-                    if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, battle.Survivors))
+                    if (Book::IsDefined(survivor.Location) && Engine::IsAlive(survivor) && Book::Equal(survivor.Location, source))
                     {
                         survivors.Add(survivor);
                     }
                 }
+
+                std::cerr << Book::String(source)
+                          << " Survivors: "
+                          << std::to_string(survivors.Count())
+                          << std::endl;
 
                 if (battle.Map.Survivors.size() >= survivors.Count())
                 {
@@ -1096,51 +1112,48 @@ namespace BloodSword::Interface
 
                     for (auto i = 0; i < survivors.Count(); i++)
                     {
-                        if (Engine::IsAlive(survivors[i]))
+                        // set current location
+                        survivors[i].Location = party.Location;
+
+                        if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
                         {
-                            // set current location
-                            survivors[i].Location = party.Location;
+                            survivors[i].Value(Attribute::Type::ENDURANCE, survivors[i].Maximum(Attribute::Type::ENDURANCE));
+                        }
 
-                            if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
+                        if (battle.SurvivorStart > 0)
+                        {
+                            survivors[i].Add(Character::Status::AWAY, battle.SurvivorStart);
+                        }
+
+                        // add to opponent party
+                        battle.Opponents.Add(survivors[i]);
+
+                        if (!survivors[i].Is(Character::Status::AWAY))
+                        {
+                            if (reinforce < battle.Map.Survivors.size())
                             {
-                                survivors[i].Value(Attribute::Type::ENDURANCE, survivors[i].Maximum(Attribute::Type::ENDURANCE));
+                                // add to map
+                                battle.Map.Put(battle.Map.Survivors[reinforce], Map::Object::ENEMY, id + i);
+
+                                reinforce++;
                             }
-
-                            if (battle.SurvivorStart > 0)
+                            else
                             {
-                                survivors[i].Add(Character::Status::AWAY, battle.SurvivorStart);
+                                throw std::invalid_argument("BATTLE: Enemy SURVIVOR locations insufficient!");
                             }
-
-                            // add to opponent party
-                            battle.Opponents.Add(survivors[i]);
-
-                            if (!survivors[i].Is(Character::Status::AWAY))
+                        }
+                        else if (survivors[i].Status[Character::Status::AWAY] > 0)
+                        {
+                            // place opponents that arrive at later rounds
+                            if (enemy_away < battle.Map.AwayOpponents.size())
                             {
-                                if (reinforce < battle.Map.Survivors.size())
-                                {
-                                    // add to map
-                                    battle.Map.Put(battle.Map.Survivors[reinforce], Map::Object::ENEMY, id + i);
+                                battle.Map.Put(battle.Map.AwayOpponents[enemy_away], Map::Object::ENEMY, id + i);
 
-                                    reinforce++;
-                                }
-                                else
-                                {
-                                    throw std::invalid_argument("BATTLE: Enemy SURVIVOR locations insufficient!");
-                                }
+                                enemy_away++;
                             }
-                            else if (survivors[i].Status[Character::Status::AWAY] > 0)
+                            else
                             {
-                                // place opponents that arrive at later rounds
-                                if (enemy_away < battle.Map.AwayOpponents.size())
-                                {
-                                    battle.Map.Put(battle.Map.AwayOpponents[enemy_away], Map::Object::ENEMY, id + i);
-
-                                    enemy_away++;
-                                }
-                                else
-                                {
-                                    throw std::invalid_argument("BATTLE: Enemy AWAY locations insufficient!");
-                                }
+                                throw std::invalid_argument("BATTLE: Enemy AWAY locations insufficient!");
                             }
                         }
                     }
@@ -1151,6 +1164,12 @@ namespace BloodSword::Interface
                 throw std::invalid_argument("BATTLE: Enemy SURVIVOR locations undefined!");
             }
         }
+
+        std::cerr << "OPPONENTS: "
+                  << battle.Opponents.Count()
+                  << " LIVE: "
+                  << std::to_string(Engine::Count(battle.Opponents))
+                  << std::endl;
     }
 
     void FinalLocationChecks(Battle::Base &battle, Party::Base &party)
@@ -1438,8 +1457,7 @@ namespace BloodSword::Interface
 
         battle.Map.Y = 0;
 
-        // put player combatants in starting positions (unless they are away)
-        if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && Engine::IsAlive(party))
+        if (battle.Duration != 0 && Engine::IsAlive(party))
         {
             if (battle.Has(Battle::Condition::TACTICS) || party.Has(Character::Status::TACTICS))
             {
@@ -2504,15 +2522,6 @@ namespace BloodSword::Interface
                 round_string = Graphics::CreateText(graphics, (std::string("ROUND: ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
             }
 
-            // check if party flees
-            if (Engine::IsFleeing(party))
-            {
-                // kill abandoned players
-                Engine::KillAllParalyzed(party);
-
-                result = Battle::Result::FLEE;
-            }
-
             Free(&texture);
 
             Free(&round_string);
@@ -2528,9 +2537,25 @@ namespace BloodSword::Interface
             Free(enemy_stats);
         }
 
-        // determine results of battle
-        if (result == Battle::Result::DETERMINE)
+        // set location of last battle
+        party.BattleLocation = party.Location;
+
+        // check if party flees
+        if (Engine::IsFleeing(party))
         {
+            // kill abandoned players
+            Engine::KillAllParalyzed(party);
+
+            // clear "IN BATTLE" status
+            Engine::ResetAll(party);
+
+            Engine::ResetAll(battle.Opponents);
+
+            result = Battle::Result::FLEE;
+        }
+        else if (result == Battle::Result::DETERMINE)
+        {
+            // determine results of battle
             if (Engine::IsAlive(party))
             {
                 auto enthralled = Engine::Count(battle.Opponents, Character::ControlType::NPC, Character::Status::ENTHRALLED);
@@ -2565,14 +2590,25 @@ namespace BloodSword::Interface
 
         if (result != Battle::Result::NONE && battle.Has(Battle::Condition::SURVIVORS))
         {
+            auto survivors = 0;
+
             // add survivors
             for (auto i = 0; i < battle.Opponents.Count(); i++)
             {
-                if (Engine::IsAlive(battle.Opponents[i]))
+                if (Engine::IsAlive(battle.Opponents[i]) && survivors < battle.SurvivorLimit)
                 {
                     party.Survivors.push_back(battle.Opponents[i]);
+
+                    survivors++;
                 }
             }
+
+            std::cerr << Book::String(battle.Opponents.Location)
+                      << " Survivors: "
+                      << std::to_string(survivors)
+                      << " (In Party): "
+                      << std::to_string(party.Survivors.size())
+                      << std::endl;
         }
 
         return result;
