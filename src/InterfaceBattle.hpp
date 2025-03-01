@@ -361,11 +361,11 @@ namespace BloodSword::Interface
                 {
                     auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
-                    auto effect = BloodSword::Find(Interface::SkillEffects, skill);
-
                     if (hit > 0)
                     {
                         alive &= Engine::GainEndurance(defender, -hit, true);
+
+                        auto effect = BloodSword::Find(Interface::SkillEffects, skill);
 
                         // do not stack up effects
                         if (alive && effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
@@ -1233,7 +1233,7 @@ namespace BloodSword::Interface
 
             overlay.VerifyAndAdd(Scene::Element(tactics, Point(tactics_x, tactics_y)));
 
-            if (current >=0 && current < party.Count())
+            if (current >= 0 && current < party.Count())
             {
                 overlay.VerifyAndAdd(Scene::Element(texture, Point(info_x, info_y)));
 
@@ -1436,10 +1436,13 @@ namespace BloodSword::Interface
         // put player combatants in starting positions (unless they are away)
         if (battle.Duration != 0 && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && Engine::IsAlive(party))
         {
-            if (battle.Has(Battle::Condition::TACTICS))
+            if (battle.Has(Battle::Condition::TACTICS) || party.Has(Character::Status::TACTICS))
             {
                 // setup player locations
                 Interface::Tactics(graphics, battle, party);
+
+                // remove TACTICS status from party
+                party.Remove(Character::Status::TACTICS);
             }
 
             // Check if any players in the party are AWAY / not participating

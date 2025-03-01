@@ -1,6 +1,7 @@
 #ifndef __CONDITIONS_HPP__
 #define __CONDITIONS_HPP__
 
+#include <algorithm>
 #include <vector>
 
 #include "nlohmann/json.hpp"
@@ -40,7 +41,8 @@ namespace BloodSword::Conditions
         ITEM_QUANTITY,
         LOSE_ALL,
         HAVE_COLLEAGUES,
-        SOLO
+        SOLO,
+        GAIN_STATUS
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -68,7 +70,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::ITEM_QUANTITY, "ITEM QUANTITY"},
         {Conditions::Type::LOSE_ALL, "LOSE ALL"},
         {Conditions::Type::HAVE_COLLEAGUES, "HAVE COLLEAGUES"},
-        {Conditions::Type::SOLO, "SOLO"}};
+        {Conditions::Type::SOLO, "SOLO"},
+        {Conditions::Type::GAIN_STATUS, "GAIN STATUS"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -195,12 +198,23 @@ namespace BloodSword::Conditions
         return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
     }
 
+    std::string ToUpper(std::string str)
+    {
+        auto upper = str;
+
+        std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
+
+        return upper;
+    }
+
     // routine to validate "condition"
     Conditions::Evaluation Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {
         auto result = false;
 
         auto failed = false;
+
+        auto internal_error = false;
 
         auto text = std::string();
 
@@ -219,59 +233,87 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::IN_PARTY)
         {
-            auto character = Character::Map(condition.Variables[0]);
-
-            if (character != Character::Class::NONE)
+            if (condition.Variables.size() > 0)
             {
-                result = party.Has(character);
+                auto character = Character::Map(condition.Variables[0]);
 
-                if (!result)
+                if (character != Character::Class::NONE)
                 {
-                    text = Conditions::NotInParty(character);
+                    result = party.Has(character);
+
+                    if (!result)
+                    {
+                        text = Conditions::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = party[character].Name + " IS DEAD!";
+
+                        result = false;
+                    }
                 }
-                else if (!Engine::IsAlive(party[character]))
+                else
                 {
-                    text = party[character].Name + " IS DEAD!";
-
-                    result = false;
+                    internal_error = true;
                 }
             }
             else
             {
-                Conditions::InternalError(graphics, background, condition.Type);
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
         {
-            auto character = Character::Map(condition.Variables[0]);
-
-            result = (party.ChosenCharacter == character);
-
-            if (!result)
+            if (condition.Variables.size() > 0)
             {
-                text = std::string("YOU HAVE CHOSEN A DIFFERENT PLAYER!");
+                auto character = Character::Map(condition.Variables[0]);
+
+                result = (party.ChosenCharacter == character);
+
+                if (!result)
+                {
+                    text = std::string("YOU HAVE CHOSEN A DIFFERENT PLAYER!");
+                }
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::CHOSEN_NUMBER)
         {
-            auto number = std::stoi(condition.Variables[0], nullptr, 10);
-
-            result = (party.ChosenNumber == number);
-
-            if (!result)
+            if (condition.Variables.size() > 0)
             {
-                text = std::string("YOU HAVE CHOSEN A DIFFERENT NUMBER!");
+                auto number = std::stoi(condition.Variables[0], nullptr, 10);
+
+                result = (party.ChosenNumber == number);
+
+                if (!result)
+                {
+                    text = std::string("YOU HAVE CHOSEN A DIFFERENT NUMBER!");
+                }
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::HAS_ITEM)
         {
-            auto item = Item::Map(condition.Variables[0]);
-
-            result = party.Has(item);
-
-            if (!result)
+            if (condition.Variables.size() > 0)
             {
-                text = Conditions::NoItem(item);
+                auto item = Item::Map(condition.Variables[0]);
+
+                result = party.Has(item);
+
+                if (!result)
+                {
+                    text = Conditions::NoItem(item);
+                }
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::TEST_ATTRIBUTE)
@@ -329,7 +371,7 @@ namespace BloodSword::Conditions
                 }
                 else
                 {
-                    Conditions::InternalError(graphics, background, condition.Type);
+                    internal_error = true;
                 }
             }
         }
@@ -357,7 +399,7 @@ namespace BloodSword::Conditions
                 }
                 else if (item == Item::Type::NONE)
                 {
-                    Conditions::InternalError(graphics, background, condition.Type);
+                    internal_error = true;
                 }
                 else if (character != Character::Class::NONE && party.Has(character) && quantity != 0)
                 {
@@ -390,7 +432,7 @@ namespace BloodSword::Conditions
                 }
                 else
                 {
-                    Conditions::InternalError(graphics, background, condition.Type);
+                    internal_error = true;
                 }
             }
         }
@@ -415,7 +457,7 @@ namespace BloodSword::Conditions
                 }
                 else if (item == Item::Type::NONE)
                 {
-                    Conditions::InternalError(graphics, background, condition.Type);
+                    internal_error = true;
                 }
                 else if (character != Character::Class::NONE && party.Has(character))
                 {
@@ -438,6 +480,10 @@ namespace BloodSword::Conditions
                     {
                         text = party[character].Name + " IS DEAD!";
                     }
+                }
+                else
+                {
+                    internal_error = true;
                 }
             }
         }
@@ -520,6 +566,95 @@ namespace BloodSword::Conditions
                     text = "YOU ARE NOT ALONE!";
                 }
             }
+        }
+        else if (condition.Type == Conditions::Type::GAIN_STATUS)
+        {
+            // variables
+            // 0 - player (or ALL)
+            // 1 - status
+            if (condition.Variables.size() > 0)
+            {
+                if (ToUpper(condition.Variables[0]) == "ALL")
+                {
+                    auto status = Character::MapStatus(condition.Variables[1]);
+
+                    if (status != Character::Status::NONE)
+                    {
+                        result = true;
+
+                        if (Engine::IsAlive(party) && party.Count() > 1)
+                        {
+                            text = "EVERYONE GAINS [" + std::string(Character::StatusMapping[status]) + "]";
+                        }
+                        if (Engine::IsAlive(party) && party.Count() == 1)
+                        {
+                            text = "YOU GAIN [" + std::string(Character::StatusMapping[status]) + "]";
+                        }
+                        else
+                        {
+                            internal_error = true;
+
+                            result = false;
+                        }
+                    }
+                    else
+                    {
+                        internal_error = true;
+                    }
+                }
+                else if (condition.Variables.size() >= 2)
+                {
+                    auto character = Character::Map(condition.Variables[0]);
+
+                    auto status = Character::MapStatus(condition.Variables[1]);
+
+                    if (character != Character::Class::NONE)
+                    {
+                        result = party.Has(character);
+
+                        if (!result)
+                        {
+                            text = Conditions::NotInParty(character);
+                        }
+                        else if (!Engine::IsAlive(party[character]))
+                        {
+                            text = party[character].Name + " IS DEAD!";
+
+                            result = false;
+                        }
+                        else if (status != Character::Status::NONE)
+                        {
+                            party[character].Add(status);
+
+                            text = party[character].Name + " GAINS" + Character::StatusMapping[status];
+                        }
+                        else
+                        {
+                            internal_error = true;
+
+                            result = false;
+                        }
+                    }
+                    else
+                    {
+                        internal_error = true;
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+
+        // internal error
+        if (internal_error)
+        {
+            Conditions::InternalError(graphics, background, condition.Type);
         }
 
         result = condition.Invert ? !result : result;

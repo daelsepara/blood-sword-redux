@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 329
+    },
+    "text": "(TRICKSTER) It is getting very cold in this room.\n\n[You glance around and see that the grey vapour is condensing into the shape of a tall, robed figure. Before it has completely materialised you have time to act, but you must be quick.",
+    "choices": [
+        {
+            "text": "You could get out of here at once",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 3
+                }
+            }
+        },
+        {
+            "text": "Back over to the door and wait for the figure to materialise",
+            "condition": {
+                "type": "GAIN STATUS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 444
+                },
+                "variables": [
+                    "TRICKSTER",
+                    "TACTICS"
+                ]
+            }
+        }
+    ]
+}

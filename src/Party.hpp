@@ -109,6 +109,24 @@ namespace BloodSword::Party
             return found;
         }
 
+        // check if anyone in the party has this status
+        int Find(Character::Status status)
+        {
+            auto found = -1;
+
+            for (auto i = 0; i < this->Members.size(); i++)
+            {
+                if (this->Members[i].Has(status))
+                {
+                    found = i;
+
+                    break;
+                }
+            }
+
+            return found;
+        }
+
         // check if party has valid target
         bool Has(Target::Type target)
         {
@@ -131,6 +149,11 @@ namespace BloodSword::Party
             }
 
             return result;
+        }
+
+        bool Has(Character::Status status)
+        {
+            return (this->Find(status) != -1);
         }
 
         // access party by character class
