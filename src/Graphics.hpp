@@ -573,6 +573,10 @@ namespace BloodSword::Graphics
 
         auto done = false;
 
+        std::cerr << "Clip: (" << animations.Clip.X << ", " << animations.Clip.Y << ")" << std::endl;
+        
+        std::cerr << "Clip W: " << animations.ClipW << " H: " << animations.ClipH << ")" << std::endl;
+
         while (!done)
         {
             done = Graphics::Animate(graphics, background, animations, trail);
