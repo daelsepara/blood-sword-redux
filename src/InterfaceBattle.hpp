@@ -1099,6 +1099,10 @@ namespace BloodSword::Interface
                 {
                     if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source))
                     {
+                        std::cerr << "SURVIVOR ADD: "
+                                  << std::to_string(i)
+                                  << std::endl;
+
                         survivors.Add(party.Survivors[i]);
 
                         // get a list of survivors to be removed
@@ -1106,13 +1110,20 @@ namespace BloodSword::Interface
                     }
                 }
 
-                // reverse index to survivor list
-                std::reverse(remove.begin(), remove.end());
-
-                for (auto i = 0; i < remove.size(); i++)
+                if (remove.size() > 0)
                 {
                     // reverse index to survivor list
-                    party.Survivors.erase(party.Survivors.begin() + i);
+                    std::reverse(remove.begin(), remove.end());
+
+                    for (auto i = 0; i < remove.size(); i++)
+                    {
+                        std::cerr << "SURVIVOR (IN PARTY) REMOVE: "
+                        << std::to_string(remove[i])
+                        << std::endl;
+
+                        // remove from survivor list
+                        party.Survivors.erase(party.Survivors.begin() + remove[i]);
+                    }
                 }
 
                 std::cerr << Book::String(source)
