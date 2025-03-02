@@ -42,7 +42,8 @@ namespace BloodSword::Conditions
         LOSE_ALL,
         HAVE_COLLEAGUES,
         SOLO,
-        GAIN_STATUS
+        GAIN_STATUS,
+        FIRST
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -71,7 +72,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::LOSE_ALL, "LOSE ALL"},
         {Conditions::Type::HAVE_COLLEAGUES, "HAVE COLLEAGUES"},
         {Conditions::Type::SOLO, "SOLO"},
-        {Conditions::Type::GAIN_STATUS, "GAIN STATUS"}};
+        {Conditions::Type::GAIN_STATUS, "GAIN STATUS"},
+        {Conditions::Type::FIRST, "FIRST"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -233,6 +235,10 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::IN_PARTY)
         {
+            internal_error = true;
+
+            // variables
+            // 0 - player
             if (condition.Variables.size() > 0)
             {
                 auto character = Character::Map(condition.Variables[0]);
@@ -251,15 +257,9 @@ namespace BloodSword::Conditions
 
                         result = false;
                     }
+
+                    internal_error = false;
                 }
-                else
-                {
-                    internal_error = true;
-                }
-            }
-            else
-            {
-                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
@@ -318,16 +318,14 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::TEST_ATTRIBUTE)
         {
+            internal_error = true;
+
             // variables
             // 0 - player
             // 1 - attribute
             // 2, 3 - destination upon failure
             // 4 - failure message
-            if (condition.Variables.size() < 5)
-            {
-                text = std::string("UNABLE TO PERFORM THIS ACTION!");
-            }
-            else
+            if (condition.Variables.size() > 4)
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
 
@@ -337,21 +335,15 @@ namespace BloodSword::Conditions
 
                 auto section = std::stoi(condition.Variables[3], nullptr, 10);
 
-                if (character != Character::Class::NONE && !party.Has(character))
+                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE && book != Book::Number::NONE && section > 0)
                 {
-                    text = Conditions::NotInParty(character);
-                }
-                else if (attribute == Attribute::Type::NONE)
-                {
-                    text = std::string("UNABLE TO PERFORM THIS ACTION!");
-                }
-                else if (character != Character::Class::NONE && party.Has(character))
-                {
-                    if (!Engine::IsAlive(party[character]))
+                    if (!party.Has(character))
+                    {
+                        text = Conditions::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
                     {
                         text = party[character].Name + " IS DEAD!";
-
-                        result = false;
                     }
                     else
                     {
@@ -368,24 +360,20 @@ namespace BloodSword::Conditions
                             text = condition.Variables[4];
                         }
                     }
-                }
-                else
-                {
-                    internal_error = true;
+
+                    internal_error = false;
                 }
             }
         }
         else if (condition.Type == Conditions::Type::ITEM_QUANTITY)
         {
+            internal_error = true;
+
             // variables
             // 0 - player
             // 1 - item
             // 2 - quantity
-            if (condition.Variables.size() < 3)
-            {
-                text = std::string("UNABLE TO PERFORM THIS ACTION!");
-            }
-            else
+            if (condition.Variables.size() > 2)
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
 
@@ -393,97 +381,89 @@ namespace BloodSword::Conditions
 
                 auto quantity = std::stoi(condition.Variables[2], nullptr, 10);
 
-                if (character != Character::Class::NONE && !party.Has(character))
+                if (character != Character::Class::NONE && item != Item::Type::NONE && quantity != 0)
                 {
-                    text = Conditions::NotInParty(character);
-                }
-                else if (item == Item::Type::NONE)
-                {
-                    internal_error = true;
-                }
-                else if (character != Character::Class::NONE && party.Has(character) && quantity != 0)
-                {
-                    if (!Engine::IsAlive(party[character]))
+                    if (!party.Has(character))
                     {
-                        text = party[character].Name + " IS DEAD!";
+                        text = Conditions::NotInParty(character);
                     }
                     else
                     {
-                        if ((party[character].Quantity(item) + quantity) >= 0)
+                        if (!Engine::IsAlive(party[character]))
                         {
-                            result = true;
-
-                            party[character].Add(item, quantity);
-
-                            if (quantity > 0)
-                            {
-                                text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
-                            }
-                            else
-                            {
-                                text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
-                            }
+                            text = party[character].Name + " IS DEAD!";
                         }
                         else
                         {
-                            text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                            if ((party[character].Quantity(item) + quantity) >= 0)
+                            {
+                                result = true;
+
+                                party[character].Add(item, quantity);
+
+                                if (quantity > 0)
+                                {
+                                    text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                                }
+                                else
+                                {
+                                    text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                                }
+                            }
+                            else
+                            {
+                                text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                            }
                         }
                     }
-                }
-                else
-                {
-                    internal_error = true;
+
+                    internal_error = false;
                 }
             }
         }
         else if (condition.Type == Conditions::Type::LOSE_ALL)
         {
+            internal_error = true;
+
             // variables
             // 0 - player
             // 1 - item
-            if (condition.Variables.size() < 2)
-            {
-                text = std::string("UNABLE TO PERFORM THIS ACTION!");
-            }
-            else
+            if (condition.Variables.size() > 1)
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
 
                 auto item = Item::Map(condition.Variables[1]);
 
-                if (character != Character::Class::NONE && !party.Has(character))
+                if (item != Item::Type::NONE && character != Character::Class::NONE)
                 {
-                    text = Conditions::NotInParty(character);
-                }
-                else if (item == Item::Type::NONE)
-                {
-                    internal_error = true;
-                }
-                else if (character != Character::Class::NONE && party.Has(character))
-                {
-                    if (!Engine::IsAlive(party[character]))
+                    if (!party.Has(character))
                     {
-                        if (party[character].Quantity(item) > 0)
+                        text = Conditions::NotInParty(character);
+                    }
+                    else if (party.Has(character))
+                    {
+                        if (!Engine::IsAlive(party[character]))
                         {
-                            result = true;
+                            if (party[character].Quantity(item) > 0)
+                            {
+                                result = true;
 
-                            party[character].Remove(item, party[character].Quantity(item));
+                                party[character].Remove(item, party[character].Quantity(item));
 
-                            text = std::string("YOU LOSE ALL ") + std::string(Item::TypeMapping[item]) + "!";
+                                text = std::string("YOU LOSE ALL ") + std::string(Item::TypeMapping[item]) + "!";
+                            }
+                            else
+                            {
+                                text = std::string("YOU DO NOT HAVE ANY ") + Item::TypeMapping[item] + "!";
+                            }
                         }
                         else
                         {
-                            text = std::string("YOU DO NOT HAVE ANY ") + Item::TypeMapping[item] + "!";
+                            text = party[character].Name + " IS DEAD!";
                         }
                     }
-                    else
-                    {
-                        text = party[character].Name + " IS DEAD!";
-                    }
-                }
-                else
-                {
-                    internal_error = true;
+
+                    internal_error = false;
                 }
             }
         }
@@ -569,6 +549,8 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::GAIN_STATUS)
         {
+            internal_error = true;
+
             // variables
             // 0 - player (or ALL)
             // 1 - status
@@ -578,28 +560,20 @@ namespace BloodSword::Conditions
                 {
                     auto status = Character::MapStatus(condition.Variables[1]);
 
-                    if (status != Character::Status::NONE)
+                    if (status != Character::Status::NONE && Engine::IsAlive(party))
                     {
                         result = true;
 
-                        if (Engine::IsAlive(party) && party.Count() > 1)
+                        if (party.Count() > 1)
                         {
                             text = "EVERYONE GAINS [" + std::string(Character::StatusMapping[status]) + "]";
                         }
-                        if (Engine::IsAlive(party) && party.Count() == 1)
+                        else
                         {
                             text = "YOU GAIN [" + std::string(Character::StatusMapping[status]) + "]";
                         }
-                        else
-                        {
-                            internal_error = true;
 
-                            result = false;
-                        }
-                    }
-                    else
-                    {
-                        internal_error = true;
+                        internal_error = false;
                     }
                 }
                 else if (condition.Variables.size() >= 2)
@@ -608,7 +582,7 @@ namespace BloodSword::Conditions
 
                     auto status = Character::MapStatus(condition.Variables[1]);
 
-                    if (character != Character::Class::NONE)
+                    if (character != Character::Class::NONE && status != Character::Status::NONE)
                     {
                         result = party.Has(character);
 
@@ -622,32 +596,54 @@ namespace BloodSword::Conditions
 
                             result = false;
                         }
-                        else if (status != Character::Status::NONE)
+                        else
                         {
                             party[character].Add(status);
 
                             text = party[character].Name + " GAINS" + Character::StatusMapping[status];
                         }
-                        else
-                        {
-                            internal_error = true;
 
-                            result = false;
-                        }
+                        internal_error = false;
+                    }
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::FIRST)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            if (condition.Variables.size() > 0)
+            {
+                auto character = Character::Map(condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    if (!party.Has(character))
+                    {
+                        text = Conditions::NotInParty(character);
                     }
                     else
                     {
-                        internal_error = true;
+                        for (auto i = 0; i < party.Count(); i++)
+                        {
+                            if (Engine::IsAlive(party[i]))
+                            {
+                                result = (party[i].Class == character);
+
+                                break;
+                            }
+                        }
+
+                        if (!result)
+                        {
+                            text = std::string(Character::ClassMapping[character]) + " NOT THE FIRST IN BATTLE ORDER!";
+                        }
                     }
+
+                    internal_error = false;
                 }
-                else
-                {
-                    internal_error = true;
-                }
-            }
-            else
-            {
-                internal_error = true;
             }
         }
 

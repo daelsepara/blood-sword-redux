@@ -1,0 +1,30 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 276
+    },
+    "text": "(TRICKSTER) Beyond the gateway you see a tall, robed man with a palce face reclining on a couch. At least you thought it was a couch, but when you draw closer you see it is actually a sarcophagus. The man stirs at the sound of your approach and looks up. To your horror you see his mouth open, revealing the fanged teeth of a vampire.",
+    "events": [
+        {
+            "type": "HAVE COLLEAGUES",
+            "variables": [
+                "You gesture for the others to hide."
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "variables": [
+                "You conceal yourself in the shadows by the gateway. You now realise that this undead creature is Magus Vyl, and the assassins were sent to kill you in order to satisfy his desperate craving for blood. You do some quick thinking.\n\n\"Master,\" you say in a husky voice, \"we have despatched some more fools for your use. Shall we return the pennant to the recruiting booth?\"\n\n\"I have enough for the time being,\" murmurs the vampire as he sinks back on to the sarcophagus, having taken a drink of a suspicious-looking, ruby-red liquid from a jewelled cup at his side. \"Return to your usual haunts until I summon you again,\" he whispers as he sinks into a deathly reverie.\n\nYou bow hastily and depart, taking the stairs leading upwards."
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 3
+            }
+        }
+    ]
+}

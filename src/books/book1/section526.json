@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 526
+    },
+    "background": [
+        {
+            "type": "FIRST",
+            "location": {
+                "book": "BOOK1",
+                "number": 276
+            },
+            "variables": [
+                "TRICKSTER"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 486
+            }
+        }
+    ]
+}
