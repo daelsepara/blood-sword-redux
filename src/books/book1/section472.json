@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 472
+    },
+    "text": "(ENCHANTER) You call the spell to mind.",
+    "background": [
+        {
+            "type": "CALL TO MIND",
+            "variables": [
+                "ENCHANTER",
+                "SUMMON FALTYN"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 289
+            },
+            "variables": [
+                "ENCHANTER",
+                "PSYCHIC ABILITY",
+                "BOOK1",
+                "444",
+                "SPELL CASTING UNSUCCESSFUL!"
+            ]
+        }
+    ]
+}

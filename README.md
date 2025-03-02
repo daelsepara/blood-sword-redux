@@ -80,8 +80,11 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ### Section 261: Fight with Magus Vyl
 
-![Choices](/screenshots/story-mode-magus-vyl.png)
+![Battle 261](/screenshots/story-mode-magus-vyl-261.png)
 
+### Section 444: Fight with Magus Vyl
+
+![Battle 444](/screenshots/story-mode-magus-vyl-444.png)
 
 # Copyright Information
 ```

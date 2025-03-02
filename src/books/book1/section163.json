@@ -1,0 +1,38 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 163
+    },
+    "text": "(ENCHANTER) You easily weave the necessary enchantment. Images pour in, showing you parts of several possible futures.\n\n[You start back as you see yourself in this very chamber, locked in mortal combat with a ravening vampire-lord! The image disintegrates to show another possibility -- this time you are entering the room at the top of the tower. An oppressive feeling of danger weighs upon you.]\n\nThe spell fades, returning your spirit to the present. What do you want to do now?",
+    "background": [
+        {
+            "type": "FORGET SPELL",
+            "variables": [
+                "ENCHANTER",
+                "PREDICTION"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Continue searching the altar",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 444
+                }
+            }
+        },
+        {
+            "text": "Leave to go on up the stairs",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 3
+                }
+            }
+        }
+    ]
+}

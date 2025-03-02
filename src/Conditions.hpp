@@ -47,7 +47,9 @@ namespace BloodSword::Conditions
         FIRST,
         TEST_GAIN_STATUS,
         COUNT_STATUS,
-        SELECT_MULTIPLE
+        SELECT_MULTIPLE,
+        CALL_TO_MIND,
+        FORGET_SPELL
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -81,7 +83,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::TEST_GAIN_STATUS, "TEST GAIN STATUS"},
         {Conditions::Type::COUNT_STATUS, "COUNT STATUS"},
         {Conditions::Type::LOSE_STATUS, "LOSE STATUS"},
-        {Conditions::Type::SELECT_MULTIPLE, "SELECT MULTIPLE"}};
+        {Conditions::Type::SELECT_MULTIPLE, "SELECT MULTIPLE"},
+        {Conditions::Type::CALL_TO_MIND, "CALL TO MIND"},
+        {Conditions::Type::FORGET_SPELL, "FORGET SPELL"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -854,6 +858,90 @@ namespace BloodSword::Conditions
                     Interface::SelectMultiple(graphics, background, party, condition.Variables[3].c_str(), preselect, selected, excluded, true);
 
                     result = true;
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::CALL_TO_MIND)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - spell
+            if (condition.Variables.size() > 1)
+            {
+                auto character = Character::Map(condition.Variables[0]);
+
+                auto spell = Spells::Map(condition.Variables[1]);
+
+                if (character != Character::Class::NONE && spell != Spells::Type::NONE)
+                {
+                    if (!party.Has(character))
+                    {
+                        text = Conditions::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Conditions::IsDead(party[character]);
+                    }
+                    else if (!party[character].HasCalledToMind(spell))
+                    {
+                        party[character].CallToMind(spell);
+
+                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] CALLED TO MIND.";
+
+                        result = true;
+                    }
+                    else
+                    {
+                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] ALREADY CALLED TO MIND.";
+
+                        result = true;
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::FORGET_SPELL)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - spell
+            if (condition.Variables.size() > 1)
+            {
+                auto character = Character::Map(condition.Variables[0]);
+
+                auto spell = Spells::Map(condition.Variables[1]);
+
+                if (character != Character::Class::NONE && spell != Spells::Type::NONE)
+                {
+                    if (!party.Has(character))
+                    {
+                        text = Conditions::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Conditions::IsDead(party[character]);
+                    }
+                    else if (party[character].HasCalledToMind(spell))
+                    {
+                        party[character].Forget(spell);
+
+                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] UN-CALLED FROM MIND.";
+
+                        result = true;
+                    }
+                    else
+                    {
+                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] WAS NOT CALLED TO MIND.";
+
+                        result = true;
+                    }
 
                     internal_error = false;
                 }

@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 332
+    },
+    "text": "There are three banners, and you must choose one. What will it be?",
+    "choices": [
+        {
+            "text": "The scarlet banner",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 28
+                }
+            }
+        },
+        {
+            "text": "The olive-green banner",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 52
+                }
+            }
+        },
+        {
+            "text": "The black and purple banner",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 381
+                }
+            }
+        }
+    ]
+}

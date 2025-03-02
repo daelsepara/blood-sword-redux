@@ -1,0 +1,45 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 347
+    },
+    "text": "(ENCHANTER) You consider casting one of your non-combat spells.",
+    "choices": [
+        {
+            "text": "Cast PREDICTION",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 183
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "SUMMON FALTYN would be more useful",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 472
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Don't cast either spell",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 444
+                }
+            }
+        }
+    ]
+}
