@@ -683,7 +683,7 @@ namespace BloodSword::Interface
             auto arrow_dn = text_h < texture_h && offset < (texture_h - text_h);
 
             // add story controls
-            if (section.Has(Feature::Type::ENDING))
+            if (section.Has(Feature::Type::ENDING) || !Engine::IsAlive(party))
             {
                 Interface::EndingControls(section, party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
             }
@@ -715,9 +715,19 @@ namespace BloodSword::Interface
                     {
                         next = Interface::NextSection(graphics, overlay, section, party);
 
-                        if (Book::IsDefined(next) || !Engine::IsAlive(party))
+                        if (Book::IsDefined(next))
                         {
                             done = true;
+                        }
+                        else if (!Engine::IsAlive(party))
+                        {
+                            if (section.ImageAsset.empty())
+                            {
+                                Free(&image);
+
+                                // regenerate party stats
+                                image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                            }
                         }
                     }
                     else

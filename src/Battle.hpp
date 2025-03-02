@@ -26,7 +26,8 @@ namespace BloodSword::Battle
         ENCHANTER_AWAY,
         HEAL_SURVIVORS,
         TACTICS,
-        LAST_BATTLE
+        LAST_BATTLE,
+        SKIP_LOCATION
     };
 
     const int Unlimited = -1;
@@ -45,7 +46,8 @@ namespace BloodSword::Battle
         {Battle::Condition::ENCHANTER_AWAY, "ENCHANTER AWAY"},
         {Battle::Condition::HEAL_SURVIVORS, "HEAL SURVIVORS"},
         {Battle::Condition::TACTICS, "TACTICS"},
-        {Battle::Condition::LAST_BATTLE, "LAST BATTLE"}};
+        {Battle::Condition::LAST_BATTLE, "LAST BATTLE"},
+        {Battle::Condition::SKIP_LOCATION, "SKIP LOCATION"}};
 
     Battle::Condition MapCondition(const char *condition)
     {
