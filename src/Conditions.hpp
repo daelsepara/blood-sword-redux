@@ -50,8 +50,10 @@ namespace BloodSword::Conditions
         SELECT_MULTIPLE,
         CALL_TO_MIND,
         FORGET_SPELL,
-        SELECT_CARDS,
-        SELECTED_CARDS
+        KALUGEN_SELECT,
+        KALUGEN_SCORE,
+        KALUGEN_LIST,
+        KALUGEN_PLAY,
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -88,8 +90,10 @@ namespace BloodSword::Conditions
         {Conditions::Type::SELECT_MULTIPLE, "SELECT MULTIPLE"},
         {Conditions::Type::CALL_TO_MIND, "CALL TO MIND"},
         {Conditions::Type::FORGET_SPELL, "FORGET SPELL"},
-        {Conditions::Type::SELECT_CARDS, "SELECT CARDS"},
-        {Conditions::Type::SELECTED_CARDS, "SELECTED CARDS"}};
+        {Conditions::Type::KALUGEN_SELECT, "KALUGEN SELECT"},
+        {Conditions::Type::KALUGEN_SCORE, "KALUGEN SCORE"},
+        {Conditions::Type::KALUGEN_LIST, "KALUGEN LIST"},
+        {Conditions::Type::KALUGEN_PLAY, "KALUGEN PLAY"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -949,6 +953,144 @@ namespace BloodSword::Conditions
 
                         result = true;
                     }
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::KALUGEN_SELECT)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - message (to display)
+            // 1 - number of options
+            // 2 - minimum number of items to be selected
+            // 3 - maximum number of items to be selected
+            // 4 - hidden (true/false)
+            // 5 to 5+(0) - assets
+            // last - asset (hidden)
+            if (condition.Variables.size() > 5)
+            {
+                auto options = std::stoi(condition.Variables[1], nullptr, 10);
+
+                auto min_select = std::stoi(condition.Variables[2], nullptr, 10);
+
+                auto max_select = std::stoi(condition.Variables[3], nullptr, 10);
+
+                auto hidden = Conditions::ToUpper(condition.Variables[4]) == "TRUE";
+
+                auto expected = 3 + options + (hidden ? 1 : 0);
+
+                if (options > 0 && min_select > 0 && min_select <= max_select && condition.Variables.size() > expected)
+                {
+                    // contains assets
+                    auto assets = std::vector<Asset::Type>();
+
+                    // contains card ids
+                    auto values = std::vector<int>();
+
+                    // set hidden asset
+                    auto asset_hidden = hidden ? Asset::Map(condition.Variables[5 + options]) : Asset::Type::NONE;
+
+                    // collect assets and set values
+                    for (auto i = 0; i < options; i++)
+                    {
+                        auto asset = Asset::Map(condition.Variables[5 + i]);
+
+                        if (asset != Asset::Type::NONE)
+                        {
+                            assets.push_back(asset);
+                        }
+
+                        values.push_back(i);
+                    }
+
+                    if (assets.size() == values.size())
+                    {
+                        // clear current selection
+                        party.Cards.clear();
+
+                        // select cards
+                        auto selection = Interface::SelectIcons(graphics, background, condition.Variables[0].c_str(), assets, values, min_select, max_select, asset_hidden, hidden);
+
+                        for (auto i = 0; i < selection.size(); i++)
+                        {
+                            if (i >= 0 && i < Items::KalugenDeck.size())
+                            {
+                                party.Cards.push_back(Items::KalugenDeck[selection[i]]);
+                            }
+                        }
+
+                        if (party.Cards.size() >= min_select && party.Cards.size() <= max_select)
+                        {
+                            result = true;
+
+                            internal_error = false;
+                        }
+                    }
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::KALUGEN_LIST)
+        {
+            if (party.Cards.size() > 0)
+            {
+                text = "You have chosen " + std::string(party.Cards.size() > 1 ? "these cards" : "this card") + ": ";
+
+                for (auto i = 0; i < party.Cards.size(); i++)
+                {
+                    if (i > 0)
+                    {
+                        text += ", ";
+                    }
+
+                    text += Item::CardMapping[party.Cards[i]];
+                }
+
+                text += ".";
+
+                result = true;
+            }
+            else
+            {
+                text = "YOU HAVE NOT SELECTED ANY CARDS!";
+            }
+        }
+        else if (condition.Type == Conditions::Type::KALUGEN_SCORE)
+        {
+            // show score
+            auto score = Engine::ScoreKalugenGame(party);
+
+            text = "You scored: " + std::to_string(score) + ".";
+
+            result = true;
+        }
+        else if (condition.Type == Conditions::Type::KALUGEN_PLAY)
+        {
+            internal_error = true;
+
+            // compare scores
+            if (condition.Variables.size() > 0)
+            {
+                auto beat = std::stoi(condition.Variables[0], nullptr, 10);
+
+                auto score = Engine::ScoreKalugenGame(party);
+
+                if (beat > 0 && score >= 0)
+                {
+                    result = (score >= beat);
+
+                    if (result)
+                    {
+                        text = "YOU HAVE " + std::string(score > beat ? "BEATEN" : "MATCHED");
+                    }
+                    else
+                    {
+                        text = "YOU HAVE LOST TO";
+                    }
+
+                    text += " THE SCORE OF " + std::to_string(beat);
 
                     internal_error = false;
                 }

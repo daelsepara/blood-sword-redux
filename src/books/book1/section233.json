@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 233
+    },
+    "text": "\"We are equal, then,\" says Kalugen. Suddenly he bursts out laughing and slaps the arm of his throne. \"Buffoon! Ah ha, I like that one, Starchwind. You have a clever tongue, you little bent twig!\" Suddenly he stops laughing and glowers around him. \"Clear the court except for my elite guard. Not everyone may hear the dreadful secrets of the Battlepits.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 177
+            }
+        }
+    ]
+}

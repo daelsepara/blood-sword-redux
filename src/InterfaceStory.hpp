@@ -837,7 +837,12 @@ namespace BloodSword::Interface
             {
                 if ((result.Result || result.Failed) && !result.Text.empty())
                 {
-                    section_text += "\n\n" + result.Text;
+                    if (!section_text.empty())
+                    {
+                        section_text += "\n\n";
+                    }
+
+                    section_text += result.Text;
                 }
             }
 

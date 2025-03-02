@@ -57,7 +57,7 @@ namespace BloodSword::Item
         {Item::CardType::ACE_OF_STARS, "ACE OF STARS"},
         {Item::CardType::ACE_OF_SWORDS, "ACE OF SWORDS"},
         {Item::CardType::ACE_OF_RINGS, "ACE OF RINGS"},
-        {Item::CardType::BUFFOON, "ACE BUFFOON"}};
+        {Item::CardType::BUFFOON, "BUFFOON"}};
 
     Item::Type Map(const char *item)
     {

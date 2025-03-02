@@ -801,14 +801,13 @@ namespace BloodSword::Engine
     // resets all status except enthralment and fleeing
     void ResetAll(Party::Base &party)
     {
-        party.Remove({
-            Character::Status::AWAY,
-            Character::Status::FLEEING,
-            Character::Status::DEFENDING,
-            Character::Status::DEFENDED,
-            Character::Status::PARALYZED,
-            Character::Status::INSTANT_DEATH,
-            Character::Status::IN_BATTLE});
+        party.Remove({Character::Status::AWAY,
+                      Character::Status::FLEEING,
+                      Character::Status::DEFENDING,
+                      Character::Status::DEFENDED,
+                      Character::Status::PARALYZED,
+                      Character::Status::INSTANT_DEATH,
+                      Character::Status::IN_BATTLE});
 
         party.ResetSpells();
     }
@@ -824,6 +823,23 @@ namespace BloodSword::Engine
                 party[i].Value(Attribute::Type::ENDURANCE, 0);
             }
         }
+    }
+
+    // scoring system of Magus Kalugen's game
+    int ScoreKalugenGame(Party::Base &party)
+    {
+        auto score = 0;
+
+        if (!party.Has(Item::CardType::KING_OF_SERPENTS) || party.Has(Item::CardType::BUFFOON))
+        {
+            score += party.Has(Item::CardType::ACE_OF_RINGS) ? 1 : 0;
+
+            score += party.Has(Item::CardType::ACE_OF_STARS) ? 1 : 0;
+
+            score += party.Has(Item::CardType::ACE_OF_SWORDS) ? 1 : 0;
+        }
+
+        return score;
     }
 }
 

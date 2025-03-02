@@ -258,6 +258,22 @@ namespace BloodSword::Items
 
     typedef std::vector<Item::CardType> Deck;
 
+    Items::Deck KalugenDeck = {
+        Item::CardType::KING_OF_SERPENTS,
+        Item::CardType::ACE_OF_STARS,
+        Item::CardType::ACE_OF_SWORDS,
+        Item::CardType::ACE_OF_RINGS,
+        Item::CardType::BUFFOON};
+
+    std::vector<Asset::Type> CardAssets = {
+        Asset::Type::KING_DIAMONDS,
+        Asset::Type::ACE_DIAMONDS,
+        Asset::Type::ACE_CLUBS,
+        Asset::Type::ACE_HEARTS,
+        Asset::Type::CARD_JOKER};
+
+    std::vector<int> KalugenValues = {0, 1, 2, 3, 4};
+
     Items::Inventory Load(nlohmann::json &data)
     {
         auto items = Items::Inventory();

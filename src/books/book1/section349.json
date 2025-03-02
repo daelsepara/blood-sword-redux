@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 349
+    },
+    "events": [
+        {
+            "type": "KALUGEN LIST"
+        },
+        {
+            "type": "KALUGEN SCORE"
+        },
+        {
+            "type": "NORMAL",
+            "variables": [
+                "Now it is Kalugen's turn. \"My jester Starchwind will shuffle the cards,\" he says. Starchwind is a crook-backed dwarf dressed back-to-front in shabby finery. He hobbles to Kalugen's throne. \"Shuffle the cards well,\" Kalugen says sternly. \"Show me no favouritism.\"\n\n\"You are truly the greatest of buffoons, sire,\" says Starchwind loudly.\n\nThere is silence in the chamber. \"Eh?\" demands Kalugen, face white and taut.\n\n\"Why, the Buffoon!\" cries Starchwind, holding up the Buffoon from the five cards he is shuffling. For only Buffoon can outwit even the very gods. So is our master Kalugen the lord of all.\"\n\nLaughter rings around the throne-room from the courtiers. The guards smile faintly. Kalugen relaxes on his throne, placated if not exactly amused. Sarchwind glances at him and then hold out the cards. Kalugen stifles a yan and draws three at random, then throws them face up on the floor with a triumphant flourish. \"The three roosters.\""
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "KALUGEN PLAY",
+            "location": {
+                "book": "BOOK1",
+                "number": 233
+            },
+            "variables": [
+                "3"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 459
+            }
+        }
+    ]
+}
