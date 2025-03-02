@@ -48,7 +48,8 @@ namespace BloodSword::Character
         FPR_PLUS1,
         FPR_PLUS2,
         EXCLUDED,
-        TACTICS
+        TACTICS,
+        MESMERISED
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -65,7 +66,8 @@ namespace BloodSword::Character
         {Character::Status::FPR_PLUS1, "FPR +1"},
         {Character::Status::FPR_PLUS2, "FPR +2"},
         {Character::Status::EXCLUDED, "EXCLUDED"},
-        {Character::Status::TACTICS, "TACTICS"}};
+        {Character::Status::TACTICS, "TACTICS"},
+        {Character::Status::MESMERISED, "MESMERISED"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -81,7 +83,8 @@ namespace BloodSword::Character
         {Character::Status::FPR_PLUS1, 5},
         {Character::Status::FPR_PLUS2, 5},
         {Character::Status::EXCLUDED, -1},
-        {Character::Status::TACTICS, -1}};
+        {Character::Status::TACTICS, -1},
+        {Character::Status::MESMERISED, -1}};
 
     Character::Status MapStatus(const char *status)
     {

@@ -151,7 +151,7 @@ namespace BloodSword::Character
 
             auto is_active = this->Status[status] != 0;
 
-            return has_status && is_active;
+            return has_status && is_active && status != Character::Status::NONE;
         }
 
         bool Is(Character::Status status)
@@ -162,13 +162,19 @@ namespace BloodSword::Character
         // add status (and duration, -1 if permanent)
         void Add(Character::Status status, int duration)
         {
-            this->Status[status] = duration;
+            if (status != Character::Status::NONE)
+            {
+                this->Status[status] = duration;
+            }
         }
 
         // add status
         void Add(Character::Status status)
         {
-            this->Add(status, Character::Duration[status]);
+            if (status != Character::Status::NONE)
+            {
+                this->Add(status, Character::Duration[status]);
+            }
         }
 
         // remove status

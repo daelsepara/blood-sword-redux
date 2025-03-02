@@ -43,7 +43,9 @@ namespace BloodSword::Conditions
         HAVE_COLLEAGUES,
         SOLO,
         GAIN_STATUS,
-        FIRST
+        FIRST,
+        TEST_GAIN_STATUS,
+        COUNT_STATUS
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -73,7 +75,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::HAVE_COLLEAGUES, "HAVE COLLEAGUES"},
         {Conditions::Type::SOLO, "SOLO"},
         {Conditions::Type::GAIN_STATUS, "GAIN STATUS"},
-        {Conditions::Type::FIRST, "FIRST"}};
+        {Conditions::Type::FIRST, "FIRST"},
+        {Conditions::Type::TEST_GAIN_STATUS, "TEST GAIN STATUS"},
+        {Conditions::Type::COUNT_STATUS, "COUNT_STATUS"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -195,6 +199,11 @@ namespace BloodSword::Conditions
         return (std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!");
     }
 
+    std::string IsDead(Character::Base &character)
+    {
+        return character.Name + " IS DEAD!";
+    }
+
     std::string NoItem(Item::Type &item)
     {
         return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
@@ -253,7 +262,7 @@ namespace BloodSword::Conditions
                     }
                     else if (!Engine::IsAlive(party[character]))
                     {
-                        text = party[character].Name + " IS DEAD!";
+                        text = Conditions::IsDead(party[character]);
 
                         result = false;
                     }
@@ -343,7 +352,7 @@ namespace BloodSword::Conditions
                     }
                     else if (!Engine::IsAlive(party[character]))
                     {
-                        text = party[character].Name + " IS DEAD!";
+                        text = Conditions::IsDead(party[character]);
                     }
                     else
                     {
@@ -391,7 +400,7 @@ namespace BloodSword::Conditions
                     {
                         if (!Engine::IsAlive(party[character]))
                         {
-                            text = party[character].Name + " IS DEAD!";
+                            text = Conditions::IsDead(party[character]);
                         }
                         else
                         {
@@ -459,7 +468,7 @@ namespace BloodSword::Conditions
                         }
                         else
                         {
-                            text = party[character].Name + " IS DEAD!";
+                            text = Conditions::IsDead(party[character]);
                         }
                     }
 
@@ -554,12 +563,12 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player (or ALL)
             // 1 - status
-            if (condition.Variables.size() > 0)
+            if (condition.Variables.size() > 1)
             {
+                auto status = Character::MapStatus(condition.Variables[1]);
+
                 if (ToUpper(condition.Variables[0]) == "ALL")
                 {
-                    auto status = Character::MapStatus(condition.Variables[1]);
-
                     if (status != Character::Status::NONE && Engine::IsAlive(party))
                     {
                         result = true;
@@ -576,11 +585,9 @@ namespace BloodSword::Conditions
                         internal_error = false;
                     }
                 }
-                else if (condition.Variables.size() >= 2)
+                else
                 {
                     auto character = Character::Map(condition.Variables[0]);
-
-                    auto status = Character::MapStatus(condition.Variables[1]);
 
                     if (character != Character::Class::NONE && status != Character::Status::NONE)
                     {
@@ -592,7 +599,7 @@ namespace BloodSword::Conditions
                         }
                         else if (!Engine::IsAlive(party[character]))
                         {
-                            text = party[character].Name + " IS DEAD!";
+                            text = Conditions::IsDead(party[character]);
 
                             result = false;
                         }
@@ -643,6 +650,112 @@ namespace BloodSword::Conditions
                     }
 
                     internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::TEST_GAIN_STATUS)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player (or ALL)
+            // 1 - attribute
+            // 2 - status gain on success
+            // 3 - status gain on failure
+            if (condition.Variables.size() > 3)
+            {
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                auto status_success = Character::MapStatus(condition.Variables[2]);
+
+                auto status_fail = Character::MapStatus(condition.Variables[3]);
+
+                if (attribute != Attribute::Type::NONE && status_fail != Character::Status::NONE)
+                {
+                    if (ToUpper(condition.Variables[0]) == "ALL")
+                    {
+                        if (Engine::IsAlive(party))
+                        {
+                            result = true;
+
+                            for (auto character = 0; character < party.Count(); character++)
+                            {
+                                if (Engine::IsAlive(party[character]))
+                                {
+                                    if (Interface::Test(graphics, background, party[character], attribute))
+                                    {
+                                        party[character].Add(status_success);
+                                    }
+                                    else
+                                    {
+                                        party[character].Add(status_fail);
+                                    }
+                                }
+                            }
+
+                            internal_error = false;
+                        }
+                    }
+                    else
+                    {
+                        auto character = Character::Map(condition.Variables[0]);
+
+                        if (character != Character::Class::NONE)
+                        {
+                            if (party.Has(character))
+                            {
+                                if (Engine::IsAlive(party[character]))
+                                {
+                                    result = true;
+
+                                    if (Interface::Test(graphics, background, party[character], attribute))
+                                    {
+                                        party[character].Add(status_success);
+                                    }
+                                    else
+                                    {
+                                        party[character].Add(status_fail);
+                                    }
+                                }
+                                else
+                                {
+                                    text = Conditions::IsDead(party[character]);
+                                }
+                            }
+                            else
+                            {
+                                text = Conditions::NotInParty(character);
+                            }
+
+                            internal_error = false;
+                        }
+                    }
+                }
+            }
+            else if (condition.Type == Conditions::Type::COUNT_STATUS)
+            {
+                internal_error = true;
+
+                // variables
+                // 0 - status
+                // 1 - min threshold
+                // 2 - max threshold
+                if (condition.Variables.size() > 2)
+                {
+                    auto status = Character::MapStatus(condition.Variables[0]);
+
+                    auto min_count = std::stoi(condition.Variables[1], nullptr, 10);
+
+                    auto max_count = std::stoi(condition.Variables[2], nullptr, 10);
+
+                    if (Engine::IsAlive(party) && status != Character::Status::NONE && min_count >= 0 && max_count >= 0 && min_count <= max_count)
+                    {
+                        auto count = Engine::Count(party, Character::ControlType::PLAYER, status);
+
+                        result = count >= min_count && count <= max_count;
+
+                        internal_error = false;
+                    }
                 }
             }
         }
