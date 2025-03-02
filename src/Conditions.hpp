@@ -43,6 +43,7 @@ namespace BloodSword::Conditions
         HAVE_COLLEAGUES,
         SOLO,
         GAIN_STATUS,
+        LOSE_STATUS,
         FIRST,
         TEST_GAIN_STATUS,
         COUNT_STATUS
@@ -77,7 +78,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::GAIN_STATUS, "GAIN STATUS"},
         {Conditions::Type::FIRST, "FIRST"},
         {Conditions::Type::TEST_GAIN_STATUS, "TEST GAIN STATUS"},
-        {Conditions::Type::COUNT_STATUS, "COUNT_STATUS"}};
+        {Conditions::Type::COUNT_STATUS, "COUNT STATUS"},
+        {Conditions::Type::LOSE_STATUS, "LOSE STATUS"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -571,6 +573,9 @@ namespace BloodSword::Conditions
                 {
                     if (status != Character::Status::NONE && Engine::IsAlive(party))
                     {
+                        // entire party gains status
+                        party.Add(status);
+
                         result = true;
 
                         if (party.Count() > 1)
@@ -608,6 +613,68 @@ namespace BloodSword::Conditions
                             party[character].Add(status);
 
                             text = party[character].Name + " GAINS" + Character::StatusMapping[status];
+                        }
+
+                        internal_error = false;
+                    }
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::LOSE_STATUS)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player (or ALL)
+            // 1 - status
+            if (condition.Variables.size() > 1)
+            {
+                auto status = Character::MapStatus(condition.Variables[1]);
+
+                if (ToUpper(condition.Variables[0]) == "ALL")
+                {
+                    if (status != Character::Status::NONE && Engine::IsAlive(party))
+                    {
+                        // remove status from entire party
+                        party.Remove(status);
+
+                        result = true;
+
+                        if (party.Count() > 1)
+                        {
+                            text = "EVERYONE LOSES [" + std::string(Character::StatusMapping[status]) + "]";
+                        }
+                        else
+                        {
+                            text = "YOU LOSE [" + std::string(Character::StatusMapping[status]) + "]";
+                        }
+
+                        internal_error = false;
+                    }
+                }
+                else
+                {
+                    auto character = Character::Map(condition.Variables[0]);
+
+                    if (character != Character::Class::NONE && status != Character::Status::NONE)
+                    {
+                        result = party.Has(character);
+
+                        if (!result)
+                        {
+                            text = Conditions::NotInParty(character);
+                        }
+                        else if (!Engine::IsAlive(party[character]))
+                        {
+                            text = Conditions::IsDead(party[character]);
+
+                            result = false;
+                        }
+                        else
+                        {
+                            party[character].Remove(status);
+
+                            text = party[character].Name + " LOSES" + Character::StatusMapping[status];
                         }
 
                         internal_error = false;
