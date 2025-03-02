@@ -406,6 +406,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
+        // initialize alive checks
         auto alive = true;
 
         alive &= Interface::ResolveFight(graphics, background, draw, map_w, map_h, attacker, defender, melee);
@@ -416,24 +417,30 @@ namespace BloodSword::Interface
 
             Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
         }
-        else
+        else if (defender.Is(Character::Status::PARALYZED))
         {
-            // retaliate only if not paralyzed, knocked out, and defending
-            if (!defender.Is(Character::Status::KNOCKED_OUT) && !defender.Is(Character::Status::PARALYZED))
+            // paralyzed combatants are removed from combat
+            battle.Map.Remove(defender.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, defender_id);
+        }
+        else if (!defender.Is(Character::Status::KNOCKED_OUT) && !defender.Is(Character::Status::DEFENDING))
+        {
+            // retaliate only if not knocked out, and defending
+
+            // reset alive checks
+            alive = true;
+
+            alive &= Interface::ResolveFight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
+
+            if (!alive)
             {
-                alive &= Interface::ResolveFight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
+                battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
 
-                if (!alive)
-                {
-                    battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
-
-                    Interface::MessageBox(graphics, background, attacker.Name + " KILLED!", attacker.IsPlayer() ? Color::Highlight : Color::Active);
-                }
-                else if (alive && defender.Is(Character::Status::PARALYZED))
-                {
-                    // paralyzed combatants are removed from combat
-                    battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
-                }
+                Interface::MessageBox(graphics, background, attacker.Name + " KILLED!", attacker.IsPlayer() ? Color::Highlight : Color::Active);
+            }
+            else if (attacker.Is(Character::Status::PARALYZED))
+            {
+                // paralyzed combatants are removed from combat
+                battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
             }
         }
     }
@@ -1118,8 +1125,8 @@ namespace BloodSword::Interface
                     for (auto i = 0; i < remove.size(); i++)
                     {
                         std::cerr << "SURVIVOR (IN PARTY) REMOVE: "
-                        << std::to_string(remove[i])
-                        << std::endl;
+                                  << std::to_string(remove[i])
+                                  << std::endl;
 
                         // remove from survivor list
                         party.Survivors.erase(party.Survivors.begin() + remove[i]);
@@ -2570,8 +2577,12 @@ namespace BloodSword::Interface
             Free(enemy_stats);
         }
 
-        // set location of last battle
-        party.BattleLocation = party.Location;
+        // handle cases where this battle's location is not recorded
+        if (battle.Has(Battle::Condition::SKIP_LOCATION))
+        {
+            // set location of last battle
+            party.BattleLocation = party.Location;
+        }
 
         // check if party flees
         if (Engine::IsFleeing(party))

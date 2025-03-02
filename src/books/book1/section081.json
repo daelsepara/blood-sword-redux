@@ -1,0 +1,40 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 81
+    },
+    "text": "You lean breathless against the wall and count the cost of this desperate battle. The body of the vampire magus lies on the old flagstones at your feet.",
+    "choices": [
+        {
+            "text": "Leave and make your way up the stairs to the top of the tower",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 14
+                }
+            }
+        }
+    ],
+    "events": [
+        {
+            "type": "LOSE STATUS",
+            "variables": [
+                "ALL",
+                "PARALYZED"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "IN PARTY",
+            "location": {
+                "book": "BOOK1",
+                "number": 416
+            },
+            "variables": [
+                "SAGE"
+            ]
+        }
+    ]
+}

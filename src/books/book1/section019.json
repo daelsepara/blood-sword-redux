@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 19
+    },
+    "text": "(SAGE) You take a close look at the insignia behind the altar. The three interlocking triangles form the crest of the House of Vyl, which is hardly surprising in view of where you are. Below them there is a smaller engraving, and you almost gasp aloud when you see it.\n\n[It is the five-pronged symbol of the Unholy Company of the Eternally Damned, a secret organisation of vampires.]",
+    "choices": [
+        {
+            "text": "Search for a secret panel behind the altar",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 444
+                }
+            }
+        },
+        {
+            "text": "You prefer to get out of here right now",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 3
+                }
+            }
+        }
+    ]
+}

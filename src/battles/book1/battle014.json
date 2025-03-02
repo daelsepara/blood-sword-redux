@@ -1,12 +1,12 @@
 {
     "battle": {
         "conditions": [
-            "CANNOT FLEE",
-            "SKIP LOCATION"
+            "LAST BATTLE",
+            "HEAL SURVIVORS"
         ],
         "duration": -1,
         "endurance": -1,
-        "map": "maps/book1/map444.json",
+        "map": "maps/book1/map014.json",
         "opponents": {
             "members": [
                 {
