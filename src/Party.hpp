@@ -162,6 +162,11 @@ namespace BloodSword::Party
             return (this->Find(status) != -1);
         }
 
+        bool Has(Item::CardType card)
+        {
+            return BloodSword::Found(this->Cards, card);
+        }
+
         // access party by character class
         Character::Base &operator[](Character::Class character_class)
         {

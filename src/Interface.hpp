@@ -1,6 +1,7 @@
 #ifndef __INTERFACE_HPP__
 #define __INTERFACE_HPP__
 
+#include <algorithm>
 #include <utility>
 
 #include "Animation.hpp"
@@ -3457,6 +3458,190 @@ namespace BloodSword::Interface
         Free(status);
 
         Free(stats);
+    }
+
+    // choose character from a party
+    Scene::Base IconList(Point origin, int w, int h, std::vector<Asset::Type> assets, std::vector<Controls::Type> controls, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, Controls::Type button, Asset::Type asset)
+    {
+        auto overlay = Scene::Base();
+
+        auto pad = BloodSword::QuarterTile;
+
+        auto screen = origin + Point(w - popup_w, h - popup_h) / 2;
+
+        overlay.Add(Scene::Element(screen, popup_w, popup_h, background, border, border_size));
+
+        for (auto i = 0; i < assets.size(); i++)
+        {
+            auto texture = Asset::Get(assets[i]);
+
+            if (texture)
+            {
+                auto texture_w = BloodSword::Width(texture);
+
+                auto lt = i > 0 ? i - 1 : i;
+
+                auto rt = 0;
+
+                if (button != Controls::Type::NONE && asset != Asset::Type::NONE)
+                {
+                    rt = i < assets.size() ? i + 1 : i;
+                }
+                else
+                {
+                    rt = i < assets.size() - 1 ? i + 1 : i;
+                }
+
+                overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+                overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile));
+            }
+        }
+
+        // add last button if requested
+        if (button != Controls::Type::NONE && asset != Asset::Type::NONE)
+        {
+            auto id = assets.size();
+
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), screen.X + assets.size() * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
+
+            overlay.Add(Controls::Base(button, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+        }
+
+        return overlay;
+    }
+
+    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false)
+    {
+        auto random = Random::Base();
+
+        auto selected_symbols = std::vector<int>();
+
+        auto selection = std::vector<bool>(assets.size());
+
+        auto controls = std::vector<Controls::Type>(selection.size(), Controls::Type::SELECT);
+
+        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto popup_pad = BloodSword::QuarterTile;
+
+        auto popup_w = std::max(int(assets.size() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+
+        auto popup_h = (BloodSword::TileSize + popup_pad) * 2;
+
+        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
+        std::cerr << "ORDER: [";
+
+        for (auto i = 0; i < values.size(); i++)
+        {
+            if (i > 0)
+            {
+                std::cerr << ", ";
+            }
+
+            std::cerr << std::to_string(values[i]);
+        }
+
+        std::cerr << "] " << std::endl;
+
+        if (hidden)
+        {
+            for (auto i = 0; i < assets.size(); i++)
+            {
+                assets[i] = asset_hidden;
+            }
+
+            // shuffle values
+            for (auto i = 0; i < assets.size(); i++)
+            {
+                std::shuffle(values.begin(), values.end(), random.Generator());
+            }
+
+            std::cerr << "SHUFFLE: [";
+
+            for (auto i = 0; i < values.size(); i++)
+            {
+                if (i > 0)
+                {
+                    std::cerr << ", ";
+                }
+
+                std::cerr << std::to_string(values[i]);
+            }
+
+            std::cerr << "] " << std::endl;
+        }
+
+        while (!done)
+        {
+            auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+
+            // title
+            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+
+            for (auto i = 0; i < selection.size(); i++)
+            {
+                if (selection[i])
+                {
+                    auto &control = overlay.Controls[i];
+
+                    // highlight current selection
+                    overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, 2));
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            {
+                if (input.Type == Controls::Type::CONFIRM)
+                {
+                    if (selected_symbols.size() >= min_select && selected_symbols.size() <= max_select)
+                    {
+                        done = Interface::Confirm(graphics, background, Graphics::RichText("PROCEED?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                    }
+                }
+                else if (input.Type == Controls::Type::SELECT && input.Current >= 0 && input.Current < assets.size())
+                {
+                    // toggle
+                    selection[input.Current] = !selection[input.Current];
+
+                    if (selection[input.Current])
+                    {
+                        selected_symbols.push_back(values[input.Current]);
+
+                        std::cerr << "SELECTED: "
+                                  << input.Current
+                                  << " => "
+                                  << values[input.Current]
+                                  << " SIZE: "
+                                  << selected_symbols.size() << std::endl;
+                    }
+                    else
+                    {
+                        selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
+
+                        std::cerr << "DESELECTED: "
+                                  << input.Current
+                                  << " => "
+                                  << values[input.Current]
+                                  << " SIZE: "
+                                  << selected_symbols.size() << std::endl;
+                    }
+                }
+
+                input.Selected = false;
+            }
+        }
+
+        Free(&select);
+
+        return selected_symbols;
     }
 }
 

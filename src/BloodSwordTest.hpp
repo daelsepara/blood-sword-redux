@@ -1450,6 +1450,54 @@ namespace BloodSword::Test
         Interface::Heal(graphics, background, party, character, true);
     }
 
+    void PrintSelection(Graphics::Base &graphics, Scene::Base &background, std::vector<Asset::Type> &assets, std::vector<int> &selection, int min_select, int max_select)
+    {
+        if (selection.size() >= min_select && selection.size() <= max_select)
+        {
+            auto selected = std::string("SELECTED: ");
+
+            for (auto i = 0; i < selection.size(); i++)
+            {
+                if (i > 0)
+                {
+                    selected += ", ";
+                }
+
+                selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
+            }
+
+            Interface::MessageBox(graphics, background, selected, Color::Active);
+        }
+    }
+
+    void Select(Graphics::Base &graphics, Scene::Base &background)
+    {
+        std::vector<Asset::Type> assets = {
+            Asset::Type::ACE_CLUBS,
+            Asset::Type::ACE_DIAMONDS,
+            Asset::Type::ACE_SPADES,
+            Asset::Type::CARD_JOKER,
+            Asset::Type::KING_DIAMONDS};
+
+        std::vector<int> values = {0, 1, 2, 3, 4};
+
+        auto selection = Interface::SelectIcons(graphics, background, "SELECT 3 CARDS", assets, values, 3, 3, Asset::Type::CARD_BLANK, true);
+
+        Test::PrintSelection(graphics, background, assets, selection, 3, 3);
+
+        std::vector<Asset::Type> party_assets = {
+            Asset::Type::WARRIOR,
+            Asset::Type::TRICKSTER,
+            Asset::Type::SAGE,
+            Asset::Type::ENCHANTER};
+
+        std::vector<int> party_values = {0, 1, 2, 3};
+
+        auto party_selection = Interface::SelectIcons(graphics, background, "SELECT UP TO 4 PLAYERS", party_assets, party_values, 1, 4, Asset::Type::CARD_BLANK, false);
+
+        Test::PrintSelection(graphics, background, party_assets, party_selection, 1, 4);
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1467,7 +1515,8 @@ namespace BloodSword::Test
              Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting/spells)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("13 HEALING\n\n\nHealing ability", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("13 HEALING\n\n\nHealing ability", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("14 SELECT SYMBOLS\n\n\nSelect symbols", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1626,6 +1675,11 @@ namespace BloodSword::Test
                     case 13:
                         // Sage healing
                         Test::Heal(graphics, scene);
+
+                        break;
+                    case 14:
+                        // select from icons
+                        Test::Select(graphics, scene);
 
                         break;
                     default:

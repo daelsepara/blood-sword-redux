@@ -87,7 +87,8 @@ namespace BloodSword::Controls
         START,
         SHURIKEN,
         NEXT,
-        CENTER
+        CENTER,
+        SELECT
     };
 
     typedef std::vector<Controls::Type> Collection;

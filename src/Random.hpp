@@ -22,6 +22,11 @@ namespace Random
 
 		Base(int seed) : generator(std::mt19937_64(seed)) {}
 
+		std::mt19937_64 Generator()
+		{
+			return this->generator;
+		}
+
 		void UniformDistribution(double a, double b)
 		{
 			uniformDistribution = std::uniform_real_distribution<double>(a, b);
