@@ -1408,6 +1408,9 @@ namespace BloodSword::Test
 
                         // reset party to original state
                         party = save_party;
+
+                        // reload story
+                        story = Story::Load("books/book1.json");
                     }
                 }
             }
