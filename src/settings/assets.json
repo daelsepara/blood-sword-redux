@@ -371,6 +371,46 @@
         {
             "id": "POISONED DAGGER",
             "path": "images/actions/assassin-pocket.png"
+        },
+        {
+            "id": "CARD BLANK",
+            "path": "images/cards/card-blank.png"
+        },
+        {
+            "id": "CARD JOKER",
+            "path": "images/cards/card-joker.png"
+        },
+        {
+            "id": "ACE CLUBS",
+            "path": "images/cards/card-ace-clubs.png"
+        },
+        {
+            "id": "ACE DIAMONDS",
+            "path": "images/cards/card-ace-diamonds.png"
+        },
+        {
+            "id": "ACE HEARTS",
+            "path": "images/cards/card-ace-hearts.png"
+        },
+        {
+            "id": "ACE SPADES",
+            "path": "images/cards/card-ace-spades.png"
+        },
+        {
+            "id": "KING CLUBS",
+            "path": "images/cards/card-king-clubs.png"
+        },
+        {
+            "id": "KING DIAMONDS",
+            "path": "images/cards/card-king-diamonds.png"
+        },
+        {
+            "id": "KING HEARTS",
+            "path": "images/cards/card-king-hearts.png"
+        },
+        {
+            "id": "KING SPADES",
+            "path": "images/cards/card-king-spades.png"
         }
     ]
 }

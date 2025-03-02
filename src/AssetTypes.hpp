@@ -116,7 +116,17 @@ namespace BloodSword::Asset
         DUNGEON_EXIT,
         GATE,
         SELECT,
-        POISONED_DAGGER
+        POISONED_DAGGER,
+        CARD_BLANK,
+        CARD_JOKER,
+        ACE_CLUBS,
+        ACE_DIAMONDS,
+        ACE_HEARTS,
+        ACE_SPADES,
+        KING_CLUBS,
+        KING_DIAMONDS,
+        KING_HEARTS,
+        KING_SPADES
     };
 
     template <typename T>
@@ -227,7 +237,17 @@ namespace BloodSword::Asset
         {Asset::Type::DUNGEON_EXIT, "DUNGEON EXIT"},
         {Asset::Type::GATE, "GATE"},
         {Asset::Type::SELECT, "SELECT"},
-        {Asset::Type::POISONED_DAGGER, "POISONED DAGGER"}};
+        {Asset::Type::POISONED_DAGGER, "POISONED DAGGER"},
+        {Asset::Type::CARD_BLANK, "CARD BLANK"},
+        {Asset::Type::CARD_JOKER, "CARD JOKER"},
+        {Asset::Type::ACE_CLUBS, "ACE CLUBS"},
+        {Asset::Type::ACE_DIAMONDS, "ACE DIAMONDS"},
+        {Asset::Type::ACE_HEARTS, "ACE HEARTS"},
+        {Asset::Type::ACE_SPADES, "ACE SPADES"},
+        {Asset::Type::KING_CLUBS, "KING CLUBS"},
+        {Asset::Type::KING_DIAMONDS, "KING DIAMONDS"},
+        {Asset::Type::KING_HEARTS, "KING HEARTS"},
+        {Asset::Type::KING_SPADES, "KING SPADES"}};
 
     Asset::Type Map(const char *asset)
     {
