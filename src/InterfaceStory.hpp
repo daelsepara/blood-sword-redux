@@ -288,7 +288,8 @@ namespace BloodSword::Interface
                 {
                     auto eval = Conditions::Process(graphics, background, party, condition);
 
-                    if (eval.Result)
+                    // handle 'NEXT' situations that behave like events
+                    if (eval.Result && Book::IsDefined(condition.Location))
                     {
                         next = condition.Location;
 

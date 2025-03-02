@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 486
+    },
+    "text": "You approach the wrought-iron gate. The chamber beyond is in darkness except for a few flickering candles. Suddenly a cold commanding voice rings out: \"Enter.\"",
+    "next": [
+        {
+            "type": "TEST GAIN STATUS",
+            "variables": [
+                "ALL",
+                "PSYCHIC ABILITY",
+                "NONE",
+                "MESMERISED"
+            ]
+        },
+        {
+            "type": "COUNT STATUS",
+            "location": {
+                "book": "BOOK1",
+                "number": 148
+            },
+            "variables": [
+                "MESMERISED",
+                "0",
+                "0"
+            ]
+        },
+        {
+            "type": "COUNT STATUS",
+            "location": {
+                "book": "BOOK1",
+                "number": 364
+            },
+            "variables": [
+                "MESMERISED",
+                "1",
+                "4"
+            ]
+        }
+    ]
+}

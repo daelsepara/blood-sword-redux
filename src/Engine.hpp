@@ -818,6 +818,8 @@ namespace BloodSword::Engine
         {
             if (Engine::IsAlive(party[i]) && party[i].Is(Character::Status::PARALYZED))
             {
+                std::cerr << "KILLED (PARALYZED): " << Character::ClassMapping[party[i].Class] << std::endl;
+
                 party[i].Value(Attribute::Type::ENDURANCE, 0);
             }
         }

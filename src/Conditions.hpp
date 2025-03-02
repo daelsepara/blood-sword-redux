@@ -46,7 +46,8 @@ namespace BloodSword::Conditions
         LOSE_STATUS,
         FIRST,
         TEST_GAIN_STATUS,
-        COUNT_STATUS
+        COUNT_STATUS,
+        SELECT_MULTIPLE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -79,7 +80,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::FIRST, "FIRST"},
         {Conditions::Type::TEST_GAIN_STATUS, "TEST GAIN STATUS"},
         {Conditions::Type::COUNT_STATUS, "COUNT STATUS"},
-        {Conditions::Type::LOSE_STATUS, "LOSE STATUS"}};
+        {Conditions::Type::LOSE_STATUS, "LOSE STATUS"},
+        {Conditions::Type::SELECT_MULTIPLE, "SELECT MULTIPLE"}};
 
     Conditions::Type Map(const char *Conditions)
     {
@@ -799,30 +801,61 @@ namespace BloodSword::Conditions
                     }
                 }
             }
-            else if (condition.Type == Conditions::Type::COUNT_STATUS)
+        }
+        else if (condition.Type == Conditions::Type::COUNT_STATUS)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - status
+            // 1 - min threshold
+            // 2 - max threshold
+            if (condition.Variables.size() > 2)
             {
-                internal_error = true;
+                auto status = Character::MapStatus(condition.Variables[0]);
 
-                // variables
-                // 0 - status
-                // 1 - min threshold
-                // 2 - max threshold
-                if (condition.Variables.size() > 2)
+                auto min_count = std::stoi(condition.Variables[1], nullptr, 10);
+
+                auto max_count = std::stoi(condition.Variables[2], nullptr, 10);
+
+                std::cerr << Character::StatusMapping[status] << " MIN: " << std::to_string(min_count) << " MAX: " << std::to_string(max_count) << std::endl;
+
+                if (Engine::IsAlive(party) && status != Character::Status::NONE && min_count >= 0 && max_count >= 0 && min_count <= max_count)
                 {
-                    auto status = Character::MapStatus(condition.Variables[0]);
+                    auto count = Engine::Count(party, Character::ControlType::PLAYER, status);
 
-                    auto min_count = std::stoi(condition.Variables[1], nullptr, 10);
+                    std::cerr << Character::StatusMapping[status] << ": " << std::to_string(count) << std::endl;
 
-                    auto max_count = std::stoi(condition.Variables[2], nullptr, 10);
+                    result = count >= min_count && count <= max_count;
 
-                    if (Engine::IsAlive(party) && status != Character::Status::NONE && min_count >= 0 && max_count >= 0 && min_count <= max_count)
-                    {
-                        auto count = Engine::Count(party, Character::ControlType::PLAYER, status);
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::SELECT_MULTIPLE)
+        {
+            internal_error = true;
 
-                        result = count >= min_count && count <= max_count;
+            // variables:
+            // 0 - criteria for preselection (status)
+            // 1 - status when selected
+            // 2 - status when not selected
+            // 3 - Message to display
+            if (condition.Variables.size() > 3 && Engine::IsAlive(party))
+            {
+                auto preselect = Character::MapStatus(condition.Variables[0]);
 
-                        internal_error = false;
-                    }
+                auto selected = Character::MapStatus(condition.Variables[1]);
+
+                auto excluded = Character::MapStatus(condition.Variables[2]);
+
+                if (selected != Character::Status::NONE || excluded != Character::Status::NONE)
+                {
+                    Interface::SelectMultiple(graphics, background, party, condition.Variables[3].c_str(), preselect, selected, excluded, true);
+
+                    result = true;
+
+                    internal_error = false;
                 }
             }
         }

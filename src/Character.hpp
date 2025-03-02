@@ -450,7 +450,7 @@ namespace BloodSword::Character
             return this->Find(property) != this->Items.end();
         }
 
-        // modifiers from items and spells called to mind (if PSYCHIC AWARENESS)
+        // modifiers from items and spells called to mind (if PSYCHIC ABILITY)
         int Modifiers(Attribute::Type attribute)
         {
             auto modifiers = 0;

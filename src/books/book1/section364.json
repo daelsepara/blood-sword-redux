@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 364
+    },
+    "text": "You open the gate to enter the next room.",
+    "next": [
+        {
+            "type": "SELECT MULTIPLE",
+            "variables": [
+                "MESMERISED",
+                "NONE",
+                "EXCLUDED",
+                "SELECT PLAYERS TO ENTER THE GATE"
+            ]
+        },
+        {
+            "type": "LOSE STATUS",
+            "variables": [
+                "ALL",
+                "MESMERISED"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 261
+            }
+        }
+    ]
+}

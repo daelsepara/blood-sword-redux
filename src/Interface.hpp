@@ -986,8 +986,8 @@ namespace BloodSword::Interface
                         SDL_BlitSurface(converted_stats, nullptr, surface, &stats_rect);
                     }
 
-                    // add icon
-                    auto surface_asset = BloodSword::Asset::Surface(party[i].Asset);
+                    // add icon (blur if dead)
+                    auto surface_asset = Engine::Score(party[i], Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(party[i].Asset) : BloodSword::Asset::Surface(party[i].Asset, Color::Inactive);
 
                     if (surface_asset)
                     {
@@ -1623,106 +1623,6 @@ namespace BloodSword::Interface
         Free(captions);
 
         return character_class;
-    }
-
-    // select multiple characters
-    void SelectMultiple(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Character::Status preselect, Character::Status status_selcted, Character::Status status_excluded, bool names = false)
-    {
-        auto selection = std::vector<bool>(party.Count());
-
-        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
-
-        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
-
-        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
-
-        auto captions = names ? Interface::GenerateNameCaptions(graphics, party) : Interface::GenerateCharacterClassCaptions(graphics, party);
-
-        // pre-select characters with specific status
-        if (preselect != Character::Status::NONE)
-        {
-            for (auto i = 0; i < party.Count(); i++)
-            {
-                if (Engine::IsAlive(party[i]) && party[i].Has(preselect))
-                {
-                    selection[i] = true;
-                }
-            }
-        }
-
-        auto pad = BloodSword::OddPad;
-
-        auto input = Controls::User();
-
-        auto done = false;
-
-        auto popup_pad = BloodSword::QuarterTile;
-
-        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
-
-        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
-
-        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
-
-        while (!done)
-        {
-            auto overlay = Scene::Base();
-
-            if (popup_h > 0)
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, false);
-            }
-            else
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, false);
-            }
-
-            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
-
-            if (Input::IsValid(overlay, input))
-            {
-                // party popup captions
-                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
-                {
-                    auto &control = overlay.Controls[input.Current];
-
-                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
-
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
-
-                    if (skills[input.Current])
-                    {
-                        auto skills_x = popup.X + (popup_w + pad * 2);
-
-                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
-
-                        overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
-                    }
-                }
-            }
-
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
-
-            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
-            {
-                if (input.Type == Controls::Type::BACK)
-                {
-                    done = true;
-                }
-                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
-                {
-                    done = true;
-                }
-            }
-        }
-
-        Free(captions);
-
-        Free(&select);
-
-        Free(skills);
-
-        Free(stats);
     }
 
     // generic dice roller
@@ -2459,19 +2359,21 @@ namespace BloodSword::Interface
 
             BloodSword::Size(message, &texture_w, &texture_h);
 
-            auto box_w = texture_w + pad * 2;
+            auto box_w = std::max(texture_w + pad * 2, BloodSword::Width(message) + ((BloodSword::TileSize + BloodSword::Pad) * 2));
 
             auto box_h = texture_h + pad * 3 + BloodSword::TileSize;
 
             auto location = offset + (Point(width, height) - Point(box_w, box_h)) / 2;
 
-            auto confirm = location + Point(texture_w / 2 - BloodSword::TileSize, texture_h + pad * 2);
+            auto message_x = offset.X + (width - texture_w) / 2;
+
+            auto confirm = location + Point(box_w / 2 - BloodSword::TileSize - pad, texture_h + pad * 2);
 
             auto input = Controls::User();
 
             box.Add(Scene::Element(location, box_w, box_h, background, border, border_size));
 
-            box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
+            box.VerifyAndAdd(Scene::Element(message, Point(message_x, location.Y + pad)));
 
             box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
 
@@ -3342,7 +3244,7 @@ namespace BloodSword::Interface
                                             // distribute healing
                                             auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false);
 
-                                            if (party[target].Value(Attribute::Type::ENDURANCE) < party[target].Maximum(Attribute::Type::ENDURANCE))
+                                            if (party[target].Value(Attribute::Type::ENDURANCE) > 0 && party[target].Value(Attribute::Type::ENDURANCE) < party[target].Maximum(Attribute::Type::ENDURANCE))
                                             {
                                                 std::string heal_string = "HEAL " + party[target].Name;
 
@@ -3360,6 +3262,11 @@ namespace BloodSword::Interface
                                                 }
 
                                                 score -= heal;
+                                            }
+                                            else if (!Engine::IsAlive(party[target]))
+                                            {
+                                                // target is beyond healing
+                                                Interface::ErrorMessage(graphics, background, MSG_LOST);
                                             }
                                             else
                                             {
@@ -3414,6 +3321,142 @@ namespace BloodSword::Interface
         {
             Interface::ErrorMessage(graphics, background, MSG_SKILL);
         }
+    }
+
+    // select multiple characters
+    void SelectMultiple(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Character::Status preselect, Character::Status status_selected, Character::Status status_excluded, bool names = false)
+    {
+        auto selection = std::vector<bool>(party.Count());
+
+        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
+
+        auto status = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
+
+        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto captions = names ? Interface::GenerateNameCaptions(graphics, party) : Interface::GenerateCharacterClassCaptions(graphics, party);
+
+        // pre-select characters with specific status
+        if (preselect != Character::Status::NONE)
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                if (Engine::IsAlive(party[i]) && party[i].Has(preselect))
+                {
+                    selection[i] = true;
+                }
+            }
+        }
+
+        auto pad = BloodSword::OddPad;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto popup_pad = BloodSword::QuarterTile;
+
+        auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+
+        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+
+        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            if (popup_h > 0)
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+            }
+            else
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+            }
+
+            // title
+            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+
+            for (auto i = 0; i < selection.size(); i++)
+            {
+                if (selection[i])
+                {
+                    auto &control = overlay.Controls[i];
+
+                    // highlight current selection
+                    overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, 2));
+                }
+            }
+
+            if (Input::IsValid(overlay, input))
+            {
+                // party popup captions
+                if (input.Type != Controls::Type::CONFIRM && input.Current >= 0 && input.Current < party.Count())
+                {
+                    auto &control = overlay.Controls[input.Current];
+
+                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+
+                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
+
+                    if (status[input.Current])
+                    {
+                        auto status_x = popup.X + (popup_w + pad * 2);
+
+                        overlay.Add(Scene::Element(status_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+
+                        overlay.VerifyAndAdd(Scene::Element(status[input.Current], status_x, popup.Y));
+                    }
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            {
+                if (input.Type == Controls::Type::CONFIRM)
+                {
+                    done = Interface::Confirm(graphics, background, Graphics::RichText("PROCEED?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                }
+                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
+                {
+                    if (preselect == Character::Status::NONE || !party[input.Current].Has(preselect))
+                    {
+                        selection[input.Current] = !selection[input.Current];
+                    }
+                }
+
+                input.Selected = false;
+            }
+        }
+
+        // update party status
+        for (auto i = 0; i < selection.size(); i++)
+        {
+            if (selection[i])
+            {
+                if (status_selected != Character::Status::NONE)
+                {
+                    party[i].Add(status_selected);
+                }
+            }
+            else
+            {
+                if (status_excluded != Character::Status::NONE)
+                {
+                    party[i].Add(status_excluded);
+                }
+            }
+        }
+
+        Free(captions);
+
+        Free(&select);
+
+        Free(status);
+
+        Free(stats);
     }
 }
 

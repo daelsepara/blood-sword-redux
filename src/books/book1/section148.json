@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 148
+    },
+    "text": "Your reputation for daring adventure was not won through stupidity. You quickly back away from the room beyond the gate, then turn and scramble up the stairs towards the top of the tower.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 3
+            }
+        }
+    ]
+}

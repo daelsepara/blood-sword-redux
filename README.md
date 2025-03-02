@@ -78,6 +78,10 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Choices](/screenshots/story-mode-choices.png)
 
+### Section: 261 Fight with Magus Vyl
+
+![Choices](/screenshots/story-mode-magus-vyl.png)
+
 
 # Copyright Information
 ```

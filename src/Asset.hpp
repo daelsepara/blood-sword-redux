@@ -59,6 +59,23 @@ namespace BloodSword::Asset
         return surface;
     }
 
+    SDL_Surface *Surface(Asset::Type asset, Uint32 blur)
+    {
+        SDL_Surface *surface = nullptr;
+
+        if (asset != Asset::Type::NONE)
+        {
+            surface = BloodSword::Load(Asset::Locations[asset].c_str());
+
+            if (surface)
+            {
+                SDL_SetSurfaceColorMod(surface, Color::R(blur), Color::G(blur), Color::B(blur));
+            }
+        }
+
+        return surface;
+    }
+
     // unload all assets
     void Unload()
     {
