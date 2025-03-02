@@ -3511,6 +3511,28 @@ namespace BloodSword::Interface
         return overlay;
     }
 
+    void PrintSelection(std::vector<Asset::Type> &assets, std::vector<int> &selection, std::string selected)
+    {
+        selected += ": [";
+
+        if (selection.size() >= 0)
+        {
+            for (auto i = 0; i < selection.size(); i++)
+            {
+                if (i > 0)
+                {
+                    selected += ", ";
+                }
+
+                selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
+            }
+        }
+
+        selected += "]";
+
+        std::cerr << selected << std::endl;
+    }
+
     std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false)
     {
         auto random = Random::Base();
@@ -3535,51 +3557,26 @@ namespace BloodSword::Interface
 
         auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
-        std::cerr << "ORDER: [";
+        auto final_assets = assets;
 
-        for (auto i = 0; i < values.size(); i++)
-        {
-            if (i > 0)
-            {
-                std::cerr << ", ";
-            }
-
-            std::cerr << std::to_string(values[i]);
-        }
-
-        std::cerr << "] " << std::endl;
+        Interface::PrintSelection(assets, values, "ORDER");
 
         if (hidden)
         {
-            for (auto i = 0; i < assets.size(); i++)
-            {
-                assets[i] = asset_hidden;
-            }
-
             // shuffle values
             for (auto i = 0; i < assets.size(); i++)
             {
+                final_assets[i] = asset_hidden;
+
                 std::shuffle(values.begin(), values.end(), random.Generator());
             }
 
-            std::cerr << "SHUFFLE: [";
-
-            for (auto i = 0; i < values.size(); i++)
-            {
-                if (i > 0)
-                {
-                    std::cerr << ", ";
-                }
-
-                std::cerr << std::to_string(values[i]);
-            }
-
-            std::cerr << "] " << std::endl;
+            Interface::PrintSelection(assets, values, "SHUFFLE");
         }
 
         while (!done)
         {
-            auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+            auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, final_assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
 
             // title
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
@@ -3618,7 +3615,7 @@ namespace BloodSword::Interface
                         std::cerr << "SELECTED: "
                                   << input.Current
                                   << " => "
-                                  << values[input.Current]
+                                  << Asset::TypeMapping[assets[values[input.Current]]]
                                   << " SIZE: "
                                   << selected_symbols.size() << std::endl;
                     }
@@ -3629,7 +3626,7 @@ namespace BloodSword::Interface
                         std::cerr << "DESELECTED: "
                                   << input.Current
                                   << " => "
-                                  << values[input.Current]
+                                  << Asset::TypeMapping[assets[values[input.Current]]]
                                   << " SIZE: "
                                   << selected_symbols.size() << std::endl;
                     }
