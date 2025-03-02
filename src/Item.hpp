@@ -256,6 +256,8 @@ namespace BloodSword::Items
 {
     typedef std::vector<Item::Base> Inventory;
 
+    typedef BloodSword::IntMapping<Item::CardType> Deck;
+
     Items::Inventory Load(nlohmann::json &data)
     {
         auto items = Items::Inventory();
@@ -339,6 +341,40 @@ namespace BloodSword::Items
         }
 
         return data;
+    }
+
+    Items::Deck LoadDeck(nlohmann::json data)
+    {
+        Items::Deck deck = {};
+
+        for (auto &[key, value] : data.items())
+        {
+            auto card = Item::MapCard(std::string(key));
+
+            if (card != Item::CardType::NONE)
+            {
+                deck[card] = int(value);
+            }
+        }
+
+        return deck;
+    }
+
+    nlohmann::json DeckData(Items::Deck &deck)
+    {
+        nlohmann::json deck_list;
+
+        if (deck.size() > 0)
+        {
+            for (auto &card : deck)
+            {
+                auto card_name = std::string(Item::CardMapping[card.first]);
+
+                deck_list.emplace(card_name, card.second);
+            }
+        }
+
+        return deck_list;
     }
 }
 

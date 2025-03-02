@@ -115,7 +115,8 @@ namespace BloodSword::Asset
         STAIRS,
         DUNGEON_EXIT,
         GATE,
-        SELECT
+        SELECT,
+        POISONED_DAGGER
     };
 
     template <typename T>
@@ -225,7 +226,8 @@ namespace BloodSword::Asset
         {Asset::Type::STAIRS, "STAIRS"},
         {Asset::Type::DUNGEON_EXIT, "DUNGEON EXIT"},
         {Asset::Type::GATE, "GATE"},
-        {Asset::Type::SELECT, "SELECT"}};
+        {Asset::Type::SELECT, "SELECT"},
+        {Asset::Type::POISONED_DAGGER, "POISONED DAGGER"}};
 
     Asset::Type Map(const char *asset)
     {

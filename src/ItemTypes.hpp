@@ -10,7 +10,7 @@ namespace BloodSword::Item
     // item type
     enum class Type
     {
-        NONE,
+        NONE = -1,
         SWORD,
         BOW,
         ARROW,
@@ -23,6 +23,17 @@ namespace BloodSword::Item
         RINGMAIL,
         SILVER_ARMOUR,
         SHURIKEN
+    };
+
+    // for the magus kalugen's card game in battlepits
+    enum class CardType
+    {
+        NONE = -1,
+        KING_OF_SERPENTS,
+        ACE_OF_STARS,
+        ACE_OF_SWORDS,
+        ACE_OF_RINGS,
+        BUFFOON
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -40,6 +51,14 @@ namespace BloodSword::Item
         {Item::Type::SILVER_ARMOUR, "SILVER ARMOUR"},
         {Item::Type::SHURIKEN, "SHURIKEN"}};
 
+    BloodSword::Mapping<Item::CardType> CardMapping = {
+        {Item::CardType::NONE, "NONE"},
+        {Item::CardType::KING_OF_SERPENTS, "KING OF SERPENTS"},
+        {Item::CardType::ACE_OF_STARS, "ACE OF STARS"},
+        {Item::CardType::ACE_OF_SWORDS, "ACE OF SWORDS"},
+        {Item::CardType::ACE_OF_RINGS, "ACE OF RINGS"},
+        {Item::CardType::BUFFOON, "ACE BUFFOON"}};
+
     Item::Type Map(const char *item)
     {
         return BloodSword::Find(Item::TypeMapping, item);
@@ -48,6 +67,16 @@ namespace BloodSword::Item
     Item::Type Map(std::string item)
     {
         return Item::Map(item.c_str());
+    }
+
+    Item::CardType MapCard(const char *item)
+    {
+        return BloodSword::Find(Item::CardMapping, item);
+    }
+
+    Item::CardType MapCard(std::string item)
+    {
+        return Item::MapCard(item.c_str());
     }
 }
 

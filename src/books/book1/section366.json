@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 366
+    },
+    "text": "The assassin hisses a curse. He cannot hurl his poisoned knife now that you are attacking him.",
+    "battle": "battles/book1/battle366.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 134
+            }
+        }
+    ]
+}

@@ -807,6 +807,7 @@ namespace BloodSword::Engine
             Character::Status::DEFENDING,
             Character::Status::DEFENDED,
             Character::Status::PARALYZED,
+            Character::Status::INSTANT_DEATH,
             Character::Status::IN_BATTLE});
 
         party.ResetSpells();

@@ -1,0 +1,65 @@
+{
+    "battle": {
+        "duration": 2,
+        "endurance": -1,
+        "map": "maps/book1/map366.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "ASSASSIN",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 15,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 15
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "POISONED DAGGER",
+                    "item_limit": 10,
+                    "moves": 0,
+                    "name": "ASSASSIN",
+                    "rank": 0,
+                    "shoot": "POISONED DAGGER",
+                    "skills": [
+                        "POISONED DAGGER"
+                    ],
+                    "type": "ASSASSIN"
+                }
+            ]
+        }
+    }
+}

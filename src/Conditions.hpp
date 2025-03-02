@@ -49,7 +49,9 @@ namespace BloodSword::Conditions
         COUNT_STATUS,
         SELECT_MULTIPLE,
         CALL_TO_MIND,
-        FORGET_SPELL
+        FORGET_SPELL,
+        SELECT_CARDS,
+        SELECTED_CARDS
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -85,7 +87,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::LOSE_STATUS, "LOSE STATUS"},
         {Conditions::Type::SELECT_MULTIPLE, "SELECT MULTIPLE"},
         {Conditions::Type::CALL_TO_MIND, "CALL TO MIND"},
-        {Conditions::Type::FORGET_SPELL, "FORGET SPELL"}};
+        {Conditions::Type::FORGET_SPELL, "FORGET SPELL"},
+        {Conditions::Type::SELECT_CARDS, "SELECT CARDS"},
+        {Conditions::Type::SELECTED_CARDS, "SELECTED CARDS"}};
 
     Conditions::Type Map(const char *Conditions)
     {

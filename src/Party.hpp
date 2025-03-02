@@ -41,6 +41,9 @@ namespace BloodSword::Party
         // holds survivors from previous battles
         Party::List Survivors = {};
 
+        // for the magus kalugen's card game
+        Items::Deck Cards = {};
+
         Base() {}
 
         Base(Party::List members) : Members(members) {}
@@ -303,6 +306,12 @@ namespace BloodSword::Party
                     this->Survivors.push_back(character);
                 }
             }
+
+            // load deck of cards
+            if (!data["cards"].is_null() && data["cards"].is_object())
+            {
+                this->Cards = Items::LoadDeck(data["cards"]);
+            }
         }
     };
 
@@ -364,6 +373,11 @@ namespace BloodSword::Party
             }
 
             data["members"] = members;
+        }
+
+        if (party.Cards.size() > 0)
+        {
+            data["cards"] = Items::DeckData(party.Cards);
         }
 
         return data;

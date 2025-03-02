@@ -367,6 +367,10 @@
         {
             "id": "WINDOW",
             "path": "images/map/window-bars.png"
+        },
+        {
+            "id": "POISONED DAGGER",
+            "path": "images/actions/assassin-pocket.png"
         }
     ]
 }

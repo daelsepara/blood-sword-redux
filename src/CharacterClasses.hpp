@@ -35,7 +35,7 @@ namespace BloodSword::Character
     // character status types
     enum class Status
     {
-        NONE,
+        NONE = -1,
         DEFENDING,
         DEFENDED,
         FLEEING,
@@ -49,7 +49,8 @@ namespace BloodSword::Character
         FPR_PLUS2,
         EXCLUDED,
         TACTICS,
-        MESMERISED
+        MESMERISED,
+        INSTANT_DEATH
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -67,7 +68,8 @@ namespace BloodSword::Character
         {Character::Status::FPR_PLUS2, "FPR +2"},
         {Character::Status::EXCLUDED, "EXCLUDED"},
         {Character::Status::TACTICS, "TACTICS"},
-        {Character::Status::MESMERISED, "MESMERISED"}};
+        {Character::Status::MESMERISED, "MESMERISED"},
+        {Character::Status::INSTANT_DEATH, "INSTANT DEATH"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -84,7 +86,8 @@ namespace BloodSword::Character
         {Character::Status::FPR_PLUS2, 5},
         {Character::Status::EXCLUDED, -1},
         {Character::Status::TACTICS, -1},
-        {Character::Status::MESMERISED, -1}};
+        {Character::Status::MESMERISED, -1},
+        {Character::Status::INSTANT_DEATH, -1}};
 
     Character::Status MapStatus(const char *status)
     {

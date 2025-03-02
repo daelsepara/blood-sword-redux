@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 416
+    },
+    "text": "(SAGE) The body of the vampire must be properly dealt with or he will rise again. You raise your staff and drive it down on the corpse's chest, impaling the heart. This destroys the corpse's power to regenerate. Reasoning that Vyl is a vampire of the traditional Krarthian variety, you put out his eyes with the heated point of an arrow. This prevents his spirit from finding its way back to its body from the afterlife. Lastly you collect ashes from the altar braziers and scatter them over the corpse, to symbolise the triumph of death over undeath. Nothing more can be done. If Vyl returns from the dead now he must be a miracle-worker as a magus.\n\nYou leave the room and continue up the stairs.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 3
+            }
+        }
+    ]
+}

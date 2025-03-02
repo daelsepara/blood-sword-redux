@@ -29,6 +29,7 @@ namespace BloodSword::Skills
         SHURIKEN,
         IGNORE_ARMOUR,
         PARALYZING_TOUCH,
+        POISONED_DAGGER
     };
 
     template <typename T>
@@ -49,7 +50,8 @@ namespace BloodSword::Skills
         {Skills::Type::CAST_SPELL, "CAST SPELL"},
         {Skills::Type::SHURIKEN, "SHURIKEN"},
         {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
-        {Skills::Type::PARALYZING_TOUCH, "PARALYZING TOUCH"}};
+        {Skills::Type::PARALYZING_TOUCH, "PARALYZING TOUCH"},
+        {Skills::Type::POISONED_DAGGER, "POISONED DAGGER"}};
 
     typedef std::vector<Skills::Type> List;
 
@@ -60,12 +62,12 @@ namespace BloodSword::Skills
         Skills::Type::SPELLS,
         Skills::Type::SHURIKEN,
         Skills::Type::IGNORE_ARMOUR,
-        Skills::Type::PARALYZING_TOUCH};
+        Skills::Type::PARALYZING_TOUCH,
+        Skills::Type::POISONED_DAGGER};
 
     Skills::List RangedAttack = {
         Skills::Type::ARCHERY,
-        Skills::Type::SHURIKEN
-    };
+        Skills::Type::SHURIKEN};
 
     Skills::List StorySkills = {
         Skills::Type::HEALING,
@@ -90,7 +92,8 @@ namespace BloodSword::Skills
         {Skills::Type::CAST_SPELL, Asset::Type::CAST_SPELL},
         {Skills::Type::SHURIKEN, Asset::Type::SHURIKEN},
         {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR},
-        {Skills::Type::PARALYZING_TOUCH, Asset::Type::GHASTLY_TOUCH}};
+        {Skills::Type::PARALYZING_TOUCH, Asset::Type::GHASTLY_TOUCH},
+        {Skills::Type::POISONED_DAGGER, Asset::Type::POISONED_DAGGER}};
 
     Skills::Type Map(const char *skill)
     {

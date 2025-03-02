@@ -10,7 +10,8 @@ namespace BloodSword::Interface
     BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
         {Skills::Type::NONE, Character::Status::NONE},
         {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
-        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED}};
+        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED},
+        {Skills::Type::POISONED_DAGGER, Character::Status::INSTANT_DEATH}};
 
     BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
         {Skills::Type::NONE, Controls::Type::NONE},
@@ -381,6 +382,12 @@ namespace BloodSword::Interface
                                     resisted = true;
                                 }
                             }
+                            else if (skill == Skills::Type::POISONED_DAGGER)
+                            {
+                                defender.Value(Attribute::Type::ENDURANCE, 0);
+
+                                alive = false;
+                            }
 
                             if (!resisted)
                             {
@@ -471,6 +478,14 @@ namespace BloodSword::Interface
                     auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
                     alive &= Engine::GainEndurance(defender, -hit, true);
+
+                    if (hit > 0 && shot == Skills::Type::POISONED_DAGGER)
+                    {
+                        // instant death
+                        defender.Add(Character::Status::INSTANT_DEATH);
+
+                        alive = false;
+                    }
                 }
             }
         }
@@ -2560,6 +2575,15 @@ namespace BloodSword::Interface
                 Free(&round_string);
 
                 round_string = Graphics::CreateText(graphics, (std::string("ROUND: ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+            }
+
+            // round limit exceeded
+            if (battle.Duration != Battle::Unlimited && round >= battle.Duration)
+            {
+                // regenerate final battle scene
+                auto scene = BattleScene(battle, party);
+
+                Interface::MessageBox(graphics, scene, Interface::Text[Interface::MSG_FIGHT].Text, Color::Active);
             }
 
             Free(&texture);

@@ -39,7 +39,7 @@ namespace BloodSword::Spells
     // spell class (blasting or psychic)
     enum class Class
     {
-        NONE,
+        NONE = -1,
         BLASTING,
         PSYCHIC
     };
