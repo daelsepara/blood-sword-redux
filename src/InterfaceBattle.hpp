@@ -2614,16 +2614,19 @@ namespace BloodSword::Interface
                 {
                     result = Battle::Result::VICTORY;
                 }
-
-                // clear "IN BATTLE" status
-                Engine::ResetAll(party);
-
-                Engine::ResetAll(battle.Opponents);
             }
             else
             {
+                // paralyzed players did not make it out
+                Engine::KillAllParalyzed(party);
+
                 result = Battle::Result::DEFEAT;
             }
+
+            // clear "IN BATTLE" status
+            Engine::ResetAll(party);
+
+            Engine::ResetAll(battle.Opponents);
         }
         else if (result == Battle::Result::NONE)
         {
