@@ -1547,48 +1547,78 @@ namespace BloodSword::Test
                     switch (choice)
                     {
                     case 1:
+                        // input controls testing
                         Test::Controls(graphics);
+                        
                         break;
                     case 2:
+                        // map rendering test
                         Test::Map(graphics);
+                        
                         break;
                     case 3:
+                        // animation test
                         Test::Animation(graphics);
+                        
                         break;
                     case 4:
+                        // battle order
                         Test::Queue(graphics);
+                        
                         break;
                     case 5:
-                        // reset textures and menu
+                        // palette tests
                         Test::Palette(graphics);
+                        
+                        // reset textures and menu
                         Free(menu);
+                        
                         Free(&title);
+                        
                         title = RegenerateTitle(graphics, width);
+                        
                         menu = RegenerateMenu(graphics, width);
+                        
                         break;
                     case 6:
+                        // enable / disable scanlines
                         Graphics::ToggleScanLines();
+                        
                         break;
                     case 7:
+                        // attribute test (FIGHTING PROWESS, etc.)
                         Test::Attribute(graphics);
+                        
                         break;
                     case 8:
+                        // Fight action
                         Test::Fight(graphics);
+                        
                         break;
                     case 9:
+                        // Shoot action
                         Test::Shoot(graphics);
+                        
                         break;
                     case 10:
+                        // Battle Engine test
                         Test::Battle(graphics);
+                        
                         break;
                     case 11:
+                        // Test story sections
                         Test::Story(graphics);
+                        
                         break;
                     case 12:
+                        // Text input (textbox)
                         Test::TextInput(graphics, scene);
+                        
                         break;
                     case 13:
+                        // Sage healing
                         Test::Heal(graphics, scene);
+                        
                         break;
                     default:
                         // do nothing - menu test
