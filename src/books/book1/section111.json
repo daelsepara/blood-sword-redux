@@ -1,0 +1,22 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 111
+    },
+    "background": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 329
+            },
+            "variables": [
+                "TRICKSTER",
+                "AWARENESS",
+                "BOOK1",
+                "444",
+                "YOU FAILED IN THE ATTEMPT!"
+            ]
+        }
+    ]
+}

@@ -641,18 +641,21 @@ namespace BloodSword::Conditions
                 {
                     if (status != Character::Status::NONE && Engine::IsAlive(party))
                     {
-                        // remove status from entire party
-                        party.Remove(status);
-
-                        result = true;
-
-                        if (party.Count() > 1)
+                        if (party.Has(status))
                         {
-                            text = "EVERYONE LOSES [" + std::string(Character::StatusMapping[status]) + "]";
-                        }
-                        else
-                        {
-                            text = "YOU LOSE [" + std::string(Character::StatusMapping[status]) + "]";
+                            // remove status from entire party
+                            party.Remove(status);
+
+                            result = true;
+
+                            if (party.Count() > 1)
+                            {
+                                text = "EVERYONE LOSES [" + std::string(Character::StatusMapping[status]) + "]";
+                            }
+                            else
+                            {
+                                text = "YOU LOSE [" + std::string(Character::StatusMapping[status]) + "]";
+                            }
                         }
 
                         internal_error = false;
@@ -676,7 +679,7 @@ namespace BloodSword::Conditions
 
                             result = false;
                         }
-                        else
+                        else if (party[character].Has(status))
                         {
                             party[character].Remove(status);
 

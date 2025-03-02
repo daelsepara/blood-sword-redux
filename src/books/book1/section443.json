@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 443
     },
-    "text": "You return to the main square, now almost deserted apart from a few whores and a bored militia patrol. A torn scrap of paper flutters past and you trad on it: a poster proclaiming the contest.\n\nYou hurry to the booth, hoping that Vyl's stweard will still be there. You have a few things you'd like to say to him, but your thoughts of vengeance are dashed. He has gone, and so has the scarlet pennant. You now have no choice but to take the olive-green pennant, the only one that remains.\n\nThe last steward is snoozing on the bench in front of the booth. He wakes with a start when you prod him. \"At last,\" he sighs sleepily, watching you take the pennant. \"Now I can go home and get some rest.\"",
+    "text": "You return to the main square, now almost deserted apart from a few whores and a bored militia patrol. A torn scrap of paper flutters past and you trad on it: a poster proclaiming the contest.\n\nYou hurry to the booth, hoping that Vyl's steward will still be there. You have a few things you'd like to say to him, but your thoughts of vengeance are dashed. He has gone, and so has the scarlet pennant. You now have no choice but to take the olive-green pennant, the only one that remains.\n\nThe last steward is snoozing on the bench in front of the booth. He wakes with a start when you prod him. \"At last,\" he sighs sleepily, watching you take the pennant. \"Now I can go home and get some rest.\"",
     "next": [
         {
             "type": "NORMAL",

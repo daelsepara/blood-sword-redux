@@ -207,7 +207,13 @@ namespace BloodSword::Interface
             {
                 auto eval = Conditions::Process(graphics, background, party, condition);
 
-                if (eval.Result)
+                if (eval.Failed)
+                {
+                    next = eval.Location;
+
+                    break;
+                }
+                else if (eval.Result)
                 {
                     next = condition.Location;
 
@@ -829,7 +835,7 @@ namespace BloodSword::Interface
 
             for (auto result : results)
             {
-                if (!result.Text.empty())
+                if ((result.Result || result.Failed) && !result.Text.empty())
                 {
                     section_text += "\n\n" + result.Text;
                 }
