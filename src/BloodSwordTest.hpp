@@ -1236,6 +1236,8 @@ namespace BloodSword::Test
 
         auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
 
+        auto save_party = party;
+
         auto story = Story::Load("books/book1.json");
 
         if (story.Sections.size() > 0 && Book::IsDefined(story.Sections.front().Location))
@@ -1403,6 +1405,9 @@ namespace BloodSword::Test
                         {
                             Interface::ProcessStory(graphics, background, story, party, choice);
                         }
+
+                        // reset party to original state
+                        party = save_party;
                     }
                 }
             }
