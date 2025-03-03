@@ -257,6 +257,41 @@ namespace BloodSword::Item
 
         return properties;
     }
+
+    Item::Base Load(nlohmann::json &data)
+    {
+        auto item = Item::Base();
+
+        if (!data["attributes"].is_null() && data["attributes"].is_object())
+        {
+            item.Attributes = Item::LoadAttributes(data["attributes"]);
+        }
+
+        if (!data["properties"].is_null() && data["properties"].is_array() && data["properties"].size() > 0)
+        {
+            item.Properties = Item::LoadProperties(data["properties"]);
+        }
+
+        item.Type = !data["type"].is_null() ? Item::Map(std::string(data["type"])) : Item::Type::NONE;
+
+        item.Contains = !data["contains"].is_null() ? Item::Map(std::string(data["contains"])) : Item::Type::NONE;
+
+        item.Quantity = !data["quantity"].is_null() ? int(data["quantity"]) : 0;
+
+        item.Limit = !data["limit"].is_null() ? int(data["limit"]) : -1;
+
+        item.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
+
+        if (!data["description"].is_null() && data["description"].is_object())
+        {
+            item.Description = Book::Load(data["description"]);
+        }
+
+        // check whether or not description has been revealed
+        item.Revealed = (!data["revealed"].is_null() && data["revealed"].is_boolean()) ? data["revealed"].get<bool>() : false;
+
+        return item;
+    }
 }
 
 namespace BloodSword::Items
@@ -287,35 +322,7 @@ namespace BloodSword::Items
 
         for (auto i = 0; i < data.size(); i++)
         {
-            auto item = Item::Base();
-
-            if (!data[i]["attributes"].is_null() && data[i]["attributes"].is_object())
-            {
-                item.Attributes = Item::LoadAttributes(data[i]["attributes"]);
-            }
-
-            if (!data[i]["properties"].is_null() && data[i]["properties"].is_array() && data[i]["properties"].size() > 0)
-            {
-                item.Properties = Item::LoadProperties(data[i]["properties"]);
-            }
-
-            item.Type = !data[i]["type"].is_null() ? Item::Map(std::string(data[i]["type"])) : Item::Type::NONE;
-
-            item.Contains = !data[i]["contains"].is_null() ? Item::Map(std::string(data[i]["contains"])) : Item::Type::NONE;
-
-            item.Quantity = !data[i]["quantity"].is_null() ? int(data[i]["quantity"]) : 0;
-
-            item.Limit = !data[i]["limit"].is_null() ? int(data[i]["limit"]) : -1;
-
-            item.Name = !data[i]["name"].is_null() ? std::string(data[i]["name"]) : std::string();
-
-            if (!data[i]["description"].is_null() && data[i]["description"].is_object())
-            {
-                item.Description = Book::Load(data[i]["description"]);
-            }
-
-            // check whether or not description has been revealed
-            item.Revealed = (!data[i]["revealed"].is_null() && data[i]["revealed"].is_boolean()) ? data[i]["revealed"].get<bool>() : false;
+            auto item = Item::Load(data[i]);
 
             if (item.Name.size() > 0)
             {
