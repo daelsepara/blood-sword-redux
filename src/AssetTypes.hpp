@@ -126,7 +126,8 @@ namespace BloodSword::Asset
         KING_CLUBS,
         KING_DIAMONDS,
         KING_HEARTS,
-        KING_SPADES
+        KING_SPADES,
+        GAME
     };
 
     template <typename T>
@@ -247,7 +248,8 @@ namespace BloodSword::Asset
         {Asset::Type::KING_CLUBS, "KING CLUBS"},
         {Asset::Type::KING_DIAMONDS, "KING DIAMONDS"},
         {Asset::Type::KING_HEARTS, "KING HEARTS"},
-        {Asset::Type::KING_SPADES, "KING SPADES"}};
+        {Asset::Type::KING_SPADES, "KING SPADES"},
+        {Asset::Type::GAME, "GAME"}};
 
     Asset::Type Map(const char *asset)
     {

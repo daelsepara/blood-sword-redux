@@ -104,7 +104,7 @@ namespace BloodSword::Input
         }
     }
 
-    void RenderWhileWaiting(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = false)
+    void RenderWhileWaiting(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true)
     {
         Graphics::Dialog(graphics, scenes, blur);
 
@@ -113,7 +113,7 @@ namespace BloodSword::Input
         Graphics::RenderNow(graphics);
     }
 
-    void RenderWhileWaiting(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = false)
+    void RenderWhileWaiting(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = true)
     {
         if (!is_dialog)
         {
@@ -137,7 +137,7 @@ namespace BloodSword::Input
         SDL_StopTextInput();
     }
 
-    Controls::User WaitForText(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = false, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForText(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         Input::RenderWhileWaiting(graphics, scenes, controls, input, blur);
 
@@ -212,14 +212,14 @@ namespace BloodSword::Input
     }
 
     // Handler for text input events. Must be called from other handler since it does not render screens
-    Controls::User WaitForText(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForText(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         auto &controls = is_dialog ? scene.Controls : background.Controls;
 
         return Input::WaitForText(graphics, {background, scene}, controls, input, blur, delay);
     }
 
-    Controls::User WaitForInput(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = false, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForInput(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         if (input.Text)
         {
@@ -484,7 +484,7 @@ namespace BloodSword::Input
     }
 
     // render scene and overlays then wait for user input
-    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = false, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         auto &controls = is_dialog ? scene.Controls : background.Controls;
 

@@ -480,7 +480,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    void Dialog(Base &graphics, Graphics::Scenery scenes, bool blur = false)
+    void Dialog(Base &graphics, Graphics::Scenery scenes, bool blur = true)
     {
         if (graphics.Renderer && scenes.size() > 0)
         {
@@ -500,7 +500,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    void Dialog(Base &graphics, Graphics::Scenery scenes, Controls::User input, bool blur = false)
+    void Dialog(Base &graphics, Graphics::Scenery scenes, Controls::User input, bool blur = true)
     {
         if (graphics.Renderer && scenes.size() > 0)
         {
@@ -511,7 +511,7 @@ namespace BloodSword::Graphics
     }
 
     // handle controls on pop-up dialog instead of the background
-    void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input, bool blur = false)
+    void Dialog(Base &graphics, Scene::Base &background, Scene::Base &dialog, Controls::User input, bool blur = true)
     {
         Graphics::Dialog(graphics, {background, dialog}, input, blur);
     }

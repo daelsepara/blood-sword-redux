@@ -5,6 +5,7 @@
 #include "Conditions.hpp"
 #include "Section.hpp"
 #include "Interface.hpp"
+#include "InterfaceBattle.hpp"
 #include "InterfaceInventory.hpp"
 
 namespace BloodSword::Interface
@@ -387,6 +388,15 @@ namespace BloodSword::Interface
 
         id++;
 
+        // game functions
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::GAME), buttons.X + num_buttons * button_spacing, buttons.Y));
+
+        overlay.Add(Controls::Base(Controls::Type::GAME, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        num_buttons++;
+
+        id++;
+
         // exit button icon
         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + num_buttons * button_spacing, buttons.Y));
 
@@ -444,8 +454,15 @@ namespace BloodSword::Interface
     {
         auto id = 0;
 
+        // game functions
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::GAME), buttons.X, buttons.Y));
+
+        overlay.Add(Controls::Base(Controls::Type::GAME, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        id++;
+
         // exit button icon
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y));
 
         // scroll button icons
         if (arrow_up)
@@ -461,7 +478,7 @@ namespace BloodSword::Interface
         if (arrow_up && arrow_dn)
         {
             // exit hotspot when both scroll buttons are present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id + 2, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             // scroll buttons hotspots
             id++;
@@ -473,7 +490,7 @@ namespace BloodSword::Interface
         else if (arrow_up)
         {
             // exit hotspot when scroll up is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             id++;
 
@@ -483,7 +500,7 @@ namespace BloodSword::Interface
         else if (arrow_dn)
         {
             // exit hotspot when scroll down is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id, id + 1, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             id++;
 
@@ -493,7 +510,7 @@ namespace BloodSword::Interface
         else
         {
             // exit hotspot when there are no scroll buttons
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id, id, id, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
     }
 
@@ -782,6 +799,12 @@ namespace BloodSword::Interface
                 else if (input.Type == Controls::Type::ITEMS)
                 {
                     Interface::PartyInventory(graphics, overlay, story, party, true);
+
+                    input.Selected = false;
+                }
+                else if (input.Type == Controls::Type::GAME)
+                {
+                    Interface::MessageBox(graphics, overlay, "NOT IMPLEMENTED YET", Color::Active);
 
                     input.Selected = false;
                 }

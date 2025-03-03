@@ -11,8 +11,7 @@
 #include "Primitives.hpp"
 #include "Templates.hpp"
 #include "Position.hpp"
-#include "InterfaceBattle.hpp"
-#include "InterfaceStory.hpp"
+#include "Battle.hpp"
 
 // classes and functions for managing story sections
 namespace BloodSword::Section

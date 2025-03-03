@@ -925,7 +925,7 @@ namespace BloodSword::Test
         {
             auto scene = Scene::Base();
 
-            auto character_class = Interface::SelectCharacter(graphics, scene, party, "CHOOSE A PLAYER", false, true);
+            auto character_class = Interface::SelectCharacter(graphics, scene, party, "CHOOSE A PLAYER", false, true, true, true, true);
 
             if (character_class != Character::Class::NONE)
             {

@@ -1533,7 +1533,7 @@ namespace BloodSword::Interface
     }
 
     // generic character class selector
-    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, bool names = false, bool back = false)
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, bool names = false, bool back = false, bool show_skills = true, bool show_stats = true, bool blur = true)
     {
         auto character_class = Character::Class::NONE;
 
@@ -1581,22 +1581,28 @@ namespace BloodSword::Interface
                 {
                     auto &control = overlay.Controls[input.Current];
 
-                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
-
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
-
-                    if (skills[input.Current])
+                    if (show_stats)
                     {
-                        auto skills_x = popup.X + (popup_w + pad * 2);
+                        overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
-                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
+                    }
 
-                        overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
+                    if (show_skills)
+                    {
+                        if (skills[input.Current])
+                        {
+                            auto skills_x = popup.X + (popup_w + pad * 2);
+
+                            overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+
+                            overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
+                        }
                     }
                 }
             }
 
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+            input = Input::WaitForInput(graphics, background, overlay, input, true, blur);
 
             if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
@@ -3243,7 +3249,7 @@ namespace BloodSword::Interface
                                         while (!done)
                                         {
                                             // distribute healing
-                                            auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false);
+                                            auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false, true, true, blur);
 
                                             if (party[target].Value(Attribute::Type::ENDURANCE) > 0 && party[target].Value(Attribute::Type::ENDURANCE) < party[target].Maximum(Attribute::Type::ENDURANCE))
                                             {

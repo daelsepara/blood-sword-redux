@@ -1,14 +1,13 @@
 #ifndef __INTERFACE_INVENTORY_HPP__
 #define __INTERFACE_INVENTORY_HPP__
 
-#include "Graphics.hpp"
-#include "Interface.hpp"
 #include "Section.hpp"
+#include "Interface.hpp"
 
 // inventory management
 namespace BloodSword::Interface
 {
-    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Character::Base &character, bool blur = false)
+    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Character::Base &character, bool blur = true)
     {
         if (!Engine::IsAlive(character))
         {
@@ -20,7 +19,7 @@ namespace BloodSword::Interface
         }
     }
 
-    void PartyInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, bool blur = false)
+    void PartyInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, bool blur = true)
     {
         if (!Engine::IsAlive(party))
         {
@@ -32,7 +31,7 @@ namespace BloodSword::Interface
 
             if (Engine::Count(party) > 1)
             {
-                character = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO VIEW INVENTORY", true, false);
+                character = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO VIEW INVENTORY", true, false, false, false, blur);
             }
 
             if (character != Character::Class::NONE)

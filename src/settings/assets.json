@@ -411,6 +411,10 @@
         {
             "id": "KING SPADES",
             "path": "images/cards/card-king-spades.png"
+        },
+        {
+            "id": "GAME",
+            "path": "images/system/bookmark.png"
         }
     ]
 }
