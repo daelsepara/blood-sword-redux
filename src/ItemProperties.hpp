@@ -18,7 +18,11 @@ namespace BloodSword::Item
         ARMOUR,
         CONTAINER,
         EQUIPPED,
-        POISONED
+        POISONED,
+        PRIMARY,
+        SECONDARY,
+        RANGED,
+        CANNOT_DROP
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -30,7 +34,11 @@ namespace BloodSword::Item
         {Item::Property::ARMOUR, "ARMOUR"},
         {Item::Property::CONTAINER, "CONTAINER"},
         {Item::Property::EQUIPPED, "EQUIPPED"},
-        {Item::Property::POISONED, "POISONED"}};
+        {Item::Property::POISONED, "POISONED"},
+        {Item::Property::PRIMARY, "PRIMARY"},
+        {Item::Property::SECONDARY, "SECONDARY"},
+        {Item::Property::RANGED, "RANGED"},
+        {Item::Property::CANNOT_DROP, "CANNOT DROP"}};
 
     Item::Property MapProperty(const char *property)
     {

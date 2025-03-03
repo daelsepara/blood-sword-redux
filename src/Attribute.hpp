@@ -74,13 +74,13 @@ namespace BloodSword::Attribute
         {Attribute::Type::ARMOUR, "ARMOUR"}};
 
     BloodSword::Mapping<Attribute::Type> Abbreviations = {
-            {Attribute::Type::NONE, "---"},
-            {Attribute::Type::FIGHTING_PROWESS, "FPR"},
-            {Attribute::Type::AWARENESS, "AWR"},
-            {Attribute::Type::PSYCHIC_ABILITY, "PSY"},
-            {Attribute::Type::ENDURANCE, "END"},
-            {Attribute::Type::DAMAGE, "DMG"},
-            {Attribute::Type::ARMOUR, "ARM"}};
+        {Attribute::Type::NONE, "---"},
+        {Attribute::Type::FIGHTING_PROWESS, "FPR"},
+        {Attribute::Type::AWARENESS, "AWR"},
+        {Attribute::Type::PSYCHIC_ABILITY, "PSY"},
+        {Attribute::Type::ENDURANCE, "END"},
+        {Attribute::Type::DAMAGE, "DMG"},
+        {Attribute::Type::ARMOUR, "ARM"}};
 
     Attribute::Type Map(const char *attribute)
     {

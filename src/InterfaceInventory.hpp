@@ -7,10 +7,90 @@
 // inventory management
 namespace BloodSword::Interface
 {
-    Book::Location RenderInventory(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
+    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, Character::Base &character, Item::Base &item)
     {
-        Book::Location next = {Book::Number::NONE, -1};
+        auto assets = std::vector<Asset::Type>();
 
+        auto controls = std::vector<Controls::Type>();
+
+        // use item
+        assets.push_back(Asset::Type::USE);
+
+        controls.push_back(Controls::Type::USE);
+
+        if ((item.Has(Item::Property::WEAPON) || item.Has(Item::Property::ARMOUR)) && !item.Has(Item::Property::EQUIPPED))
+        {
+            // equip weapon / armour
+            assets.push_back(Asset::Type::CONFIRM);
+
+            controls.push_back(Controls::Type::EQUIP);
+        }
+        else if ((item.Has(Item::Property::WEAPON) || item.Has(Item::Property::ARMOUR)) && item.Has(Item::Property::EQUIPPED))
+        {
+            // unequip weapon / armour
+            assets.push_back(Asset::Type::CANCEL);
+
+            controls.push_back(Controls::Type::UNEQUIP);
+        }
+
+        if (item.Has(Item::Property::CONTAINER) && item.Contains == Item::Type::GOLD && item.Quantity > 0)
+        {
+            // money
+            assets.push_back(Asset::Type::MONEY);
+
+            controls.push_back(Controls::Type::MONEY);
+        }
+
+        if (Engine::Count(party) > 1)
+        {
+            // trade
+            assets.push_back(Asset::Type::TRADE);
+
+            controls.push_back(Controls::Type::TRADE);
+        }
+
+        if (!item.Has(Item::Property::CANNOT_DROP))
+        {
+            assets.push_back(Asset::Type::DROP);
+
+            controls.push_back(Controls::Type::DROP);
+        }
+
+        assets.push_back(Asset::Type::BACK);
+
+        controls.push_back(Controls::Type::BACK);
+
+        auto values = std::vector<int>();
+
+        for (auto i = 0; i < controls.size(); i++)
+        {
+            values.push_back(i);
+        }
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, item.Name.c_str(), assets, values, 1, 1, Asset::Type::NONE, false);
+
+            if (selection.size() == 1)
+            {
+                auto input = controls[selection[0]];
+
+                if (input == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else
+                {
+                    Interface::NotImplemented(graphics, background);
+                }
+            }
+        }
+    }
+
+    void ShowInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, Character::Base &character)
+    {
         auto limit = std::min(4, int(character.Items.size()));
 
         auto start = 0;
@@ -156,18 +236,16 @@ namespace BloodSword::Interface
 
                     if (choice >= 0 && choice < character.Items.size())
                     {
-                        // show item
+                        Interface::ManageItem(graphics, background, story, party, character, character.Items[choice]);
                     }
                 }
             }
         }
 
         Free(menu);
-
-        return next;
     }
 
-    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Character::Base &character, bool blur = true)
+    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, Character::Base &character, bool blur = true)
     {
         if (!Engine::IsAlive(character))
         {
@@ -175,7 +253,7 @@ namespace BloodSword::Interface
         }
         else if (character.Items.size() > 0)
         {
-            Interface::RenderInventory(graphics, background, character);
+            Interface::ShowInventory(graphics, background, story, party, character);
         }
         else
         {
@@ -183,7 +261,7 @@ namespace BloodSword::Interface
         }
     }
 
-    void PartyInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, bool blur = true)
+    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, bool blur = true)
     {
         if (!Engine::IsAlive(party))
         {
@@ -202,7 +280,7 @@ namespace BloodSword::Interface
 
                 if (character != Character::Class::NONE)
                 {
-                    Interface::ManageInventory(graphics, background, story, party[character], blur);
+                    Interface::ManageInventory(graphics, background, story, party, party[character], blur);
                 }
 
                 if (Engine::Count(party) == 1)

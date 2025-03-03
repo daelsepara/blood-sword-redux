@@ -3002,6 +3002,11 @@ namespace BloodSword::Interface
         Interface::MessageBox(graphics, background, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Highlight, true);
     }
 
+    void NotImplemented(Graphics::Base &graphics, Scene::Base &overlay)
+    {
+        Interface::Notify(graphics, overlay, Interface::MSG_IMPLEMENT);
+    }
+
     // generic get number popup (arbitrary location)
     int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, Point origin, int popup_w, int popup_h, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease)
     {
@@ -3557,7 +3562,9 @@ namespace BloodSword::Interface
 
         auto popup_pad = BloodSword::QuarterTile;
 
-        auto popup_w = std::max(int(assets.size() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+        auto num_icons = int(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
+
+        auto popup_w = std::max(num_icons * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
 
         auto popup_h = (BloodSword::TileSize + popup_pad) * 2;
 
@@ -3580,9 +3587,13 @@ namespace BloodSword::Interface
             Interface::PrintSelection(assets, values, "SHUFFLE");
         }
 
+        auto last_control = (min_select == 1 && max_select == 1) ? Controls::Type::NONE : Controls::Type::CONFIRM;
+
+        auto last_asset = (min_select == 1 && max_select == 1) ? Asset::Type::NONE : Asset::Type::CONFIRM;
+
         while (!done)
         {
-            auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, final_assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+            auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, final_assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, last_control, last_asset);
 
             // title
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
@@ -3611,30 +3622,40 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::SELECT && input.Current >= 0 && input.Current < assets.size())
                 {
-                    // toggle
-                    selection[input.Current] = !selection[input.Current];
-
-                    if (selection[input.Current])
+                    if (min_select == 1 && max_select == 1)
                     {
-                        selected_symbols.push_back(values[input.Current]);
+                        // if min/max selection is 1, skip confirmation message box
+                        selected_symbols = {values[input.Current]};
 
-                        std::cerr << "SELECTED: "
-                                  << input.Current
-                                  << " => "
-                                  << Asset::TypeMapping[assets[values[input.Current]]]
-                                  << " SIZE: "
-                                  << selected_symbols.size() << std::endl;
+                        done = true;
                     }
                     else
                     {
-                        selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
+                        // toggle
+                        selection[input.Current] = !selection[input.Current];
 
-                        std::cerr << "DESELECTED: "
-                                  << input.Current
-                                  << " => "
-                                  << Asset::TypeMapping[assets[values[input.Current]]]
-                                  << " SIZE: "
-                                  << selected_symbols.size() << std::endl;
+                        if (selection[input.Current])
+                        {
+                            selected_symbols.push_back(values[input.Current]);
+
+                            std::cerr << "SELECTED: "
+                                      << input.Current
+                                      << " => "
+                                      << Asset::TypeMapping[assets[values[input.Current]]]
+                                      << " SIZE: "
+                                      << selected_symbols.size() << std::endl;
+                        }
+                        else
+                        {
+                            selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
+
+                            std::cerr << "DESELECTED: "
+                                      << input.Current
+                                      << " => "
+                                      << Asset::TypeMapping[assets[values[input.Current]]]
+                                      << " SIZE: "
+                                      << selected_symbols.size() << std::endl;
+                        }
                     }
                 }
 

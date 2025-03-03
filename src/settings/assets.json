@@ -415,6 +415,22 @@
         {
             "id": "GAME",
             "path": "images/system/bookmark.png"
+        },
+        {
+            "id": "USE",
+            "path": "images/items/hand.png"
+        },
+        {
+            "id": "MONEY",
+            "path": "images/items/coins.png"
+        },
+        {
+            "id": "TRADE",
+            "path": "images/items/trade.png"
+        },
+        {
+            "id": "DROP",
+            "path": "images/items/trash-can.png"
         }
     ]
 }

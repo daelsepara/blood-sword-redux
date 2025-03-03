@@ -51,6 +51,7 @@
                         "name": "SWORD",
                         "properties": [
                             "WEAPON",
+                            "PRIMARY",
                             "EQUIPPED"
                         ],
                         "quantity": 1,
@@ -134,6 +135,7 @@
                         "name": "SWORD",
                         "properties": [
                             "WEAPON",
+                            "PRIMARY",
                             "EQUIPPED"
                         ],
                         "quantity": 1,
@@ -144,6 +146,7 @@
                         "name": "BOW",
                         "properties": [
                             "WEAPON",
+                            "RANGED",
                             "EQUIPPED"
                         ],
                         "quantity": 1,
@@ -242,6 +245,7 @@
                         "name": "QUARTERSTAFF",
                         "properties": [
                             "WEAPON",
+                            "PRIMARY",
                             "EQUIPPED"
                         ],
                         "quantity": 1,
@@ -252,6 +256,7 @@
                         "name": "BOW",
                         "properties": [
                             "WEAPON",
+                            "RANGED",
                             "EQUIPPED"
                         ],
                         "quantity": 1,
@@ -355,6 +360,7 @@
                         "name": "SWORD",
                         "properties": [
                             "WEAPON",
+                            "PRIMARY",
                             "EQUIPPED"
                         ],
                         "quantity": 1,

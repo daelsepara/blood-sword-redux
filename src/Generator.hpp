@@ -536,7 +536,7 @@ namespace BloodSword::Generate
     {
         if (warrior.Rank <= 8)
         {
-            warrior.Items.push_back(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::EQUIPPED}));
+            warrior.Items.push_back(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
 
             warrior.Items.push_back(Item::Base("CHAINMAIL", Item::Type::CHAINMAIL, {{Attribute::Type::ARMOUR, 3}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
         }
@@ -547,9 +547,9 @@ namespace BloodSword::Generate
     {
         if (trickster.Rank <= 8)
         {
-            trickster.Items.push_back(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::EQUIPPED}));
+            trickster.Items.push_back(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
 
-            trickster.Items.push_back(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::EQUIPPED}));
+            trickster.Items.push_back(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}));
 
             trickster.Items.push_back(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER}, Item::Type::ARROW, 6, 6));
 
@@ -562,9 +562,9 @@ namespace BloodSword::Generate
     {
         if (sage.Rank <= 8)
         {
-            sage.Items.push_back(Item::Base("QUARTERSTAFF", Item::Type::QUARTERSTAFF, {Item::Property::WEAPON, Item::Property::EQUIPPED}));
+            sage.Items.push_back(Item::Base("QUARTERSTAFF", Item::Type::QUARTERSTAFF, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
 
-            sage.Items.push_back(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::EQUIPPED}));
+            sage.Items.push_back(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}));
 
             sage.Items.push_back(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER}, Item::Type::ARROW, 6, 6));
 
@@ -577,7 +577,7 @@ namespace BloodSword::Generate
     {
         if (enchanter.Rank <= 8)
         {
-            enchanter.Items.push_back(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::EQUIPPED}));
+            enchanter.Items.push_back(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
 
             enchanter.Items.push_back(Item::Base("SILVER ARMOUR", Item::Type::SILVER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
         }

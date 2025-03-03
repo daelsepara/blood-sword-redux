@@ -65,7 +65,7 @@ namespace BloodSword::Controls
         INFO,
         USE,
         DROP,
-        TRANSFER,
+        TRADE,
         TAKE,
         TEMPORARY_OBSTACLE,
         VOLCANO_SPRAY,
@@ -88,7 +88,10 @@ namespace BloodSword::Controls
         SHURIKEN,
         NEXT,
         CENTER,
-        SELECT
+        SELECT,
+        EQUIP,
+        UNEQUIP,
+        MONEY
     };
 
     typedef std::vector<Controls::Type> Collection;

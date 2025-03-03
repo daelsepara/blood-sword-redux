@@ -1498,6 +1498,16 @@ namespace BloodSword::Test
         Test::PrintSelection(graphics, background, party_assets, party_selection, 1, 4);
     }
 
+    void Inventory(Graphics::Base &graphics, Scene::Base &background)
+    {
+        // load party from file
+        auto party = Party::Load("party/rank08.json", "party");
+
+        auto story = Story::Base();
+
+        Interface::ManageInventory(graphics, background, story, party, true);
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1516,7 +1526,8 @@ namespace BloodSword::Test
              Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("13 HEALING\n\n\nHealing ability", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("14 SELECT SYMBOLS\n\n\nSelect symbols", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("14 SELECT SYMBOLS\n\n\nSelect symbols", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("15 INVENTORY\n\n\nManage inventory", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1680,6 +1691,11 @@ namespace BloodSword::Test
                     case 14:
                         // select from icons
                         Test::Select(graphics, scene);
+
+                        break;
+                    case 15:
+                        // inventory management
+                        Test::Inventory(graphics, scene);
 
                         break;
                     default:

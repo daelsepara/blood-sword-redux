@@ -798,13 +798,13 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::ITEMS)
                 {
-                    Interface::PartyInventory(graphics, overlay, story, party, true);
+                    Interface::ManageInventory(graphics, overlay, story, party, true);
 
                     input.Selected = false;
                 }
                 else if (input.Type == Controls::Type::GAME)
                 {
-                    Interface::MessageBox(graphics, overlay, "NOT IMPLEMENTED YET", Color::Active);
+                    Interface::NotImplemented(graphics, overlay);
 
                     input.Selected = false;
                 }
