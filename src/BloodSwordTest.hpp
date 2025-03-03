@@ -563,7 +563,7 @@ namespace BloodSword::Test
                 {
                     auto overlay = Scene::Base(fps_texture, map.DrawX, map.TileSize / 2);
 
-                    input = Input::WaitForInput(graphics, scene, overlay, input);
+                    input = Input::WaitForInput(graphics, scene, overlay, input, false, false);
                 }
                 else
                 {
