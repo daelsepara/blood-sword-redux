@@ -91,7 +91,8 @@ namespace BloodSword::Controls
         SELECT,
         EQUIP,
         UNEQUIP,
-        MONEY
+        MONEY,
+        INVENTORY
     };
 
     typedef std::vector<Controls::Type> Collection;

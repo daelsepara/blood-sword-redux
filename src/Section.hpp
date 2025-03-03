@@ -39,6 +39,8 @@ namespace BloodSword::Section
 
         Conditions::List Next = {};
 
+        Items::Inventory Items = {};
+
         Base() {}
 
         bool Has(Feature::Type feature)
@@ -153,6 +155,11 @@ namespace BloodSword::Section
             }
 
             section.Next = conditions;
+        }
+
+        if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+        {
+            section.Items = Items::Load(data["items"]);
         }
 
         return section;

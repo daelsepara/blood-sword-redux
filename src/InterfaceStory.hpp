@@ -338,6 +338,8 @@ namespace BloodSword::Interface
 
         auto spells = party.Has(Character::Class::ENCHANTER);
 
+        auto items = section.Items.size() > 0;
+
         // add button textures
         if (section.Battle.IsDefined())
         {
@@ -354,6 +356,18 @@ namespace BloodSword::Interface
         num_buttons++;
 
         id++;
+
+        if (items)
+        {
+            // items in the area
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::ITEMS), buttons.X + num_buttons * button_spacing, buttons.Y));
+
+            overlay.Add(Controls::Base(Controls::Type::ITEMS, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
+
+            id++;
+        }
 
         if (heal)
         {
@@ -380,9 +394,9 @@ namespace BloodSword::Interface
         }
 
         // inventory management and hotpost
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::ITEMS), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::INVENTORY), buttons.X + num_buttons * button_spacing, buttons.Y));
 
-        overlay.Add(Controls::Base(Controls::Type::ITEMS, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        overlay.Add(Controls::Base(Controls::Type::INVENTORY, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
         num_buttons++;
 
@@ -797,6 +811,12 @@ namespace BloodSword::Interface
                     }
                 }
                 else if (input.Type == Controls::Type::ITEMS)
+                {
+                    Interface::ShowInventory(graphics, overlay, party, section.Items);
+
+                    input.Selected = false;
+                }
+                else if (input.Type == Controls::Type::INVENTORY)
                 {
                     Interface::ManageInventory(graphics, overlay, story, party, true);
 

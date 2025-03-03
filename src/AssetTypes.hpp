@@ -131,7 +131,8 @@ namespace BloodSword::Asset
         USE,
         TRADE,
         MONEY,
-        DROP
+        DROP,
+        INVENTORY
     };
 
     template <typename T>
@@ -257,7 +258,8 @@ namespace BloodSword::Asset
         {Asset::Type::USE, "USE"},
         {Asset::Type::TRADE, "TRADE"},
         {Asset::Type::MONEY, "MONEY"},
-        {Asset::Type::DROP, "DROP"}};
+        {Asset::Type::DROP, "DROP"},
+        {Asset::Type::INVENTORY, "INVENTORY"}};
 
     Asset::Type Map(const char *asset)
     {

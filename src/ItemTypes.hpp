@@ -22,7 +22,8 @@ namespace BloodSword::Item
         LEATHER_ARMOUR,
         RINGMAIL,
         SILVER_ARMOUR,
-        SHURIKEN
+        SHURIKEN,
+        SILVER_RING
     };
 
     // for the magus kalugen's card game in battlepits
@@ -49,7 +50,8 @@ namespace BloodSword::Item
         {Item::Type::LEATHER_ARMOUR, "LEATHER ARMOUR"},
         {Item::Type::RINGMAIL, "RINGMAIL"},
         {Item::Type::SILVER_ARMOUR, "SILVER ARMOUR"},
-        {Item::Type::SHURIKEN, "SHURIKEN"}};
+        {Item::Type::SHURIKEN, "SHURIKEN"},
+        {Item::Type::SILVER_RING, "SILVER RING"}};
 
     BloodSword::Mapping<Item::CardType> CardMapping = {
         {Item::CardType::NONE, "NONE"},

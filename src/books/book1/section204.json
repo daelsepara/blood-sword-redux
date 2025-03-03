@@ -1,0 +1,24 @@
+{
+    "items": [
+        {
+            "contains": "NONE",
+            "name": "SILVER RING",
+            "quantity": 1,
+            "type": "SILVER RING"
+        }
+    ],
+    "location": {
+        "book": "BOOK1",
+        "number": 204
+    },
+    "text": "You rake through the thick damp ashes that fill the trough. You soon discover some hard fragments of bone -- and then a melted SILVER RING. These appear to be the remains of several human sacrifices.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 515
+            }
+        }
+    ]
+}

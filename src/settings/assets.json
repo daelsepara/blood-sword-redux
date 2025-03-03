@@ -431,6 +431,10 @@
         {
             "id": "DROP",
             "path": "images/items/trash-can.png"
+        },
+        {
+            "id": "INVENTORY",
+            "path": "images/system/locked-chest.png"
         }
     ]
 }

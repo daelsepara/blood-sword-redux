@@ -64,6 +64,10 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Cast Spell](/screenshots/cast-spell.png)
 
+## Inventory System
+
+![Inventory](/screenshots/inventory-system.png)
+
 ## Story Mode
 
 ### Introduction
