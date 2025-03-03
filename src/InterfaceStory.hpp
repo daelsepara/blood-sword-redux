@@ -760,6 +760,13 @@ namespace BloodSword::Interface
                 {
                     if (Engine::IsAlive(party))
                     {
+                        while (!Interface::CheckItemLimit(party))
+                        {
+                            Interface::ErrorMessage(graphics, overlay, Interface::MSG_ITEMS);
+
+                            Interface::ManageInventory(graphics, overlay, story, party, true);
+                        }
+
                         next = Interface::NextSection(graphics, overlay, section, party);
 
                         if (Book::IsDefined(next))
@@ -779,7 +786,7 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        Interface::ErrorMessage(graphics, overlay, MSG_OVER);
+                        Interface::ErrorMessage(graphics, overlay, Interface::MSG_OVER);
                     }
                 }
                 else if (input.Type == Controls::Type::SPELLS)
@@ -937,14 +944,14 @@ namespace BloodSword::Interface
 
                 if (!(section != -1 && Book::IsDefined(story.Sections[section].Location)))
                 {
-                    Interface::Notify(graphics, background, MSG_IMPLEMENT);
+                    Interface::Notify(graphics, background, Interface::MSG_IMPLEMENT);
 
                     break;
                 }
             }
             else
             {
-                Interface::Notify(graphics, background, MSG_PLAY);
+                Interface::Notify(graphics, background, Interface::MSG_PLAY);
 
                 break;
             }

@@ -13,6 +13,8 @@
 
 namespace BloodSword::Item
 {
+    const int Unlimited = -1;
+
     // item base class
     class Base
     {
@@ -32,7 +34,7 @@ namespace BloodSword::Item
         // amount/number of the items above it currently contains
         int Quantity = 0;
 
-        int Limit = -1;
+        int Limit = Item::Unlimited;
 
         // item name
         std::string Name;
@@ -115,7 +117,7 @@ namespace BloodSword::Item
         // this item contains a type of item and of sufficient quanity
         bool Has(Item::Type type, int quantity)
         {
-            return (this->Is(Property::CONTAINER) && (this->Contains == type) && (this->Quantity >= quantity) && ((this->Limit != -1 && quantity >= 1) || this->Limit == -1));
+            return (this->Is(Property::CONTAINER) && (this->Contains == type) && (this->Quantity >= quantity) && ((this->Limit != Item::Unlimited && quantity >= 1) || this->Limit == Item::Unlimited));
         }
 
         // check if item has this attribute
@@ -135,14 +137,14 @@ namespace BloodSword::Item
         {
             auto result = false;
 
-            if (this->Is(Property::CONTAINER) && (this->Contains == item) && ((this->Limit == -1) || (((this->Quantity + quantity) <= this->Limit) && ((this->Quantity + quantity) >= 0))))
+            if (this->Is(Property::CONTAINER) && (this->Contains == item) && ((this->Limit == Item::Unlimited) || (((this->Quantity + quantity) <= this->Limit) && ((this->Quantity + quantity) >= 0))))
             {
                 this->Quantity += quantity;
 
                 // minimum
                 this->Quantity = std::max(0, this->Quantity);
 
-                if (this->Limit != -1)
+                if (this->Limit != Item::Unlimited)
                 {
                     // maximum
                     this->Quantity = std::min(this->Quantity, this->Limit);
@@ -361,7 +363,7 @@ namespace BloodSword::Item
 
         item.Quantity = !data["quantity"].is_null() ? int(data["quantity"]) : 0;
 
-        item.Limit = !data["limit"].is_null() ? int(data["limit"]) : -1;
+        item.Limit = !data["limit"].is_null() ? int(data["limit"]) : Item::Unlimited;
 
         item.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
 
@@ -387,6 +389,8 @@ namespace BloodSword::Items
     typedef std::vector<Item::Base> Inventory;
 
     typedef std::vector<Item::CardType> Deck;
+
+    const int Unlimited = -1;
 
     Items::Deck KalugenDeck = {
         Item::CardType::KING_OF_SERPENTS,

@@ -1385,7 +1385,7 @@ namespace BloodSword::Interface
                         {
                             Interface::MessageBox(graphics, map, "NUMBER OF LOCATIONS INSUFFICIENT", Color::Highlight);
                         }
-                        else if (!Interface::Confirm(graphics, map, Graphics::RichText("PROCEED WITH THIS FORMATION?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true))
+                        else if (!Interface::Confirm(graphics, map, "PROCEED WITH THIS FORMATION?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true))
                         {
                             input.Selected = false;
 

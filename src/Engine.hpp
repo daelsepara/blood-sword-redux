@@ -842,7 +842,6 @@ namespace BloodSword::Engine
         return score;
     }
 
-
     std::string NotInParty(Character::Class &character)
     {
         return (std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!");

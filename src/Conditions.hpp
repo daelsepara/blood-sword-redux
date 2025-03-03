@@ -1072,6 +1072,12 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
+        {
+            condition.Location = party.PreviousLocation;
+
+            result = true;
+        }
 
         // internal error
         if (internal_error)

@@ -33,7 +33,8 @@ namespace BloodSword::Interface
         Graphics::RichText("EVERYONE IS INCAPACITATED", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("YOU ARE INCAPACITATED", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("TARGET IS DEAD!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("THE FIGHT IS OVER!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+        Graphics::RichText("THE FIGHT IS OVER!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("YOU ARE CARRYING TOO MANY ITEMS!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     BloodSword::Textures Message = {};
 
@@ -90,6 +91,8 @@ namespace BloodSword::Interface
     const int MSG_LOST = 25;
 
     const int MSG_FIGHT = 26;
+
+    const int MSG_ITEMS = 27;
 
     void InitializeMessages(Graphics::Base &graphics)
     {

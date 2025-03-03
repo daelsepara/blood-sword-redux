@@ -2438,6 +2438,11 @@ namespace BloodSword::Interface
         return result;
     }
 
+    bool Confirm(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        return Interface::Confirm(graphics, scene, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), background, border, border_size, highlight, blur);
+    }
+
     // focus cursor on character on the map
     void Focus(Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
     {
@@ -2851,14 +2856,14 @@ namespace BloodSword::Interface
 
                     overlay.VerifyAndAdd(Scene::Element(current, (graphics.Width - BloodSword::Width(current)) / 2, party_y + pad));
 
-                    if (!Interface::Confirm(graphics, overlay, Graphics::RichText("Proceed with this party?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur))
+                    if (!Interface::Confirm(graphics, overlay, "PROCEED WITH THIS PARTY?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur))
                     {
                         party.Clear();
                     }
                 }
             }
 
-            Interface::MessageBox(graphics, overlay, Graphics::RichText("Party Complete!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur);
+            Interface::MessageBox(graphics, overlay, Graphics::RichText("PARTY COMPLETE!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur);
         }
 
         Free(&current);
@@ -3245,7 +3250,7 @@ namespace BloodSword::Interface
                                     if (score == 0)
                                     {
                                         // healing attempt failed
-                                        Interface::ErrorMessage(graphics, background, MSG_HEALING);
+                                        Interface::ErrorMessage(graphics, background, Interface::MSG_HEALING);
                                     }
                                     else
                                     {
@@ -3270,7 +3275,7 @@ namespace BloodSword::Interface
                                                     // heal selected character
                                                     Engine::GainEndurance(party[target], heal, false);
 
-                                                    Interface::Notify(graphics, background, MSG_HEALED);
+                                                    Interface::Notify(graphics, background, Interface::MSG_HEALED);
                                                 }
 
                                                 score -= heal;
@@ -3278,12 +3283,12 @@ namespace BloodSword::Interface
                                             else if (!Engine::IsAlive(party[target]))
                                             {
                                                 // target is beyond healing
-                                                Interface::ErrorMessage(graphics, background, MSG_LOST);
+                                                Interface::ErrorMessage(graphics, background, Interface::MSG_LOST);
                                             }
                                             else
                                             {
                                                 // target is not wounded
-                                                Interface::ErrorMessage(graphics, background, MSG_WOUND);
+                                                Interface::ErrorMessage(graphics, background, Interface::MSG_WOUND);
                                             }
 
                                             all_healed = true;
@@ -3303,7 +3308,7 @@ namespace BloodSword::Interface
                                         if (all_healed)
                                         {
                                             // everyone is at maximum endurance
-                                            Interface::Notify(graphics, background, MSG_MAX);
+                                            Interface::Notify(graphics, background, Interface::MSG_MAX);
                                         }
                                     }
                                 }
@@ -3316,22 +3321,22 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        Interface::ErrorMessage(graphics, background, MSG_ENDURANCE);
+                        Interface::ErrorMessage(graphics, background, Interface::MSG_ENDURANCE);
                     }
                 }
                 else
                 {
-                    Interface::ErrorMessage(graphics, background, MSG_BATTLE);
+                    Interface::ErrorMessage(graphics, background, Interface::MSG_BATTLE);
                 }
             }
             else
             {
-                Interface::ErrorMessage(graphics, background, MSG_ACTION);
+                Interface::ErrorMessage(graphics, background, Interface::MSG_ACTION);
             }
         }
         else
         {
-            Interface::ErrorMessage(graphics, background, MSG_SKILL);
+            Interface::ErrorMessage(graphics, background, Interface::MSG_SKILL);
         }
     }
 
@@ -3617,7 +3622,7 @@ namespace BloodSword::Interface
                 {
                     if (selected_symbols.size() >= min_select && selected_symbols.size() <= max_select)
                     {
-                        done = Interface::Confirm(graphics, background, Graphics::RichText("PROCEED?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                        done = Interface::Confirm(graphics, background, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
                     }
                 }
                 else if (input.Type == Controls::Type::SELECT && input.Current >= 0 && input.Current < assets.size())
