@@ -56,6 +56,27 @@ namespace BloodSword::Interface
             controls.push_back(Controls::Type::DROP);
         }
 
+        // item description / identify
+        if (Book::IsDefined(item.Description))
+        {
+            if (!item.Revealed)
+            {
+                if (character.Class == Character::Class::SAGE)
+                {
+                    assets.push_back(Asset::Type::IDENTIFY);
+
+                    controls.push_back(Controls::Type::IDENTIFY);
+                }
+            }
+            else
+            {
+                // add info button
+                assets.push_back(Asset::Type::INFO);
+
+                controls.push_back(Controls::Type::INFO);
+            }
+        }
+
         assets.push_back(Asset::Type::BACK);
 
         controls.push_back(Controls::Type::BACK);

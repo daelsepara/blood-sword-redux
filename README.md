@@ -66,7 +66,7 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ## Inventory System
 
-![Inventory](/screenshots/inventory-system.png)
+![Inventory](/screenshots/inventory-management.png)
 
 ## Story Mode
 

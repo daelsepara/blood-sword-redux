@@ -435,6 +435,14 @@
         {
             "id": "INVENTORY",
             "path": "images/system/locked-chest.png"
+        },
+        {
+            "id": "INFO",
+            "path": "images/system/scroll-unfurled.png"
+        },
+        {
+            "id": "IDENTIFY",
+            "path": "images/system/tied-scroll.png"
         }
     ]
 }

@@ -40,6 +40,9 @@ namespace BloodSword::Item
         // book description as sections
         Book::Location Description = {Book::Number::NONE, -1};
 
+        // item effects as sections
+        Book::Location Effects = {Book::Number::NONE, -1};
+
         // flag to check if it's revealed (i.e. with the SAGE)
         bool Revealed = false;
 
@@ -241,7 +244,7 @@ namespace BloodSword::Item
                 item_string += " ";
             }
 
-            if (this->Attributes.size() > 0 || this->Properties.size() > 0)
+            if (this->Attributes.size() > 0 || this->Properties.size() > 0 || this->Quantity > 1)
             {
                 auto stats = 0;
 
@@ -290,6 +293,16 @@ namespace BloodSword::Item
 
                         stats++;
                     }
+                }
+
+                if ((this->Properties.size() == 0 || !this->Has(Item::Property::CONTAINER)) && this->Quantity > 1)
+                {
+                    if (stats > 0)
+                    {
+                        item_string += ", ";
+                    }
+
+                    item_string += "QUANTITY: " + std::to_string(this->Quantity);
                 }
 
                 item_string += ")";
@@ -355,6 +368,11 @@ namespace BloodSword::Item
         if (!data["description"].is_null() && data["description"].is_object())
         {
             item.Description = Book::Load(data["description"]);
+        }
+
+        if (!data["effects"].is_null() && data["effects"].is_object())
+        {
+            item.Effects = Book::Load(data["effects"]);
         }
 
         // check whether or not description has been revealed
@@ -450,6 +468,11 @@ namespace BloodSword::Items
             if (Book::IsDefined(item.Description))
             {
                 data["description"] = Book::Data(item.Description);
+            }
+
+            if (Book::IsDefined(item.Effects))
+            {
+                data["effects"] = Book::Data(item.Effects);
             }
 
             data.push_back(row);
