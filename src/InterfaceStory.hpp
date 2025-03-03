@@ -328,6 +328,10 @@ namespace BloodSword::Interface
 
     void StoryControls(Section::Base &section, Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
+        auto elements = overlay.Elements.size();
+
+        auto controls = overlay.Controls.size();
+
         auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
 
         auto num_buttons = 0;
@@ -430,17 +434,21 @@ namespace BloodSword::Interface
             // exit hotspot when both scroll buttons are present
             overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
+            num_buttons++;
+
             // scroll buttons hotspots
             id++;
 
             overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id + 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 2, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_up)
         {
             // exit hotspot when scroll up is present
             overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
 
             id++;
 
@@ -452,6 +460,8 @@ namespace BloodSword::Interface
             // exit hotspot when scroll down is present
             overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
+            num_buttons++;
+
             id++;
 
             // scroll down hotspot
@@ -461,11 +471,29 @@ namespace BloodSword::Interface
         {
             // exit hotspot when there are no scroll buttons
             overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
+        }
+
+        // adjust position at buttom of screen
+        for (auto i = 0; i < num_buttons; i++)
+        {
+            overlay.Elements[elements + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
+
+            overlay.Controls[controls + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
         }
     }
 
     void EndingControls(Section::Base &section, Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
+        auto elements = overlay.Elements.size();
+
+        auto controls = overlay.Controls.size();
+
+        auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
+
+        auto num_buttons = 0;
+
         auto id = 0;
 
         // game functions
@@ -473,10 +501,12 @@ namespace BloodSword::Interface
 
         overlay.Add(Controls::Base(Controls::Type::GAME, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
+        num_buttons++;
+
         id++;
 
         // exit button icon
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + button_spacing, buttons.Y));
 
         // scroll button icons
         if (arrow_up)
@@ -492,19 +522,23 @@ namespace BloodSword::Interface
         if (arrow_up && arrow_dn)
         {
             // exit hotspot when both scroll buttons are present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
 
             // scroll buttons hotspots
             id++;
 
             overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id + 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 2, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_up)
         {
             // exit hotspot when scroll up is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
 
             id++;
 
@@ -514,7 +548,9 @@ namespace BloodSword::Interface
         else if (arrow_dn)
         {
             // exit hotspot when scroll down is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
 
             id++;
 
@@ -525,6 +561,16 @@ namespace BloodSword::Interface
         {
             // exit hotspot when there are no scroll buttons
             overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id, id, id, buttons.X + BloodSword::TileSize + BloodSword::Pad, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
+        }
+
+        // adjust position at buttom of screen
+        for (auto i = 0; i < num_buttons; i++)
+        {
+            overlay.Elements[elements + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
+
+            overlay.Controls[controls + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
         }
     }
 

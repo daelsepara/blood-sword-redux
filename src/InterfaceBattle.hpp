@@ -59,6 +59,9 @@ namespace BloodSword::Interface
                 controls.push_back(Controls::Type::MOVE);
             }
 
+            // defend
+            controls.push_back(Controls::Type::DEFEND);
+
             if (!battle.Has(Battle::Condition::NO_COMBAT))
             {
                 if (battle.Map.Adjacent(src, Map::Object::ENEMY))
@@ -94,9 +97,6 @@ namespace BloodSword::Interface
                 {
                     controls.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
                 }
-
-                // defend
-                controls.push_back(Controls::Type::DEFEND);
 
                 if (is_player && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
                 {
