@@ -227,6 +227,76 @@ namespace BloodSword::Item
 
             return result;
         }
+
+        std::string String(bool newline = false)
+        {
+            auto item_string = this->Name;
+
+            if (newline)
+            {
+                item_string += "\n";
+            }
+            else
+            {
+                item_string += " ";
+            }
+
+            if (this->Attributes.size() > 0 || this->Properties.size() > 0)
+            {
+                auto stats = 0;
+
+                item_string += "(";
+
+                if (this->Properties.size() > 0)
+                {
+                    for (auto &property : this->Properties)
+                    {
+                        if (property != Item::Property::CONTAINER)
+                        {
+                            if (stats > 0)
+                            {
+                                item_string += ", ";
+                            }
+
+                            item_string += Item::PropertyMapping[property];
+
+                            stats++;
+                        }
+                    }
+                }
+
+                if (this->Has(Item::Property::CONTAINER) && this->Contains != Item::Type::NONE)
+                {
+                    if (stats > 0)
+                    {
+                        item_string += ", ";
+                    }
+
+                    item_string += std::string(Item::TypeMapping[this->Contains]) + ": " + std::to_string(this->Quantity);
+
+                    stats++;
+                }
+
+                if (this->Attributes.size() > 0)
+                {
+                    for (auto &attribute : this->Attributes)
+                    {
+                        if (stats > 0)
+                        {
+                            item_string += ", ";
+                        }
+
+                        item_string += std::string(Attribute::Abbreviations[attribute.first]) + ": " + std::to_string(attribute.second);
+
+                        stats++;
+                    }
+                }
+
+                item_string += ")";
+            }
+
+            return item_string;
+        }
     };
 
     BloodSword::IntMapping<Attribute::Type> LoadAttributes(nlohmann::json &data)
