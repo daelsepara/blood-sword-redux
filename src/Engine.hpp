@@ -841,6 +841,60 @@ namespace BloodSword::Engine
 
         return score;
     }
+
+
+    std::string NotInParty(Character::Class &character)
+    {
+        return (std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!");
+    }
+
+    std::string IsDead(Character::Base &character)
+    {
+        return character.Name + " IS DEAD!";
+    }
+
+    std::string NoItem(Item::Type &item)
+    {
+        return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
+    }
+
+    std::string ToUpper(std::string str)
+    {
+        auto upper = str;
+
+        std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
+
+        return upper;
+    }
+
+    // returns index (in party) of first live character
+    int First(Party::Base &party)
+    {
+        auto first = -1;
+
+        if (Engine::IsAlive(party))
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                if (Engine::IsAlive(party[i]))
+                {
+                    first = i;
+
+                    break;
+                }
+            }
+        }
+
+        return first;
+    }
+
+    // returns class of first live character in party
+    Character::Class FirstClass(Party::Base &party)
+    {
+        auto character = Engine::First(party);
+
+        return character != -1 ? party[character].Class : Character::Class::NONE;
+    }
 }
 
 #endif

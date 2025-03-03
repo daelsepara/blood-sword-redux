@@ -5,6 +5,7 @@
 #include "Conditions.hpp"
 #include "Section.hpp"
 #include "Interface.hpp"
+#include "InterfaceInventory.hpp"
 
 namespace BloodSword::Interface
 {
@@ -377,6 +378,15 @@ namespace BloodSword::Interface
             id++;
         }
 
+        // inventory management and hotpost
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::ITEMS), buttons.X + num_buttons * button_spacing, buttons.Y));
+
+        overlay.Add(Controls::Base(Controls::Type::ITEMS, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        num_buttons++;
+
+        id++;
+
         // exit button icon
         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + num_buttons * button_spacing, buttons.Y));
 
@@ -585,7 +595,7 @@ namespace BloodSword::Interface
         return update;
     }
 
-    Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party, Party::Base &saved_party, std::string &text)
+    Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Section::Base &section, Party::Base &party, Party::Base &saved_party, std::string &text)
     {
         Book::Location next = {Book::Number::NONE, -1};
 
@@ -769,6 +779,12 @@ namespace BloodSword::Interface
                         input.Selected = false;
                     }
                 }
+                else if (input.Type == Controls::Type::ITEMS)
+                {
+                    Interface::PartyInventory(graphics, overlay, story, party, true);
+
+                    input.Selected = false;
+                }
                 else if (input.Type == Controls::Type::EXIT)
                 {
                     done = true;
@@ -811,7 +827,7 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
+    Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Section::Base &section, Party::Base &party)
     {
         std::cerr << "SECTION: " << Book::String(section.Location) << std::endl;
 
@@ -846,7 +862,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            next = Interface::RenderSection(graphics, background, section, party, saved_party, section_text);
+            next = Interface::RenderSection(graphics, background, story, section, party, saved_party, section_text);
         }
 
         return next;
@@ -867,7 +883,7 @@ namespace BloodSword::Interface
         {
             auto &current = story.Sections[section];
 
-            auto location = Interface::ProcessSection(graphics, background, current, party);
+            auto location = Interface::ProcessSection(graphics, background, story, current, party);
 
             if (Book::IsDefined(location) && Engine::IsAlive(party))
             {

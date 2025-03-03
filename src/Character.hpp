@@ -738,7 +738,7 @@ namespace BloodSword::Character
             character.SpellStrategy = Spells::LoadStrategy(data["spell_strategy"]);
         }
 
-        if (!data["location"].is_null())
+        if (!data["location"].is_null() && data["location"].is_object())
         {
             character.Location = Book::Load(data["location"]);
         }

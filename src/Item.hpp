@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "nlohmann/json.hpp"
+#include "Book.hpp"
 #include "Attribute.hpp"
 #include "ItemProperties.hpp"
 #include "ItemTypes.hpp"
@@ -35,6 +36,12 @@ namespace BloodSword::Item
 
         // item name
         std::string Name;
+
+        // book description as sections
+        Book::Location Description = {Book::Number::NONE, -1};
+
+        // flag to check if it's revealed (i.e. with the SAGE)
+        bool Revealed = false;
 
         Base() {}
 
@@ -298,9 +305,17 @@ namespace BloodSword::Items
 
             item.Quantity = !data[i]["quantity"].is_null() ? int(data[i]["quantity"]) : 0;
 
-            item.Limit = !data[i]["limiy"].is_null() ? int(data[i]["limit"]) : -1;
+            item.Limit = !data[i]["limit"].is_null() ? int(data[i]["limit"]) : -1;
 
             item.Name = !data[i]["name"].is_null() ? std::string(data[i]["name"]) : std::string();
+
+            if (!data["description"].is_null() && data["description"].is_object())
+            {
+                item.Description = Book::Load(data["description"]);
+            }
+
+            // check whether or not description has been revealed
+            item.Revealed = (!data["revealed"].is_null() && data["revealed"].is_boolean()) ? data["revealed"].get<bool>() : false;
 
             if (item.Name.size() > 0)
             {
@@ -352,6 +367,13 @@ namespace BloodSword::Items
             row["type"] = std::string(Item::TypeMapping[item.Type]);
 
             row["quantity"] = item.Quantity;
+
+            row["revealed"] = item.Revealed;
+
+            if (Book::IsDefined(item.Description))
+            {
+                data["description"] = Book::Data(item.Description);
+            }
 
             data.push_back(row);
         }

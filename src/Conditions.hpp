@@ -174,7 +174,7 @@ namespace BloodSword::Conditions
             }
 
             // set invert condition
-            condition.Invert = (!data["invert"].is_null() && data["invert"].is_boolean()) ? bool(!data["invert"]) : false;
+            condition.Invert = (!data["invert"].is_null() && data["invert"].is_boolean()) ? data["invert"].get<bool>() : false;
         }
 
         return condition;
@@ -208,30 +208,6 @@ namespace BloodSword::Conditions
         std::string message = "Internal Error: " + std::string(Conditions::TypeMapping[condition]) + "!";
 
         Interface::InternalError(graphics, background, message);
-    }
-
-    std::string NotInParty(Character::Class &character)
-    {
-        return (std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!");
-    }
-
-    std::string IsDead(Character::Base &character)
-    {
-        return character.Name + " IS DEAD!";
-    }
-
-    std::string NoItem(Item::Type &item)
-    {
-        return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
-    }
-
-    std::string ToUpper(std::string str)
-    {
-        auto upper = str;
-
-        std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
-
-        return upper;
     }
 
     // routine to validate "condition"
@@ -274,11 +250,11 @@ namespace BloodSword::Conditions
 
                     if (!result)
                     {
-                        text = Conditions::NotInParty(character);
+                        text = Engine::NotInParty(character);
                     }
                     else if (!Engine::IsAlive(party[character]))
                     {
-                        text = Conditions::IsDead(party[character]);
+                        text = Engine::IsDead(party[character]);
 
                         result = false;
                     }
@@ -333,7 +309,7 @@ namespace BloodSword::Conditions
 
                 if (!result)
                 {
-                    text = Conditions::NoItem(item);
+                    text = Engine::NoItem(item);
                 }
             }
             else
@@ -364,11 +340,11 @@ namespace BloodSword::Conditions
                 {
                     if (!party.Has(character))
                     {
-                        text = Conditions::NotInParty(character);
+                        text = Engine::NotInParty(character);
                     }
                     else if (!Engine::IsAlive(party[character]))
                     {
-                        text = Conditions::IsDead(party[character]);
+                        text = Engine::IsDead(party[character]);
                     }
                     else
                     {
@@ -410,13 +386,13 @@ namespace BloodSword::Conditions
                 {
                     if (!party.Has(character))
                     {
-                        text = Conditions::NotInParty(character);
+                        text = Engine::NotInParty(character);
                     }
                     else
                     {
                         if (!Engine::IsAlive(party[character]))
                         {
-                            text = Conditions::IsDead(party[character]);
+                            text = Engine::IsDead(party[character]);
                         }
                         else
                         {
@@ -463,7 +439,7 @@ namespace BloodSword::Conditions
                 {
                     if (!party.Has(character))
                     {
-                        text = Conditions::NotInParty(character);
+                        text = Engine::NotInParty(character);
                     }
                     else if (party.Has(character))
                     {
@@ -484,7 +460,7 @@ namespace BloodSword::Conditions
                         }
                         else
                         {
-                            text = Conditions::IsDead(party[character]);
+                            text = Engine::IsDead(party[character]);
                         }
                     }
 
@@ -583,7 +559,7 @@ namespace BloodSword::Conditions
             {
                 auto status = Character::MapStatus(condition.Variables[1]);
 
-                if (ToUpper(condition.Variables[0]) == "ALL")
+                if (Engine::ToUpper(condition.Variables[0]) == "ALL")
                 {
                     if (status != Character::Status::NONE && Engine::IsAlive(party))
                     {
@@ -614,11 +590,11 @@ namespace BloodSword::Conditions
 
                         if (!result)
                         {
-                            text = Conditions::NotInParty(character);
+                            text = Engine::NotInParty(character);
                         }
                         else if (!Engine::IsAlive(party[character]))
                         {
-                            text = Conditions::IsDead(party[character]);
+                            text = Engine::IsDead(party[character]);
 
                             result = false;
                         }
@@ -645,7 +621,7 @@ namespace BloodSword::Conditions
             {
                 auto status = Character::MapStatus(condition.Variables[1]);
 
-                if (ToUpper(condition.Variables[0]) == "ALL")
+                if (Engine::ToUpper(condition.Variables[0]) == "ALL")
                 {
                     if (status != Character::Status::NONE && Engine::IsAlive(party))
                     {
@@ -679,11 +655,11 @@ namespace BloodSword::Conditions
 
                         if (!result)
                         {
-                            text = Conditions::NotInParty(character);
+                            text = Engine::NotInParty(character);
                         }
                         else if (!Engine::IsAlive(party[character]))
                         {
-                            text = Conditions::IsDead(party[character]);
+                            text = Engine::IsDead(party[character]);
 
                             result = false;
                         }
@@ -713,7 +689,7 @@ namespace BloodSword::Conditions
                 {
                     if (!party.Has(character))
                     {
-                        text = Conditions::NotInParty(character);
+                        text = Engine::NotInParty(character);
                     }
                     else
                     {
@@ -756,7 +732,7 @@ namespace BloodSword::Conditions
 
                 if (attribute != Attribute::Type::NONE && status_fail != Character::Status::NONE)
                 {
-                    if (ToUpper(condition.Variables[0]) == "ALL")
+                    if (Engine::ToUpper(condition.Variables[0]) == "ALL")
                     {
                         if (Engine::IsAlive(party))
                         {
@@ -803,12 +779,12 @@ namespace BloodSword::Conditions
                                 }
                                 else
                                 {
-                                    text = Conditions::IsDead(party[character]);
+                                    text = Engine::IsDead(party[character]);
                                 }
                             }
                             else
                             {
-                                text = Conditions::NotInParty(character);
+                                text = Engine::NotInParty(character);
                             }
 
                             internal_error = false;
@@ -891,11 +867,11 @@ namespace BloodSword::Conditions
                 {
                     if (!party.Has(character))
                     {
-                        text = Conditions::NotInParty(character);
+                        text = Engine::NotInParty(character);
                     }
                     else if (!Engine::IsAlive(party[character]))
                     {
-                        text = Conditions::IsDead(party[character]);
+                        text = Engine::IsDead(party[character]);
                     }
                     else if (!party[character].HasCalledToMind(spell))
                     {
@@ -933,11 +909,11 @@ namespace BloodSword::Conditions
                 {
                     if (!party.Has(character))
                     {
-                        text = Conditions::NotInParty(character);
+                        text = Engine::NotInParty(character);
                     }
                     else if (!Engine::IsAlive(party[character]))
                     {
-                        text = Conditions::IsDead(party[character]);
+                        text = Engine::IsDead(party[character]);
                     }
                     else if (party[character].HasCalledToMind(spell))
                     {
@@ -978,7 +954,7 @@ namespace BloodSword::Conditions
 
                 auto max_select = std::stoi(condition.Variables[3], nullptr, 10);
 
-                auto hidden = Conditions::ToUpper(condition.Variables[4]) == "TRUE";
+                auto hidden = Engine::ToUpper(condition.Variables[4]) == "TRUE";
 
                 auto expected = 3 + options + (hidden ? 1 : 0);
 

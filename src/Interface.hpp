@@ -1553,7 +1553,7 @@ namespace BloodSword::Interface
 
         auto popup_pad = BloodSword::QuarterTile;
 
-        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
+        auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
 
         auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
 
