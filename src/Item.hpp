@@ -309,13 +309,13 @@ namespace BloodSword::Items
 
             item.Name = !data[i]["name"].is_null() ? std::string(data[i]["name"]) : std::string();
 
-            if (!data["description"].is_null() && data["description"].is_object())
+            if (!data[i]["description"].is_null() && data[i]["description"].is_object())
             {
-                item.Description = Book::Load(data["description"]);
+                item.Description = Book::Load(data[i]["description"]);
             }
 
             // check whether or not description has been revealed
-            item.Revealed = (!data["revealed"].is_null() && data["revealed"].is_boolean()) ? data["revealed"].get<bool>() : false;
+            item.Revealed = (!data[i]["revealed"].is_null() && data[i]["revealed"].is_boolean()) ? data[i]["revealed"].get<bool>() : false;
 
             if (item.Name.size() > 0)
             {
