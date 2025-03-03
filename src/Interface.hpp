@@ -2697,7 +2697,7 @@ namespace BloodSword::Interface
                 overlay.VerifyAndAdd(Scene::Element(current, screen.X + BloodSword::QuarterTile, screen.Y + pad));
             }
 
-            input = Input::WaitForInput(graphics, scene, overlay, input, true);
+            input = Input::WaitForInput(graphics, scene, overlay, input, true, true);
 
             if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {

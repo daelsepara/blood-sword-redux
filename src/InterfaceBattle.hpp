@@ -1320,7 +1320,7 @@ namespace BloodSword::Interface
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(party[current].Asset), Point(info_x, info_y + pad * 8)));
             }
 
-            input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input);
+            input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);
 
             if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
