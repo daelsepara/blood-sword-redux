@@ -68,7 +68,7 @@ namespace BloodSword::Interface
         }
         else if (Interface::CheckItemLimit(receiver) && (receiver.Items.size() < receiver.ItemLimit || receiver.ItemLimit == Items::Unlimited))
         {
-            std::string message = receiver.Name + " TAKES " + source[id].Name;
+            std::string message = receiver.Name + " TAKES THE " + source[id].Name;
 
             Interface::MessageBox(graphics, background, message, Color::Active);
 
