@@ -475,12 +475,14 @@ namespace BloodSword::Interface
             num_buttons++;
         }
 
-        // adjust position at buttom of screen
+        auto adjust = (num_buttons * button_spacing) / 2 + BloodSword::HalfTile - BloodSword::Pixel;
+
+        // adjust icon positions at bottom
         for (auto i = 0; i < num_buttons; i++)
         {
-            overlay.Elements[elements + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
+            overlay.Elements[elements + i].X -= adjust;
 
-            overlay.Controls[controls + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
+            overlay.Controls[controls + i].X -= adjust;
         }
     }
 
@@ -565,12 +567,14 @@ namespace BloodSword::Interface
             num_buttons++;
         }
 
-        // adjust position at buttom of screen
+        auto adjust = (num_buttons * button_spacing) / 2 + BloodSword::HalfTile - BloodSword::Pixel;
+
+        // adjust icon positions at bottom
         for (auto i = 0; i < num_buttons; i++)
         {
-            overlay.Elements[elements + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
+            overlay.Elements[elements + i].X -= adjust;
 
-            overlay.Controls[controls + i].X -= ((num_buttons * button_spacing) / 2 + BloodSword::HalfTile);
+            overlay.Controls[controls + i].X -= adjust;
         }
     }
 

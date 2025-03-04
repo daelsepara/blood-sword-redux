@@ -207,7 +207,7 @@ namespace BloodSword::Graphics
 
             SDL_SetRenderDrawColor(graphics.Renderer, 0, 0, 0, 0x40);
 
-            for (auto i = 0; i < graphics.Height; i += 2)
+            for (auto i = 0; i < graphics.Height; i += BloodSword::Pixel)
             {
                 scanline.y = i + 1;
 

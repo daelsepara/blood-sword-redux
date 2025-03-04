@@ -377,7 +377,7 @@ namespace BloodSword::Test
                 {
                     prev_background = background;
 
-                    background = 2;
+                    background = BloodSword::Pixel;
 
                     change = true;
                 }
@@ -789,13 +789,13 @@ namespace BloodSword::Test
 
             auto palette_y2 = origin_y1 + BloodSword::TileSize * 5 + BloodSword::Pad;
 
-            scene.Add(Scene::Element(palette_x1, origin_x, palette_w, palette_h, Palette::List[palette][0], Palette::List[palette][0], 2));
+            scene.Add(Scene::Element(palette_x1, origin_x, palette_w, palette_h, Palette::List[palette][0], Palette::List[palette][0], BloodSword::Pixel));
 
-            scene.Add(Scene::Element(palette_x2, origin_x, palette_w, palette_h, Palette::List[palette][1], Palette::List[palette][1], 2));
+            scene.Add(Scene::Element(palette_x2, origin_x, palette_w, palette_h, Palette::List[palette][1], Palette::List[palette][1], BloodSword::Pixel));
 
-            scene.Add(Scene::Element(palette_x1, origin_y2, palette_w, palette_h, Palette::List[palette][2], Palette::List[palette][2], 2));
+            scene.Add(Scene::Element(palette_x1, origin_y2, palette_w, palette_h, Palette::List[palette][2], Palette::List[palette][2], BloodSword::Pixel));
 
-            scene.Add(Scene::Element(palette_x2, origin_y2, palette_w, palette_h, Palette::List[palette][3], fixed, 2));
+            scene.Add(Scene::Element(palette_x2, origin_y2, palette_w, palette_h, Palette::List[palette][3], fixed, BloodSword::Pixel));
 
             scene.VerifyAndAdd(Scene::Element(labels[0], Point(palette_x1, palette_y1)));
 

@@ -38,6 +38,8 @@ namespace BloodSword
 
     const int SmallPad = 4;
 
+    const int Pixel = 2;
+
     // delay constants
     const int FrameDelay = 25;
 

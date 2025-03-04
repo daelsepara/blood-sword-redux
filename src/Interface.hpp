@@ -1049,7 +1049,7 @@ namespace BloodSword::Interface
 
             auto scroll = start_id + (options < limit ? options : limit);
 
-            auto pixels = 2;
+            auto pixels = BloodSword::Pixel;
 
             auto offset = pixels * 2;
 
@@ -1135,7 +1135,7 @@ namespace BloodSword::Interface
     {
         if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
         {
-            auto pixels = 2;
+            auto pixels = BloodSword::Pixel;
 
             auto offset = pixels * 2;
 
@@ -1518,7 +1518,7 @@ namespace BloodSword::Interface
 
                         if (i == 0)
                         {
-                            overlay.Add(Scene::Element(x + BloodSword::SmallPad, y + BloodSword::SmallPad, map.TileSize - BloodSword::Pad, map.TileSize - BloodSword::Pad, Color::Transparent, Color::Inactive, 2));
+                            overlay.Add(Scene::Element(x + BloodSword::SmallPad, y + BloodSword::SmallPad, map.TileSize - BloodSword::Pad, map.TileSize - BloodSword::Pad, Color::Transparent, Color::Inactive, BloodSword::Pixel));
                         }
                         else
                         {
@@ -2454,7 +2454,7 @@ namespace BloodSword::Interface
         {
             auto screen = (draw + (focus - Point(map.X, map.Y)) * map.TileSize) + BloodSword::SmallPad;
 
-            overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - BloodSword::Pad, map.TileSize - BloodSword::Pad, Color::Transparent, Color::Active, 2));
+            overlay.Add(Scene::Element(screen.X, screen.Y, map.TileSize - BloodSword::Pad, map.TileSize - BloodSword::Pad, Color::Transparent, Color::Active, BloodSword::Pixel));
         }
     }
 
@@ -3402,7 +3402,7 @@ namespace BloodSword::Interface
                     auto &control = overlay.Controls[i];
 
                     // highlight current selection
-                    overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, 2));
+                    overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, BloodSword::Pixel));
                 }
             }
 
@@ -3610,7 +3610,7 @@ namespace BloodSword::Interface
                     auto &control = overlay.Controls[i];
 
                     // highlight current selection
-                    overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, 2));
+                    overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, BloodSword::Pixel));
                 }
             }
 

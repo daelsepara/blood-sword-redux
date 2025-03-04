@@ -48,7 +48,7 @@ namespace BloodSword::Controls
         int H = 0;
 
         // border size (when highligted)
-        int Pixels = 2;
+        int Pixels = BloodSword::Pixel;
 
         // control is on the map
         bool OnMap = false;

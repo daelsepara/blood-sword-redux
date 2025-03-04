@@ -83,7 +83,7 @@ namespace BloodSword::Animation
         int FrameH = BloodSword::TileSize;
 
         // trail properties
-        int TrailSize = 2;
+        int TrailSize = BloodSword::Pixel;
 
         // clipping area
         Point Clip = Point(-1, -1);
