@@ -250,6 +250,8 @@ namespace BloodSword::Interface
         Palette::Switch(palette, override);
 
         Interface::LoadTextures(graphics);
+
+        InitializeMessages(graphics);
     }
 
     // add map to the scene
@@ -3549,7 +3551,7 @@ namespace BloodSword::Interface
         std::cerr << selected << std::endl;
     }
 
-    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false)
+    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false)
     {
         auto random = Random::Base();
 
@@ -3560,6 +3562,8 @@ namespace BloodSword::Interface
         auto controls = std::vector<Controls::Type>(selection.size(), Controls::Type::SELECT);
 
         auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto texture_captions = (captions.size() > 0 && captions.size() <= assets.size()) ? Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0)) : BloodSword::Textures();
 
         auto input = Controls::User();
 
@@ -3611,6 +3615,17 @@ namespace BloodSword::Interface
 
                     // highlight current selection
                     overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, BloodSword::Pixel));
+                }
+            }
+
+            if (Input::IsValid(overlay, input) && !hidden)
+            {
+                // captions
+                if (input.Type != Controls::Type::CONFIRM && input.Current >= 0 && input.Current < texture_captions.size())
+                {
+                    auto &control = overlay.Controls[input.Current];
+
+                    overlay.VerifyAndAdd(Scene::Element(texture_captions[input.Current], control.X, control.Y + control.H + BloodSword::Pad));
                 }
             }
 
@@ -3667,6 +3682,8 @@ namespace BloodSword::Interface
                 input.Selected = false;
             }
         }
+
+        Free(texture_captions);
 
         Free(&select);
 

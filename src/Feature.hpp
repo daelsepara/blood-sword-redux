@@ -13,7 +13,8 @@ namespace BloodSword::Feature
         CHOICES,
         BATTLE,
         SHOP,
-        ENDING
+        ENDING,
+        BAD_ENDING
     };
 
     BloodSword::Mapping<Feature::Type> TypeMapping = {
@@ -22,7 +23,8 @@ namespace BloodSword::Feature
         {Feature::Type::CHOICES, "CHOICES"},
         {Feature::Type::BATTLE, "BATTLE"},
         {Feature::Type::SHOP, "SHOP"},
-        {Feature::Type::ENDING, "ENDING"}};
+        {Feature::Type::ENDING, "ENDING"},
+        {Feature::Type::BAD_ENDING, "BAD ENDING"}};
 
     Feature::Type Map(const char *feature)
     {

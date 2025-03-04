@@ -99,6 +99,12 @@ namespace BloodSword::Interface
         // initialize battle messages
         Graphics::SetFonts(Text);
 
+        // reset colors
+        for (auto &text : Text)
+        {
+            text.Color = Color::S(Color::Active);
+        }
+
         Free(Message);
 
         Message = Graphics::CreateText(graphics, Text);
@@ -109,4 +115,5 @@ namespace BloodSword::Interface
         Free(Message);
     }
 }
+
 #endif

@@ -59,6 +59,18 @@ namespace BloodSword::Graphics
             text.Load();
         }
     }
+
+    Graphics::TextList GenerateTextList(std::vector<std::string> collection, TTF_Font *font, Uint32 color, int wrap = 0)
+    {
+        auto text_list = Graphics::TextList();
+
+        for (auto text : collection)
+        {
+            text_list.push_back(Graphics::RichText(text.c_str(), font, Color::S(color), TTF_STYLE_NORMAL, wrap));
+        }
+
+        return text_list;
+    }
 }
 
 #endif

@@ -988,7 +988,7 @@ namespace BloodSword::Conditions
                         party.Cards.clear();
 
                         // select cards
-                        auto selection = Interface::SelectIcons(graphics, background, condition.Variables[0].c_str(), assets, values, min_select, max_select, asset_hidden, hidden);
+                        auto selection = Interface::SelectIcons(graphics, background, condition.Variables[0].c_str(), assets, values, {}, min_select, max_select, asset_hidden, hidden);
 
                         for (auto i = 0; i < selection.size(); i++)
                         {

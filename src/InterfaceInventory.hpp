@@ -76,10 +76,14 @@ namespace BloodSword::Interface
 
         auto controls = std::vector<Controls::Type>();
 
+        auto captions = std::vector<std::string>();
+
         // use item
         assets.push_back(Asset::Type::USE);
 
         controls.push_back(Controls::Type::USE);
+
+        captions.push_back("USE");
 
         if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
         {
@@ -87,6 +91,8 @@ namespace BloodSword::Interface
             assets.push_back(Asset::Type::CONFIRM);
 
             controls.push_back(Controls::Type::EQUIP);
+
+            captions.push_back("EQUIP");
         }
         else if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && items[id].Has(Item::Property::EQUIPPED))
         {
@@ -94,6 +100,8 @@ namespace BloodSword::Interface
             assets.push_back(Asset::Type::CANCEL);
 
             controls.push_back(Controls::Type::UNEQUIP);
+
+            captions.push_back("UNEQUIP");
         }
 
         if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0)
@@ -102,6 +110,8 @@ namespace BloodSword::Interface
             assets.push_back(Asset::Type::MONEY);
 
             controls.push_back(Controls::Type::MONEY);
+
+            captions.push_back("GOLD");
         }
 
         if (Engine::Count(party) > 1)
@@ -110,6 +120,8 @@ namespace BloodSword::Interface
             assets.push_back(Asset::Type::TRADE);
 
             controls.push_back(Controls::Type::TRADE);
+
+            captions.push_back("TRADE");
         }
 
         if (!items[id].Has(Item::Property::CANNOT_DROP))
@@ -117,6 +129,8 @@ namespace BloodSword::Interface
             assets.push_back(Asset::Type::DROP);
 
             controls.push_back(Controls::Type::DROP);
+
+            captions.push_back("DROP");
         }
 
         // item description / identify
@@ -129,6 +143,8 @@ namespace BloodSword::Interface
                     assets.push_back(Asset::Type::IDENTIFY);
 
                     controls.push_back(Controls::Type::IDENTIFY);
+
+                    captions.push_back("IDENTIFY");
                 }
             }
             else
@@ -137,6 +153,8 @@ namespace BloodSword::Interface
                 assets.push_back(Asset::Type::INFO);
 
                 controls.push_back(Controls::Type::INFO);
+
+                captions.push_back("ABOUT");
             }
         }
 
@@ -155,7 +173,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, 1, 1, Asset::Type::NONE, false);
+            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
 
             if (selection.size() == 1)
             {
@@ -197,10 +215,14 @@ namespace BloodSword::Interface
 
         auto controls = std::vector<Controls::Type>();
 
+        auto captions = std::vector<std::string>();
+
         // take item
         assets.push_back(Asset::Type::USE);
 
         controls.push_back(Controls::Type::TAKE);
+
+        captions.push_back("USE");
 
         // go back
         assets.push_back(Asset::Type::BACK);
@@ -218,7 +240,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, 1, 1, Asset::Type::NONE, false);
+            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
 
             if (selection.size() == 1)
             {

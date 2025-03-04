@@ -1481,7 +1481,7 @@ namespace BloodSword::Test
 
         std::vector<int> values = {0, 1, 2, 3, 4};
 
-        auto selection = Interface::SelectIcons(graphics, background, "SELECT 3 CARDS", assets, values, 3, 3, Asset::Type::CARD_BLANK, true);
+        auto selection = Interface::SelectIcons(graphics, background, "SELECT 3 CARDS", assets, values, {}, 3, 3, Asset::Type::CARD_BLANK, true);
 
         Test::PrintSelection(graphics, background, assets, selection, 3, 3);
 
@@ -1493,7 +1493,13 @@ namespace BloodSword::Test
 
         std::vector<int> party_values = {0, 1, 2, 3};
 
-        auto party_selection = Interface::SelectIcons(graphics, background, "SELECT UP TO 4 PLAYERS", party_assets, party_values, 1, 4, Asset::Type::CARD_BLANK, false);
+        std::vector<std::string> captions = {
+            "WARRIOR",
+            "TRICKSTER",
+            "SAGE",
+            "ENCHANTER"};
+
+        auto party_selection = Interface::SelectIcons(graphics, background, "SELECT UP TO 4 PLAYERS", party_assets, party_values, captions, 1, 4, Asset::Type::CARD_BLANK, false);
 
         Test::PrintSelection(graphics, background, party_assets, party_selection, 1, 4);
     }

@@ -79,6 +79,9 @@ namespace BloodSword::Graphics
             {
                 SDL_SetWindowTitle(graphics.Window, title);
             }
+
+            // raise window
+            SDL_RaiseWindow(graphics.Window);
         }
     }
 
