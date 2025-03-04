@@ -26,10 +26,12 @@ namespace BloodSword::Interface
         return ok;
     }
 
-    void TransferItem(Items::Inventory &destination, Items::Inventory &source, int id)
+    void TransferItem(Graphics::Base &graphics, Scene::Base &background, std::string message, Uint32 border, Items::Inventory &destination, Items::Inventory &source, int id)
     {
         if (id >= 0 && id < source.size())
         {
+            Interface::MessageBox(graphics, background, message, Color::Active);
+
             destination.push_back(source[id]);
 
             source.erase(source.begin() + id);
@@ -39,15 +41,15 @@ namespace BloodSword::Interface
     // DROP
     bool DropItem(Graphics::Base &graphics, Scene::Base &background, std::string action, Items::Inventory &items, int id)
     {
+        auto ether = Items::Inventory();
+
         auto result = false;
 
         if (id >= 0 && id <= items.size())
         {
             std::string message = action + " THE " + items[id].Name;
 
-            Interface::MessageBox(graphics, background, message, Color::Active);
-
-            items.erase(items.begin() + id);
+            Interface::TransferItem(graphics, background, message, Color::Active, ether, items, id);
 
             result = true;
         }
@@ -70,9 +72,7 @@ namespace BloodSword::Interface
         {
             std::string message = receiver.Name + " TAKES THE " + source[id].Name;
 
-            Interface::MessageBox(graphics, background, message, Color::Active);
-
-            Interface::TransferItem(receiver.Items, source, id);
+            Interface::TransferItem(graphics, background, message, Color::Active, receiver.Items, source, id);
 
             result = true;
         }
