@@ -74,7 +74,8 @@
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [
-                            "CONTAINER"
+                            "CONTAINER",
+                            "CANNOT DROP"
                         ],
                         "quantity": 10,
                         "type": "POUCH"
@@ -179,7 +180,8 @@
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [
-                            "CONTAINER"
+                            "CONTAINER",
+                            "CANNOT DROP"
                         ],
                         "quantity": 10,
                         "type": "POUCH"
@@ -289,7 +291,8 @@
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [
-                            "CONTAINER"
+                            "CONTAINER",
+                            "CANNOT DROP"
                         ],
                         "quantity": 10,
                         "type": "POUCH"
@@ -383,7 +386,8 @@
                         "contains": "GOLD",
                         "name": "MONEY POUCH",
                         "properties": [
-                            "CONTAINER"
+                            "CONTAINER",
+                            "CANNOT DROP"
                         ],
                         "quantity": 10,
                         "type": "POUCH"

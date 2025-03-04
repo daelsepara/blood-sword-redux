@@ -256,7 +256,7 @@ namespace BloodSword::Item
                 {
                     for (auto &property : this->Properties)
                     {
-                        if (property != Item::Property::CONTAINER)
+                        if (property != Item::Property::CONTAINER && property != Item::Property::CANNOT_DROP)
                         {
                             if (stats > 0)
                             {
