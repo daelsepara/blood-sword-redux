@@ -222,7 +222,7 @@ namespace BloodSword::Interface
 
         controls.push_back(Controls::Type::TAKE);
 
-        captions.push_back("USE");
+        captions.push_back("TAKE");
 
         // go back
         assets.push_back(Asset::Type::BACK);
