@@ -22,7 +22,8 @@ namespace BloodSword::Item
         PRIMARY,
         SECONDARY,
         RANGED,
-        CANNOT_DROP
+        CANNOT_DROP ,
+        CANNOT_TRADE
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -38,7 +39,8 @@ namespace BloodSword::Item
         {Item::Property::PRIMARY, "PRIMARY"},
         {Item::Property::SECONDARY, "SECONDARY"},
         {Item::Property::RANGED, "RANGED"},
-        {Item::Property::CANNOT_DROP, "CANNOT DROP"}};
+        {Item::Property::CANNOT_DROP, "CANNOT DROP"},
+        {Item::Property::CANNOT_TRADE, "CANNOT TRADE"}};
 
     Item::Property MapProperty(const char *property)
     {

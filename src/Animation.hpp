@@ -26,6 +26,7 @@ namespace BloodSword::Animation
     // animation type: MOVE (movement), FRAME (cycle through a sequence of frames)
     enum class Type
     {
+        NONE = -1,
         MOVE,
         FRAME
     };

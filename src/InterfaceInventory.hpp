@@ -39,17 +39,15 @@ namespace BloodSword::Interface
     }
 
     // DROP
-    bool DropItem(Graphics::Base &graphics, Scene::Base &background, std::string action, Items::Inventory &items, int id)
+    bool DropItem(Graphics::Base &graphics, Scene::Base &background, std::string action, Items::Inventory &destination, Items::Inventory &items, int id)
     {
-        auto ether = Items::Inventory();
-
         auto result = false;
 
         if (id >= 0 && id <= items.size())
         {
             std::string message = action + " THE " + items[id].Name;
 
-            Interface::TransferItem(graphics, background, message, Color::Active, ether, items, id);
+            Interface::TransferItem(graphics, background, message, Color::Active, destination, items, id);
 
             result = true;
         }
@@ -88,6 +86,15 @@ namespace BloodSword::Interface
 
     void ManageItem(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
     {
+        // create black hole
+        auto ether = Items::Inventory();
+
+        // check if it can be dropped at current location
+        auto current = story.Find(party.Location);
+
+        // select destination for dropped items
+        auto &destination = (current != -1 && current >= 0 && current < story.Sections.size()) ? story.Sections[current].Items : ether;
+
         auto assets = std::vector<Asset::Type>();
 
         auto controls = std::vector<Controls::Type>();
@@ -130,7 +137,7 @@ namespace BloodSword::Interface
             captions.push_back("GOLD");
         }
 
-        if (Engine::Count(party) > 1)
+        if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
         {
             // trade
             assets.push_back(Asset::Type::TRADE);
@@ -212,7 +219,7 @@ namespace BloodSword::Interface
                     {
                         std::string action = character.Name + " DROPPED";
 
-                        Interface::DropItem(graphics, background, action, items, id);
+                        Interface::DropItem(graphics, background, action, destination, items, id);
 
                         done = true;
                     }
