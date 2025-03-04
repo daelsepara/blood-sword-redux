@@ -26,6 +26,16 @@ namespace BloodSword::Interface
         return ok;
     }
 
+    void TransferItem(Items::Inventory &destination, Items::Inventory &source, int id)
+    {
+        if (id >= 0 && id < source.size())
+        {
+            destination.push_back(source[id]);
+
+            source.erase(source.begin() + id);
+        }
+    }
+
     // DROP
     bool DropItem(Graphics::Base &graphics, Scene::Base &background, std::string action, Items::Inventory &items, int id)
     {
@@ -46,19 +56,25 @@ namespace BloodSword::Interface
     }
 
     // GIVE / TAKE
-    bool TransferItem(Graphics::Base &graphics, Scene::Base &background, std::string action, Character::Base &receiver, Items::Inventory &items, int id)
+    bool TransferItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &receiver, Items::Inventory &source, int id)
     {
         auto result = false;
 
-        if (Interface::CheckItemLimit(receiver) && (receiver.ItemLimit == Items::Unlimited || receiver.Items.size() < receiver.ItemLimit))
+        if (!Engine::IsAlive(receiver))
         {
-            // add to receiver's inventory
-            receiver.Items.push_back(items[id]);
+            std::string message = Engine::IsDead(receiver);
 
-            std::string action = receiver.Name + " TAKES";
+            Interface::MessageBox(graphics, background, receiver.Name, Color::Highlight);
+        }
+        else if (Interface::CheckItemLimit(receiver) && (receiver.Items.size() < receiver.ItemLimit || receiver.ItemLimit == Items::Unlimited))
+        {
+            std::string message = receiver.Name + " TAKES " + source[id].Name;
 
-            // drop from source (e.g. loot, another character)
-            result = Interface::DropItem(graphics, background, action, items, id);
+            Interface::MessageBox(graphics, background, message, Color::Active);
+
+            Interface::TransferItem(receiver.Items, source, id);
+
+            result = true;
         }
         else
         {
@@ -263,7 +279,7 @@ namespace BloodSword::Interface
 
                     if (character != Character::Class::NONE)
                     {
-                        done = Interface::TransferItem(graphics, background, "TAKES", party[character], items, id);
+                        done = Interface::TransferItem(graphics, background, party[character], items, id);
                     }
                 }
                 else
