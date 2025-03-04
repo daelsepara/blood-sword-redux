@@ -3625,7 +3625,13 @@ namespace BloodSword::Interface
                 {
                     auto &control = overlay.Controls[input.Current];
 
-                    overlay.VerifyAndAdd(Scene::Element(texture_captions[input.Current], control.X, control.Y + control.H + BloodSword::Pad));
+                    if (texture_captions[input.Current])
+                    {
+                        // center texture
+                        auto center = (control.W - BloodSword::Width(texture_captions[input.Current])) / 2;
+
+                        overlay.VerifyAndAdd(Scene::Element(texture_captions[input.Current], control.X + center, control.Y + control.H + BloodSword::Pad));
+                    }
                 }
             }
 

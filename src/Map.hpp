@@ -20,7 +20,7 @@ namespace BloodSword::Map
     {
     public:
         // tile type classification
-        Map::Object Type = Map::Object::NONE;
+        Map::Object Type = Map::Object::PASSABLE;
 
         // the tile's current occupant
         Map::Object Occupant = Map::Object::NONE;
