@@ -197,8 +197,12 @@ namespace BloodSword::Interface
     }
 
     // process background events
-    Book::Location ProcessBackground(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
+    Book::Location ProcessBackground(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
         Book::Location next = {Book::Number::NONE, -1};
 
         if (section.Background.size() > 0)
@@ -228,8 +232,12 @@ namespace BloodSword::Interface
     }
 
     // process real-time events
-    std::vector<Conditions::Evaluation> ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
+    std::vector<Conditions::Evaluation> ProcessEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
         auto results = std::vector<Conditions::Evaluation>();
 
         if (section.Events.size() > 0)
@@ -251,8 +259,12 @@ namespace BloodSword::Interface
     }
 
     // get next location
-    Book::Location NextSection(Graphics::Base &graphics, Scene::Base &background, Section::Base &section, Party::Base &party)
+    Book::Location NextSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
         Book::Location next = {Book::Number::NONE, -1};
 
         auto after_battle = false;
@@ -326,8 +338,12 @@ namespace BloodSword::Interface
         return next;
     }
 
-    void StoryControls(Section::Base &section, Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
+    void StoryControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
         auto elements = overlay.Elements.size();
 
         auto controls = overlay.Controls.size();
@@ -486,7 +502,7 @@ namespace BloodSword::Interface
         }
     }
 
-    void EndingControls(Section::Base &section, Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
+    void EndingControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
         auto elements = overlay.Elements.size();
 
@@ -676,8 +692,12 @@ namespace BloodSword::Interface
         return update;
     }
 
-    Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Section::Base &section, Party::Base &party, Party::Base &saved_party, std::string &text)
+    Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, std::string &text)
     {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
         Book::Location next = {Book::Number::NONE, -1};
 
         // texture for section text / default text
@@ -782,11 +802,11 @@ namespace BloodSword::Interface
             // add story controls
             if (section.Has(Feature::Type::ENDING) || !Engine::IsAlive(party))
             {
-                Interface::EndingControls(section, party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+                Interface::EndingControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
             }
             else
             {
-                Interface::StoryControls(section, party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+                Interface::StoryControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
             }
 
             if (scroll_up)
@@ -814,10 +834,10 @@ namespace BloodSword::Interface
                         {
                             Interface::ErrorMessage(graphics, overlay, Interface::MSG_ITEMS);
 
-                            Interface::ManageInventory(graphics, overlay, story, party, true);
+                            Interface::ManageInventory(graphics, overlay, party, true);
                         }
 
-                        next = Interface::NextSection(graphics, overlay, section, party);
+                        next = Interface::NextSection(graphics, overlay, party);
 
                         if (Book::IsDefined(next))
                         {
@@ -875,7 +895,7 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::INVENTORY)
                 {
-                    Interface::ManageInventory(graphics, overlay, story, party, true);
+                    Interface::ManageInventory(graphics, overlay, party, true);
 
                     input.Selected = false;
                 }
@@ -927,19 +947,21 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Section::Base &section, Party::Base &party)
+    Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
         std::cerr << "SECTION: " << Book::String(section.Location) << std::endl;
 
         // save a copy party prior to background and events (for save game functionality)
         auto saved_party = party;
 
         // set party location (previous, current)
-        party.PreviousLocation = party.Location;
+        party.Set(section.Location);
 
-        party.Location = section.Location;
-
-        auto next = Interface::ProcessBackground(graphics, background, section, party);
+        auto next = Interface::ProcessBackground(graphics, background, party);
 
         // skip this section if background events redirect to another location
         if (Book::IsUndefined(next))
@@ -947,7 +969,7 @@ namespace BloodSword::Interface
             // process events
             auto section_text = section.Text;
 
-            auto results = Interface::ProcessEvents(graphics, background, section, party);
+            auto results = Interface::ProcessEvents(graphics, background, party);
 
             for (auto result : results)
             {
@@ -962,14 +984,16 @@ namespace BloodSword::Interface
                 }
             }
 
-            next = Interface::RenderSection(graphics, background, story, section, party, saved_party, section_text);
+            next = Interface::RenderSection(graphics, background, party, saved_party, section_text);
         }
 
         return next;
     }
 
-    void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, int section = 0)
+    void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int current = 0)
     {
+        auto &story = Story::CurrentBook;
+
         if (story.Title.size() > 0 && story.Description.size() > 0)
         {
             auto message = story.Title + "\n\n" + story.Description;
@@ -979,20 +1003,20 @@ namespace BloodSword::Interface
             Interface::TextBox(graphics, background, Fonts::Normal, message.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
         }
 
+        party.Location = story.Sections[current].Location;
+
         while (true)
         {
-            auto &current = story.Sections[section];
-
-            auto location = Interface::ProcessSection(graphics, background, story, current, party);
+            auto location = Interface::ProcessSection(graphics, background, party);
 
             if (Book::IsDefined(location) && Engine::IsAlive(party))
             {
-                section = story.Find(location);
+                current = story.Find(location);
 
                 // log missing items
-                std::cerr << "FIND: " << Book::String(location) << " == " << (section != -1 ? "FOUND" : "NOT FOUND") << std::endl;
+                std::cerr << "FIND: " << Book::String(location) << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
 
-                if (!(section != -1 && Book::IsDefined(story.Sections[section].Location)))
+                if (!(current != -1 && Book::IsDefined(story.Sections[current].Location)))
                 {
                     Interface::Notify(graphics, background, Interface::MSG_IMPLEMENT);
 

@@ -1238,7 +1238,9 @@ namespace BloodSword::Test
 
         auto save_party = party;
 
-        auto story = Story::Load("books/book1.json");
+        Story::Load("books/book1.json");
+
+        auto &story = Story::CurrentBook;
 
         if (story.Sections.size() > 0 && Book::IsDefined(story.Sections.front().Location))
         {
@@ -1403,14 +1405,14 @@ namespace BloodSword::Test
 
                         if (choice >= 0 && choice < story.Sections.size())
                         {
-                            Interface::ProcessStory(graphics, background, story, party, choice);
+                            Interface::ProcessStory(graphics, background, party, choice);
                         }
 
                         // reset party to original state
                         party = save_party;
 
                         // reload story
-                        story = Story::Load("books/book1.json");
+                        Story::Load("books/book1.json");
                     }
                 }
             }
@@ -1511,7 +1513,7 @@ namespace BloodSword::Test
 
         auto story = Story::Base();
 
-        Interface::ManageInventory(graphics, background, story, party, true);
+        Interface::ManageInventory(graphics, background, party, true);
     }
 
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)

@@ -524,6 +524,9 @@ namespace BloodSword::Items
     // loads defaults for items
     void LoadDefaults(const char *filename)
     {
+        // clear global map
+        Items::Defaults.clear();
+
         std::ifstream file(filename);
 
         if (file.good())

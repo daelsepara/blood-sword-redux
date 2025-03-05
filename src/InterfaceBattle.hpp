@@ -1057,7 +1057,7 @@ namespace BloodSword::Interface
         if (battle.Opponents.Count() > 0)
         {
             // set opposing party's location
-            battle.Opponents.Location = party.Location;
+            battle.Opponents.Set(party.Location);
 
             if (battle.Map.Spawn.size() >= battle.Opponents.Count())
             {
@@ -1066,9 +1066,6 @@ namespace BloodSword::Interface
                 {
                     if (Engine::IsAlive(battle.Opponents[i]))
                     {
-                        // set opponent location
-                        battle.Opponents[i].Location = party.Location;
-
                         if (!battle.Opponents[i].Is(Character::Status::AWAY))
                         {
                             if (spawn < battle.Map.Spawn.size())

@@ -192,6 +192,18 @@ namespace BloodSword::Party
             this->Members.clear();
         }
 
+        void Set(Book::Location location)
+        {
+            this->PreviousLocation = this->Location;
+
+            this->Location = location;
+
+            for (auto &member : this->Members)
+            {
+                member.Location = location;
+            }
+        }
+
         // remove character from party (based on character class)
         void Remove(Character::Class character_class)
         {

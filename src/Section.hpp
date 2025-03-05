@@ -220,9 +220,16 @@ namespace BloodSword::Story
         }
     };
 
-    Story::Base Load(const char *filename)
+    // global "book" variable to save on passing by reference all the time
+    Story::Base CurrentBook = Story::Base();
+
+    void Load(const char *filename)
     {
-        auto story = Story::Base();
+        // re-initalize
+        Story::CurrentBook = Story::Base();
+
+        // make a reference
+        auto &story = Story::CurrentBook;
 
         std::ifstream ifs(filename);
 
@@ -273,8 +280,6 @@ namespace BloodSword::Story
         }
 
         std::cerr << "LOADED: " << story.Sections.size() << " SECTIONS" << std::endl;
-
-        return story;
     }
 }
 #endif

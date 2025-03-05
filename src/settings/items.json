@@ -1,0 +1,131 @@
+{
+    "items": [
+        {
+            "name": "SHURIKEN",
+            "quantity": 7,
+            "type": "SHURIKEN"
+        },
+        {
+            "name": "CRESCENTIUM STEEL SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "CRESCENTIUM STEEL SWORD"
+        },
+        {
+            "description": {
+                "book": "BOOK1",
+                "number": 47
+            },
+            "effects": {
+                "book": "BOOK1",
+                "number": 24
+            },
+            "name": "BOTTLE OF MAUVE LIQUID",
+            "quantity": 1,
+            "revealed": false,
+            "type": "MAUVE LIQUID"
+        },
+        {
+            "name": "SILVER RING",
+            "quantity": 1,
+            "type": "SILVER RING"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 3
+            },
+            "contains": "NONE",
+            "name": "CHAINMAIL",
+            "properties": [
+                "ARMOUR",
+                "EQUIPPED"
+            ],
+            "quantity": 1,
+            "type": "CHAINMAIL"
+        },
+        {
+            "contains": "GOLD",
+            "name": "MONEY POUCH",
+            "properties": [
+                "CONTAINER",
+                "CANNOT DROP",
+                "CANNOT TRADE"
+            ],
+            "quantity": 0,
+            "type": "POUCH"
+        },
+        {
+            "name": "BOW",
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
+            "quantity": 1,
+            "type": "BOW"
+        },
+        {
+            "contains": "ARROW",
+            "limit": 6,
+            "name": "QUIVER",
+            "properties": [
+                "CONTAINER"
+            ],
+            "quantity": 0,
+            "type": "QUIVER"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 2
+            },
+            "name": "LEATHER ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER ARMOUR"
+        },
+        {
+            "name": "QUARTERSTAFF",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "QUARTERSTAFF"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 2
+            },
+            "name": "RINGMAIL",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "RINGMAIL"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 2
+            },
+            "name": "SILVER ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "SILVER ARMOUR"
+        }
+    ]
+}

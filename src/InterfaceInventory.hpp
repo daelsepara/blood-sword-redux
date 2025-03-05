@@ -47,6 +47,12 @@ namespace BloodSword::Interface
         {
             std::string message = action + " THE " + items[id].Name;
 
+            // if equipped, then un-equip first then drop
+            if (items[id].Has(Item::Property::EQUIPPED))
+            {
+                items[id].Remove(Item::Property::EQUIPPED);
+            }
+
             Interface::TransferItem(graphics, background, message, Color::Active, destination, items, id);
 
             result = true;
@@ -84,16 +90,16 @@ namespace BloodSword::Interface
         return result;
     }
 
-    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
+    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
     {
         // create black hole
         auto ether = Items::Inventory();
 
         // check if it can be dropped at current location
-        auto current = story.Find(party.Location);
+        auto current = Story::CurrentBook.Find(party.Location);
 
         // select destination for dropped items
-        auto &destination = (current != -1 && current >= 0 && current < story.Sections.size()) ? story.Sections[current].Items : ether;
+        auto &destination = (current != -1 && current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current].Items : ether;
 
         auto assets = std::vector<Asset::Type>();
 
@@ -300,7 +306,7 @@ namespace BloodSword::Interface
         }
     }
 
-    void ShowInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, Character::Base &character)
+    void ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
     {
         auto exit = false;
 
@@ -453,7 +459,7 @@ namespace BloodSword::Interface
 
                         if (choice >= 0 && choice < character.Items.size())
                         {
-                            Interface::ManageItem(graphics, background, story, party, character, character.Items, choice);
+                            Interface::ManageItem(graphics, background, party, character, character.Items, choice);
                         }
 
                         if (character.Items.size() == 0)
@@ -474,6 +480,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // show inventory of a location / another player
     void ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items)
     {
         auto exit = false;
@@ -649,7 +656,7 @@ namespace BloodSword::Interface
         }
     }
 
-    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, Character::Base &character, bool blur = true)
+    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
     {
         if (!Engine::IsAlive(character))
         {
@@ -657,7 +664,7 @@ namespace BloodSword::Interface
         }
         else if (character.Items.size() > 0)
         {
-            Interface::ShowInventory(graphics, background, story, party, character);
+            Interface::ShowInventory(graphics, background, party, character);
         }
         else
         {
@@ -665,7 +672,7 @@ namespace BloodSword::Interface
         }
     }
 
-    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Story::Base &story, Party::Base &party, bool blur = true)
+    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, bool blur = true)
     {
         if (!Engine::IsAlive(party))
         {
@@ -684,7 +691,7 @@ namespace BloodSword::Interface
 
                 if (character != Character::Class::NONE)
                 {
-                    Interface::ManageInventory(graphics, background, story, party, party[character], blur);
+                    Interface::ManageInventory(graphics, background, party, party[character], blur);
                 }
 
                 if (Engine::Count(party) == 1)
