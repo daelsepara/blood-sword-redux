@@ -71,7 +71,7 @@ namespace BloodSword::Character
         Target::List Targets = {};
 
         // location (survivor tracking in a battle)
-        Book::Location Location = {Book::Number::NONE, -1};
+        Book::Location Location = Book::Undefined;
 
         Base(const char *name,
              Character::Class character_class,

@@ -49,6 +49,8 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, {20, 10, 7, 5}},
         {Book::Number::BOOK5, {20, 12, 8, 6}}};
 
+    Location Undefined = {Book::Number::NONE, -1};
+    
     bool IsUndefined(Location location)
     {
         return (location.first == Book::Number::NONE || location.second == -1);

@@ -22,9 +22,9 @@ namespace BloodSword::Party
 
     public:
         // current book and section number
-        Book::Location Location = {Book::Number::NONE, -1};
+        Book::Location Location = Book::Undefined;
 
-        Book::Location PreviousLocation = {Book::Number::NONE, -1};
+        Book::Location PreviousLocation = Book::Undefined;
 
         // for choices / conditions requiring a selected character
         Character::Class ChosenCharacter = Character::Class::NONE;
@@ -33,7 +33,7 @@ namespace BloodSword::Party
         Battle::Result LastBattle = Battle::Result::NONE;
 
         // location of last battle
-        Book::Location BattleLocation = {Book::Number::NONE, -1};
+        Book::Location BattleLocation = Book::Undefined;
 
         // for choices / conditions requiring a chosen number (1-6)
         int ChosenNumber = -1;

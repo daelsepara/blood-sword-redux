@@ -14,7 +14,7 @@ namespace BloodSword::Interface
 
     Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choices &choices, bool after_battle = false)
     {
-        Book::Location next = {Book::Number::NONE, -1};
+        Book::Location next = Book::Undefined;
 
         auto limit = std::min(4, int(choices.size()));
 
@@ -203,7 +203,7 @@ namespace BloodSword::Interface
 
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        Book::Location next = {Book::Number::NONE, -1};
+        Book::Location next = Book::Undefined;
 
         if (section.Background.size() > 0)
         {
@@ -265,7 +265,7 @@ namespace BloodSword::Interface
 
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        Book::Location next = {Book::Number::NONE, -1};
+        Book::Location next = Book::Undefined;
 
         auto after_battle = false;
 
@@ -698,7 +698,7 @@ namespace BloodSword::Interface
 
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        Book::Location next = {Book::Number::NONE, -1};
+        Book::Location next = Book::Undefined;
 
         // texture for section text / default text
         SDL_Texture *texture = nullptr;

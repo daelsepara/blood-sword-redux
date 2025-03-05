@@ -19,7 +19,7 @@ namespace BloodSword::Section
     class Base
     {
     public:
-        Book::Location Location = {Book::Number::NONE, -1};
+        Book::Location Location = Book::Undefined;
 
         std::vector<Feature::Type> Features = {};
 

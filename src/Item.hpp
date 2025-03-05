@@ -41,10 +41,10 @@ namespace BloodSword::Item
         std::string Name;
 
         // book description as sections
-        Book::Location Description = {Book::Number::NONE, -1};
+        Book::Location Description = Book::Undefined;
 
         // item effects as sections
-        Book::Location Effects = {Book::Number::NONE, -1};
+        Book::Location Effects = Book::Undefined;
 
         // flag to check if it's revealed (i.e. with the SAGE)
         bool Revealed = false;

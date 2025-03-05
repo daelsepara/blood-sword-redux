@@ -85,7 +85,7 @@ namespace BloodSword::Battle
         // limit of survivors carried over into the next battle (0 - no one survives)
         int SurvivorLimit = 0;
 
-        Book::Location Survivors = {Book::Number::NONE, -1};
+        Book::Location Survivors = Book::Undefined;
 
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 

@@ -116,7 +116,7 @@ namespace BloodSword::Conditions
         Conditions::Type Type = Type::NONE;
 
         // destination (book, section)
-        Book::Location Location = {Book::Number::NONE, -1};
+        Book::Location Location = Book::Undefined;
 
         // internal variables used to validate "condition"
         std::vector<std::string> Variables = {};
@@ -193,7 +193,7 @@ namespace BloodSword::Conditions
         bool Failed = false;
 
         // destination on failure
-        Book::Location Location = {Book::Number::NONE, -1};
+        Book::Location Location = Book::Undefined;
 
         // text (usually on failure)
         std::string Text = std::string();
@@ -225,7 +225,7 @@ namespace BloodSword::Conditions
 
         auto text = std::string();
 
-        Book::Location location = {Book::Number::NONE, -1};
+        Book::Location location = Book::Undefined;
 
         if (condition.Type == Conditions::Type::NORMAL)
         {
