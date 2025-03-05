@@ -75,7 +75,8 @@
                         "name": "MONEY POUCH",
                         "properties": [
                             "CONTAINER",
-                            "CANNOT DROP"
+                            "CANNOT DROP",
+                            "CANNOT TRADE"
                         ],
                         "quantity": 40,
                         "type": "POUCH"
@@ -181,7 +182,8 @@
                         "name": "MONEY POUCH",
                         "properties": [
                             "CONTAINER",
-                            "CANNOT DROP"
+                            "CANNOT DROP",
+                            "CANNOT TRADE"
                         ],
                         "quantity": 40,
                         "type": "POUCH"
@@ -292,7 +294,8 @@
                         "name": "MONEY POUCH",
                         "properties": [
                             "CONTAINER",
-                            "CANNOT DROP"
+                            "CANNOT DROP",
+                            "CANNOT TRADE"
                         ],
                         "quantity": 40,
                         "type": "POUCH"
@@ -387,7 +390,8 @@
                         "name": "MONEY POUCH",
                         "properties": [
                             "CONTAINER",
-                            "CANNOT DROP"
+                            "CANNOT DROP",
+                            "CANNOT TRADE"
                         ],
                         "quantity": 40,
                         "type": "POUCH"

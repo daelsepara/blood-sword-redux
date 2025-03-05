@@ -612,7 +612,7 @@ namespace BloodSword::Generate
 
         character.Rank = std::max(1, character.Rank);
 
-        character.Items.push_back(Item::Base("MONEY POUCH", Item::Type::POUCH, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP}, Item::Type::GOLD, character.Rank * 5));
+        character.Items.push_back(Item::Base("MONEY POUCH", Item::Type::POUCH, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::GOLD, character.Rank * 5));
     }
 
     // set character asset

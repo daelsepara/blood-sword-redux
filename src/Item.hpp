@@ -1,6 +1,7 @@
 #ifndef __ITEM_HPP__
 #define __ITEM_HPP__
 
+#include <fstream>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -390,6 +391,9 @@ namespace BloodSword::Items
 
     typedef std::vector<Item::CardType> Deck;
 
+    // default stats/properties for in-game items
+    BloodSword::UnorderedMap<Item::Type, Item::Base> Defaults = {};
+
     const int Unlimited = -1;
 
     Items::Deck KalugenDeck = {
@@ -515,6 +519,32 @@ namespace BloodSword::Items
         }
 
         return deck_list;
+    }
+
+    // loads defaults for items
+    void LoadDefaults(const char *filename)
+    {
+        std::ifstream file(filename);
+
+        if (file.good())
+        {
+            auto data = nlohmann::json::parse(file);
+
+            if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+            {
+                for (auto i = 0; i < data["items"].size(); i++)
+                {
+                    auto item = Item::Load(data["items"][i]);
+
+                    if (item.Type != Item::Type::NONE)
+                    {
+                        Items::Defaults[item.Type] = item;
+                    }
+                }
+            }
+
+            file.close();
+        }
     }
 }
 

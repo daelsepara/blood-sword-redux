@@ -31,6 +31,9 @@ namespace BloodSword
 
             Input::InitializeGamePads();
 
+            // load item defaults
+            Items::LoadDefaults("settings/items.json");
+
             Input::Flush();
         }
 

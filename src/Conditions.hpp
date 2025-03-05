@@ -54,6 +54,8 @@ namespace BloodSword::Conditions
         KALUGEN_SCORE,
         KALUGEN_LIST,
         KALUGEN_PLAY,
+        PLAYER_HAS_ITEM,
+        REMOVE_FROM_LOCATION
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -93,7 +95,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::KALUGEN_SELECT, "KALUGEN SELECT"},
         {Conditions::Type::KALUGEN_SCORE, "KALUGEN SCORE"},
         {Conditions::Type::KALUGEN_LIST, "KALUGEN LIST"},
-        {Conditions::Type::KALUGEN_PLAY, "KALUGEN PLAY"}};
+        {Conditions::Type::KALUGEN_PLAY, "KALUGEN PLAY"},
+        {Conditions::Type::PLAYER_HAS_ITEM, "PLAYER HAS ITEM"},
+        {Conditions::Type::REMOVE_FROM_LOCATION, "REMOVE FROM LOCATION"}};
 
     Conditions::Type Map(const char *Conditions)
     {

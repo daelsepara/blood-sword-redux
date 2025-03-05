@@ -101,12 +101,15 @@ namespace BloodSword::Interface
 
         auto captions = std::vector<std::string>();
 
-        // use item
-        assets.push_back(Asset::Type::USE);
+        if (!items[id].Has(Item::Property::CONTAINER) && !(items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)))
+        {
+            // use item
+            assets.push_back(Asset::Type::USE);
 
-        controls.push_back(Controls::Type::USE);
+            controls.push_back(Controls::Type::USE);
 
-        captions.push_back("USE");
+            captions.push_back("USE");
+        }
 
         if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
         {
