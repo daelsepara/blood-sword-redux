@@ -631,6 +631,19 @@ namespace BloodSword::Character
             }
         }
 
+        void Remove(Item::Type item)
+        {
+            if (this->Has(item))
+            {
+                auto index = this->Find(item);
+
+                if (index != this->Items.end())
+                {
+                    this->Items.erase(index);
+                }
+            }
+        }
+
         // count ammo in all containers in character's possessions
         int Quantity(Item::Type ammo)
         {

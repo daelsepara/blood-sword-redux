@@ -983,6 +983,121 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::DISCARD_ITEM)
+        {
+            internal_error = false;
+
+            // variables:
+            // 0 - player / ALL
+            // 1 .. N - items to discard (type)
+            if (condition.Variables.size() > 1)
+            {
+                auto character = Character::Map(std::string(condition.Variables[0]));
+
+                auto characters = std::vector<Character::Class>();
+
+                auto items = std::vector<Item::Type>();
+
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                if (is_party || character != Character::Class::NONE)
+                {
+                    if ((is_party && Engine::IsAlive(party)) || (party.Has(character) && Engine::IsAlive(party[character])))
+                    {
+                        for (auto i = 1; i < condition.Variables.size(); i++)
+                        {
+                            auto item = Item::Map(condition.Variables[i]);
+
+                            if (item != Item::Type::NONE)
+                            {
+                                items.push_back(item);
+                            }
+                        }
+
+                        if (items.size() > 0)
+                        {
+                            if (Engine::ToUpper(condition.Variables[0]) == "ALL")
+                            {
+                                for (auto i = 0; i < party.Count(); i++)
+                                {
+                                    if (Engine::IsAlive(party[i]))
+                                    {
+                                        characters.push_back(party[i].Class);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                characters.push_back(character);
+                            }
+
+                            auto discarded = std::vector<std::string>();
+
+                            for (auto i = 0; i < items.size(); i++)
+                            {
+                                auto item = items[i];
+
+                                if ((is_party && party.Has(item)) || (!is_party && party[character].Has(item)))
+                                {
+                                    discarded.push_back(Item::TypeMapping[item]);
+
+                                    for (auto player : characters)
+                                    {
+                                        party[player].Remove(item);
+                                    }
+                                }
+                            }
+
+                            if (!discarded.empty())
+                            {
+                                text = (is_party ? "EVERYONE" : party[character].Name) + " discards the ";
+
+                                for (auto i = 0; i < discarded.size(); i++)
+                                {
+                                    if (i > 0 && discarded.size() > 2)
+                                    {
+                                        text += ", ";
+                                    }
+
+                                    if ((discarded.size() > 1) && (i == discarded.size() - 1))
+                                    {
+                                        text += " and the ";
+                                    }
+
+                                    text += discarded[i];
+                                }
+
+                                text += ".";
+
+                                result = true;
+                            }
+                        }
+                        else
+                        {
+                            // nothing to discard
+                            internal_error = true;
+                        }
+                    }
+                    else if (is_party)
+                    {
+                        text = "EVERYONE IS INCAPACITATED!";
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                }
+                else
+                {
+                    // party or player not specified
+                    internal_error = true;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;
