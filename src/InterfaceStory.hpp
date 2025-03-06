@@ -947,10 +947,8 @@ namespace BloodSword::Interface
         return next;
     }
 
-    Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int current)
     {
-        auto current = Story::CurrentBook.Find(party.Location);
-
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
         std::cerr << "SECTION: " << Book::String(section.Location) << std::endl;
@@ -1003,11 +1001,9 @@ namespace BloodSword::Interface
             Interface::TextBox(graphics, background, Fonts::Normal, message.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
         }
 
-        party.Location = story.Sections[current].Location;
-
         while (true)
         {
-            auto location = Interface::ProcessSection(graphics, background, party);
+            auto location = Interface::ProcessSection(graphics, background, party, current);
 
             if (Book::IsDefined(location) && Engine::IsAlive(party))
             {
