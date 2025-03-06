@@ -985,8 +985,6 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::DISCARD_ITEM)
         {
-            internal_error = false;
-
             // variables:
             // 0 - player / ALL
             // 1 .. N - items to discard (type)
@@ -1080,7 +1078,14 @@ namespace BloodSword::Conditions
                     }
                     else if (is_party)
                     {
-                        text = "EVERYONE IS INCAPACITATED!";
+                        if (party.Count() > 1)
+                        {
+                            text = "EVERYONE IS INCAPACITATED!";
+                        }
+                        else
+                        {
+                            text = "YOU ARE INCAPACITATED!";
+                        }
                     }
                     else if (!party.Has(character))
                     {
@@ -1096,6 +1101,100 @@ namespace BloodSword::Conditions
                     // party or player not specified
                     internal_error = true;
                 }
+            }
+        }
+        else if (condition.Type == Conditions::Type::RECEIVE_ITEM)
+        {
+            internal_error = false;
+
+            // variables
+            // 0 - ALL/FIRST/SELECT or player
+            // 1 - FALL-BACK recipient (NONE/FIRST/SELECT)
+            // 2 - item
+            if (condition.Variables.size() > 2)
+            {
+                auto character = Character::Map(std::string(condition.Variables[0]));
+
+                auto is_character = (character != Character::Class::NONE);
+
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto is_first = (Engine::ToUpper(condition.Variables[0]) == "FIRST");
+
+                auto selected = (Engine::ToUpper(condition.Variables[0]) == "SELECT");
+
+                auto next = is_character && (Engine::ToUpper(condition.Variables[1]) == "FIRST");
+
+                auto select_next = is_character && (Engine::ToUpper(condition.Variables[1]) == "SELECT");
+
+                auto item = Item::Map(condition.Variables[2]);
+
+                if ((is_party || is_first || selected || is_character) && Engine::IsAlive(party) && item != Item::Type::NONE && Items::Found(item))
+                {
+                    auto characters = std::vector<Character::Class>();
+
+                    if (is_party)
+                    {
+                        for (auto i = 0; i < party.Count(); i++)
+                        {
+                            if (Engine::IsAlive(party[i]))
+                            {
+                                characters.push_back(party[i].Class);
+                            }
+                        }
+                    }
+                    else if (is_first || (is_character && (!party.Has(character) || !Engine::IsAlive(party[character])) && next))
+                    {
+                        characters.push_back(Engine::FirstClass(party));
+                    }
+                    else if (selected || (is_character && (!party.Has(character) || !Engine::IsAlive(party[character])) && select_next))
+                    {
+                        std::string message = "WHO RECEIVES THE " + Items::Defaults[item].Name + "?";
+
+                        character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+
+                        characters.push_back(character);
+                    }
+                    else if (is_character && party.Has(character) && Engine::IsAlive(party[character]))
+                    {
+                        characters.push_back(party[character].Class);
+                    }
+
+                    if (characters.size() > 0)
+                    {
+                        for (auto i = 0; i < characters.size(); i++)
+                        {
+                            party[characters[i]].Add(Items::Defaults[item]);
+                        }
+
+                        text = (is_party ? "EVERYONE" : party[characters[0]].Name) + " receives the " + Items::Defaults[item].Name;
+
+                        result = true;
+                    }
+                    else
+                    {
+                        internal_error = true;
+                    }
+                }
+                else if (!Engine::IsAlive(party))
+                {
+                    if (party.Count() > 1)
+                    {
+                        text = "EVERYONE IS INCAPACITATED!";
+                    }
+                    else
+                    {
+                        text = "YOU ARE INCAPACITATED!";
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)

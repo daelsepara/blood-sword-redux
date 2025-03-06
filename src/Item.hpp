@@ -544,9 +544,77 @@ namespace BloodSword::Items
                         Items::Defaults[item.Type] = item;
                     }
                 }
+
+                std::cerr << "LOADED: " << Items::Defaults.size() << " items" << std::endl;
             }
 
             file.close();
+        }
+    }
+
+    bool Found(Item::Type item)
+    {
+        return Items::Defaults.find(item) != Items::Defaults.end();
+    }
+
+    Items::Inventory::iterator Find(Items::Inventory &items, Item::Type container, Item::Type type)
+    {
+        auto result = items.end();
+
+        for (auto item = items.begin(); item != items.end(); item++)
+        {
+            if (item->Type == container && item->Has(Item::Property::CONTAINER) && item->Contains == type)
+            {
+                result = item;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    void Add(Items::Inventory &items, Item::Base item)
+    {
+        if (item.Type != Item::Type::NONE && item.Name.size() > 0)
+        {
+            auto is_container = false;
+
+            auto container = Item::Type::NONE;
+
+            // check if container
+            for (auto i = 0; i < items.size(); i++)
+            {
+                if (items[i].Has(Item::Property::CONTAINER) && items[i].Contains == item.Type)
+                {
+                    is_container = true;
+
+                    container = items[i].Type;
+
+                    break;
+                }
+            }
+
+            if (is_container && container != Item::Type::NONE)
+            {
+                auto found = Items::Find(items, container, item.Type);
+
+                if (found != items.end())
+                {
+                    (*found).Quantity += item.Quantity;
+
+                    (*found).Quantity = std::min(0, (*found).Quantity);
+
+                    if ((*found).Limit != Item::Unlimited)
+                    {
+                        (*found).Quantity = std::max((*found).Quantity, (*found).Limit);
+                    }
+                }
+            }
+            else
+            {
+                items.push_back(item);
+            }
         }
     }
 }

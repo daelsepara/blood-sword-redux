@@ -1534,106 +1534,6 @@ namespace BloodSword::Interface
         return overlay;
     }
 
-    // generic character class selector
-    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, bool names = false, bool back = false, bool show_skills = true, bool show_stats = true, bool blur = true)
-    {
-        auto character_class = Character::Class::NONE;
-
-        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
-
-        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
-
-        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
-
-        auto captions = names ? Interface::GenerateNameCaptions(graphics, party) : Interface::GenerateCharacterClassCaptions(graphics, party);
-
-        auto pad = BloodSword::OddPad;
-
-        auto input = Controls::User();
-
-        auto done = false;
-
-        auto popup_pad = BloodSword::QuarterTile;
-
-        auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
-
-        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
-
-        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
-
-        while (!done)
-        {
-            auto overlay = Scene::Base();
-
-            if (popup_h > 0)
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, back);
-            }
-            else
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, back);
-            }
-
-            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
-
-            if (Input::IsValid(overlay, input))
-            {
-                // party popup captions
-                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
-                {
-                    auto &control = overlay.Controls[input.Current];
-
-                    if (show_stats)
-                    {
-                        overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
-
-                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
-                    }
-
-                    if (show_skills)
-                    {
-                        if (skills[input.Current])
-                        {
-                            auto skills_x = popup.X + (popup_w + pad * 2);
-
-                            overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
-
-                            overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
-                        }
-                    }
-                }
-            }
-
-            input = Input::WaitForInput(graphics, background, overlay, input, true, blur);
-
-            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
-            {
-                if (input.Type == Controls::Type::BACK)
-                {
-                    character_class = Character::Class::NONE;
-
-                    done = true;
-                }
-                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
-                {
-                    character_class = party[input.Current].Class;
-
-                    done = true;
-                }
-            }
-        }
-
-        Free(&select);
-
-        Free(skills);
-
-        Free(stats);
-
-        Free(captions);
-
-        return character_class;
-    }
-
     // generic dice roller
     int Roll(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Asset::Type actor, Asset::Type action, int roll, int modifier)
     {
@@ -2319,6 +2219,113 @@ namespace BloodSword::Interface
 
             Free(&texture);
         }
+    }
+
+    // generic character class selector
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, bool names = false, bool back = false, bool show_skills = true, bool show_stats = true, bool blur = true)
+    {
+        auto character_class = Character::Class::NONE;
+
+        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
+
+        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
+
+        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto captions = names ? Interface::GenerateNameCaptions(graphics, party) : Interface::GenerateCharacterClassCaptions(graphics, party);
+
+        auto pad = BloodSword::OddPad;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto popup_pad = BloodSword::QuarterTile;
+
+        auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+
+        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+
+        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            if (popup_h > 0)
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, back);
+            }
+            else
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, back);
+            }
+
+            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+
+            if (Input::IsValid(overlay, input))
+            {
+                // party popup captions
+                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                {
+                    auto &control = overlay.Controls[input.Current];
+
+                    if (show_stats)
+                    {
+                        overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+
+                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
+                    }
+
+                    if (show_skills)
+                    {
+                        if (skills[input.Current])
+                        {
+                            auto skills_x = popup.X + (popup_w + pad * 2);
+
+                            overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+
+                            overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
+                        }
+                    }
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, blur);
+
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    character_class = Character::Class::NONE;
+
+                    done = true;
+                }
+                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
+                {
+                    if (Engine::IsAlive(party[input.Current]))
+                    {
+                        character_class = party[input.Current].Class;
+
+                        done = true;
+                    }
+                    else
+                    {
+                        Interface::MessageBox(graphics, background, Engine::IsDead(party[input.Current]), Color::Highlight);
+                    }
+                }
+            }
+        }
+
+        Free(&select);
+
+        Free(skills);
+
+        Free(stats);
+
+        Free(captions);
+
+        return character_class;
     }
 
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, int wrap, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)

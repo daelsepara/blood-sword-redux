@@ -32,7 +32,7 @@ namespace BloodSword::Interface
         {
             Interface::MessageBox(graphics, background, message, Color::Active);
 
-            destination.push_back(source[id]);
+            Items::Add(destination, source[id]);
 
             source.erase(source.begin() + id);
         }

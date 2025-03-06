@@ -341,23 +341,6 @@ namespace BloodSword::Character
             return result;
         }
 
-        Items::Inventory::const_iterator Find(Item::Type container, Item::Type type)
-        {
-            auto result = this->Items.end();
-
-            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
-            {
-                if (item->Type == container && item->Has(Item::Property::CONTAINER) && item->Contains == type)
-                {
-                    result = item;
-
-                    break;
-                }
-            }
-
-            return result;
-        }
-
         bool Has(Item::Type container, Item::Type item, int quantity)
         {
             return this->Find(container, item, quantity) != this->Items.end();
@@ -609,15 +592,20 @@ namespace BloodSword::Character
             }
         }
 
-        void Add(Item::Type ammo, int quantity)
+        void Add(Item::Type something, int quantity)
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if (item->Add(ammo, quantity))
+                if (item->Add(something, quantity))
                 {
                     break;
                 }
             }
+        }
+
+        void Add(Item::Base item)
+        {
+            Items::Add(this->Items, item);
         }
 
         void Remove(Item::Type ammo, int quantity)
