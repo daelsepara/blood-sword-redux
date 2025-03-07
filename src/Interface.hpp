@@ -3026,6 +3026,8 @@ namespace BloodSword::Interface
     void InternalError(Graphics::Base &graphics, Scene::Base &background, std::string message)
     {
         Interface::MessageBox(graphics, background, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Highlight, true);
+
+        throw std::invalid_argument(message.c_str());
     }
 
     void NotImplemented(Graphics::Base &graphics, Scene::Base &overlay)

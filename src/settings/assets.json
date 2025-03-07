@@ -442,6 +442,14 @@
         },
         {
             "id": "IDENTIFY",
+            "path": "images/system/scroll-quill.png"
+        },
+        {
+            "id": "DRINK",
+            "path": "images/system/spiral-bottle.png"
+        },
+        {
+            "id": "READ",
             "path": "images/system/tied-scroll.png"
         }
     ]

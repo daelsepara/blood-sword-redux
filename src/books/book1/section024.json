@@ -1,0 +1,18 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 24
+    },
+    "text": "You unstopper the small bottle and drain its contents. Immediately you feel a wave of agony through your body, accompanied by a buzzing sensation inside your head. Suddenly your vision seems very sharply defined -- the colours of everything around you become almost painfully vivid. You can hear the slightest noise. Your senses and agility have become cat-like. You have the strength of three men. And you may be dying.",
+    "next": [
+        {
+            "type": "ITEM EFFECT",
+            "variables": [
+                "MAUVE LIQUID"
+            ]
+        },
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

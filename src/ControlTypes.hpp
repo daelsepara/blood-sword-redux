@@ -93,7 +93,9 @@ namespace BloodSword::Controls
         UNEQUIP,
         MONEY,
         INVENTORY,
-        IDENTIFY
+        IDENTIFY,
+        DRINK,
+        READ
     };
 
     typedef std::vector<Controls::Type> Collection;

@@ -26,7 +26,8 @@ namespace BloodSword::Item
         CANNOT_TRADE,
         LIQUID,
         GIANT_BANE,
-        INVISIBLE
+        INVISIBLE,
+        READABLE
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -46,12 +47,14 @@ namespace BloodSword::Item
         {Item::Property::CANNOT_TRADE, "CANNOT TRADE"},
         {Item::Property::LIQUID, "LIQUID"},
         {Item::Property::GIANT_BANE, "GIANT BANE"},
-        {Item::Property::INVISIBLE, "INVISIBLE"}};
+        {Item::Property::INVISIBLE, "INVISIBLE"},
+        {Item::Property::READABLE, "READABLE"}};
 
     Item::Properties Invisible = {
         Item::Property::NONE,
         Item::Property::CONTAINER,
         Item::Property::LIQUID,
+        Item::Property::READABLE,
         Item::Property::CANNOT_DROP,
         Item::Property::CANNOT_TRADE};
 

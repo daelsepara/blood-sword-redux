@@ -134,7 +134,9 @@ namespace BloodSword::Asset
         DROP,
         INVENTORY,
         INFO,
-        IDENTIFY
+        IDENTIFY,
+        DRINK,
+        READ
     };
 
     template <typename T>
@@ -263,7 +265,9 @@ namespace BloodSword::Asset
         {Asset::Type::DROP, "DROP"},
         {Asset::Type::INVENTORY, "INVENTORY"},
         {Asset::Type::INFO, "INFO"},
-        {Asset::Type::IDENTIFY, "IDENTIFY"}};
+        {Asset::Type::IDENTIFY, "IDENTIFY"},
+        {Asset::Type::DRINK, "DRINK"},
+        {Asset::Type::READ, "READ"}};
 
     Asset::Type Map(const char *asset)
     {

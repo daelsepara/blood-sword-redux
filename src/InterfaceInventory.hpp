@@ -3,93 +3,11 @@
 
 #include "Section.hpp"
 #include "Interface.hpp"
+#include "InterfaceItems.hpp"
 
 // inventory management
 namespace BloodSword::Interface
 {
-    // check character item limit
-    bool CheckItemLimit(Character::Base &character)
-    {
-        return !Engine::IsAlive(character) || (character.ItemLimit == Items::Unlimited) || (character.Items.size() <= character.ItemLimit);
-    }
-
-    // check party item limit
-    bool CheckItemLimit(Party::Base &party)
-    {
-        auto ok = true;
-
-        for (auto i = 0; i < party.Count(); i++)
-        {
-            ok &= Interface::CheckItemLimit(party[i]);
-        }
-
-        return ok;
-    }
-
-    void TransferItem(Graphics::Base &graphics, Scene::Base &background, std::string message, Uint32 border, Items::Inventory &destination, Items::Inventory &source, int id)
-    {
-        if (id >= 0 && id < source.size())
-        {
-            Interface::MessageBox(graphics, background, message, Color::Active);
-
-            Items::Add(destination, source[id]);
-
-            source.erase(source.begin() + id);
-        }
-    }
-
-    // DROP
-    bool DropItem(Graphics::Base &graphics, Scene::Base &background, std::string action, Items::Inventory &destination, Items::Inventory &items, int id)
-    {
-        auto result = false;
-
-        if (id >= 0 && id <= items.size())
-        {
-            std::string message = action + " THE " + items[id].Name;
-
-            // if equipped, then un-equip first then drop
-            if (items[id].Has(Item::Property::EQUIPPED))
-            {
-                items[id].Remove(Item::Property::EQUIPPED);
-            }
-
-            Interface::TransferItem(graphics, background, message, Color::Active, destination, items, id);
-
-            result = true;
-        }
-
-        return result;
-    }
-
-    // GIVE / TAKE
-    bool TransferItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &receiver, Items::Inventory &source, int id)
-    {
-        auto result = false;
-
-        if (!Engine::IsAlive(receiver))
-        {
-            std::string message = Engine::IsDead(receiver);
-
-            Interface::MessageBox(graphics, background, receiver.Name, Color::Highlight);
-        }
-        else if (Interface::CheckItemLimit(receiver) && (receiver.Items.size() < receiver.ItemLimit || receiver.ItemLimit == Items::Unlimited))
-        {
-            std::string message = receiver.Name + " TAKES THE " + source[id].Name;
-
-            Interface::TransferItem(graphics, background, message, Color::Active, receiver.Items, source, id);
-
-            result = true;
-        }
-        else
-        {
-            std::string message = receiver.Name + "'S INVENTORY IS FULL!";
-
-            Interface::MessageBox(graphics, background, message, Color::Highlight);
-        }
-
-        return result;
-    }
-
     void ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
     {
         // create black hole
@@ -110,11 +28,30 @@ namespace BloodSword::Interface
         if (!items[id].Has(Item::Property::CONTAINER) && !(items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)))
         {
             // use item
-            assets.push_back(Asset::Type::USE);
+            if (items[id].Has(Item::Property::LIQUID))
+            {
+                assets.push_back(Asset::Type::DRINK);
 
-            controls.push_back(Controls::Type::USE);
+                controls.push_back(Controls::Type::DRINK);
 
-            captions.push_back("USE");
+                captions.push_back("DRINK");
+            }
+            else if (items[id].Has(Item::Property::READABLE))
+            {
+                assets.push_back(Asset::Type::READ);
+
+                controls.push_back(Controls::Type::READ);
+
+                captions.push_back("READ");
+            }
+            else
+            {
+                assets.push_back(Asset::Type::USE);
+
+                controls.push_back(Controls::Type::USE);
+
+                captions.push_back("USE");
+            }
         }
 
         if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
@@ -232,6 +169,53 @@ namespace BloodSword::Interface
 
                         done = true;
                     }
+                }
+                else if ((input == Controls::Type::IDENTIFY) || (input == Controls::Type::INFO))
+                {
+                    auto is_sage = (character.Class == Character::Class::SAGE);
+
+                    auto is_revealed = items[id].Revealed;
+
+                    if ((is_sage || is_revealed) || (party.Has(Character::Class::SAGE) && Engine::IsAlive(party[Character::Class::SAGE])))
+                    {
+                        if (Book::IsDefined(items[id].Description))
+                        {
+                            items[id].Revealed = true;
+
+                            auto description = Story::CurrentBook.Find(items[id].Description);
+
+                            if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+                            {
+                                auto item_description = Story::CurrentBook.Sections[description].Text;
+
+                                auto wrap = graphics.Width - BloodSword::TileSize * 8;
+
+                                Interface::TextBox(graphics, background, Fonts::Normal, item_description.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+                            }
+                            else
+                            {
+                                std::string message = "INTERNAL ERROR: ITEM DESCRIPTION";
+
+                                Interface::InternalError(graphics, background, message);
+                            }
+                        }
+                        else if (!Book::IsDefined(items[id].Description))
+                        {
+                            std::string message = "INTERNAL ERROR: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "INFO");
+
+                            Interface::InternalError(graphics, background, message);
+                        }
+                    }
+                    else
+                    {
+                        Interface::ErrorMessage(graphics, background, MSG_IDENTIFY);
+                    }
+                }
+                else if (input == Controls::Type::DRINK)
+                {
+                    Interface::ItemEffects(graphics, background, character, items[id].Type);
+
+                    done = true;
                 }
                 else
                 {

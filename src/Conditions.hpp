@@ -12,6 +12,7 @@
 #include "Scene.hpp"
 #include "Templates.hpp"
 #include "Interface.hpp"
+#include "InterfaceItems.hpp"
 #include "ConditionTypes.hpp"
 
 namespace BloodSword::Conditions
@@ -114,6 +115,21 @@ namespace BloodSword::Conditions
         Evaluation(bool result) : Result(result) {}
     };
 
+    std::string DeathMessage(Party::Base &party)
+    {
+        auto death = std::string();
+
+        if (party.Count() > 1)
+        {
+            death = Interface::GetText(Interface::MSG_DEAD);
+        }
+        else
+        {
+            death = Interface::GetText(Interface::MSG_DIED);
+        }
+
+        return death;
+    }
     void InternalError(Graphics::Base &graphics, Scene::Base &background, Conditions::Type condition)
     {
         std::string message = "Internal Error: " + std::string(Conditions::TypeMapping[condition]) + "!";
@@ -783,7 +799,7 @@ namespace BloodSword::Conditions
             // 0 - criteria for preselection (status)
             // 1 - status when selected
             // 2 - status when not selected
-            // 3 - Message to display
+            // 3 - message to display
             if (condition.Variables.size() > 3 && Engine::IsAlive(party))
             {
                 auto preselect = Character::MapStatus(condition.Variables[0]);
@@ -1119,14 +1135,7 @@ namespace BloodSword::Conditions
                     }
                     else if (is_party)
                     {
-                        if (party.Count() > 1)
-                        {
-                            text = Interface::GetText(Interface::MSG_DEAD);
-                        }
-                        else
-                        {
-                            text = Interface::GetText(Interface::MSG_DIED);
-                        }
+                        text = Conditions::DeathMessage(party);
                     }
                     else if (!party.Has(character))
                     {
@@ -1146,15 +1155,17 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::RECEIVE_ITEM)
         {
-            internal_error = false;
+            internal_error = true;
 
             // variables
-            // 0 - ALL/FIRST/SELECT or player
+            // 0 - ALL/FIRST/SELECT/CHOSEN or player
             // 1 - FALL-BACK recipient (NONE/FIRST/SELECT)
             // 2 - item
             if (condition.Variables.size() > 2)
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
+
+                character = (Engine::ToUpper(condition.Variables[0]) == "CHOSEN") ? party.ChosenCharacter : character;
 
                 auto is_character = (character != Character::Class::NONE);
 
@@ -1211,26 +1222,76 @@ namespace BloodSword::Conditions
                         text = (is_party ? "You" : party[characters[0]].Name) + " receive" + (is_party ? "" : "s") + " the " + Items::Defaults[item].Name + ".";
 
                         result = true;
-                    }
-                    else
-                    {
-                        internal_error = true;
+
+                        internal_error = false;
                     }
                 }
                 else if (!Engine::IsAlive(party))
                 {
-                    if (party.Count() > 1)
-                    {
-                        text = Interface::GetText(Interface::MSG_DEAD);
-                    }
-                    else
-                    {
-                        text = Interface::GetText(Interface::MSG_DIED);
-                    }
+                    text = Conditions::DeathMessage(party);
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::SELECT_PLAYER)
+        {
+            // variables:
+            // 0 - message to display
+            if (condition.Variables.size() > 0 && Engine::IsAlive(party))
+            {
+                if (Engine::Count(party) > 1)
+                {
+                    auto message = condition.Variables[0].size() > 0 ? condition.Variables[0] : std::string("SELECT PLAYER");
+
+                    party.ChosenCharacter = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                 }
                 else
                 {
-                    internal_error = true;
+                    party.ChosenCharacter = Engine::FirstClass(party);
+                }
+
+                result = true;
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::ITEM_EFFECT)
+        {
+            // variables
+            // 0 - item (type)
+            if (condition.Variables.size() > 0)
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                if (party.ChosenCharacter != Character::Class::NONE && party.Has(party.ChosenCharacter) && Engine::IsAlive(party[party.ChosenCharacter]) && item != Item::Type::NONE)
+                {
+                    auto &chosen = party[party.ChosenCharacter];
+
+                    if (chosen.Has(item))
+                    {
+                        Interface::ItemEffects(graphics, background, chosen, item);
+
+                        result = true;
+                    }
+                    else
+                    {
+                        text = Engine::NoItem(item);
+                    }
+                }
+                else if (!party.Has(party.ChosenCharacter))
+                {
+                    text = Engine::NotInParty(party.ChosenCharacter);
+                }
+                else if (party.Has(party.ChosenCharacter) && !Engine::IsAlive(party[party.ChosenCharacter]))
+                {
+                    text = Engine::IsDead(party[party.ChosenCharacter]);
                 }
             }
             else
