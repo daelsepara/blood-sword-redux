@@ -127,6 +127,30 @@ namespace BloodSword::Item
             return this->Attributes.find(attribute) != this->Attributes.end();
         }
 
+        bool HasAll(std::vector<Item::Property> properties)
+        {
+            auto has = true;
+
+            for (auto property : properties)
+            {
+                has &= this->Has(property);
+            }
+
+            return has;
+        }
+
+        bool HasAny(std::vector<Item::Property> properties)
+        {
+            auto has = false;
+
+            for (auto property : properties)
+            {
+                has |= this->Has(property);
+            }
+
+            return has;
+        }
+
         // check if this item contains this type of object
         bool Has(Item::Type item)
         {
@@ -217,7 +241,19 @@ namespace BloodSword::Item
                 }
             }
 
-            return result;
+            return !this->Has(property);
+        }
+
+        bool Add(Item::Property property)
+        {
+            auto result = !this->Has(property);
+
+            if (result)
+            {
+                this->Properties.push_back(property);
+            }
+
+            return this->Has(property);
         }
 
         // remove item property, e.g. remove 'FIGHTING PROWESS' attribute, i.e. it will no longer modify
@@ -588,12 +624,7 @@ namespace BloodSword::Items
 
         for (auto item = items.begin(); item != items.end(); item++)
         {
-            auto has = true;
-
-            for (auto property : properties)
-            {
-                has &= item->Has(property);
-            }
+            auto has = item->HasAll(properties);
 
             if (has)
             {

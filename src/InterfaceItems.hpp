@@ -113,9 +113,9 @@ namespace BloodSword::Interface
                 character.Modifier(Attribute::Type::AWARENESS, character.Modifier(Attribute::Type::AWARENESS) + 1);
 
                 // decrease stats
-                character.Modifier(Attribute::Type::PSYCHIC_ABILITY, character.Modifier(Attribute::Type::FIGHTING_PROWESS) - 1);
+                character.Modifier(Attribute::Type::PSYCHIC_ABILITY, character.Modifier(Attribute::Type::PSYCHIC_ABILITY) - 1);
 
-                character.Modifier(Attribute::Type::ENDURANCE, character.Modifier(Attribute::Type::AWARENESS) - 1);
+                character.Modifier(Attribute::Type::ENDURANCE, character.Modifier(Attribute::Type::ENDURANCE) - 1);
 
                 std::string message = "FIGHTING PROWESS: +1\nAWARENESS: +1\nPSYCHIC ABILITY: -1\nENDURANCE: -1";
 

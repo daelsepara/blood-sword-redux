@@ -491,6 +491,43 @@ namespace BloodSword::Character
             return modifier;
         }
 
+        int EquippedWeapon(Item::Property weapon_type)
+        {
+            auto equipped = -1;
+
+            if (weapon_type != Item::Property::NONE)
+            {
+                for (auto i = 0; i < this->Items.size(); i++)
+                {
+                    if (this->Items[i].HasAll({Item::Property::WEAPON, weapon_type, Item::Property::EQUIPPED}))
+                    {
+                        equipped = i;
+
+                        break;
+                    }
+                }
+            }
+
+            return equipped;
+        }
+
+        int EquippedArmour()
+        {
+            auto equipped = -1;
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].HasAll({Item::Property::ARMOUR, Item::Property::EQUIPPED}))
+                {
+                    equipped = i;
+
+                    break;
+                }
+            }
+
+            return equipped;
+        }
+
         // is the character a player character?
         bool IsPlayer()
         {

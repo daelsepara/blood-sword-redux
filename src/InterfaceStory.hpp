@@ -42,6 +42,10 @@ namespace BloodSword::Interface
                         text = Engine::NoItem(item);
                     }
                 }
+                else if (party.ChosenCharacter == Character::Class::NONE || item == Item::Type::NONE)
+                {
+                    Conditions::InternalError(graphics, background, condition.Type);
+                }
                 else if (!party.Has(party.ChosenCharacter))
                 {
                     text = Engine::NotInParty(party.ChosenCharacter);
@@ -974,7 +978,15 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::ITEMS)
                 {
-                    Interface::ShowInventory(graphics, overlay, party, section.Items);
+                    auto update = Interface::ShowInventory(graphics, overlay, party, section.Items);
+
+                    if (update && section.ImageAsset.empty())
+                    {
+                        BloodSword::Free(&image);
+
+                        // regenerate party stats
+                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                    }
 
                     input.Selected = false;
                 }

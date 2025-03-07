@@ -155,7 +155,10 @@ namespace BloodSword::Conditions
         {
             std::cerr << ", LOCATION: " << Book::String(location);
         }
+
+        std::cerr << ")" << std::endl;
     }
+    
     // routine to validate "condition"
     Conditions::Evaluation Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {

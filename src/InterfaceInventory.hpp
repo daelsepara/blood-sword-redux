@@ -8,8 +8,10 @@
 // inventory management
 namespace BloodSword::Interface
 {
-    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
+    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
     {
+        auto update = false;
+
         // create black hole
         auto ether = Items::Inventory();
 
@@ -93,15 +95,6 @@ namespace BloodSword::Interface
             captions.push_back("TRADE");
         }
 
-        if (!items[id].Has(Item::Property::CANNOT_DROP))
-        {
-            assets.push_back(Asset::Type::DROP);
-
-            controls.push_back(Controls::Type::DROP);
-
-            captions.push_back("DROP");
-        }
-
         // item description / identify
         if (Book::IsDefined(items[id].Description))
         {
@@ -125,6 +118,15 @@ namespace BloodSword::Interface
 
                 captions.push_back("ABOUT");
             }
+        }
+
+        if (!items[id].Has(Item::Property::CANNOT_DROP))
+        {
+            assets.push_back(Asset::Type::DROP);
+
+            controls.push_back(Controls::Type::DROP);
+
+            captions.push_back("DROP");
         }
 
         assets.push_back(Asset::Type::BACK);
@@ -157,6 +159,41 @@ namespace BloodSword::Interface
                     else
                     {
                         Interface::ErrorMessage(graphics, background, Interface::MSG_ITEMS);
+                    }
+                }
+                else if (input == Controls::Type::EQUIP)
+                {
+                    auto is_weapon = items[id].Is(Item::Property::WEAPON);
+
+                    auto is_armour = items[id].Is(Item::Property::ARMOUR);
+
+                    auto is_melee = is_weapon && items[id].Is(Item::Property::PRIMARY);
+
+                    auto weapon_type = is_weapon ? (is_melee ? Item::Property::PRIMARY : Item::Property::RANGED) : Item::Property::NONE;
+
+                    auto equipped = is_weapon ? character.EquippedWeapon(weapon_type) : (is_armour ? character.EquippedArmour() : -1);
+
+                    if (equipped != 1 && equipped >= 0 && equipped < items.size())
+                    {
+                        // un-equip
+                        items[equipped].Remove(Item::Property::EQUIPPED);
+                    }
+
+                    if (!items[id].Is(Item::Property::EQUIPPED))
+                    {
+                        // equip
+                        update = items[id].Add(Item::Property::EQUIPPED);
+
+                        done = true;
+                    }
+                }
+                else if (input == Controls::Type::UNEQUIP)
+                {
+                    if (items[id].Is(Item::Property::EQUIPPED))
+                    {
+                        update = items[id].Remove(Item::Property::EQUIPPED);
+
+                        done = true;
                     }
                 }
                 else if (input == Controls::Type::DROP)
@@ -215,6 +252,8 @@ namespace BloodSword::Interface
                 {
                     Interface::ItemEffects(graphics, background, character, items[id].Type);
 
+                    update = true;
+
                     done = true;
                 }
                 else
@@ -223,6 +262,8 @@ namespace BloodSword::Interface
                 }
             }
         }
+
+        return update;
     }
 
     void ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items, int id)
@@ -290,8 +331,10 @@ namespace BloodSword::Interface
         }
     }
 
-    void ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
+    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
     {
+        auto update = false;
+
         auto exit = false;
 
         while (!exit)
@@ -443,9 +486,9 @@ namespace BloodSword::Interface
 
                         if (choice >= 0 && choice < character.Items.size())
                         {
-                            Interface::ManageItem(graphics, background, party, character, character.Items, choice);
+                            update = Interface::ManageItem(graphics, background, party, character, character.Items, choice);
 
-                            if (!Engine::IsAlive(character))
+                            if (!Engine::IsAlive(character) || update)
                             {
                                 done = true;
 
@@ -469,11 +512,15 @@ namespace BloodSword::Interface
 
             BloodSword::Free(menu);
         }
+
+        return update;
     }
 
     // show inventory of a location / another player
-    void ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items)
+    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items)
     {
+        auto update = false;
+
         auto exit = false;
 
         while (!exit)
@@ -645,22 +692,28 @@ namespace BloodSword::Interface
 
             BloodSword::Free(menu);
         }
+
+        return update;
     }
 
-    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
+    bool ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
     {
+        auto update = false;
+
         if (!Engine::IsAlive(character))
         {
             Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
         }
         else if (character.Items.size() > 0)
         {
-            Interface::ShowInventory(graphics, background, party, character);
+            update = Interface::ShowInventory(graphics, background, party, character);
         }
         else
         {
             Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY ITEMS", Color::Highlight);
         }
+
+        return update;
     }
 
     bool ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, bool blur = true)
@@ -684,12 +737,10 @@ namespace BloodSword::Interface
 
                 if (character != Character::Class::NONE)
                 {
-                    Interface::ManageInventory(graphics, background, party, party[character], blur);
+                    update = Interface::ManageInventory(graphics, background, party, party[character], blur);
 
-                    if (!Engine::IsAlive(party[character]))
+                    if (!Engine::IsAlive(party[character]) || update)
                     {
-                        update = true;
-
                         break;
                     }
                 }
