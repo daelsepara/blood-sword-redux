@@ -28,6 +28,8 @@ namespace BloodSword::Color
 
     Uint32 Transparent = 0x00000000;
 
+    Uint32 Blur = 0xB0000000;
+
     SDL_Color S(Uint8 r, Uint8 g, Uint8 b, Uint8 a)
     {
         return {r, g, b, a};

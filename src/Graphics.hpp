@@ -493,7 +493,7 @@ namespace BloodSword::Graphics
             {
                 if ((it == (scenes.end() - 1)) && blur)
                 {
-                    auto rect = Graphics::CreateRect(graphics, graphics.Width, graphics.Height, 0, 0, 0xB0000000);
+                    auto rect = Graphics::CreateRect(graphics, graphics.Width, graphics.Height, 0, 0, Color::Blur);
 
                     SDL_RenderFillRect(graphics.Renderer, &rect);
                 }

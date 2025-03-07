@@ -12,257 +12,269 @@ namespace BloodSword::Interface
     {
         auto update = false;
 
-        // create black hole
-        auto ether = Items::Inventory();
+        auto exit = false;
 
-        // check if it can be dropped at current location
-        auto current = Story::CurrentBook.Find(party.Location);
-
-        // select destination for dropped items
-        auto &destination = (current != -1 && current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current].Items : ether;
-
-        auto assets = std::vector<Asset::Type>();
-
-        auto controls = std::vector<Controls::Type>();
-
-        auto captions = std::vector<std::string>();
-
-        if (!items[id].Has(Item::Property::CONTAINER) && !(items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)))
+        while (!exit)
         {
-            // use item
-            if (items[id].Has(Item::Property::LIQUID))
+            // create black hole
+            auto ether = Items::Inventory();
+
+            // check if it can be dropped at current location
+            auto current = Story::CurrentBook.Find(party.Location);
+
+            // select destination for dropped items
+            auto &destination = (current != -1 && current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current].Items : ether;
+
+            auto assets = std::vector<Asset::Type>();
+
+            auto controls = std::vector<Controls::Type>();
+
+            auto captions = std::vector<std::string>();
+
+            if (!items[id].Has(Item::Property::CONTAINER) && !(items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)))
             {
-                assets.push_back(Asset::Type::DRINK);
-
-                controls.push_back(Controls::Type::DRINK);
-
-                captions.push_back("DRINK");
-            }
-            else if (items[id].Has(Item::Property::READABLE))
-            {
-                assets.push_back(Asset::Type::READ);
-
-                controls.push_back(Controls::Type::READ);
-
-                captions.push_back("READ");
-            }
-            else
-            {
-                assets.push_back(Asset::Type::USE);
-
-                controls.push_back(Controls::Type::USE);
-
-                captions.push_back("USE");
-            }
-        }
-
-        if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
-        {
-            // equip weapon / armour
-            assets.push_back(Asset::Type::CONFIRM);
-
-            controls.push_back(Controls::Type::EQUIP);
-
-            captions.push_back("EQUIP");
-        }
-        else if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && items[id].Has(Item::Property::EQUIPPED))
-        {
-            // unequip weapon / armour
-            assets.push_back(Asset::Type::CANCEL);
-
-            controls.push_back(Controls::Type::UNEQUIP);
-
-            captions.push_back("UNEQUIP");
-        }
-
-        if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0)
-        {
-            // money
-            assets.push_back(Asset::Type::MONEY);
-
-            controls.push_back(Controls::Type::MONEY);
-
-            captions.push_back("GOLD");
-        }
-
-        if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
-        {
-            // trade
-            assets.push_back(Asset::Type::TRADE);
-
-            controls.push_back(Controls::Type::TRADE);
-
-            captions.push_back("TRADE");
-        }
-
-        // item description / identify
-        if (Book::IsDefined(items[id].Description))
-        {
-            if (!items[id].Revealed)
-            {
-                if (character.Class == Character::Class::SAGE)
+                // use item
+                if (items[id].Has(Item::Property::LIQUID))
                 {
-                    assets.push_back(Asset::Type::IDENTIFY);
+                    assets.push_back(Asset::Type::DRINK);
 
-                    controls.push_back(Controls::Type::IDENTIFY);
+                    controls.push_back(Controls::Type::DRINK);
 
-                    captions.push_back("IDENTIFY");
+                    captions.push_back("DRINK");
+                }
+                else if (items[id].Has(Item::Property::READABLE))
+                {
+                    assets.push_back(Asset::Type::READ);
+
+                    controls.push_back(Controls::Type::READ);
+
+                    captions.push_back("READ");
+                }
+                else
+                {
+                    assets.push_back(Asset::Type::USE);
+
+                    controls.push_back(Controls::Type::USE);
+
+                    captions.push_back("USE");
                 }
             }
-            else
+
+            if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
             {
-                // add info button
-                assets.push_back(Asset::Type::INFO);
+                // equip weapon / armour
+                assets.push_back(Asset::Type::CONFIRM);
 
-                controls.push_back(Controls::Type::INFO);
+                controls.push_back(Controls::Type::EQUIP);
 
-                captions.push_back("ABOUT");
+                captions.push_back("EQUIP");
             }
-        }
-
-        if (!items[id].Has(Item::Property::CANNOT_DROP))
-        {
-            assets.push_back(Asset::Type::DROP);
-
-            controls.push_back(Controls::Type::DROP);
-
-            captions.push_back("DROP");
-        }
-
-        assets.push_back(Asset::Type::BACK);
-
-        controls.push_back(Controls::Type::BACK);
-
-        auto values = std::vector<int>();
-
-        for (auto i = 0; i < controls.size(); i++)
-        {
-            values.push_back(i);
-        }
-
-        auto done = false;
-
-        while (!done)
-        {
-            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
-
-            if (selection.size() == 1)
+            else if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && items[id].Has(Item::Property::EQUIPPED))
             {
-                auto input = controls[selection[0]];
+                // unequip weapon / armour
+                assets.push_back(Asset::Type::CANCEL);
 
-                if (input == Controls::Type::BACK)
+                controls.push_back(Controls::Type::UNEQUIP);
+
+                captions.push_back("UNEQUIP");
+            }
+
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0)
+            {
+                // money
+                assets.push_back(Asset::Type::MONEY);
+
+                controls.push_back(Controls::Type::MONEY);
+
+                captions.push_back("GOLD");
+            }
+
+            if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
+            {
+                // trade
+                assets.push_back(Asset::Type::TRADE);
+
+                controls.push_back(Controls::Type::TRADE);
+
+                captions.push_back("TRADE");
+            }
+
+            // item description / identify
+            if (Book::IsDefined(items[id].Description))
+            {
+                if (!items[id].Revealed)
                 {
-                    if (Interface::CheckItemLimit(character))
+                    if (character.Class == Character::Class::SAGE)
                     {
-                        done = true;
-                    }
-                    else
-                    {
-                        Interface::ErrorMessage(graphics, background, Interface::MSG_ITEMS);
+                        assets.push_back(Asset::Type::IDENTIFY);
+
+                        controls.push_back(Controls::Type::IDENTIFY);
+
+                        captions.push_back("IDENTIFY");
                     }
                 }
-                else if (input == Controls::Type::EQUIP)
+                else
                 {
-                    auto is_weapon = items[id].Is(Item::Property::WEAPON);
+                    // add info button
+                    assets.push_back(Asset::Type::INFO);
 
-                    auto is_armour = items[id].Is(Item::Property::ARMOUR);
+                    controls.push_back(Controls::Type::INFO);
 
-                    auto is_melee = is_weapon && items[id].Is(Item::Property::PRIMARY);
-
-                    auto weapon_type = is_weapon ? (is_melee ? Item::Property::PRIMARY : Item::Property::RANGED) : Item::Property::NONE;
-
-                    auto equipped = is_weapon ? character.EquippedWeapon(weapon_type) : (is_armour ? character.EquippedArmour() : -1);
-
-                    if (equipped != 1 && equipped >= 0 && equipped < items.size())
-                    {
-                        // un-equip
-                        items[equipped].Remove(Item::Property::EQUIPPED);
-                    }
-
-                    if (!items[id].Is(Item::Property::EQUIPPED))
-                    {
-                        // equip
-                        update = items[id].Add(Item::Property::EQUIPPED);
-
-                        done = true;
-                    }
+                    captions.push_back("ABOUT");
                 }
-                else if (input == Controls::Type::UNEQUIP)
+            }
+
+            if (!items[id].Has(Item::Property::CANNOT_DROP))
+            {
+                assets.push_back(Asset::Type::DROP);
+
+                controls.push_back(Controls::Type::DROP);
+
+                captions.push_back("DROP");
+            }
+
+            assets.push_back(Asset::Type::BACK);
+
+            controls.push_back(Controls::Type::BACK);
+
+            auto values = std::vector<int>();
+
+            for (auto i = 0; i < controls.size(); i++)
+            {
+                values.push_back(i);
+            }
+
+            auto done = false;
+
+            while (!done)
+            {
+                auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
+
+                if (selection.size() == 1)
                 {
-                    if (items[id].Is(Item::Property::EQUIPPED))
+                    auto input = controls[selection[0]];
+
+                    if (input == Controls::Type::BACK)
                     {
-                        update = items[id].Remove(Item::Property::EQUIPPED);
-
-                        done = true;
-                    }
-                }
-                else if (input == Controls::Type::DROP)
-                {
-                    if (Interface::Confirm(graphics, background, "ARE YOU SURE?", Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true))
-                    {
-                        std::string action = character.Name + " DROPPED";
-
-                        Interface::DropItem(graphics, background, action, destination, items, id);
-
-                        done = true;
-                    }
-                }
-                else if ((input == Controls::Type::IDENTIFY) || (input == Controls::Type::INFO))
-                {
-                    auto is_sage = (character.Class == Character::Class::SAGE);
-
-                    auto is_revealed = items[id].Revealed;
-
-                    if ((is_sage || is_revealed) || (party.Has(Character::Class::SAGE) && Engine::IsAlive(party[Character::Class::SAGE])))
-                    {
-                        if (Book::IsDefined(items[id].Description))
+                        if (Interface::CheckItemLimit(character))
                         {
-                            items[id].Revealed = true;
+                            done = true;
 
-                            auto description = Story::CurrentBook.Find(items[id].Description);
+                            exit = true;
+                        }
+                        else
+                        {
+                            Interface::ErrorMessage(graphics, background, Interface::MSG_ITEMS);
+                        }
+                    }
+                    else if (input == Controls::Type::EQUIP)
+                    {
+                        auto is_weapon = items[id].Is(Item::Property::WEAPON);
 
-                            if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+                        auto is_armour = items[id].Is(Item::Property::ARMOUR);
+
+                        auto is_melee = is_weapon && items[id].Is(Item::Property::PRIMARY);
+
+                        auto weapon_type = is_weapon ? (is_melee ? Item::Property::PRIMARY : Item::Property::RANGED) : Item::Property::NONE;
+
+                        auto equipped = is_weapon ? character.EquippedWeapon(weapon_type) : (is_armour ? character.EquippedArmour() : -1);
+
+                        if (equipped != 1 && equipped >= 0 && equipped < items.size())
+                        {
+                            // un-equip
+                            items[equipped].Remove(Item::Property::EQUIPPED);
+                        }
+
+                        if (!items[id].Is(Item::Property::EQUIPPED))
+                        {
+                            // equip
+                            update = items[id].Add(Item::Property::EQUIPPED);
+
+                            done = true;
+                        }
+                    }
+                    else if (input == Controls::Type::UNEQUIP)
+                    {
+                        if (items[id].Is(Item::Property::EQUIPPED))
+                        {
+                            update = items[id].Remove(Item::Property::EQUIPPED);
+
+                            done = true;
+                        }
+                    }
+                    else if (input == Controls::Type::DROP)
+                    {
+                        if (Interface::Confirm(graphics, background, "ARE YOU SURE?", Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true))
+                        {
+                            std::string action = character.Name + " DROPPED";
+
+                            Interface::DropItem(graphics, background, action, destination, items, id);
+
+                            done = true;
+
+                            exit = true;
+                        }
+                    }
+                    else if ((input == Controls::Type::IDENTIFY) || (input == Controls::Type::INFO))
+                    {
+                        auto is_sage = (character.Class == Character::Class::SAGE);
+
+                        auto is_revealed = items[id].Revealed;
+
+                        if ((is_sage || is_revealed) || (party.Has(Character::Class::SAGE) && Engine::IsAlive(party[Character::Class::SAGE])))
+                        {
+                            if (Book::IsDefined(items[id].Description))
                             {
-                                auto item_description = Story::CurrentBook.Sections[description].Text;
+                                items[id].Revealed = true;
 
-                                auto wrap = graphics.Width - BloodSword::TileSize * 8;
+                                auto description = Story::CurrentBook.Find(items[id].Description);
 
-                                Interface::TextBox(graphics, background, Fonts::Normal, item_description.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+                                if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+                                {
+                                    auto item_description = Story::CurrentBook.Sections[description].Text;
+
+                                    auto wrap = graphics.Width - BloodSword::TileSize * 8;
+
+                                    Interface::TextBox(graphics, background, Fonts::Normal, item_description.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+
+                                    done = true;
+                                }
+                                else
+                                {
+                                    std::string message = "INTERNAL ERROR: ITEM DESCRIPTION";
+
+                                    Interface::InternalError(graphics, background, message);
+                                }
                             }
-                            else
+                            else if (!Book::IsDefined(items[id].Description))
                             {
-                                std::string message = "INTERNAL ERROR: ITEM DESCRIPTION";
+                                std::string message = "INTERNAL ERROR: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "INFO");
 
                                 Interface::InternalError(graphics, background, message);
                             }
                         }
-                        else if (!Book::IsDefined(items[id].Description))
+                        else
                         {
-                            std::string message = "INTERNAL ERROR: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "INFO");
-
-                            Interface::InternalError(graphics, background, message);
+                            Interface::ErrorMessage(graphics, background, MSG_IDENTIFY);
                         }
+                    }
+                    else if (input == Controls::Type::DRINK)
+                    {
+                        Interface::ItemEffects(graphics, background, character, items[id].Type);
+
+                        update = true;
+
+                        done = true;
+
+                        exit = true;
                     }
                     else
                     {
-                        Interface::ErrorMessage(graphics, background, MSG_IDENTIFY);
+                        Interface::NotImplemented(graphics, background);
                     }
-                }
-                else if (input == Controls::Type::DRINK)
-                {
-                    Interface::ItemEffects(graphics, background, character, items[id].Type);
-
-                    update = true;
-
-                    done = true;
-                }
-                else
-                {
-                    Interface::NotImplemented(graphics, background);
                 }
             }
         }
-
         return update;
     }
 

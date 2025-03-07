@@ -1375,6 +1375,12 @@ namespace BloodSword::Interface
                 overlay.Add(Controls::Base(Interface::CharacterControls[party[i].Class], i, lt, rt, i, i, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
                 overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile));
+
+                if (!Engine::IsAlive(party[i]))
+                {
+                    // blur dead characters
+                    overlay.Add(Scene::Element(screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
+                }
             }
         }
 
