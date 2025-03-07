@@ -444,6 +444,13 @@ namespace BloodSword::Interface
                         if (choice >= 0 && choice < character.Items.size())
                         {
                             Interface::ManageItem(graphics, background, party, character, character.Items, choice);
+
+                            if (!Engine::IsAlive(character))
+                            {
+                                done = true;
+
+                                exit = true;
+                            }
                         }
 
                         if (character.Items.size() == 0)
@@ -656,8 +663,10 @@ namespace BloodSword::Interface
         }
     }
 
-    void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, bool blur = true)
+    bool ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, bool blur = true)
     {
+        auto update = false;
+
         if (!Engine::IsAlive(party))
         {
             Interface::ErrorMessage(graphics, background, Interface::MSG_DEAD);
@@ -676,14 +685,23 @@ namespace BloodSword::Interface
                 if (character != Character::Class::NONE)
                 {
                     Interface::ManageInventory(graphics, background, party, party[character], blur);
+
+                    if (!Engine::IsAlive(party[character]))
+                    {
+                        update = true;
+
+                        break;
+                    }
                 }
 
-                if (Engine::Count(party) == 1)
+                if (Engine::Count(party) <= 1)
                 {
                     break;
                 }
             }
         }
+
+        return update;
     }
 }
 

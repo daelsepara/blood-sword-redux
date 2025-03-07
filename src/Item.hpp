@@ -247,7 +247,14 @@ namespace BloodSword::Item
                 item_string += " ";
             }
 
-            if (this->Attributes.size() > 0 || this->Properties.size() > 0 || this->Quantity > 1)
+            auto visible = 0;
+
+            for (auto &property : this->Properties)
+            {
+                visible += !Item::IsInvisible(property) ? 1 : 0;
+            }
+
+            if (this->Attributes.size() > 0 || (this->Properties.size() > 0 && visible > 0) || this->Quantity > 1)
             {
                 auto stats = 0;
 
@@ -598,7 +605,6 @@ namespace BloodSword::Items
 
         return result;
     }
-
 
     void Add(Items::Inventory &items, Item::Base item)
     {

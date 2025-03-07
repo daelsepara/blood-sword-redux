@@ -12,7 +12,6 @@
 #include "Scene.hpp"
 #include "Templates.hpp"
 #include "Interface.hpp"
-#include "InterfaceItems.hpp"
 #include "ConditionTypes.hpp"
 
 namespace BloodSword::Conditions
@@ -137,6 +136,26 @@ namespace BloodSword::Conditions
         Interface::InternalError(graphics, background, message);
     }
 
+    void Log(Conditions::Base &condition, bool result, bool failed, std::string text, Book::Location location)
+    {
+        // debug info
+        std::cerr << "CONDITION: "
+                  << std::string(Conditions::TypeMapping[condition.Type])
+                  << " (RESULT: "
+                  << (result ? "true" : "false")
+                  << ", FAILED: "
+                  << (failed ? "true" : "false");
+
+        if (text.size() > 0)
+        {
+            std::cerr << ", TEXT: " << text;
+        }
+
+        if (Book::IsDefined(location))
+        {
+            std::cerr << ", LOCATION: " << Book::String(location);
+        }
+    }
     // routine to validate "condition"
     Conditions::Evaluation Process(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {
@@ -1262,43 +1281,6 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
-        else if (condition.Type == Conditions::Type::ITEM_EFFECT)
-        {
-            // variables
-            // 0 - item (type)
-            if (condition.Variables.size() > 0)
-            {
-                auto item = Item::Map(condition.Variables[0]);
-
-                if (party.ChosenCharacter != Character::Class::NONE && party.Has(party.ChosenCharacter) && Engine::IsAlive(party[party.ChosenCharacter]) && item != Item::Type::NONE)
-                {
-                    auto &chosen = party[party.ChosenCharacter];
-
-                    if (chosen.Has(item))
-                    {
-                        Interface::ItemEffects(graphics, background, chosen, item);
-
-                        result = true;
-                    }
-                    else
-                    {
-                        text = Engine::NoItem(item);
-                    }
-                }
-                else if (!party.Has(party.ChosenCharacter))
-                {
-                    text = Engine::NotInParty(party.ChosenCharacter);
-                }
-                else if (party.Has(party.ChosenCharacter) && !Engine::IsAlive(party[party.ChosenCharacter]))
-                {
-                    text = Engine::IsDead(party[party.ChosenCharacter]);
-                }
-            }
-            else
-            {
-                internal_error = true;
-            }
-        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;
@@ -1314,25 +1296,7 @@ namespace BloodSword::Conditions
 
         result = condition.Invert ? !result : result;
 
-        // debug info
-        std::cerr << "CONDITION: "
-                  << std::string(Conditions::TypeMapping[condition.Type])
-                  << " (RESULT: "
-                  << (result ? "true" : "false")
-                  << ", FAILED: "
-                  << (failed ? "true" : "false");
-
-        if (text.size() > 0)
-        {
-            std::cerr << ", TEXT: " << text;
-        }
-
-        if (Book::IsDefined(location))
-        {
-            std::cerr << ", LOCATION: " << Book::String(location);
-        }
-
-        std::cerr << ")" << std::endl;
+        Conditions::Log(condition, result, failed, text, location);
 
         return failed ? Conditions::Evaluation(result, failed, location, text) : Conditions::Evaluation(result, text);
     }

@@ -166,7 +166,7 @@ namespace BloodSword::Interface
 
                         Interface::TextBox(graphics, background, Fonts::Normal, item_description.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
                     }
-                    
+
                     // process effects
                     Interface::ProcessEffects(graphics, background, character, id);
                 }

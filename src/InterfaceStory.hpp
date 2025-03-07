@@ -12,6 +12,52 @@ namespace BloodSword::Interface
 {
     typedef std::vector<Choice::Base> Choices;
 
+    Conditions::Evaluation ProcessItemEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
+    {
+        auto result = false;
+
+        auto text = std::string();
+
+        // TODO: Figure out a way to move this into Conditions namespace
+        if (condition.Type == Conditions::Type::ITEM_EFFECT)
+        {
+            // variables
+            // 0 - item (type)
+            if (condition.Variables.size() > 0)
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                if (party.ChosenCharacter != Character::Class::NONE && party.Has(party.ChosenCharacter) && Engine::IsAlive(party[party.ChosenCharacter]) && item != Item::Type::NONE)
+                {
+                    auto &chosen = party[party.ChosenCharacter];
+
+                    if (chosen.Has(item))
+                    {
+                        Interface::ItemEffects(graphics, background, chosen, item);
+
+                        result = true;
+                    }
+                    else
+                    {
+                        text = Engine::NoItem(item);
+                    }
+                }
+                else if (!party.Has(party.ChosenCharacter))
+                {
+                    text = Engine::NotInParty(party.ChosenCharacter);
+                }
+                else if (party.Has(party.ChosenCharacter) && !Engine::IsAlive(party[party.ChosenCharacter]))
+                {
+                    text = Engine::IsDead(party[party.ChosenCharacter]);
+                }
+            }
+        }
+
+        Conditions::Log(condition, result, false, text, {Book::Number::NONE, -1});
+
+        return Conditions::Evaluation(result, text);
+    }
+
     Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choices &choices, bool after_battle = false)
     {
         Book::Location next = Book::Undefined;
@@ -164,7 +210,17 @@ namespace BloodSword::Interface
 
                     if (choice >= 0 && choice < choices.size())
                     {
-                        auto eval = Conditions::Process(graphics, background, party, choices[choice].Condition);
+                        auto eval = Conditions::Evaluation();
+
+                        // TODO: Figure out a way to move this into Conditions namespace
+                        if (choices[choice].Condition.Type == Conditions::Type::ITEM_EFFECT)
+                        {
+                            eval = Interface::ProcessItemEvents(graphics, background, party, choices[choice].Condition);
+                        }
+                        else
+                        {
+                            eval = Conditions::Process(graphics, background, party, choices[choice].Condition);
+                        }
 
                         if (eval.Failed)
                         {
@@ -248,7 +304,18 @@ namespace BloodSword::Interface
             {
                 if (Engine::IsAlive(party))
                 {
-                    auto eval = Conditions::Process(graphics, background, party, condition);
+                    auto eval = Conditions::Evaluation();
+
+                    // TODO: Figure out a way to move this into Conditions namespace
+                    if (condition.Type == Conditions::Type::ITEM_EFFECT)
+                    {
+                        // process item effects first
+                        eval = Interface::ProcessItemEvents(graphics, background, party, condition);
+                    }
+                    else
+                    {
+                        eval = Conditions::Process(graphics, background, party, condition);
+                    }
 
                     results.push_back(eval);
                 }
@@ -306,7 +373,17 @@ namespace BloodSword::Interface
                 // process through each condition
                 for (auto &condition : section.Next)
                 {
-                    auto eval = Conditions::Process(graphics, background, party, condition);
+                    auto eval = Conditions::Evaluation();
+
+                    // TODO: Figure out a way to move this into Conditions namespace
+                    if (condition.Type == Conditions::Type::ITEM_EFFECT)
+                    {
+                        eval = Interface::ProcessItemEvents(graphics, background, party, condition);
+                    }
+                    else
+                    {
+                        eval = Conditions::Process(graphics, background, party, condition);
+                    }
 
                     // handle 'NEXT' situations that behave like events
                     if (eval.Result && Book::IsDefined(condition.Location))
@@ -834,7 +911,15 @@ namespace BloodSword::Interface
                         {
                             Interface::ErrorMessage(graphics, overlay, Interface::MSG_ITEMS);
 
-                            Interface::ManageInventory(graphics, overlay, party, true);
+                            auto update = Interface::ManageInventory(graphics, overlay, party, true);
+
+                            if (update && section.ImageAsset.empty())
+                            {
+                                BloodSword::Free(&image);
+
+                                // regenerate party stats
+                                image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                            }
                         }
 
                         next = Interface::NextSection(graphics, overlay, party);
@@ -895,7 +980,15 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::INVENTORY)
                 {
-                    Interface::ManageInventory(graphics, overlay, party, true);
+                    auto update = Interface::ManageInventory(graphics, overlay, party, true);
+
+                    if (update && section.ImageAsset.empty())
+                    {
+                        BloodSword::Free(&image);
+
+                        // regenerate party stats
+                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                    }
 
                     input.Selected = false;
                 }
