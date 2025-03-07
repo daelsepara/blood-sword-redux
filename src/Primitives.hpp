@@ -193,7 +193,7 @@ namespace BloodSword
         {
             for (auto &texture : textures)
             {
-                Free(&texture);
+                BloodSword::Free(&texture);
             }
 
             textures.clear();

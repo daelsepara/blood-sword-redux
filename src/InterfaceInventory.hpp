@@ -476,7 +476,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            Free(menu);
+            BloodSword::Free(menu);
         }
     }
 
@@ -652,7 +652,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            Free(menu);
+            BloodSword::Free(menu);
         }
     }
 

@@ -542,13 +542,13 @@ namespace BloodSword::Interface
     // generate stats
     void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, BloodSword::Textures &party_stats, BloodSword::Textures &party_status, BloodSword::Textures &enemy_stats, BloodSword::Textures &enemy_status)
     {
-        Free(enemy_stats);
+        BloodSword::Free(enemy_stats);
 
-        Free(enemy_status);
+        BloodSword::Free(enemy_status);
 
-        Free(party_stats);
+        BloodSword::Free(party_stats);
 
-        Free(party_status);
+        BloodSword::Free(party_status);
 
         auto info_w = battle.Map.TileSize * 5;
 
@@ -1477,9 +1477,9 @@ namespace BloodSword::Interface
         // set new player ORIGIN locations
         battle.Map.Origins = origins;
 
-        Free(&texture);
+        BloodSword::Free(&texture);
 
-        Free(&tactics);
+        BloodSword::Free(&tactics);
     }
 
     // fight battle
@@ -1808,7 +1808,7 @@ namespace BloodSword::Interface
                                                 {
                                                     asset = battle.Map[control.Map].Asset;
 
-                                                    Free(&texture);
+                                                    BloodSword::Free(&texture);
 
                                                     texture = Graphics::CreateText(graphics, "EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                                                 }
@@ -1825,7 +1825,7 @@ namespace BloodSword::Interface
 
                                                     std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
 
-                                                    Free(&texture);
+                                                    BloodSword::Free(&texture);
 
                                                     texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                                                 }
@@ -2570,7 +2570,7 @@ namespace BloodSword::Interface
                 round++;
 
                 // regenerate round string
-                Free(&round_string);
+                BloodSword::Free(&round_string);
 
                 round_string = Graphics::CreateText(graphics, (std::string("ROUND: ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
             }
@@ -2584,19 +2584,19 @@ namespace BloodSword::Interface
                 Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_FIGHT), Color::Active);
             }
 
-            Free(&texture);
+            BloodSword::Free(&texture);
 
-            Free(&round_string);
+            BloodSword::Free(&round_string);
 
-            Free(captions);
+            BloodSword::Free(captions);
 
-            Free(party_status);
+            BloodSword::Free(party_status);
 
-            Free(party_stats);
+            BloodSword::Free(party_stats);
 
-            Free(enemy_status);
+            BloodSword::Free(enemy_status);
 
-            Free(enemy_stats);
+            BloodSword::Free(enemy_stats);
         }
 
         // handle cases where this battle's location is not recorded

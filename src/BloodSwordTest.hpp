@@ -128,15 +128,15 @@ namespace BloodSword::Test
             input = Input::WaitForInput(graphics, scene, input);
         }
 
-        Free(&enchanter_text);
+        BloodSword::Free(&enchanter_text);
 
-        Free(&sage_text);
+        BloodSword::Free(&sage_text);
 
-        Free(&trickster_text);
+        BloodSword::Free(&trickster_text);
 
-        Free(&warrior_text);
+        BloodSword::Free(&warrior_text);
 
-        Free(&text);
+        BloodSword::Free(&text);
     }
 
     // map rendering test
@@ -448,11 +448,11 @@ namespace BloodSword::Test
             }
         }
 
-        Free(stats);
+        BloodSword::Free(stats);
 
-        Free(backgrounds);
+        BloodSword::Free(backgrounds);
 
-        Free(textures);
+        BloodSword::Free(textures);
     }
 
     // animation test
@@ -645,7 +645,7 @@ namespace BloodSword::Test
 
                     if (msec > 0)
                     {
-                        Free(&fps_texture);
+                        BloodSword::Free(&fps_texture);
 
                         fps = (double)(frames * BloodSword::OneSecond) / (double)msec;
 
@@ -673,7 +673,7 @@ namespace BloodSword::Test
             }
         }
 
-        Free(&fps_texture);
+        BloodSword::Free(&fps_texture);
     }
 
     // battle order
@@ -888,11 +888,11 @@ namespace BloodSword::Test
             }
         }
 
-        Free(labels);
+        BloodSword::Free(labels);
 
-        Free(menu);
+        BloodSword::Free(menu);
 
-        Free(&title);
+        BloodSword::Free(&title);
 
         Interface::ReloadTextures(graphics, palette);
     }
@@ -1042,7 +1042,7 @@ namespace BloodSword::Test
 
             round++;
 
-            Free(&texture);
+            BloodSword::Free(&texture);
         }
 
         scene.Clear();
@@ -1056,7 +1056,7 @@ namespace BloodSword::Test
             Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " WINS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Active, true);
         }
 
-        Free(events);
+        BloodSword::Free(events);
     }
 
     // shoot demo
@@ -1150,7 +1150,7 @@ namespace BloodSword::Test
 
             round++;
 
-            Free(&texture);
+            BloodSword::Free(&texture);
         }
 
         scene.Clear();
@@ -1168,7 +1168,7 @@ namespace BloodSword::Test
             Interface::MessageBox(graphics, scene, Graphics::RichText(enemy.Name + " WINS!", Fonts::Normal, Color::Highlight, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Active, true);
         }
 
-        Free(events);
+        BloodSword::Free(events);
     }
 
     // battle
@@ -1417,9 +1417,9 @@ namespace BloodSword::Test
                 }
             }
 
-            Free(story_menu);
+            BloodSword::Free(story_menu);
 
-            Free(&title);
+            BloodSword::Free(&title);
         }
         else
         {
@@ -1647,9 +1647,9 @@ namespace BloodSword::Test
                         Test::Palette(graphics);
 
                         // reset textures and menu
-                        Free(menu);
+                        BloodSword::Free(menu);
 
-                        Free(&title);
+                        BloodSword::Free(&title);
 
                         title = RegenerateTitle(graphics, width);
 
@@ -1759,9 +1759,9 @@ namespace BloodSword::Test
             }
         }
 
-        Free(&title);
+        BloodSword::Free(&title);
 
-        Free(menu);
+        BloodSword::Free(menu);
     }
 }
 

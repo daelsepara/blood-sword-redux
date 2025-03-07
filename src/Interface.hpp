@@ -168,37 +168,37 @@ namespace BloodSword::Interface
     {
         for (auto &skill : SkillCaptionsActive)
         {
-            Free(&skill.second);
+            BloodSword::Free(&skill.second);
         }
 
         for (auto &skill : SkillCaptionsInactive)
         {
-            Free(&skill.second);
+            BloodSword::Free(&skill.second);
         }
 
         for (auto &skill : SkillsTexturesInactive)
         {
-            Free(&skill.second);
+            BloodSword::Free(&skill.second);
         }
 
         for (auto &spell : SpellCaptionsActive)
         {
-            Free(&spell.second);
+            BloodSword::Free(&spell.second);
         }
 
         for (auto &spell : SpellCaptionsInactive)
         {
-            Free(&spell.second);
+            BloodSword::Free(&spell.second);
         }
 
         for (auto &spell : SpellsTexturesInactive)
         {
-            Free(&spell.second);
+            BloodSword::Free(&spell.second);
         }
 
         for (auto &control : BattleControlCaptions)
         {
-            Free(&control.second);
+            BloodSword::Free(&control.second);
         }
 
         SkillCaptionsActive.clear();
@@ -215,9 +215,9 @@ namespace BloodSword::Interface
 
         BattleControlCaptions.clear();
 
-        Free(&NoSkills);
+        BloodSword::Free(&NoSkills);
 
-        Free(&NoSpells);
+        BloodSword::Free(&NoSpells);
 
         Interface::FreeMessages();
     }
@@ -1660,11 +1660,11 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(end);
+        BloodSword::Free(end);
 
-        Free(start);
+        BloodSword::Free(start);
 
-        Free(&roll_texture);
+        BloodSword::Free(&roll_texture);
 
         return result;
     }
@@ -1849,15 +1849,15 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(start);
+        BloodSword::Free(start);
 
-        Free(end);
+        BloodSword::Free(end);
 
-        Free(&passed);
+        BloodSword::Free(&passed);
 
-        Free(&failed);
+        BloodSword::Free(&failed);
 
-        Free(&texture);
+        BloodSword::Free(&texture);
 
         return result;
     }
@@ -2056,7 +2056,7 @@ namespace BloodSword::Interface
                             {
                                 if (damage_value)
                                 {
-                                    Free(&damage_value);
+                                    BloodSword::Free(&damage_value);
                                 }
 
                                 damage_value = Graphics::CreateText(graphics, ("-" + std::to_string(damage) + " END").c_str(), Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
@@ -2076,19 +2076,19 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(end);
+        BloodSword::Free(end);
 
-        Free(start);
+        BloodSword::Free(start);
 
-        Free(&unharmed);
+        BloodSword::Free(&unharmed);
 
-        Free(&damaged);
+        BloodSword::Free(&damaged);
 
-        Free(&armour_texture);
+        BloodSword::Free(&armour_texture);
 
-        Free(&damage_texture);
+        BloodSword::Free(&damage_texture);
 
-        Free(&damage_value);
+        BloodSword::Free(&damage_value);
 
         return damage;
     }
@@ -2170,7 +2170,7 @@ namespace BloodSword::Interface
         {
             Interface::MessageBox(graphics, scene, origin, width, height, texture, background, border, border_size, highlight, blur);
 
-            Free(&texture);
+            BloodSword::Free(&texture);
         }
     }
 
@@ -2189,7 +2189,7 @@ namespace BloodSword::Interface
         {
             Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
 
-            Free(&texture);
+            BloodSword::Free(&texture);
         }
     }
 
@@ -2202,7 +2202,7 @@ namespace BloodSword::Interface
         {
             Interface::MessageBox(graphics, scene, texture, Color::Background, border, BloodSword::Border, border == Color::Active ? Color::Highlight : Color::Active, true);
 
-            Free(&texture);
+            BloodSword::Free(&texture);
         }
     }
 
@@ -2217,7 +2217,7 @@ namespace BloodSword::Interface
 
             Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
 
-            Free(&texture);
+            BloodSword::Free(&texture);
         }
     }
 
@@ -2317,13 +2317,13 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(&select);
+        BloodSword::Free(&select);
 
-        Free(skills);
+        BloodSword::Free(skills);
 
-        Free(stats);
+        BloodSword::Free(stats);
 
-        Free(captions);
+        BloodSword::Free(captions);
 
         return character_class;
     }
@@ -2441,7 +2441,7 @@ namespace BloodSword::Interface
         {
             result = Interface::Confirm(graphics, scene, texture, background, border, border_size, highlight, blur);
 
-            Free(&texture);
+            BloodSword::Free(&texture);
         }
 
         return result;
@@ -2610,7 +2610,7 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(menu);
+        BloodSword::Free(menu);
 
         return choice;
     }
@@ -2728,15 +2728,15 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(&current);
+        BloodSword::Free(&current);
 
-        Free(&select);
+        BloodSword::Free(&select);
 
-        Free(skills);
+        BloodSword::Free(skills);
 
-        Free(stats);
+        BloodSword::Free(stats);
 
-        Free(captions);
+        BloodSword::Free(captions);
 
         return character_class;
     }
@@ -2875,9 +2875,9 @@ namespace BloodSword::Interface
             Interface::MessageBox(graphics, overlay, Graphics::RichText("PARTY COMPLETE!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur);
         }
 
-        Free(&current);
+        BloodSword::Free(&current);
 
-        Free(&menu_title);
+        BloodSword::Free(&menu_title);
 
         return party;
     }
@@ -2945,7 +2945,7 @@ namespace BloodSword::Interface
 
                 if (input.RefreshText)
                 {
-                    Free(&texture);
+                    BloodSword::Free(&texture);
 
                     if (input.TextInput.size() > 0)
                     {
@@ -2961,11 +2961,11 @@ namespace BloodSword::Interface
             // disable text input events
             Input::StopTextInput();
 
-            Free(&texture);
+            BloodSword::Free(&texture);
 
-            Free(&cursor);
+            BloodSword::Free(&cursor);
 
-            Free(&message);
+            BloodSword::Free(&message);
 
             input_text = input.TextInput;
         }
@@ -3126,7 +3126,7 @@ namespace BloodSword::Interface
             // update texture
             if (update)
             {
-                Free(&current);
+                BloodSword::Free(&current);
 
                 current = Graphics::CreateText(graphics, (string_current + std::to_string(number)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
@@ -3211,13 +3211,13 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(&current);
+        BloodSword::Free(&current);
 
-        Free(&texture_max);
+        BloodSword::Free(&texture_max);
 
-        Free(&texture_min);
+        BloodSword::Free(&texture_min);
 
-        Free(&texture);
+        BloodSword::Free(&texture);
 
         return number;
     }
@@ -3488,13 +3488,13 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(captions);
+        BloodSword::Free(captions);
 
-        Free(&select);
+        BloodSword::Free(&select);
 
-        Free(status);
+        BloodSword::Free(status);
 
-        Free(stats);
+        BloodSword::Free(stats);
     }
 
     // choose character from a party
@@ -3708,9 +3708,9 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(texture_captions);
+        BloodSword::Free(texture_captions);
 
-        Free(&select);
+        BloodSword::Free(&select);
 
         return selected_symbols;
     }

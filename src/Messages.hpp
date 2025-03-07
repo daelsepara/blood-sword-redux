@@ -105,14 +105,14 @@ namespace BloodSword::Interface
             text.Color = Color::S(Color::Active);
         }
 
-        Free(Message);
+        BloodSword::Free(Message);
 
         Message = Graphics::CreateText(graphics, Text);
     }
 
     void FreeMessages()
     {
-        Free(Message);
+        BloodSword::Free(Message);
     }
 }
 

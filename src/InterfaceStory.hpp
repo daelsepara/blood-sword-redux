@@ -191,7 +191,7 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(menu);
+        BloodSword::Free(menu);
 
         return next;
     }
@@ -687,7 +687,7 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(&text);
+        BloodSword::Free(&text);
 
         return update;
     }
@@ -847,7 +847,7 @@ namespace BloodSword::Interface
                         {
                             if (section.ImageAsset.empty())
                             {
-                                Free(&image);
+                                BloodSword::Free(&image);
 
                                 // regenerate party stats
                                 image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
@@ -867,7 +867,7 @@ namespace BloodSword::Interface
 
                         if (update && section.ImageAsset.empty())
                         {
-                            Free(&image);
+                            BloodSword::Free(&image);
 
                             // regenerate party stats
                             image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
@@ -940,9 +940,9 @@ namespace BloodSword::Interface
             }
         }
 
-        Free(&image);
+        BloodSword::Free(&image);
 
-        Free(&texture);
+        BloodSword::Free(&texture);
 
         return next;
     }

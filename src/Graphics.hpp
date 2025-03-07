@@ -733,7 +733,7 @@ namespace BloodSword::Graphics
     // free all textures allocated by this module
     void FreeTextures()
     {
-        Free(&VersionOverlay);
+        BloodSword::Free(&VersionOverlay);
     }
 
     // close graphics system
