@@ -257,7 +257,7 @@ namespace BloodSword::Item
                 {
                     for (auto &property : this->Properties)
                     {
-                        if (property != Item::Property::CONTAINER && property != Item::Property::CANNOT_DROP && property != Item::Property::CANNOT_TRADE)
+                        if (!Item::IsInvisible(property))
                         {
                             if (stats > 0)
                             {
@@ -573,6 +573,32 @@ namespace BloodSword::Items
 
         return result;
     }
+
+    // has any item with all the properties
+    Items::Inventory::iterator Find(Items::Inventory &items, Item::Properties properties)
+    {
+        auto result = items.end();
+
+        for (auto item = items.begin(); item != items.end(); item++)
+        {
+            auto has = true;
+
+            for (auto property : properties)
+            {
+                has &= item->Has(property);
+            }
+
+            if (has)
+            {
+                result = item;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
 
     void Add(Items::Inventory &items, Item::Base item)
     {

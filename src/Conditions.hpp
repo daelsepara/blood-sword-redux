@@ -1208,7 +1208,7 @@ namespace BloodSword::Conditions
                             party[characters[i]].Add(Items::Defaults[item]);
                         }
 
-                        text = (is_party ? "You" : party[characters[0]].Name) + " receive" + (is_party ? "" : "s") + " the " + Items::Defaults[item].Name;
+                        text = (is_party ? "You" : party[characters[0]].Name) + " receive" + (is_party ? "" : "s") + " the " + Items::Defaults[item].Name + ".";
 
                         result = true;
                     }

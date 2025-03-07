@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 196
+    },
+    "text": "You find a magnificent translucent sword, which appears to be made of blue crystal. As you take this and remove it from the cabinet, it fades into invisibility. You can still feel it, but you cannot see it. This is the fabled sword of LOGE SKYRUNNER. Your enemies will find it very difficult to parry an invisible blade when fighting with it.\n\nAfter covering Balhazar's body with his cloak, you leave the mansion.",
+    "events": [
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "FIRST",
+                "NONE",
+                "LOGE SKYRUNNER"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 119
+            }
+        }
+    ]
+}

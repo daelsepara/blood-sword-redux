@@ -398,28 +398,9 @@ namespace BloodSword::Character
         }
 
         // has any item with all the properties
-        Items::Inventory::const_iterator Find(Item::Properties properties)
+        Items::Inventory::iterator Find(Item::Properties properties)
         {
-            auto result = this->Items.end();
-
-            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
-            {
-                auto has = true;
-
-                for (auto property : properties)
-                {
-                    has &= item->Has(property);
-                }
-
-                if (has)
-                {
-                    result = item;
-
-                    break;
-                }
-            }
-
-            return result;
+            return Items::Find(this->Items, properties);
         }
 
         // has any item with specific property
@@ -494,6 +475,20 @@ namespace BloodSword::Character
         bool IsArmed(Item::Type weapon, Item::Type container, Item::Type ammo)
         {
             return this->Has(container, ammo, 1) && this->Has(weapon);
+        }
+
+        int WeaponModifier(Item::Property weapon_type, Attribute::Type attribute)
+        {
+            auto modifier = 0;
+
+            auto found = this->Find({Item::Property::WEAPON, Item::Property::EQUIPPED, weapon_type});
+
+            if (found != this->Items.end())
+            {
+                modifier = found->Modifier(attribute);
+            }
+
+            return modifier;
         }
 
         // is the character a player character?

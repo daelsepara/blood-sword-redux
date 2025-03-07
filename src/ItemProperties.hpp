@@ -24,7 +24,9 @@ namespace BloodSword::Item
         RANGED,
         CANNOT_DROP,
         CANNOT_TRADE,
-        LIQUID
+        LIQUID,
+        GIANT_BANE,
+        INVISIBLE
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -42,7 +44,16 @@ namespace BloodSword::Item
         {Item::Property::RANGED, "RANGED"},
         {Item::Property::CANNOT_DROP, "CANNOT DROP"},
         {Item::Property::CANNOT_TRADE, "CANNOT TRADE"},
-        {Item::Property::LIQUID, "LIQUID"}};
+        {Item::Property::LIQUID, "LIQUID"},
+        {Item::Property::GIANT_BANE, "GIANT BANE"},
+        {Item::Property::INVISIBLE, "INVISIBLE"}};
+
+    Item::Properties Invisible = {
+        Item::Property::NONE,
+        Item::Property::CONTAINER,
+        Item::Property::LIQUID,
+        Item::Property::CANNOT_DROP,
+        Item::Property::CANNOT_TRADE};
 
     Item::Property MapProperty(const char *property)
     {
@@ -52,6 +63,11 @@ namespace BloodSword::Item
     Item::Property MapProperty(std::string property)
     {
         return Item::MapProperty(property.c_str());
+    }
+
+    bool IsInvisible(Item::Property property)
+    {
+        return property != Item::Property::NONE && BloodSword::Find(Item::Invisible, property) != Item::Invisible.end();
     }
 }
 

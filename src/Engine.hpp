@@ -88,7 +88,7 @@ namespace BloodSword::Engine
     }
 
     // total character score
-    int Score(Character::Base &character, Attribute::Type attribute, bool in_battle = false)
+    int Score(Character::Base &character, Attribute::Type attribute, bool in_battle = false, Item::Property weapon = Item::Property::NONE)
     {
         auto score = 0;
 
@@ -109,8 +109,14 @@ namespace BloodSword::Engine
 
             score = value + modifier;
         }
+        else if (in_battle && character.IsArmed() && weapon != Item::Property::NONE)
+        {
+            modifier += character.WeaponModifier(weapon, attribute);
 
-        return std::max(0, score);
+            score = value + modifier;
+        }
+
+        return (in_battle && character.IsArmed() && weapon != Item::Property::NONE) ? score : std::max(0, score);
     }
 
     // check if character is still alive (and not enthralled)

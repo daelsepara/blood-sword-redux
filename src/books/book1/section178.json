@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 178
+    },
+    "text": "You identify Balhazar and stride over to him. \"My lord Magus,\" you say, giving a curt bow, \"you need look no further for champions.\"\n\n\"Excellent,\" says Balhazar, standing and removing the hood of his cape. \"You have found me among all these images.\" With this he turns and, waving his hand, murmurs a spell. The partygoers fade from sight. \"They were all illusions,\" explains Balhazar, \"except for the assassin you cunningly rooted out and dealt with. I am impressed -- and since he might have taken my life, I am even indebted to you. Such obligation is not seemly towards one's employees, so I shall discharge the debt at once by rewarding you.\"\n\nHe claps his hands, and a servant scurries in at once carrying a silver sword studded with emeralds. This he hands to you. \"It is BLUTGETRANKER -- the 'blood-drinker' -- made out of a silver from the legendary sword of the god Frey.\"\n\nYou cut the air with this fabulous weapon. It seems light, but hums with deadly force.",
+    "events": [
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "WARRIOR",
+                "FIRST",
+                "BLUTGETRANKER"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 134
+            }
+        }
+    ]
+}

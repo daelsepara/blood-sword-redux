@@ -126,6 +126,39 @@
             ],
             "quantity": 1,
             "type": "SILVER ARMOUR"
+        },
+        {
+            "name": "BLUTGETRANKER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "GIANT BANE"
+            ],
+            "quantity": 1,
+            "type": "BLUTGETRANKER"
+        },
+        {
+            "name": "OPAL MEDALLION",
+            "quantity": 1,
+            "type": "OPAL MEDALLION"
+        },
+        {
+            "name": "OCTAGONAL GLASS PRISM",
+            "quantity": 1,
+            "type": "OCTAGONAL GLASS PRISM"
+        },
+        {
+            "name": "LOGE SKYRUNNER",
+            "attributes": {
+                "FIGHTING PROWESS": 1
+            },
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "INVISIBLE"
+            ],
+            "quantity": 1,
+            "type": "LOGE SKYRUNNER"
         }
     ]
 }

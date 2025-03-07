@@ -442,7 +442,7 @@ namespace BloodSword::Interface
     }
 
     // form attribute score string
-    std::string ScoreString(Character::Base &character, Attribute::Type attribute, bool in_battle = false)
+    std::string ScoreString(Character::Base &character, Attribute::Type attribute, bool in_battle = false, Item::Property weapon = Item::Property::NONE)
     {
         std::string stats;
 
@@ -1670,7 +1670,7 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check (with target)
-    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle)
+    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, Item::Property weapon = Item::Property::NONE)
     {
         auto result = false;
 
@@ -1698,7 +1698,7 @@ namespace BloodSword::Interface
 
         auto end = Graphics::CreateText(graphics, {Graphics::RichText(" DONE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
 
-        auto score = Engine::Score(character, attribute, in_battle);
+        auto score = Engine::Score(character, attribute, in_battle, weapon);
 
         auto stage = Engine::RollStage::START;
 

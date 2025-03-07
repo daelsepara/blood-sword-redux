@@ -25,7 +25,11 @@ namespace BloodSword::Item
         SHURIKEN,
         SILVER_RING,
         CRESCENTIUM_STEEL_SWORD,
-        MAUVE_LIQUID
+        MAUVE_LIQUID,
+        BLUTGETRANKER,
+        OPAL_MEDALLION,
+        OCTAGONAL_GLASS_PRISM,
+        LOGE_SKYRUNNER
     };
 
     // for the magus kalugen's card game in battlepits
@@ -55,7 +59,11 @@ namespace BloodSword::Item
         {Item::Type::SHURIKEN, "SHURIKEN"},
         {Item::Type::SILVER_RING, "SILVER RING"},
         {Item::Type::MAUVE_LIQUID, "MAUVE LIQUID"},
-        {Item::Type::CRESCENTIUM_STEEL_SWORD, "CRESCENTIUM STEEL SWORD"}};
+        {Item::Type::CRESCENTIUM_STEEL_SWORD, "CRESCENTIUM STEEL SWORD"},
+        {Item::Type::BLUTGETRANKER, "BLUTGETRANKER"},
+        {Item::Type::OPAL_MEDALLION, "OPAL MEDALLION"},
+        {Item::Type::OCTAGONAL_GLASS_PRISM, "OCTAGONAL GLASS PRISM"},
+        {Item::Type::LOGE_SKYRUNNER, "LOGE SKYRUNNER"}};
 
     BloodSword::Mapping<Item::CardType> CardMapping = {
         {Item::CardType::NONE, "NONE"},
