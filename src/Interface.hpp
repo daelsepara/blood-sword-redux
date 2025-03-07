@@ -2999,6 +2999,18 @@ namespace BloodSword::Interface
         return Interface::TextInput(graphics, background, question, blur);
     }
 
+    std::string GetText(const int message)
+    {
+        auto text = std::string();
+
+        if (message >= 0 && message < Interface::Text.size())
+        {
+            text = Interface::Text[message].Text;
+        }
+
+        return text;
+    }
+
     // generic error message box
     void ErrorMessage(Graphics::Base &graphics, Scene::Base &background, int message)
     {

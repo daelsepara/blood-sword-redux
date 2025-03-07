@@ -36,24 +36,30 @@
         "book": "BOOK1",
         "number": 226
     },
-    "text": "You quickly search the bodies. You find several SHURIKEN. You do not have the expertise to use them properly, but you can take them anyway.\n\nA more interesting item is a long thin sword of CRESCENTIUM STEEL SWORD. This is so flexible that it can be worn wrapped around the waist under a belt which is presumably why the dead assassin thought it was useful.\n\nYou also find a SMALL BOTTLE OF MAUVE LIQUID.\n\nYou return to the main square and see if you have better luck finding a patron.",
-    "next": [
+    "text": "You quickly search the bodies. You find several SHURIKEN. You do not have the expertise to use them properly, but you can take them anyway.\n\nA more interesting item is a long thin sword of CRESCENTIUM STEEL SWORD. This is so flexible that it can be worn wrapped around the waist under a belt which is presumably why the dead assassin thought it was useful.\n\nYou also find a SMALL BOTTLE OF MAUVE LIQUID.",
+    "choices": [
         {
-            "type": "IN PARTY WITH ITEM",
-            "location": {
-                "book": "BOOK1",
-                "number": 47
-            },
-            "variables": [
-                "SAGE",
-                "MAUVE LIQUID"
-            ]
+            "text": "(SAGE) Try to identify the SMALL BOTTLE OF MAUVE LIQUID",
+            "condition": {
+                "type": "IN PARTY WITH ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 47
+                },
+                "variables": [
+                    "SAGE",
+                    "MAUVE LIQUID"
+                ]
+            }
         },
         {
-            "type": "NORMAL",
-            "location": {
-                "book": "BOOK1",
-                "number": 443
+            "text": "Return to the main square and see if you have better luck finding a patron.",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 443
+                }
             }
         }
     ]

@@ -1089,7 +1089,7 @@ namespace BloodSword::Conditions
 
                             if (!discarded.empty())
                             {
-                                text = (is_party ? "EVERYONE" : party[character].Name) + " discards the ";
+                                text = (is_party ? "You" : party[character].Name) + " discard" + (is_party ? "" : "s") + " the ";
 
                                 for (auto i = 0; i < discarded.size(); i++)
                                 {
@@ -1121,11 +1121,11 @@ namespace BloodSword::Conditions
                     {
                         if (party.Count() > 1)
                         {
-                            text = "EVERYONE IS INCAPACITATED!";
+                            text = Interface::GetText(Interface::MSG_DEAD);
                         }
                         else
                         {
-                            text = "YOU ARE INCAPACITATED!";
+                            text = Interface::GetText(Interface::MSG_DIED);
                         }
                     }
                     else if (!party.Has(character))
@@ -1208,7 +1208,7 @@ namespace BloodSword::Conditions
                             party[characters[i]].Add(Items::Defaults[item]);
                         }
 
-                        text = (is_party ? "EVERYONE" : party[characters[0]].Name) + " receives the " + Items::Defaults[item].Name;
+                        text = (is_party ? "You" : party[characters[0]].Name) + " receive" + (is_party ? "" : "s") + " the " + Items::Defaults[item].Name;
 
                         result = true;
                     }
@@ -1221,11 +1221,11 @@ namespace BloodSword::Conditions
                 {
                     if (party.Count() > 1)
                     {
-                        text = "EVERYONE IS INCAPACITATED!";
+                        text = Interface::GetText(Interface::MSG_DEAD);
                     }
                     else
                     {
-                        text = "YOU ARE INCAPACITATED!";
+                        text = Interface::GetText(Interface::MSG_DIED);
                     }
                 }
                 else

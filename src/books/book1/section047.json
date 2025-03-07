@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 47
+    },
+    "text": "(SAGE) You are very careful not to splash any of the liquid on to your lips, knowing that assassin usually carry the most virulent poisons with them. In fact, you recignise it as a preparation of the drug VATRAVISH, a powerful stimulant that increases the user's speed and strength. Assassins sometimes use it because of their single-minded dedicatin to their cause, but you know that it can have unpleasant side-effects. You throw the bottle away.\n\nYou decide it is time to return to the main square and see about getting one of the other magi as a patron.",
+    "events": [
+        {
+            "type": "DISCARD ITEM",
+            "variables": [
+                "ALL",
+                "MAUVE LIQUID"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 443
+            }
+        }
+    ]
+}
