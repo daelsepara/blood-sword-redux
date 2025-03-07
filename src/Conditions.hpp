@@ -212,20 +212,61 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::HAS_ITEM)
         {
+            internal_error = true;
+
             if (condition.Variables.size() > 0)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
-                result = party.Has(item);
-
-                if (!result)
+                if (item != Item::Type::NONE)
                 {
-                    text = Engine::NoItem(item);
+                    result = party.Has(item);
+
+                    if (!result)
+                    {
+                        text = Engine::NoItem(item);
+                    }
+
+                    internal_error = false;
                 }
             }
-            else
+        }
+        else if (condition.Type == Conditions::Type::IN_PARTY_WITH_ITEM)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - item
+            if (condition.Variables.size() > 1)
             {
-                internal_error = true;
+                auto character = Character::Map(condition.Variables[0]);
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                if (character != Character::Class::NONE && item != Item::Type::NONE)
+                {
+                    result = party.Has(character) && Engine::IsAlive(party[character]) && party.Has(item);
+
+                    if (result)
+                    {
+                        text = std::string(Character::ClassMapping[character]) + " HAS THE " + Item::TypeMapping[item];
+                    }
+                    else if (!(party.Has(character)))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                    else
+                    {
+                        text = Engine::NoItem(item);
+                    }
+
+                    internal_error = false;
+                }
             }
         }
         else if (condition.Type == Conditions::Type::TEST_ATTRIBUTE)

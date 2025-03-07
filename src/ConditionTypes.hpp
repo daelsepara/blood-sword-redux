@@ -45,7 +45,8 @@ namespace BloodSword::Conditions
         KALUGEN_LIST,
         KALUGEN_PLAY,
         DISCARD_ITEM,
-        RECEIVE_ITEM
+        RECEIVE_ITEM,
+        IN_PARTY_WITH_ITEM
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -87,7 +88,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::KALUGEN_LIST, "KALUGEN LIST"},
         {Conditions::Type::KALUGEN_PLAY, "KALUGEN PLAY"},
         {Conditions::Type::DISCARD_ITEM, "DISCARD ITEM"},
-        {Conditions::Type::RECEIVE_ITEM, "RECEIVE ITEM"}};
+        {Conditions::Type::RECEIVE_ITEM, "RECEIVE ITEM"},
+        {Conditions::Type::IN_PARTY_WITH_ITEM, "IN PARTY WITH ITEM"}};
 
     Conditions::Type Map(const char *Conditions)
     {
