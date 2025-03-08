@@ -267,9 +267,17 @@ namespace BloodSword::Interface
                     }
                     else if (input == Controls::Type::DRINK)
                     {
-                        party.ChosenCharacter = character.Class;
+                        if (Book::IsDefined(items[id].Effects))
+                        {
+                            party.ChosenCharacter = character.Class;
 
-                        update.Next = items[id].Effects;
+                            update.Next = items[id].Effects;
+                        }
+                        else
+                        {
+                            // handles effects such as potion of healing, etc.
+                            Interface::ItemEffects(graphics, background, character, items[id].Type);
+                        }
 
                         update.Update = true;
 

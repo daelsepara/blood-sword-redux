@@ -149,6 +149,21 @@ namespace BloodSword::Interface
 
                 if (id != -1)
                 {
+                    if (Book::IsDefined(character.Items[id].Effects) && !Book::Equal(character.Location, character.Items[id].Effects))
+                    {
+                        // show text description
+                        auto description = Story::CurrentBook.Find(character.Items[id].Effects);
+
+                        if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+                        {
+                            auto item_description = Story::CurrentBook.Sections[description].Text;
+
+                            auto wrap = graphics.Width - BloodSword::TileSize * 8;
+
+                            Interface::TextBox(graphics, background, item_description, wrap);
+                        }
+                    }
+
                     // process effects
                     Interface::ProcessEffects(graphics, background, character, id);
                 }
