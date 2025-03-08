@@ -350,6 +350,13 @@ namespace BloodSword::Party
             }
         }
 
+        bool IsANumber(const std::string &variable)
+        {
+            // SEE: https://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
+            return !variable.empty() && std::find_if(variable.begin(), variable.end(), [](unsigned char c)
+                                                     { return !std::isdigit(c); }) == variable.end();
+        }
+
         bool IsPresent(std::string variable)
         {
             return !variable.empty() && (this->Variables.find(variable) != this->Variables.end());
@@ -361,7 +368,11 @@ namespace BloodSword::Party
 
             if (!variable.empty())
             {
-                if (this->IsPresent(variable))
+                if (variable == "CHOSEN")
+                {
+                    value = std::to_string(this->ChosenNumber);
+                }
+                else if (this->IsPresent(variable))
                 {
                     value = this->Variables[variable];
 
@@ -376,9 +387,19 @@ namespace BloodSword::Party
         {
             if (!variable.empty())
             {
-                this->Variables[variable] = value;
+                if (variable == "CHOSEN")
+                {
+                    if (this->IsANumber(value))
+                    {
+                        this->ChosenNumber = std::stoi(value, nullptr, 10);
+                    }
+                }
+                else
+                {
+                    this->Variables[variable] = value;
 
-                std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
+                    std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
+                }
             }
         }
 
@@ -386,9 +407,16 @@ namespace BloodSword::Party
         {
             if (!variable.empty())
             {
-                this->Variables[variable] = std::to_string(value);
+                if (variable == "CHOSEN")
+                {
+                    this->ChosenNumber = value;
+                }
+                else
+                {
+                    this->Variables[variable] = std::to_string(value);
 
-                std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
+                    std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
+                }
             }
         }
 
@@ -398,19 +426,19 @@ namespace BloodSword::Party
 
             if (!variable.empty())
             {
-                auto search = this->Get(variable);
+                if (variable != "CHOSEN")
+                {
+                    auto search = this->Get(variable);
 
-                value = !search.empty() ? std::stoi(search, nullptr, 10) : 0;
+                    value = !search.empty() ? std::stoi(search, nullptr, 10) : 0;
+                }
+                else
+                {
+                    value = this->ChosenNumber;
+                }
             }
 
             return value;
-        }
-
-        bool IsANumber(const std::string &variable)
-        {
-            // SEE: https://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
-            return !variable.empty() && std::find_if(variable.begin(), variable.end(), [](unsigned char c)
-                                                     { return !std::isdigit(c); }) == variable.end();
         }
 
         void Math(std::string operation, std::string first, std::string second, bool clamp = true)
@@ -423,7 +451,7 @@ namespace BloodSword::Party
                 // check if operation is valid
                 if (std::find(valid_operations.begin(), valid_operations.end(), operation) != valid_operations.end())
                 {
-                    if (!this->IsPresent(first))
+                    if (first != "CHOSEN" && !this->IsPresent(first))
                     {
                         // initialize first variable if not present
                         this->Set(first, 0);

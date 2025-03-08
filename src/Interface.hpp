@@ -1675,6 +1675,18 @@ namespace BloodSword::Interface
         return result;
     }
 
+    // default roller
+    int Roll(Graphics::Base &graphics, Scene::Base &background, Asset::Type actor, Asset::Type action, int roll, int modifier)
+    {
+        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+
+        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+
+        auto origin = Point(graphics.Width - window_w, graphics.Height - window_h) / 2;
+
+        return Interface::Roll(graphics, background, origin, window_w, window_h, Color::Active, BloodSword::Border, actor, action, roll, modifier);
+    }
+
     // attribute difficulty check (with target)
     bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, Item::Property weapon = Item::Property::NONE)
     {
@@ -3259,12 +3271,6 @@ namespace BloodSword::Interface
 
     void Heal(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
     {
-        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
-
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
-
-        auto origin = Point(graphics.Width - window_w, graphics.Height - window_h) / 2;
-
         if (character.Has(Skills::Type::HEALING))
         {
             if (Engine::IsAlive(party) && Engine::IsAlive(character))
@@ -3287,7 +3293,7 @@ namespace BloodSword::Interface
                                 {
                                     Engine::GainEndurance(character, -cost, false);
 
-                                    auto score = cost * Interface::Roll(graphics, background, origin, window_w, window_h, Color::Active, BloodSword::Border, character.Asset, Asset::Type::HEALING, 1, -2);
+                                    auto score = cost * Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2);
 
                                     done = !(score > 0);
 

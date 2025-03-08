@@ -58,7 +58,11 @@ namespace BloodSword::Conditions
         GET,
         NUMBER,
         COPY,
-        MATH
+        MATH,
+        ROLL,
+        EQUAL_MATH,
+        LOWER_MATH,
+        HIGHER_MATH
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -113,7 +117,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::SET, "SET"},
         {Conditions::Type::NUMBER, "NUMBER"},
         {Conditions::Type::COPY, "COPY"},
-        {Conditions::Type::MATH, "MATH"}};
+        {Conditions::Type::MATH, "MATH"},
+        {Conditions::Type::ROLL, "ROLL"}};
 
     Conditions::Type Map(const char *Conditions)
     {

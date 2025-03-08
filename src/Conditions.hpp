@@ -1451,23 +1451,15 @@ namespace BloodSword::Conditions
 
                 if (number)
                 {
-                    std::cerr << "NUMBER: " << condition.Variables[0] << std::endl;
-
                     party.ChosenNumber = std::stoi(condition.Variables[0], nullptr, 10);
 
                     result = true;
                 }
                 else if (condition.Variables.size() > 3)
                 {
-                    std::cerr << "MIN: " << condition.Variables[2] << std::endl;
-
                     auto min_number = std::stoi(condition.Variables[2], nullptr, 10);
 
-                    std::cerr << "MAX: " << condition.Variables[3] << std::endl;
-
                     auto max_number = std::stoi(condition.Variables[3], nullptr, 10);
-
-                    std::cerr << "MESSAGE: " << condition.Variables[1] << std::endl;
 
                     party.ChosenNumber = Interface::GetNumber(graphics, background, condition.Variables[1].c_str(), min_number, max_number, Asset::Type::DICE1, Asset::Type::UP, Asset::Type::DOWN, false);
 
@@ -1485,6 +1477,51 @@ namespace BloodSword::Conditions
             else
             {
                 internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::ROLL)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - number of dice to roll
+            // 1 - modifiers
+            // 2 - variable to save results to
+            // 3 - asset (CHOSEN / asset name)
+            // 4 - asset (action)
+            if (condition.Variables.size() > 4 && Engine::IsAlive(party))
+            {
+                auto roll = std::stoi(condition.Variables[0], nullptr, 10);
+
+                auto mods = std::stoi(condition.Variables[1], nullptr, 10);
+
+                auto variable = condition.Variables[2];
+
+                auto is_character = (Engine::ToUpper(condition.Variables[0]) == "CHOSEN");
+
+                if (!is_character || (is_character && party.ChosenCharacter != Character::Class::NONE && party.Has(party.ChosenCharacter) && Engine::IsAlive(party[party.ChosenCharacter])))
+                {
+                    auto asset = is_character ? party[party.ChosenCharacter].Asset : Asset::Map(condition.Variables[3]);
+
+                    auto action = Asset::Map(condition.Variables[4]);
+
+                    if (asset != Asset::Type::NONE && action != Asset::Type::NONE && !variable.empty())
+                    {
+                        auto rolls = Interface::Roll(graphics, background, asset, action, roll, mods);
+
+                        party.Set(variable, rolls);
+
+                        result = true;
+
+                        internal_error = false;
+                    }
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+
+                internal_error = false;
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)

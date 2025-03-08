@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 499
+    },
+    "text": "Kalugen throws two dice.",
+    "next": [
+        {
+            "type": "ROLL",
+            "variables": [
+                "2",
+                "0",
+                "KALUGEN ROLL",
+                "KALUGEN",
+                "DICE GAME"
+            ]
+        },
+        {
+            "type": "EQUAL MATH",
+            "variables": [
+                "CHOSEN",
+                "KALUGEN ROLL",
+                "-",
+                "HOUSE STAKE",
+                "KALUGEN ROLL"
+            ]
+        },
+        {
+            "type": "EQUAL MATH",
+            "variables": [
+                "CHOSEN",
+                "KALUGEN ROLL",
+                "-",
+                "STAKED GOLD",
+                "KALUGEN ROLL"
+            ]
+        }
+    ]
+}

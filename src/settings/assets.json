@@ -451,6 +451,14 @@
         {
             "id": "READ",
             "path": "images/system/tied-scroll.png"
+        },
+        {
+            "id": "DICE GAME",
+            "path": "images/system/rolling-dices.png"
+        },
+        {
+            "id": "KALUGEN",
+            "path": "images/enemies/wizard-face.png"
         }
     ]
 }

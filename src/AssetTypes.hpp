@@ -136,7 +136,9 @@ namespace BloodSword::Asset
         INFO,
         IDENTIFY,
         DRINK,
-        READ
+        READ,
+        DICE_GAME,
+        KALUGEN
     };
 
     template <typename T>
@@ -267,7 +269,9 @@ namespace BloodSword::Asset
         {Asset::Type::INFO, "INFO"},
         {Asset::Type::IDENTIFY, "IDENTIFY"},
         {Asset::Type::DRINK, "DRINK"},
-        {Asset::Type::READ, "READ"}};
+        {Asset::Type::READ, "READ"},
+        {Asset::Type::DICE_GAME, "DICE GAME"},
+        {Asset::Type::KALUGEN, "KALUGEN"}};
 
     Asset::Type Map(const char *asset)
     {

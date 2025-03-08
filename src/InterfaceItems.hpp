@@ -91,19 +91,13 @@ namespace BloodSword::Interface
 
     void ProcessEffects(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int id)
     {
-        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
-
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
-
-        auto origin = Point(graphics.Width - window_w, graphics.Height - window_h) / 2;
-
         auto &item = character.Items[id];
 
         auto ether = Items::Inventory();
 
         if (item.Type == Item::Type::MAUVE_LIQUID)
         {
-            auto result = Interface::Roll(graphics, background, origin, window_w, window_h, Color::Active, BloodSword::Border, character.Asset, Asset::Type::DRINK, 1, 0);
+            auto result = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0);
 
             if (result > 2)
             {
