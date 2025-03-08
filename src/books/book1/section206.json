@@ -58,11 +58,33 @@
         {
             "type": "IF MATH",
             "variables": [
+                ">",
+                "CHOSEN",
+                "KALUGEN ROLL",
+                "+",
+                "HOUSE STAKE",
+                "KALUGEN ROLL"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
                 "<",
                 "CHOSEN",
                 "KALUGEN ROLL",
                 "-",
                 "HOUSE STAKE",
+                "KALUGEN ROLL"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "CHOSEN",
+                "KALUGEN ROLL",
+                "+",
+                "STAKED GOLD",
                 "KALUGEN ROLL"
             ]
         },
