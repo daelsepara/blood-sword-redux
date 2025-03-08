@@ -1366,6 +1366,76 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::COPY || condition.Type == Conditions::Type::SET)
+        {
+            // variables
+            // 0 - destination variable
+            // 1 - source variable / value
+            if (condition.Variables.size() > 1 && Engine::IsAlive(party))
+            {
+                auto dst = condition.Variables[0];
+
+                auto src = condition.Variables[1];
+
+                if (!dst.empty() && !src.empty())
+                {
+                    if (party.IsPresent(src))
+                    {
+                        party.Set(dst, party.Get(src));
+                    }
+                    else
+                    {
+                        party.Set(dst, src);
+                    }
+
+                    result = true;
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::MATH)
+        {
+            // variables
+            // 0 - operation (+, -, *)
+            // 1 - first variable (destination)
+            // 2 - second variable / value (source)
+            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            {
+                auto ops = condition.Variables[0];
+
+                auto dst = condition.Variables[1];
+
+                auto src = condition.Variables[2];
+
+                if (!ops.empty() && !dst.empty() && !src.empty())
+                {
+                    party.Math(ops, dst, src);
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;

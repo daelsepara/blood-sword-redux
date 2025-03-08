@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 162
+    },
+    "text": "\"Yes,\" says Kalugen, nodding. \"That's a good game. First of all, we must decide how much we're going to stake. You first.\"",
+    "next": [
+        {
+            "type": "SELECT PLAYER",
+            "variables": [
+                "Who is playing against Kalugen?"
+            ]
+        },
+        {
+            "type": "STAKE",
+            "location": {
+                "book": "BOOK1",
+                "number": 189
+            },
+            "variables": [
+                "GOLD",
+                "MONEY"
+            ]
+        }
+    ]
+}

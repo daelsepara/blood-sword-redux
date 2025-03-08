@@ -1516,6 +1516,32 @@ namespace BloodSword::Test
         Interface::ManageInventory(graphics, background, party, true);
     }
 
+    void Variables(Graphics::Base &graphics, Scene::Base &background)
+    {
+        // load party from file
+        auto party = Party::Load("party/rank08.json", "party");
+
+        auto story = Story::Base();
+
+        auto done = false;
+
+        while (!done)
+        {
+            party.ChosenCharacter = Interface::SelectCharacter(graphics, background, party, "WHO IS PLAYING?", true, false, false, false, true);
+
+            done = Interface::StakeQuantity(graphics, background, party, Item::Type::GOLD, Asset::Type::MONEY);
+        }
+
+        auto variable = party.Get("STAKED GOLD");
+
+        if (!variable.empty())
+        {
+            std::string staked = "STAKED GOLD: " + variable;
+
+            Interface::MessageBox(graphics, background, staked, Color::Active);
+        }
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1535,7 +1561,8 @@ namespace BloodSword::Test
              Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("13 HEALING\n\n\nHealing ability", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("14 SELECT SYMBOLS\n\n\nSelect symbols", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("15 INVENTORY\n\n\nManage inventory", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("15 INVENTORY\n\n\nManage inventory", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("16 VARIABLES\n\n\nRead/Write in-game variables", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1704,6 +1731,11 @@ namespace BloodSword::Test
                     case 15:
                         // inventory management
                         Test::Inventory(graphics, scene);
+
+                        break;
+                    case 16:
+                        // in-game variables, staking quantities
+                        Test::Variables(graphics, scene);
 
                         break;
                     default:

@@ -350,17 +350,22 @@ namespace BloodSword::Party
             }
         }
 
+        bool IsPresent(std::string variable)
+        {
+            return this->Variables.find(variable) != this->Variables.end();
+        }
+
         std::string Get(std::string variable)
         {
             auto value = std::string();
 
             if (!variable.empty())
             {
-                auto search = this->Variables.find(variable);
-
-                if (search != this->Variables.end())
+                if (this->IsPresent(variable))
                 {
-                    value = (*search).first;
+                    value = this->Variables[variable];
+
+                    std::cerr << "VARIABLES: " << value << " => " << variable << std::endl;
                 }
             }
 
@@ -372,6 +377,8 @@ namespace BloodSword::Party
             if (!variable.empty())
             {
                 this->Variables[variable] = value;
+
+                std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
             }
         }
 
@@ -380,6 +387,8 @@ namespace BloodSword::Party
             if (!variable.empty())
             {
                 this->Variables[variable] = std::to_string(value);
+
+                std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
             }
         }
 
@@ -395,6 +404,50 @@ namespace BloodSword::Party
             }
 
             return value;
+        }
+
+        bool IsANumber(const std::string &variable)
+        {
+            // SEE: https://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
+            return !variable.empty() && std::find_if(variable.begin(), variable.end(), [](unsigned char c)
+                                                     { return !std::isdigit(c); }) == variable.end();
+        }
+
+        void Math(std::string operation, std::string first, std::string second, bool clamp = true)
+        {
+            // first = (first) (operation) (second)
+            std::vector<std::string> valid_operations = {"+", "-", "*"};
+
+            if (!operation.empty() && !first.empty() && !second.empty())
+            {
+                // check if operation is valid
+                if (std::find(valid_operations.begin(), valid_operations.end(), operation) != valid_operations.end())
+                {
+                    auto value_first = this->Number(first);
+
+                    auto value_second = this->IsANumber(second) ? std::stoi(second, nullptr, 10) : this->Number(second);
+
+                    if (operation == "+")
+                    {
+                        value_first += value_second;
+                    }
+                    else if (operation == "-")
+                    {
+                        value_first -= value_second;
+                    }
+                    else if (operation == "*")
+                    {
+                        value_first *= value_second;
+                    }
+
+                    value_first = clamp ? std::max(0, value_first) : value_first;
+
+                    std::cerr << "VARIABLES: " << first << " " << operation << " " << second << " = " << value_first << std::endl;
+
+                    // set variable
+                    this->Set(first, value_first);
+                }
+            }
         }
     };
 
