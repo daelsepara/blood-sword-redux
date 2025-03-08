@@ -1,0 +1,43 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 189
+    },
+    "text": "Kalugen gestures to a servant, who hands him a money-pouch. He looks at the amount you will be wagering, then dips his fat fingers into the pouch and produces the same amount plus one additional gold piece.\n\n\"A little house advantage,\" he says, tittering to himself. \"Now, here's how we play. One of us calls out a number -- say it's you to go first, you call out a number from two to twelve. I shake two dice. If ht number I roll is less than the number you called, you have to pay me the amount called. If I roll higher, I pay the amount to you. If I roll exactly equal to the number called, we both lose the amount. \"When you have no coins left, you've lost. Okay, you go first.\"",
+    "events": [
+        {
+            "type": "COPY",
+            "variables": [
+                "HOUSE STAKE",
+                "STAKED GOLD"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "+",
+                "HOUSE STAKE",
+                "1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "IN PARTY",
+            "variables": [
+                "SAGE"
+            ],
+            "location": {
+                "book": "BOOK1",
+                "number": 311
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 499
+            }
+        }
+    ]
+}

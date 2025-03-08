@@ -3756,20 +3756,23 @@ namespace BloodSword::Interface
 
                 std::string stake_message = "HOW MUCH " + std::string(Item::TypeMapping[to_stake]) + " TO STAKE?";
 
-                auto staked = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[stake].Quantity(to_stake), stake_asset, Asset::Type::UP, Asset::Type::DOWN);
-
-                if (staked > 0)
+                if (stake != Character::Class::NONE)
                 {
-                    party[stake].Remove(to_stake, staked);
+                    auto staked = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[stake].Quantity(to_stake), stake_asset, Asset::Type::UP, Asset::Type::DOWN);
 
-                    total_staked += staked;
+                    if (staked > 0)
+                    {
+                        party[stake].Remove(to_stake, staked);
+
+                        total_staked += staked;
+                    }
                 }
 
-                if (Engine::Count(party) > 1)
+                if (Engine::Count(party) == 1 || stake == Character::Class::NONE)
                 {
-                    std::string message = "STAKED: " + std::to_string(total_staked) + " " + std::string(Item::TypeMapping[to_stake]) + ", BEGIN?";
+                    std::string message = "STAKED: " + std::to_string(total_staked) + " " + std::string(Item::TypeMapping[to_stake]) + ", PROCEED?";
 
-                    if (!Interface::Confirm(graphics, background, message.c_str(), Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                    if (Interface::Confirm(graphics, background, message.c_str(), Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
                     {
                         done = true;
                     }
@@ -3782,7 +3785,7 @@ namespace BloodSword::Interface
 
                 party.Set(stake_variable, std::to_string(total_staked));
             }
-            
+
             start_game = (total_staked > 0);
         }
         else if (party.ChosenCharacter == Character::Class::NONE)
