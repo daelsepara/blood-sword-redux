@@ -163,6 +163,19 @@
             ],
             "quantity": 1,
             "type": "LOGE SKYRUNNER"
+        },
+        {
+            "contains": "NONE",
+            "effects": {
+                "book": "BOOK1",
+                "number": 312
+            },
+            "name": "VELLUM SCROLL",
+            "properties": [
+                "READABLE"
+            ],
+            "quantity": 1,
+            "type": "VELLUM SCROLL"
         }
     ]
 }

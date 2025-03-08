@@ -61,7 +61,8 @@ namespace BloodSword::Conditions
         IF_MATH,
         AND,
         OR,
-        ADD_TO_ITEM
+        ADD_TO_ITEM,
+        SHOW_VARIABLES
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -119,7 +120,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::IF_MATH, "IF MATH"},
         {Conditions::Type::AND, "AND"},
         {Conditions::Type::OR, "OR"},
-        {Conditions::Type::ADD_TO_ITEM, "ADD TO ITEM"}};
+        {Conditions::Type::ADD_TO_ITEM, "ADD TO ITEM"},
+        {Conditions::Type::SHOW_VARIABLES, "SHOW VARIABLES"}};
 
     Conditions::Type Map(const char *Conditions)
     {

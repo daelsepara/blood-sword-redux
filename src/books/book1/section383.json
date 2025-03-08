@@ -18,7 +18,7 @@
                 "2",
                 "0",
                 "CHOSEN",
-                "PLAYER",
+                "CHOSEN",
                 "DICE GAME"
             ]
         },
@@ -64,6 +64,13 @@
                 "+",
                 "STAKED GOLD",
                 "CHOSEN"
+            ]
+        },
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "STAKED GOLD",
+                "HOUSE STAKE"
             ]
         },
         {
@@ -113,7 +120,7 @@
             },
             "variables": [
                 "CHOOSE",
-                "CHOOSE A NUMBER BETWEEN 2 AND 12",
+                "CALL ANOTHER NUMBER",
                 "2",
                 "12"
             ]

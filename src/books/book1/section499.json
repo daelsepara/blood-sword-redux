@@ -60,6 +60,13 @@
             ]
         },
         {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "STAKED GOLD",
+                "HOUSE STAKE"
+            ]
+        },
+        {
             "type": "AND",
             "location": {
                 "book": "BOOK1",

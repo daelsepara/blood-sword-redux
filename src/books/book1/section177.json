@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 177
+    },
+    "text": "Kalugen's soldiers clear the chamber of courtiers. \"What I have to say now is for your ears alone,\" the Magus tells you. His jester lurks at the back of the throne, apparently unnoticed by the guards. He points at a large casket nearby, indicating that you should open it.",
+    "events": [
+        {
+            "type": "HAVE COLLEAGUES",
+            "variables": [
+                "Inside you find several OPAL MEDALLIONs. There is also a VELLUM SCROLL fixed with Kalugen's seal in green wax."
+            ]
+        },
+        {
+            "type": "SOLO",
+            "variables": [
+                "Inside you find an OPAL MEDALLION. There is also a VELLUM SCROLL fixed with Kalugen's seal in green wax."
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "variables": [
+                "Kalugen gestures you into a cold stone cell. \"Rest until dawn,\" he says disinterestedly. \"Gather your strength. You will have need of it.\" He turns and, laughing, swaggers off to the warmth of his own bedchamber."
+            ]
+        },
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "ALL",
+                "NONE",
+                "OPAL MEDALLION"
+            ]
+        }
+    ],
+    "items": [
+        {
+            "contains": "NONE",
+            "effects": {
+                "book": "BOOK1",
+                "number": 312
+            },
+            "name": "VELLUM SCROLL",
+            "properties": [
+                "READABLE"
+            ],
+            "quantity": 1,
+            "type": "VELLUM SCROLL"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 402
+            }
+        }
+    ]
+}

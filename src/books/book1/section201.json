@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 201
+    },
+    "text": "With Balhazar's standard, you advance into the first chamber of the underworld. Torches flicker in brackets around the grime-encrusted walls. At the centre of the room, a vast marble table has been laid with a luscious array of sweetmeats and succulent viands.\n\nBalhazar watches you proceed through the heavy door as his servants swing it shut. \"Succeed in your quest to find the EMBLEM OF VICTORY and I will reward you lavishly,\" he says. \"But fail, and --\"\n\nHis last words are drowned out by the deep clang as the doors swings shut.",
+    "choices": [
+        {
+            "text": "(SAGE) Inspect the food",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 413
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Eat the food",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 273
+                }
+            }
+        },
+        {
+            "text": "Leave the room by corridor at the far end",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 326
+                }
+            }
+        },
+        {
+            "text": "Enter an alcove to your left",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 13
+                }
+            }
+        }
+    ]
+}

@@ -1497,7 +1497,7 @@ namespace BloodSword::Conditions
 
                 auto variable = condition.Variables[2];
 
-                auto is_character = (Engine::ToUpper(condition.Variables[0]) == "CHOSEN");
+                auto is_character = (Engine::ToUpper(condition.Variables[3]) == "CHOSEN");
 
                 if (!is_character || (is_character && party.ChosenCharacter != Character::Class::NONE && party.Has(party.ChosenCharacter) && Engine::IsAlive(party[party.ChosenCharacter])))
                 {
@@ -1703,6 +1703,45 @@ namespace BloodSword::Conditions
 
                     internal_error = false;
                 }
+            }
+        }
+        else if (condition.Type == Conditions::Type::SHOW_VARIABLES)
+        {
+            // variables:
+            // 0 - N variables to show
+            if (condition.Variables.size() > 0 && Engine::IsAlive(party))
+            {
+                auto wrap = BloodSword::TileSize * 5;
+
+                for (auto i = 0; i < condition.Variables.size(); i++)
+                {
+                    auto variable = party.Get(condition.Variables[i]);
+
+                    if (!variable.empty())
+                    {
+                        if (!text.empty())
+                        {
+                            text += "\n";
+                        }
+
+                        text += condition.Variables[i] + ": " + variable;
+                    }
+                }
+
+                if (text.size() > 0)
+                {
+                    Interface::TextBox(graphics, background, text, wrap);
+                }
+
+                result = true;
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
