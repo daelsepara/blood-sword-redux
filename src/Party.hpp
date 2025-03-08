@@ -376,7 +376,7 @@ namespace BloodSword::Party
                 {
                     value = this->Variables[variable];
 
-                    std::cerr << "VARIABLES: " << value << " => " << variable << std::endl;
+                    std::cerr << "VARIABLES: " << value << " ---> " << variable << std::endl;
                 }
             }
 
@@ -398,7 +398,7 @@ namespace BloodSword::Party
                 {
                     this->Variables[variable] = value;
 
-                    std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
+                    std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
                 }
             }
         }
@@ -415,7 +415,7 @@ namespace BloodSword::Party
                 {
                     this->Variables[variable] = std::to_string(value);
 
-                    std::cerr << "VARIABLES: " << variable << " <= " << value << std::endl;
+                    std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
                 }
             }
         }
@@ -428,9 +428,16 @@ namespace BloodSword::Party
             {
                 if (variable != "CHOSEN")
                 {
-                    auto search = this->Get(variable);
+                    if (this->IsANumber(variable))
+                    {
+                        value = std::stoi(variable, nullptr, 10);
+                    }
+                    else
+                    {
+                        auto search = this->Get(variable);
 
-                    value = !search.empty() ? std::stoi(search, nullptr, 10) : 0;
+                        value = !search.empty() ? std::stoi(search, nullptr, 10) : 0;
+                    }
                 }
                 else
                 {
@@ -441,15 +448,18 @@ namespace BloodSword::Party
             return value;
         }
 
+        bool IsValid(std::vector<std::string> list, std::string item)
+        {
+            return (std::find(list.begin(), list.end(), item) != list.end());
+        }
+
         void Math(std::string operation, std::string first, std::string second, bool clamp = true)
         {
             // first = (first) (operation) (second)
-            std::vector<std::string> valid_operations = {"+", "-", "*"};
-
-            if (!operation.empty() && !first.empty() && !second.empty())
+            if (!operation.empty() && !first.empty() && !this->IsANumber(first) && !second.empty())
             {
                 // check if operation is valid
-                if (std::find(valid_operations.begin(), valid_operations.end(), operation) != valid_operations.end())
+                if (this->IsValid({"+", "-", "*"}, operation))
                 {
                     if (first != "CHOSEN" && !this->IsPresent(first))
                     {
@@ -459,7 +469,7 @@ namespace BloodSword::Party
 
                     auto value_first = this->Number(first);
 
-                    auto value_second = this->IsANumber(second) ? std::stoi(second, nullptr, 10) : (this->IsPresent(second) ? this->Number(second) : 0);
+                    auto value_second = this->Number(second);
 
                     if (operation == "+")
                     {
@@ -482,6 +492,53 @@ namespace BloodSword::Party
                     this->Set(first, value_first);
                 }
             }
+        }
+
+        // logical operations
+        bool If(std::string operation, std::string first, std::string second)
+        {
+            auto result = false;
+
+            // (first) (logical operiation) (second)
+            if (!operation.empty() && !first.empty() && !second.empty())
+            {
+                // check if operation is valid
+                if (this->IsValid({"=", "!=", "<>", "<", ">", "<=", ">="}, operation))
+                {
+                    auto value_first = this->Number(first);
+
+                    auto value_second = this->Number(second);
+
+                    if (operation == "=")
+                    {
+                        result = (value_first == value_second);
+                    }
+                    else if (operation == "!=" || operation == "<>")
+                    {
+                        result = (value_first != value_second);
+                    }
+                    else if (operation == "<")
+                    {
+                        result = (value_first < value_second);
+                    }
+                    else if (operation == "<=")
+                    {
+                        result = (value_first <= value_second);
+                    }
+                    else if (operation == ">")
+                    {
+                        result = (value_first > value_second);
+                    }
+                    else if (operation == ">=")
+                    {
+                        result = (value_first > value_second);
+                    }
+
+                    std::cerr << "RESULT: " << first << " " << operation << " " << second << " = " << (result ? "TRUE" : "FALSE") << std::endl;
+                }
+            }
+
+            return result;
         }
     };
 

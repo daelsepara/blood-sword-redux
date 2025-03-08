@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 244
+    },
+    "text": "\"A draw?\" cries Kalugen. \"This is not really satisfactory. Somebody has to win, and somebody has to lose. We'll just have to play Frey's Roosters after all.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 328
+            }
+        }
+    ]
+}

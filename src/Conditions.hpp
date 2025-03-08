@@ -1524,6 +1524,187 @@ namespace BloodSword::Conditions
                 internal_error = false;
             }
         }
+        else if (condition.Type == Conditions::Type::IF)
+        {
+            // variables
+            // 0 - operation (=, !=, <>, >, <, >=. <=)
+            // 1 - first variable / value
+            // 2 - second variable / value
+            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            {
+                auto ops = condition.Variables[0];
+
+                auto first = condition.Variables[1];
+
+                auto second = condition.Variables[2];
+
+                if (!ops.empty() && !first.empty() && !second.empty())
+                {
+                    result = party.If(ops, first, second);
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::IF_MATH)
+        {
+            // variables
+            // 0 - logical operation (=, !=, <>, >, <, >=. <=)
+            // 1 - first variable
+            // 2 - second variable
+            // 3 - math operation (*, +, -)
+            // 4 - first variable (destination)
+            // 5 - second variable / value (source)
+            if (condition.Variables.size() > 4 && Engine::IsAlive(party))
+            {
+                auto ops = condition.Variables[0];
+
+                auto first = condition.Variables[1];
+
+                auto second = condition.Variables[2];
+
+                if (!ops.empty() && !first.empty() && !second.empty())
+                {
+                    result = party.If(ops, first, second);
+
+                    if (result)
+                    {
+                        auto ops = condition.Variables[3];
+
+                        auto first = condition.Variables[4];
+
+                        auto second = condition.Variables[5];
+
+                        party.Math(ops, first, second);
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::AND || condition.Type == Conditions::Type::OR)
+        {
+            // variables
+            // 0 - 1st operation (=, !=, <>, >, <, >=. <=)
+            // 1 - 1st variable (first)
+            // 2 - 1st variable (second)
+            // 3 - 2nd operation (=, !=, <>, >, <, >=. <=)
+            // 4 - 2nd variable (first)
+            // 5 - 2nd variable (second)
+            if (condition.Variables.size() > 5 && Engine::IsAlive(party))
+            {
+                auto empty = 0;
+
+                for (auto i = 0; i < condition.Variables.size(); i++)
+                {
+                    empty += (condition.Variables[i].empty() ? 1 : 0);
+                }
+
+                if (empty == 0)
+                {
+                    auto first = party.If(condition.Variables[0], condition.Variables[1], condition.Variables[2]);
+
+                    auto second = party.If(condition.Variables[3], condition.Variables[4], condition.Variables[5]);
+
+                    if (condition.Type == Conditions::Type::AND)
+                    {
+                        result = (first && second);
+                    }
+                    else if (condition.Type == Conditions::Type::OR)
+                    {
+                        result = (first || second);
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::ADD_TO_ITEM)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - item
+            // 2 - quantity or variable
+            if (condition.Variables.size() > 2)
+            {
+                auto character = (Engine::ToUpper(condition.Variables[0]) == "CHOSEN") ? party.ChosenCharacter : Character::Map(std::string(condition.Variables[0]));
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                auto quantity = party.Number(condition.Variables[2]);
+
+                if (character != Character::Class::NONE && item != Item::Type::NONE && quantity != 0)
+                {
+                    if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else
+                    {
+                        if (!Engine::IsAlive(party[character]))
+                        {
+                            text = Engine::IsDead(party[character]);
+                        }
+                        else
+                        {
+                            if ((party[character].Quantity(item) + quantity) >= 0)
+                            {
+                                result = true;
+
+                                party[character].Add(item, quantity);
+
+                                if (quantity > 0)
+                                {
+                                    text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                                }
+                                else
+                                {
+                                    text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                                }
+                            }
+                            else
+                            {
+                                text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                            }
+                        }
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;

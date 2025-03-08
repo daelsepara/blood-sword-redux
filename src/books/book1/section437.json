@@ -1,0 +1,28 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 437
+    },
+    "text": "It is Kalugen's turn to call a number. He considers the situation carefully.",
+    "next": [
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 206
+            },
+            "variables": [
+                "<",
+                "STAKED GOLD",
+                "3"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 383
+            }
+        }
+    ]
+}

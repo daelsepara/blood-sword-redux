@@ -50,9 +50,6 @@ namespace BloodSword::Conditions
         SELECT_PLAYER,
         LOSE_WEAPONS,
         ITEM_EFFECT,
-        LOWER,
-        HIGHER,
-        EQUAL,
         STAKE,
         SET,
         GET,
@@ -60,9 +57,11 @@ namespace BloodSword::Conditions
         COPY,
         MATH,
         ROLL,
-        EQUAL_MATH,
-        LOWER_MATH,
-        HIGHER_MATH
+        IF,
+        IF_MATH,
+        AND,
+        OR,
+        ADD_TO_ITEM
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -109,16 +108,18 @@ namespace BloodSword::Conditions
         {Conditions::Type::SELECT_PLAYER, "SELECT PLAYER"},
         {Conditions::Type::LOSE_WEAPONS, "LOSE WEAPONS"},
         {Conditions::Type::ITEM_EFFECT, "ITEM EFFECT"},
-        {Conditions::Type::LOWER, "LOWER"},
-        {Conditions::Type::HIGHER, "HIGHER"},
-        {Conditions::Type::EQUAL, "EQUAL"},
         {Conditions::Type::STAKE, "STAKE"},
         {Conditions::Type::GET, "GET"},
         {Conditions::Type::SET, "SET"},
         {Conditions::Type::NUMBER, "NUMBER"},
         {Conditions::Type::COPY, "COPY"},
         {Conditions::Type::MATH, "MATH"},
-        {Conditions::Type::ROLL, "ROLL"}};
+        {Conditions::Type::ROLL, "ROLL"},
+        {Conditions::Type::IF, "IF"},
+        {Conditions::Type::IF_MATH, "IF MATH"},
+        {Conditions::Type::AND, "AND"},
+        {Conditions::Type::OR, "OR"},
+        {Conditions::Type::ADD_TO_ITEM, "ADD TO ITEM"}};
 
     Conditions::Type Map(const char *Conditions)
     {

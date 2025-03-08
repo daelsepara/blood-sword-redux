@@ -8,7 +8,7 @@
         {
             "type": "CHOOSE NUMBER",
             "variables": [
-                "1"
+                "4"
             ]
         }
     ],

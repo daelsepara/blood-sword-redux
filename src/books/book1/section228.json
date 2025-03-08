@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 228
+    },
+    "text": "\"This is somewhat extraordinary. A fluke victory,\" snaps Kalugen petulantly. \"Still, you've won and that's all thre is to it, I suppose.\"",
+    "events": [
+        {
+            "type": "ADD TO ITEM",
+            "variables": [
+                "CHOSEN",
+                "GOLD",
+                "STAKED GOLD"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 177
+            }
+        }
+    ]
+}

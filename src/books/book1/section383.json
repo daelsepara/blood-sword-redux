@@ -1,17 +1,24 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 499
+        "number": 383
     },
-    "text": "Kalugen throws two dice.",
+    "text": "\"I call four,\" says Kalugen silkily.",
     "next": [
+        {
+            "type": "SET",
+            "variables": [
+                "KALUGEN ROLL",
+                "4"
+            ]
+        },
         {
             "type": "ROLL",
             "variables": [
                 "2",
                 "0",
-                "KALUGEN ROLL",
-                "KALUGEN",
+                "CHOSEN",
+                "PLAYER",
                 "DICE GAME"
             ]
         },
@@ -22,30 +29,30 @@
                 "KALUGEN ROLL",
                 "CHOSEN",
                 "-",
-                "HOUSE STAKE",
-                "KALUGEN ROLL"
+                "STAKED GOLD",
+                "CHOSEN"
             ]
         },
         {
             "type": "IF MATH",
             "variables": [
                 "=",
-                "KALUGEN ROLL",
                 "CHOSEN",
+                "KALUGEN ROLL",
                 "-",
-                "STAKED GOLD",
-                "KALUGEN ROLL"
+                "HOUSE STAKE",
+                "CHOSEN"
             ]
         },
         {
             "type": "IF MATH",
             "variables": [
                 ">",
-                "KALUGEN ROLL",
                 "CHOSEN",
+                "KALUGEN ROLL",
                 "-",
-                "HOUSE STAKE",
-                "KALUGEN ROLL"
+                "STAKED GOLD",
+                "CHOSEN"
             ]
         },
         {
@@ -56,7 +63,7 @@
                 "CHOSEN",
                 "+",
                 "STAKED GOLD",
-                "KALUGEN ROLL"
+                "CHOSEN"
             ]
         },
         {
@@ -99,11 +106,17 @@
             ]
         },
         {
-            "type": "NORMAL",
+            "type": "CHOOSE NUMBER",
             "location": {
                 "book": "BOOK1",
-                "number": 437
-            }
+                "number": 499
+            },
+            "variables": [
+                "CHOOSE",
+                "CHOOSE A NUMBER BETWEEN 2 AND 12",
+                "2",
+                "12"
+            ]
         }
     ]
 }

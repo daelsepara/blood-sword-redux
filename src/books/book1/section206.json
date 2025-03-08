@@ -1,17 +1,24 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 499
+        "number": 206
     },
-    "text": "Kalugen throws two dice.",
+    "text": "\"I call a two,\" says Kalugen with a crowing laugh.",
     "next": [
+        {
+            "type": "SET",
+            "variables": [
+                "KALUGEN ROLL",
+                "2"
+            ]
+        },
         {
             "type": "ROLL",
             "variables": [
                 "2",
                 "0",
-                "KALUGEN ROLL",
-                "KALUGEN",
+                "CHOSEN",
+                "PLAYER",
                 "DICE GAME"
             ]
         },
@@ -22,30 +29,30 @@
                 "KALUGEN ROLL",
                 "CHOSEN",
                 "-",
-                "HOUSE STAKE",
-                "KALUGEN ROLL"
+                "STAKED GOLD",
+                "CHOSEN"
             ]
         },
         {
             "type": "IF MATH",
             "variables": [
                 "=",
-                "KALUGEN ROLL",
                 "CHOSEN",
+                "KALUGEN ROLL",
                 "-",
-                "STAKED GOLD",
-                "KALUGEN ROLL"
+                "HOUSE STAKE",
+                "CHOSEN"
             ]
         },
         {
             "type": "IF MATH",
             "variables": [
                 ">",
-                "KALUGEN ROLL",
                 "CHOSEN",
+                "KALUGEN ROLL",
                 "-",
-                "HOUSE STAKE",
-                "KALUGEN ROLL"
+                "STAKED GOLD",
+                "CHOSEN"
             ]
         },
         {
@@ -56,7 +63,7 @@
                 "CHOSEN",
                 "+",
                 "STAKED GOLD",
-                "KALUGEN ROLL"
+                "CHOSEN"
             ]
         },
         {
@@ -75,34 +82,10 @@
             ]
         },
         {
-            "type": "IF",
-            "location": {
-                "book": "BOOK1",
-                "number": 228
-            },
-            "variables": [
-                "<=",
-                "HOUSE STAKE",
-                "0"
-            ]
-        },
-        {
-            "type": "IF",
-            "location": {
-                "book": "BOOK1",
-                "number": 459
-            },
-            "variables": [
-                "<=",
-                "STAKED GOLD",
-                "0"
-            ]
-        },
-        {
             "type": "NORMAL",
             "location": {
                 "book": "BOOK1",
-                "number": 437
+                "number": 459
             }
         }
     ]
