@@ -52,7 +52,8 @@ namespace BloodSword::Conditions
         ITEM_EFFECT,
         NUMBER_LOWER,
         NUMBER_HIGHER,
-        NUMBER_EQUAL
+        NUMBER_EQUAL,
+        STAKE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -101,7 +102,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::ITEM_EFFECT, "ITEM EFFECT"},
         {Conditions::Type::NUMBER_LOWER, "NUMBER LOWER"},
         {Conditions::Type::NUMBER_HIGHER, "NUMBER HIGHER"},
-        {Conditions::Type::NUMBER_EQUAL, "NUMBER EQUAL"}};
+        {Conditions::Type::NUMBER_EQUAL, "NUMBER EQUAL"},
+        {Conditions::Type::STAKE, "STAKE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

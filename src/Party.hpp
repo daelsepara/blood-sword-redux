@@ -367,6 +367,22 @@ namespace BloodSword::Party
             return value;
         }
 
+        void Set(std::string variable, std::string value)
+        {
+            if (!variable.empty())
+            {
+                this->Variables[variable] = value;
+            }
+        }
+
+        void Set(std::string variable, int value)
+        {
+            if (!variable.empty())
+            {
+                this->Variables[variable] = std::to_string(value);
+            }
+        }
+
         int Number(std::string variable)
         {
             auto value = 0;

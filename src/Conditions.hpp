@@ -1344,6 +1344,28 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::STAKE)
+        {
+            // variables
+            // 0 - item to stake
+            // 1 - asset (to item in #0)
+            if (condition.Variables.size() > 1 && Engine::IsAlive(party))
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                auto asset = Asset::Map(condition.Variables[1]);
+
+                result = Interface::StakeQuantity(graphics, background, party, item, asset);
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;

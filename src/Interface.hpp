@@ -3733,19 +3733,65 @@ namespace BloodSword::Interface
         return selected_symbols;
     }
 
-    bool PlayOldManInTheMountain(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    bool StakeQuantity(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type to_stake, Asset::Type stake_asset)
     {
         auto start_game = false;
 
-        if (Engine::IsAlive(party))
+        if (Engine::IsAlive(party) && party.ChosenCharacter != Character::Class::NONE && to_stake != Item::Type::NONE)
         {
-            auto player = Engine::FirstClass(party);
+            auto player = party.ChosenCharacter;
 
-            if (Engine::Count(party) > 1)
+            auto total_staked = 0;
+
+            auto done = false;
+
+            while (!done)
             {
-                // select a player on a multi-player party
-                player = Interface::SelectCharacter(graphics, background, party, "WHO IS PLAYING THE GAME?", true, false, false, false, true);
+                auto stake = player;
+
+                if (Engine::Count(party) > 1)
+                {
+                    stake = Interface::SelectCharacter(graphics, background, party, "WHO IS ADDING TO THE STAKE?", true, true, false, false, true);
+                }
+
+                std::string stake_message = "HOW MUCH " + std::string(Item::TypeMapping[to_stake]) + " TO STAKE?";
+
+                auto staked = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[stake].Quantity(to_stake), stake_asset, Asset::Type::UP, Asset::Type::DOWN);
+
+                if (staked > 0)
+                {
+                    party[stake].Remove(to_stake, staked);
+
+                    total_staked += staked;
+                }
+
+                if (Engine::Count(party) > 1)
+                {
+                    std::string message = "STAKED: " + std::to_string(total_staked) + " " + std::string(Item::TypeMapping[to_stake]) + ", BEGIN?";
+
+                    if (!Interface::Confirm(graphics, background, message.c_str(), Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                    {
+                        done = true;
+                    }
+                }
             }
+
+            if (total_staked > 0)
+            {
+                std::string stake_variable = "STAKED " + std::string(Item::TypeMapping[to_stake]);
+
+                party.Set(stake_variable, std::to_string(total_staked));
+            }
+            
+            start_game = (total_staked > 0);
+        }
+        else if (party.ChosenCharacter == Character::Class::NONE)
+        {
+            Interface::InternalError(graphics, background, "Internal Error: STAKE QUANTITY (NO PLAYER SELECTED)");
+        }
+        else if (to_stake == Item::Type::NONE)
+        {
+            Interface::InternalError(graphics, background, "Internal Error: STAKE QUANTITY (NONE STAKED)");
         }
         else
         {
