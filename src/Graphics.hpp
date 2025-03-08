@@ -79,9 +79,6 @@ namespace BloodSword::Graphics
             {
                 SDL_SetWindowTitle(graphics.Window, title);
             }
-
-            // raise window
-            SDL_RaiseWindow(graphics.Window);
         }
     }
 
@@ -104,6 +101,9 @@ namespace BloodSword::Graphics
         Graphics::CreateWindow(SDL_INIT_VIDEO | SDL_INIT_AUDIO, title, graphics);
 
         Graphics::SetWindowIcon(graphics, "images/icons/sword-wound.png");
+
+        // raise window
+        SDL_RaiseWindow(graphics.Window);
 
         IMG_Init(IMG_INIT_JPG | IMG_INIT_PNG);
     }
