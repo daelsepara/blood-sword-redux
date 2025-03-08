@@ -119,7 +119,7 @@ namespace BloodSword::Interface
 
                 std::string message = "FIGHTING PROWESS: +1\nAWARENESS: +1\nPSYCHIC ABILITY: -1\nENDURANCE: -1";
 
-                Interface::TextBox(graphics, background, Fonts::Normal, message.c_str(), (BloodSword::TileSize * 5), Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+                Interface::TextBox(graphics, background, message.c_str(), (BloodSword::TileSize * 5));
             }
             else
             {
@@ -164,7 +164,7 @@ namespace BloodSword::Interface
 
                         auto wrap = graphics.Width - BloodSword::TileSize * 8;
 
-                        Interface::TextBox(graphics, background, Fonts::Normal, item_description.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+                        Interface::TextBox(graphics, background, item_description, wrap);
                     }
 
                     // process effects

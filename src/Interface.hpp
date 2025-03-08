@@ -2334,6 +2334,12 @@ namespace BloodSword::Interface
         return character_class;
     }
 
+    // draws a message box
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, const char *message, TTF_Font *font, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
+    }
+
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, int wrap, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
         auto texture = Graphics::CreateText(graphics, message, font, color, style, wrap);
@@ -2358,10 +2364,14 @@ namespace BloodSword::Interface
         }
     }
 
-    // draws a message box
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, const char *message, TTF_Font *font, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap)
     {
-        Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
+        TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+    }
+
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap)
+    {
+        TextBox(graphics, scene, message.c_str(), wrap);
     }
 
     // draws a confirmation message box on screen

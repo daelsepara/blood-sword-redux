@@ -1103,7 +1103,7 @@ namespace BloodSword::Interface
 
             auto wrap = graphics.Width - BloodSword::TileSize * 6;
 
-            Interface::TextBox(graphics, background, Fonts::Normal, message.c_str(), wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+            Interface::TextBox(graphics, background, message, wrap);
         }
 
         while (true)
