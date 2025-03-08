@@ -3514,7 +3514,7 @@ namespace BloodSword::Interface
         BloodSword::Free(stats);
     }
 
-    // choose character from a party
+    // generate horizontal icon menu
     Scene::Base IconList(Point origin, int w, int h, std::vector<Asset::Type> assets, std::vector<Controls::Type> controls, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, Controls::Type button, Asset::Type asset)
     {
         auto overlay = Scene::Base();
@@ -3565,12 +3565,12 @@ namespace BloodSword::Interface
         return overlay;
     }
 
-    void PrintSelection(std::vector<Asset::Type> &assets, std::vector<int> &selection, std::string selected)
+    void LogOptions(std::vector<Asset::Type> &assets, std::vector<int> &selection, std::string selected)
     {
-        selected += ": [";
-
-        if (selection.size() >= 0)
+        if (selection.size() > 0)
         {
+            selected += ": [";
+
             for (auto i = 0; i < selection.size(); i++)
             {
                 if (i > 0)
@@ -3580,11 +3580,22 @@ namespace BloodSword::Interface
 
                 selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
             }
+
+            selected += "]";
+
+            std::cerr << selected << std::endl;
         }
+    }
 
-        selected += "]";
-
-        std::cerr << selected << std::endl;
+    void LogChoice(const char *message, Asset::Type asset, int selected, int size)
+    {
+        std::cerr << message
+                  << selected
+                  << ": => "
+                  << Asset::TypeMapping[asset]
+                  << " SIZE: "
+                  << size
+                  << std::endl;
     }
 
     std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false)
@@ -3597,7 +3608,7 @@ namespace BloodSword::Interface
 
         auto controls = std::vector<Controls::Type>(selection.size(), Controls::Type::SELECT);
 
-        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+        auto texture = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
         auto texture_captions = (captions.size() > 0 && captions.size() <= assets.size()) ? Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0)) : BloodSword::Textures();
 
@@ -3609,7 +3620,7 @@ namespace BloodSword::Interface
 
         auto num_icons = int(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
 
-        auto popup_w = std::max(num_icons * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+        auto popup_w = std::max(num_icons * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(texture) + popup_pad * 2);
 
         auto popup_h = (BloodSword::TileSize + popup_pad) * 2;
 
@@ -3617,7 +3628,7 @@ namespace BloodSword::Interface
 
         auto final_assets = assets;
 
-        Interface::PrintSelection(assets, values, "ORDER");
+        Interface::LogOptions(assets, values, "ORDER");
 
         if (hidden)
         {
@@ -3629,7 +3640,7 @@ namespace BloodSword::Interface
                 std::shuffle(values.begin(), values.end(), random.Generator());
             }
 
-            Interface::PrintSelection(assets, values, "SHUFFLE");
+            Interface::LogOptions(assets, values, "SHUFFLE");
         }
 
         auto last_control = (min_select == 1 && max_select == 1) ? Controls::Type::NONE : Controls::Type::CONFIRM;
@@ -3641,7 +3652,7 @@ namespace BloodSword::Interface
             auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, final_assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, last_control, last_asset);
 
             // title
-            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+            overlay.VerifyAndAdd(Scene::Element(texture, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
 
             for (auto i = 0; i < selection.size(); i++)
             {
@@ -3686,7 +3697,7 @@ namespace BloodSword::Interface
                 {
                     if (min_select == 1 && max_select == 1)
                     {
-                        // if min/max selection is 1, skip confirmation message box
+                        // if min / max selection is 1, skip confirmation message box
                         selected_symbols = {values[input.Current]};
 
                         done = true;
@@ -3700,23 +3711,13 @@ namespace BloodSword::Interface
                         {
                             selected_symbols.push_back(values[input.Current]);
 
-                            std::cerr << "SELECTED: "
-                                      << input.Current
-                                      << " => "
-                                      << Asset::TypeMapping[assets[values[input.Current]]]
-                                      << " SIZE: "
-                                      << selected_symbols.size() << std::endl;
+                            Interface::LogChoice("SELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
                         }
                         else
                         {
                             selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
 
-                            std::cerr << "DESELECTED: "
-                                      << input.Current
-                                      << " => "
-                                      << Asset::TypeMapping[assets[values[input.Current]]]
-                                      << " SIZE: "
-                                      << selected_symbols.size() << std::endl;
+                            Interface::LogChoice("DESELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
                         }
                     }
                 }
@@ -3727,7 +3728,7 @@ namespace BloodSword::Interface
 
         BloodSword::Free(texture_captions);
 
-        BloodSword::Free(&select);
+        BloodSword::Free(&texture);
 
         return selected_symbols;
     }

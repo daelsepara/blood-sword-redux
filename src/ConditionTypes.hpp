@@ -48,6 +48,7 @@ namespace BloodSword::Conditions
         RECEIVE_ITEM,
         IN_PARTY_WITH_ITEM,
         SELECT_PLAYER,
+        LOSE_WEAPONS,
         ITEM_EFFECT
     };
 
@@ -93,6 +94,7 @@ namespace BloodSword::Conditions
         {Conditions::Type::RECEIVE_ITEM, "RECEIVE ITEM"},
         {Conditions::Type::IN_PARTY_WITH_ITEM, "IN PARTY WITH ITEM"},
         {Conditions::Type::SELECT_PLAYER, "SELECT PLAYER"},
+        {Conditions::Type::LOSE_WEAPONS, "LOSE WEAPONS"},
         {Conditions::Type::ITEM_EFFECT, "ITEM EFFECT"}};
 
     Conditions::Type Map(const char *Conditions)

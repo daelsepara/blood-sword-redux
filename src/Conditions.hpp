@@ -1073,7 +1073,7 @@ namespace BloodSword::Conditions
 
                 auto characters = std::vector<Character::Class>();
 
-                auto items = std::vector<Item::Type>();
+                auto items = Items::List();
 
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -1254,6 +1254,66 @@ namespace BloodSword::Conditions
 
                     internal_error = false;
                 }
+            }
+        }
+        else if (condition.Type == Conditions::Type::LOSE_WEAPONS)
+        {
+            // variables
+            // 0 - message to display
+            // 1 - N items to be excluded (optional)
+            if (condition.Variables.size() > 0 && !condition.Variables[0].empty())
+            {
+                auto excluded = std::vector<Item::Type>();
+
+                for (auto i = 1; i < condition.Variables.size(); i++)
+                {
+                    auto item = Item::Map(condition.Variables[i]);
+
+                    if (item != Item::Type::NONE)
+                    {
+                        excluded.push_back(item);
+                    }
+                }
+
+                if (Engine::IsAlive(party))
+                {
+                    for (auto i = 0; i < party.Count(); i++)
+                    {
+                        if (Engine::IsAlive(party[i]))
+                        {
+                            auto inventory = Items::Inventory();
+
+                            for (auto item = 0; item < party[i].Items.size(); item++)
+                            {
+                                if (!party[i].Items[item].Is(Item::Property::WEAPON) || Items::Included(excluded, party[i].Items[item].Type))
+                                {
+                                    inventory.push_back(party[i].Items[item]);
+                                }
+                            }
+
+                            party[i].Items = inventory;
+                        }
+                    }
+
+                    text = condition.Variables[0];
+
+                    result = true;
+                }
+                else
+                {
+                    if (party.Count() > 1)
+                    {
+                        text = Conditions::DeathMessage(party);
+                    }
+                    else
+                    {
+                        text = Engine::IsDead(party[0]);
+                    }
+                }
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::SELECT_PLAYER)

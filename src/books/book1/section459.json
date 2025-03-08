@@ -3,12 +3,12 @@
         "book": "BOOK1",
         "number": 459
     },
-    "text": "\"Oh dear, you seem to have lost,\" sniggers Kalugen.\n\nHis guards and courtiers fall about in fits of laughter. Suddenly you hear swords being drawn. You whirl around, but several soldiers of the Battalion of the Emerald Hydra, Kalugen's elite bodyguard, are already surrounding you grimly. Their swords gleam with frosty green light. You have no choice but to surrender.\n\n\"There is a forfeit for losing,\" declaims the mad magus. \"Captain Praetorius will disarm you. It will be interesting to see how you fare in the Battlepits without your weapons, eh?\"\n\nThe hard-faced captain strides over and strips you of your weapons.",
+    "text": "\"Oh dear, you seem to have lost,\" sniggers Kalugen.\n\nHis guards and courtiers fall about in fits of laughter. Suddenly you hear swords being drawn. You whirl around, but several soldiers of the Battalion of the Emerald Hydra, Kalugen's elite bodyguard, are already surrounding you grimly. Their swords gleam with frosty green light. You have no choice but to surrender.\n\n\"There is a forfeit for losing,\" declaims the mad magus. \"Captain Praetorius will disarm you. It will be interesting to see how you fare in the Battlepits without your weapons, eh?\"",
     "events": [
         {
             "type": "LOSE WEAPONS",
             "variables": [
-                "2",
+                "The hard-faced captain strides over and strips you of your weapons.",
                 "CRESCENTIUM STEEL SWORD",
                 "LOGE SKYYRUNNER"
             ]

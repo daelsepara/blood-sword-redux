@@ -430,12 +430,14 @@ namespace BloodSword::Item
 
 namespace BloodSword::Items
 {
+    // default stats/properties for in-game items
+    BloodSword::UnorderedMap<Item::Type, Item::Base> Defaults = {};
+
     typedef std::vector<Item::Base> Inventory;
 
     typedef std::vector<Item::CardType> Deck;
 
-    // default stats/properties for in-game items
-    BloodSword::UnorderedMap<Item::Type, Item::Base> Defaults = {};
+    typedef std::vector<Item::Type> List;
 
     const int Unlimited = -1;
 
@@ -679,6 +681,26 @@ namespace BloodSword::Items
                 items.push_back(item);
             }
         }
+    }
+
+    bool Included(Items::List list, Item::Type item)
+    {
+        auto included = false;
+
+        if (item != Item::Type::NONE)
+        {
+            for (auto i = 0; i < list.size(); i++)
+            {
+                if (list[i] == item)
+                {
+                    included = true;
+
+                    break;
+                }
+            }
+        }
+
+        return included;
     }
 }
 
