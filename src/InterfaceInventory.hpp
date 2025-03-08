@@ -79,26 +79,6 @@ namespace BloodSword::Interface
                 captions.push_back("UNEQUIP");
             }
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0)
-            {
-                // money
-                assets.push_back(Asset::Type::MONEY);
-
-                controls.push_back(Controls::Type::MONEY);
-
-                captions.push_back("GOLD");
-            }
-
-            if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
-            {
-                // trade
-                assets.push_back(Asset::Type::TRADE);
-
-                controls.push_back(Controls::Type::TRADE);
-
-                captions.push_back("TRADE");
-            }
-
             // item description / identify
             if (Book::IsDefined(items[id].Description))
             {
@@ -122,6 +102,26 @@ namespace BloodSword::Interface
 
                     captions.push_back("ABOUT");
                 }
+            }
+
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0)
+            {
+                // money
+                assets.push_back(Asset::Type::MONEY);
+
+                controls.push_back(Controls::Type::MONEY);
+
+                captions.push_back("GOLD");
+            }
+
+            if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
+            {
+                // trade
+                assets.push_back(Asset::Type::TRADE);
+
+                controls.push_back(Controls::Type::TRADE);
+
+                captions.push_back("TRADE");
             }
 
             if (!items[id].Has(Item::Property::CANNOT_DROP))
