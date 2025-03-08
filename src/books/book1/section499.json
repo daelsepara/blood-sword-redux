@@ -23,7 +23,7 @@
                 "CHOSEN",
                 "-",
                 "HOUSE STAKE",
-                "KALUGEN ROLL"
+                "CHOSEN"
             ]
         },
         {
@@ -34,7 +34,7 @@
                 "CHOSEN",
                 "-",
                 "STAKED GOLD",
-                "KALUGEN ROLL"
+                "CHOSEN"
             ]
         },
         {
@@ -45,7 +45,7 @@
                 "CHOSEN",
                 "-",
                 "HOUSE STAKE",
-                "KALUGEN ROLL"
+                "CHOSEN"
             ]
         },
         {
@@ -56,7 +56,29 @@
                 "CHOSEN",
                 "+",
                 "STAKED GOLD",
-                "KALUGEN ROLL"
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KALUGEN ROLL",
+                "CHOSEN",
+                "+",
+                "HOUSE STAKE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KALUGEN ROLL",
+                "CHOSEN",
+                "-",
+                "STAKED GOLD",
+                "CHOSEN"
             ]
         },
         {
