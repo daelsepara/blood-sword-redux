@@ -31,30 +31,35 @@ namespace BloodSword::Interface
 
             auto captions = std::vector<std::string>();
 
-            if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
+            auto is_equipment = (items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR));
+
+            if (is_equipment)
             {
-                // equip weapon / armour
-                assets.push_back(Asset::Type::CONFIRM);
+                if (items[id].Has(Item::Property::EQUIPPED))
+                {
+                    // unequip weapon / armour
+                    assets.push_back(Asset::Type::CANCEL);
 
-                controls.push_back(Controls::Type::EQUIP);
+                    controls.push_back(Controls::Type::UNEQUIP);
 
-                captions.push_back("EQUIP");
+                    captions.push_back("UNEQUIP");
+                }
+                else
+                {
+                    // equip weapon / armour
+                    assets.push_back(Asset::Type::CONFIRM);
+
+                    controls.push_back(Controls::Type::EQUIP);
+
+                    captions.push_back("EQUIP");
+                }
             }
-            else if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && items[id].Has(Item::Property::EQUIPPED))
+
+            if (!items[id].Has(Item::Property::CONTAINER) && !is_equipment)
             {
-                // unequip weapon / armour
-                assets.push_back(Asset::Type::CANCEL);
-
-                controls.push_back(Controls::Type::UNEQUIP);
-
-                captions.push_back("UNEQUIP");
-            }
-
-            if (!items[id].Has(Item::Property::CONTAINER) && !(items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)))
-            {
-                // use item
                 if (items[id].Has(Item::Property::LIQUID))
                 {
+                    // drink
                     assets.push_back(Asset::Type::DRINK);
 
                     controls.push_back(Controls::Type::DRINK);
@@ -63,6 +68,7 @@ namespace BloodSword::Interface
                 }
                 else if (items[id].Has(Item::Property::READABLE))
                 {
+                    // read / open scroll
                     assets.push_back(Asset::Type::READ);
 
                     controls.push_back(Controls::Type::READ);
@@ -71,6 +77,7 @@ namespace BloodSword::Interface
                 }
                 else
                 {
+                    // default: use
                     assets.push_back(Asset::Type::USE);
 
                     controls.push_back(Controls::Type::USE);
@@ -275,6 +282,7 @@ namespace BloodSword::Interface
                 }
             }
         }
+
         return update;
     }
 
