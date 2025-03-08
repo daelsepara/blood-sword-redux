@@ -18,10 +18,6 @@
         },
         {
             "contains": "NONE",
-            "description": {
-                "book": "BOOK1",
-                "number": 47
-            },
             "effects": {
                 "book": "BOOK1",
                 "number": 24

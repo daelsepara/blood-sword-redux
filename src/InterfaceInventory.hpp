@@ -232,28 +232,37 @@ namespace BloodSword::Interface
                         {
                             if (Book::IsDefined(items[id].Description))
                             {
-                                items[id].Revealed = true;
-
-                                auto description = Story::CurrentBook.Find(items[id].Description);
-
-                                if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+                                if (items[id].Revealed)
                                 {
-                                    auto item_description = Story::CurrentBook.Sections[description].Text;
+                                    auto description = Story::CurrentBook.Find(items[id].Description);
 
-                                    auto wrap = graphics.Width - BloodSword::TileSize * 8;
+                                    if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+                                    {
+                                        auto item_description = Story::CurrentBook.Sections[description].Text;
 
-                                    Interface::TextBox(graphics, background, item_description, wrap);
+                                        auto wrap = graphics.Width - BloodSword::TileSize * 8;
 
-                                    done = true;
+                                        Interface::TextBox(graphics, background, item_description, wrap);
+
+                                        done = true;
+                                    }
                                 }
                                 else
                                 {
-                                    std::string message = "INTERNAL ERROR: ITEM DESCRIPTION";
+                                    items[id].Revealed = true;
 
-                                    Interface::InternalError(graphics, background, message);
+                                    party.ChosenCharacter = character.Class;
+
+                                    update.Next = items[id].Description;
+
+                                    update.Update = true;
+
+                                    done = true;
+
+                                    exit = true;
                                 }
                             }
-                            else if (!Book::IsDefined(items[id].Description))
+                            else
                             {
                                 std::string message = "INTERNAL ERROR: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "INFO");
 
