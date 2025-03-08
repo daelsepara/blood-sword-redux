@@ -49,7 +49,10 @@ namespace BloodSword::Conditions
         IN_PARTY_WITH_ITEM,
         SELECT_PLAYER,
         LOSE_WEAPONS,
-        ITEM_EFFECT
+        ITEM_EFFECT,
+        NUMBER_LOWER,
+        NUMBER_HIGHER,
+        NUMBER_EQUAL
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -95,7 +98,10 @@ namespace BloodSword::Conditions
         {Conditions::Type::IN_PARTY_WITH_ITEM, "IN PARTY WITH ITEM"},
         {Conditions::Type::SELECT_PLAYER, "SELECT PLAYER"},
         {Conditions::Type::LOSE_WEAPONS, "LOSE WEAPONS"},
-        {Conditions::Type::ITEM_EFFECT, "ITEM EFFECT"}};
+        {Conditions::Type::ITEM_EFFECT, "ITEM EFFECT"},
+        {Conditions::Type::NUMBER_LOWER, "NUMBER LOWER"},
+        {Conditions::Type::NUMBER_HIGHER, "NUMBER HIGHER"},
+        {Conditions::Type::NUMBER_EQUAL, "NUMBER EQUAL"}};
 
     Conditions::Type Map(const char *Conditions)
     {

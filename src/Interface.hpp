@@ -3732,6 +3732,35 @@ namespace BloodSword::Interface
 
         return selected_symbols;
     }
+
+    bool PlayOldManInTheMountain(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+        auto start_game = false;
+
+        if (Engine::IsAlive(party))
+        {
+            auto player = Engine::FirstClass(party);
+
+            if (Engine::Count(party) > 1)
+            {
+                // select a player on a multi-player party
+                player = Interface::SelectCharacter(graphics, background, party, "WHO IS PLAYING THE GAME?", true, false, false, false, true);
+            }
+        }
+        else
+        {
+            if (party.Count() > 1)
+            {
+                Interface::ErrorMessage(graphics, background, Interface::MSG_DEAD);
+            }
+            else
+            {
+                Interface::ErrorMessage(graphics, background, Interface::MSG_DIED);
+            }
+        }
+
+        return start_game;
+    }
 }
 
 #endif
