@@ -33,11 +33,17 @@
             }
         },
         {
-            "type": "NORMAL",
+            "type": "CHOOSE NUMBER",
             "location": {
                 "book": "BOOK1",
                 "number": 499
-            }
+            },
+            "variables": [
+                "CHOOSE",
+                "CHOOSE A NUMBER BETWEEN 2 AND 12",
+                "2",
+                "12"
+            ]
         }
     ]
 }

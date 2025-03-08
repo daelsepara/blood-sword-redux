@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 311
+    },
+    "text": "(SAGE) You have studied mathematics and know a little of statistical probabilities. You maximise your probable gain and Kalugen's probable loss by calling a four.",
+    "events": [
+        {
+            "type": "CHOOSE NUMBER",
+            "variables": [
+                "1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 499
+            }
+        }
+    ]
+}

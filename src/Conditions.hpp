@@ -1421,6 +1421,57 @@ namespace BloodSword::Conditions
                 if (!ops.empty() && !dst.empty() && !src.empty())
                 {
                     party.Math(ops, dst, src);
+
+                    result = true;
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Conditions::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::CHOOSE_NUMBER)
+        {
+            // variables
+            // 0 - CHOOSE/VALUE
+            // 1 - message to display if CHOOSE in #0
+            // 2 - min if CHOOSE in #0
+            // 3 - max if CHOOSE in #0
+            if (condition.Variables.size() > 0 && Engine::IsAlive(party))
+            {
+                auto number = (Engine::ToUpper(condition.Variables[0]) != "CHOOSE");
+
+                if (number)
+                {
+                    std::cerr << "NUMBER: " << condition.Variables[0] << std::endl;
+
+                    party.ChosenNumber = std::stoi(condition.Variables[0], nullptr, 10);
+
+                    result = true;
+                }
+                else if (condition.Variables.size() > 3)
+                {
+                    std::cerr << "MIN: " << condition.Variables[2] << std::endl;
+
+                    auto min_number = std::stoi(condition.Variables[2], nullptr, 10);
+
+                    std::cerr << "MAX: " << condition.Variables[3] << std::endl;
+
+                    auto max_number = std::stoi(condition.Variables[3], nullptr, 10);
+
+                    std::cerr << "MESSAGE: " << condition.Variables[1] << std::endl;
+
+                    party.ChosenNumber = Interface::GetNumber(graphics, background, condition.Variables[1].c_str(), min_number, max_number, Asset::Type::DICE1, Asset::Type::UP, Asset::Type::DOWN, false);
+
+                    result = true;
                 }
                 else
                 {

@@ -352,7 +352,7 @@ namespace BloodSword::Party
 
         bool IsPresent(std::string variable)
         {
-            return this->Variables.find(variable) != this->Variables.end();
+            return !variable.empty() && (this->Variables.find(variable) != this->Variables.end());
         }
 
         std::string Get(std::string variable)
@@ -423,9 +423,15 @@ namespace BloodSword::Party
                 // check if operation is valid
                 if (std::find(valid_operations.begin(), valid_operations.end(), operation) != valid_operations.end())
                 {
+                    if (!this->IsPresent(first))
+                    {
+                        // initialize first variable if not present
+                        this->Set(first, 0);
+                    }
+
                     auto value_first = this->Number(first);
 
-                    auto value_second = this->IsANumber(second) ? std::stoi(second, nullptr, 10) : this->Number(second);
+                    auto value_second = this->IsANumber(second) ? std::stoi(second, nullptr, 10) : (this->IsPresent(second) ? this->Number(second) : 0);
 
                     if (operation == "+")
                     {

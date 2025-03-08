@@ -3051,7 +3051,7 @@ namespace BloodSword::Interface
     }
 
     // generic get number popup (arbitrary location)
-    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, Point origin, int popup_w, int popup_h, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease)
+    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, Point origin, int popup_w, int popup_h, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease, bool cancel = true)
     {
         auto number = 0;
 
@@ -3110,8 +3110,11 @@ namespace BloodSword::Interface
         // confirm
         controls.push_back(Controls::Base(Controls::Type::CONFIRM, id + 2, id + 1, id + 3, id + 2, id + 2, button.X + offset * 2, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
-        // cancel
-        controls.push_back(Controls::Base(Controls::Type::CANCEL, id + 3, id + 2, id + 3, id + 3, id + 3, button.X + offset * 3, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+        if (cancel)
+        {
+            // cancel
+            controls.push_back(Controls::Base(Controls::Type::CANCEL, id + 3, id + 2, id + 3, id + 3, id + 3, button.X + offset * 3, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+        }
 
         while (!done)
         {
@@ -3162,8 +3165,11 @@ namespace BloodSword::Interface
             // confirm (icon)
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(button.X + offset * 2, button.Y)));
 
-            // cancel (icon)
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CANCEL), Point(button.X + offset * 3, button.Y)));
+            if (cancel)
+            {
+                // cancel (icon)
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CANCEL), Point(button.X + offset * 3, button.Y)));
+            }
 
             // add boxes
             auto row = 0;
@@ -3240,7 +3246,7 @@ namespace BloodSword::Interface
     }
 
     // generic get number popup (centered)
-    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease)
+    int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease, bool cancel = true)
     {
         auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
 
@@ -3248,7 +3254,7 @@ namespace BloodSword::Interface
 
         auto origin = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
-        return Interface::GetNumber(graphics, background, message, origin, popup_w, popup_h, minimum, maximum, target, increase, decrease);
+        return Interface::GetNumber(graphics, background, message, origin, popup_w, popup_h, minimum, maximum, target, increase, decrease, cancel);
     }
 
     void Heal(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
