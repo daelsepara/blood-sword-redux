@@ -44,6 +44,9 @@ namespace BloodSword::Party
         // for the magus kalugen's card game
         Items::Deck Cards = {};
 
+        // variables
+        BloodSword::UnorderedMap<std::string, std::string> Variables = {};
+
         Base() {}
 
         Base(Party::List members) : Members(members) {}
@@ -298,7 +301,7 @@ namespace BloodSword::Party
                 this->BattleLocation = Book::Load(data["battle_location"]);
             }
 
-            // load party
+            // load party members
             this->Clear();
 
             if (!data["members"].is_null() && data["members"].is_array() && data["members"].size() > 0)
@@ -325,10 +328,57 @@ namespace BloodSword::Party
             }
 
             // load deck of cards
-            if (!data["cards"].is_null() && data["cards"].is_object())
+            this->Cards.clear();
+
+            if (!data["cards"].is_null() && data["cards"].is_array() && data["cards"].size() > 0)
             {
                 this->Cards = Items::LoadDeck(data["cards"]);
             }
+
+            this->Variables.clear();
+
+            if (!data["variables"].is_null() && data["variables"].is_object())
+            {
+                for (auto &[key, val] : data["variables"].items())
+                {
+                    auto variable = std::string(key);
+
+                    auto value = std::string(val);
+
+                    this->Variables[key] = value;
+                }
+            }
+        }
+
+        std::string Get(std::string variable)
+        {
+            auto value = std::string();
+
+            if (!variable.empty())
+            {
+                auto search = this->Variables.find(variable);
+
+                if (search != this->Variables.end())
+                {
+                    value = (*search).first;
+                }
+            }
+
+            return value;
+        }
+
+        int Number(std::string variable)
+        {
+            auto value = 0;
+
+            if (!variable.empty())
+            {
+                auto search = this->Get(variable);
+
+                value = !search.empty() ? std::stoi(search, nullptr, 10) : 0;
+            }
+
+            return value;
         }
     };
 
@@ -395,6 +445,18 @@ namespace BloodSword::Party
         if (party.Cards.size() > 0)
         {
             data["cards"] = Items::DeckData(party.Cards);
+        }
+
+        if (party.Variables.size() > 0)
+        {
+            nlohmann::json variables;
+
+            for (auto &variable : party.Variables)
+            {
+                variables.emplace(variable.first, variable.second);
+            }
+
+            data["variables"] = variables;
         }
 
         return data;
