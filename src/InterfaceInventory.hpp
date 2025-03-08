@@ -8,9 +8,9 @@
 // inventory management
 namespace BloodSword::Interface
 {
-    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
+    Interface::ItemResult ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
     {
-        auto update = false;
+        Interface::ItemResult update;
 
         auto exit = false;
 
@@ -195,7 +195,7 @@ namespace BloodSword::Interface
                         if (!items[id].Is(Item::Property::EQUIPPED))
                         {
                             // equip
-                            update = items[id].Add(Item::Property::EQUIPPED);
+                            update.Update = items[id].Add(Item::Property::EQUIPPED);
 
                             done = true;
                         }
@@ -204,7 +204,7 @@ namespace BloodSword::Interface
                     {
                         if (items[id].Is(Item::Property::EQUIPPED))
                         {
-                            update = items[id].Remove(Item::Property::EQUIPPED);
+                            update.Update = items[id].Remove(Item::Property::EQUIPPED);
 
                             done = true;
                         }
@@ -267,9 +267,11 @@ namespace BloodSword::Interface
                     }
                     else if (input == Controls::Type::DRINK)
                     {
-                        Interface::ItemEffects(graphics, background, character, items[id].Type);
+                        party.ChosenCharacter = character.Class;
 
-                        update = true;
+                        update.Next = items[id].Effects;
+
+                        update.Update = true;
 
                         done = true;
 
@@ -351,9 +353,9 @@ namespace BloodSword::Interface
         }
     }
 
-    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
+    Interface::ItemResult ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
     {
-        auto update = false;
+        Interface::ItemResult update = {false, {Book::Number::NONE, -1}};
 
         auto exit = false;
 
@@ -508,7 +510,7 @@ namespace BloodSword::Interface
                         {
                             update = Interface::ManageItem(graphics, background, party, character, character.Items, choice);
 
-                            if (!Engine::IsAlive(character) || update)
+                            if (!Engine::IsAlive(character) || update.Update || Book::IsDefined(update.Next))
                             {
                                 done = true;
 
@@ -716,9 +718,9 @@ namespace BloodSword::Interface
         return update;
     }
 
-    bool ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
+    Interface::ItemResult ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
     {
-        auto update = false;
+        Interface::ItemResult update = {false, {Book::Number::NONE, -1}};
 
         if (!Engine::IsAlive(character))
         {
@@ -736,9 +738,9 @@ namespace BloodSword::Interface
         return update;
     }
 
-    bool ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, bool blur = true)
+    Interface::ItemResult ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, bool blur = true)
     {
-        auto update = false;
+        Interface::ItemResult update;
 
         if (!Engine::IsAlive(party))
         {
@@ -759,7 +761,7 @@ namespace BloodSword::Interface
                 {
                     update = Interface::ManageInventory(graphics, background, party, party[character], blur);
 
-                    if (!Engine::IsAlive(party[character]) || update)
+                    if (!Engine::IsAlive(party[character]) || update.Update)
                     {
                         break;
                     }

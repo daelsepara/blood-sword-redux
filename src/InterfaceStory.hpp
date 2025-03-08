@@ -583,6 +583,119 @@ namespace BloodSword::Interface
         }
     }
 
+    void ItemControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
+    {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
+        auto elements = overlay.Elements.size();
+
+        auto controls = overlay.Controls.size();
+
+        auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
+
+        auto num_buttons = 0;
+
+        auto id = 0;
+
+        // add button textures
+        if (section.Battle.IsDefined())
+        {
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), buttons.X, buttons.Y));
+        }
+        else
+        {
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), buttons.X, buttons.Y));
+        }
+
+        // next button hotspot
+        overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        num_buttons++;
+
+        id++;
+
+        // game functions
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::GAME), buttons.X + num_buttons * button_spacing, buttons.Y));
+
+        overlay.Add(Controls::Base(Controls::Type::GAME, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        num_buttons++;
+
+        id++;
+
+        // exit button icon
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + num_buttons * button_spacing, buttons.Y));
+
+        // scroll button icons
+        if (arrow_up)
+        {
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scroll_top.X, scroll_top.Y));
+        }
+
+        if (arrow_dn)
+        {
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scroll_bot.X, scroll_bot.Y));
+        }
+
+        if (arrow_up && arrow_dn)
+        {
+            // exit hotspot when both scroll buttons are present
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
+
+            // scroll buttons hotspots
+            id++;
+
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id + 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
+        else if (arrow_up)
+        {
+            // exit hotspot when scroll up is present
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
+
+            id++;
+
+            // scroll up hotspot
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
+        else if (arrow_dn)
+        {
+            // exit hotspot when scroll down is present
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
+
+            id++;
+
+            // scroll down hotspot
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
+        else
+        {
+            // exit hotspot when there are no scroll buttons
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            num_buttons++;
+        }
+
+        auto adjust = (num_buttons * button_spacing) / 2 + BloodSword::HalfTile - BloodSword::Pixel;
+
+        // adjust icon positions at bottom
+        for (auto i = 0; i < num_buttons; i++)
+        {
+            overlay.Elements[elements + i].X -= adjust;
+
+            overlay.Controls[controls + i].X -= adjust;
+        }
+    }
+
     void EndingControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
         auto elements = overlay.Elements.size();
@@ -885,6 +998,10 @@ namespace BloodSword::Interface
             {
                 Interface::EndingControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
             }
+            else if (section.Has(Feature::Type::ITEM_EFFECT))
+            {
+                Interface::ItemControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+            }
             else
             {
                 Interface::StoryControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
@@ -917,7 +1034,7 @@ namespace BloodSword::Interface
 
                             auto update = Interface::ManageInventory(graphics, overlay, party, true);
 
-                            if (update && section.ImageAsset.empty())
+                            if (update.Update && section.ImageAsset.empty())
                             {
                                 BloodSword::Free(&image);
 
@@ -928,7 +1045,7 @@ namespace BloodSword::Interface
 
                         next = Interface::NextSection(graphics, overlay, party);
 
-                        if (Book::IsDefined(next))
+                        if (Engine::IsAlive(party) && Book::IsDefined(next))
                         {
                             done = true;
                         }
@@ -994,7 +1111,7 @@ namespace BloodSword::Interface
                 {
                     auto update = Interface::ManageInventory(graphics, overlay, party, true);
 
-                    if (update && section.ImageAsset.empty())
+                    if (update.Update && section.ImageAsset.empty())
                     {
                         BloodSword::Free(&image);
 
@@ -1003,6 +1120,13 @@ namespace BloodSword::Interface
                     }
 
                     input.Selected = false;
+
+                    if (Book::IsDefined(update.Next))
+                    {
+                        next = update.Next;
+
+                        done = true;
+                    }
                 }
                 else if (input.Type == Controls::Type::GAME)
                 {

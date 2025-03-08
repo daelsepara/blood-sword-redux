@@ -121,6 +121,13 @@ namespace BloodSword::Interface
 
     const int MaxBoxRow = 16;
 
+    struct ItemResult
+    {
+        bool Update = false;
+
+        Book::Location Next = {Book::Number::NONE, -1};
+    };
+
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
     {
