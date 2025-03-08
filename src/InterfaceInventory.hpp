@@ -31,6 +31,25 @@ namespace BloodSword::Interface
 
             auto captions = std::vector<std::string>();
 
+            if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
+            {
+                // equip weapon / armour
+                assets.push_back(Asset::Type::CONFIRM);
+
+                controls.push_back(Controls::Type::EQUIP);
+
+                captions.push_back("EQUIP");
+            }
+            else if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && items[id].Has(Item::Property::EQUIPPED))
+            {
+                // unequip weapon / armour
+                assets.push_back(Asset::Type::CANCEL);
+
+                controls.push_back(Controls::Type::UNEQUIP);
+
+                captions.push_back("UNEQUIP");
+            }
+
             if (!items[id].Has(Item::Property::CONTAINER) && !(items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)))
             {
                 // use item
@@ -58,25 +77,6 @@ namespace BloodSword::Interface
 
                     captions.push_back("USE");
                 }
-            }
-
-            if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && !items[id].Has(Item::Property::EQUIPPED))
-            {
-                // equip weapon / armour
-                assets.push_back(Asset::Type::CONFIRM);
-
-                controls.push_back(Controls::Type::EQUIP);
-
-                captions.push_back("EQUIP");
-            }
-            else if ((items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR)) && items[id].Has(Item::Property::EQUIPPED))
-            {
-                // unequip weapon / armour
-                assets.push_back(Asset::Type::CANCEL);
-
-                controls.push_back(Controls::Type::UNEQUIP);
-
-                captions.push_back("UNEQUIP");
             }
 
             // item description / identify
