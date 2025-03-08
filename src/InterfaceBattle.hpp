@@ -2600,7 +2600,7 @@ namespace BloodSword::Interface
         }
 
         // handle cases where this battle's location is not recorded
-        if (battle.Has(Battle::Condition::SKIP_LOCATION))
+        if (!battle.Has(Battle::Condition::SKIP_LOCATION))
         {
             // set location of last battle
             party.BattleLocation = party.Location;
