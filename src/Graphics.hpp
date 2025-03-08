@@ -14,6 +14,9 @@ namespace BloodSword::Graphics
 {
     typedef std::vector<std::reference_wrapper<Scene::Base>> Scenery;
 
+    // vindow icon
+    SDL_Surface *BloodSwordIcon = nullptr;
+
     // version string texture overlay
     SDL_Texture *VersionOverlay = nullptr;
 
@@ -45,6 +48,8 @@ namespace BloodSword::Graphics
     // initialize graphics system
     void CreateWindow(Uint32 flags, const char *title, Base &graphics)
     {
+        BloodSwordIcon = BloodSword::Load("images/icons/sword-wound.png");
+
         // the window and renderer we'll be rendering to
         graphics.Window = nullptr;
 
@@ -78,6 +83,11 @@ namespace BloodSword::Graphics
             else if (graphics.Window)
             {
                 SDL_SetWindowTitle(graphics.Window, title);
+
+                if (BloodSwordIcon != nullptr)
+                {
+                    SDL_SetWindowIcon(graphics.Window, BloodSwordIcon);
+                }
             }
 
             // raise window
@@ -751,6 +761,13 @@ namespace BloodSword::Graphics
             SDL_DestroyWindow(graphics.Window);
 
             graphics.Window = nullptr;
+        }
+
+        if (BloodSwordIcon != nullptr)
+        {
+            SDL_FreeSurface(BloodSwordIcon);
+
+            BloodSwordIcon = nullptr;
         }
 
         IMG_Quit();
