@@ -465,10 +465,10 @@ namespace BloodSword::Engine
                     {
                         auto vulnerability = map.Free(location);
 
-                        std::cerr << "[MOVE TARGET] TARGET " << i
-                                  << " PATH: " << path.Points.size()
-                                  << " DIST: " << distance
-                                  << " VULN: " << vulnerability
+                        std::cerr << "[TARGET/MOVE" << i << "]"
+                                  << " [PATH] " << path.Points.size()
+                                  << " [DIST] " << distance
+                                  << " [VULN] " << vulnerability
                                   << std::endl;
 
                         // add vulnerability score (more empty spaces, more vulnerable)
@@ -844,7 +844,7 @@ namespace BloodSword::Engine
         {
             if (Engine::IsAlive(party[i]) && party[i].Is(Character::Status::PARALYZED))
             {
-                std::cerr << "KILLED (PARALYZED): " << Character::ClassMapping[party[i].Class] << std::endl;
+                std::cerr << "[KILLED/PARALYZED " << Character::ClassMapping[party[i].Class] << "]" << std::endl;
 
                 party[i].Value(Attribute::Type::ENDURANCE, 0);
             }

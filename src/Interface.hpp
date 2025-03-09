@@ -1479,10 +1479,20 @@ namespace BloodSword::Interface
 
         if (path.Points.size() == 0 && enemy)
         {
-            std::cerr << "CLOSEST  X: " << path.Closest.X << " Y: " << path.Closest.Y << " DIST: " << map.Distance(start, path.Closest) << std::endl;
+            auto target = path.Closest;
 
             // move closer to target
             path = Move::FindPath(map, start, path.Closest);
+
+            std::cerr << "[TARGET ("
+                      << target.X
+                      << ", "
+                      << target.Y
+                      << ")] [PATH] "
+                      << path.Points.size()
+                      << " [DIST] "
+                      << map.Distance(start, target)
+                      << std::endl;
 
             closer = true;
         }
@@ -1490,17 +1500,17 @@ namespace BloodSword::Interface
         // add extra move if enemy is trying to close distance
         auto valid = Move::Count(map, path, enemy) + (closer ? 1 : 0);
 
-        if (enemy)
+        if (enemy && !closer)
         {
             if (map.IsValid(end))
             {
-                std::cerr << "[APPROACH] TARGET "
+                std::cerr << "[TARGET "
                           << map[end].Id
-                          << " PATH: "
+                          << "] [PATH] "
                           << path.Points.size()
-                          << " DIST: "
+                          << " [DIST] "
                           << valid
-                          << " VULN: "
+                          << " [VULN] "
                           << map.Free(end)
                           << std::endl;
             }

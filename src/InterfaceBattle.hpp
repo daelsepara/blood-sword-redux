@@ -967,7 +967,7 @@ namespace BloodSword::Interface
 
         auto valid_target = false;
 
-        std::cerr << "MOVE TARGETS: " << targets.size() << std::endl;
+        std::cerr << "[MOVE TARGETS] " << targets.size() << std::endl;
 
         for (auto &target : targets)
         {
@@ -1041,9 +1041,9 @@ namespace BloodSword::Interface
             throw std::invalid_argument("BATTLE: PLAYER ORIGIN LOCATIONS INSUFFICIENT!");
         }
 
-        std::cerr << "PLAYERS: "
+        std::cerr << "[PLAYERS] "
                   << std::to_string(party.Count())
-                  << " LIVE: "
+                  << " [LIVE] "
                   << std::to_string(Engine::Count(party))
                   << std::endl;
     }
@@ -1121,8 +1121,9 @@ namespace BloodSword::Interface
                 {
                     if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source))
                     {
-                        std::cerr << "SURVIVOR ADD: "
+                        std::cerr << "[SURVIVOR] [ADD "
                                   << std::to_string(i)
+                                  << "]"
                                   << std::endl;
 
                         survivors.Add(party.Survivors[i]);
@@ -1139,8 +1140,9 @@ namespace BloodSword::Interface
 
                     for (auto i = 0; i < remove.size(); i++)
                     {
-                        std::cerr << "SURVIVOR (IN PARTY) REMOVE: "
+                        std::cerr << "[SURVIVOR/PARTY] [DELETE "
                                   << std::to_string(remove[i])
+                                  << "]"
                                   << std::endl;
 
                         // remove from survivor list
@@ -1149,11 +1151,11 @@ namespace BloodSword::Interface
                 }
 
                 std::cerr << Book::String(source)
-                          << " SURVIVORS: "
+                          << " [SURVIVORS] "
                           << std::to_string(survivors.Count())
                           << std::endl;
 
-                std::cerr << "SURVIVORS (IN PARTY): "
+                std::cerr << "[SURVIVORS/PARTY] "
                           << std::to_string(party.Survivors.size())
                           << std::endl;
 
@@ -1168,9 +1170,11 @@ namespace BloodSword::Interface
 
                         if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
                         {
-                            std::cerr << "SURVIVOR "
+                            std::cerr << "[SURVIVOR "
                                       << std::to_string(i)
-                                      << " HEAL: " << std::to_string(survivors[i].Maximum(Attribute::Type::ENDURANCE)) << std::endl;
+                                      << "] [HEAL] "
+                                      << std::to_string(survivors[i].Maximum(Attribute::Type::ENDURANCE))
+                                      << std::endl;
 
                             survivors[i].Value(Attribute::Type::ENDURANCE, survivors[i].Maximum(Attribute::Type::ENDURANCE));
                         }
@@ -1220,9 +1224,9 @@ namespace BloodSword::Interface
             }
         }
 
-        std::cerr << "OPPONENTS: "
+        std::cerr << "[OPPONENTS] "
                   << battle.Opponents.Count()
-                  << " LIVE: "
+                  << " [LIVE] "
                   << std::to_string(Engine::Count(battle.Opponents))
                   << std::endl;
     }
@@ -2683,9 +2687,9 @@ namespace BloodSword::Interface
             }
 
             std::cerr << Book::String(battle.Opponents.Location)
-                      << " SURVIVORS: "
+                      << " [SURVIVORS/BATTLE] "
                       << std::to_string(survivors)
-                      << " (IN PARTY): "
+                      << " [SURVIVORS/PARTY] "
                       << std::to_string(party.Survivors.size())
                       << std::endl;
         }
