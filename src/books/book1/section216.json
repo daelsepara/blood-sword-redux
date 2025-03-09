@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 216
+    },
+    "text": "The corridor ahead terminates in vast bronze double doors. To either side, gilt-framed mirrors wink in your torchlight. Unless the mirrors conceal some hidden passageway, your only route lies through the bronze doors in front of you.",
+    "choices": [
+        {
+            "text": "(TRICKSTER) Examine the mirrors",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 511
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Look behind the mirrors anyway",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 76
+                }
+            }
+        },
+        {
+            "text": "Advance to the end of the corridor and open the bronze doors",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 256
+                }
+            }
+        }
+    ]
+}

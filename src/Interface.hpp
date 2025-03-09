@@ -1470,10 +1470,31 @@ namespace BloodSword::Interface
     {
         auto moving = false;
 
+        auto is_enemy = !character.IsPlayer();
+
         // find a path to the destination
         auto path = Move::FindPath(map, start, end);
 
-        auto valid = Move::Count(map, path, false);
+        if (path.Points.size() == 0 && is_enemy)
+        {
+            // check unrestricted path
+            path = Move::FindPath(map, start, end, true);
+        }
+
+        auto valid = Move::Count(map, path, is_enemy);
+
+        if (is_enemy)
+        {
+            if (map.IsValid(end))
+            {
+                std::cerr << "PATH TO TARGET "
+                          << map[end].Id << ": "
+                          << path.Points.size()
+                          << " VALID: "
+                          << valid
+                          << std::endl;
+            }
+        }
 
         if (valid > 0)
         {

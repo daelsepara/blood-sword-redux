@@ -1,0 +1,49 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 141
+    },
+    "text": "The barbarians swagger off down the corridor, discussing all the ale they'll be able to buy with their loot once they have won the contest. You smile wryly, reflecting that this is a clear case of counting one's chickens before they hatch.",
+    "choices": [
+        {
+            "text": "(SAGE) Now might be a good time to try ESP to scan the vicinity",
+            "condition": {
+                "type": "TEST ATTRIBUTE",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 448
+                },
+                "variables": [
+                    "SAGE",
+                    "PSYCHIC ABILITY",
+                    "BOOK1",
+                    "297",
+                    "USING ESP FAILED!"
+                ]
+            }
+        },
+        {
+            "text": "Dislodge the grille and drop down to follow the barbarians",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 477
+                }
+            }
+        },
+        {
+            "text": "Wait",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 73
+                },
+                "variables": [
+                    "You wait where you are, watching through the grille"
+                ]
+            }
+        }
+    ]
+}

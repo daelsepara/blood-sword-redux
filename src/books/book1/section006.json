@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 6
+    },
+    "text": "You wrench up the grating and drop lithely to the floor in the midst of the astonished barbarians. They reach for their axes, but they are taken by surprise.",
+    "battle": "battles/book1/battle006.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 191
+            }
+        },
+        {
+            "type": "BATTLE FLEE",
+            "location": {
+                "book": "BOOK1",
+                "number": 43
+            }
+        }
+    ]
+}

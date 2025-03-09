@@ -63,7 +63,8 @@ namespace BloodSword::Conditions
         OR,
         ADD_TO_ITEM,
         SHOW_VARIABLES,
-        EAT_FOOD
+        EAT_FOOD,
+        SHOW_MESSAGE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -123,7 +124,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::OR, "OR"},
         {Conditions::Type::ADD_TO_ITEM, "ADD TO ITEM"},
         {Conditions::Type::SHOW_VARIABLES, "SHOW VARIABLES"},
-        {Conditions::Type::EAT_FOOD, "EAT FOOD"}};
+        {Conditions::Type::EAT_FOOD, "EAT FOOD"},
+        {Conditions::Type::SHOW_MESSAGE, "SHOW MESSAGE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

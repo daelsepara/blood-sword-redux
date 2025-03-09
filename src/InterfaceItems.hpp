@@ -127,6 +127,24 @@ namespace BloodSword::Interface
             // remove
             character.Items.erase(character.Items.begin() + id);
         }
+        else if (item.Type == Item::Type::FOOD)
+        {
+            if (!Engine::Healed(character))
+            {
+                Interface::MessageBox(graphics, background, "HEALED 1 ENDURANCE", Color::Active);
+
+                Engine::GainEndurance(character, 1);
+
+                // remove
+                character.Items.erase(character.Items.begin() + id);
+            }
+            else
+            {
+                std::string message = character.Name + " IS AT MAXIMUM ENDURANCE";
+
+                Interface::MessageBox(graphics, background, message, Color::Inactive);
+            }
+        }
     }
 
     void ItemEffects(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Item::Type item)

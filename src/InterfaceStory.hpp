@@ -238,10 +238,15 @@ namespace BloodSword::Interface
                         }
                         else if (!eval.Result)
                         {
-                            Interface::MessageBox(graphics, background, Graphics::RichText(eval.Text.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Highlight, true);
+                            Interface::MessageBox(graphics, background, eval.Text, Color::Highlight);
                         }
                         else
                         {
+                            if (!eval.Text.empty())
+                            {
+                                Interface::MessageBox(graphics, background, eval.Text, Color::Inactive);
+                            }
+
                             next = choices[choice].Condition.Location;
 
                             done = true;
@@ -392,6 +397,11 @@ namespace BloodSword::Interface
                     // handle 'NEXT' situations that behave like events
                     if (eval.Result && Book::IsDefined(condition.Location))
                     {
+                        if (!eval.Text.empty())
+                        {
+                            Interface::MessageBox(graphics, background, eval.Text, Color::Active);
+                        }
+
                         next = condition.Location;
 
                         break;

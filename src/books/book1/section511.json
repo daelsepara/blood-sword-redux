@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 511
+    },
+    "text": "(TRICKSTER) You bend close to each of the mirrors in turn, listening intently for any sound beyond.\n\nGently tapping one with your fingers, you hear a slight movement as if something was lurking behind it, perhaps even waiting in the darkness to ambush you. You tap each of the other mirrors in turn and hear the same rustling sound behind each of them except one. Examining the gilt frame of this mirror, you find a concealed catch which, when flicked down, allows the mirror to swing away from the wall. Behind it, a low tunnel leads off at an oblique angle to the corridor in which you stand.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 379
+            }
+        }
+    ]
+}

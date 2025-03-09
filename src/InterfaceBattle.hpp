@@ -967,6 +967,8 @@ namespace BloodSword::Interface
 
         auto valid_target = false;
 
+        std::cerr << "MOVE TARGETS: " << targets.size() << std::endl;
+
         for (auto &target : targets)
         {
             auto end = battle.Map.Find(Map::Object::PLAYER, target.Id);
@@ -1980,7 +1982,15 @@ namespace BloodSword::Interface
 
                                                     auto &control = scene.Controls[input.Current];
 
-                                                    if (opponents.size() == 0 || (opponents.size() > 0 && (is_enemy || (is_player && character.Is(Character::Status::DEFENDED)))) || battle.Has(Battle::Condition::NO_COMBAT))
+                                                    auto no_opponents = (opponents.size() == 0);
+
+                                                    auto has_defended = (is_player && character.Is(Character::Status::DEFENDED));
+
+                                                    auto ambush = (round == 0 && battle.Has(Battle::Condition::AMBUSH_PLAYER));
+
+                                                    auto can_move = (opponents.size() > 0 && (is_enemy || has_defended || ambush));
+
+                                                    if (no_opponents || can_move || battle.Has(Battle::Condition::NO_COMBAT))
                                                     {
                                                         auto start = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
 

@@ -679,6 +679,26 @@ namespace BloodSword::Map
             return adjacent;
         }
 
+        int Free(Point src)
+        {
+            int space = 0;
+
+            if (this->IsValid(src) && (*this)[src].IsOccupied())
+            {
+                for (auto &direction : Map::Directions)
+                {
+                    auto neighbor = src + direction;
+
+                    if (this->IsValid(neighbor) && !((*this)[neighbor].IsOccupied()))
+                    {
+                        space++;
+                    }
+                }
+            }
+
+            return space;
+        }
+
         // remove occupant from map
         void Remove(Map::Object occupant, int id)
         {

@@ -1746,7 +1746,7 @@ namespace BloodSword::Conditions
                 if (item != Item::Type::NONE && asset != Asset::Type::NONE && (limit == Item::Unlimited || limit > 0))
                 {
                     Interface::TakeItems(graphics, background, party, item, asset, limit);
-                    
+
                     result = true;
                 }
                 else

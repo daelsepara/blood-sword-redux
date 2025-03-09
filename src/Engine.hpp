@@ -451,9 +451,25 @@ namespace BloodSword::Engine
 
                 if (move)
                 {
-                    auto path = Move::FindPath(map, src, location, map[src].IsEnemy());
+                    auto path = Move::FindPath(map, src, location);
 
                     distance = Move::Count(map, path, map[src].IsEnemy());
+
+                    if (path.Points.size() == 0 && map[src].IsEnemy())
+                    {
+                        path = Move::FindPath(map, src, location, map[src].IsEnemy());
+
+                        // make lack of unoccupied spaces less of a priority
+                        distance = Move::Count(map, path, map[src].IsEnemy()) + (Map::Directions.size() - map.Free(location));
+                    }
+
+                    if (map[src].IsEnemy())
+                    {
+                        std::cerr << "MOVE TARGET " << i
+                                  << " PATH: " << path.Points.size()
+                                  << " DIST: " << distance
+                                  << std::endl;
+                    }
                 }
                 else
                 {

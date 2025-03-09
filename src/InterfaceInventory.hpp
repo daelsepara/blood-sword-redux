@@ -283,6 +283,26 @@ namespace BloodSword::Interface
                             Interface::ErrorMessage(graphics, background, MSG_IDENTIFY);
                         }
                     }
+                    else if (input == Controls::Type::EAT)
+                    {
+                        if (Book::IsDefined(items[id].Effects))
+                        {
+                            party.ChosenCharacter = character.Class;
+
+                            update.Next = items[id].Effects;
+                        }
+                        else
+                        {
+                            // handles effects such as potion of healing, etc.
+                            Interface::ItemEffects(graphics, background, character, items[id].Type);
+                        }
+
+                        update.Update = true;
+
+                        done = true;
+
+                        exit = true;
+                    }
                     else if (input == Controls::Type::DRINK)
                     {
                         if (Book::IsDefined(items[id].Effects))

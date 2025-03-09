@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 297
+    },
+    "text": "(SAGE) [You have failed to concentrate your mind sufficiently to make contact with the planes beyond, and you are none the wiser as to what lies ahead of you.]",
+    "choices": [
+        {
+            "text": "Wait",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 73
+                },
+                "variables": [
+                    "You wait here watching through the grille"
+                ]
+            }
+        },
+        {
+            "text": "Jump down",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 477
+                },
+                "variables": [
+                    "You jump down and follow the barbarians"
+                ]
+            }
+        }
+    ]
+}

@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 326
     },
-    "text": "You are walking in what you judge to be a notherly direction along a red-carpeted corridor lined with gilt-eged mirrors that cast dim reflection from your torchlight. The carpet muffles the sound of your feet as you move along, sending up small puffs of the centuries-old dust that covers everything.\n\nA vague sense of unease growing with every footstep.",
+    "text": "You are walking in what you judge to be a notherly direction along a red-carpeted corridor lined with gilt-eged mirrors that cast dim reflection from your torchlight. The carpet muffles the sound of your feet as you move along, sending up small puffs of the centuries-old dust that covers everything.",
     "choices": [
         {
             "text": "(ENCHANTER) Use a PREDICTION SPELL",
@@ -38,7 +38,10 @@
                 "location": {
                     "book": "BOOK1",
                     "number": 216
-                }
+                },
+                "variables": [
+                    "A vague sense of unease grows with every footstep"
+                ]
             }
         }
     ]

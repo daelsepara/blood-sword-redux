@@ -476,7 +476,7 @@ namespace BloodSword::Party
 
         bool IsValid(std::vector<std::string> list, std::string item)
         {
-            auto result = (std::find(list.begin(), list.end(), item) != list.end());
+            auto result = BloodSword::Find(list, item) != list.end();
 
             std::cerr << "CHECK: " << item << " IS " << (result ? "VALID" : "INVALID") << std::endl;
 
