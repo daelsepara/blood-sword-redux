@@ -279,7 +279,7 @@ namespace BloodSword::Story
             ifs.close();
         }
 
-        std::cerr << "LOADED: " << story.Sections.size() << " SECTIONS" << std::endl;
+        std::cerr << "[LOADED] " << story.Sections.size() << " SECTIONS" << std::endl;
     }
 }
 #endif

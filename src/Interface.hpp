@@ -3627,7 +3627,7 @@ namespace BloodSword::Interface
     {
         if (selection.size() > 0)
         {
-            selected += ": [";
+            selected += " (";
 
             for (auto i = 0; i < selection.size(); i++)
             {
@@ -3639,7 +3639,7 @@ namespace BloodSword::Interface
                 selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
             }
 
-            selected += "]";
+            selected += ")";
 
             std::cerr << selected << std::endl;
         }
@@ -3649,9 +3649,9 @@ namespace BloodSword::Interface
     {
         std::cerr << message
                   << selected
-                  << ": => "
+                  << " ---> "
                   << Asset::TypeMapping[asset]
-                  << " SIZE: "
+                  << " [SIZE] "
                   << size
                   << std::endl;
     }
@@ -3769,13 +3769,13 @@ namespace BloodSword::Interface
                         {
                             selected_symbols.push_back(values[input.Current]);
 
-                            Interface::LogChoice("SELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                            Interface::LogChoice("[SELECTED]", assets[values[input.Current]], input.Current, selected_symbols.size());
                         }
                         else
                         {
                             selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
 
-                            Interface::LogChoice("DESELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                            Interface::LogChoice("[DESELECTED]", assets[values[input.Current]], input.Current, selected_symbols.size());
                         }
                     }
                 }

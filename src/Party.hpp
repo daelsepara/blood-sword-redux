@@ -357,7 +357,7 @@ namespace BloodSword::Party
             auto result = !variable.empty() && std::find_if(variable.begin(), variable.end(), [](unsigned char c)
                                                             { return !std::isdigit(c); }) == variable.end();
 
-            std::cerr << "VARIABLE: " << variable << " IS " << (result ? "A NUMBER" : "NOT A NUMBER") << std::endl;
+            std::cerr << "[VARIABLE " << variable << "] IS " << (!result ? "NOT" : "") << " A NUMBER" << std::endl;
 
             return result;
         }
@@ -367,7 +367,7 @@ namespace BloodSword::Party
         {
             auto result = !variable.empty() && (this->Variables.find(variable) != this->Variables.end());
 
-            std::cerr << "VARIABLE: " << variable << " IS " << (result ? "PRESENT" : "ABSENT") << std::endl;
+            std::cerr << "[VARIABLE " << variable << "] IS " << (result ? "PRE" : "AB") << "SENT" << std::endl;
 
             return result;
         }
@@ -383,18 +383,18 @@ namespace BloodSword::Party
                 {
                     value = std::to_string(this->ChosenNumber);
 
-                    std::cerr << "CHOSEN NUMBER: " << value << " ---> " << variable << std::endl;
+                    std::cerr << "[CHOSEN NUMBER] ---> " << value << std::endl;
                 }
                 else if (this->IsPresent(variable))
                 {
                     value = this->Variables[variable];
 
-                    std::cerr << "VARIABLE: " << value << " ---> " << variable << std::endl;
+                    std::cerr << "[VARIABLE " << variable << "] ---> " << value << std::endl;
                 }
                 else
                 {
                     // may be a number of a string literal
-                    std::cerr << "LITERAL: " << variable << std::endl;
+                    std::cerr << "[LITERAL] " << variable << std::endl;
 
                     value = variable;
                 }
@@ -413,14 +413,14 @@ namespace BloodSword::Party
                     {
                         this->ChosenNumber = std::stoi(value, nullptr, 10);
 
-                        std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
+                        std::cerr << "[CHOSEN NUMBER] <--- " << value << std::endl;
                     }
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = value;
 
-                    std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
+                    std::cerr << "[VARIABLE " << variable << "] <--- " << value << std::endl;
                 }
             }
         }
@@ -433,13 +433,13 @@ namespace BloodSword::Party
                 {
                     this->ChosenNumber = value;
 
-                    std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
+                    std::cerr << "[CHOSEN NUMBER] <--- " << value << std::endl;
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = std::to_string(value);
 
-                    std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
+                    std::cerr << "[VARIABLE " << variable << "] <--- " << value << std::endl;
                 }
             }
         }
@@ -469,7 +469,7 @@ namespace BloodSword::Party
                 }
             }
 
-            std::cerr << "NUMBER: " << variable << " ---> " << value << std::endl;
+            std::cerr << "[NUMBER " << variable << "] ---> " << value << std::endl;
 
             return value;
         }
@@ -478,7 +478,7 @@ namespace BloodSword::Party
         {
             auto result = BloodSword::Find(list, item) != list.end();
 
-            std::cerr << "CHECK: " << item << " IS " << (result ? "VALID" : "INVALID") << std::endl;
+            std::cerr << "[CHECK " << item << "] IS " << (result ? "VALID" : "INVALID") << std::endl;
 
             return result;
         }
@@ -518,7 +518,7 @@ namespace BloodSword::Party
 
                         value_first = clamp ? std::max(0, value_first) : value_first;
 
-                        std::cerr << "MATH: " << first << " " << operation << " " << second << " = " << value_first << std::endl;
+                        std::cerr << "[MATH] " << first << " " << operation << " " << second << " = " << value_first << std::endl;
 
                         // set variable
                         this->Set(first, value_first);
@@ -551,7 +551,7 @@ namespace BloodSword::Party
                         result = (value_first != value_second);
                     }
 
-                    std::cerr << "IF: " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
+                    std::cerr << "[IF] " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
                 }
             }
 
@@ -604,7 +604,7 @@ namespace BloodSword::Party
                         result = (value_first > value_second);
                     }
 
-                    std::cerr << "IF: " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
+                    std::cerr << "[IF] " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
                 }
             }
 

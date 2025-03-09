@@ -465,7 +465,7 @@ namespace BloodSword::Engine
                     {
                         auto vulnerability = map.Free(location);
 
-                        std::cerr << "[TARGET/MOVE" << i << "]"
+                        std::cerr << "[TARGET/MOVE " << i << "]"
                                   << " [PATH] " << path.Points.size()
                                   << " [DIST] " << distance
                                   << " [VULN] " << vulnerability

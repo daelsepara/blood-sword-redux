@@ -124,21 +124,21 @@ namespace BloodSword::Conditions
     void Log(Conditions::Base &condition, bool result, bool failed, std::string text, Book::Location location)
     {
         // debug info
-        std::cerr << "CONDITION: "
+        std::cerr << "[CONDITION] "
                   << std::string(Conditions::TypeMapping[condition.Type])
-                  << " (RESULT: "
+                  << " ([RESULT] "
                   << (result ? "true" : "false")
-                  << ", FAILED: "
+                  << " [FAILED] "
                   << (failed ? "true" : "false");
 
         if (text.size() > 0)
         {
-            std::cerr << ", TEXT: " << text;
+            std::cerr << " [TEXT] " << text;
         }
 
         if (Book::IsDefined(location))
         {
-            std::cerr << ", LOCATION: " << Book::String(location);
+            std::cerr << " [LOCATION] " << Book::String(location);
         }
 
         std::cerr << ")" << std::endl;
@@ -784,13 +784,9 @@ namespace BloodSword::Conditions
 
                 auto max_count = std::stoi(condition.Variables[2], nullptr, 10);
 
-                std::cerr << Character::StatusMapping[status] << " MIN: " << std::to_string(min_count) << " MAX: " << std::to_string(max_count) << std::endl;
-
                 if (Engine::IsAlive(party) && status != Character::Status::NONE && min_count >= 0 && max_count >= 0 && min_count <= max_count)
                 {
                     auto count = Engine::Count(party, Character::ControlType::PLAYER, status);
-
-                    std::cerr << Character::StatusMapping[status] << ": " << std::to_string(count) << std::endl;
 
                     result = count >= min_count && count <= max_count;
 
