@@ -457,7 +457,7 @@ namespace BloodSword::Engine
 
                     if (path.Points.size() == 0)
                     {
-                        // path to target is block, set arbitrarily large distance
+                        // path to target is blocked, set arbitrarily large distance
                         distance = 9999;
                     }
 
@@ -471,8 +471,8 @@ namespace BloodSword::Engine
                                   << " VULN: " << vulnerability
                                   << std::endl;
 
-                        // make lack of unoccupied spaces lesser priority
-                        distance += (Map::Directions.size() - vulnerability);
+                        // add vulnerability score (more empty spaces, more vulnerable)
+                        distance += (Map::Directions.size() - vulnerability) * 4;
                     }
                 }
                 else
