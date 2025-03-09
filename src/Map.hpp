@@ -64,7 +64,7 @@ namespace BloodSword::Map
         // tile is blocked
         bool IsBlocked()
         {
-            return (this->Type == Map::Object::OBSTACLE || this->IsTemporarilyBlocked());
+            return (this->Type == Map::Object::OBSTACLE || this->IsTemporarilyBlocked() || this->Type == Map::Object::NONE);
         }
 
         // tile is occupied
@@ -689,9 +689,20 @@ namespace BloodSword::Map
                 {
                     auto neighbor = src + direction;
 
-                    if (this->IsValid(neighbor) && !((*this)[neighbor].IsOccupied()))
+                    if (this->IsValid(neighbor))
                     {
-                        space++;
+                        auto &tile = (*this)[neighbor];
+
+                        auto occupied = tile.IsOccupied();
+
+                        auto blocked = tile.IsBlocked();
+
+                        auto passable = tile.IsPassable() || tile.IsPassableToEnemy() || tile.IsExit();
+
+                        if (!occupied && !blocked && passable)
+                        {
+                            space++;
+                        }
                     }
                 }
             }

@@ -21,6 +21,8 @@ namespace BloodSword::Move
         // List of coordinates of the path
         Points Points;
 
+        Point Closest;
+
         Path() {}
     };
 
@@ -99,11 +101,11 @@ namespace BloodSword::Move
 
             auto is_passable = Tile.IsPassable() && is_valid;
 
-            auto is_passable_enemy = is_enemy && Tile.IsPassableToEnemy() && is_valid;
+            auto is_passable_enemy = Tile.IsPassableToEnemy() && is_enemy && is_valid;
 
-            auto is_exit = Tile.IsExit() && not_occupied;
+            auto is_exit = Tile.IsExit() && is_valid;
 
-            auto is_target = is_enemy && Tile.IsPlayer();
+            auto is_target = Tile.IsPlayer() && is_enemy;
 
             result = (is_passable || is_passable_enemy || is_exit || is_target);
         }
@@ -202,6 +204,8 @@ namespace BloodSword::Move
 
             auto is_enemy = map[src].IsEnemy();
 
+            path.Closest = src;
+
             while (!active.empty())
             {
                 // Sort based on CostDistance
@@ -259,6 +263,25 @@ namespace BloodSword::Move
                     {
                         // We've never seen this node before so add it to the list.
                         active.push_back(node);
+                    }
+                }
+            }
+
+            if (path.Points.size() == 0)
+            {
+                auto min_distance = map.Distance(src, dst);
+
+                for (auto node : visited)
+                {
+                    auto test = Point(node->X, node->Y);
+
+                    auto dist = map.Distance(test, dst);
+
+                    if (dist < min_distance)
+                    {
+                        path.Closest = test;
+
+                        min_distance = dist;
                     }
                 }
             }

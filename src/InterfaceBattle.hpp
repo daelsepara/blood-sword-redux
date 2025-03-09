@@ -564,7 +564,7 @@ namespace BloodSword::Interface
     // checks if enthrallment is broken
     void CheckEnthrallment(Graphics::Base &graphics, Battle::Base &battle, Scene::Base &scene, Character::Base &character, Graphics::RichText &text)
     {
-        auto is_enemy = !character.IsPlayer();
+        auto is_enemy = character.IsEnemy();
 
         // check if enthralment is broken
         if (is_enemy && character.Is(Character::Status::ENTHRALLED))
@@ -629,20 +629,20 @@ namespace BloodSword::Interface
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true))
             {
-                Interface::MessageBox(graphics, background, affected, !target.IsPlayer() ? Color::Highlight : Color::Active);
+                Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Highlight : Color::Active);
 
                 target.Add(Character::Status::NIGHTHOWL);
             }
             else
             {
-                Interface::MessageBox(graphics, background, affected, !target.IsPlayer() ? Color::Highlight : Color::Active);
+                Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Highlight : Color::Active);
             }
         }
         else if (spell == Spells::Type::MISTS_OF_DEATH)
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true))
             {
-                Interface::MessageBox(graphics, background, affected, !target.IsPlayer() ? Color::Active : Color::Highlight);
+                Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
@@ -650,14 +650,14 @@ namespace BloodSword::Interface
             }
             else
             {
-                Interface::MessageBox(graphics, background, resisted, !target.IsPlayer() ? Color::Highlight : Color::Active);
+                Interface::MessageBox(graphics, background, resisted, target.IsEnemy() ? Color::Highlight : Color::Active);
             }
         }
         else if (spell == Spells::Type::THE_VAMPIRE_SPELL)
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true))
             {
-                Interface::MessageBox(graphics, background, affected, !target.IsPlayer() ? Color::Active : Color::Highlight);
+                Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
@@ -668,14 +668,14 @@ namespace BloodSword::Interface
             }
             else
             {
-                Interface::MessageBox(graphics, background, resisted, !target.IsPlayer() ? Color::Highlight : Color::Active);
+                Interface::MessageBox(graphics, background, resisted, target.IsEnemy() ? Color::Highlight : Color::Active);
             }
         }
         else if (spell == Spells::Type::GHASTLY_TOUCH)
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true))
             {
-                Interface::MessageBox(graphics, background, affected, !target.IsPlayer() ? Color::Active : Color::Highlight);
+                Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
@@ -683,7 +683,7 @@ namespace BloodSword::Interface
             }
             else
             {
-                Interface::MessageBox(graphics, background, resisted, !target.IsPlayer() ? Color::Highlight : Color::Active);
+                Interface::MessageBox(graphics, background, resisted, target.IsEnemy() ? Color::Highlight : Color::Active);
 
                 auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::AlternateDamage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
@@ -700,13 +700,13 @@ namespace BloodSword::Interface
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true))
             {
-                Interface::MessageBox(graphics, background, affected, !target.IsPlayer() ? Color::Active : Color::Highlight);
+                Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
                 target.Add(Character::Status::ENTHRALLED);
             }
             else
             {
-                Interface::MessageBox(graphics, background, resisted, !target.IsPlayer() ? Color::Highlight : Color::Active);
+                Interface::MessageBox(graphics, background, resisted, target.IsEnemy() ? Color::Highlight : Color::Active);
             }
         }
 

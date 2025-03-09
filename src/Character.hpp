@@ -539,6 +539,11 @@ namespace BloodSword::Character
             return this->ControlType == Character::ControlType::PLAYER;
         }
 
+        bool IsEnemy()
+        {
+            return this->ControlType == Character::ControlType::NPC;
+        }
+
         bool IsImmune(Skills::Type skill)
         {
             return this->SkillImmunity.size() > 0 && BloodSword::Found(this->SkillImmunity, skill);

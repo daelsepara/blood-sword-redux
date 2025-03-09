@@ -455,20 +455,24 @@ namespace BloodSword::Engine
 
                     distance = Move::Count(map, path, map[src].IsEnemy());
 
-                    if (path.Points.size() == 0 && map[src].IsEnemy())
+                    if (path.Points.size() == 0)
                     {
-                        path = Move::FindPath(map, src, location, map[src].IsEnemy());
-
-                        // make lack of unoccupied spaces less of a priority
-                        distance = Move::Count(map, path, map[src].IsEnemy()) + (Map::Directions.size() - map.Free(location));
+                        // path to target is block, set arbitrarily large distance
+                        distance = 9999;
                     }
 
                     if (map[src].IsEnemy())
                     {
-                        std::cerr << "MOVE TARGET " << i
+                        auto vulnerability = map.Free(location);
+
+                        std::cerr << "[MOVE TARGET] TARGET " << i
                                   << " PATH: " << path.Points.size()
                                   << " DIST: " << distance
+                                  << " VULN: " << vulnerability
                                   << std::endl;
+
+                        // make lack of unoccupied spaces lesser priority
+                        distance += (Map::Directions.size() - vulnerability);
                     }
                 }
                 else

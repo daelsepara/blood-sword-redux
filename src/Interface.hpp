@@ -1470,28 +1470,38 @@ namespace BloodSword::Interface
     {
         auto moving = false;
 
-        auto is_enemy = !character.IsPlayer();
-
-        // find a path to the destination
+        // find a direct path to the destination
         auto path = Move::FindPath(map, start, end);
 
-        if (path.Points.size() == 0 && is_enemy)
+        auto closer = false;
+
+        auto enemy = character.IsEnemy();
+
+        if (path.Points.size() == 0 && enemy)
         {
-            // check unrestricted path
-            path = Move::FindPath(map, start, end, true);
+            std::cerr << "CLOSEST  X: " << path.Closest.X << " Y: " << path.Closest.Y << " DIST: " << map.Distance(start, path.Closest) << std::endl;
+
+            // move closer to target
+            path = Move::FindPath(map, start, path.Closest);
+
+            closer = true;
         }
 
-        auto valid = Move::Count(map, path, is_enemy);
+        // add extra move if enemy is trying to close distance
+        auto valid = Move::Count(map, path, enemy) + (closer ? 1 : 0);
 
-        if (is_enemy)
+        if (enemy)
         {
             if (map.IsValid(end))
             {
-                std::cerr << "PATH TO TARGET "
-                          << map[end].Id << ": "
+                std::cerr << "[APPROACH] TARGET "
+                          << map[end].Id
+                          << " PATH: "
                           << path.Points.size()
-                          << " VALID: "
+                          << " DIST: "
                           << valid
+                          << " VULN: "
+                          << map.Free(end)
                           << std::endl;
             }
         }
