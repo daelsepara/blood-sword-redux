@@ -459,6 +459,10 @@
         {
             "id": "KALUGEN",
             "path": "images/enemies/wizard-face.png"
+        },
+        {
+            "id": "FOOD",
+            "path": "images/items/fruit-bowl.png"
         }
     ]
 }

@@ -1,0 +1,45 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 326
+    },
+    "text": "You are walking in what you judge to be a notherly direction along a red-carpeted corridor lined with gilt-eged mirrors that cast dim reflection from your torchlight. The carpet muffles the sound of your feet as you move along, sending up small puffs of the centuries-old dust that covers everything.\n\nA vague sense of unease growing with every footstep.",
+    "choices": [
+        {
+            "text": "(ENCHANTER) Use a PREDICTION SPELL",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 287
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "(SAGE) Try ESP",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 362
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Continue along a corridor",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 216
+                }
+            }
+        }
+    ]
+}

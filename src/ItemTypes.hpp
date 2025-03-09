@@ -30,7 +30,8 @@ namespace BloodSword::Item
         OPAL_MEDALLION,
         OCTAGONAL_GLASS_PRISM,
         LOGE_SKYRUNNER,
-        VELLUM_SCROLL
+        VELLUM_SCROLL,
+        FOOD
     };
 
     // for the magus kalugen's card game in battlepits
@@ -65,7 +66,8 @@ namespace BloodSword::Item
         {Item::Type::OPAL_MEDALLION, "OPAL MEDALLION"},
         {Item::Type::OCTAGONAL_GLASS_PRISM, "OCTAGONAL GLASS PRISM"},
         {Item::Type::LOGE_SKYRUNNER, "LOGE SKYRUNNER"},
-        {Item::Type::VELLUM_SCROLL, "VELLUM SCROLL"}};
+        {Item::Type::VELLUM_SCROLL, "VELLUM SCROLL"},
+        {Item::Type::FOOD, "FOOD"}};
 
     BloodSword::Mapping<Item::CardType> CardMapping = {
         {Item::CardType::NONE, "NONE"},

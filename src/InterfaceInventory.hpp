@@ -75,6 +75,15 @@ namespace BloodSword::Interface
 
                     captions.push_back("READ");
                 }
+                else if (items[id].Has(Item::Property::EDIBLE))
+                {
+                    // read / open scroll
+                    assets.push_back(Asset::Type::FOOD);
+
+                    controls.push_back(Controls::Type::EAT);
+
+                    captions.push_back("EAT");
+                }
                 else
                 {
                     // default: use

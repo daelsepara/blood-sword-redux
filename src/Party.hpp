@@ -389,7 +389,7 @@ namespace BloodSword::Party
                 {
                     value = this->Variables[variable];
 
-                    std::cerr << "VARIABLES: " << value << " ---> " << variable << std::endl;
+                    std::cerr << "VARIABLE: " << value << " ---> " << variable << std::endl;
                 }
                 else
                 {
@@ -413,14 +413,14 @@ namespace BloodSword::Party
                     {
                         this->ChosenNumber = std::stoi(value, nullptr, 10);
 
-                        std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
+                        std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
                     }
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = value;
 
-                    std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
+                    std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
                 }
             }
         }
@@ -433,13 +433,13 @@ namespace BloodSword::Party
                 {
                     this->ChosenNumber = value;
 
-                    std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
+                    std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = std::to_string(value);
 
-                    std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
+                    std::cerr << "VARIABLE: " << variable << " <--- " << value << std::endl;
                 }
             }
         }

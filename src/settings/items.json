@@ -172,6 +172,15 @@
             ],
             "quantity": 1,
             "type": "VELLUM SCROLL"
+        },
+        {
+            "contains": "NONE",
+            "name": "FOOD PORTION",
+            "properties": [
+                "EDIBLE"
+            ],
+            "quantity": 1,
+            "type": "FOOD"
         }
     ]
 }

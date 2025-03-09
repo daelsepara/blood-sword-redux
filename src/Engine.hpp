@@ -900,6 +900,28 @@ namespace BloodSword::Engine
 
         return character != -1 ? party[character].Class : Character::Class::NONE;
     }
+
+    bool Healed(Character::Base &character)
+    {
+        // check if dead (counts as healed) or healed
+        return !Engine::IsAlive(character) || (Engine::Score(character, Attribute::Type::ENDURANCE) >= character.Maximum(Attribute::Type::ENDURANCE));
+    }
+
+    bool Healed(Party::Base &party)
+    {
+        auto healed = true;
+
+        // check if everyone is healed
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (Engine::IsAlive(party[i]))
+            {
+                healed &= Engine::Healed(party[i]);
+            }
+        }
+
+        return healed;
+    }
 }
 
 #endif

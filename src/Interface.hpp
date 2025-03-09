@@ -3282,108 +3282,106 @@ namespace BloodSword::Interface
         {
             if (Engine::IsAlive(party) && Engine::IsAlive(character))
             {
-                if (!character.Has(Character::Status::IN_BATTLE))
+                if (!Engine::Healed(party))
                 {
-                    if (Engine::Score(character, Attribute::Type::ENDURANCE) > 1)
+                    if (!character.Has(Character::Status::IN_BATTLE))
                     {
-                        auto done = false;
-
-                        while (!done)
+                        if (Engine::Score(character, Attribute::Type::ENDURANCE) > 1)
                         {
-                            auto endurance = Engine::Score(character, Attribute::Type::ENDURANCE);
+                            auto done = false;
 
-                            if (endurance > 1)
+                            while (!done)
                             {
-                                auto cost = Interface::GetNumber(graphics, background, "HOW MANY ENDURANCE TO SPEND?", 0, endurance - 1, character.Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+                                auto endurance = Engine::Score(character, Attribute::Type::ENDURANCE);
 
-                                if (cost > 0)
+                                if (endurance > 1)
                                 {
-                                    Engine::GainEndurance(character, -cost, false);
+                                    auto cost = Interface::GetNumber(graphics, background, "HOW MANY ENDURANCE TO SPEND?", 0, endurance - 1, character.Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
 
-                                    auto score = cost * Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2);
-
-                                    done = !(score > 0);
-
-                                    if (score == 0)
+                                    if (cost > 0)
                                     {
-                                        // healing attempt failed
-                                        Interface::ErrorMessage(graphics, background, Interface::MSG_HEALING);
-                                    }
-                                    else
-                                    {
-                                        auto all_healed = true;
+                                        Engine::GainEndurance(character, -cost, false);
 
-                                        while (!done)
+                                        auto score = cost * Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2);
+
+                                        done = !(score > 0);
+
+                                        if (score == 0)
                                         {
-                                            // distribute healing
-                                            auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false, true, true, blur);
-
-                                            if (party[target].Value(Attribute::Type::ENDURANCE) > 0 && party[target].Value(Attribute::Type::ENDURANCE) < party[target].Maximum(Attribute::Type::ENDURANCE))
+                                            // healing attempt failed
+                                            Interface::ErrorMessage(graphics, background, Interface::MSG_HEALING);
+                                        }
+                                        else
+                                        {
+                                            while (!done)
                                             {
-                                                std::string heal_string = "HEAL " + party[target].Name;
+                                                // distribute healing
+                                                auto target = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER TO HEAL", true, false, true, true, blur);
 
-                                                auto max_healing = std::min(score, party[target].Maximum(Attribute::Type::ENDURANCE) - party[target].Value(Attribute::Type::ENDURANCE));
-
-                                                // heal
-                                                auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, max_healing, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
-
-                                                if (heal > 0)
+                                                if (party[target].Value(Attribute::Type::ENDURANCE) > 0 && party[target].Value(Attribute::Type::ENDURANCE) < party[target].Maximum(Attribute::Type::ENDURANCE))
                                                 {
-                                                    // heal selected character
-                                                    Engine::GainEndurance(party[target], heal, false);
+                                                    std::string heal_string = "HEAL " + party[target].Name;
 
-                                                    Interface::Notify(graphics, background, Interface::MSG_HEALED);
+                                                    auto max_healing = std::min(score, party[target].Maximum(Attribute::Type::ENDURANCE) - party[target].Value(Attribute::Type::ENDURANCE));
+
+                                                    // heal
+                                                    auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, max_healing, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+
+                                                    if (heal > 0)
+                                                    {
+                                                        // heal selected character
+                                                        Engine::GainEndurance(party[target], heal, false);
+
+                                                        Interface::Notify(graphics, background, Interface::MSG_HEALED);
+                                                    }
+
+                                                    score -= heal;
+                                                }
+                                                else if (!Engine::IsAlive(party[target]))
+                                                {
+                                                    // target is beyond healing
+                                                    Interface::ErrorMessage(graphics, background, Interface::MSG_LOST);
+                                                }
+                                                else
+                                                {
+                                                    // target is not wounded
+                                                    Interface::ErrorMessage(graphics, background, Interface::MSG_WOUND);
                                                 }
 
-                                                score -= heal;
+                                                done = !(score > 0) || Engine::Healed(party);
                                             }
-                                            else if (!Engine::IsAlive(party[target]))
+
+                                            if (Engine::Healed(party))
                                             {
-                                                // target is beyond healing
-                                                Interface::ErrorMessage(graphics, background, Interface::MSG_LOST);
+                                                // everyone is at maximum endurance
+                                                Interface::Notify(graphics, background, Interface::MSG_MAX);
                                             }
-                                            else
-                                            {
-                                                // target is not wounded
-                                                Interface::ErrorMessage(graphics, background, Interface::MSG_WOUND);
-                                            }
-
-                                            all_healed = true;
-
-                                            // check if everyone is healed
-                                            for (auto i = 0; i < party.Count(); i++)
-                                            {
-                                                if (Engine::IsAlive(party[i]))
-                                                {
-                                                    all_healed &= (Engine::Score(party[i], Attribute::Type::ENDURANCE) >= party[i].Maximum(Attribute::Type::ENDURANCE));
-                                                }
-                                            }
-
-                                            done = !(score > 0) || all_healed;
-                                        }
-
-                                        if (all_healed)
-                                        {
-                                            // everyone is at maximum endurance
-                                            Interface::Notify(graphics, background, Interface::MSG_MAX);
                                         }
                                     }
+
+                                    done = !(cost > 0) || done;
                                 }
 
-                                done = !(cost > 0) || done;
+                                done = !(endurance > 1) || done;
                             }
-
-                            done = !(endurance > 1) || done;
+                        }
+                        else
+                        {
+                            Interface::ErrorMessage(graphics, background, Interface::MSG_ENDURANCE);
                         }
                     }
                     else
                     {
-                        Interface::ErrorMessage(graphics, background, Interface::MSG_ENDURANCE);
+                        Interface::ErrorMessage(graphics, background, Interface::MSG_BATTLE);
                     }
                 }
                 else
                 {
-                    Interface::ErrorMessage(graphics, background, Interface::MSG_BATTLE);
+                    if (Engine::Healed(party))
+                    {
+                        // everyone is at maximum endurance
+                        Interface::Notify(graphics, background, Interface::MSG_MAX);
+                    }
                 }
             }
             else
@@ -3752,6 +3750,22 @@ namespace BloodSword::Interface
         return selected_symbols;
     }
 
+    std::string DeathMessage(Party::Base &party)
+    {
+        auto death = std::string();
+
+        if (party.Count() > 1)
+        {
+            death = Interface::GetText(Interface::MSG_DEAD);
+        }
+        else
+        {
+            death = Interface::GetText(Interface::MSG_DIED);
+        }
+
+        return death;
+    }
+
     bool StakeQuantity(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type to_stake, Asset::Type stake_asset)
     {
         auto start_game = false;
@@ -3817,17 +3831,126 @@ namespace BloodSword::Interface
         }
         else
         {
-            if (party.Count() > 1)
-            {
-                Interface::ErrorMessage(graphics, background, Interface::MSG_DEAD);
-            }
-            else
-            {
-                Interface::ErrorMessage(graphics, background, Interface::MSG_DIED);
-            }
+            Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
         }
 
         return start_game;
+    }
+
+    // eat food
+    void EatFood(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Asset::Type food, int gain = 1, int limit = Item::Unlimited)
+    {
+        if (Engine::IsAlive(party))
+        {
+            auto done = false;
+
+            auto food_left = limit;
+
+            while (!done || (food_left != Item::Unlimited && food_left > 0))
+            {
+                auto eater = Engine::FirstClass(party);
+
+                if (Engine::Count(party) > 1)
+                {
+                    eater = Interface::SelectCharacter(graphics, background, party, "WHO IS EATING?", true, true, false, false, true);
+                }
+
+                if (eater != Character::Class::NONE)
+                {
+                    auto max_heal = party[eater].Maximum(Attribute::Type::ENDURANCE) - party[eater].Value(Attribute::Type::ENDURANCE);
+
+                    auto max_food = (limit != Item::Unlimited) ? food_left : max_heal;
+
+                    auto eaten = Interface::GetNumber(graphics, background, "HOW MANY PORTIONS TO EAT?", 0, std::min(max_food, max_heal), food, Asset::Type::UP, Asset::Type::DOWN);
+
+                    if (eaten > 0)
+                    {
+                        Engine::GainEndurance(party[eater], eaten * gain);
+
+                        if (limit != Item::Unlimited)
+                        {
+                            food_left -= eaten;
+                        }
+                    }
+                }
+
+                if (Engine::Count(party) == 1 || eater == Character::Class::NONE || food_left == 0 || Engine::Healed(party))
+                {
+                    if (Interface::Confirm(graphics, background, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                    {
+                        done = true;
+                    }
+                }
+            }
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
+        }
+    }
+
+    // take (default) items
+    void TakeItems(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type item, Asset::Type asset, int limit = Item::Unlimited)
+    {
+        if (Engine::IsAlive(party))
+        {
+            auto done = false;
+
+            auto items_left = limit;
+
+            if (Items::Found(item))
+            {
+                while (!done || (limit != Item::Unlimited && items_left > 0))
+                {
+                    auto taker = Engine::FirstClass(party);
+
+                    if (Engine::Count(party) > 1)
+                    {
+                        std::string message = "WHO IS TAKING THE " + Items::Defaults[item].Name + ((limit == Items::Unlimited || items_left > 1) ? "S?" : "?");
+
+                        taker = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
+                    }
+
+                    if (taker != Character::Class::NONE)
+                    {
+                        auto max_take = (limit != Item::Unlimited) ? items_left : party[taker].SpaceLeft();
+
+                        std::string message = "HOW MANY " + Items::Defaults[item].Name + (items_left > 1 ? "S" : "") + " TO TAKE?";
+
+                        auto taken = Interface::GetNumber(graphics, background, message.c_str(), 0, std::min(max_take, party[taker].SpaceLeft()), asset, Asset::Type::UP, Asset::Type::DOWN);
+
+                        if (taken > 0)
+                        {
+                            for (auto i = 0; i < taken; i++)
+                            {
+                                party[taker].Add(Items::Defaults[item]);
+                            }
+
+                            if (limit != Item::Unlimited)
+                            {
+                                items_left -= taken;
+                            }
+                        }
+                    }
+
+                    if (Engine::Count(party) == 1 || taker == Character::Class::NONE || items_left == 0)
+                    {
+                        if (Interface::Confirm(graphics, background, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                        {
+                            done = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Interface::InternalError(graphics, background, "Internal Error: ITEM NOT FOUND");
+            }
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
+        }
     }
 }
 

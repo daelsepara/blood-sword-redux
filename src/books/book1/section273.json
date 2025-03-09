@@ -1,0 +1,47 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 273
+    },
+    "text": "Balhazar has provided excellent fare for you to begin your journey.",
+    "choices": [
+        {
+            "text": "Enter the corridor leading from the far end of the room",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 326
+                }
+            }
+        },
+        {
+            "text": "Enter the alcove in the side wall",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 13
+                }
+            }
+        }
+    ],
+    "next": [
+        {
+            "type": "EAT FOOD",
+            "variables": [
+                "FOOD",
+                "1",
+                "UNLIMITED"
+            ]
+        },
+        {
+            "type": "TAKE ITEMS",
+            "variables": [
+                "FOOD",
+                "UNLIMITED",
+                "FOOD"
+            ]
+        }
+    ]
+}

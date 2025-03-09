@@ -114,21 +114,6 @@ namespace BloodSword::Conditions
         Evaluation(bool result) : Result(result) {}
     };
 
-    std::string DeathMessage(Party::Base &party)
-    {
-        auto death = std::string();
-
-        if (party.Count() > 1)
-        {
-            death = Interface::GetText(Interface::MSG_DEAD);
-        }
-        else
-        {
-            death = Interface::GetText(Interface::MSG_DIED);
-        }
-
-        return death;
-    }
     void InternalError(Graphics::Base &graphics, Scene::Base &background, Conditions::Type condition)
     {
         std::string message = "Internal Error: " + std::string(Conditions::TypeMapping[condition]) + "!";
@@ -1157,7 +1142,7 @@ namespace BloodSword::Conditions
                     }
                     else if (is_party)
                     {
-                        text = Conditions::DeathMessage(party);
+                        text = Interface::DeathMessage(party);
                     }
                     else if (!party.Has(character))
                     {
@@ -1250,7 +1235,7 @@ namespace BloodSword::Conditions
                 }
                 else if (!Engine::IsAlive(party))
                 {
-                    text = Conditions::DeathMessage(party);
+                    text = Interface::DeathMessage(party);
 
                     internal_error = false;
                 }
@@ -1303,7 +1288,7 @@ namespace BloodSword::Conditions
                 {
                     if (party.Count() > 1)
                     {
-                        text = Conditions::DeathMessage(party);
+                        text = Interface::DeathMessage(party);
                     }
                     else
                     {
@@ -1337,7 +1322,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1359,7 +1344,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1397,7 +1382,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1431,7 +1416,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1472,7 +1457,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1519,7 +1504,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
 
                 internal_error = false;
             }
@@ -1549,7 +1534,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1595,7 +1580,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1642,7 +1627,7 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
             }
             else
             {
@@ -1737,7 +1722,75 @@ namespace BloodSword::Conditions
             }
             else if (!Engine::IsAlive(party))
             {
-                text = Conditions::DeathMessage(party);
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::TAKE_ITEMS)
+        {
+            // variables:
+            // 0 - item (type)
+            // 1 - limit
+            // 2 - asset
+            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                auto limit = (Engine::ToUpper(condition.Variables[1]) == "UNLIMITED") ? Items::Unlimited : std::stoi(condition.Variables[1], nullptr, 10);
+
+                auto asset = Asset::Map(condition.Variables[2]);
+
+                if (item != Item::Type::NONE && asset != Asset::Type::NONE && (limit == Item::Unlimited || limit > 0))
+                {
+                    Interface::TakeItems(graphics, background, party, item, asset, limit);
+                    
+                    result = true;
+                }
+                else
+                {
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::EAT_FOOD)
+        {
+            // variables:
+            // 0 - asset
+            // 1 - gain (ENDURANCE)
+            // 2 - limit
+            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            {
+                auto asset = Asset::Map(condition.Variables[0]);
+
+                auto gain = std::stoi(condition.Variables[1], nullptr, 10);
+
+                auto limit = (Engine::ToUpper(condition.Variables[2]) == "UNLIMITED") ? Items::Unlimited : std::stoi(condition.Variables[2], nullptr, 10);
+
+                if (asset != Asset::Type::NONE && (limit == Item::Unlimited || limit > 0) && gain > 0)
+                {
+                    Interface::EatFood(graphics, background, party, asset, gain, limit);
+
+                    result = true;
+                }
+                else
+                {
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
             }
             else
             {

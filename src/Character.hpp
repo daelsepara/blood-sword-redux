@@ -511,6 +511,11 @@ namespace BloodSword::Character
             return equipped;
         }
 
+        int SpaceLeft()
+        {
+            return (this->ItemLimit - this->Items.size());
+        }
+
         int EquippedArmour()
         {
             auto equipped = -1;

@@ -1542,6 +1542,28 @@ namespace BloodSword::Test
         }
     }
 
+    void EatFood(Graphics::Base &graphics, Scene::Base &background)
+    {
+        // load party from file
+        auto party = Party::Load("party/rank08.json", "party");
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            // add sample damage
+            Engine::GainEndurance(party[i], -8, false);
+        }
+
+        Interface::EatFood(graphics, background, party, Asset::Type::FOOD, 1, 32);
+    }
+
+    void TakeItems(Graphics::Base &graphics, Scene::Base &background)
+    {
+        // load party from file
+        auto party = Party::Load("party/rank08.json", "party");
+
+        Interface::TakeItems(graphics, background, party, Item::Type::FOOD, Asset::Type::FOOD, Items::Unlimited);
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1562,7 +1584,9 @@ namespace BloodSword::Test
              Graphics::RichText("13 HEALING\n\n\nHealing ability", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("14 SELECT SYMBOLS\n\n\nSelect symbols", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("15 INVENTORY\n\n\nManage inventory", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("16 VARIABLES\n\n\nRead/Write in-game variables", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("16 VARIABLES\n\n\nRead/Write in-game variables", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("17 EAT FOOD\n\n\nEat Food", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("18 TAKE ITEMS\n\n\nTake Items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1736,6 +1760,16 @@ namespace BloodSword::Test
                     case 16:
                         // in-game variables, staking quantities
                         Test::Variables(graphics, scene);
+
+                        break;
+                    case 17:
+                        // Eat Food
+                        Test::EatFood(graphics, scene);
+
+                        break;
+                    case 18:
+                        // Take Items
+                        Test::TakeItems(graphics, scene);
 
                         break;
                     default:

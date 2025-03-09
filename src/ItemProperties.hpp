@@ -27,7 +27,8 @@ namespace BloodSword::Item
         LIQUID,
         GIANT_BANE,
         INVISIBLE,
-        READABLE
+        READABLE,
+        EDIBLE
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -48,7 +49,8 @@ namespace BloodSword::Item
         {Item::Property::LIQUID, "LIQUID"},
         {Item::Property::GIANT_BANE, "GIANT BANE"},
         {Item::Property::INVISIBLE, "INVISIBLE"},
-        {Item::Property::READABLE, "READABLE"}};
+        {Item::Property::READABLE, "READABLE"},
+        {Item::Property::EDIBLE, "EDIBLE"}};
 
     Item::Properties Invisible = {
         Item::Property::NONE,
