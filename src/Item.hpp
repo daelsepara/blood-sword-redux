@@ -590,7 +590,7 @@ namespace BloodSword::Items
                     }
                 }
 
-                std::cerr << "LOADED: " << Items::Defaults.size() << " items" << std::endl;
+                std::cerr << "[LOADED] " << Items::Defaults.size() << " items" << std::endl;
             }
 
             file.close();
