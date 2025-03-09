@@ -375,9 +375,13 @@ namespace BloodSword::Party
                 else if (this->IsPresent(variable))
                 {
                     value = this->Variables[variable];
-
-                    std::cerr << "VARIABLES: " << value << " ---> " << variable << std::endl;
                 }
+                else if (this->IsANumber(variable))
+                {
+                    value = variable;
+                }
+
+                std::cerr << "VARIABLES: " << value << " ---> " << variable << std::endl;
             }
 
             return value;
@@ -392,9 +396,11 @@ namespace BloodSword::Party
                     if (this->IsANumber(value))
                     {
                         this->ChosenNumber = std::stoi(value, nullptr, 10);
+
+                        std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
                     }
                 }
-                else
+                else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = value;
 
@@ -410,8 +416,10 @@ namespace BloodSword::Party
                 if (variable == "CHOSEN")
                 {
                     this->ChosenNumber = value;
+
+                    std::cerr << "VARIABLES: " << variable << " <--- " << value << std::endl;
                 }
-                else
+                else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = std::to_string(value);
 
@@ -461,37 +469,71 @@ namespace BloodSword::Party
                 // check if operation is valid
                 if (this->IsValid({"+", "-", "*"}, operation))
                 {
-                    if (first != "CHOSEN" && !this->IsPresent(first))
+                    if (first != "CHOSEN" && !this->IsPresent(first) && !this->IsANumber(first))
                     {
                         // initialize first variable if not present
                         this->Set(first, 0);
                     }
 
-                    auto value_first = this->Number(first);
-
-                    auto value_second = this->Number(second);
-
-                    if (operation == "+")
+                    if ((!this->IsANumber(first) || this->IsANumber(this->Get(first))) && (this->IsANumber(second) || this->IsANumber(this->Get(second))))
                     {
-                        value_first += value_second;
-                    }
-                    else if (operation == "-")
-                    {
-                        value_first -= value_second;
-                    }
-                    else if (operation == "*")
-                    {
-                        value_first *= value_second;
-                    }
+                        auto value_first = this->Number(first);
 
-                    value_first = clamp ? std::max(0, value_first) : value_first;
+                        auto value_second = this->Number(second);
 
-                    std::cerr << "VARIABLES: " << first << " " << operation << " " << second << " = " << value_first << std::endl;
+                        if (operation == "+")
+                        {
+                            value_first += value_second;
+                        }
+                        else if (operation == "-")
+                        {
+                            value_first -= value_second;
+                        }
+                        else if (operation == "*")
+                        {
+                            value_first *= value_second;
+                        }
 
-                    // set variable
-                    this->Set(first, value_first);
+                        value_first = clamp ? std::max(0, value_first) : value_first;
+
+                        std::cerr << "VARIABLES: " << first << " " << operation << " " << second << " = " << value_first << std::endl;
+
+                        // set variable
+                        this->Set(first, value_first);
+                    }
                 }
             }
+        }
+
+        // logical operations (on non-numeric)
+        bool Is(std::string operation, std::string first, std::string second)
+        {
+            auto result = false;
+
+            // (first) (logical operiation) (second)
+            if (!operation.empty() && !first.empty() && !second.empty())
+            {
+                // check if operation is valid
+                if (this->IsValid({"=", "!=", "<>"}, operation))
+                {
+                    auto value_first = this->Get(first);
+
+                    auto value_second = this->Get(second);
+
+                    if (operation == "=")
+                    {
+                        result = (value_first == value_second);
+                    }
+                    else if (operation == "!=" || operation == "<>")
+                    {
+                        result = (value_first != value_second);
+                    }
+
+                    std::cerr << "RESULT: " << first << " " << operation << " " << second << " = " << (result ? "TRUE" : "FALSE") << std::endl;
+                }
+            }
+
+            return result;
         }
 
         // logical operations
@@ -505,6 +547,12 @@ namespace BloodSword::Party
                 // check if operation is valid
                 if (this->IsValid({"=", "!=", "<>", "<", ">", "<=", ">="}, operation))
                 {
+                    // check if both are numbers and/or resolve to numbers
+                    if ((!this->IsANumber(this->Get(first)) && !this->IsANumber(first)) || (!this->IsANumber(this->Get(second)) && !this->IsANumber(second)))
+                    {
+                        return this->Is(operation, first, second);
+                    }
+
                     auto value_first = this->Number(first);
 
                     auto value_second = this->Number(second);

@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 136
+    },
+    "text": "You descend into the torchlit gloom. The sound of dripping water reaches your ears and soon you are standing in a damp stairwell, with a single bricked archway in front of you and a tunnel leading off behind it. You follow the tunnel for a few steps then find another tunnel leading off to the right. As you peer down it you fancy you can make out a motionless figure standing in the gloom. Ahead, you can see that the passage ends in a huge ornamental doorway.",
+    "choices": [
+        {
+            "text": "Approach the figure down the right-hand tunnel",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 278
+                }
+            }
+        },
+        {
+            "text": "Carry on up the corridor to the ornamental doorway",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 246
+                }
+            }
+        }
+    ]
+}
