@@ -376,11 +376,12 @@ namespace BloodSword::Party
                 {
                     value = this->Variables[variable];
                 }
-                else if (this->IsANumber(variable))
+                else
                 {
+                    // may be a number of a string literal
                     value = variable;
                 }
-
+                
                 std::cerr << "VARIABLES: " << value << " ---> " << variable << std::endl;
             }
 
@@ -529,7 +530,7 @@ namespace BloodSword::Party
                         result = (value_first != value_second);
                     }
 
-                    std::cerr << "RESULT: " << first << " " << operation << " " << second << " = " << (result ? "TRUE" : "FALSE") << std::endl;
+                    std::cerr << "RESULT: " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
                 }
             }
 
@@ -582,7 +583,7 @@ namespace BloodSword::Party
                         result = (value_first > value_second);
                     }
 
-                    std::cerr << "RESULT: " << first << " " << operation << " " << second << " = " << (result ? "TRUE" : "FALSE") << std::endl;
+                    std::cerr << "RESULT: " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
                 }
             }
 
