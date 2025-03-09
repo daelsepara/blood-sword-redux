@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 413
+    },
+    "text": "(SAGE) You stoop to inspect the food, first crumbling it between your fingers to examine the texture, then sniffing at it, then finally tasting it gingerly. Detecting no trace of the poison you feared, you decide to eat.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 273
+            }
+        }
+    ]
+}
