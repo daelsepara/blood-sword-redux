@@ -330,16 +330,21 @@ namespace BloodSword::Move
     {
         auto traversable = Points();
 
-        if (map.Width > 0 && map.Height > 0)
+        if (map.Width > 0 && map.Height > 0 && map.IsValid(src))
         {
+            auto is_enemy = map[src].IsEnemy();
+
             for (auto &neighbor : Map::Directions)
             {
                 auto next = src + neighbor;
 
-                // Check if within map boundaries and if passable
-                if (Move::IsPassable(map, next, false, false))
+                if (map.IsValid(next))
                 {
-                    traversable.push_back(next);
+                    // Check if within map boundaries and if passable
+                    if (Move::IsPassable(map, next, is_enemy, false))
+                    {
+                        traversable.push_back(next);
+                    }
                 }
             }
         }
