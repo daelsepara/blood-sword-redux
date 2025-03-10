@@ -473,8 +473,12 @@ namespace BloodSword::Engine
                     {
                         auto vulnerability = map.Free(location);
 
-                        std::cerr << "[TARGET/MOVE " << i << "]"
-                                  << " [PATH] " << path.Points.size()
+                        std::cerr << "[ENEMY "
+                                  << map[src].Id
+                                  << "] [MOVE TARGET]"
+                                  << "["
+                                  << Target::Mapping[party[i].Target]
+                                  << "] [PATH] " << path.Points.size()
                                   << " [DIST] " << distance
                                   << " [VULN] " << vulnerability
                                   << std::endl;
@@ -489,23 +493,26 @@ namespace BloodSword::Engine
 
                     if (map[src].IsEnemy())
                     {
-                        std::cerr << "[TARGET/";
+                        std::cerr << "[ENEMY "
+                                  << map[src].Id
+                                  << "] [";
 
                         if (spell)
                         {
-                            std::cerr << "SPELL ";
+                            std::cerr << "SPELL";
                         }
                         else if (ranged)
                         {
-                            std::cerr << "RANGED ";
+                            std::cerr << "RANGED";
                         }
                         else
                         {
-                            std::cerr << "FIGHT ";
+                            std::cerr << "FIGHT";
                         }
 
-                        std::cerr << i << "]"
-                                  << " [DIST] " << distance
+                        std::cerr << " TARGET] ["
+                                  << Target::Mapping[party[i].Target]
+                                  << "] [DIST] " << distance
                                   << std::endl;
                     }
                 }
