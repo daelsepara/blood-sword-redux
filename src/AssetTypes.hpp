@@ -139,7 +139,10 @@ namespace BloodSword::Asset
         READ,
         DICE_GAME,
         KALUGEN,
-        FOOD
+        FOOD,
+        BATTLE_ORDER,
+        LOAD,
+        SAVE
     };
 
     template <typename T>
@@ -273,7 +276,10 @@ namespace BloodSword::Asset
         {Asset::Type::READ, "READ"},
         {Asset::Type::DICE_GAME, "DICE GAME"},
         {Asset::Type::KALUGEN, "KALUGEN"},
-        {Asset::Type::FOOD, "FOOD"}};
+        {Asset::Type::FOOD, "FOOD"},
+        {Asset::Type::BATTLE_ORDER, "BATTLE ORDER"},
+        {Asset::Type::LOAD, "LOAD"},
+        {Asset::Type::SAVE, "SAVE"}};
 
     Asset::Type Map(const char *asset)
     {

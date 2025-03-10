@@ -915,7 +915,7 @@ namespace BloodSword::Conditions
             // 2 - minimum number of items to be selected
             // 3 - maximum number of items to be selected
             // 4 - hidden (true/false)
-            // 5 to 5+(0) - assets
+            // 5 to 5+(1) - assets
             // last - asset (hidden)
             if (condition.Variables.size() > 5)
             {
@@ -927,7 +927,7 @@ namespace BloodSword::Conditions
 
                 auto hidden = Engine::ToUpper(condition.Variables[4]) == "TRUE";
 
-                auto expected = 3 + options + (hidden ? 1 : 0);
+                auto expected = 4 + options + (hidden ? 1 : 0);
 
                 if (options > 0 && min_select > 0 && min_select <= max_select && condition.Variables.size() > expected)
                 {

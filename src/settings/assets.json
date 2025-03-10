@@ -463,6 +463,18 @@
         {
             "id": "FOOD",
             "path": "images/items/fruit-bowl.png"
+        },
+        {
+            "id": "BATTLE ORDER",
+            "path": "images/system/podium.png"
+        },
+        {
+            "id": "LOAD",
+            "path": "images/system/load.png"
+        },
+        {
+            "id": "SAVE",
+            "path": "images/system/save.png"
         }
     ]
 }

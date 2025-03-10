@@ -3656,16 +3656,18 @@ namespace BloodSword::Interface
 
     void LogChoice(const char *message, Asset::Type asset, int selected, int size)
     {
-        std::cerr << message
+        std::cerr << "["
+                  << message
+                  << " "
                   << selected
-                  << " ---> "
+                  << "] ["
                   << Asset::TypeMapping[asset]
-                  << " [SIZE] "
+                  << "] [SIZE] "
                   << size
                   << std::endl;
     }
 
-    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false)
+    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true)
     {
         auto random = Random::Base();
 
@@ -3677,7 +3679,18 @@ namespace BloodSword::Interface
 
         auto texture = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto texture_captions = (captions.size() > 0 && captions.size() <= assets.size()) ? Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0)) : BloodSword::Textures();
+        auto has_captions = (captions.size() > 0 && captions.size() <= assets.size());
+
+        auto texture_captions = has_captions ? Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0)) : BloodSword::Textures();
+
+        auto ordering_captions = std::vector<std::string>();
+
+        for (auto i = 0; i < assets.size(); i++)
+        {
+            ordering_captions.push_back(std::to_string(i + 1));
+        }
+
+        auto texture_ordering = Graphics::CreateText(graphics, Graphics::GenerateTextList(ordering_captions, Fonts::Caption, Color::Active, 0));
 
         auto input = Controls::User();
 
@@ -3695,7 +3708,7 @@ namespace BloodSword::Interface
 
         auto final_assets = assets;
 
-        Interface::LogOptions(assets, values, "ORDER");
+        Interface::LogOptions(assets, values, "[ORDER]");
 
         if (hidden)
         {
@@ -3707,7 +3720,7 @@ namespace BloodSword::Interface
                 std::shuffle(values.begin(), values.end(), random.Generator());
             }
 
-            Interface::LogOptions(assets, values, "SHUFFLE");
+            Interface::LogOptions(assets, values, "[SHUFFLE]");
         }
 
         auto last_control = (min_select == 1 && max_select == 1) ? Controls::Type::NONE : Controls::Type::CONFIRM;
@@ -3729,6 +3742,25 @@ namespace BloodSword::Interface
 
                     // highlight current selection
                     overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, BloodSword::Pixel));
+
+                    if (!has_captions)
+                    {
+                        for (auto j = 0; j < selected_symbols.size(); j++)
+                        {
+                            if (values[i] == selected_symbols[j])
+                            {
+                                auto center = 0;
+
+                                if (centered)
+                                {
+                                    // center texture
+                                    center = (control.W - BloodSword::Width(texture_ordering[j])) / 2;
+                                }
+
+                                overlay.VerifyAndAdd(Scene::Element(texture_ordering[j], control.X + center, control.Y + control.H + BloodSword::Pad));
+                            }
+                        }
+                    }
                 }
             }
 
@@ -3741,8 +3773,13 @@ namespace BloodSword::Interface
 
                     if (texture_captions[input.Current])
                     {
-                        // center texture
-                        auto center = (control.W - BloodSword::Width(texture_captions[input.Current])) / 2;
+                        auto center = 0;
+
+                        if (centered)
+                        {
+                            // center texture
+                            center = (control.W - BloodSword::Width(texture_captions[input.Current])) / 2;
+                        }
 
                         overlay.VerifyAndAdd(Scene::Element(texture_captions[input.Current], control.X + center, control.Y + control.H + BloodSword::Pad));
                     }
@@ -3771,20 +3808,22 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        // toggle
-                        selection[input.Current] = !selection[input.Current];
-
-                        if (selection[input.Current])
+                        if ((!selection[input.Current] && selected_symbols.size() < max_select) || selection[input.Current])
                         {
-                            selected_symbols.push_back(values[input.Current]);
+                            selection[input.Current] = !selection[input.Current];
 
-                            Interface::LogChoice("[SELECTED]", assets[values[input.Current]], input.Current, selected_symbols.size());
-                        }
-                        else
-                        {
-                            selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
+                            if (selection[input.Current])
+                            {
+                                selected_symbols.push_back(values[input.Current]);
 
-                            Interface::LogChoice("[DESELECTED]", assets[values[input.Current]], input.Current, selected_symbols.size());
+                                Interface::LogChoice("SELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                            }
+                            else
+                            {
+                                selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
+
+                                Interface::LogChoice("DESELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                            }
                         }
                     }
                 }
@@ -3792,6 +3831,8 @@ namespace BloodSword::Interface
                 input.Selected = false;
             }
         }
+
+        BloodSword::Free(texture_ordering);
 
         BloodSword::Free(texture_captions);
 
@@ -4001,6 +4042,117 @@ namespace BloodSword::Interface
         {
             Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
         }
+    }
+
+    // change battle order
+    bool BattleOrder(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+        auto assets = std::vector<Asset::Type>();
+
+        auto values = std::vector<int>();
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            assets.push_back(party[i].Asset);
+
+            values.push_back(i);
+        }
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, "SET BATTLE ORDER", assets, values, {}, party.Count(), party.Count(), Asset::Type::NONE, false, true);
+
+            if (selection.size() == party.Count())
+            {
+                auto characters = std::vector<Character::Base>();
+
+                for (auto i = 0; i < selection.size(); i++)
+                {
+                    characters.push_back(party[selection[i]]);
+                }
+
+                party.Clear();
+
+                for (auto i = 0; i < characters.size(); i++)
+                {
+                    party.Add(characters[i]);
+                }
+
+                done = true;
+            }
+        }
+
+        return true;
+    }
+
+    bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+        auto update = false;
+
+        std::vector<Asset::Type> assets = {
+            Asset::Type::BATTLE_ORDER,
+            Asset::Type::LOAD,
+            Asset::Type::SAVE,
+            Asset::Type::BACK};
+
+        Controls::Collection controls = {
+            Controls::Type::BATTLE_ORDER,
+            Controls::Type::LOAD,
+            Controls::Type::SAVE,
+            Controls::Type::BACK,
+        };
+
+        std::vector<std::string> captions = {
+            "BATTLE ORDER",
+            "LOAD GAME",
+            "SAVE GAME",
+            "BACK"};
+
+        auto values = std::vector<int>();
+
+        for (auto i = 0; i < controls.size(); i++)
+        {
+            values.push_back(i);
+        }
+
+        auto message = Book::IsDefined(party.Location) ? std::string(Book::Title[party.Location.first]) : std::string("BLOODSWORD ") + BloodSword::Version();
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, false);
+
+            if (selection.size() == 1)
+            {
+                auto input = controls[selection[0]];
+
+                if (input == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input == Controls::Type::BATTLE_ORDER)
+                {
+                    if (party.Count() > 1)
+                    {
+                        update = Interface::BattleOrder(graphics, background, party);
+
+                        done = true;
+                    }
+                    else
+                    {
+                    }
+                }
+                else
+                {
+                    Interface::NotImplemented(graphics, background);
+                }
+            }
+        }
+
+        return update;
     }
 }
 

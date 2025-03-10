@@ -1184,7 +1184,15 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::GAME)
                 {
-                    Interface::NotImplemented(graphics, overlay);
+                    auto update = Interface::GameMenu(graphics, overlay, party);
+
+                    if (update && section.ImageAsset.empty())
+                    {
+                        BloodSword::Free(&image);
+
+                        // regenerate party stats
+                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                    }
 
                     input.Selected = false;
                 }
