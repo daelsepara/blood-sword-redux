@@ -274,84 +274,92 @@ namespace BloodSword::Item
         {
             auto item_string = this->Name;
 
-            if (newline)
+            if (this->Type != Item::Type::GOLD)
             {
-                item_string += "\n";
-            }
-            else
-            {
-                item_string += " ";
-            }
-
-            auto visible = 0;
-
-            for (auto &property : this->Properties)
-            {
-                visible += !Item::IsInvisible(property) ? 1 : 0;
-            }
-
-            if (this->Attributes.size() > 0 || (this->Properties.size() > 0 && visible > 0) || this->Quantity > 1)
-            {
-                auto stats = 0;
-
-                item_string += "(";
-
-                if (this->Properties.size() > 0)
+                if (newline)
                 {
-                    for (auto &property : this->Properties)
+                    item_string += "\n";
+                }
+                else
+                {
+                    item_string += " ";
+                }
+
+                auto visible = 0;
+
+                for (auto &property : this->Properties)
+                {
+                    visible += !Item::IsInvisible(property) ? 1 : 0;
+                }
+
+                if (this->Attributes.size() > 0 || (this->Properties.size() > 0 && visible > 0) || this->Quantity > 1)
+                {
+                    auto stats = 0;
+
+                    item_string += "(";
+
+                    if (this->Properties.size() > 0)
                     {
-                        if (!Item::IsInvisible(property))
+                        for (auto &property : this->Properties)
                         {
-                            if (stats > 0)
+                            if (!Item::IsInvisible(property))
                             {
-                                item_string += ", ";
+                                if (stats > 0)
+                                {
+                                    item_string += ", ";
+                                }
+
+                                item_string += Item::PropertyMapping[property];
+
+                                stats++;
                             }
-
-                            item_string += Item::PropertyMapping[property];
-
-                            stats++;
                         }
                     }
-                }
 
-                if (this->Has(Item::Property::CONTAINER) && this->Contains != Item::Type::NONE)
-                {
-                    if (stats > 0)
-                    {
-                        item_string += ", ";
-                    }
-
-                    item_string += std::string(Item::TypeMapping[this->Contains]) + ": " + std::to_string(this->Quantity);
-
-                    stats++;
-                }
-
-                if (this->Attributes.size() > 0)
-                {
-                    for (auto &attribute : this->Attributes)
+                    if (this->Has(Item::Property::CONTAINER) && this->Contains != Item::Type::NONE)
                     {
                         if (stats > 0)
                         {
                             item_string += ", ";
                         }
 
-                        item_string += std::string(Attribute::Abbreviations[attribute.first]) + ": " + std::to_string(attribute.second);
+                        item_string += std::string(Item::TypeMapping[this->Contains]) + ": " + std::to_string(this->Quantity);
 
                         stats++;
                     }
-                }
 
-                if ((this->Properties.size() == 0 || !this->Has(Item::Property::CONTAINER)) && this->Quantity > 1)
-                {
-                    if (stats > 0)
+                    if (this->Attributes.size() > 0)
                     {
-                        item_string += ", ";
+                        for (auto &attribute : this->Attributes)
+                        {
+                            if (stats > 0)
+                            {
+                                item_string += ", ";
+                            }
+
+                            item_string += std::string(Attribute::Abbreviations[attribute.first]) + ": " + std::to_string(attribute.second);
+
+                            stats++;
+                        }
                     }
 
-                    item_string += "QUANTITY: " + std::to_string(this->Quantity);
-                }
+                    if ((this->Properties.size() == 0 || !this->Has(Item::Property::CONTAINER)) && this->Quantity > 1)
+                    {
+                        if (stats > 0)
+                        {
+                            item_string += ", ";
+                        }
 
-                item_string += ")";
+                        item_string += "QUANTITY: " + std::to_string(this->Quantity);
+                    }
+
+                    item_string += ")";
+                }
+            }
+            else
+            {
+                // GOLD pieces
+                item_string = std::to_string(this->Quantity) + " " + item_string;
             }
 
             return item_string;

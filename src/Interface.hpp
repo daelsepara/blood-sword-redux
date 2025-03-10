@@ -908,11 +908,11 @@ namespace BloodSword::Interface
     SDL_Texture *GeneratePartyStats(Graphics::Base &graphics, Party::Base &party, int w, int h)
     {
         // attribute labels
-        auto label_1 = std::string("RNK    FPR        END");
+        auto label_1 = std::string("RNK    FPR        END        GOLD");
 
-        auto label_2 = std::string("       AWR        DMG");
+        auto label_2 = std::string("       AWR        DMG            ");
 
-        auto label_3 = std::string("       PSY        ARM");
+        auto label_3 = std::string("       PSY        ARM            ");
 
         auto labels = label_1 + '\n' + label_2 + '\n' + label_3;
 
@@ -960,12 +960,14 @@ namespace BloodSword::Interface
 
                     auto arm = Interface::ScoreString(party[i], Attribute::Type::ARMOUR);
 
+                    auto gold = std::to_string(party[i].Quantity(Item::Type::GOLD));
+
                     auto four = std::string(4, ' ');
 
                     // format attribute values
                     auto stats_1 = four + rnk + std::string(3 - rnk.size(), ' ') + four + fpr + std::string(7 - fpr.size(), ' ') + four + end + '\n';
 
-                    auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + '\n';
+                    auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + std::string(7 - dmg.size(), ' ') + gold + '\n';
 
                     auto stats_3 = std::string(11, ' ') + psy + std::string(7 - psy.size(), ' ') + four + arm;
 
