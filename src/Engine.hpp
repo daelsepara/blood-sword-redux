@@ -617,7 +617,7 @@ namespace BloodSword::Engine
             {
                 for (auto i = 0; i < opponents.Count(); i++)
                 {
-                    if (opponents[i].Target == target)
+                    if ((opponents[i].Target == target) || (!in_party && target == Target::Type::PLAYER))
                     {
                         auto add_target = true;
 

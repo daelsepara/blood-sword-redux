@@ -55,7 +55,11 @@
                     "moves": 1000,
                     "name": "BARBARIAN",
                     "rank": 0,
-                    "target": "BARBARIAN"
+                    "target": "BARBARIAN",
+                    "targets": [
+                        "ASSASSIN",
+                        "PLAYER"
+                    ]
                 },
                 {
                     "asset": "BARBARIAN",
@@ -104,7 +108,11 @@
                     "moves": 1000,
                     "name": "BARBARIAN",
                     "rank": 0,
-                    "target": "BARBARIAN"
+                    "target": "BARBARIAN",
+                    "targets": [
+                        "ASSASSIN",
+                        "PLAYER"
+                    ]
                 },
                 {
                     "asset": "BARBARIAN",
@@ -153,7 +161,11 @@
                     "moves": 1000,
                     "name": "BARBARIAN",
                     "rank": 0,
-                    "target": "BARBARIAN"
+                    "target": "BARBARIAN",
+                    "targets": [
+                        "ASSASSIN",
+                        "PLAYER"
+                    ]
                 },
                 {
                     "asset": "BARBARIAN",
@@ -202,7 +214,11 @@
                     "moves": 1000,
                     "name": "BARBARIAN",
                     "rank": 0,
-                    "target": "BARBARIAN"
+                    "target": "BARBARIAN",
+                    "targets": [
+                        "ASSASSIN",
+                        "PLAYER"
+                    ]
                 }
             ]
         },

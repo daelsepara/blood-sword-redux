@@ -1,0 +1,41 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 354
+    },
+    "text": "After a short distance you pass a door engraved with red sigils.",
+    "choices": [
+        {
+            "text": "Open the door",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 406
+                }
+            }
+        },
+        {
+            "text": "Continue onwards",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 249
+                }
+            }
+        }
+    ],
+    "next": [
+        {
+            "type": "IN PARTY",
+            "location": {
+                "book": "BOOK1",
+                "number": 266
+            },
+            "variables": [
+                "SAGE"
+            ]
+        }
+    ]
+}

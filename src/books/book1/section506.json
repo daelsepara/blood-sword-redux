@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 506
+    },
+    "text": "Balhazar's voice speaks through your OPAL MEDALLION as you run. \"Take the left-hand passage,\" he says. \"The other is a dead end.\"\n\nYou see what he means a moment later as you come to a point where the corridor branches in two. You take your patron's advice and choose the left-hand passage -- a long corridor faced in black marble.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 354
+            }
+        }
+    ]
+}

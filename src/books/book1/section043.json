@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 43
+    },
+    "text": "The barbarians jeer as you run for dear life. You reach a junction and skid to a halt on the marble floor. You must make a snap decision which way to go.",
+    "choices": [
+        {
+            "text": "Go left, along a corridor of black marble",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 354
+                }
+            }
+        },
+        {
+            "text": "Go right, along a white marble corridor",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 54
+                }
+            }
+        }
+    ]
+}
