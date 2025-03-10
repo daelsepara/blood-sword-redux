@@ -1470,12 +1470,14 @@ namespace BloodSword::Interface
     {
         auto moving = false;
 
+        auto enemy = character.IsEnemy();
+
+        auto enemy_target = (enemy && map.IsValid(end) && map[end].IsEnemy()) ? map[end].Id : -1; 
+
         // find a direct path to the destination
-        auto path = Move::FindPath(map, start, end);
+        auto path = Move::FindPath(map, start, end, false, enemy_target);
 
         auto closer = false;
-
-        auto enemy = character.IsEnemy();
 
         if (path.Points.size() == 0 && enemy)
         {
@@ -1498,13 +1500,15 @@ namespace BloodSword::Interface
         }
 
         // add extra move if enemy is trying to close distance
-        auto valid = Move::Count(map, path, enemy) + (closer ? 1 : 0);
+        auto valid = Move::Count(map, path, enemy, enemy_target) + (closer ? 1 : 0);
 
         if (enemy && !closer)
         {
             if (map.IsValid(end))
             {
                 std::cerr << "[TARGET "
+                          << (map[end].IsEnemy() ? "ENEMY" : "PLAYER")
+                          << " "
                           << map[end].Id
                           << "] [PATH] "
                           << path.Points.size()

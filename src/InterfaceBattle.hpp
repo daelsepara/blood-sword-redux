@@ -940,18 +940,31 @@ namespace BloodSword::Interface
     // enemy does ranged attacks
     void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Engine::Queue &opponents, Character::Base &character, Point &src)
     {
-        auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
+        Engine::Queue targets;
+
+        if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
+        {
+            // PREFERRED TARGET:
+            targets = Engine::RangedTargets(battle.Map, battle.Opponents, party, src, true);
+        }
+        else
+        {
+            // DEFAULT
+            targets = Engine::RangedTargets(battle.Map, party, src, true, false);
+        }
 
         // shoot only when there are no nearby player enemies
         if (targets.size() > 0 && opponents.size() == 0)
         {
             for (auto &target : targets)
             {
+                auto &defender = (target.Type == Character::ControlType::PLAYER) ? party[target.Id] : battle.Opponents[target.Id];
+
                 // shoot first available target
-                if (!party[target.Id].IsImmune(character.Shoot))
+                if (!defender.IsImmune(character.Shoot))
                 {
                     // shoot
-                    Interface::Shoot(graphics, scene, battle, character, party[target.Id], target.Id);
+                    Interface::Shoot(graphics, scene, battle, character, defender, target.Id);
 
                     break;
                 }
@@ -968,7 +981,7 @@ namespace BloodSword::Interface
         if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
             // PREFERRED TARGET
-            targets = Engine::MoveTargets(battle.Map, party, battle.Opponents, src, true);
+            targets = Engine::MoveTargets(battle.Map, battle.Opponents, party, src, true);
         }
         else
         {
@@ -982,7 +995,7 @@ namespace BloodSword::Interface
 
         for (auto &target : targets)
         {
-            auto end = battle.Map.Find(Map::Object::PLAYER, target.Id);
+            auto end = battle.Map.Find(target.Type == Character::ControlType::PLAYER ? Map::Object::PLAYER : Map::Object::ENEMY, target.Id);
 
             if (!end.IsNone())
             {
@@ -1004,7 +1017,7 @@ namespace BloodSword::Interface
         if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
             // PREFERRED TARGET:
-            return Engine::FightTargets(battle.Map, party, battle.Opponents, src, true);
+            return Engine::FightTargets(battle.Map, battle.Opponents, party, src, true);
         }
         else
         {
@@ -1744,7 +1757,11 @@ namespace BloodSword::Interface
                                             Engine::ResetSpells(character);
 
                                             // fight
-                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, party[opponents[0].Id], opponents[0].Id, character.Fight);
+                                            auto defender_id = opponents[0].Id;
+
+                                            auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[opponents[0].Id] : battle.Opponents[opponents[0].Id]); 
+                                            
+                                            Interface::Fight(graphics, scene, battle, character, order[combatant].Id, defender, defender_id, character.Fight);
                                         }
                                         else if (Engine::CanShoot(character) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {

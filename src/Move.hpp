@@ -87,7 +87,7 @@ namespace BloodSword::Move
     }
 
     // check if location is traversible
-    bool IsPassable(Map::Base &map, Point &location, bool is_enemy, bool unrestricted)
+    bool IsPassable(Map::Base &map, Point &location, bool is_enemy, bool unrestricted, int enemy_target = -1)
     {
         auto result = false;
 
@@ -105,7 +105,7 @@ namespace BloodSword::Move
 
             auto is_exit = Tile.IsExit() && is_valid;
 
-            auto is_target = Tile.IsPlayer() && is_enemy;
+            auto is_target = (Tile.IsPlayer() || (Tile.IsEnemy() && enemy_target == Tile.Id && enemy_target != -1)) && is_enemy;
 
             result = (is_passable || is_passable_enemy || is_exit || is_target);
         }
@@ -114,7 +114,7 @@ namespace BloodSword::Move
     }
 
     // check if location is traversable or if it is the target destination
-    bool IsPassable(Map::Base &map, Smart<Move::Node> &target, Point &location, bool is_enemy, bool unrestricted)
+    bool IsPassable(Map::Base &map, Smart<Move::Node> &target, Point &location, bool is_enemy, bool unrestricted, int enemy_target = -1)
     {
         auto result = false;
 
@@ -124,7 +124,7 @@ namespace BloodSword::Move
 
             auto is_destination = Move::Is(target, location) && !tile.IsOccupied();
 
-            auto is_passable = Move::IsPassable(map, location, is_enemy, unrestricted);
+            auto is_passable = Move::IsPassable(map, location, is_enemy, unrestricted, enemy_target);
 
             result = (is_passable || is_destination);
         }
@@ -133,7 +133,7 @@ namespace BloodSword::Move
     }
 
     // Get all traversible nodes from current node
-    Moves Nodes(Map::Base &map, Smart<Move::Node> &current, Smart<Move::Node> &target, bool is_enemy, bool unrestricted)
+    Moves Nodes(Map::Base &map, Smart<Move::Node> &current, Smart<Move::Node> &target, bool is_enemy, bool unrestricted, int enemy_target = -1)
     {
         auto traversable = Moves();
 
@@ -144,7 +144,7 @@ namespace BloodSword::Move
                 auto next = current + neighbor;
 
                 // Check if within map boundaries and if passable and/or leads to destination
-                if (Move::IsPassable(map, target, next, is_enemy, unrestricted))
+                if (Move::IsPassable(map, target, next, is_enemy, unrestricted, enemy_target))
                 {
                     traversable.push_back(std::make_shared<Move::Node>(next, current->Cost + 1, current));
 
@@ -180,7 +180,7 @@ namespace BloodSword::Move
     }
 
     // Find path from src to dst using the A* algorithm
-    Move::Path FindPath(Map::Base &map, Point src, Point dst, bool unrestricted = false)
+    Move::Path FindPath(Map::Base &map, Point src, Point dst, bool unrestricted = false, int enemy_target = -1)
     {
         auto path = Move::Path();
 
@@ -237,7 +237,7 @@ namespace BloodSword::Move
 
                 Move::Remove(active, check);
 
-                auto nodes = Move::Nodes(map, check, end, is_enemy, unrestricted);
+                auto nodes = Move::Nodes(map, check, end, is_enemy, unrestricted, enemy_target);
 
                 for (auto &node : nodes)
                 {
@@ -291,13 +291,13 @@ namespace BloodSword::Move
     }
 
     // find a path from src X, Y to dst X, Y
-    Move::Path FindPath(Map::Base &map, int src_x, int src_y, int dst_x, int dst_y, bool unrestricted = false)
+    Move::Path FindPath(Map::Base &map, int src_x, int src_y, int dst_x, int dst_y, bool unrestricted = false, int enemy_target = -1)
     {
-        return Move::FindPath(map, Point(src_x, src_y), Point(dst_x, dst_y), unrestricted);
+        return Move::FindPath(map, Point(src_x, src_y), Point(dst_x, dst_y), unrestricted, enemy_target);
     }
 
     // return the number of valid moves that can be made in the path
-    int Count(Map::Base &map, Move::Path &path, bool is_enemy)
+    int Count(Map::Base &map, Move::Path &path, bool is_enemy, int enemy_target = -1)
     {
         auto count = 0;
 
@@ -311,7 +311,7 @@ namespace BloodSword::Move
                 auto target = std::make_shared<Move::Node>(*next);
 
                 // check if move to next location is possible
-                if (!Move::IsPassable(map, target, *current, is_enemy, false) && current != path.Points.begin())
+                if (!Move::IsPassable(map, target, *current, is_enemy, false, enemy_target) && current != path.Points.begin())
                 {
                     break;
                 }

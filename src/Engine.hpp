@@ -551,7 +551,7 @@ namespace BloodSword::Engine
     }
 
     // build queue of preferred targets
-    void Targets(Engine::Queue &queue, Map::Base &map, Party::Base &party, Character::Base &character, Point &src, bool in_party = true, bool in_battle = false, bool ranged = false, bool move = false, bool spell = false)
+    void Targets(Engine::Queue &queue, Map::Base &map, Party::Base &opponents, Character::Base &character, Point &src, bool in_party = true, bool in_battle = false, bool ranged = false, bool move = false, bool spell = false)
     {
         if (map.IsValid(src))
         {
@@ -561,92 +561,119 @@ namespace BloodSword::Engine
 
             for (auto &target : character.Targets)
             {
-                if (party.Has(target))
+                for (auto i = 0; i < opponents.Count(); i++)
                 {
-                    auto i = party.Find(target);
-
-                    if ((i != -1) && (((in_party && id != i) || !in_party) && Engine::CanTarget(party[i], in_battle)))
+                    if (opponents[i].Target == target)
                     {
-                        auto location = Engine::Location(map, party[i], i);
+                        auto add = true;
 
-                        auto distance = -1;
-
-                        if (move)
+                        if (((in_party && id != i) || !in_party) && Engine::CanTarget(opponents[i], in_battle))
                         {
-                            auto path = Move::FindPath(map, src, location);
+                            auto location = Engine::Location(map, opponents[i], i);
 
-                            distance = Move::Count(map, path, is_enemy);
+                            auto distance = -1;
 
-                            if (path.Points.size() == 0)
+                            auto prob = Engine::Percentile.NextInt();
+
+                            if (move)
                             {
-                                // path to target is blocked, set arbitrarily large distance
-                                distance = 9999;
-                            }
+                                auto path = Move::FindPath(map, src, location, false, (in_party ? i : -1));
 
-                            if (is_enemy)
-                            {
-                                auto vulnerability = map.Free(location);
+                                distance = Move::Count(map, path, is_enemy, (in_party ? i : -1));
 
-                                std::cerr << "[PREFERRED] [TARGET/MOVE "
-                                          << i << "] ["
-                                          << ((in_party) ? "IN" : "OTHER")
-                                          << " PARTY]"
-                                          << " [PATH] " << path.Points.size()
-                                          << " [DIST] " << distance
-                                          << " [VULN] " << vulnerability
-                                          << std::endl;
+                                if (path.Points.size() == 0)
+                                {
+                                    // path to target is blocked, set arbitrarily large distance
+                                    distance = 9999;
+                                }
 
-                                // add vulnerability score (more empty spaces, more vulnerable)
-                                distance += (Map::Directions.size() - vulnerability) * 4;
-                            }
-                        }
-                        else
-                        {
-                            distance = map.Distance(src, location);
+                                if (is_enemy)
+                                {
+                                    auto vulnerability = map.Free(location);
 
-                            std::cerr << "[PREFERRED] [TARGET/";
+                                    std::cerr << "["
+                                              << Target::Mapping[character.Target]
+                                              << " " << id << "]"
+                                              << " [MOVE TARGET "
+                                              << i << "] ["
+                                              << Target::Mapping[opponents[i].Target]
+                                              << "]"
+                                              << " [PATH] " << path.Points.size()
+                                              << " [DIST] " << distance
+                                              << " [VULN] " << vulnerability
+                                              << std::endl;
 
-                            if (spell)
-                            {
-                                std::cerr << "SPELL ";
-                            }
-                            else if (ranged)
-                            {
-                                std::cerr << "RANGED ";
+                                    // add vulnerability score (more empty spaces, more vulnerable)
+                                    distance += (Map::Directions.size() - vulnerability) * 4;
+                                }
                             }
                             else
                             {
-                                std::cerr << "FIGHT ";
+                                distance = map.Distance(src, location);
+
+                                std::cerr << "["
+                                          << Target::Mapping[character.Target]
+                                          << " " << id << "] "
+                                          << "[";
+
+                                if (spell)
+                                {
+                                    std::cerr << "SPELL";
+                                }
+                                else if (ranged)
+                                {
+                                    std::cerr << "RANGED";
+                                }
+                                else
+                                {
+                                    std::cerr << "FIGHT";
+                                }
+
+                                if (is_enemy && in_party && (character.TargetProbability > 0 && character.TargetProbability <= 100))
+                                {
+                                    add = (prob < character.TargetProbability);
+                                }
+
+                                std::cerr << " TARGET "
+                                          << i
+                                          << "] ["
+                                          << Target::Mapping[opponents[i].Target]
+                                          << "]"
+                                          << " [DIST] " << distance;
+
+                                if ((move || ranged))
+                                {
+                                    std::cerr << " [PROB] "
+                                              << prob
+                                              << " "
+                                              << ((prob <= character.TargetProbability) ? "<=" : "> ")
+                                              << character.TargetProbability;
+                                }
+
+                                std::cerr << std::endl;
                             }
 
-                            std::cerr << i << "] ["
-                                      << ((in_party) ? "IN" : "OTHER")
-                                      << " PARTY]"
-                                      << " [DIST] " << distance
-                                      << std::endl;
-                        }
-
-                        if (map.IsValid(location) && location != src)
-                        {
-                            auto add = true;
-
-                            if (is_enemy && in_party && (character.TargetProbability > 0 && character.TargetProbability <= 100))
+                            if (map.IsValid(location) && location != src)
                             {
-                                add = (Engine::Percentile.NextInt() < character.TargetProbability);
-                            }
-
-                            // preserve scoring for future uses
-                            if ((spell || (!ranged && !move && distance == 1)) && add)
-                            {
-                                queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, in_battle)));
-                            }
-                            else if (((ranged && distance > 1) || (move && distance > 0)) && add)
-                            {
-                                queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+                                // preserve scoring for future uses
+                                if (spell || (!ranged && !move && distance == 1))
+                                {
+                                    queue.push_back(Engine::ScoreElement(opponents[i].ControlType, i, Engine::Score(opponents[i], Attribute::Type::ENDURANCE, in_battle)));
+                                }
+                                else if (((ranged && distance > 1) || (move && distance > 0)) && add)
+                                {
+                                    queue.push_back(Engine::ScoreElement(opponents[i].ControlType, i, distance));
+                                }
                             }
                         }
                     }
                 }
+            }
+
+            if ((move || ranged) && is_enemy && in_party)
+            {
+                // sort according to distance
+                Engine::Sort(queue);
             }
         }
     }
@@ -673,7 +700,7 @@ namespace BloodSword::Engine
     }
 
     // search preferred ranged targets
-    Engine::Queue RangedTargets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false)
+    Engine::Queue RangedTargets(Map::Base &map, Party::Base &mine, Party::Base &other, Point &src, bool in_battle = false)
     {
         Engine::Queue queue = {};
 
@@ -681,13 +708,13 @@ namespace BloodSword::Engine
         {
             auto id = map[src].Id;
 
-            auto &character = party[id];
+            auto &character = mine[id];
 
             // search within party
-            Engine::Targets(queue, map, party, character, src, true, in_battle, true);
+            Engine::Targets(queue, map, mine, character, src, true, in_battle, true);
 
             // search within the other party
-            Engine::Targets(queue, map, opponents, character, src, false, in_battle, true);
+            Engine::Targets(queue, map, other, character, src, false, in_battle, true);
         }
 
         return queue;
