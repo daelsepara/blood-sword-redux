@@ -619,7 +619,7 @@ namespace BloodSword::Engine
                 {
                     if (opponents[i].Target == target)
                     {
-                        auto add = true;
+                        auto add_target = true;
 
                         if (((in_party && id != i) || !in_party) && Engine::CanTarget(opponents[i], in_battle))
                         {
@@ -655,11 +655,6 @@ namespace BloodSword::Engine
                             {
                                 distance = map.Distance(src, location);
 
-                                std::cerr << "["
-                                          << Target::Mapping[character.Target]
-                                          << " " << id << "] "
-                                          << "[";
-
                                 auto action = std::string();
 
                                 auto probability = -1;
@@ -681,7 +676,7 @@ namespace BloodSword::Engine
 
                                 if (is_enemy && in_party && (character.TargetProbability > 0 && character.TargetProbability <= 100))
                                 {
-                                    add = (prob < character.TargetProbability);
+                                    add_target = (prob < character.TargetProbability);
                                 }
 
                                 if (ranged && is_enemy && in_party)
@@ -692,8 +687,6 @@ namespace BloodSword::Engine
                                 }
 
                                 Engine::Log(action.c_str(), character.Target, id, opponents[i].Target, i, distance, -1, -1, probability, threshold);
-
-                                std::cerr << std::endl;
                             }
 
                             if (map.IsValid(location) && location != src)
@@ -703,7 +696,7 @@ namespace BloodSword::Engine
                                 {
                                     queue.push_back(Engine::ScoreElement(opponents[i].ControlType, i, Engine::Score(opponents[i], Attribute::Type::ENDURANCE, in_battle)));
                                 }
-                                else if (((ranged && distance > 1) || (move && distance > 0)) && add)
+                                else if (((ranged && distance > 1) || (move && distance > 0)) && add_target)
                                 {
                                     queue.push_back(Engine::ScoreElement(opponents[i].ControlType, i, distance));
                                 }
