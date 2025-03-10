@@ -1472,7 +1472,7 @@ namespace BloodSword::Interface
 
         auto enemy = character.IsEnemy();
 
-        auto enemy_target = (enemy && map.IsValid(end) && map[end].IsEnemy()) ? map[end].Id : -1; 
+        auto enemy_target = (enemy && map.IsValid(end) && map[end].IsEnemy()) ? map[end].Id : -1;
 
         // find a direct path to the destination
         auto path = Move::FindPath(map, start, end, false, enemy_target);
@@ -1506,7 +1506,12 @@ namespace BloodSword::Interface
         {
             if (map.IsValid(end))
             {
-                std::cerr << "[TARGET "
+                std::cerr << "["
+                          << Target::Mapping[character.Target]
+                          << " "
+                          << map[start].Id
+                          << "] [MOVE] "
+                          << "[TARGET "
                           << (map[end].IsEnemy() ? "ENEMY" : "PLAYER")
                           << " "
                           << map[end].Id

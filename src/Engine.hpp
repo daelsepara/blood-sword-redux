@@ -487,24 +487,27 @@ namespace BloodSword::Engine
                 {
                     distance = map.Distance(src, location);
 
-                    std::cerr << "[TARGET/";
+                    if (map[src].IsEnemy())
+                    {
+                        std::cerr << "[TARGET/";
 
-                    if (spell)
-                    {
-                        std::cerr << "SPELL ";
-                    }
-                    else if (ranged)
-                    {
-                        std::cerr << "RANGED ";
-                    }
-                    else
-                    {
-                        std::cerr << "FIGHT ";
-                    }
+                        if (spell)
+                        {
+                            std::cerr << "SPELL ";
+                        }
+                        else if (ranged)
+                        {
+                            std::cerr << "RANGED ";
+                        }
+                        else
+                        {
+                            std::cerr << "FIGHT ";
+                        }
 
-                    std::cerr << i << "]"
-                              << " [DIST] " << distance
-                              << std::endl;
+                        std::cerr << i << "]"
+                                  << " [DIST] " << distance
+                                  << std::endl;
+                    }
                 }
 
                 if (map.IsValid(location) && location != src)
@@ -641,12 +644,12 @@ namespace BloodSword::Engine
                                           << "]"
                                           << " [DIST] " << distance;
 
-                                if ((move || ranged))
+                                if ((move || ranged) && is_enemy && in_party)
                                 {
                                     std::cerr << " [PROB] "
                                               << prob
                                               << " "
-                                              << ((prob <= character.TargetProbability) ? "<=" : "> ")
+                                              << ((prob <= character.TargetProbability) ? "<= " : "> ")
                                               << character.TargetProbability;
                                 }
 
@@ -668,12 +671,6 @@ namespace BloodSword::Engine
                         }
                     }
                 }
-            }
-
-            if ((move || ranged) && is_enemy && in_party)
-            {
-                // sort according to distance
-                Engine::Sort(queue);
             }
         }
     }
@@ -737,6 +734,9 @@ namespace BloodSword::Engine
             // search within the other party
             Engine::Targets(queue, map, opponents, character, src, false, in_battle, false, true);
         }
+
+        // sort according to distance
+        Engine::Sort(queue, false);
 
         return queue;
     }

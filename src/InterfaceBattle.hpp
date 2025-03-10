@@ -953,6 +953,8 @@ namespace BloodSword::Interface
             targets = Engine::RangedTargets(battle.Map, party, src, true, false);
         }
 
+        std::cerr << "[SHOOT TARGETS] " << targets.size() << std::endl;
+
         // shoot only when there are no nearby player enemies
         if (targets.size() > 0 && opponents.size() == 0)
         {
@@ -963,6 +965,17 @@ namespace BloodSword::Interface
                 // shoot first available target
                 if (!defender.IsImmune(character.Shoot))
                 {
+                    std::cerr << "["
+                            << Target::Mapping[character.Target]
+                            << " "
+                            << battle.Map[src].Id
+                            << "] [SHOOT] ["
+                            << Target::Mapping[defender.Target]
+                            << " "
+                            << target.Id
+                            << "]"
+                            << std::endl;
+
                     // shoot
                     Interface::Shoot(graphics, scene, battle, character, defender, target.Id);
 
@@ -1754,12 +1767,26 @@ namespace BloodSword::Interface
                                         }
                                         else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
+                                            std::cerr << "[FIGHT TARGETS] " << opponents.size() << std::endl;
+
                                             Engine::ResetSpells(character);
 
                                             // fight
                                             auto defender_id = opponents[0].Id;
 
-                                            auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[opponents[0].Id] : battle.Opponents[opponents[0].Id]); 
+                                            auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[opponents[0].Id] : battle.Opponents[opponents[0].Id]);
+
+                                            std::cerr << "["
+                                                      << Target::Mapping[character.Target]
+                                                      << " "
+                                                      << order[combatant].Id
+                                                      << "] [FIGHT] ["
+                                                      << Target::Mapping[defender.Target]
+                                                      << " "
+                                                      << defender_id
+                                                      << "]"
+                                                      << std::endl;
+
                                             
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, defender, defender_id, character.Fight);
                                         }
