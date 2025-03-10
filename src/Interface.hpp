@@ -4143,6 +4143,7 @@ namespace BloodSword::Interface
                     }
                     else
                     {
+                        Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
                     }
                 }
                 else
