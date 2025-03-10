@@ -456,23 +456,23 @@ namespace BloodSword::Engine
 
         if (path != -1)
         {
-            std::cerr << " [PATH] " << path;
+            std::cerr << " [PATH] " << std::to_string(path);
         }
 
-        std::cerr << " [DIST] " << dist;
+        std::cerr << " [DIST] " << std::to_string(dist);
 
         if (vuln != -1)
         {
-            std::cerr << " [VULN] " << vuln;
+            std::cerr << " [VULN] " << std::to_string(vuln);
         }
 
         if (prob != -1 && threshold != -1)
         {
             std::cerr << " [PROB] "
-                      << prob
+                      << std::to_string(prob)
                       << " "
                       << ((prob <= threshold) ? "<= " : "> ")
-                      << threshold;
+                      << std::to_string(threshold);
         }
 
         std::cerr << std::endl;
@@ -493,7 +493,7 @@ namespace BloodSword::Engine
     // helper function
     void Log(const char *action, Target::Type target, int id, int target_id, int dist, int path = -1, int vuln = -1)
     {
-        auto action_string = std::string(action) + " TARGET";
+        auto action_string = std::string(action) + " TARGET " + std::to_string(target_id);
 
         auto attacker_string = std::string("ENEMY ") + std::to_string(id);
 

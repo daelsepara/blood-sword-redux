@@ -994,7 +994,7 @@ namespace BloodSword::Interface
                 // shoot first available target
                 if (!defender.IsImmune(character.Shoot))
                 {
-                    Interface::LogAction("SHOOT", character.Target, battle.Map[src].Id, defender.Target, target.Id);
+                    Interface::LogAction("SHOOTS", character.Target, battle.Map[src].Id, defender.Target, target.Id);
 
                     // shoot
                     Interface::Shoot(graphics, scene, battle, character, defender, target.Id);
@@ -1802,7 +1802,7 @@ namespace BloodSword::Interface
 
                                             auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[opponents[0].Id] : battle.Opponents[opponents[0].Id]);
 
-                                            Interface::LogAction("FIGHT", character.Target, order[combatant].Id, defender.Target, defender_id);
+                                            Interface::LogAction("FIGHTS", character.Target, order[combatant].Id, defender.Target, defender_id);
 
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, defender, defender_id, character.Fight);
                                         }
