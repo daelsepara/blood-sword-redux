@@ -938,7 +938,7 @@ namespace BloodSword::Interface
     }
 
     // enemy does ranged attacks
-    void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Engine::Queue &opponents, Point &src)
+    void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Engine::Queue &opponents, Character::Base &character, Point &src)
     {
         auto targets = Engine::RangedTargets(battle.Map, party, src, true, false);
 
@@ -962,8 +962,19 @@ namespace BloodSword::Interface
     // enemy moves to target
     bool EnemyMoves(Scene::Base &scene, Animation::Base &movement, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
     {
+        Engine::Queue targets;
+
         // check if enemy can move towards the player-controlled characters
-        auto targets = Engine::MoveTargets(battle.Map, party, src, true, false);
+        if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
+        {
+            // PREFERRED TARGET
+            targets = Engine::MoveTargets(battle.Map, party, battle.Opponents, src, true);
+        }
+        else
+        {
+            // DEFAULT
+            targets = Engine::MoveTargets(battle.Map, party, src, true, false);
+        }
 
         auto valid_target = false;
 
@@ -985,6 +996,21 @@ namespace BloodSword::Interface
         }
 
         return valid_target;
+    }
+
+    Engine::Queue EnemyFights(Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
+    {
+        // check if enemy can move towards the player-controlled characters
+        if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
+        {
+            // PREFERRED TARGET:
+            return Engine::FightTargets(battle.Map, party, battle.Opponents, src, true);
+        }
+        else
+        {
+            // DEFAULT
+            return Engine::FightTargets(battle.Map, party, src, true, false);
+        }
     }
 
     // set players' starting locations
@@ -1706,7 +1732,7 @@ namespace BloodSword::Interface
                                     if (has_actions)
                                     {
                                         // check if there are adjacent player combatants
-                                        auto opponents = Engine::FightTargets(battle.Map, party, src, true, false);
+                                        auto opponents = Interface::EnemyFights(battle, party, character, src);
 
                                         if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
@@ -1723,7 +1749,7 @@ namespace BloodSword::Interface
                                         else if (Engine::CanShoot(character) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             // do ranged attacks
-                                            Interface::EnemyShoots(graphics, scene, battle, party, character, opponents, src);
+                                            Interface::EnemyShoots(graphics, scene, battle, party, opponents, character, src);
                                         }
                                         else if (character.Moves > 0 && Move::Available(battle.Map, src))
                                         {

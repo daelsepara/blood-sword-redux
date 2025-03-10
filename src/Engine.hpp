@@ -45,6 +45,8 @@ namespace BloodSword::Engine
     // RNG engine
     auto Random = Random::Base();
 
+    auto Percentile = Random::Base();
+
     // initialize RNG
     void InitializeRNG()
     {
@@ -53,6 +55,12 @@ namespace BloodSword::Engine
 
         // fix floating point RNG to [0.0, 1.0)
         Random.UniformDistribution(0, 1.0);
+
+        // fix integer RNG to 0-100
+        Percentile.UniformIntDistribution(0, 100);
+
+        // fix floating point RNG to [0.0, 1.0)
+        Percentile.UniformDistribution(0, 1.0);
     }
 
     class RollResult
@@ -478,6 +486,25 @@ namespace BloodSword::Engine
                 else
                 {
                     distance = map.Distance(src, location);
+
+                    std::cerr << "[TARGET/";
+
+                    if (spell)
+                    {
+                        std::cerr << "SPELL ";
+                    }
+                    else if (ranged)
+                    {
+                        std::cerr << "RANGED ";
+                    }
+                    else
+                    {
+                        std::cerr << "FIGHT ";
+                    }
+
+                    std::cerr << i << "]"
+                              << " [DIST] " << distance
+                              << std::endl;
                 }
 
                 if (map.IsValid(location) && location != src)
@@ -528,6 +555,8 @@ namespace BloodSword::Engine
     {
         if (map.IsValid(src))
         {
+            auto is_enemy = character.IsEnemy();
+
             auto id = map[src].Id;
 
             for (auto &target : character.Targets)
@@ -544,23 +573,74 @@ namespace BloodSword::Engine
 
                         if (move)
                         {
-                            auto path = Move::FindPath(map, src, location, map[src].IsEnemy());
+                            auto path = Move::FindPath(map, src, location);
 
-                            distance = Move::Count(map, path, map[src].IsEnemy());
+                            distance = Move::Count(map, path, is_enemy);
+
+                            if (path.Points.size() == 0)
+                            {
+                                // path to target is blocked, set arbitrarily large distance
+                                distance = 9999;
+                            }
+
+                            if (is_enemy)
+                            {
+                                auto vulnerability = map.Free(location);
+
+                                std::cerr << "[PREFERRED] [TARGET/MOVE "
+                                          << i << "] ["
+                                          << ((in_party) ? "IN" : "OTHER")
+                                          << " PARTY]"
+                                          << " [PATH] " << path.Points.size()
+                                          << " [DIST] " << distance
+                                          << " [VULN] " << vulnerability
+                                          << std::endl;
+
+                                // add vulnerability score (more empty spaces, more vulnerable)
+                                distance += (Map::Directions.size() - vulnerability) * 4;
+                            }
                         }
                         else
                         {
                             distance = map.Distance(src, location);
+
+                            std::cerr << "[PREFERRED] [TARGET/";
+
+                            if (spell)
+                            {
+                                std::cerr << "SPELL ";
+                            }
+                            else if (ranged)
+                            {
+                                std::cerr << "RANGED ";
+                            }
+                            else
+                            {
+                                std::cerr << "FIGHT ";
+                            }
+
+                            std::cerr << i << "] ["
+                                      << ((in_party) ? "IN" : "OTHER")
+                                      << " PARTY]"
+                                      << " [DIST] " << distance
+                                      << std::endl;
                         }
 
                         if (map.IsValid(location) && location != src)
                         {
+                            auto add = true;
+
+                            if (is_enemy && in_party && (character.TargetProbability > 0 && character.TargetProbability <= 100))
+                            {
+                                add = (Engine::Percentile.NextInt() < character.TargetProbability);
+                            }
+
                             // preserve scoring for future uses
-                            if (spell || (!ranged && !move && distance == 1))
+                            if ((spell || (!ranged && !move && distance == 1)) && add)
                             {
                                 queue.push_back(Engine::ScoreElement(party[i].ControlType, i, Engine::Score(party[i], Attribute::Type::ENDURANCE, in_battle)));
                             }
-                            else if ((ranged && distance > 1) || (move && distance > 0))
+                            else if (((ranged && distance > 1) || (move && distance > 0)) && add)
                             {
                                 queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
                             }

@@ -70,6 +70,9 @@ namespace BloodSword::Character
         // additional targets
         Target::List Targets = {};
 
+        // target probability
+        int TargetProbability = 0;
+
         // location (survivor tracking in a battle)
         Book::Location Location = Book::Undefined;
 
@@ -715,7 +718,7 @@ namespace BloodSword::Character
 
         character.Moves = !data["moves"].is_null() ? int(data["moves"]) : BloodSword::MaximumMoves;
 
-        character.ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 6;
+        character.ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 10;
 
         character.Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
 
@@ -775,6 +778,8 @@ namespace BloodSword::Character
         {
             character.Targets = Target::Load(data["targets"]);
         }
+
+        character.TargetProbability = !data["target_probability"].is_null() ? int(data["target_probability"]) : 0;
 
         if (!data["spell_strategy"].is_null() && data["spell_strategy"].is_array() && data["spell_strategy"].size() > 0)
         {
@@ -869,6 +874,8 @@ namespace BloodSword::Character
         {
             data["targets"] = Target::Data(character.Targets);
         }
+
+        data["target_probability"] = character.TargetProbability;
 
         if (Book::IsDefined(character.Location))
         {
