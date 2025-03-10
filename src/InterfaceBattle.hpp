@@ -966,15 +966,15 @@ namespace BloodSword::Interface
                 if (!defender.IsImmune(character.Shoot))
                 {
                     std::cerr << "["
-                            << Target::Mapping[character.Target]
-                            << " "
-                            << battle.Map[src].Id
-                            << "] [SHOOT] ["
-                            << Target::Mapping[defender.Target]
-                            << " "
-                            << target.Id
-                            << "]"
-                            << std::endl;
+                              << Target::Mapping[character.Target]
+                              << " "
+                              << battle.Map[src].Id
+                              << "] [SHOOT] ["
+                              << Target::Mapping[defender.Target]
+                              << " "
+                              << target.Id
+                              << "]"
+                              << std::endl;
 
                     // shoot
                     Interface::Shoot(graphics, scene, battle, character, defender, target.Id);
@@ -1787,7 +1787,6 @@ namespace BloodSword::Interface
                                                       << "]"
                                                       << std::endl;
 
-                                            
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, defender, defender_id, character.Fight);
                                         }
                                         else if (Engine::CanShoot(character) && !battle.Has(Battle::Condition::NO_COMBAT))

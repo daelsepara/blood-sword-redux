@@ -676,17 +676,6 @@ namespace BloodSword::Test
         BloodSword::Free(&fps_texture);
     }
 
-    // battle order
-    void Queue(Graphics::Base &graphics)
-    {
-        auto party = Party::Load("party/rank02.json", "party");
-
-        // Load battle with NO COMBAT setting from configuration file
-        auto battle = Battle::Load("battles/queue.json");
-
-        Interface::RenderBattle(graphics, battle, party);
-    }
-
     void Palette(Graphics::Base &graphics)
     {
         Interface::ReloadTextures(graphics, 0, false);
@@ -1172,13 +1161,13 @@ namespace BloodSword::Test
     }
 
     // battle
-    void Battle(Graphics::Base &graphics)
+    void Battle(Graphics::Base &graphics, const char *battle_file)
     {
         // Load party from configuration file
         auto party = Party::Load("party/rank02.json", "party");
 
         // Load battle from configuration file
-        auto battle = Battle::Load("battles/test-complete.json");
+        auto battle = Battle::Load(battle_file);
 
         auto result = Interface::RenderBattle(graphics, battle, party);
 
@@ -1586,7 +1575,8 @@ namespace BloodSword::Test
              Graphics::RichText("15 INVENTORY\n\n\nManage inventory", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("16 VARIABLES\n\n\nRead/Write in-game variables", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("17 EAT FOOD\n\n\nEat Food", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("18 TAKE ITEMS\n\n\nTake Items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("18 TAKE ITEMS\n\n\nTake Items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("19 BATTLE (PREFERRED TARGETS)\n\n\nEnemies can target one aonther", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1690,7 +1680,7 @@ namespace BloodSword::Test
                         break;
                     case 4:
                         // battle order
-                        Test::Queue(graphics);
+                        Test::Battle(graphics, "battles/queue.json");
 
                         break;
                     case 5:
@@ -1729,7 +1719,7 @@ namespace BloodSword::Test
                         break;
                     case 10:
                         // Battle Engine test
-                        Test::Battle(graphics);
+                        Test::Battle(graphics, "battles/test-complete.json");
 
                         break;
                     case 11:
@@ -1770,6 +1760,11 @@ namespace BloodSword::Test
                     case 18:
                         // Take Items
                         Test::TakeItems(graphics, scene);
+
+                        break;
+                    case 19:
+                        // Battle Engine test (preferred targets)
+                        Test::Battle(graphics, "battles/targets.json");
 
                         break;
                     default:

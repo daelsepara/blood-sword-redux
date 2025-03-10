@@ -105,7 +105,9 @@ namespace BloodSword::Move
 
             auto is_exit = Tile.IsExit() && is_valid;
 
-            auto is_target = (Tile.IsPlayer() || (Tile.IsEnemy() && enemy_target == Tile.Id && enemy_target != -1)) && is_enemy;
+            auto is_enemy_target = (Tile.IsEnemy() && enemy_target == Tile.Id && enemy_target != -1);
+
+            auto is_target = (Tile.IsPlayer() || is_enemy_target) && is_enemy;
 
             result = (is_passable || is_passable_enemy || is_exit || is_target);
         }
