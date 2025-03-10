@@ -455,14 +455,17 @@ namespace BloodSword::Interface
         if (section.Battle.IsDefined())
         {
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), buttons.X, buttons.Y));
+
+            // fight button hotspot
+            overlay.Add(Controls::Base(Controls::Type::FIGHT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), buttons.X, buttons.Y));
-        }
 
-        // next button hotspot
-        overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            // next button hotspot
+            overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
 
         num_buttons++;
 
@@ -613,14 +616,17 @@ namespace BloodSword::Interface
         if (section.Battle.IsDefined())
         {
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::FIGHT), buttons.X, buttons.Y));
+
+            // next button hotspot
+            overlay.Add(Controls::Base(Controls::Type::FIGHT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), buttons.X, buttons.Y));
-        }
 
-        // next button hotspot
-        overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            // next button hotspot
+            overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        }
 
         num_buttons++;
 
@@ -976,6 +982,29 @@ namespace BloodSword::Interface
 
         auto done = false;
 
+        std::vector<std::string> captions = {
+            "CONTINUE",
+            "BATTLE",
+            "ITEMS",
+            "HEAL",
+            "SPELLS",
+            "INVENTORY",
+            "GAME",
+            "EXIT"};
+
+        Controls::Collection caption_controls = {
+            Controls::Type::NEXT,
+            Controls::Type::FIGHT,
+            Controls::Type::ITEMS,
+            Controls::Type::HEAL,
+            Controls::Type::SPELLS,
+            Controls::Type::INVENTORY,
+            Controls::Type::GAME,
+            Controls::Type::EXIT};
+
+        // create captions textures
+        auto textures = Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0));
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -1030,11 +1059,26 @@ namespace BloodSword::Interface
                 scroll_dn = false;
             }
 
+            auto caption_id = Controls::Find(caption_controls, input.Type);
+
+            if (caption_id >= 0 && caption_id < captions.size())
+            {
+                auto &control = overlay.Controls[input.Current];
+
+                if (textures[caption_id])
+                {
+                    // center texture
+                    auto center = (control.W - BloodSword::Width(textures[caption_id])) / 2;
+
+                    overlay.VerifyAndAdd(Scene::Element(textures[caption_id], control.X + center, control.Y + control.H + BloodSword::Pad));
+                }
+            }
+
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
             if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
             {
-                if (input.Type == Controls::Type::NEXT)
+                if (input.Type == Controls::Type::NEXT || input.Type == Controls::Type::FIGHT)
                 {
                     if (Engine::IsAlive(party))
                     {
@@ -1146,7 +1190,10 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::EXIT)
                 {
-                    done = true;
+                    if (Interface::Confirm(graphics, overlay, "ARE YOU SURE?", Color::Background, Color::Active, BloodSword::Border, Color::Active, false))
+                    {
+                        done = true;
+                    }
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
@@ -1182,6 +1229,8 @@ namespace BloodSword::Interface
         BloodSword::Free(&image);
 
         BloodSword::Free(&texture);
+
+        BloodSword::Free(textures);
 
         return next;
     }

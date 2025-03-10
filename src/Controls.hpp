@@ -184,6 +184,23 @@ namespace BloodSword::Controls
 
         return result;
     }
+
+    int Find(Controls::Collection &controls, Controls::Type type)
+    {
+        auto result = -1;
+
+        for (auto id = 0; id < controls.size(); id++)
+        {
+            if (controls[id] == type)
+            {
+                result = id;
+
+                break;
+            }
+        }
+
+        return result;
+    }
 }
 
 #endif

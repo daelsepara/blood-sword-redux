@@ -269,6 +269,7 @@ namespace BloodSword::Move
                 }
             }
 
+            // if there is no direct path, select closest
             if (path.Points.size() == 0)
             {
                 auto min_distance = map.Distance(src, dst);
@@ -290,12 +291,6 @@ namespace BloodSword::Move
         }
 
         return path;
-    }
-
-    // find a path from src X, Y to dst X, Y
-    Move::Path FindPath(Map::Base &map, int src_x, int src_y, int dst_x, int dst_y, bool unrestricted = false, int enemy_target = -1)
-    {
-        return Move::FindPath(map, Point(src_x, src_y), Point(dst_x, dst_y), unrestricted, enemy_target);
     }
 
     // return the number of valid moves that can be made in the path

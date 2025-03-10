@@ -973,12 +973,12 @@ namespace BloodSword::Interface
 
         if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
-            // PREFERRED TARGET:
+            // preferred targetting
             targets = Engine::RangedTargets(battle.Map, battle.Opponents, party, src, true);
         }
         else
         {
-            // DEFAULT
+            // default
             targets = Engine::RangedTargets(battle.Map, party, src, true, false);
         }
 
@@ -1013,12 +1013,12 @@ namespace BloodSword::Interface
         // check if enemy can move towards the player-controlled characters
         if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
-            // PREFERRED TARGET
+            // preferred targetting
             targets = Engine::MoveTargets(battle.Map, battle.Opponents, party, src, true);
         }
         else
         {
-            // DEFAULT
+            // default
             targets = Engine::MoveTargets(battle.Map, party, src, true, false);
         }
 
