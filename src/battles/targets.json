@@ -57,10 +57,7 @@
                     "target": "BARBARIAN",
                     "targets": [
                         "ASSASSIN",
-                        "WARRIOR",
-                        "TRICKSTER",
-                        "ENCHANTER",
-                        "SAGE"
+                        "PLAYER"
                     ],
                     "target_probability": 50
                 },
@@ -118,10 +115,7 @@
                     "target": "ASSASSIN",
                     "targets": [
                         "BARBARIAN",
-                        "WARRIOR",
-                        "TRICKSTER",
-                        "SAGE",
-                        "ENCHANTER"
+                        "PLAYER"
                     ],
                     "target_probability": 50
                 },
@@ -179,10 +173,7 @@
                     "target": "ASSASSIN",
                     "targets": [
                         "BARBARIAN",
-                        "WARRIOR",
-                        "TRICKSTER",
-                        "SAGE",
-                        "ENCHANTER"
+                        "PLAYER"
                     ],
                     "target_probability": 50
                 },
@@ -236,10 +227,7 @@
                     "target": "BARBARIAN",
                     "targets": [
                         "ASSASSIN",
-                        "WARRIOR",
-                        "TRICKSTER",
-                        "ENCHANTER",
-                        "SAGE"
+                        "PLAYER"
                     ],
                     "target_probability": 50
                 }

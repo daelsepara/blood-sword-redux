@@ -59,7 +59,8 @@
                     "targets": [
                         "ASSASSIN",
                         "PLAYER"
-                    ]
+                    ],
+                    "target_probability": 50
                 },
                 {
                     "asset": "BARBARIAN",
@@ -112,7 +113,8 @@
                     "targets": [
                         "ASSASSIN",
                         "PLAYER"
-                    ]
+                    ],
+                    "target_probability": 50
                 },
                 {
                     "asset": "BARBARIAN",
@@ -165,7 +167,8 @@
                     "targets": [
                         "ASSASSIN",
                         "PLAYER"
-                    ]
+                    ],
+                    "target_probability": 50
                 },
                 {
                     "asset": "BARBARIAN",
@@ -218,7 +221,8 @@
                     "targets": [
                         "ASSASSIN",
                         "PLAYER"
-                    ]
+                    ],
+                    "target_probability": 50
                 }
             ]
         },
