@@ -481,7 +481,7 @@ namespace BloodSword::Engine
     // helper function
     void Log(const char *action, Target::Type attacker, int id, Target::Type target, int target_id, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
     {
-        auto action_string = std::string(action) + " TARGET " + std::to_string(id);
+        auto action_string = std::string(action) + " TARGET " + std::to_string(target_id);
 
         auto attacker_string = std::string(Target::Mapping[attacker]) + " " + std::to_string(id);
 

@@ -937,6 +937,35 @@ namespace BloodSword::Interface
         }
     }
 
+    void LogAction(const char *action, Target::Type attacker, int id, Target::Type target, int target_id)
+    {
+        std::cerr << "["
+                  << Target::Mapping[attacker]
+                  << " "
+                  << id
+                  << "] ["
+                  << action
+                  << "] ["
+                  << Target::Mapping[target]
+                  << " "
+                  << target_id
+                  << "]"
+                  << std::endl;
+    }
+
+    void LogTargets(const char *target_type, Target::Type attacker, int id, int count)
+    {
+        std::cerr << "["
+                  << Target::Mapping[attacker]
+                  << " "
+                  << id
+                  << "] ["
+                  << target_type
+                  << " TARGETS] "
+                  << count
+                  << std::endl;
+    }
+
     // enemy does ranged attacks
     void EnemyShoots(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Engine::Queue &opponents, Character::Base &character, Point &src)
     {
@@ -953,7 +982,7 @@ namespace BloodSword::Interface
             targets = Engine::RangedTargets(battle.Map, party, src, true, false);
         }
 
-        std::cerr << "[SHOOT TARGETS] " << targets.size() << std::endl;
+        Interface::LogTargets("SHOOT", character.Target, battle.Map[src].Id, targets.size());
 
         // shoot only when there are no nearby player enemies
         if (targets.size() > 0 && opponents.size() == 0)
@@ -965,16 +994,7 @@ namespace BloodSword::Interface
                 // shoot first available target
                 if (!defender.IsImmune(character.Shoot))
                 {
-                    std::cerr << "["
-                              << Target::Mapping[character.Target]
-                              << " "
-                              << battle.Map[src].Id
-                              << "] [SHOOT] ["
-                              << Target::Mapping[defender.Target]
-                              << " "
-                              << target.Id
-                              << "]"
-                              << std::endl;
+                    Interface::LogAction("SHOOT", character.Target, battle.Map[src].Id, defender.Target, target.Id);
 
                     // shoot
                     Interface::Shoot(graphics, scene, battle, character, defender, target.Id);
@@ -1004,7 +1024,7 @@ namespace BloodSword::Interface
 
         auto valid_target = false;
 
-        std::cerr << "[MOVE TARGETS] " << targets.size() << std::endl;
+        Interface::LogTargets("MOVE", character.Target, battle.Map[src].Id, targets.size());
 
         for (auto &target : targets)
         {
@@ -1173,9 +1193,11 @@ namespace BloodSword::Interface
                 {
                     if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source))
                     {
-                        std::cerr << "[SURVIVOR] [ADD "
+                        std::cerr << "[SURVIVOR] ["
+                                  << Target::Mapping[party.Survivors[i].Target]
+                                  << " "
                                   << std::to_string(i)
-                                  << "]"
+                                  << "] [ADD]"
                                   << std::endl;
 
                         survivors.Add(party.Survivors[i]);
@@ -1192,8 +1214,10 @@ namespace BloodSword::Interface
 
                     for (auto i = 0; i < remove.size(); i++)
                     {
-                        std::cerr << "[SURVIVOR/PARTY] [DELETE "
-                                  << std::to_string(remove[i])
+                        std::cerr << "[PARTY SURVIVOR] [DELETE] ["
+                                  << Target::Mapping[party.Survivors[remove[i]].Target]
+                                  << " "
+                                  << std::to_string(i)
                                   << "]"
                                   << std::endl;
 
@@ -1203,11 +1227,11 @@ namespace BloodSword::Interface
                 }
 
                 std::cerr << Book::String(source)
-                          << " [SURVIVORS] "
+                          << " [REINFORCEMENTS] "
                           << std::to_string(survivors.Count())
                           << std::endl;
 
-                std::cerr << "[SURVIVORS/PARTY] "
+                std::cerr << "[PARTY SURVIVORS] "
                           << std::to_string(party.Survivors.size())
                           << std::endl;
 
@@ -1222,7 +1246,9 @@ namespace BloodSword::Interface
 
                         if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
                         {
-                            std::cerr << "[SURVIVOR "
+                            std::cerr << "[SURVIVOR] ["
+                                      << Target::Mapping[survivors[i].Target]
+                                      << " "
                                       << std::to_string(i)
                                       << "] [HEAL] "
                                       << std::to_string(survivors[i].Maximum(Attribute::Type::ENDURANCE))
@@ -1767,7 +1793,7 @@ namespace BloodSword::Interface
                                         }
                                         else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
-                                            std::cerr << "[FIGHT TARGETS] " << opponents.size() << std::endl;
+                                            Interface::LogTargets("FIGHT", character.Target, battle.Map[src].Id, opponents.size());
 
                                             Engine::ResetSpells(character);
 
@@ -1776,16 +1802,7 @@ namespace BloodSword::Interface
 
                                             auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[opponents[0].Id] : battle.Opponents[opponents[0].Id]);
 
-                                            std::cerr << "["
-                                                      << Target::Mapping[character.Target]
-                                                      << " "
-                                                      << order[combatant].Id
-                                                      << "] [FIGHT] ["
-                                                      << Target::Mapping[defender.Target]
-                                                      << " "
-                                                      << defender_id
-                                                      << "]"
-                                                      << std::endl;
+                                            Interface::LogAction("FIGHT", character.Target, order[combatant].Id, defender.Target, defender_id);
 
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, defender, defender_id, character.Fight);
                                         }
@@ -2756,9 +2773,9 @@ namespace BloodSword::Interface
             }
 
             std::cerr << Book::String(battle.Opponents.Location)
-                      << " [SURVIVORS/BATTLE] "
+                      << " [BATTLE SURVIVORS] "
                       << std::to_string(survivors)
-                      << " [SURVIVORS/PARTY] "
+                      << " [PARTY SURVIVORS] "
                       << std::to_string(party.Survivors.size())
                       << std::endl;
         }
