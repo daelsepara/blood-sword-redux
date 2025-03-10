@@ -42,6 +42,9 @@ namespace BloodSword::Engine
         RESULT
     };
 
+    // vulnerability scaler
+    const int VulnerabilityScaler = 4;
+
     // RNG engine
     auto Random = Random::Base();
 
@@ -444,6 +447,61 @@ namespace BloodSword::Engine
         return location;
     }
 
+    // BloodSword Engine Simple Intelligence Logger"
+    void Log(const char *action, const char *attacker, const char *target, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
+    {
+        std::cerr << "[" << attacker << "]"
+                  << " [" << action << "]"
+                  << " [" << target << "]";
+
+        if (path != -1)
+        {
+            std::cerr << " [PATH] " << path;
+        }
+
+        std::cerr << " [DIST] " << dist;
+
+        if (vuln != -1)
+        {
+            std::cerr << " [VULN] " << vuln;
+        }
+
+        if (prob != -1 && threshold != -1)
+        {
+            std::cerr << " [PROB] "
+                      << prob
+                      << " "
+                      << ((prob <= threshold) ? "<= " : "> ")
+                      << threshold;
+        }
+
+        std::cerr << std::endl;
+    }
+
+    // helper function
+    void Log(const char *action, Target::Type attacker, int id, Target::Type target, int target_id, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
+    {
+        auto action_string = std::string(action) + " TARGET " + std::to_string(id);
+
+        auto attacker_string = std::string(Target::Mapping[attacker]) + " " + std::to_string(id);
+
+        auto target_string = std::string(Target::Mapping[target]) + " " + std::to_string(target_id);
+
+        Engine::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln, prob, threshold);
+    }
+
+    // helper function
+    void Log(const char *action, Target::Type target, int id, int target_id, int dist, int path = -1, int vuln = -1)
+    {
+        auto action_string = std::string(action) + " TARGET";
+
+        auto attacker_string = std::string("ENEMY ") + std::to_string(id);
+
+        auto target_string = std::string(Target::Mapping[target]) + " " + std::to_string(target_id);
+
+        Engine::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln);
+    }
+
     // generic queue builder (based on distance / endurance)
     Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle, bool fight, bool ranged, bool move, bool spell, bool descending = false)
     {
@@ -473,18 +531,10 @@ namespace BloodSword::Engine
                     {
                         auto vulnerability = map.Free(location);
 
-                        std::cerr << "[ENEMY "
-                                  << map[src].Id
-                                  << "] [MOVE TARGET]"
-                                  << "["
-                                  << Target::Mapping[party[i].Target]
-                                  << "] [PATH] " << path.Points.size()
-                                  << " [DIST] " << distance
-                                  << " [VULN] " << vulnerability
-                                  << std::endl;
+                        Engine::Log("MOVE", party[i].Target, map[src].Id, i, distance, path.Points.size(), vulnerability);
 
                         // add vulnerability score (more empty spaces, more vulnerable)
-                        distance += (Map::Directions.size() - vulnerability) * 4;
+                        distance += (Map::Directions.size() - vulnerability) * VulnerabilityScaler;
                     }
                 }
                 else
@@ -493,27 +543,21 @@ namespace BloodSword::Engine
 
                     if (map[src].IsEnemy())
                     {
-                        std::cerr << "[ENEMY "
-                                  << map[src].Id
-                                  << "] [";
-
+                        auto action = std::string();
                         if (spell)
                         {
-                            std::cerr << "SPELL";
+                            action = "SPELL";
                         }
                         else if (ranged)
                         {
-                            std::cerr << "RANGED";
+                            action = "RANGED";
                         }
                         else
                         {
-                            std::cerr << "FIGHT";
+                            action = "FIGHT";
                         }
 
-                        std::cerr << " TARGET] ["
-                                  << Target::Mapping[party[i].Target]
-                                  << "] [DIST] " << distance
-                                  << std::endl;
+                        Engine::Log(action.c_str(), party[i].Target, map[src].Id, i, distance);
                     }
                 }
 
@@ -601,20 +645,10 @@ namespace BloodSword::Engine
                                 {
                                     auto vulnerability = map.Free(location);
 
-                                    std::cerr << "["
-                                              << Target::Mapping[character.Target]
-                                              << " " << id << "]"
-                                              << " [MOVE TARGET "
-                                              << i << "] ["
-                                              << Target::Mapping[opponents[i].Target]
-                                              << "]"
-                                              << " [PATH] " << path.Points.size()
-                                              << " [DIST] " << distance
-                                              << " [VULN] " << vulnerability
-                                              << std::endl;
+                                    Engine::Log("MOVE", character.Target, id, opponents[i].Target, i, distance, path.Points.size(), vulnerability);
 
                                     // add vulnerability score (more empty spaces, more vulnerable)
-                                    distance += (Map::Directions.size() - vulnerability) * 4;
+                                    distance += (Map::Directions.size() - vulnerability) * VulnerabilityScaler;
                                 }
                             }
                             else
@@ -626,17 +660,23 @@ namespace BloodSword::Engine
                                           << " " << id << "] "
                                           << "[";
 
+                                auto action = std::string();
+
+                                auto probability = -1;
+
+                                auto threshold = -1;
+
                                 if (spell)
                                 {
-                                    std::cerr << "SPELL";
+                                    action = "SPELL";
                                 }
                                 else if (ranged)
                                 {
-                                    std::cerr << "RANGED";
+                                    action = "RANGED";
                                 }
                                 else
                                 {
-                                    std::cerr << "FIGHT";
+                                    action = "FIGHT";
                                 }
 
                                 if (is_enemy && in_party && (character.TargetProbability > 0 && character.TargetProbability <= 100))
@@ -644,21 +684,14 @@ namespace BloodSword::Engine
                                     add = (prob < character.TargetProbability);
                                 }
 
-                                std::cerr << " TARGET "
-                                          << i
-                                          << "] ["
-                                          << Target::Mapping[opponents[i].Target]
-                                          << "]"
-                                          << " [DIST] " << distance;
-
-                                if ((move || ranged) && is_enemy && in_party)
+                                if (ranged && is_enemy && in_party)
                                 {
-                                    std::cerr << " [PROB] "
-                                              << prob
-                                              << " "
-                                              << ((prob <= character.TargetProbability) ? "<= " : "> ")
-                                              << character.TargetProbability;
+                                    probability = prob;
+
+                                    threshold = character.TargetProbability;
                                 }
+
+                                Engine::Log(action.c_str(), character.Target, id, opponents[i].Target, i, distance, -1, -1, probability, threshold);
 
                                 std::cerr << std::endl;
                             }
