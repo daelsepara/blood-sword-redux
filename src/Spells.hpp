@@ -303,14 +303,22 @@ namespace BloodSword::Spells
         int Uses = 0;
 
         // min number of opponents before it is used
-        int Min = 0;
+        int Min = 1;
 
         // max number of opponents before it is used
         int Max = 4;
 
+        // spell to check if already cast this round, NONE if any spell
+        Spells::Type AlreadyCast = Spells::Type::NONE;
+
+        // number of spells of type (AlreadyCast) must not exceed this number
+        int Count = 0;
+
+        Usage(Spells::Type spell, int uses, int min, int max, Spells::Type already_cast, int count) : Spell(spell), Uses(uses), Min(min), Max(max), AlreadyCast(already_cast), Count(count) {}
+
         Usage(Spells::Type spell, int uses, int min, int max) : Spell(spell), Uses(uses), Max(max) {}
 
-        Usage(Spells::Type spell, int min, int max) : Spell(spell), Uses(1), Min(min), Max(max) {}
+        Usage(Spells::Type spell, int min, int max) : Spell(spell), Uses(1), Min(min), Max(max), Count(1) {}
 
         Usage() {}
     };
@@ -377,9 +385,13 @@ namespace BloodSword::Spells
 
             auto max = !data[i]["max"].is_null() ? int(data[i]["max"]) : 0;
 
+            auto already_cast = !data[i]["already_cast"].is_null() ? Spells::Map(std::string(data[i]["already_cast"])) : Spells::Type::NONE;
+
+            auto count = !data[i]["count"].is_null() ? int(data[i]["count"]) : 0;
+
             if (spell != Spells::Type::NONE)
             {
-                strategies.push_back(Spells::Usage(spell, uses, min, max));
+                strategies.push_back(Spells::Usage(spell, uses, min, max, already_cast, count));
             }
         }
 
@@ -446,14 +458,40 @@ namespace BloodSword::Spells
         return data;
     }
 
+    int Count(Spells::List spells, Spells::Type spell)
+    {
+        auto count = 0;
+
+        if (spell == Spells::Type::NONE)
+        {
+            count = spells.size();
+        }
+        else
+        {
+            for (auto &cast : spells)
+            {
+                if (cast == spell)
+                {
+                    count++;
+                }
+            }
+        }
+
+        return count;
+    }
+
     // NPC will try to cast spell
-    bool CanCastSpells(Spells::Strategy &strategies, int opponents)
+    bool CanCastSpells(Spells::Strategy &strategies, Spells::List already_cast, int opponents)
     {
         bool cast = false;
 
         for (auto &strategy : strategies)
         {
-            if (strategy.Uses > 0 && opponents >= strategy.Min && opponents <= strategy.Max)
+            auto targets = (opponents >= strategy.Min && opponents <= strategy.Max);
+
+            auto spells_cast = Spells::Count(already_cast, strategy.AlreadyCast);
+
+            if (targets && (strategy.Uses > 0) && (spells_cast < strategy.Count))
             {
                 cast = true;
 

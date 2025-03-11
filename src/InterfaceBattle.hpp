@@ -855,7 +855,7 @@ namespace BloodSword::Interface
     }
 
     // enemy casts spells
-    void EnemyCastSpells(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
+    void EnemyCastSpells(Graphics::Base &graphics, Scene::Base &scene, Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src, Spells::List &already_cast)
     {
         auto map_w = battle.Map.ViewX * battle.Map.TileSize;
 
@@ -871,6 +871,8 @@ namespace BloodSword::Interface
             // cast spell
             if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
             {
+                already_cast.push_back(spell);
+                
                 // spellcasting successful
                 Interface::MessageBox(graphics, scene, std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Color::Highlight);
 
@@ -1706,6 +1708,9 @@ namespace BloodSword::Interface
                 // battle order
                 Engine::Queue order = {};
 
+                // spells already cast by NPC players
+                Spells::List already_cast = {};
+
                 if (round == 0 && battle.Has(Battle::Condition::AMBUSH_PLAYER))
                 {
                     // players get a free initial turn
@@ -1786,10 +1791,10 @@ namespace BloodSword::Interface
                                         // check if there are adjacent player combatants
                                         auto opponents = Interface::EnemyFights(battle, party, character, src);
 
-                                        if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, Engine::Count(party)) && !battle.Has(Battle::Condition::NO_COMBAT))
+                                        if (character.Has(Skills::Type::SPELLS) && Spells::CanCastSpells(character.SpellStrategy, already_cast, Engine::Count(party)) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             // cast or call to mind spell
-                                            Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);
+                                            Interface::EnemyCastSpells(graphics, scene, battle, party, character, src, already_cast);
                                         }
                                         else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
