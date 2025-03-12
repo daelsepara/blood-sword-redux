@@ -637,6 +637,20 @@ namespace BloodSword::Character
             }
         }
 
+        // NPC casts spell (updates strategy)
+        void CastSpell(Spells::Type spell)
+        {
+            for (auto &strategy : this->SpellStrategy)
+            {
+                if (strategy.Uses > 0 && strategy.Spell == spell)
+                {
+                    strategy.Uses--;
+
+                    break;
+                }
+            }
+        }
+
         void Add(Item::Type something, int quantity)
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)

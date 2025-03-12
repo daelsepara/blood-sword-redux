@@ -87,6 +87,9 @@ namespace BloodSword::Battle
 
         Book::Location Survivors = Book::Undefined;
 
+        // internal tracker of spells already cast this round
+        Spells::List AlreadyCast = {};
+
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}

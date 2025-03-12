@@ -501,20 +501,6 @@ namespace BloodSword::Spells
 
         return cast;
     }
-
-    // NPC casts spell (updates strategy)
-    void CastSpell(Spells::Strategy &strategies, Spells::Type spell)
-    {
-        for (auto &strategy : strategies)
-        {
-            if (strategy.Uses > 0 && strategy.Spell == spell)
-            {
-                strategy.Uses--;
-
-                break;
-            }
-        }
-    }
 }
 
 #endif
