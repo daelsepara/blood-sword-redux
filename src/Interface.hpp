@@ -3780,7 +3780,8 @@ namespace BloodSword::Interface
                     {
                         auto center = 0;
 
-                        if (centered)
+                        // do not center caption on first icon
+                        if (centered && texture_captions.size() > 1)
                         {
                             // center texture
                             center = (control.W - BloodSword::Width(texture_captions[input.Current])) / 2;
@@ -4128,7 +4129,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, false);
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
 
             if (selection.size() == 1)
             {

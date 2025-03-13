@@ -127,7 +127,9 @@ namespace BloodSword::Interface
 
                 controls.push_back(Controls::Type::MONEY);
 
-                captions.push_back("GOLD");
+                std::string gold_string = "GOLD: " + std::to_string(character.Quantity(Item::Type::GOLD));
+
+                captions.push_back(gold_string);
             }
 
             if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
@@ -307,9 +309,12 @@ namespace BloodSword::Interface
 
                                         done = true;
 
-                                        exit = true;
+                                        if (character.Quantity(Item::Type::GOLD) <= 0)
+                                        {
+                                            exit = true;
 
-                                        update.Update = true;
+                                            update.Update = true;
+                                        }
                                     }
                                     else
                                     {
