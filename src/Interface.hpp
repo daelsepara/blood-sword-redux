@@ -4160,34 +4160,39 @@ namespace BloodSword::Interface
 
     Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable)
     {
+        auto character_string = Engine::ToUpper(variable);
+
         auto character = Character::Class::NONE;
 
         if (Engine::IsAlive(party))
         {
-            if (Engine::Count(party) == 1)
+            if (character_string == "FIRST")
             {
                 character = Engine::FirstClass(party);
             }
-            else if (Engine::ToUpper(variable) == "FIRST")
-            {
-                character = Engine::FirstClass(party);
-            }
-            else if (Engine::ToUpper(variable) == "LAST")
+            else if (character_string == "LAST")
             {
                 character = Engine::LastClass(party);
             }
-            else if (Engine::ToUpper(variable) == "CHOSEN")
+            else if (character_string == "CHOSEN")
             {
                 character = party.ChosenCharacter;
             }
-            else if (Engine::ToUpper(variable) == "SELECT")
+            else if (character_string == "SELECT")
             {
-                character = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER", true, false, false, false, true);
+                if (Engine::Count(party) == 1)
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else
+                {
+                    character = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER", true, false, false, false, true);
+                }
             }
             else
             {
                 // default: try to map character class
-                character = Character::Map(variable);
+                character = Character::Map(character_string);
             }
         }
 
