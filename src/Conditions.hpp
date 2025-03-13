@@ -655,8 +655,7 @@ namespace BloodSword::Conditions
             internal_error = true;
 
             // variables
-            // 0 - player
-            if (condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
                 auto character = Character::Map(condition.Variables[0]);
 
@@ -686,6 +685,55 @@ namespace BloodSword::Conditions
 
                     internal_error = false;
                 }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::LAST)
+        {
+            internal_error = true;
+
+            // variables
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto character = Character::Map(condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else
+                    {
+                        for (auto i = (party.Count() - 1); i >= 0; i--)
+                        {
+                            if (Engine::IsAlive(party[i]))
+                            {
+                                result = (party[i].Class == character);
+
+                                break;
+                            }
+                        }
+
+                        if (!result)
+                        {
+                            text = std::string(Character::ClassMapping[character]) + " NOT THE LAST IN BATTLE ORDER!";
+                        }
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
             }
         }
         else if (condition.Type == Conditions::Type::TEST_GAIN_STATUS)
@@ -1161,8 +1209,8 @@ namespace BloodSword::Conditions
             internal_error = true;
 
             // variables
-            // 0 - ALL/FIRST/SELECT/CHOSEN or player
-            // 1 - FALL-BACK recipient (NONE/FIRST/SELECT)
+            // 0 - ALL/FIRST/LAST/SELECT/CHOSEN or player
+            // 1 - FALL-BACK recipient (NONE/FIRST/LAST/SELECT)
             // 2 - item
             if (condition.Variables.size() > 2)
             {
@@ -1176,15 +1224,23 @@ namespace BloodSword::Conditions
 
                 auto is_first = (Engine::ToUpper(condition.Variables[0]) == "FIRST");
 
+                auto is_last = (Engine::ToUpper(condition.Variables[0]) == "LAST");
+
+                auto first_or_last = (is_first || is_last);
+
                 auto selected = (Engine::ToUpper(condition.Variables[0]) == "SELECT");
 
-                auto next = is_character && (Engine::ToUpper(condition.Variables[1]) == "FIRST");
+                auto next_first = (Engine::ToUpper(condition.Variables[1]) == "FIRST");
+
+                auto next_last = (Engine::ToUpper(condition.Variables[1]) == "LAST");
+
+                auto next = is_character && (next_first || next_last);
 
                 auto select_next = is_character && (Engine::ToUpper(condition.Variables[1]) == "SELECT");
 
                 auto item = Item::Map(condition.Variables[2]);
 
-                if ((is_party || is_first || selected || is_character) && Engine::IsAlive(party) && item != Item::Type::NONE && Items::Found(item))
+                if ((is_party || first_or_last || selected || is_character) && Engine::IsAlive(party) && item != Item::Type::NONE && Items::Found(item))
                 {
                     auto characters = std::vector<Character::Class>();
 
@@ -1198,9 +1254,30 @@ namespace BloodSword::Conditions
                             }
                         }
                     }
-                    else if (is_first || (is_character && (!party.Has(character) || !Engine::IsAlive(party[character])) && next))
+                    else if (first_or_last || (is_character && (!party.Has(character) || !Engine::IsAlive(party[character])) && next))
                     {
-                        characters.push_back(Engine::FirstClass(party));
+                        if (!next)
+                        {
+                            if (is_first)
+                            {
+                                characters.push_back(Engine::FirstClass(party));
+                            }
+                            else if (is_last)
+                            {
+                                characters.push_back(Engine::LastClass(party));
+                            }
+                        }
+                        else
+                        {
+                            if (next_first)
+                            {
+                                characters.push_back(Engine::FirstClass(party));
+                            }
+                            else if (next_last)
+                            {
+                                characters.push_back(Engine::LastClass(party));
+                            }
+                        }
                     }
                     else if (selected || (is_character && (!party.Has(character) || !Engine::IsAlive(party[character])) && select_next))
                     {
