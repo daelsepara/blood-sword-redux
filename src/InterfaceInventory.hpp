@@ -120,7 +120,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0)
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1)
             {
                 // money
                 assets.push_back(Asset::Type::MONEY);
@@ -281,6 +281,46 @@ namespace BloodSword::Interface
                         else
                         {
                             Interface::ErrorMessage(graphics, background, MSG_IDENTIFY);
+                        }
+                    }
+                    else if (input == Controls::Type::MONEY)
+                    {
+                        if (Engine::IsAlive(party) && Engine::Count(party) > 1)
+                        {
+                            std::string message = "WHICH PLAYER TO TRANSFER GOLD TO?";
+
+                            auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
+
+                            if (character.Class != other_character)
+                            {
+                                std::string transfer_money = "HOW MUCH GOLD TO TRANSFER?";
+
+                                auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(Item::Type::GOLD), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
+
+                                if (transfer > 0)
+                                {
+                                    if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
+                                    {
+                                        party[other_character].Add(Item::Type::GOLD, transfer);
+
+                                        character.Remove(Item::Type::GOLD, transfer);
+
+                                        done = true;
+
+                                        exit = true;
+
+                                        update.Update = true;
+                                    }
+                                    else
+                                    {
+                                        Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
                         }
                     }
                     else if (input == Controls::Type::EAT)
