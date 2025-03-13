@@ -1,0 +1,57 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 76
+    },
+    "text": "You look at the four nearest mirrors. There might be a secret passage behind at least one of them, and you decide which one to try first.",
+    "choices": [
+        {
+            "text": "Look behind the first mirror",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 231
+                }
+            }
+        },
+        {
+            "text": "Look behind the second mirror",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 304
+                }
+            }
+        },
+        {
+            "text": "Look behind the third mirror",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 202
+                }
+            }
+        },
+        {
+            "text": "Look behind the fourth mirror",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 34
+                }
+            }
+        }
+    ],
+    "next": [
+        {
+            "type": "SELECT PLAYER",
+            "variables": [
+                "WHO SHALL EXAMINE THE MIRRORS?"
+            ]
+        }
+    ]
+}

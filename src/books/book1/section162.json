@@ -8,7 +8,7 @@
         {
             "type": "SELECT PLAYER",
             "variables": [
-                "WHO SHALL PLAY AGAINS KALUGEN?"
+                "WHO SHALL PLAY AGAINST KALUGEN?"
             ]
         },
         {

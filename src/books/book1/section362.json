@@ -1,0 +1,23 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 362
+    },
+    "text": "(SAGE) You are attempting to use your psionic power of ESP. Like many of your powers, it is unreliable. It depends upon a number of abstract symbols and mind-sets that you must meditate upon.",
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 498
+            },
+            "variables": [
+                "SAGE",
+                "PSYCHIC ABILITY",
+                "BOOK1",
+                "258",
+                "USING ESP FAILED!"
+            ]
+        }
+    ]
+}

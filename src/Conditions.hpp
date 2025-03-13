@@ -1793,6 +1793,45 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::SHOW_MESSAGE)
+        {
+            // variables:
+            // 0 - message
+            // 1 - border color (ACTIVE, HIGHLIGHT, INACTIVE, BACKGROUND, TRANSPARENT)
+            if (condition.Variables.size() > 1 && !condition.Variables[0].empty())
+            {
+                auto border = Color::Active;
+
+                if (Engine::ToUpper(condition.Variables[1]) == "INACTIVE")
+                {
+                    border = Color::Inactive;
+                }
+                else if (Engine::ToUpper(condition.Variables[1]) == "HIGHLIGHT")
+                {
+                    border = Color::Highlight;
+                }
+                else if (Engine::ToUpper(condition.Variables[1]) == "BACKGROUND")
+                {
+                    border = Color::Background;
+                }
+                else if (Engine::ToUpper(condition.Variables[1]) == "TRANSPARENT")
+                {
+                    border = Color::Transparent;
+                }
+                else
+                {
+                    border = Color::Active;
+                }
+
+                Interface::MessageBox(graphics, background, condition.Variables[0], border);
+                
+                result = true;
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;

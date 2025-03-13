@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 498
+    },
+    "text": "(SAGE) You try to free your mind from the effort of concentrating, to 'let go from trying,' as your adept masters taught you. Suddenly you enter a state of serene calm in which all things are clear, and in this instant of Nirvana you sense the thoughts of others around you.\n\n[Drifting outwards with this expanded sense, you feel the presence of an immensely powerful creature at the end of the corridor. Then, examining the side walls of the corridor, you detect brief flickers of thoughts, as though several beings of very low mentality lurk beyond the mirrors.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 216
+            },
+            "variables": [
+                "You return reluctantly to normal"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 287
+    },
+    "text": "(ENCHANTER) You pause for a moment and prepare to weave your PREDICTION spell. At last you feel the spell take effect and your seven senses flow forwards through the currents of future possibilities.\n\n[A jumble of strange images imposes itself upon your mind, many images overlapping one another. But the most haunting image stays with youeven when the effect of the spell has worn off. It is an image of your worst nightmare, a creature that cannot be harmed by magic, lurking ahead of you somewhere in the gloom. This is only one possible future, and having seen it you have a chance of averting it.]\n\nAs the spell fades, your glance falls on the mirrors. Could they conceal another route out of the corridor?",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 216
+            }
+        }
+    ]
+}

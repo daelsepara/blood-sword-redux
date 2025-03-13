@@ -1053,10 +1053,39 @@ namespace BloodSword::Engine
         return first;
     }
 
+    // returns index (in party) of the last (battle order) live character
+    int Last(Party::Base &party)
+    {
+        auto last = -1;
+
+        if (Engine::IsAlive(party))
+        {
+            for (auto i = (party.Count() - 1); i >= 0; i--)
+            {
+                if (Engine::IsAlive(party[i]))
+                {
+                    last = i;
+
+                    break;
+                }
+            }
+        }
+
+        return last;
+    }
+
     // returns class of first live character in party
     Character::Class FirstClass(Party::Base &party)
     {
         auto character = Engine::First(party);
+
+        return character != -1 ? party[character].Class : Character::Class::NONE;
+    }
+
+    // returns class of the last (battle order) live character
+    Character::Class LastClass(Party::Base &party)
+    {
+        auto character = Engine::Last(party);
 
         return character != -1 ? party[character].Class : Character::Class::NONE;
     }

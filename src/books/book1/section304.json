@@ -1,0 +1,15 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 304
+    },
+    "background": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 34
+            }
+        }
+    ]
+}

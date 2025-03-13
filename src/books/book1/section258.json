@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 258
+    },
+    "text": "(SAGE) You struggle hard to focus your mind until beads of perspiration stand out on your forehead, but try as you might you cannot achieve the effort of will needed to activate your latent psionic power. Groaning with exasperation, you abandon the attempt.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 216
+            }
+        }
+    ]
+}
