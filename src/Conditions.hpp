@@ -1824,7 +1824,7 @@ namespace BloodSword::Conditions
                 }
 
                 Interface::MessageBox(graphics, background, condition.Variables[0], border);
-                
+
                 result = true;
             }
             else
