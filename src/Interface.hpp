@@ -4157,6 +4157,26 @@ namespace BloodSword::Interface
 
         return update;
     }
+
+    Character::Class SelectCharacter(Party::Base &party, std::string variable)
+    {
+        auto character = Character::Class::NONE;
+
+        if (Engine::ToUpper(variable) == "FIRST")
+        {
+            character = Engine::FirstClass(party);
+        }
+        else if (Engine::ToUpper(variable) == "LAST")
+        {
+            character = Engine::LastClass(party);
+        }
+        else if (Engine::ToUpper(variable) == "CHOSEN")
+        {
+            character = party.ChosenCharacter;
+        }
+
+        return character;
+    }
 }
 
 #endif
