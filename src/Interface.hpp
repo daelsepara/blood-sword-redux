@@ -908,9 +908,9 @@ namespace BloodSword::Interface
     SDL_Texture *GeneratePartyStats(Graphics::Base &graphics, Party::Base &party, int w, int h)
     {
         // attribute labels
-        auto label_1 = std::string("RNK    FPR        END        GOLD");
+        auto label_1 = std::string("RNK    FPR        END            ");
 
-        auto label_2 = std::string("       AWR        DMG            ");
+        auto label_2 = std::string("GOLD   AWR        DMG            ");
 
         auto label_3 = std::string("       PSY        ARM            ");
 
@@ -967,9 +967,9 @@ namespace BloodSword::Interface
                     // format attribute values
                     auto stats_1 = four + rnk + std::string(3 - rnk.size(), ' ') + four + fpr + std::string(7 - fpr.size(), ' ') + four + end + '\n';
 
-                    auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + std::string(7 - dmg.size(), ' ') + gold + '\n';
+                    auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + '\n';
 
-                    auto stats_3 = std::string(11, ' ') + psy + std::string(7 - psy.size(), ' ') + four + arm;
+                    auto stats_3 = gold + std::string(11 - gold.size(), ' ') + psy + std::string(7 - psy.size(), ' ') + four + arm;
 
                     auto stats = stats_1 + stats_2 + stats_3;
 
@@ -2952,14 +2952,17 @@ namespace BloodSword::Interface
 
                     overlay.VerifyAndAdd(Scene::Element(current, (graphics.Width - BloodSword::Width(current)) / 2, party_y + pad));
 
-                    if (!Interface::Confirm(graphics, overlay, "PROCEED WITH THIS PARTY?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur))
+                    if (!Interface::Confirm(graphics, overlay, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur))
                     {
                         party.Clear();
                     }
                 }
             }
 
-            Interface::MessageBox(graphics, overlay, Graphics::RichText("PARTY COMPLETE!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur);
+            if (party.Count() > 1)
+            {
+                Interface::MessageBox(graphics, overlay, Graphics::RichText("PARTY COMPLETE!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, blur);
+            }
         }
 
         BloodSword::Free(&current);
@@ -4197,6 +4200,28 @@ namespace BloodSword::Interface
         }
 
         return character;
+    }
+
+    Character::Class GetCharacter(Controls::Type control)
+    {
+        auto character = Character::Class::NONE;
+
+        for (auto &keys : Interface::CharacterControls)
+        {
+            if (keys.second == control)
+            {
+                character = keys.first;
+
+                break;
+            }
+        }
+
+        return character;
+    }
+
+    bool IsCharacter(Controls::Type control)
+    {
+        return Interface::GetCharacter(control) != Character::Class::NONE;
     }
 }
 

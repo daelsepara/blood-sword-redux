@@ -596,6 +596,31 @@ namespace BloodSword::Interface
         }
     }
 
+    void InventoryControls(Scene::Base &overlay, Party::Base &party, SDL_Texture *image, Point origin)
+    {
+        auto id = overlay.Controls.size();
+
+        auto next_control = Controls::Find(overlay.Controls, Controls::Type::NEXT);
+
+        auto offset_y = BloodSword::Height(image) / party.Count();
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (party[i].Class != Character::Class::NONE)
+            {
+                auto up = (i > 0);
+
+                auto dn = (i < party.Count() - 1);
+
+                overlay.Add(Controls::Base(Interface::CharacterControls[party[i].Class], id, id, id, (up ? id - 1 : next_control), (dn ? id + 1 : next_control), origin.X + BloodSword::Pad, origin.Y + offset_y * i + BloodSword::Pad, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                id++;
+            }
+        }
+
+        overlay.Controls[next_control].Up = id - 1;
+    }
+
     void ItemControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
         auto current = Story::CurrentBook.Find(party.Location);
@@ -1044,6 +1069,11 @@ namespace BloodSword::Interface
             else
             {
                 Interface::StoryControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+
+                if (section.ImageAsset.length() == 0)
+                {
+                    Interface::InventoryControls(overlay, party, image, origin);
+                }
             }
 
             if (scroll_up)
@@ -1182,6 +1212,39 @@ namespace BloodSword::Interface
                         done = true;
                     }
                 }
+                else if (Interface::IsCharacter(input.Type))
+                {
+                    auto character = Interface::GetCharacter(input.Type);
+
+                    if (character != Character::Class::NONE && party.Has(character))
+                    {
+                        if (Engine::IsAlive(party[character]))
+                        {
+                            auto update = Interface::ManageInventory(graphics, overlay, party, party[character], true);
+
+                            if (update.Update && section.ImageAsset.empty())
+                            {
+                                BloodSword::Free(&image);
+
+                                // regenerate party stats
+                                image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                            }
+
+                            if (Book::IsDefined(update.Next))
+                            {
+                                next = update.Next;
+
+                                done = true;
+                            }
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, overlay, Engine::IsDead(party[character]), Color::Highlight);
+                        }
+                    }
+
+                    input.Selected = false;
+                }
                 else if (input.Type == Controls::Type::GAME)
                 {
                     auto update = Interface::GameMenu(graphics, overlay, party);
@@ -1202,6 +1265,8 @@ namespace BloodSword::Interface
                     {
                         done = true;
                     }
+
+                    input.Selected = false;
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
