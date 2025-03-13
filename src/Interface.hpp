@@ -3134,7 +3134,7 @@ namespace BloodSword::Interface
             std::swap(minimum, maximum);
         }
 
-        std::string string_current = "CUR: ";
+        std::string string_current = "NOW: ";
 
         std::string string_min = "MIN: " + std::to_string(minimum);
 
