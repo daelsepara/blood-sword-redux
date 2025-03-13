@@ -26,6 +26,8 @@ namespace BloodSword::Choice
         Base() {}
     };
 
+    typedef std::vector<Choice::Base> List;
+
     Choice::Base Parse(nlohmann::json &data)
     {
         auto choice = Choice::Base();

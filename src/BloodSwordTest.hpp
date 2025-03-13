@@ -1441,7 +1441,7 @@ namespace BloodSword::Test
         Interface::Heal(graphics, background, party, character, true);
     }
 
-    void PrintSelection(Graphics::Base &graphics, Scene::Base &background, std::vector<Asset::Type> &assets, std::vector<int> &selection, int min_select, int max_select)
+    void PrintSelection(Graphics::Base &graphics, Scene::Base &background, Asset::List &assets, std::vector<int> &selection, int min_select, int max_select)
     {
         if (selection.size() >= min_select && selection.size() <= max_select)
         {
@@ -1463,7 +1463,7 @@ namespace BloodSword::Test
 
     void Select(Graphics::Base &graphics, Scene::Base &background)
     {
-        std::vector<Asset::Type> assets = {
+        Asset::List assets = {
             Asset::Type::ACE_CLUBS,
             Asset::Type::ACE_DIAMONDS,
             Asset::Type::ACE_SPADES,
@@ -1476,7 +1476,7 @@ namespace BloodSword::Test
 
         Test::PrintSelection(graphics, background, assets, selection, 3, 3);
 
-        std::vector<Asset::Type> party_assets = {
+        Asset::List party_assets = {
             Asset::Type::WARRIOR,
             Asset::Type::TRICKSTER,
             Asset::Type::SAGE,

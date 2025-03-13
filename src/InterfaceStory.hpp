@@ -10,8 +10,6 @@
 
 namespace BloodSword::Interface
 {
-    typedef std::vector<Choice::Base> Choices;
-
     Conditions::Evaluation ProcessItemEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {
         auto result = false;
@@ -62,7 +60,7 @@ namespace BloodSword::Interface
         return Conditions::Evaluation(result, text);
     }
 
-    Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choices &choices, bool after_battle = false)
+    Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choice::List &choices, bool after_battle = false)
     {
         Book::Location next = Book::Undefined;
 

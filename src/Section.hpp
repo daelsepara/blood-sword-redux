@@ -21,9 +21,9 @@ namespace BloodSword::Section
     public:
         Book::Location Location = Book::Undefined;
 
-        std::vector<Feature::Type> Features = {};
+        Features::List Features = {};
 
-        std::vector<Choice::Base> Choices = {};
+        Choice::List Choices = {};
 
         Position::Type ImagePosition = Position::Type::NONE;
 
@@ -64,7 +64,7 @@ namespace BloodSword::Section
         // set features
         if (!data["features"].is_null() && data["features"].is_array() && data["features"].size() > 0)
         {
-            auto features = std::vector<Feature::Type>();
+            auto features = Features::List();
 
             for (auto i = 0; i < data["features"].size(); i++)
             {
@@ -79,7 +79,7 @@ namespace BloodSword::Section
         // read choices
         if (!data["choices"].is_null() && data["choices"].is_array() && data["choices"].size() > 0)
         {
-            auto choices = std::vector<Choice::Base>();
+            auto choices = Choice::List();
 
             for (auto i = 0; i < data["choices"].size(); i++)
             {

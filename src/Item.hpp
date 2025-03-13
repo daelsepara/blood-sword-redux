@@ -127,7 +127,7 @@ namespace BloodSword::Item
             return this->Attributes.find(attribute) != this->Attributes.end();
         }
 
-        bool HasAll(std::vector<Item::Property> properties)
+        bool HasAll(Item::Properties properties)
         {
             auto has = true;
 
@@ -139,7 +139,7 @@ namespace BloodSword::Item
             return has;
         }
 
-        bool HasAny(std::vector<Item::Property> properties)
+        bool HasAny(Item::Properties properties)
         {
             auto has = false;
 
@@ -456,7 +456,7 @@ namespace BloodSword::Items
         Item::CardType::ACE_OF_RINGS,
         Item::CardType::BUFFOON};
 
-    std::vector<Asset::Type> CardAssets = {
+    Asset::List CardAssets = {
         Asset::Type::KING_DIAMONDS,
         Asset::Type::ACE_DIAMONDS,
         Asset::Type::ACE_CLUBS,

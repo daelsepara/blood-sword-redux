@@ -148,6 +148,8 @@ namespace BloodSword::Asset
     template <typename T>
     using AssetMapping = BloodSword::UnorderedMap<Asset::Type, T>;
 
+    typedef std::vector<Asset::Type> List;
+
     BloodSword::Mapping<Asset::Type> TypeMapping = {
         {Asset::Type::NONE, "NONE"},
         {Asset::Type::WARRIOR, "WARRIOR"},

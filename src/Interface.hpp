@@ -109,7 +109,7 @@ namespace BloodSword::Interface
 
     SDL_Texture *NoSpells = nullptr;
 
-    std::vector<Asset::Type> DICE = {
+    Asset::List DICE = {
         Asset::Type::DICE1,
         Asset::Type::DICE2,
         Asset::Type::DICE3,
@@ -3587,7 +3587,7 @@ namespace BloodSword::Interface
     }
 
     // generate horizontal icon menu
-    Scene::Base IconList(Point origin, int w, int h, std::vector<Asset::Type> assets, std::vector<Controls::Type> controls, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, Controls::Type button, Asset::Type asset)
+    Scene::Base IconList(Point origin, int w, int h, Asset::List assets, Controls::Collection controls, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, Controls::Type button, Asset::Type asset)
     {
         auto overlay = Scene::Base();
 
@@ -3637,7 +3637,7 @@ namespace BloodSword::Interface
         return overlay;
     }
 
-    void LogOptions(std::vector<Asset::Type> &assets, std::vector<int> &selection, std::string selected)
+    void LogOptions(Asset::List &assets, std::vector<int> &selection, std::string selected)
     {
         if (selection.size() > 0)
         {
@@ -3672,7 +3672,7 @@ namespace BloodSword::Interface
                   << std::endl;
     }
 
-    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, std::vector<Asset::Type> assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true)
+    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, Asset::List assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true)
     {
         auto random = Random::Base();
 
@@ -3680,7 +3680,7 @@ namespace BloodSword::Interface
 
         auto selection = std::vector<bool>(assets.size());
 
-        auto controls = std::vector<Controls::Type>(selection.size(), Controls::Type::SELECT);
+        auto controls = Controls::Collection(selection.size(), Controls::Type::SELECT);
 
         auto texture = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -3781,7 +3781,7 @@ namespace BloodSword::Interface
                         auto center = 0;
 
                         // do not center caption on first icon
-                        if (centered && texture_captions.size() > 1)
+                        if (centered && input.Current > 0)
                         {
                             // center texture
                             center = (control.W - BloodSword::Width(texture_captions[input.Current])) / 2;
@@ -4053,7 +4053,7 @@ namespace BloodSword::Interface
     // change battle order
     bool BattleOrder(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
-        auto assets = std::vector<Asset::Type>();
+        auto assets = Asset::List();
 
         auto values = std::vector<int>();
 
@@ -4072,7 +4072,7 @@ namespace BloodSword::Interface
 
             if (selection.size() == party.Count())
             {
-                auto characters = std::vector<Character::Base>();
+                auto characters = Party::List();
 
                 for (auto i = 0; i < selection.size(); i++)
                 {
@@ -4097,7 +4097,7 @@ namespace BloodSword::Interface
     {
         auto update = false;
 
-        std::vector<Asset::Type> assets = {
+        Asset::List assets = {
             Asset::Type::BATTLE_ORDER,
             Asset::Type::LOAD,
             Asset::Type::SAVE,

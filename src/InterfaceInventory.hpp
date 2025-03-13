@@ -25,9 +25,9 @@ namespace BloodSword::Interface
             // select destination for dropped items
             auto &destination = (current != -1 && current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current].Items : ether;
 
-            auto assets = std::vector<Asset::Type>();
+            auto assets = Asset::List();
 
-            auto controls = std::vector<Controls::Type>();
+            auto controls = Controls::Collection();
 
             auto captions = std::vector<std::string>();
 
@@ -289,13 +289,13 @@ namespace BloodSword::Interface
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
                         {
-                            std::string message = "WHICH PLAYER TO TRANSFER GOLD TO?";
+                            std::string message = "SELECT THE PLAYER TO RECEIVE GOLD";
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
                             if (character.Class != other_character)
                             {
-                                std::string transfer_money = "HOW MUCH GOLD TO TRANSFER?";
+                                std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
 
                                 auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(Item::Type::GOLD), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
 
@@ -326,6 +326,36 @@ namespace BloodSword::Interface
                         else
                         {
                             Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
+                        }
+                    }
+                    else if (input == Controls::Type::TRADE)
+                    {
+                        if (Engine::IsAlive(party) && Engine::Count(party) > 1)
+                        {
+                            std::string message = "WHO SHALL RECEIVE THE " + items[id].Name + "?";
+
+                            auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
+
+                            if (other_character != Character::Class::NONE)
+                            {
+                                if (other_character != character.Class && party.Has(other_character) && Engine::IsAlive(party[other_character]))
+                                {
+                                    done = Interface::TransferItem(graphics, background, party[other_character], items, id);
+
+                                    if (done)
+                                    {
+                                        exit = true;
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Interface::InternalError(graphics, background, std::string("Internal Error: TRADE"));
+                            }
+                        }
+                        else
+                        {
+                            Interface::InternalError(graphics, background, std::string("Internal Error: TRADE"));
                         }
                     }
                     else if (input == Controls::Type::EAT)
@@ -381,9 +411,9 @@ namespace BloodSword::Interface
 
     void ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items, int id)
     {
-        auto assets = std::vector<Asset::Type>();
+        auto assets = Asset::List();
 
-        auto controls = std::vector<Controls::Type>();
+        auto controls = Controls::Collection();
 
         auto captions = std::vector<std::string>();
 

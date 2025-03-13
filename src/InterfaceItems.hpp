@@ -31,6 +31,11 @@ namespace BloodSword::Interface
         {
             Interface::MessageBox(graphics, background, message, Color::Active);
 
+            if (source[id].Is(Item::Property::EQUIPPED))
+            {
+                source[id].Remove(Item::Property::EQUIPPED);
+            }
+
             Items::Add(destination, source[id]);
 
             source.erase(source.begin() + id);

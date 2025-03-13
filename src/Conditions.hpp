@@ -980,7 +980,7 @@ namespace BloodSword::Conditions
                 if (options > 0 && min_select > 0 && min_select <= max_select && condition.Variables.size() > expected)
                 {
                     // contains assets
-                    auto assets = std::vector<Asset::Type>();
+                    auto assets = Asset::List();
 
                     // contains card ids
                     auto values = std::vector<int>();
@@ -1100,7 +1100,7 @@ namespace BloodSword::Conditions
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
-                auto characters = std::vector<Character::Class>();
+                auto characters = Character::Classes();
 
                 auto items = Items::List();
 
@@ -1242,7 +1242,7 @@ namespace BloodSword::Conditions
 
                 if ((is_party || first_or_last || selected || is_character) && Engine::IsAlive(party) && item != Item::Type::NONE && Items::Found(item))
                 {
-                    auto characters = std::vector<Character::Class>();
+                    auto characters = Character::Classes();
 
                     if (is_party)
                     {
@@ -1321,7 +1321,7 @@ namespace BloodSword::Conditions
             // 1 - N items to be excluded (optional)
             if (condition.Variables.size() > 0 && !condition.Variables[0].empty())
             {
-                auto excluded = std::vector<Item::Type>();
+                auto excluded = Items::List();
 
                 for (auto i = 1; i < condition.Variables.size(); i++)
                 {
