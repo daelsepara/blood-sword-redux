@@ -305,6 +305,19 @@ namespace BloodSword::Conditions
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
 
+                if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                {
+                    character = Engine::LastClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                {
+                    character = party.ChosenCharacter;
+                }
+
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
                 auto book = Book::MapBook(condition.Variables[2]);
@@ -352,6 +365,19 @@ namespace BloodSword::Conditions
             if (condition.Variables.size() > 2)
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
+
+                if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                {
+                    character = Engine::LastClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                {
+                    character = party.ChosenCharacter;
+                }
 
                 auto item = Item::Map(condition.Variables[1]);
 
@@ -407,6 +433,19 @@ namespace BloodSword::Conditions
             if (condition.Variables.size() > 1)
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
+
+                if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                {
+                    character = Engine::LastClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                {
+                    character = party.ChosenCharacter;
+                }
 
                 auto item = Item::Map(condition.Variables[1]);
 
@@ -559,6 +598,19 @@ namespace BloodSword::Conditions
                 {
                     auto character = Character::Map(condition.Variables[0]);
 
+                    if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                    {
+                        character = Engine::FirstClass(party);
+                    }
+                    else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                    {
+                        character = Engine::LastClass(party);
+                    }
+                    else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                    {
+                        character = party.ChosenCharacter;
+                    }
+
                     if (character != Character::Class::NONE && status != Character::Status::NONE)
                     {
                         result = party.Has(character);
@@ -623,6 +675,19 @@ namespace BloodSword::Conditions
                 else
                 {
                     auto character = Character::Map(condition.Variables[0]);
+
+                    if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                    {
+                        character = Engine::FirstClass(party);
+                    }
+                    else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                    {
+                        character = Engine::LastClass(party);
+                    }
+                    else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                    {
+                        character = party.ChosenCharacter;
+                    }
 
                     if (character != Character::Class::NONE && status != Character::Status::NONE)
                     {
@@ -783,6 +848,19 @@ namespace BloodSword::Conditions
                     {
                         auto character = Character::Map(condition.Variables[0]);
 
+                        if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                        {
+                            character = Engine::FirstClass(party);
+                        }
+                        else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                        {
+                            character = Engine::LastClass(party);
+                        }
+                        else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                        {
+                            character = party.ChosenCharacter;
+                        }
+
                         if (character != Character::Class::NONE)
                         {
                             if (party.Has(character))
@@ -880,6 +958,19 @@ namespace BloodSword::Conditions
             {
                 auto character = Character::Map(condition.Variables[0]);
 
+                if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                {
+                    character = Engine::LastClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                {
+                    character = party.ChosenCharacter;
+                }
+
                 auto spell = Spells::Map(condition.Variables[1]);
 
                 if (character != Character::Class::NONE && spell != Spells::Type::NONE)
@@ -921,6 +1012,19 @@ namespace BloodSword::Conditions
             if (condition.Variables.size() > 1)
             {
                 auto character = Character::Map(condition.Variables[0]);
+
+                if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                {
+                    character = Engine::LastClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                {
+                    character = party.ChosenCharacter;
+                }
 
                 auto spell = Spells::Map(condition.Variables[1]);
 
@@ -1099,6 +1203,19 @@ namespace BloodSword::Conditions
             if (condition.Variables.size() > 1)
             {
                 auto character = Character::Map(std::string(condition.Variables[0]));
+
+                if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                {
+                    character = Engine::LastClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                {
+                    character = party.ChosenCharacter;
+                }
 
                 auto characters = std::vector<Character::Class>();
 
@@ -1717,7 +1834,20 @@ namespace BloodSword::Conditions
             // 2 - quantity or variable
             if (condition.Variables.size() > 2)
             {
-                auto character = (Engine::ToUpper(condition.Variables[0]) == "CHOSEN") ? party.ChosenCharacter : Character::Map(std::string(condition.Variables[0]));
+                auto character = Character::Map(std::string(condition.Variables[0]));
+
+                if (Engine::ToUpper(condition.Variables[0]) == "FIRST")
+                {
+                    character = Engine::FirstClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "LAST")
+                {
+                    character = Engine::LastClass(party);
+                }
+                else if (Engine::ToUpper(condition.Variables[0]) == "CHOSEN")
+                {
+                    character = party.ChosenCharacter;
+                }
 
                 auto item = Item::Map(condition.Variables[1]);
 
