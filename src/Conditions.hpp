@@ -176,7 +176,7 @@ namespace BloodSword::Conditions
             // 0 - player
             if (condition.Variables.size() > 0)
             {
-                auto character = Character::Map(condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 if (character != Character::Class::NONE)
                 {
@@ -201,7 +201,7 @@ namespace BloodSword::Conditions
         {
             if (condition.Variables.size() > 0)
             {
-                auto character = Character::Map(condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 result = (party.ChosenCharacter == character);
 
@@ -263,7 +263,7 @@ namespace BloodSword::Conditions
             // 1 - item
             if (condition.Variables.size() > 1)
             {
-                auto character = Character::Map(condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto item = Item::Map(condition.Variables[1]);
 
@@ -303,7 +303,7 @@ namespace BloodSword::Conditions
             // 4 - failure message
             if (condition.Variables.size() > 4)
             {
-                auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
@@ -351,7 +351,7 @@ namespace BloodSword::Conditions
             // 2 - quantity
             if (condition.Variables.size() > 2)
             {
-                auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto item = Item::Map(condition.Variables[1]);
 
@@ -406,7 +406,7 @@ namespace BloodSword::Conditions
             // 1 - item
             if (condition.Variables.size() > 1)
             {
-                auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto item = Item::Map(condition.Variables[1]);
 
@@ -557,7 +557,7 @@ namespace BloodSword::Conditions
                 }
                 else
                 {
-                    auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                    auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                     if (character != Character::Class::NONE && status != Character::Status::NONE)
                     {
@@ -622,7 +622,7 @@ namespace BloodSword::Conditions
                 }
                 else
                 {
-                    auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                    auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                     if (character != Character::Class::NONE && status != Character::Status::NONE)
                     {
@@ -657,7 +657,7 @@ namespace BloodSword::Conditions
             // variables
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
-                auto character = Character::Map(condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 if (character != Character::Class::NONE)
                 {
@@ -700,7 +700,7 @@ namespace BloodSword::Conditions
             // variables
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
-                auto character = Character::Map(condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 if (character != Character::Class::NONE)
                 {
@@ -781,7 +781,7 @@ namespace BloodSword::Conditions
                     }
                     else
                     {
-                        auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                        auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                         if (character != Character::Class::NONE)
                         {
@@ -878,7 +878,7 @@ namespace BloodSword::Conditions
             // 1 - spell
             if (condition.Variables.size() > 1)
             {
-                auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto spell = Spells::Map(condition.Variables[1]);
 
@@ -920,7 +920,7 @@ namespace BloodSword::Conditions
             // 1 - spell
             if (condition.Variables.size() > 1)
             {
-                auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto spell = Spells::Map(condition.Variables[1]);
 
@@ -1098,7 +1098,7 @@ namespace BloodSword::Conditions
             // 1 .. N - items to discard (type)
             if (condition.Variables.size() > 1)
             {
-                auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto characters = std::vector<Character::Class>();
 
@@ -1214,7 +1214,7 @@ namespace BloodSword::Conditions
             // 2 - item
             if (condition.Variables.size() > 2)
             {
-                auto character = Character::Map(std::string(condition.Variables[0]));
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 character = (Engine::ToUpper(condition.Variables[0]) == "CHOSEN") ? party.ChosenCharacter : character;
 
@@ -1717,7 +1717,7 @@ namespace BloodSword::Conditions
             // 2 - quantity or variable
             if (condition.Variables.size() > 2)
             {
-                auto character = Interface::SelectCharacter(party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto item = Item::Map(condition.Variables[1]);
 
