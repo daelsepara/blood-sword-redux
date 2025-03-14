@@ -20,7 +20,11 @@ namespace BloodSword::Target
         ENCHANTER,
         ASSASSIN,
         BARBARIAN,
-        CORPSE
+        CORPSE,
+        GUARD,
+        NIGHT_ELF,
+        MAGUS_VYL,
+        MAN_IN_BLUE
     };
 
     typedef std::vector<Target::Type> List;
@@ -35,7 +39,11 @@ namespace BloodSword::Target
         {Target::Type::ENCHANTER, "ENCHANTER"},
         {Target::Type::ASSASSIN, "ASSASSIN"},
         {Target::Type::BARBARIAN, "BARBARIAN"},
-        {Target::Type::CORPSE, "CORPSE"}};
+        {Target::Type::CORPSE, "CORPSE"},
+        {Target::Type::GUARD, "GUARD"},
+        {Target::Type::NIGHT_ELF, "NIGHT ELF"},
+        {Target::Type::MAGUS_VYL, "MAGUS VYL"},
+        {Target::Type::MAN_IN_BLUE, "MAN IN BLUE"}};
 
     Target::Type Map(const char *target)
     {

@@ -80,7 +80,7 @@
                             "type": "NIGHTHOWL"
                         }
                     ],
-                    "target": "ENEMY"
+                    "target": "NIGHT ELF"
                 },
                 {
                     "asset": "NIGHT ELF",
@@ -156,7 +156,7 @@
                             "type": "NIGHTHOWL"
                         }
                     ],
-                    "target": "ENEMY"
+                    "target": "NIGHT ELF"
                 },
                 {
                     "asset": "NIGHT ELF",
@@ -232,7 +232,7 @@
                             "type": "NIGHTHOWL"
                         }
                     ],
-                    "target": "ENEMY"
+                    "target": "NIGHT ELF"
                 },
                 {
                     "asset": "NIGHT ELF",
@@ -308,7 +308,7 @@
                             "type": "NIGHTHOWL"
                         }
                     ],
-                    "target": "ENEMY"
+                    "target": "NIGHT ELF"
                 }
             ]
         }
