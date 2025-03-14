@@ -1091,7 +1091,7 @@ namespace BloodSword::Interface
 
             if (caption_id >= 0 && caption_id < captions.size())
             {
-                auto &control = overlay.Controls[caption_id];
+                auto &control = overlay.Controls[input.Current];
 
                 if (textures[caption_id])
                 {
