@@ -1091,7 +1091,7 @@ namespace BloodSword::Interface
 
             if (caption_id >= 0 && caption_id < captions.size())
             {
-                auto &control = overlay.Controls[input.Current];
+                auto &control = overlay.Controls[caption_id];
 
                 if (textures[caption_id])
                 {
@@ -1108,6 +1108,8 @@ namespace BloodSword::Interface
             {
                 if (input.Type == Controls::Type::NEXT || input.Type == Controls::Type::FIGHT)
                 {
+                    auto input_type = input.Type;
+
                     if (Engine::IsAlive(party))
                     {
                         while (!Interface::CheckItemLimit(party))
@@ -1146,6 +1148,10 @@ namespace BloodSword::Interface
                     {
                         Interface::ErrorMessage(graphics, overlay, Interface::MSG_OVER);
                     }
+
+                    input.Current = Controls::Find(overlay.Controls, input_type);
+
+                    input.Selected = false;
                 }
                 else if (input.Type == Controls::Type::SPELLS)
                 {
@@ -1162,6 +1168,8 @@ namespace BloodSword::Interface
                         }
                     }
 
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SPELLS);
+
                     input.Selected = false;
                 }
                 else if (input.Type == Controls::Type::HEAL)
@@ -1169,11 +1177,11 @@ namespace BloodSword::Interface
                     if (party.Has(Character::Class::SAGE))
                     {
                         Interface::Heal(graphics, overlay, party, party[Character::Class::SAGE], true);
-
-                        input.Current = input.Current = Controls::Find(overlay.Controls, Controls::Type::HEAL);
-
-                        input.Selected = false;
                     }
+
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::HEAL);
+
+                    input.Selected = false;
                 }
                 else if (input.Type == Controls::Type::ITEMS)
                 {
@@ -1186,6 +1194,8 @@ namespace BloodSword::Interface
                         // regenerate party stats
                         image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                     }
+
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::ITEMS);
 
                     input.Selected = false;
                 }
@@ -1201,14 +1211,16 @@ namespace BloodSword::Interface
                         image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                     }
 
-                    input.Selected = false;
-
                     if (Book::IsDefined(update.Next))
                     {
                         next = update.Next;
 
                         done = true;
                     }
+
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::INVENTORY);
+
+                    input.Selected = false;
                 }
                 else if (Interface::IsCharacter(input.Type))
                 {
@@ -1255,6 +1267,8 @@ namespace BloodSword::Interface
                         image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                     }
 
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::GAME);
+
                     input.Selected = false;
                 }
                 else if (input.Type == Controls::Type::EXIT)
@@ -1279,6 +1293,8 @@ namespace BloodSword::Interface
 
                         scroll_up = true;
                     }
+
+                    input.Selected = false;
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
@@ -1293,6 +1309,8 @@ namespace BloodSword::Interface
 
                         scroll_dn = true;
                     }
+
+                    input.Selected = false;
                 }
             }
         }
