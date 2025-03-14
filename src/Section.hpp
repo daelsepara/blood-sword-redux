@@ -41,6 +41,11 @@ namespace BloodSword::Section
 
         Items::Inventory Items = {};
 
+        Conditions::List BattleEvents = {};
+
+        // flag to indicate that battle events have been processed already
+        bool ProcessedBattleEvents = false;
+
         Base() {}
 
         bool Has(Feature::Type feature)
@@ -140,6 +145,21 @@ namespace BloodSword::Section
             }
 
             section.Events = events;
+        }
+
+        // events happening before battle
+        if (!data["battle_events"].is_null() && data["battle_events"].is_array() && data["battle_events"].size() > 0)
+        {
+            auto battle_events = Conditions::List();
+
+            for (auto i = 0; i < data["battle_events"].size(); i++)
+            {
+                auto condition = Conditions::Parse(data["battle_events"][i]);
+
+                battle_events.push_back(condition);
+            }
+
+            section.BattleEvents = battle_events;
         }
 
         // load "next section" conditions

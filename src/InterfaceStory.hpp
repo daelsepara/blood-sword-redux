@@ -332,6 +332,25 @@ namespace BloodSword::Interface
         return results;
     }
 
+    // process events before battle
+    void ProcessBattleEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+        auto current = Story::CurrentBook.Find(party.Location);
+
+        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+
+        if (section.BattleEvents.size() > 0)
+        {
+            std::cerr << "[PRE-BATTLE] " << Book::String(section.Location) << std::endl;
+
+            for (auto &condition : section.BattleEvents)
+            {
+                // ignore results
+                Conditions::Process(graphics, background, party, condition);
+            }
+        }
+    }
+
     // get next location
     Book::Location NextSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
@@ -345,8 +364,16 @@ namespace BloodSword::Interface
 
         auto exit_battle = false;
 
+        if (section.BattleEvents.size() > 0 && !section.ProcessedBattleEvents)
+        {
+            // process this only once
+            Interface::ProcessBattleEvents(graphics, background, party);
+
+            section.ProcessedBattleEvents = true;
+        }
+
         // fight battle
-        if (section.Battle.IsDefined())
+        if (Engine::IsAlive(party) && section.Battle.IsDefined())
         {
             std::cerr << "[BATTLE] " << Book::String(section.Location) << std::endl;
 

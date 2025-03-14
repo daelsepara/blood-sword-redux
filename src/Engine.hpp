@@ -247,6 +247,18 @@ namespace BloodSword::Engine
         return (is_alive && !is_away && !is_paralyzed && battle);
     }
 
+    int Combatants(Party::Base &party, bool in_battle = false)
+    {
+        auto live = 0;
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            live += (Engine::CanTarget(party[character], in_battle) && !party[character].Is(Character::Status::EXCLUDED)) ? 1 : 0;
+        }
+
+        return live;
+    }
+
     int Min(Party::Base &party, Attribute::Type attribute, bool in_battle = false)
     {
         auto min_value = 255;
@@ -983,9 +995,10 @@ namespace BloodSword::Engine
     void ResetAll(Party::Base &party)
     {
         party.Remove({Character::Status::AWAY,
-                      Character::Status::FLEEING,
                       Character::Status::DEFENDING,
                       Character::Status::DEFENDED,
+                      Character::Status::ENTANGLED,
+                      Character::Status::FLEEING,
                       Character::Status::PARALYZED,
                       Character::Status::INSTANT_DEATH,
                       Character::Status::IN_BATTLE});

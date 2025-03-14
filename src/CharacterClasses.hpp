@@ -50,7 +50,8 @@ namespace BloodSword::Character
         EXCLUDED,
         TACTICS,
         MESMERISED,
-        INSTANT_DEATH
+        INSTANT_DEATH,
+        ENTANGLED
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -69,7 +70,8 @@ namespace BloodSword::Character
         {Character::Status::EXCLUDED, "EXCLUDED"},
         {Character::Status::TACTICS, "TACTICS"},
         {Character::Status::MESMERISED, "MESMERISED"},
-        {Character::Status::INSTANT_DEATH, "INSTANT DEATH"}};
+        {Character::Status::INSTANT_DEATH, "INSTANT DEATH"},
+        {Character::Status::ENTANGLED, "ENTANGLED"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -87,7 +89,8 @@ namespace BloodSword::Character
         {Character::Status::EXCLUDED, -1},
         {Character::Status::TACTICS, -1},
         {Character::Status::MESMERISED, -1},
-        {Character::Status::INSTANT_DEATH, -1}};
+        {Character::Status::INSTANT_DEATH, -1},
+        {Character::Status::ENTANGLED, -1}};
 
     Character::Status MapStatus(const char *status)
     {

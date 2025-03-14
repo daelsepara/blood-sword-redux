@@ -58,7 +58,7 @@ namespace BloodSword::Interface
         if (!src.IsNone())
         {
             // can move
-            if (Move::Available(battle.Map, src))
+            if (Move::Available(battle.Map, src) && !character.Is(Character::Status::ENTANGLED))
             {
                 controls.push_back(Controls::Type::MOVE);
             }
@@ -1780,11 +1780,29 @@ namespace BloodSword::Interface
                 party.Remove(Character::Status::TACTICS);
             }
 
+            if (battle.Has(Battle::Condition::ENTANGLED))
+            {
+                // apply ENTANGLED
+                party.Add(Character::Status::ENTANGLED);
+            }
+
             // Check if any players in the party are AWAY / not participating
             Interface::CheckPartyAwayStatus(battle, party);
 
             // set player starting locations
             Interface::SetPlayerLocations(battle, party);
+
+            if (battle.Has(Battle::Condition::REPLICATE) && battle.Opponents.Count() == 1)
+            {
+                // opponents to be replicated
+                auto replicated = battle.Opponents[0];
+
+                // replicate opponents to the number of players
+                for (auto i = 0; i < Engine::Combatants(party) - 1; i++)
+                {
+                    battle.Opponents.Add(replicated);
+                }
+            }
 
             // set enemy starting locations
             Interface::SetEnemyLocations(battle, party);
@@ -1992,7 +2010,7 @@ namespace BloodSword::Interface
                                             // do ranged attacks
                                             Interface::EnemyShoots(graphics, scene, battle, party, opponents, character, src);
                                         }
-                                        else if (character.Moves > 0 && Move::Available(battle.Map, src))
+                                        else if (character.Moves > 0 && Move::Available(battle.Map, src) && !character.Is(Character::Status::ENTANGLED))
                                         {
                                             // enemy moves next to a target
                                             animating = Interface::EnemyMoves(scene, movement, battle, party, character, src);
