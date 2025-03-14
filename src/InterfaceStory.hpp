@@ -1096,8 +1096,6 @@ namespace BloodSword::Interface
 
             if (caption_id >= 0 && caption_id < captions.size())
             {
-                std::cerr << "[CAPTION " << caption_id << "] " << captions[caption_id] << " [INPUT " << input.Current << "]" << std::endl;
-
                 if (input.Current >= 0 && input.Current < overlay.Controls.size())
                 {
                     auto &control = overlay.Controls[input.Current];
