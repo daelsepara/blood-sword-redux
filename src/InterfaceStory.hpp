@@ -1091,6 +1091,10 @@ namespace BloodSword::Interface
 
             if (caption_id >= 0 && caption_id < captions.size())
             {
+                std::cerr << "[CAPTION " << caption_id << "]" <<std::endl;
+
+                std::cerr << "[INPUT CURRENT] " << input.Current << std::endl;
+
                 auto &control = overlay.Controls[input.Current];
 
                 if (textures[caption_id])
@@ -1100,6 +1104,8 @@ namespace BloodSword::Interface
 
                     overlay.VerifyAndAdd(Scene::Element(textures[caption_id], control.X + center, control.Y + control.H + BloodSword::Pad));
                 }
+
+                std::cerr << "[/CAPTION]" << std::endl;
             }
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
