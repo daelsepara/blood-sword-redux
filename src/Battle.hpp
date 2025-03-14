@@ -50,6 +50,7 @@ namespace BloodSword::Battle
         {Battle::Condition::TACTICS, "TACTICS"},
         {Battle::Condition::LAST_BATTLE, "LAST BATTLE"},
         {Battle::Condition::SKIP_LOCATION, "SKIP LOCATION"},
+        {Battle::Condition::ENTANGLED, "ENTANGLED"},
         {Battle::Condition::REPLICATE, "REPLICATE"}};
 
     Battle::Condition MapCondition(const char *condition)

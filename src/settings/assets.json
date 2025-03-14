@@ -479,6 +479,10 @@
         {
             "id": "MUMMY HEAD",
             "path": "images/enemies/mummy-head.png"
+        },
+        {
+            "id": "ROCK",
+            "path": "images/map/rock.png"
         }
     ]
 }
