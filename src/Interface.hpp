@@ -125,7 +125,7 @@ namespace BloodSword::Interface
     {
         bool Update = false;
 
-        Book::Location Next = {Book::Number::NONE, -1};
+        Book::Location Next = Book::Undefined;
     };
 
     // create textures

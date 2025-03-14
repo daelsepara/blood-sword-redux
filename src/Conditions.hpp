@@ -31,6 +31,9 @@ namespace BloodSword::Conditions
         // flag to indicate that the result (or condition) is inverted
         bool Invert = false;
 
+        // alternate location
+        Book::Location Another = Book::Undefined;
+
         Base() {}
 
         Base(Conditions::Type type,
@@ -86,6 +89,12 @@ namespace BloodSword::Conditions
 
             // set invert condition
             condition.Invert = (!data["invert"].is_null() && data["invert"].is_boolean()) ? data["invert"].get<bool>() : false;
+        }
+
+        // load alternate location
+        if (!data["another"].is_null())
+        {
+            condition.Another = Book::Load(data["another"]);
         }
 
         return condition;
@@ -299,19 +308,14 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - attribute
-            // 2, 3 - destination upon failure
-            // 4 - failure message
-            if (condition.Variables.size() > 4)
+            // 2 - failure message
+            if (condition.Variables.size() > 2)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
-                auto book = Book::MapBook(condition.Variables[2]);
-
-                auto section = std::stoi(condition.Variables[3], nullptr, 10);
-
-                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE && book != Book::Number::NONE && section > 0)
+                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE && !Book::IsUndefined(condition.Another))
                 {
                     if (!party.Has(character))
                     {
@@ -331,9 +335,9 @@ namespace BloodSword::Conditions
                         {
                             failed = true;
 
-                            location = {book, section};
+                            location = condition.Another;
 
-                            text = condition.Variables[4];
+                            text = condition.Variables[3];
                         }
                     }
 

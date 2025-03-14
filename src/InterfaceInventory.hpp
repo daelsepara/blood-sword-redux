@@ -476,7 +476,7 @@ namespace BloodSword::Interface
 
     Interface::ItemResult ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
     {
-        Interface::ItemResult update = {false, {Book::Number::NONE, -1}};
+        Interface::ItemResult update = {false, Book::Undefined};
 
         auto exit = false;
 
@@ -841,7 +841,7 @@ namespace BloodSword::Interface
 
     Interface::ItemResult ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
     {
-        Interface::ItemResult update = {false, {Book::Number::NONE, -1}};
+        Interface::ItemResult update = {false, Book::Undefined};
 
         if (!Engine::IsAlive(character))
         {

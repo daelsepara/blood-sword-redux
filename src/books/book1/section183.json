@@ -20,11 +20,13 @@
                 "book": "BOOK1",
                 "number": 163
             },
+            "another": {
+                "book": "BOOK1",
+                "number": 444
+            },
             "variables": [
                 "ENCHANTER",
                 "PSYCHIC ABILITY",
-                "BOOK1",
-                "444",
                 "SPELL CASTING UNSUCCESSFUL!"
             ]
         }

@@ -13,11 +13,13 @@
                     "book": "BOOK1",
                     "number": 121
                 },
+                "another": {
+                    "book": "BOOK1",
+                    "number": 181
+                },
                 "variables": [
                     "TRICKSTER",
                     "AWARENESS",
-                    "BOOK1",
-                    "181",
                     "YOUR ATTEMPT AT THEFT FAILED!"
                 ]
             }

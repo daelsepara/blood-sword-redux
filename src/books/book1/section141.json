@@ -13,11 +13,13 @@
                     "book": "BOOK1",
                     "number": 448
                 },
+                "another": {
+                    "book": "BOOK1",
+                    "number": 297
+                },
                 "variables": [
                     "SAGE",
                     "PSYCHIC ABILITY",
-                    "BOOK1",
-                    "297",
                     "USING ESP FAILED!"
                 ]
             }

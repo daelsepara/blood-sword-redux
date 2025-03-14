@@ -11,11 +11,13 @@
                 "book": "BOOK1",
                 "number": 306
             },
+            "another": {
+                "book": "BOOK1",
+                "number": 434
+            },
             "variables": [
                 "WARRIOR",
                 "FIGHTING PROWESS",
-                "BOOK1",
-                "434",
                 "YOU FAILED IN THE ATTEMPT!"
             ]
         }

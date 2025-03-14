@@ -55,7 +55,7 @@ namespace BloodSword::Interface
             }
         }
 
-        Conditions::Log(condition, result, false, text, {Book::Number::NONE, -1});
+        Conditions::Log(condition, result, false, text, Book::Undefined);
 
         return Conditions::Evaluation(result, text);
     }
