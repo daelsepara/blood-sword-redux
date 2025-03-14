@@ -4,6 +4,18 @@
         "number": 333
     },
     "text": "(ENCHANTER) You begin to have second thoughts as soon as you call the ENTHRALMENT spell to mind.",
+    "background": [
+        {
+            "type": "IS DEAD",
+            "location": {
+                "book": "BOOK1",
+                "number": 529
+            },
+            "variables": [
+                "ENCHANTER"
+            ]
+        }
+    ],
     "choices": [
         {
             "text": "(ENCHANTER) Cast SERVILE ENTHRALMENT",
@@ -37,19 +49,6 @@
                 "location": {
                     "book": "BOOK1",
                     "number": 167
-                },
-                "variables": [
-                    "ENCHANTER"
-                ]
-            }
-        },
-        {
-            "text": "Wait and see",
-            "condition": {
-                "type": "IS DEAD",
-                "location": {
-                    "book": "BOOK1",
-                    "number": 529
                 },
                 "variables": [
                     "ENCHANTER"
