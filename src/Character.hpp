@@ -269,7 +269,7 @@ namespace BloodSword::Character
 
             if (this->Is(attribute))
             {
-                attribute->Maximum = maximum;
+                attribute->Maximum = std::max(0, maximum);
             }
         }
 
@@ -304,7 +304,7 @@ namespace BloodSword::Character
         }
 
         // has item of specific type
-        Items::Inventory::const_iterator Find(Item::Type type)
+        Items::Inventory::iterator Find(Item::Type type)
         {
             auto result = this->Items.end();
 
@@ -324,6 +324,38 @@ namespace BloodSword::Character
         bool Has(Item::Type item)
         {
             return this->Find(item) != this->Items.end();
+        }
+
+        bool HasCharged(Item::Type item, Item::Type charge, int quantity)
+        {
+            auto found = this->Find(item);
+
+            auto has_item = found != this->Items.end();
+
+            auto has_charge = false;
+
+            if (has_item)
+            {
+                auto charged = *found;
+
+                has_charge = (charged.Type == item && charged.Contains == charge && charged.Quantity >= quantity);
+            }
+
+            return has_item && has_charge;
+        }
+
+        bool AddCharge(Item::Type item, Item::Type charge, int quantity)
+        {
+            auto result = this->HasCharged(item, charge, quantity);
+
+            if (result)
+            {
+                auto charged_item = this->Find(item);
+
+                (*charged_item).Quantity += quantity;
+            }
+
+            return result;
         }
 
         // has a container with a sufficient amount of the item

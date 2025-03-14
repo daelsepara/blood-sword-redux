@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 296
+    },
+    "text": "You are examining the grille when an eerie cacophony of wails and shrieks attracts your attention. Looking around you see a host of shambling grey beings emerging from the alcoves along the other corridor. Rather than face them all, you expend a charge of the STEEL SCEPTRE, blowing the grille open. Without wasting time waiting around to see what the monsters do, you scramble through the exit and along the tunnel beyond.",
+    "events": [
+        {
+            "type": "DISCHARGE",
+            "variables": [
+                "STEEL SCEPTRE",
+                "CHARGE",
+                "1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 279
+            }
+        }
+    ]
+}

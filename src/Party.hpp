@@ -160,6 +160,40 @@ namespace BloodSword::Party
             return result;
         }
 
+        // check if party has charged item of type (charge) with enough quantity
+        bool HasChargedItem(Item::Type item, Item::Type charge, int quantity)
+        {
+            auto result = false;
+
+            for (auto character = this->Members.begin(); character != this->Members.end(); character++)
+            {
+                if (character->HasCharged(item, charge, quantity))
+                {
+                    result = true;
+
+                    break;
+                }
+            }
+
+            return result;
+        }
+
+        // charge / discharge item
+        bool AddCharge(Item::Type item, Item::Type charge, int quantity)
+        {
+            auto result = false;
+
+            for (auto character = this->Members.begin(); character != this->Members.end(); character++)
+            {
+                if (character->HasCharged(item, charge, quantity < 0 ? quantity : 0))
+                {
+                    character->AddCharge(item, charge, quantity);
+                }
+            }
+
+            return result;
+        }
+
         bool Has(Character::Status status)
         {
             return (this->Find(status) != -1);

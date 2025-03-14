@@ -17,6 +17,7 @@ namespace BloodSword::Conditions
         BATTLE_ENTHRALMENT,
         BATTLE_VICTORY_OR_ENTHRALMENT,
         HAS_ITEM,
+        HAS_CHARGED_ITEM,
         USE_ITEM,
         DROP_ITEM,
         TAKE_ITEM,
@@ -69,7 +70,10 @@ namespace BloodSword::Conditions
         COUNT_ITEMS,
         PSYCHIC_SPELL,
         IS_DEAD,
-        COLLECT
+        COLLECT,
+        PERMANENT_ATTRIBUTE_GAIN,
+        CHARGE,
+        DISCHARGE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -83,6 +87,7 @@ namespace BloodSword::Conditions
         {Conditions::Type::BATTLE_ENTHRALMENT, "BATTLE ENTHRALMENT"},
         {Conditions::Type::BATTLE_VICTORY_OR_ENTHRALMENT, "BATTLE VICTORY OR ENTHRALMENT"},
         {Conditions::Type::HAS_ITEM, "HAS ITEM"},
+        {Conditions::Type::HAS_CHARGED_ITEM, "HAS CHARGED ITEM"},
         {Conditions::Type::USE_ITEM, "USE ITEM"},
         {Conditions::Type::DROP_ITEM, "DROP ITEM"},
         {Conditions::Type::TAKE_ITEM, "TAKE ITEM"},
@@ -135,7 +140,10 @@ namespace BloodSword::Conditions
         {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"},
         {Conditions::Type::PSYCHIC_SPELL, "PSYCHIC SPELL"},
         {Conditions::Type::IS_DEAD, "IS DEAD"},
-        {Conditions::Type::COLLECT, "COLLECT"}};
+        {Conditions::Type::COLLECT, "COLLECT"},
+        {Conditions::Type::PERMANENT_ATTRIBUTE_GAIN, "PERMANENT ATTRIBUTE GAIN"},
+        {Conditions::Type::CHARGE, "CHARGE"},
+        {Conditions::Type::DISCHARGE, "DISCHARGE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

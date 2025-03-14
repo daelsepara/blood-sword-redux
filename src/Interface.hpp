@@ -4181,6 +4181,66 @@ namespace BloodSword::Interface
         return true;
     }
 
+    // permanetly gain or lose attribute points
+    void PermanentAttributeGain(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int attributes, int gain)
+    {
+        std::vector<Attribute::Type> attribute_list = {
+            Attribute::Type::FIGHTING_PROWESS,
+            Attribute::Type::AWARENESS,
+            Attribute::Type::PSYCHIC_ABILITY,
+            Attribute::Type::ENDURANCE};
+
+        auto captions = std::vector<std::string>();
+
+        auto values = std::vector<int>();
+
+        auto assets = Asset::List();
+
+        for (auto i = 0; i < attribute_list.size(); i++)
+        {
+            auto attribute = attribute_list[i];
+
+            assets.push_back(Attribute::Assets[attribute]);
+
+            captions.push_back(Attribute::TypeMapping[attribute]);
+
+            values.push_back(i);
+        }
+
+        auto done = false;
+
+        while (!done)
+        {
+            std::string message = std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " TO " + std::to_string(attributes) + " ATTRIBUTE" + (attributes > 1 ? "S" : "");
+
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, {}, attributes, attributes, Asset::Type::NONE, false, false);
+
+            if (selection.size() == attributes)
+            {
+                for (auto selected = 0; selected < selection.size(); selected++)
+                {
+                    auto attribute = attribute_list[selection[selected]];
+
+                    for (auto i = 0; i < party.Count(); i++)
+                    {
+                        if (Engine::IsAlive(party[i]))
+                        {
+                            auto max_value = party[i].Maximum(attribute);
+
+                            auto value = party[i].Value(attribute);
+
+                            party[i].Maximum(attribute, max_value + gain);
+
+                            party[i].Value(attribute, value + gain);
+                        }
+                    }
+                }
+
+                done = true;
+            }
+        }
+    }
+
     bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto update = false;

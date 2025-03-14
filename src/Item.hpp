@@ -121,6 +121,12 @@ namespace BloodSword::Item
             return (this->Is(Property::CONTAINER) && (this->Contains == type) && (this->Quantity >= quantity) && ((this->Limit != Item::Unlimited && quantity >= 1) || this->Limit == Item::Unlimited));
         }
 
+        // has a charged item
+        bool Is(Item::Type item, Item::Type charge, int quantity)
+        {
+            return (this->Is(Property::CONTAINER) && (this->Type == item) && (this->Contains == charge) && (this->Quantity >= quantity) && ((this->Limit != Item::Unlimited && quantity >= 1) || this->Limit == Item::Unlimited));
+        }
+
         // check if item has this attribute
         bool Has(Attribute::Type attribute)
         {

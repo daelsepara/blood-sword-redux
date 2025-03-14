@@ -258,9 +258,11 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::CHOSEN_NUMBER)
         {
+            // variables
+            // 0 - number
             if (condition.Variables.size() > 0)
             {
-                auto number = std::stoi(condition.Variables[0], nullptr, 10);
+                auto number = party.Number(condition.Variables[0]);
 
                 result = (party.ChosenNumber == number);
 
@@ -278,7 +280,9 @@ namespace BloodSword::Conditions
         {
             internal_error = true;
 
-            if (condition.Variables.size() > 0)
+            // variables
+            // 0 - item
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -293,6 +297,12 @@ namespace BloodSword::Conditions
 
                     internal_error = false;
                 }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
             }
         }
         else if (condition.Type == Conditions::Type::IN_PARTY_WITH_ITEM)
@@ -808,9 +818,9 @@ namespace BloodSword::Conditions
             {
                 auto status = Character::MapStatus(condition.Variables[0]);
 
-                auto min_count = std::stoi(condition.Variables[1], nullptr, 10);
+                auto min_count = party.Number(condition.Variables[1]);
 
-                auto max_count = std::stoi(condition.Variables[2], nullptr, 10);
+                auto max_count = party.Number(condition.Variables[2]);
 
                 if (Engine::IsAlive(party) && status != Character::Status::NONE && min_count >= 0 && max_count >= 0 && min_count <= max_count)
                 {
@@ -831,7 +841,7 @@ namespace BloodSword::Conditions
             // 1 - status when selected
             // 2 - status when not selected
             // 3 - message to display
-            if (condition.Variables.size() > 3 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
             {
                 auto preselect = Character::MapStatus(condition.Variables[0]);
 
@@ -947,11 +957,11 @@ namespace BloodSword::Conditions
             // last - asset (hidden)
             if (condition.Variables.size() > 5)
             {
-                auto options = std::stoi(condition.Variables[1], nullptr, 10);
+                auto options = party.Number(condition.Variables[1]);
 
-                auto min_select = std::stoi(condition.Variables[2], nullptr, 10);
+                auto min_select = party.Number(condition.Variables[2]);
 
-                auto max_select = std::stoi(condition.Variables[3], nullptr, 10);
+                auto max_select = party.Number(condition.Variables[3]);
 
                 auto hidden = Engine::ToUpper(condition.Variables[4]) == "TRUE";
 
@@ -1045,10 +1055,11 @@ namespace BloodSword::Conditions
         {
             internal_error = true;
 
-            // compare scores
+            // variables
+            // 0 - score to beat
             if (condition.Variables.size() > 0)
             {
-                auto beat = std::stoi(condition.Variables[0], nullptr, 10);
+                auto beat = party.Number(condition.Variables[0]);
 
                 auto score = Engine::ScoreKalugenGame(party);
 
@@ -1339,14 +1350,7 @@ namespace BloodSword::Conditions
                 }
                 else
                 {
-                    if (party.Count() > 1)
-                    {
-                        text = Interface::DeathMessage(party);
-                    }
-                    else
-                    {
-                        text = Engine::IsDead(party[0]);
-                    }
+                    text = Interface::DeathMessage(party);
                 }
             }
             else
@@ -1399,14 +1403,7 @@ namespace BloodSword::Conditions
                 }
                 else
                 {
-                    if (party.Count() > 1)
-                    {
-                        text = Interface::DeathMessage(party);
-                    }
-                    else
-                    {
-                        text = Engine::IsDead(party[0]);
-                    }
+                    text = Interface::DeathMessage(party);
                 }
             }
             else
@@ -1418,7 +1415,7 @@ namespace BloodSword::Conditions
         {
             // variables:
             // 0 - message to display
-            if (condition.Variables.size() > 0 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
                 if (Engine::Count(party) > 1)
                 {
@@ -1447,7 +1444,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - item to stake
             // 1 - asset (to item in #0)
-            if (condition.Variables.size() > 1 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -1469,7 +1466,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - destination variable
             // 1 - source variable / value
-            if (condition.Variables.size() > 1 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
             {
                 auto dst = condition.Variables[0];
 
@@ -1508,7 +1505,7 @@ namespace BloodSword::Conditions
             // 0 - operation (+, -, *)
             // 1 - first variable (destination)
             // 2 - second variable / value (source)
-            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
             {
                 auto ops = condition.Variables[0];
 
@@ -1543,21 +1540,21 @@ namespace BloodSword::Conditions
             // 1 - message to display if CHOOSE in #0
             // 2 - min if CHOOSE in #0
             // 3 - max if CHOOSE in #0
-            if (condition.Variables.size() > 0 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
                 auto number = (Engine::ToUpper(condition.Variables[0]) != "CHOOSE");
 
                 if (number)
                 {
-                    party.ChosenNumber = std::stoi(condition.Variables[0], nullptr, 10);
+                    party.ChosenNumber = party.Number(condition.Variables[0]);
 
                     result = true;
                 }
                 else if (condition.Variables.size() > 3)
                 {
-                    auto min_number = std::stoi(condition.Variables[2], nullptr, 10);
+                    auto min_number = party.Number(condition.Variables[2]);
 
-                    auto max_number = std::stoi(condition.Variables[3], nullptr, 10);
+                    auto max_number = party.Number(condition.Variables[3]);
 
                     party.ChosenNumber = Interface::GetNumber(graphics, background, condition.Variables[1].c_str(), min_number, max_number, Asset::Type::DICE1, Asset::Type::UP, Asset::Type::DOWN, false);
 
@@ -1587,11 +1584,11 @@ namespace BloodSword::Conditions
             // 2 - variable to save results to
             // 3 - asset (CHOSEN / asset name)
             // 4 - asset (action)
-            if (condition.Variables.size() > 4 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
             {
-                auto roll = std::stoi(condition.Variables[0], nullptr, 10);
+                auto roll = party.Number(condition.Variables[0]);
 
-                auto mods = std::stoi(condition.Variables[1], nullptr, 10);
+                auto mods = party.Number(condition.Variables[1]);
 
                 auto variable = condition.Variables[2];
 
@@ -1628,7 +1625,7 @@ namespace BloodSword::Conditions
             // 0 - operation (=, !=, <>, >, <, >=. <=)
             // 1 - first variable / value
             // 2 - second variable / value
-            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
             {
                 auto ops = condition.Variables[0];
 
@@ -1663,7 +1660,7 @@ namespace BloodSword::Conditions
             // 3 - math operation (*, +, -)
             // 4 - first variable (destination)
             // 5 - second variable / value (source)
-            if (condition.Variables.size() > 4 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
             {
                 auto ops = condition.Variables[0];
 
@@ -1709,7 +1706,7 @@ namespace BloodSword::Conditions
             // 3 - 2nd operation (=, !=, <>, >, <, >=. <=)
             // 4 - 2nd variable (first)
             // 5 - 2nd variable (second)
-            if (condition.Variables.size() > 5 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 5)
             {
                 auto empty = 0;
 
@@ -1807,7 +1804,7 @@ namespace BloodSword::Conditions
         {
             // variables:
             // 0 - N variables to show
-            if (condition.Variables.size() > 0 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) > 0 && condition.Variables.size())
             {
                 auto wrap = BloodSword::TileSize * 5;
 
@@ -1848,11 +1845,11 @@ namespace BloodSword::Conditions
             // 0 - item (type)
             // 1 - limit
             // 2 - asset
-            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
-                auto limit = (Engine::ToUpper(condition.Variables[1]) == "UNLIMITED") ? Items::Unlimited : std::stoi(condition.Variables[1], nullptr, 10);
+                auto limit = (Engine::ToUpper(condition.Variables[1]) == "UNLIMITED") ? Items::Unlimited : party.Number(condition.Variables[1]);
 
                 auto asset = Asset::Map(condition.Variables[2]);
 
@@ -1882,13 +1879,13 @@ namespace BloodSword::Conditions
             // 0 - asset
             // 1 - gain (ENDURANCE)
             // 2 - limit
-            if (condition.Variables.size() > 2 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
             {
                 auto asset = Asset::Map(condition.Variables[0]);
 
-                auto gain = std::stoi(condition.Variables[1], nullptr, 10);
+                auto gain = party.Number(condition.Variables[1]);
 
-                auto limit = (Engine::ToUpper(condition.Variables[2]) == "UNLIMITED") ? Items::Unlimited : std::stoi(condition.Variables[2], nullptr, 10);
+                auto limit = (Engine::ToUpper(condition.Variables[2]) == "UNLIMITED") ? Items::Unlimited : party.Number(condition.Variables[2]);
 
                 if (asset != Asset::Type::NONE && (limit == Item::Unlimited || limit > 0) && gain > 0)
                 {
@@ -2021,13 +2018,13 @@ namespace BloodSword::Conditions
 
                 auto target = Asset::Map(condition.Variables[2]);
 
-                auto difficulty = std::stoi(condition.Variables[3], nullptr, 10);
+                auto difficulty = party.Number(condition.Variables[3]);
 
                 auto dmg_act = Asset::Map(condition.Variables[4]);
 
-                auto dmg_rol = std::stoi(condition.Variables[5], nullptr, 10);
+                auto dmg_rol = party.Number(condition.Variables[5]);
 
-                auto dmg_mod = std::stoi(condition.Variables[6], nullptr, 10);
+                auto dmg_mod = party.Number(condition.Variables[6]);
 
                 auto ignore_armour = (Engine::ToUpper(condition.Variables[7]) == "TRUE");
 
@@ -2105,15 +2102,15 @@ namespace BloodSword::Conditions
             // 1 - asset (to item in #0)
             // 2 - min collect
             // 3 - max collect
-            if (condition.Variables.size() > 3 && Engine::IsAlive(party))
+            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
                 auto asset = Asset::Map(condition.Variables[1]);
 
-                auto min_collect = std::stoi(condition.Variables[2], nullptr, 10);
+                auto min_collect = party.Number(condition.Variables[2]);
 
-                auto max_collect = std::stoi(condition.Variables[3], nullptr, 10);
+                auto max_collect = party.Number(condition.Variables[3]);
 
                 if (item != Item::Type::NONE && asset != Asset::Type::NONE)
                 {
@@ -2138,6 +2135,140 @@ namespace BloodSword::Conditions
             else
             {
                 internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::PERMANENT_ATTRIBUTE_GAIN)
+        {
+            // variables
+            // 0 - number of attributes to update
+            // 1 - gain (+/-)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto attributes = party.Number(condition.Variables[0]);
+
+                auto gain = party.Number(condition.Variables[1]);
+
+                if (attributes > 0 && gain != 0)
+                {
+                    Interface::PermanentAttributeGain(graphics, background, party, attributes, gain);
+
+                    result = true;
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::HAS_CHARGED_ITEM)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - item
+            // 1 - charge (item)
+            // 2 - charges (minimum)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                auto charge = Item::Map(condition.Variables[1]);
+
+                auto charges = party.Number(condition.Variables[2]);
+
+                if (item != Item::Type::NONE && charge != Item::Type::NONE)
+                {
+                    result = party.Has(item);
+
+                    if (result)
+                    {
+                        if (party.HasChargedItem(item, charge, charges))
+                        {
+                            result = true;
+                        }
+                        else
+                        {
+                            text = Engine::NotEnough(charge);
+                        }
+                    }
+                    else
+                    {
+                        text = Engine::NoItem(item);
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::CHARGE || condition.Type == Conditions::Type::DISCHARGE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - item
+            // 1 - charge (item)
+            // 2 - charges (minimum)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                auto charge = Item::Map(condition.Variables[1]);
+
+                auto charges = party.Number(condition.Variables[2]);
+
+                if (item != Item::Type::NONE && charge != Item::Type::NONE && charges > 0)
+                {
+                    result = party.Has(item);
+
+                    if (result)
+                    {
+                        if (condition.Type == Conditions::Type::DISCHARGE)
+                        {
+                            if (party.HasChargedItem(item, charge, charges))
+                            {
+                                party.AddCharge(item, charge, -charges);
+
+                                result = true;
+                            }
+                            else
+                            {
+                                text = Engine::NotEnough(charge);
+                            }
+                        }
+                        else if (condition.Type == Conditions::Type::CHARGE)
+                        {
+                            party.AddCharge(item, charge, charges);
+
+                            result = true;
+                        }
+                    }
+                    else
+                    {
+                        text = Engine::NoItem(item);
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)

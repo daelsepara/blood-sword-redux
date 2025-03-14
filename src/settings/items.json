@@ -181,6 +181,21 @@
             ],
             "quantity": 1,
             "type": "FOOD"
+        },
+        {
+            "contains": "CHARGE",
+            "limit": 2,
+            "name": "STEEL SCEPTRE",
+            "properties": [
+                "CONTAINER"
+            ],
+            "quantity": 0,
+            "type": "STEEL SCEPTRE"
+        },
+        {
+            "name": "BRONZE KEY",
+            "quantity": 1,
+            "type": "BRONZE KEY"
         }
     ]
 }

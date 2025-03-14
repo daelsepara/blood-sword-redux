@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 221
+    },
+    "text": "You take out the key and try it in the padlock. Sure enough, it opens the grille. This is just as well, because there is an eerie cacophony of howling from the corridor, and you look around to see a horde of grey slouching creatures emerging from the alcoves. What do you do?",
+    "choices": [
+        {
+            "text": "Dive through the grille and hurry along the tunnel beyond",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 279
+                }
+            }
+        },
+        {
+            "text": "Stand your ground",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 209
+                }
+            }
+        }
+    ]
+}
