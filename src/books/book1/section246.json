@@ -19,7 +19,7 @@
             }
         },
         {
-            "text": "(ENCHANTER) Cast DETECT ENCHANTMENT",
+            "text": "(ENCHANTER) Detect spells",
             "condition": {
                 "type": "IN PARTY",
                 "location": {
