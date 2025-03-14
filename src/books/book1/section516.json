@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 516
+    },
+    "text": "Without money to pay your way, you have reached a dead end. You try negotiating the gondolier down to a more reasonable fee, but he remains deaf to your every plea. All he will say, in his rich old accent, is: \"The fee is forty gold coins.\"",
+    "choices": [
+        {
+            "text": "(40 GOLD) Relent and decide to pay him",
+            "condition": {
+                "type": "COLLECT",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 193
+                },
+                "variables": [
+                    "GOLD",
+                    "MONEY",
+                    "40",
+                    "40"
+                ]
+            }
+        },
+        {
+            "text": "You really cannot do this or doggedly refuse",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 324
+                }
+            }
+        }
+    ]
+}

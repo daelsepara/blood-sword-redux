@@ -1354,6 +1354,66 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::LOSE_ARMOUR)
+        {
+            // variables
+            // 0 - message to display
+            // 1 - N items to be excluded (optional)
+            if (condition.Variables.size() > 0 && !condition.Variables[0].empty())
+            {
+                auto excluded = Items::List();
+
+                for (auto i = 1; i < condition.Variables.size(); i++)
+                {
+                    auto item = Item::Map(condition.Variables[i]);
+
+                    if (item != Item::Type::NONE)
+                    {
+                        excluded.push_back(item);
+                    }
+                }
+
+                if (Engine::IsAlive(party))
+                {
+                    for (auto i = 0; i < party.Count(); i++)
+                    {
+                        if (Engine::IsAlive(party[i]))
+                        {
+                            auto inventory = Items::Inventory();
+
+                            for (auto item = 0; item < party[i].Items.size(); item++)
+                            {
+                                if (!party[i].Items[item].Is(Item::Property::ARMOUR) || Items::Included(excluded, party[i].Items[item].Type))
+                                {
+                                    inventory.push_back(party[i].Items[item]);
+                                }
+                            }
+
+                            party[i].Items = inventory;
+                        }
+                    }
+
+                    text = condition.Variables[0];
+
+                    result = true;
+                }
+                else
+                {
+                    if (party.Count() > 1)
+                    {
+                        text = Interface::DeathMessage(party);
+                    }
+                    else
+                    {
+                        text = Engine::IsDead(party[0]);
+                    }
+                }
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
         else if (condition.Type == Conditions::Type::SELECT_PLAYER)
         {
             // variables:
