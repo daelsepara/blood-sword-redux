@@ -25,6 +25,148 @@ namespace BloodSword::Interface
         {Spells::Type::NONE, Character::Status::NONE},
         {Spells::Type::NIGHTHOWL, Character::Status::NIGHTHOWL}};
 
+    void LogSpellStrategy(Spells::Type spell, int spells_cast, bool cast)
+    {
+        std::cerr << "[SPELLS CAST] ";
+
+        if (spell != Spells::Type::NONE)
+        {
+            std::cerr << "[" << Spells::TypeMapping[spell] << "] ";
+        }
+
+        std::cerr << std::to_string(spells_cast) << " [CAST] " << (cast ? "TRUE" : "FALSE") << std::endl;
+    }
+
+    void LogCaster(Character::Base &caster, int caster_id)
+    {
+        std::cerr << "["
+                  << Target::Mapping[caster.Target]
+                  << " " << std::to_string(caster_id)
+                  << "] ";
+
+        if (!Engine::IsAlive(caster))
+        {
+            std::cerr << "IS DEAD" << std::endl;
+        }
+        else if (!caster.Has(Skills::Type::SPELLS))
+        {
+            std::cerr << "CANNOT CAST SPELLS" << std::endl;
+        }
+        else
+        {
+            std::cerr << "CANNOT CAST SPELLS THIS ROUND" << std::endl;
+        }
+    }
+
+    void LogCasters(Battle::Base &battle)
+    {
+        if (battle.Casters.size() > 0)
+        {
+            std::cerr << "[SPELL CASTERS] (";
+
+            for (auto i = 0; i < battle.Casters.size(); i++)
+            {
+                if (i > 0)
+                {
+                    std::cerr << ", ";
+                }
+
+                std::cerr << "[" << Target::Mapping[battle.Opponents[battle.Casters[i]].Target] << " " << std::to_string(battle.Casters[i]) << "]";
+            }
+
+            std::cerr << ")" << std::endl;
+        }
+    }
+
+    void LogTargets(const char *target_type, Target::Type attacker, int id, int count)
+    {
+        std::cerr << "["
+                  << Target::Mapping[attacker]
+                  << " "
+                  << id
+                  << "] ["
+                  << target_type
+                  << " TARGETS] "
+                  << count
+                  << std::endl;
+    }
+
+    void LogAction(const char *action, Target::Type attacker, int id, Target::Type target, int target_id)
+    {
+        std::cerr << "["
+                  << Target::Mapping[attacker]
+                  << " "
+                  << id
+                  << "] ["
+                  << action
+                  << "] ["
+                  << Target::Mapping[target]
+                  << " "
+                  << target_id
+                  << "]"
+                  << std::endl;
+    }
+
+    void LogSpellCasting(Target::Type caster, int caster_id, Spells::Type spell)
+    {
+        std::cerr << "["
+                  << Target::Mapping[caster]
+                  << " "
+                  << std::to_string(caster_id)
+                  << "] [CASTS "
+                  << Spells::TypeMapping[spell]
+                  << "]"
+                  << std::endl;
+    }
+
+    void LogCombatants(Party::Base &party, const char *group)
+    {
+        std::cerr << "["
+                  << group
+                  << "]"
+                  << std::to_string(party.Count())
+                  << " [LIVE] "
+                  << std::to_string(Engine::Count(party))
+                  << std::endl;
+    }
+
+    void LogGroup(Book::Location location, const char *first, const char *second, int count_first, int count_second)
+    {
+        std::cerr << Book::String(location)
+                  << " ["
+                  << first
+                  << "] "
+                  << std::to_string(count_first)
+                  << " ["
+                  << second
+                  << "] "
+                  << std::to_string(count_second)
+                  << std::endl;
+    }
+
+    void LogSurvivors(Book::Location location, const char *first, const char *second, int count_first, int count_second)
+    {
+        std::string group_first = std::string(first) + " SURVIVORS";
+
+        std::string group_second = std::string(second) + " SURVIVORS";
+
+        Interface::LogGroup(location, group_first.c_str(), group_second.c_str(), count_first, count_second);
+    }
+
+    void LogGroupAction(const char *group, const char *action, Target::Type actor, int id)
+    {
+        std::cerr << "["
+                  << group
+                  << "] ["
+                  << action
+                  << "] ["
+                  << Target::Mapping[actor]
+                  << " "
+                  << std::to_string(id)
+                  << "]"
+                  << std::endl;
+    }
+
     // find map control
     int Find(Map::Base &map, Controls::List &controls, Controls::Type type, int id)
     {
@@ -905,42 +1047,17 @@ namespace BloodSword::Interface
                     cast = true;
                 }
 
-                if (battle.Casters.size() > 0)
-                {
-                    std::cerr << "[SPELLS CAST] ";
+                Interface::LogSpellStrategy(strategy.AlreadyCast, spells_cast, cast);
 
-                    if (strategy.AlreadyCast != Spells::Type::NONE)
-                    {
-                        std::cerr << "[" << Spells::TypeMapping[strategy.AlreadyCast] << "] ";
-                    }
-
-                    std::cerr << std::to_string(spells_cast) << " [CAST] " << (cast ? "TRUE" : "FALSE") << std::endl;
-                }
                 if (cast)
                 {
                     break;
                 }
             }
         }
-        else
+        else if (battle.Casters.size() > 0)
         {
-            if (battle.Casters.size() > 0)
-            {
-                std::cerr << "[" << Target::Mapping[caster.Target] << " " << std::to_string(caster_id) << "] ";
-
-                if (!Engine::IsAlive(caster))
-                {
-                    std::cerr << "IS DEAD" << std::endl;
-                }
-                else if (!caster.Has(Skills::Type::SPELLS))
-                {
-                    std::cerr << "CANNOT CAST SPELLS" << std::endl;
-                }
-                else
-                {
-                    std::cerr << "CANNOT CAST SPELLS THIS ROUND" << std::endl;
-                }
-            }
+            Interface::LogCaster(caster, caster_id);
         }
 
         return cast;
@@ -982,51 +1099,7 @@ namespace BloodSword::Interface
             battle.Casters = subset;
         }
 
-        if (battle.Casters.size() > 0)
-        {
-            std::cerr << "[SPELL CASTERS] (";
-
-            for (auto i = 0; i < battle.Casters.size(); i++)
-            {
-                if (i > 0)
-                {
-                    std::cerr << ", ";
-                }
-
-                std::cerr << "[" << Target::Mapping[battle.Opponents[battle.Casters[i]].Target] << " " << std::to_string(battle.Casters[i]) << "]";
-            }
-
-            std::cerr << ")" << std::endl;
-        }
-    }
-
-    void LogTargets(const char *target_type, Target::Type attacker, int id, int count)
-    {
-        std::cerr << "["
-                  << Target::Mapping[attacker]
-                  << " "
-                  << id
-                  << "] ["
-                  << target_type
-                  << " TARGETS] "
-                  << count
-                  << std::endl;
-    }
-
-    void LogAction(const char *action, Target::Type attacker, int id, Target::Type target, int target_id)
-    {
-        std::cerr << "["
-                  << Target::Mapping[attacker]
-                  << " "
-                  << id
-                  << "] ["
-                  << action
-                  << "] ["
-                  << Target::Mapping[target]
-                  << " "
-                  << target_id
-                  << "]"
-                  << std::endl;
+        Interface::LogCasters(battle);
     }
 
     // enemy casts spells
@@ -1080,14 +1153,7 @@ namespace BloodSword::Interface
                     {
                         if (!spellbook.RequiresTarget())
                         {
-                            std::cerr << "["
-                                      << Target::Mapping[character.Target]
-                                      << " "
-                                      << std::to_string(battle.Map[src].Id)
-                                      << "] [CASTS "
-                                      << Spells::TypeMapping[spell]
-                                      << "]"
-                                      << std::endl;
+                            Interface::LogSpellCasting(character.Target, battle.Map[src].Id, spell);
 
                             // resolve spell
                             Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
@@ -1288,11 +1354,7 @@ namespace BloodSword::Interface
             throw std::invalid_argument("BATTLE: PLAYER ORIGIN LOCATIONS INSUFFICIENT!");
         }
 
-        std::cerr << "[PLAYERS] "
-                  << std::to_string(party.Count())
-                  << " [LIVE] "
-                  << std::to_string(Engine::Count(party))
-                  << std::endl;
+        Interface::LogCombatants(party, "PLAYERS");
     }
 
     void SetEnemyLocations(Battle::Base &battle, Party::Base &party)
@@ -1368,12 +1430,7 @@ namespace BloodSword::Interface
                 {
                     if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source))
                     {
-                        std::cerr << "[SURVIVOR] ["
-                                  << Target::Mapping[party.Survivors[i].Target]
-                                  << " "
-                                  << std::to_string(i)
-                                  << "] [ADD]"
-                                  << std::endl;
+                        Interface::LogGroupAction("SURVIVOR", "ADD", party.Survivors[i].Target, i);
 
                         survivors.Add(party.Survivors[i]);
 
@@ -1389,26 +1446,14 @@ namespace BloodSword::Interface
 
                     for (auto i = 0; i < remove.size(); i++)
                     {
-                        std::cerr << "[PARTY SURVIVOR] [DELETE] ["
-                                  << Target::Mapping[party.Survivors[remove[i]].Target]
-                                  << " "
-                                  << std::to_string(i)
-                                  << "]"
-                                  << std::endl;
+                        Interface::LogGroupAction("PARTY SURVIVOR", "DELETE", party.Survivors[remove[i]].Target, remove[i]);
 
                         // remove from survivor list
                         party.Survivors.erase(party.Survivors.begin() + remove[i]);
                     }
                 }
 
-                std::cerr << Book::String(source)
-                          << " [REINFORCEMENTS] "
-                          << std::to_string(survivors.Count())
-                          << std::endl;
-
-                std::cerr << "[PARTY SURVIVORS] "
-                          << std::to_string(party.Survivors.size())
-                          << std::endl;
+                Interface::LogGroup(source, "REINFORCEMENTS", "PARTY SURVIVORS", survivors.Count(), party.Survivors.size());
 
                 if (battle.Map.Survivors.size() >= survivors.Count())
                 {
@@ -1421,13 +1466,7 @@ namespace BloodSword::Interface
 
                         if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
                         {
-                            std::cerr << "[SURVIVOR] ["
-                                      << Target::Mapping[survivors[i].Target]
-                                      << " "
-                                      << std::to_string(i)
-                                      << "] [HEAL] "
-                                      << std::to_string(survivors[i].Maximum(Attribute::Type::ENDURANCE))
-                                      << std::endl;
+                            Interface::LogGroupAction("SURVIVOR", "HEAL", survivors[i].Target, i);
 
                             survivors[i].Value(Attribute::Type::ENDURANCE, survivors[i].Maximum(Attribute::Type::ENDURANCE));
                         }
@@ -1477,11 +1516,7 @@ namespace BloodSword::Interface
             }
         }
 
-        std::cerr << "[OPPONENTS] "
-                  << battle.Opponents.Count()
-                  << " [LIVE] "
-                  << std::to_string(Engine::Count(battle.Opponents))
-                  << std::endl;
+        Interface::LogCombatants(battle.Opponents, "OPPONENTS");
     }
 
     void FinalLocationChecks(Battle::Base &battle, Party::Base &party)
@@ -2971,12 +3006,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            std::cerr << Book::String(battle.Opponents.Location)
-                      << " [BATTLE SURVIVORS] "
-                      << std::to_string(survivors)
-                      << " [PARTY SURVIVORS] "
-                      << std::to_string(party.Survivors.size())
-                      << std::endl;
+            Interface::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, party.Survivors.size());
         }
 
         return result;
