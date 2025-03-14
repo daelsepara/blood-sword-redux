@@ -600,6 +600,11 @@ namespace BloodSword::Interface
 
         auto next_control = Controls::Find(overlay.Controls, Controls::Type::NEXT);
 
+        if (next_control == -1)
+        {
+            next_control = Controls::Find(overlay.Controls, Controls::Type::FIGHT);
+        }
+
         auto offset_y = BloodSword::Height(image) / party.Count();
 
         for (auto i = 0; i < party.Count(); i++)
@@ -1091,21 +1096,20 @@ namespace BloodSword::Interface
 
             if (caption_id >= 0 && caption_id < captions.size())
             {
-                std::cerr << "[CAPTION " << caption_id << "]" <<std::endl;
+                std::cerr << "[CAPTION " << caption_id << "] " << captions[caption_id] << " [INPUT " << input.Current << "]" << std::endl;
 
-                std::cerr << "[INPUT CURRENT] " << input.Current << std::endl;
-
-                auto &control = overlay.Controls[input.Current];
-
-                if (textures[caption_id])
+                if (input.Current >= 0 && input.Current < overlay.Controls.size())
                 {
-                    // center texture
-                    auto center = (control.W - BloodSword::Width(textures[caption_id])) / 2;
+                    auto &control = overlay.Controls[input.Current];
 
-                    overlay.VerifyAndAdd(Scene::Element(textures[caption_id], control.X + center, control.Y + control.H + BloodSword::Pad));
+                    if (textures[caption_id])
+                    {
+                        // center texture
+                        auto center = (control.W - BloodSword::Width(textures[caption_id])) / 2;
+
+                        overlay.VerifyAndAdd(Scene::Element(textures[caption_id], control.X + center, control.Y + control.H + BloodSword::Pad));
+                    }
                 }
-
-                std::cerr << "[/CAPTION]" << std::endl;
             }
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
