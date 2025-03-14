@@ -128,6 +128,86 @@ namespace BloodSword::Interface
         Book::Location Next = Book::Undefined;
     };
 
+    void LogSpellFailure(Character::Base &caster, Spells::Type spell)
+    {
+        if (!caster.HasCalledToMind(spell))
+        {
+            std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT CALLED TO MIND" << std::endl;
+        }
+        else
+        {
+            std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE" << std::endl;
+        }
+    }
+
+    void LogOptions(Asset::List &assets, std::vector<int> &selection, std::string selected)
+    {
+        if (selection.size() > 0)
+        {
+            selected += " (";
+
+            for (auto i = 0; i < selection.size(); i++)
+            {
+                if (i > 0)
+                {
+                    selected += ", ";
+                }
+
+                selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
+            }
+
+            selected += ")";
+
+            std::cerr << selected << std::endl;
+        }
+    }
+
+    void LogChoice(const char *message, Asset::Type asset, int selected, int size)
+    {
+        std::cerr << "["
+                  << message
+                  << " "
+                  << selected
+                  << "] ["
+                  << Asset::TypeMapping[asset]
+                  << "] [SIZE] "
+                  << size
+                  << std::endl;
+    }
+
+    void LogPathToTarget(Point target, int path, int distance)
+    {
+        std::cerr << "[TARGET ("
+                  << target.X
+                  << ", "
+                  << target.Y
+                  << ")] [PATH] "
+                  << path
+                  << " [DIST] "
+                  << distance
+                  << std::endl;
+    }
+
+    void LogMoveTargets(const char *type, Target::Type character, int src_id, int dst_id, int path, int valid, int avail)
+    {
+        std::cerr << "["
+                  << Target::Mapping[character]
+                  << " "
+                  << src_id
+                  << "] [MOVE] "
+                  << "[TARGET "
+                  << type
+                  << " "
+                  << dst_id
+                  << "] [PATH] "
+                  << path
+                  << " [DIST] "
+                  << valid
+                  << " [VULN] "
+                  << avail
+                  << std::endl;
+    }
+
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
     {
@@ -1488,15 +1568,7 @@ namespace BloodSword::Interface
             // move closer to target
             path = Move::FindPath(map, start, path.Closest);
 
-            std::cerr << "[TARGET ("
-                      << target.X
-                      << ", "
-                      << target.Y
-                      << ")] [PATH] "
-                      << path.Points.size()
-                      << " [DIST] "
-                      << map.Distance(start, target)
-                      << std::endl;
+            Interface::LogPathToTarget(target, path.Points.size(), map.Distance(start, target));
 
             closer = true;
         }
@@ -1508,22 +1580,7 @@ namespace BloodSword::Interface
         {
             if (map.IsValid(end))
             {
-                std::cerr << "["
-                          << Target::Mapping[character.Target]
-                          << " "
-                          << map[start].Id
-                          << "] [MOVE] "
-                          << "[TARGET "
-                          << (map[end].IsEnemy() ? "ENEMY" : "PLAYER")
-                          << " "
-                          << map[end].Id
-                          << "] [PATH] "
-                          << path.Points.size()
-                          << " [DIST] "
-                          << valid
-                          << " [VULN] "
-                          << map.Free(end)
-                          << std::endl;
+                Interface::LogMoveTargets((map[end].IsEnemy() ? "ENEMY" : "PLAYER"), character.Target, map[start].Id, map[end].Id, path.Points.size(), valid, map.Free(end));
             }
         }
 
@@ -2590,13 +2647,9 @@ namespace BloodSword::Interface
                         caster.Forget(spell);
                     }
                 }
-                else if (!caster.HasCalledToMind(spell))
-                {
-                    std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT CALLED TO MIND" << std::endl;
-                }
                 else
                 {
-                    std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE" << std::endl;
+                    Interface::LogSpellFailure(caster, spell);
                 }
             }
         }
@@ -3643,41 +3696,6 @@ namespace BloodSword::Interface
         }
 
         return overlay;
-    }
-
-    void LogOptions(Asset::List &assets, std::vector<int> &selection, std::string selected)
-    {
-        if (selection.size() > 0)
-        {
-            selected += " (";
-
-            for (auto i = 0; i < selection.size(); i++)
-            {
-                if (i > 0)
-                {
-                    selected += ", ";
-                }
-
-                selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
-            }
-
-            selected += ")";
-
-            std::cerr << selected << std::endl;
-        }
-    }
-
-    void LogChoice(const char *message, Asset::Type asset, int selected, int size)
-    {
-        std::cerr << "["
-                  << message
-                  << " "
-                  << selected
-                  << "] ["
-                  << Asset::TypeMapping[asset]
-                  << "] [SIZE] "
-                  << size
-                  << std::endl;
     }
 
     std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, Asset::List assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true)

@@ -10,6 +10,26 @@
 
 namespace BloodSword::Interface
 {
+    void LogSectionHeader(const char *header, Book::Location location, bool newline = true)
+    {
+        std::cerr << "["
+                  << header
+                  << "] "
+                  << Book::String(location);
+
+        if (newline)
+        {
+            std::cerr << std::endl;
+        }
+    }
+
+    void LogSearch(Book::Location location, int current)
+    {
+        Interface::LogSectionHeader("FIND", location, false);
+
+        std::cerr << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
+    }
+
     Conditions::Evaluation ProcessItemEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
     {
         auto result = false;
@@ -270,7 +290,7 @@ namespace BloodSword::Interface
 
         if (section.Background.size() > 0)
         {
-            std::cerr << "[BACKGROUND] " << Book::String(section.Location) << std::endl;
+            Interface::LogSectionHeader("BACKGROUND", section.Location);
 
             for (auto &condition : section.Background)
             {
@@ -305,7 +325,7 @@ namespace BloodSword::Interface
 
         if (section.Events.size() > 0)
         {
-            std::cerr << "[EVENT] " << Book::String(section.Location) << std::endl;
+            Interface::LogSectionHeader("EVENT", section.Location);
 
             for (auto &condition : section.Events)
             {
@@ -341,7 +361,7 @@ namespace BloodSword::Interface
 
         if (section.BattleEvents.size() > 0)
         {
-            std::cerr << "[PRE-BATTLE] " << Book::String(section.Location) << std::endl;
+            Interface::LogSectionHeader("PRE-BATTLE", section.Location);
 
             for (auto &condition : section.BattleEvents)
             {
@@ -375,7 +395,7 @@ namespace BloodSword::Interface
         // fight battle
         if (Engine::IsAlive(party) && section.Battle.IsDefined())
         {
-            std::cerr << "[BATTLE] " << Book::String(section.Location) << std::endl;
+            Interface::LogSectionHeader("BATTLE", section.Location);
 
             auto result = Interface::RenderBattle(graphics, section.Battle, party);
 
@@ -402,7 +422,7 @@ namespace BloodSword::Interface
         {
             if (section.Next.size() > 0)
             {
-                std::cerr << "[NEXT] " << Book::String(section.Location) << std::endl;
+                Interface::LogSectionHeader("NEXT", section.Location);
 
                 // process through each condition
                 for (auto &condition : section.Next)
@@ -439,7 +459,7 @@ namespace BloodSword::Interface
                 // process through any choices
                 while (true)
                 {
-                    std::cerr << "[CHOICE] " << Book::String(section.Location) << std::endl;
+                    Interface::LogSectionHeader("CHOICE", section.Location);
 
                     next = Interface::RenderChoices(graphics, background, party, section.Choices, after_battle);
 
@@ -1360,7 +1380,7 @@ namespace BloodSword::Interface
     {
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        std::cerr << "[SECTION] " << Book::String(section.Location) << std::endl;
+        Interface::LogSectionHeader("SECTION", section.Location);
 
         // save a copy party prior to background and events (for save game functionality)
         auto saved_party = party;
@@ -1419,7 +1439,7 @@ namespace BloodSword::Interface
                 current = story.Find(location);
 
                 // log missing items
-                std::cerr << "[FIND] " << Book::String(location) << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
+                Interface::LogSearch(location, current);
 
                 if (!(current != -1 && Book::IsDefined(story.Sections[current].Location)))
                 {
