@@ -32,7 +32,7 @@ namespace BloodSword::Conditions
         bool Invert = false;
 
         // alternate location
-        Book::Location Another = Book::Undefined;
+        Book::Location Failure = Book::Undefined;
 
         Base() {}
 
@@ -92,9 +92,9 @@ namespace BloodSword::Conditions
         }
 
         // load alternate location
-        if (!data["another"].is_null())
+        if (!data["failure"].is_null())
         {
-            condition.Another = Book::Load(data["another"]);
+            condition.Failure = Book::Load(data["failure"]);
         }
 
         return condition;
@@ -315,7 +315,7 @@ namespace BloodSword::Conditions
 
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
-                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE && !Book::IsUndefined(condition.Another))
+                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE && !Book::IsUndefined(condition.Failure))
                 {
                     if (!party.Has(character))
                     {
@@ -335,9 +335,9 @@ namespace BloodSword::Conditions
                         {
                             failed = true;
 
-                            location = condition.Another;
+                            location = condition.Failure;
 
-                            text = condition.Variables[3];
+                            text = condition.Variables[2];
                         }
                     }
 
