@@ -1141,15 +1141,12 @@ namespace BloodSword::Interface
                         {
                             done = true;
                         }
-                        else if (!Engine::IsAlive(party))
+                        else if (section.ImageAsset.empty())
                         {
-                            if (section.ImageAsset.empty())
-                            {
-                                BloodSword::Free(&image);
+                            BloodSword::Free(&image);
 
-                                // regenerate party stats
-                                image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
-                            }
+                            // regenerate party stats
+                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                         }
                     }
                     else
