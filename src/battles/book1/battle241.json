@@ -58,7 +58,7 @@
                     "name": "GUARD",
                     "rank": 0,
                     "shoot": "NONE",
-                    "type": "ENEMY"
+                    "target": "ENEMY"
                 }
             ]
         }

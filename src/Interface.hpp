@@ -2590,6 +2590,15 @@ namespace BloodSword::Interface
                         caster.Forget(spell);
                     }
                 }
+                else if (!caster.HasCalledToMind(spell))
+                {
+                    std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT CALLED TO MIND" << std::endl;
+                }
+                else
+                {
+                    std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE" << std::endl;
+                }
+
             }
         }
 
@@ -3674,8 +3683,6 @@ namespace BloodSword::Interface
 
     std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, Asset::List assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true)
     {
-        auto random = Random::Base();
-
         auto selected_symbols = std::vector<int>();
 
         auto selection = std::vector<bool>(assets.size());
@@ -3722,7 +3729,7 @@ namespace BloodSword::Interface
             {
                 final_assets[i] = asset_hidden;
 
-                std::shuffle(values.begin(), values.end(), random.Generator());
+                std::shuffle(values.begin(), values.end(), Engine::Random.Generator());
             }
 
             Interface::LogOptions(assets, values, "[SHUFFLE]");

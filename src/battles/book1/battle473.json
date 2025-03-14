@@ -95,7 +95,7 @@
                             "type": "THE VAMPIRE SPELL"
                         }
                     ],
-                    "type": "ENEMY"
+                    "target": "ENEMY"
                 }
             ]
         }

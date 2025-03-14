@@ -639,7 +639,7 @@ namespace BloodSword::Interface
             }
             else
             {
-                Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Highlight : Color::Active);
+                Interface::MessageBox(graphics, background, resisted, target.IsEnemy() ? Color::Highlight : Color::Active);
             }
         }
         else if (spell == Spells::Type::MISTS_OF_DEATH)
@@ -882,13 +882,17 @@ namespace BloodSword::Interface
         return target;
     }
 
-    bool CanCastSpells(Battle::Base &battle, Party::Base &party, Character::Base &caster)
+    bool CanCastSpells(Battle::Base &battle, Party::Base &party, Character::Base &caster, int caster_id)
     {
         auto cast = false;
 
+        // count number of live opponents
         auto opponents = caster.ControlType == Character::ControlType::NPC ? Engine::Count(party) : Engine::Count(battle.Opponents);
 
-        if (Engine::IsAlive(caster))
+        // determine if this is the caster's turn to cast spells (also check if list is being generated)
+        auto my_turn = (std::find(battle.Casters.begin(), battle.Casters.end(), caster_id) != battle.Casters.end()) || (battle.Casters.size() == 0);
+
+        if (Engine::IsAlive(caster) && caster.Has(Skills::Type::SPELLS) && my_turn)
         {
             for (auto &strategy : caster.SpellStrategy)
             {
@@ -899,12 +903,130 @@ namespace BloodSword::Interface
                 if (targets && (strategy.Uses > 0) && (spells_cast < strategy.Count))
                 {
                     cast = true;
+                }
 
+                if (battle.Casters.size() > 0)
+                {
+                    std::cerr << "[SPELLS CAST] ";
+
+                    if (strategy.AlreadyCast != Spells::Type::NONE)
+                    {
+                        std::cerr << "[" << Spells::TypeMapping[strategy.AlreadyCast] << "] ";
+                    }
+
+                    std::cerr << std::to_string(spells_cast) << " [CAST] " << (cast ? "TRUE" : "FALSE") << std::endl;
+                }
+                if (cast)
+                {
                     break;
                 }
             }
         }
+        else
+        {
+            if (battle.Casters.size() > 0)
+            {
+                std::cerr << "[" << Target::Mapping[caster.Target] << " " << std::to_string(caster_id) << "] ";
+
+                if (!Engine::IsAlive(caster))
+                {
+                    std::cerr << "IS DEAD" << std::endl;
+                }
+                else if (!caster.Has(Skills::Type::SPELLS))
+                {
+                    std::cerr << "CANNOT CAST SPELLS" << std::endl;
+                }
+                else
+                {
+                    std::cerr << "CANNOT CAST SPELLS THIS ROUND" << std::endl;
+                }
+            }
+        }
+
         return cast;
+    }
+
+    // generate list of spell casters
+    void GenerateCasters(Battle::Base &battle, Party::Base &party)
+    {
+        // temporary list
+        auto temp_casters = std::vector<int>();
+
+        // clear spell casters list
+        battle.Casters.clear();
+
+        // generate initial list
+        for (auto i = 0; i < battle.Opponents.Count(); i++)
+        {
+            if (Interface::CanCastSpells(battle, party, battle.Opponents[i], i))
+            {
+                temp_casters.push_back(i);
+            }
+        }
+
+        // transfer list
+        battle.Casters = temp_casters;
+
+        // create random subset
+        if (battle.MaxCasters != Battle::Unlimited && battle.Casters.size() > 1)
+        {
+            for (auto i = 0; i < battle.Opponents.Count(); i++)
+            {
+                std::shuffle(battle.Casters.begin(), battle.Casters.end(), Engine::Random.Generator());
+            }
+
+            auto limit = std::min(battle.MaxCasters, int(battle.Casters.size()));
+
+            std::vector<int> subset(battle.Casters.begin(), battle.Casters.begin() + limit);
+
+            battle.Casters = subset;
+        }
+
+        if (battle.Casters.size() > 0)
+        {
+            std::cerr << "[SPELL CASTERS] (";
+
+            for (auto i = 0; i < battle.Casters.size(); i++)
+            {
+                if (i > 0)
+                {
+                    std::cerr << ", ";
+                }
+
+                std::cerr << "[" << Target::Mapping[battle.Opponents[battle.Casters[i]].Target] << " " << std::to_string(battle.Casters[i]) << "]";
+            }
+
+            std::cerr << ")" << std::endl;
+        }
+    }
+
+    void LogTargets(const char *target_type, Target::Type attacker, int id, int count)
+    {
+        std::cerr << "["
+                  << Target::Mapping[attacker]
+                  << " "
+                  << id
+                  << "] ["
+                  << target_type
+                  << " TARGETS] "
+                  << count
+                  << std::endl;
+    }
+
+    void LogAction(const char *action, Target::Type attacker, int id, Target::Type target, int target_id)
+    {
+        std::cerr << "["
+                  << Target::Mapping[attacker]
+                  << " "
+                  << id
+                  << "] ["
+                  << action
+                  << "] ["
+                  << Target::Mapping[target]
+                  << " "
+                  << target_id
+                  << "]"
+                  << std::endl;
     }
 
     // enemy casts spells
@@ -920,6 +1042,21 @@ namespace BloodSword::Interface
         if (character.CalledToMind.size() > 0)
         {
             auto spell = character.CalledToMind[0];
+
+            // find spell targets. prioritize targets with low endurance
+            auto targets = Engine::Queue();
+
+            if (spell != Spells::Type::GHASTLY_TOUCH)
+            {
+                targets = Engine::SpellTargets(battle.Map, party, src, true, false);
+            }
+            else
+            {
+                // spell needs adjacent targets
+                targets = Engine::FightTargets(battle.Map, party, src, true, false);
+            }
+
+            Interface::LogTargets("SPELL", character.Target, battle.Map[src].Id, targets.size());
 
             // cast spell
             if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
@@ -943,24 +1080,20 @@ namespace BloodSword::Interface
                     {
                         if (!spellbook.RequiresTarget())
                         {
+                            std::cerr << "["
+                                      << Target::Mapping[character.Target]
+                                      << " "
+                                      << std::to_string(battle.Map[src].Id)
+                                      << "] [CASTS "
+                                      << Spells::TypeMapping[spell]
+                                      << "]"
+                                      << std::endl;
+
                             // resolve spell
                             Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
                         }
                         else
                         {
-                            // find spell targets. prioritize targets with low endurance
-                            auto targets = Engine::Queue();
-
-                            if (spell != Spells::Type::GHASTLY_TOUCH)
-                            {
-                                targets = Engine::SpellTargets(battle.Map, party, src, true, false);
-                            }
-                            else
-                            {
-                                // spell needs adjacent targets
-                                targets = Engine::FightTargets(battle.Map, party, src, true, false);
-                            }
-
                             if (targets.size() > 0)
                             {
                                 // filter spell targets further
@@ -971,6 +1104,10 @@ namespace BloodSword::Interface
                                     auto target_id = targets[target].Id;
 
                                     auto &defender = targets[target].Type == Character::ControlType::NPC ? battle.Opponents[target_id] : party[target_id];
+
+                                    std::string spell_action = "CASTS " + std::string(Spells::TypeMapping[spell]);
+
+                                    Interface::LogAction(spell_action.c_str(), character.Target, battle.Map[src].Id, defender.Target, target_id);
 
                                     Interface::ResolveSpell(graphics, battle, scene, character, defender, target_id, spell);
                                 }
@@ -1002,35 +1139,6 @@ namespace BloodSword::Interface
                 }
             }
         }
-    }
-
-    void LogAction(const char *action, Target::Type attacker, int id, Target::Type target, int target_id)
-    {
-        std::cerr << "["
-                  << Target::Mapping[attacker]
-                  << " "
-                  << id
-                  << "] ["
-                  << action
-                  << "] ["
-                  << Target::Mapping[target]
-                  << " "
-                  << target_id
-                  << "]"
-                  << std::endl;
-    }
-
-    void LogTargets(const char *target_type, Target::Type attacker, int id, int count)
-    {
-        std::cerr << "["
-                  << Target::Mapping[attacker]
-                  << " "
-                  << id
-                  << "] ["
-                  << target_type
-                  << " TARGETS] "
-                  << count
-                  << std::endl;
     }
 
     // enemy does ranged attacks
@@ -1776,6 +1884,9 @@ namespace BloodSword::Interface
                 // spells already cast by NPC players
                 battle.AlreadyCast.clear();
 
+                // generate spell casters this turn
+                Interface::GenerateCasters(battle, party);
+
                 if (round == 0 && battle.Has(Battle::Condition::AMBUSH_PLAYER))
                 {
                     // players get a free initial turn
@@ -1856,7 +1967,7 @@ namespace BloodSword::Interface
                                         // check if there are adjacent player combatants
                                         auto opponents = Interface::EnemyFights(battle, party, character, src);
 
-                                        if (character.Has(Skills::Type::SPELLS) && Interface::CanCastSpells(battle, party, character) && !battle.Has(Battle::Condition::NO_COMBAT))
+                                        if (Interface::CanCastSpells(battle, party, character, order[combatant].Id) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             // cast or call to mind spell
                                             Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);

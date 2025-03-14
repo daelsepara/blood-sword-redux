@@ -87,8 +87,14 @@ namespace BloodSword::Battle
 
         Book::Location Survivors = Book::Undefined;
 
+        // max spell casters
+        int MaxCasters = Battle::Unlimited;
+
         // internal tracker of spells already cast this round
         Spells::List AlreadyCast = {};
+
+        // internal tracker of allowed casters this round
+        std::vector<int> Casters = {};
 
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
@@ -174,6 +180,8 @@ namespace BloodSword::Battle
                 this->SurvivorStart = !data["survivor_start"].is_null() ? int(data["survivor_start"]) : Battle::Unlimited;
 
                 this->SurvivorLimit = !data["survivor_limit"].is_null() ? int(data["survivor_limit"]) : 0;
+
+                this->MaxCasters = !data["max_casters"].is_null() ? int(data["max_casters"]) : Battle::Unlimited;
             }
         }
     };

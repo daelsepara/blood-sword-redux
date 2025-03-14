@@ -479,28 +479,6 @@ namespace BloodSword::Spells
 
         return count;
     }
-
-    // NPC will try to cast spell
-    bool CanCastSpells(Spells::Strategy &strategies, Spells::List already_cast, int opponents)
-    {
-        bool cast = false;
-
-        for (auto &strategy : strategies)
-        {
-            auto targets = (opponents >= strategy.Min && opponents <= strategy.Max);
-
-            auto spells_cast = Spells::Count(already_cast, strategy.AlreadyCast);
-
-            if (targets && (strategy.Uses > 0) && (spells_cast < strategy.Count))
-            {
-                cast = true;
-
-                break;
-            }
-        }
-
-        return cast;
-    }
 }
 
 #endif

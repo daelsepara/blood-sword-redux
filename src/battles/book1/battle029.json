@@ -55,7 +55,7 @@
                     "moves": 1000,
                     "name": "MAN IN BLUE",
                     "rank": 0,
-                    "type": "ENEMY"
+                    "target": "ENEMY"
                 }
             ]
         }

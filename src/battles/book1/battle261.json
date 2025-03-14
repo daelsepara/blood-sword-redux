@@ -59,7 +59,7 @@
                     "skills": [
                         "PARALYZING TOUCH"
                     ],
-                    "type": "ENEMY"
+                    "target": "ENEMY"
                 }
             ]
         }
