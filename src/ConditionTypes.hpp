@@ -28,7 +28,6 @@ namespace BloodSword::Conditions
         PARTY_WOUNDED,
         PREVIOUS_LOCATION,
         TEST_ATTRIBUTE,
-        ITEM_QUANTITY,
         LOSE_ALL,
         HAVE_COLLEAGUES,
         SOLO,
@@ -65,7 +64,8 @@ namespace BloodSword::Conditions
         ADD_TO_ITEM,
         SHOW_VARIABLES,
         EAT_FOOD,
-        SHOW_MESSAGE
+        SHOW_MESSAGE,
+        COUNT_ITEMS
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -90,7 +90,6 @@ namespace BloodSword::Conditions
         {Conditions::Type::PARTY_WOUNDED, "PARTY WOUNDED"},
         {Conditions::Type::PREVIOUS_LOCATION, "PREVIOUS LOCATION"},
         {Conditions::Type::TEST_ATTRIBUTE, "TEST ATTRIBUTE"},
-        {Conditions::Type::ITEM_QUANTITY, "ITEM QUANTITY"},
         {Conditions::Type::LOSE_ALL, "LOSE ALL"},
         {Conditions::Type::HAVE_COLLEAGUES, "HAVE COLLEAGUES"},
         {Conditions::Type::SOLO, "SOLO"},
@@ -127,7 +126,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::ADD_TO_ITEM, "ADD TO ITEM"},
         {Conditions::Type::SHOW_VARIABLES, "SHOW VARIABLES"},
         {Conditions::Type::EAT_FOOD, "EAT FOOD"},
-        {Conditions::Type::SHOW_MESSAGE, "SHOW MESSAGE"}};
+        {Conditions::Type::SHOW_MESSAGE, "SHOW MESSAGE"},
+        {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"}};
 
     Conditions::Type Map(const char *Conditions)
     {

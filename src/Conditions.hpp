@@ -345,62 +345,6 @@ namespace BloodSword::Conditions
                 }
             }
         }
-        else if (condition.Type == Conditions::Type::ITEM_QUANTITY)
-        {
-            internal_error = true;
-
-            // variables
-            // 0 - player
-            // 1 - item
-            // 2 - quantity
-            if (condition.Variables.size() > 2)
-            {
-                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
-
-                auto item = Item::Map(condition.Variables[1]);
-
-                auto quantity = std::stoi(condition.Variables[2], nullptr, 10);
-
-                if (character != Character::Class::NONE && item != Item::Type::NONE && quantity != 0)
-                {
-                    if (!party.Has(character))
-                    {
-                        text = Engine::NotInParty(character);
-                    }
-                    else
-                    {
-                        if (!Engine::IsAlive(party[character]))
-                        {
-                            text = Engine::IsDead(party[character]);
-                        }
-                        else
-                        {
-                            if ((party[character].Quantity(item) + quantity) >= 0)
-                            {
-                                result = true;
-
-                                party[character].Add(item, quantity);
-
-                                if (quantity > 0)
-                                {
-                                    text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
-                                }
-                                else
-                                {
-                                    text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
-                                }
-                            }
-                            else
-                            {
-                                text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
-                            }
-                        }
-                    }
-
-                    internal_error = false;
-                }
-            }
-        }
         else if (condition.Type == Conditions::Type::LOSE_ALL)
         {
             internal_error = true;
@@ -1907,6 +1851,58 @@ namespace BloodSword::Conditions
                 Interface::MessageBox(graphics, background, condition.Variables[0], border);
 
                 result = true;
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::COUNT_ITEMS)
+        {
+            // variables
+            // 0 - ALL / player
+            // 1 - item
+            // 2 - quantity
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                auto required = party.Number(condition.Variables[2]);
+
+                if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))) && item != Item::Type::NONE)
+                {
+                    auto quantity = is_party ? Engine::Quantity(party, item) : party[character].Quantity(item);
+
+                    result = (quantity >= required);
+
+                    if (!result)
+                    {
+                        text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                    }
+                }
+                else if (character != Character::Class::NONE && item != Item::Type::NONE)
+                {
+                    if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
             }
             else
             {

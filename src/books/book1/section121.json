@@ -6,7 +6,7 @@
     "text": "(TRICKSTER) You saunter casually past the merchant and reaching deftly inside his jacket, remove his doubtless ill-gotten gains. He is so drunk that he does not notice a thing.\n\n[Inspecting your haul, you find that you now have the grand sum of fifty gold pieces.]",
     "events": [
         {
-            "type": "ITEM QUANTITY",
+            "type": "ADD TO ITEM",
             "variables": [
                 "TRICKSTER",
                 "GOLD",

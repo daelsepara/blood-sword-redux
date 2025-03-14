@@ -475,9 +475,9 @@ namespace BloodSword::Character
         }
 
         // is character armed with a ranged weapon?
-        bool IsArmed(Item::Type weapon, Item::Type container, Item::Type ammo)
+        bool IsArmed(Item::Type weapon, Item::Type container, Item::Type content)
         {
-            return this->Has(container, ammo, 1) && this->Has(weapon);
+            return this->Has(container, content, 1) && this->Has(weapon);
         }
 
         int WeaponModifier(Item::Property weapon_type, Attribute::Type attribute)
@@ -667,11 +667,11 @@ namespace BloodSword::Character
             Items::Add(this->Items, item);
         }
 
-        void Remove(Item::Type ammo, int quantity)
+        void Remove(Item::Type content, int quantity)
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if (item->Remove(ammo, quantity))
+                if (item->Remove(content, quantity))
                 {
                     break;
                 }
@@ -691,14 +691,14 @@ namespace BloodSword::Character
             }
         }
 
-        // count ammo in all containers in character's possessions
-        int Quantity(Item::Type ammo)
+        // count item quantities in all containers in character's possessions
+        int Quantity(Item::Type content)
         {
             auto quantity = 0;
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                quantity += item->Has(ammo, 1) ? item->Quantity : 0;
+                quantity += item->Has(content, 1) ? item->Quantity : 0;
             }
 
             return quantity;

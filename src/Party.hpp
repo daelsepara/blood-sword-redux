@@ -353,8 +353,11 @@ namespace BloodSword::Party
         // check if string is a number
         bool IsANumber(const std::string &variable)
         {
+            // check if first character is a sign (-/+)
+            auto offset = (variable.size() > 1 && (variable[0] == '-' || variable[0] == '+') ? 1 : 0);
+
             // SEE: https://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
-            auto result = !variable.empty() && std::find_if(variable.begin(), variable.end(), [](unsigned char c)
+            auto result = !variable.empty() && std::find_if(variable.begin() + offset, variable.end(), [](unsigned char c)
                                                             { return !std::isdigit(c); }) == variable.end();
 
             std::cerr << "[VARIABLE " << variable << "] IS " << (!result ? "NOT" : "") << " A NUMBER" << std::endl;

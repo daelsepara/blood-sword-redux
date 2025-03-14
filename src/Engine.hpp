@@ -161,6 +161,21 @@ namespace BloodSword::Engine
         return count;
     }
 
+    int Quantity(Party::Base &party, Item::Type item)
+    {
+        auto quantity = 0;
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (Engine::IsAlive(party[i]))
+            {
+                quantity += party[i].Quantity(item);
+            }
+        }
+
+        return quantity;
+    }
+
     // check if there is at least one character in the party still alive
     bool IsAlive(Party::Base &party, Character::ControlType control_type = Character::ControlType::PLAYER)
     {

@@ -3872,7 +3872,7 @@ namespace BloodSword::Interface
 
     bool StakeQuantity(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type to_stake, Asset::Type stake_asset)
     {
-        auto start_game = false;
+        auto proceed = false;
 
         if (Engine::IsAlive(party) && party.ChosenCharacter != Character::Class::NONE && to_stake != Item::Type::NONE)
         {
@@ -3923,7 +3923,18 @@ namespace BloodSword::Interface
                 party.Set(stake_variable, std::to_string(total_staked));
             }
 
-            start_game = (total_staked > 0);
+            proceed = (total_staked > 0);
+
+            if (!proceed)
+            {
+                auto character = Engine::FirstClass(party);
+
+                if (character != Character::Class::NONE)
+                {
+                    // refund to first character
+                    party[character].Add(to_stake, total_staked);
+                }
+            }
         }
         else if (party.ChosenCharacter == Character::Class::NONE)
         {
@@ -3938,7 +3949,78 @@ namespace BloodSword::Interface
             Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
         }
 
-        return start_game;
+        return proceed;
+    }
+
+    bool Collect(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type to_collect, Asset::Type collect_asset, int min_collect, int max_collect)
+    {
+        auto proceed = false;
+
+        if (Engine::IsAlive(party) && party.ChosenCharacter != Character::Class::NONE && to_collect != Item::Type::NONE)
+        {
+            auto player = party.ChosenCharacter;
+
+            auto total_collected = 0;
+
+            auto done = false;
+
+            while (!done)
+            {
+                auto from = player;
+
+                if (Engine::Count(party) > 1)
+                {
+                    from = Interface::SelectCharacter(graphics, background, party, "WHO IS ADDING TO THE POOL?", true, true, false, false, true);
+                }
+
+                std::string stake_message = "HOW MUCH " + std::string(Item::TypeMapping[to_collect]) + " TO ADD?";
+
+                if (from != Character::Class::NONE)
+                {
+                    auto collected = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[from].Quantity(to_collect), collect_asset, Asset::Type::UP, Asset::Type::DOWN);
+
+                    if (collected > 0)
+                    {
+                        party[from].Remove(to_collect, collected);
+
+                        total_collected += collected;
+                    }
+                }
+
+                if ((Engine::Count(party) == 1 || from == Character::Class::NONE) && (total_collected >= min_collect && total_collected <= max_collect))
+                {
+                    std::string message = "COLLECTED: " + std::to_string(total_collected) + " " + std::string(Item::TypeMapping[to_collect]) + ", PROCEED?";
+
+                    if (Interface::Confirm(graphics, background, message.c_str(), Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                    {
+                        done = true;
+                    }
+                }
+            }
+
+            proceed = (total_collected >= min_collect && total_collected <= max_collect);
+
+            if (!proceed)
+            {
+                auto character = Engine::FirstClass(party);
+
+                if (character != Character::Class::NONE)
+                {
+                    // refund to first character
+                    party[character].Add(to_collect, total_collected);
+                }
+            }
+        }
+        else if (to_collect == Item::Type::NONE)
+        {
+            Interface::InternalError(graphics, background, "Internal Error: COLLECT QUANTITY (NOTHING TO COLLECT)");
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
+        }
+
+        return proceed;
     }
 
     // eat food

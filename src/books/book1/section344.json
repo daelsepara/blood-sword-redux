@@ -8,7 +8,7 @@
         {
             "text": "Agree to pay him ten gold pieces",
             "condition": {
-                "type": "ITEM QUANTITY",
+                "type": "ADD TO ITEM",
                 "location": {
                     "book": "BOOK1",
                     "number": 292
@@ -23,7 +23,7 @@
         {
             "text": "Insist that you will pay only five gold pieces",
             "condition": {
-                "type": "ITEM QUANTITY",
+                "type": "ADD TO ITEM",
                 "location": {
                     "book": "BOOK1",
                     "number": 454
@@ -38,7 +38,7 @@
         {
             "text": "Pay him five gold pieces now and five after he's advised you",
             "condition": {
-                "type": "ITEM QUANTITY",
+                "type": "ADD TO ITEM",
                 "location": {
                     "book": "BOOK1",
                     "number": 166

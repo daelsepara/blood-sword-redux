@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 96
+    },
+    "text": "The sarcophagi are truly colossal. You were not able to fully appreciate the size until you approached one close up. It is more than four metres long, big enough to hold the body of an ogre or a frost giant. The carvings on the lids depict four old men in regal attire. Ancestors of the loathsome Magus Kalugen? There is little to suggest a family resemblance in the wise faces of these long-dead monarchs.",
+    "choices": [
+        {
+            "text": "Press on towards the beach",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 293
+                }
+            }
+        },
+        {
+            "text": "Open the first sarcophagus",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 351
+                }
+            }
+        },
+        {
+            "text": "Open the second sarcophagus",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 186
+                }
+            }
+        },
+        {
+            "text": "Open the third sarcophagus",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 403
+                }
+            }
+        },
+        {
+            "text": "Open the fourth sarcophagus",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 137
+                }
+            }
+        }
+    ]
+}
