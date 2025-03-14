@@ -540,7 +540,7 @@ namespace BloodSword::Interface
         if (arrow_up && arrow_dn)
         {
             // exit hotspot when both scroll buttons are present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 2, id + 2, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             num_buttons++;
 
@@ -549,7 +549,7 @@ namespace BloodSword::Interface
 
             overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id + 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id - 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_up)
         {
@@ -561,19 +561,19 @@ namespace BloodSword::Interface
             id++;
 
             // scroll up hotspot
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id - 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_dn)
         {
             // exit hotspot when scroll down is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             num_buttons++;
 
             id++;
 
             // scroll down hotspot
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id - 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
@@ -686,7 +686,7 @@ namespace BloodSword::Interface
         if (arrow_up && arrow_dn)
         {
             // exit hotspot when both scroll buttons are present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 2, id + 2, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             num_buttons++;
 
@@ -695,7 +695,7 @@ namespace BloodSword::Interface
 
             overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id + 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id - 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_up)
         {
@@ -707,19 +707,19 @@ namespace BloodSword::Interface
             id++;
 
             // scroll up hotspot
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id - 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_dn)
         {
             // exit hotspot when scroll down is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             num_buttons++;
 
             id++;
 
             // scroll down hotspot
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id - 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
@@ -778,7 +778,7 @@ namespace BloodSword::Interface
         if (arrow_up && arrow_dn)
         {
             // exit hotspot when both scroll buttons are present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id + 2, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 2, id + 2, id, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             num_buttons++;
 
@@ -787,31 +787,31 @@ namespace BloodSword::Interface
 
             overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id + 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id + 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id + 1, id - 1, id + 1, id, id - 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_up)
         {
             // exit hotspot when scroll up is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id, id + 1, id + 1, id, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             num_buttons++;
 
             id++;
 
             // scroll up hotspot
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_UP, id, id - 1, id, id, id - 1, scroll_top.X, scroll_top.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else if (arrow_dn)
         {
             // exit hotspot when scroll down is present
-            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id, id + 1, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::EXIT, id, id - 1, id + 1, id + 1, id, buttons.X + button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             num_buttons++;
 
             id++;
 
             // scroll down hotspot
-            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::SCROLL_DOWN, id, id - 1, id, id, id - 1, scroll_bot.X, scroll_bot.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
