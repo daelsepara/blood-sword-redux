@@ -44,12 +44,14 @@
         "books/book1/section163.json",
         "books/book1/section164.json",
         "books/book1/section166.json",
+        "books/book1/section167.json",
         "books/book1/section177.json",
         "books/book1/section178.json",
         "books/book1/section181.json",
         "books/book1/section183.json",
         "books/book1/section184.json",
         "books/book1/section189.json",
+        "books/book1/section193.json",
         "books/book1/section196.json",
         "books/book1/section201.json",
         "books/book1/section202.json",
@@ -89,6 +91,7 @@
         "books/book1/section329.json",
         "books/book1/section331.json",
         "books/book1/section332.json",
+        "books/book1/section333.json",
         "books/book1/section343.json",
         "books/book1/section344.json",
         "books/book1/section346.json",
@@ -139,6 +142,7 @@
         "books/book1/section520.json",
         "books/book1/section526.json",
         "books/book1/section527.json",
+        "books/book1/section529.json",
         "books/book1/section535.json"
     ]
 }

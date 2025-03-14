@@ -1,0 +1,60 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 333
+    },
+    "text": "(ENCHANTER) You begin to have second thoughts as soon as you call the ENTHRALMENT spell to mind.",
+    "choices": [
+        {
+            "text": "(ENCHANTER) Cast SERVILE ENTHRALMENT",
+            "condition": {
+                "type": "PSYCHIC SPELL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 193
+                },
+                "failure": {
+                    "book": "BOOK1",
+                    "number": 333
+                },
+                "variables": [
+                    "ENCHANTER",
+                    "SERVILE ENTHRALMENT",
+                    "MUMMY HEAD",
+                    "8",
+                    "DAMAGE",
+                    "1",
+                    "3",
+                    "TRUE",
+                    "YOU FAIL TO BRING THE GONDOLIER UNDER ENTHRALMENT"
+                ]
+            }
+        },
+        {
+            "text": "(ENCHANTER) Give up trying to cast ENTRHALMENT and pay for your passage",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 167
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Wait and see",
+            "condition": {
+                "type": "IS DEAD",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 529
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        }
+    ]
+}

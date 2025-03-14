@@ -25,7 +25,10 @@
                 "location": {
                     "book": "BOOK1",
                     "number": 333
-                }
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
             }
         },
         {

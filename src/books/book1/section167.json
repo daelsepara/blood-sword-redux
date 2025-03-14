@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 167
+    },
+    "text": "The gondolier speaks from behind his mournful mask. \"The fee is 40 gold coins,\" he says, his voice thickly accented.",
+    "choices": [
+        {
+            "text": "(40 GOLD) Pay what he demands",
+            "condition": {
+                "type": "COLLECT",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 193
+                },
+                "variables": [
+                    "GOLD",
+                    "MONEY",
+                    "40",
+                    "40"
+                ]
+            }
+        },
+        {
+            "text": "You cannot or will not pay him forty gold pieces",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 516
+                }
+            }
+        }
+    ]
+}

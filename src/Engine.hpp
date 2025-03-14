@@ -1038,6 +1038,11 @@ namespace BloodSword::Engine
         return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
     }
 
+    std::string NotEnough(Item::Type &item)
+    {
+        return (std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!");
+    }
+
     std::string ToUpper(std::string str)
     {
         auto upper = str;

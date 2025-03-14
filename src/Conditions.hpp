@@ -206,6 +206,38 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::IS_DEAD)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            if (condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    if (party.Has(character))
+                    {
+                        if (!Engine::IsAlive(party[character]))
+                        {
+                            result = true;
+                        }
+                        else
+                        {
+                            text = party[character].Name + " IS NOT DEAD";
+                        }
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
         {
             if (condition.Variables.size() > 0)
@@ -1702,7 +1734,7 @@ namespace BloodSword::Conditions
                             }
                             else
                             {
-                                text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                                text = Engine::NotEnough(item);
                             }
                         }
                     }
@@ -1881,7 +1913,7 @@ namespace BloodSword::Conditions
 
                     if (!result)
                     {
-                        text = std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!";
+                        text = Engine::NotEnough(item);
                     }
                 }
                 else if (character != Character::Class::NONE && item != Item::Type::NONE)
@@ -1893,6 +1925,145 @@ namespace BloodSword::Conditions
                     else
                     {
                         text = Engine::IsDead(party[character]);
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::PSYCHIC_SPELL)
+        {
+            // variables
+            // 0 - player
+            // 1 - spell
+            // 2 - target asset
+            // 3 - difficulty (when sucessfully cast)
+            // 4 - damage action asset
+            // 5 - damage roll (on failure)
+            // 6 - damage modifier (on failure)
+            // 7 - ignore armour (TRUE/FALSE)
+            // 8 - message (on failure)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 8)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto spell = Spells::Map(condition.Variables[1]);
+
+                auto target = Asset::Map(condition.Variables[2]);
+
+                auto difficulty = std::stoi(condition.Variables[3], nullptr, 10);
+
+                auto dmg_act = Asset::Map(condition.Variables[4]);
+
+                auto dmg_rol = std::stoi(condition.Variables[5], nullptr, 10);
+
+                auto dmg_mod = std::stoi(condition.Variables[6], nullptr, 10);
+
+                auto ignore_armour = (Engine::ToUpper(condition.Variables[7]) == "TRUE");
+
+                if (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]) && spell != Spells::Type::NONE && target != Asset::Type::NONE && dmg_act != Asset::Type::NONE)
+                {
+                    party[character].CallToMind(spell);
+
+                    if (Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, party[character], spell, false))
+                    {
+                        auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
+
+                        if (rolls <= difficulty)
+                        {
+                            result = true;
+                        }
+                    }
+
+                    if (!result)
+                    {
+                        // spellcasting unsuccessful!
+                        auto message = condition.Variables[8].empty() ? Interface::GetText(Interface::MSG_CAST) : condition.Variables[8];
+
+                        Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+                        if (dmg_rol > 0)
+                        {
+                            auto rolls = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod);
+
+                            rolls -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
+
+                            if (rolls > 0)
+                            {
+                                Engine::GainEndurance(party[character], -rolls);
+                            }
+
+                            if (!Engine::IsAlive(party[character]))
+                            {
+                                std::string message = party[character].Name + " KILLED!";
+
+                                Interface::MessageBox(graphics, background, message, Color::Highlight);
+                            }
+                        }
+
+                        failed = true;
+
+                        location = condition.Failure;
+                    }
+                }
+                else if (!party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (!Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::COLLECT)
+        {
+            // variables
+            // 0 - item to stake
+            // 1 - asset (to item in #0)
+            // 2 - min collect
+            // 3 - max collect
+            if (condition.Variables.size() > 3 && Engine::IsAlive(party))
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                auto asset = Asset::Map(condition.Variables[1]);
+
+                auto min_collect = std::stoi(condition.Variables[2], nullptr, 10);
+
+                auto max_collect = std::stoi(condition.Variables[3], nullptr, 10);
+
+                if (item != Item::Type::NONE && asset != Asset::Type::NONE)
+                {
+                    if (Engine::Quantity(party, item) >= min_collect)
+                    {
+                        result = Interface::Collect(graphics, background, party, item, asset, min_collect, max_collect);
+                    }
+                    else
+                    {
+                        text = Engine::NotEnough(item);
                     }
                 }
                 else

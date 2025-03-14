@@ -65,7 +65,10 @@ namespace BloodSword::Conditions
         SHOW_VARIABLES,
         EAT_FOOD,
         SHOW_MESSAGE,
-        COUNT_ITEMS
+        COUNT_ITEMS,
+        PSYCHIC_SPELL,
+        IS_DEAD,
+        COLLECT
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -127,7 +130,10 @@ namespace BloodSword::Conditions
         {Conditions::Type::SHOW_VARIABLES, "SHOW VARIABLES"},
         {Conditions::Type::EAT_FOOD, "EAT FOOD"},
         {Conditions::Type::SHOW_MESSAGE, "SHOW MESSAGE"},
-        {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"}};
+        {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"},
+        {Conditions::Type::PSYCHIC_SPELL, "PSYCHIC SPELL"},
+        {Conditions::Type::IS_DEAD, "IS DEAD"},
+        {Conditions::Type::COLLECT, "COLLECT"}};
 
     Conditions::Type Map(const char *Conditions)
     {

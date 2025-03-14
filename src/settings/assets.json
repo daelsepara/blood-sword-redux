@@ -475,6 +475,10 @@
         {
             "id": "SAVE",
             "path": "images/system/save.png"
+        },
+        {
+            "id": "MUMMY HEAD",
+            "path": "images/enemies/mummy-head.png"
         }
     ]
 }

@@ -142,7 +142,8 @@ namespace BloodSword::Asset
         FOOD,
         BATTLE_ORDER,
         LOAD,
-        SAVE
+        SAVE,
+        MUMMY_HEAD
     };
 
     template <typename T>
@@ -281,7 +282,8 @@ namespace BloodSword::Asset
         {Asset::Type::FOOD, "FOOD"},
         {Asset::Type::BATTLE_ORDER, "BATTLE ORDER"},
         {Asset::Type::LOAD, "LOAD"},
-        {Asset::Type::SAVE, "SAVE"}};
+        {Asset::Type::SAVE, "SAVE"},
+        {Asset::Type::MUMMY_HEAD, "MUMMY HEAD"}};
 
     Asset::Type Map(const char *asset)
     {

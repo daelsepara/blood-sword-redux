@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 529
+    },
+    "text": "You see the ENCHANTER's face contort in terrible agony. There is a hideous scream that seems to ech from a great distance, and then the body of your comrade blackens and begins to fade away to nothingness. Stunned by the horror of this terrible death, you see that further attacks on the gondolier would be futile. You must attempt to bargain with him.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 167
+            }
+        }
+    ]
+}

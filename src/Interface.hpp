@@ -1957,7 +1957,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle, bool ignore_armour = false)
+    int CombatDamage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle, bool ignore_armour = false)
     {
         SDL_Texture *damage_value = nullptr;
 
@@ -2171,7 +2171,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int Damage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type skill, Asset::Type asset, bool in_battle, bool ignore_armour = false)
+    int CombatDamage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type skill, Asset::Type asset, bool in_battle, bool ignore_armour = false)
     {
         auto shooting = Engine::CanShoot(attacker, skill);
 
@@ -2187,7 +2187,7 @@ namespace BloodSword::Interface
 
         modifier -= (shooting && (skill == Skills::Type::SHURIKEN)) ? 1 : 0;
 
-        return Interface::Damage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle, ignore_armour);
+        return Interface::CombatDamage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle, ignore_armour);
     }
 
     // draws a message box on screen
@@ -2598,7 +2598,6 @@ namespace BloodSword::Interface
                 {
                     std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE" << std::endl;
                 }
-
             }
         }
 
@@ -3956,7 +3955,7 @@ namespace BloodSword::Interface
     {
         auto proceed = false;
 
-        if (Engine::IsAlive(party) && party.ChosenCharacter != Character::Class::NONE && to_collect != Item::Type::NONE)
+        if (Engine::IsAlive(party) && to_collect != Item::Type::NONE)
         {
             auto player = party.ChosenCharacter;
 
@@ -3987,7 +3986,7 @@ namespace BloodSword::Interface
                     }
                 }
 
-                if ((Engine::Count(party) == 1 || from == Character::Class::NONE) && (total_collected >= min_collect && total_collected <= max_collect))
+                if ((Engine::Count(party) == 1 || from == Character::Class::NONE))
                 {
                     std::string message = "COLLECTED: " + std::to_string(total_collected) + " " + std::string(Item::TypeMapping[to_collect]) + ", PROCEED?";
 

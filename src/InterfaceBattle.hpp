@@ -365,7 +365,7 @@ namespace BloodSword::Interface
 
                 if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::PRIMARY))
                 {
-                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
+                    auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
                     if (hit > 0)
                     {
@@ -480,7 +480,7 @@ namespace BloodSword::Interface
 
                 if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::RANGED))
                 {
-                    auto hit = Interface::Damage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
+                    auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
                     alive &= Engine::GainEndurance(defender, -hit, true);
 
@@ -607,25 +607,25 @@ namespace BloodSword::Interface
 
         if (spell == Spells::Type::VOLCANO_SPRAY)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
+            auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
             alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::WHITE_FIRE)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
+            auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
             alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::SWORDTHRUST)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
+            auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
             alive &= Engine::GainEndurance(target, -hit, true);
         }
         else if (spell == Spells::Type::NEMESIS_BOLT)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
+            auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
             alive &= Engine::GainEndurance(target, -hit, true);
         }
@@ -648,7 +648,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
+                auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
                 alive &= Engine::GainEndurance(target, -hit, true);
             }
@@ -663,7 +663,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
+                auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
                 alive &= Engine::GainEndurance(target, -hit, true);
 
@@ -681,7 +681,7 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
+                auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
                 alive &= Engine::GainEndurance(target, -hit, true);
             }
@@ -689,14 +689,14 @@ namespace BloodSword::Interface
             {
                 Interface::MessageBox(graphics, background, resisted, target.IsEnemy() ? Color::Highlight : Color::Active);
 
-                auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::AlternateDamage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
+                auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::AlternateDamage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, true);
 
                 alive &= Engine::GainEndurance(target, -hit, true);
             }
         }
         else if (spell == Spells::Type::SHEET_LIGHTNING)
         {
-            auto hit = Interface::Damage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
+            auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true);
 
             alive &= Engine::GainEndurance(target, -hit, true);
         }
