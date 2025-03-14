@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 207
+    },
+    "text": "(SAGE) You scan the chamber for the thoughts of hostile beings. You sense none -- but you cannot tell whether this is because there are no hostile beings within range of your psychic senses, or merely because you did not activate your ESP properly.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 246
+            }
+        }
+    ]
+}

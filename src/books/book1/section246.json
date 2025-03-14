@@ -1,0 +1,65 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 246
+    },
+    "text": "You step through the ornamental door into a vast cavern whose walls sparkle with veins of quartz. Rock-cut steps lead down. At the bottom of the steps a slab of grey rock with a sculpted frieze running round it forms a low dais. Looking beyond this, you see four sarcophagi carved on a monumental scale. Further on, you can dimly make out a pebble beach washed by the dark waters of an underground lake. Catiously you make your way down the steps.",
+    "choices": [
+        {
+            "text": "(SAGE) Try ESP",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 207
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "(ENCHANTER) Cast DETECT ENCHANTMENT",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 86
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Step onto the dais",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 386
+                }
+            }
+        },
+        {
+            "text": "Examine the sarcophagi",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 96
+                }
+            }
+        },
+        {
+            "text": "Cross the cavern to the beach",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 293
+                }
+            }
+        }
+    ]
+}
