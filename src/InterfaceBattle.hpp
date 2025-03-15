@@ -372,7 +372,7 @@ namespace BloodSword::Interface
             // focus on SCROLL RIGHT
             for (auto i = 0; i < battle.Map.ViewY; i++)
             {
-                auto control = i * (battle.Map.ViewX - 1);
+                auto control = i * (battle.Map.ViewX) + (battle.Map.ViewX - 1);
 
                 if (control >= 0 && control < scene.Controls.size())
                 {
@@ -388,6 +388,14 @@ namespace BloodSword::Interface
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), Point(mid_x - BloodSword::HalfTile, bottom_y)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_DOWN, id, id, id, id, id, mid_x - BloodSword::HalfTile, bottom_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            // focus on SCROLL DOWN
+            auto control = (battle.Map.ViewY - 1) * battle.Map.ViewX + (battle.Map.ViewX / 2) - (battle.Map.ViewX & 1 ? 0 : 1);
+
+            if (control >= 0 && control < scene.Controls.size())
+            {
+                scene.Controls[control].Down = id;
+            }
 
             id++;
         }
@@ -407,44 +415,46 @@ namespace BloodSword::Interface
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_LEFT);
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : map_top;
+            scene.Controls[my_id].Up = map_top;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : map_bottom;
+            scene.Controls[my_id].Down = map_bottom;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : map_left;
+            scene.Controls[my_id].Right = map_left;
         }
 
         if (up)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_UP);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : map_left;
+            scene.Controls[my_id].Left = map_left;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : map_top;
+            scene.Controls[my_id].Down = map_top;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : map_right;
+            scene.Controls[my_id].Right = map_right;
         }
 
         if (right)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : map_right;
+            scene.Controls[my_id].Left = map_right;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : map_top;
+            scene.Controls[my_id].Up = map_top;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : map_bottom;
+            scene.Controls[my_id].Down = map_bottom;
         }
 
         if (down)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_DOWN);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : map_left;
+            scene.Controls[my_id].Left = map_left;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : map_bottom;
+            scene.Controls[my_id].Up = map_bottom;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : map_right;
+            scene.Controls[my_id].Right = map_right;
+
+            scene.Controls[my_id].Down = battle.Map.ViewX * battle.Map.ViewY;
         }
     }
 
