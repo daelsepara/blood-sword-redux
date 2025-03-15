@@ -434,7 +434,7 @@ namespace BloodSword::Interface
                                     break;
                                 }
 
-                                color = Color::Highlight;
+                                color = Color::Active;
                             }
                         }
                         break;
@@ -460,7 +460,7 @@ namespace BloodSword::Interface
 
                                 type = Controls::Type::TEMPORARY_OBSTACLE;
 
-                                color = Color::Highlight;
+                                color = Color::Inactive;
                             }
                         }
                         else
@@ -481,17 +481,17 @@ namespace BloodSword::Interface
                     {
                         type = Controls::Type::MAP_EXIT;
 
-                        color = Color::Highlight;
+                        color = Color::Active;
                     }
                     else if (tile.IsPassable())
                     {
                         type = Controls::Type::LOCATION;
 
-                        color = Color::Highlight;
+                        color = Color::Active;
                     }
                     else if (tile.IsPassableToEnemy())
                     {
-                        color = Color::Inactive;
+                        color = Color::Highlight;
                     }
 
                     if (tile.Asset != Asset::Type::NONE)

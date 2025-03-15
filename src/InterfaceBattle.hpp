@@ -2037,7 +2037,7 @@ namespace BloodSword::Interface
 
             std::vector<std::string> captions_text = {
                 "EXIT",
-                "CENTER MAP ON COMBATANT",
+                "CENTER ON COMBATANT",
                 "MOVE",
                 "DEFEND",
                 "FIGHT",
