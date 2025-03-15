@@ -460,6 +460,134 @@ namespace BloodSword::Interface
         return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad));
     }
 
+    // regenerate battle map (starting at point location)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location, Character::Base &character, int character_id)
+    {
+        auto id = int(battle.Map.ViewX * battle.Map.ViewY);
+
+        auto map_h = battle.Map.ViewY * battle.Map.TileSize;
+
+        auto bottom = location.Y + map_h;
+
+        auto space = BloodSword::TileSize + BloodSword::Pad;
+
+        auto is_player = party[character_id].IsPlayer();
+
+        auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, character_id) : battle.Map.Find(Map::Object::ENEMY, character_id);
+
+        Asset::List asset_list = {Asset::Type::EXIT, Asset::Type::CENTER};
+
+        Controls::Collection controls_list = {Controls::Type::EXIT, Controls::Type::CENTER};
+
+        if (!src.IsNone())
+        {
+            // can move
+            if (Move::Available(battle.Map, src) && !character.Is(Character::Status::ENTANGLED))
+            {
+                asset_list.push_back(Asset::Type::MOVE);
+
+                controls_list.push_back(Controls::Type::MOVE);
+            }
+
+            // defend
+            asset_list.push_back(Asset::Type::DEFEND);
+
+            controls_list.push_back(Controls::Type::DEFEND);
+
+            if (!battle.Has(Battle::Condition::NO_COMBAT))
+            {
+                if (battle.Map.Adjacent(src, Map::Object::ENEMY))
+                {
+                    // can fight
+                    asset_list.push_back(Asset::Type::FIGHT);
+
+                    controls_list.push_back(Controls::Type::FIGHT);
+
+                    // has quarterstaff skill
+                    if (character.Has(Skills::Type::QUARTERSTAFF) && character.IsArmed(Item::Type::QUARTERSTAFF))
+                    {
+                        asset_list.push_back(Asset::Type::QUARTERSTAFF);
+
+                        controls_list.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
+                    }
+                }
+                else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
+                {
+                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                    {
+                        // can shoot
+                        asset_list.push_back(Asset::Type::SHOOT);
+
+                        controls_list.push_back(Interface::ActionControls[character.Shoot]);
+                    }
+                }
+                else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
+                {
+                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                    {
+                        // can shoot
+                        asset_list.push_back(Asset::Type::SHOOT);
+
+                        controls_list.push_back(Interface::ActionControls[character.Shoot]);
+                    }
+                }
+
+                // can cast spells
+                if (character.Has(Skills::Type::SPELLS))
+                {
+                    asset_list.push_back(Asset::Type::SPELLS);
+
+                    controls_list.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
+                }
+
+                if (is_player && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
+                {
+                    asset_list.push_back(Asset::Type::FLEE);
+
+                    controls_list.push_back(Controls::Type::FLEE);
+                }
+
+                if (is_player && character.Items.size() > 0)
+                {
+                    asset_list.push_back(Asset::Type::ITEMS);
+
+                    controls_list.push_back(Controls::Type::ITEMS);
+                }
+            }
+        }
+
+        Scene::Elements assets = {};
+
+        Controls::List controls = {};
+
+        for (auto i = 0; i < controls_list.size(); i++)
+        {
+            auto texture = Asset::Get(asset_list[i]);
+
+            if (texture)
+            {
+                auto new_id = id + i;
+
+                auto lt = i > 0 ? (new_id - 1) : (new_id);
+
+                auto rt = i < controls_list.size() - 1 ? (new_id + 1) : new_id;
+
+                auto up = i < battle.Map.ViewX ? new_id - battle.Map.ViewX : new_id;
+
+                controls.push_back(Controls::Base(controls_list[i], new_id, lt, rt, up, new_id, location.X + i * space, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+                assets.push_back(Scene::Element(texture, location.X + i * space, bottom));
+            }
+        }
+
+        return Interface::BattleScene(battle, party, assets, controls, location);
+    }
+
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int character_id)
+    {
+        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, character_id);
+    }
+
     // generate status
     BloodSword::Textures GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
     {
@@ -1856,13 +1984,34 @@ namespace BloodSword::Interface
             // final checks on placement of all combatants
             Interface::FinalLocationChecks(battle, party);
 
-            // initialize captions
-            auto caption_w = BloodSword::TileSize * 5;
+            std::vector<std::string> captions_text = {
+                "EXIT",
+                "CENTER MAP ON COMBATANT",
+                "MOVE",
+                "DEFEND",
+                "FIGHT",
+                "QUARTERSTAFF",
+                "SHOOT",
+                "SHURIKEN",
+                "FLEE",
+                "SPELLS",
+                "ITEMS"};
 
-            auto captions = Graphics::CreateText(
-                graphics,
-                {Graphics::RichText("EXIT", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w),
-                 Graphics::RichText("CENTER ON COMBATANT", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, caption_w)});
+            Controls::Collection caption_controls = {
+                Controls::Type::EXIT,
+                Controls::Type::CENTER,
+                Controls::Type::MOVE,
+                Controls::Type::DEFEND,
+                Controls::Type::FIGHT,
+                Controls::Type::QUARTERSTAFF,
+                Controls::Type::SHOOT,
+                Controls::Type::SHURIKEN,
+                Controls::Type::FLEE,
+                Controls::Type::SPELLS,
+                Controls::Type::ITEMS};
+
+            // create captions textures
+            auto captions = Graphics::CreateText(graphics, Graphics::GenerateTextList(captions_text, Fonts::Caption, Color::Active, 0));
 
             auto infow = battle.Map.TileSize * 5;
 
@@ -1987,6 +2136,18 @@ namespace BloodSword::Interface
                 // start with current character
                 auto combatant = 0;
 
+                // controls list
+                Controls::Collection battle_actions = {
+                    Controls::Type::MOVE,
+                    Controls::Type::DEFEND,
+                    Controls::Type::FIGHT,
+                    Controls::Type::QUARTERSTAFF,
+                    Controls::Type::SHOOT,
+                    Controls::Type::SHURIKEN,
+                    Controls::Type::FLEE,
+                    Controls::Type::SPELLS,
+                    Controls::Type::ITEMS};
+
                 while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
                 {
                     auto is_enemy = Engine::IsEnemy(order, combatant);
@@ -1999,7 +2160,7 @@ namespace BloodSword::Interface
                     Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
 
                     // regenerate scene
-                    auto scene = Interface::BattleScene(battle, party);
+                    auto scene = Interface::BattleScene(battle, party, character, order[combatant].Id);
 
                     // start of character turn
                     if (round > 0 && Engine::CoolDown(character))
@@ -2094,7 +2255,6 @@ namespace BloodSword::Interface
 
                                     if (!spells && !actions)
                                     {
-                                        // captions and overlays
                                         auto &control = scene.Controls[input.Current];
 
                                         if (control.OnMap && battle.Map.IsValid(control.Map))
@@ -2189,16 +2349,20 @@ namespace BloodSword::Interface
                                             // round number
                                             overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
 
-                                            // captions for other controls
-                                            auto exit_id = Controls::Find(scene.Controls, Controls::Type::EXIT);
+                                            auto caption_id = Controls::Find(caption_controls, control.Type);
 
-                                            auto caption = control.Id - exit_id;
-
-                                            if (caption >= 0 && caption < captions.size())
+                                            if (caption_id >= 0 && caption_id < captions.size())
                                             {
-                                                auto control = exit_id + caption;
+                                                if (input.Current >= 0 && input.Current < scene.Controls.size())
+                                                {
+                                                    if (captions[caption_id])
+                                                    {
+                                                        // center texture
+                                                        auto center = (control.W - BloodSword::Width(captions[caption_id])) / 2;
 
-                                                overlay.VerifyAndAdd(Scene::Element(captions[caption], scene.Controls[control].X, scene.Controls[control].Y + scene.Controls[control].H + BloodSword::Pad));
+                                                        overlay.VerifyAndAdd(Scene::Element(captions[caption_id], control.X + center, control.Y + control.H + BloodSword::Pad));
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -2298,7 +2462,7 @@ namespace BloodSword::Interface
 
                                     if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
                                     {
-                                        if (Input::IsValid(scene, input) && !actions && !spells)
+                                        if (Input::IsValid(scene, input) && !actions && !spells && (Controls::Find(battle_actions, input.Type) == -1))
                                         {
                                             auto &control = scene.Controls[input.Current];
 
@@ -2587,7 +2751,7 @@ namespace BloodSword::Interface
                                                 }
                                             }
                                         }
-                                        else if (actions && Input::IsValid(overlay, input))
+                                        else if ((actions && Input::IsValid(overlay, input)) || (!actions && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != -1))
                                         {
                                             if (input.Type == Controls::Type::MOVE)
                                             {
@@ -2908,7 +3072,7 @@ namespace BloodSword::Interface
                         else if (regenerate_scene)
                         {
                             // regenerate scene (on map movement, movement, etc.)
-                            scene = Interface::BattleScene(battle, party);
+                            scene = Interface::BattleScene(battle, party, character, order[combatant].Id);
                         }
                     }
 
