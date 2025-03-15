@@ -512,7 +512,7 @@ namespace BloodSword::Interface
     }
 
     // regenerate battle map (starting at point location)
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location, Character::Base &character, int id)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location, Character::Base &character, int id, Point origin)
     {
         auto map = int(battle.Map.ViewX * battle.Map.ViewY);
 
@@ -524,16 +524,14 @@ namespace BloodSword::Interface
 
         auto is_player = character.IsPlayer();
 
-        auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, id) : battle.Map.Find(Map::Object::ENEMY, id);
-
         Asset::List asset_list = {Asset::Type::EXIT, Asset::Type::CENTER};
 
         Controls::Collection controls_list = {Controls::Type::EXIT, Controls::Type::CENTER};
 
-        if (!src.IsNone())
+        if (!origin.IsNone())
         {
             // can move
-            if (Move::Available(battle.Map, src) && !character.Is(Character::Status::ENTANGLED))
+            if (Move::Available(battle.Map, origin) && !character.Is(Character::Status::ENTANGLED))
             {
                 asset_list.push_back(Asset::Type::MOVE);
 
@@ -547,7 +545,7 @@ namespace BloodSword::Interface
 
             if (!battle.Has(Battle::Condition::NO_COMBAT))
             {
-                if (battle.Map.Adjacent(src, Map::Object::ENEMY))
+                if (battle.Map.Adjacent(origin, Map::Object::ENEMY))
                 {
                     // can fight
                     asset_list.push_back(Asset::Type::FIGHT);
@@ -634,9 +632,9 @@ namespace BloodSword::Interface
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
 
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int id)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int id, Point origin)
     {
-        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, id);
+        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, id, origin);
     }
 
     // generate status
@@ -2207,11 +2205,13 @@ namespace BloodSword::Interface
 
                     auto &character = is_player ? party[order[combatant].Id] : battle.Opponents[order[combatant].Id];
 
+                    auto origin = battle.Map.Find(is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
+
                     // center map on player
                     Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
 
                     // regenerate scene
-                    auto scene = Interface::BattleScene(battle, party, character, order[combatant].Id);
+                    auto scene = Interface::BattleScene(battle, party, character, order[combatant].Id, origin);
 
                     // start of character turn
                     if (round > 0 && Engine::CoolDown(character))
@@ -3190,7 +3190,7 @@ namespace BloodSword::Interface
                         else if (regenerate_scene)
                         {
                             // regenerate scene (on map movement, movement, etc.)
-                            scene = Interface::BattleScene(battle, party, character, order[combatant].Id);
+                            scene = Interface::BattleScene(battle, party, character, order[combatant].Id, origin);
                         }
                     }
 
