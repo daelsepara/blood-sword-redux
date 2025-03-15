@@ -395,6 +395,11 @@ namespace BloodSword::Interface
             if (control >= 0 && control < scene.Controls.size())
             {
                 scene.Controls[control].Down = id;
+
+                if (!(battle.Map.ViewX & 1))
+                {
+                    scene.Controls[control + 1].Down = id;
+                }
             }
 
             id++;
