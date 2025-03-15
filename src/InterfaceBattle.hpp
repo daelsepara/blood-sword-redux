@@ -336,6 +336,17 @@ namespace BloodSword::Interface
 
             scene.Add(Controls::Base(Controls::Type::MAP_LEFT, id, id, id, id, id, left_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
+            // focus on SCROLL LEFT
+            for (auto i = 0; i < battle.Map.ViewY; i++)
+            {
+                auto control = i * (battle.Map.ViewX);
+
+                if (control >= 0 && control < scene.Controls.size())
+                {
+                    scene.Controls[control].Right = id;
+                }
+            }
+
             id++;
         }
 
@@ -345,6 +356,12 @@ namespace BloodSword::Interface
 
             scene.Add(Controls::Base(Controls::Type::MAP_UP, id, id, id, id, id, mid_x - BloodSword::HalfTile, top_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
+            // focus on SCROLL UP
+            for (auto i = 0; i < battle.Map.ViewX; i++)
+            {
+                scene.Controls[i].Up = id;
+            }
+
             id++;
         }
 
@@ -353,6 +370,17 @@ namespace BloodSword::Interface
             scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), Point(right_x, mid_y - BloodSword::HalfTile)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_RIGHT, id, id, id, id, id, right_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            // focus on SCROLL RIGHT
+            for (auto i = 0; i < battle.Map.ViewY; i++)
+            {
+                auto control = i * (battle.Map.ViewX - 1);
+
+                if (control >= 0 && control < scene.Controls.size())
+                {
+                    scene.Controls[control].Right = id;
+                }
+            }
 
             id++;
         }
