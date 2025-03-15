@@ -4,6 +4,7 @@
 #include "Battle.hpp"
 #include "Graphics.hpp"
 #include "Interface.hpp"
+#include "InterfaceInventory.hpp"
 
 // battle engine
 namespace BloodSword::Interface
@@ -1939,6 +1940,8 @@ namespace BloodSword::Interface
 
             auto blinking = false;
 
+            // clear any dropped items
+            battle.Loot.clear();
             while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
             {
                 // battle order

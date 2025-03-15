@@ -29,7 +29,8 @@ namespace BloodSword::Skills
         SHURIKEN,
         IGNORE_ARMOUR,
         PARALYZING_TOUCH,
-        POISONED_DAGGER
+        POISONED_DAGGER,
+        ATTACKS_ENGAGED
     };
 
     template <typename T>
@@ -51,7 +52,8 @@ namespace BloodSword::Skills
         {Skills::Type::SHURIKEN, "SHURIKEN"},
         {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
         {Skills::Type::PARALYZING_TOUCH, "PARALYZING TOUCH"},
-        {Skills::Type::POISONED_DAGGER, "POISONED DAGGER"}};
+        {Skills::Type::POISONED_DAGGER, "POISONED DAGGER"},
+        {Skills::Type::ATTACKS_ENGAGED, "ATTACKS ENGAGED"}};
 
     typedef std::vector<Skills::Type> List;
 

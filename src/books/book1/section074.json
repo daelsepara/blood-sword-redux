@@ -1,0 +1,132 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 74
+    },
+    "text": "You search their bodies and find twenty GOLD pieces. You also find four BATTLE AXES and BRONZE BREASTPLATES.\n\nReasoning that they will have alrady cleared out any treasure hoards to the left, you decide to head right. The corridor takes sveral sharp turns. You come to an object that sparkles in the light of the wall-lanterns. It is a sword encrusted with gems of fabulous value. But as you are about to pick it up, your natural suspicion gets the better of you. Why should anyone leave a magnificent weapon like this just lying in the middle of a corridor?",
+    "items": [
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "GOLD PIECES",
+            "quantity": 20,
+            "type": "GOLD"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Leave it and continue on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 503
+                }
+            }
+        },
+        {
+            "text": "(ENCHANTER) Investigate it",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 387
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Pick it up regardless of consequences",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 37
+                },
+                "variables": [
+                    "JEWELLED SWORD"
+                ]
+            }
+        }
+    ]
+}

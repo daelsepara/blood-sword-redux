@@ -94,11 +94,14 @@ namespace BloodSword::Battle
         // max spell casters
         int MaxCasters = Battle::Unlimited;
 
-        // internal tracker of spells already cast this round
+        // internal: spells already cast this round
         Spells::List AlreadyCast = {};
 
-        // internal tracker of allowed casters this round
+        // internal: allowed casters this round
         std::vector<int> Casters = {};
+
+        // internal: dropped items during combat
+        Items::Inventory Loot = {};
 
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 

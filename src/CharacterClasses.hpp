@@ -51,7 +51,8 @@ namespace BloodSword::Character
         TACTICS,
         MESMERISED,
         ENTANGLED,
-        DOUBLE_HEALING
+        DOUBLE_HEALING,
+        IN_COMBAT
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -71,7 +72,8 @@ namespace BloodSword::Character
         {Character::Status::TACTICS, "TACTICS"},
         {Character::Status::MESMERISED, "MESMERISED"},
         {Character::Status::ENTANGLED, "ENTANGLED"},
-        {Character::Status::DOUBLE_HEALING, "DOUBLE HEALING"}};
+        {Character::Status::DOUBLE_HEALING, "DOUBLE HEALING"},
+        {Character::Status::IN_COMBAT, "IN COMBAT"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},

@@ -1,0 +1,38 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 37
+    },
+    "text": "The moment you pick up the sword, a wall appears, blocking the corridor. By experimenting, you find that the wall appears when you pick up the sword and disappears when you put it down. You cannot go on, and the thought of retracing your steps is not inviting.",
+    "choices": [
+        {
+            "text": "Use the STEEL SCEPTRE to break through the wall",
+            "condition": {
+                "type": "DISCHARGE",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 4
+                },
+                "variables": [
+                    "STEEL SCEPTRE",
+                    "CHARGE",
+                    "1"
+                ]
+            }
+        },
+        {
+            "text": "Leave the JEWELLED SWORD",
+            "condition": {
+                "type": "DROP ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 503
+                },
+                "variables": [
+                    "ALL",
+                    "JEWELLED SWORD"
+                ]
+            }
+        }
+    ]
+}

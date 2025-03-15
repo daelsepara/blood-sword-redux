@@ -5,8 +5,8 @@
 #include "Conditions.hpp"
 #include "Section.hpp"
 #include "Interface.hpp"
-#include "InterfaceBattle.hpp"
 #include "InterfaceInventory.hpp"
+#include "InterfaceBattle.hpp"
 
 namespace BloodSword::Interface
 {

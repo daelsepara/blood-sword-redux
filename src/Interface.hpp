@@ -4431,6 +4431,49 @@ namespace BloodSword::Interface
 
         return ok;
     }
+
+    void RandomRangedAttack(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int rounds, Asset::Type shoot, bool ignore_armour = false, bool in_battle = false)
+    {
+        auto targets = std::vector<int>();
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (Engine::CanTarget(party[i], in_battle))
+            {
+                targets.push_back(i);
+            }
+        }
+
+        for (auto i = 0; i < rounds; i++)
+        {
+            // shuffle
+            std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
+
+            auto damage = Interface::Roll(graphics, background, party[targets[0]].Asset, shoot, 1, 0);
+
+            damage -= ignore_armour ? 0 : Engine::Score(party[targets[0]], Attribute::Type::ARMOUR, in_battle);
+
+            if (damage > 0)
+            {
+                std::string message = party[targets[0]].Name + " HIT WITH " + std::to_string(-damage) + " ENDURANCE";
+
+                Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+                Engine::GainEndurance(party[targets[0]], -damage, in_battle);
+
+                if (!Engine::IsAlive(party[targets[0]]))
+                {
+                    targets.erase(targets.begin());
+                }
+            }
+            else
+            {
+                std::string message = party[targets[0]].Name + " UNHARMED";
+
+                Interface::MessageBox(graphics, background, message, Color::Inactive);
+            }
+        }
+    }
 }
 
 #endif

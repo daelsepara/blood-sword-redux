@@ -250,6 +250,17 @@
             "type": "BRONZE ARMOUR"
         },
         {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
             "name": "DAGGER OF VISLET",
             "quantity": 1,
             "type": "DAGGER OF VISLET"
