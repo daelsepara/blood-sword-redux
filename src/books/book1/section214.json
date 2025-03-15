@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 214
     },
-    "text": "The DAGGER OF VISLET can be used in any combat. It can be thrown, an action like the shoot option available to SAGES and TRICKSTERS.\n\nThe player who throws the dagger can do so without having to be in a square adjacent to the target. To hit, the player must roll FIGHTING PROWESS or less on two dice. The dagger inflicts 1D6 damage to the target if itt hits, then returns to its owner's hand ready for throwing again next round. If the dagger misses its target, it does not return to its owner. In this case it cannot be used again until the combat is over and you have a chance to retrieve it. And if you flee then you don't get to retrieve it, of course.\n\nLike the shoot option, the throw optioin is not opn to a player who is under attack.",
+    "text": "The DAGGER OF VISLET can be used in any combat. It can be thrown, an action like the shoot option available to SAGES and TRICKSTERS.\n\nThe player who throws the dagger can do so without having to be in a square adjacent to the target. To hit, the player must roll FIGHTING PROWESS or less on two dice. The dagger inflicts 1D6 damage to the target if itt hits, then returns to its owner's hand ready for throwing again next round. If the dagger misses its target, it does not return to its owner. In this case it cannot be used again until the combat is over and you have a chance to retrieve it. And if you flee then you don't get to retrieve it, of course.\n\nLike the shoot option, the throw option is not opn to a player who is under attack.",
     "next": [
         {
             "type": "PREVIOUS LOCATION"

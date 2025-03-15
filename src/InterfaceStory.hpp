@@ -244,9 +244,13 @@ namespace BloodSword::Interface
                 }
                 else if (eval.Result)
                 {
-                    next = condition.Location;
+                    // process multiple background events until they resolve into a new location
+                    if (Book::IsDefined(condition.Location))
+                    {
+                        next = condition.Location;
 
-                    break;
+                        break;
+                    }
                 }
             }
         }
