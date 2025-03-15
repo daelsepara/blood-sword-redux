@@ -392,53 +392,59 @@ namespace BloodSword::Interface
             id++;
         }
 
-        auto mid_x = (battle.Map.ViewX / 2) - 1;
+        auto top_mid = (battle.Map.ViewX / 2) - 1;
 
-        auto mid_y = (battle.Map.ViewY / 2) - 1;
+        auto viewy = (battle.Map.ViewY / 2) - 1;
+
+        auto bottom_mid = (battle.Map.ViewY - 1) * battle.Map.ViewX + top_mid;
+
+        auto right_mid = (viewy + 1) * battle.Map.ViewX - 1;
+
+        auto left_mid = viewy * battle.Map.ViewX;
 
         // fix control switching
         if (left)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_LEFT);
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : mid_x;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : top_mid;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : (battle.Map.ViewY - 1) * battle.Map.ViewX + mid_x;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : bottom_mid;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : mid_y * battle.Map.ViewX;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : left_mid;
         }
 
         if (up)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_UP);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : mid_y * battle.Map.ViewX;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : left_mid;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : mid_x;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : top_mid;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : (mid_y + 1) * battle.Map.ViewX - 1;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : right_mid;
         }
 
         if (right)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : (mid_y + 1) * battle.Map.ViewX - 1;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : right_mid;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : mid_x;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : top_mid;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : (battle.Map.ViewY - 1) * battle.Map.ViewX + mid_x;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : bottom_mid;
         }
 
         if (down)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_DOWN);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : mid_y * battle.Map.ViewX;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : left_mid;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : (battle.Map.ViewY - 1) * battle.Map.ViewX + mid_x;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : bottom_mid;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : (mid_y + 1) * battle.Map.ViewX - 1;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : right_mid;
         }
     }
 
