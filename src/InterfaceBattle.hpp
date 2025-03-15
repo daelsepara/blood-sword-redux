@@ -392,59 +392,59 @@ namespace BloodSword::Interface
             id++;
         }
 
-        auto top_mid = (battle.Map.ViewX / 2) - 1;
+        auto map_top = (battle.Map.ViewX / 2) - (battle.Map.ViewX & 1 ? 0 : 1);
 
-        auto viewy = (battle.Map.ViewY / 2) - 1;
+        auto viewy_half = (battle.Map.ViewY / 2) - (battle.Map.ViewY & 1 ? 0 : 1);
 
-        auto bottom_mid = (battle.Map.ViewY - 1) * battle.Map.ViewX + top_mid;
+        auto map_bottom = (battle.Map.ViewY - 1) * battle.Map.ViewX + map_top;
 
-        auto right_mid = (viewy + 1) * battle.Map.ViewX - 1;
+        auto map_right = (viewy_half + 1) * battle.Map.ViewX - 1;
 
-        auto left_mid = viewy * battle.Map.ViewX;
+        auto map_left = viewy_half * battle.Map.ViewX;
 
         // fix control switching
         if (left)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_LEFT);
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : top_mid;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : map_top;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : bottom_mid;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : map_bottom;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : left_mid;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : map_left;
         }
 
         if (up)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_UP);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : left_mid;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : map_left;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : top_mid;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : map_top;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : right_mid;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : map_right;
         }
 
         if (right)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : right_mid;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : map_right;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : top_mid;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : map_top;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : bottom_mid;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : map_bottom;
         }
 
         if (down)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_DOWN);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : left_mid;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : map_left;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : bottom_mid;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : map_bottom;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : right_mid;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : map_right;
         }
     }
 
