@@ -522,7 +522,7 @@ namespace BloodSword::Interface
 
         auto space = BloodSword::TileSize + BloodSword::Pad;
 
-        auto is_player = party[character_id].IsPlayer();
+        auto is_player = character.IsPlayer();
 
         auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, character_id) : battle.Map.Find(Map::Object::ENEMY, character_id);
 
