@@ -1979,6 +1979,11 @@ namespace BloodSword::Interface
                 // start of round effects
                 auto next = false;
 
+                // reset IN COMBAT status
+                Engine::ResetCombatStatus(party);
+
+                Engine::ResetCombatStatus(battle.Opponents);
+
                 // start with current character
                 auto combatant = 0;
 
@@ -2036,11 +2041,15 @@ namespace BloodSword::Interface
 
                                         if (Interface::CanCastSpells(battle, party, character, order[combatant].Id) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
+                                            character.Add(Character::Status::IN_COMBAT);
+
                                             // cast or call to mind spell
                                             Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);
                                         }
                                         else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
+                                            character.Add(Character::Status::IN_COMBAT);
+
                                             Interface::LogTargets("FIGHT", character.Target, order[combatant].Id, opponents.size());
 
                                             Engine::ResetSpells(character);
@@ -2056,6 +2065,8 @@ namespace BloodSword::Interface
                                         }
                                         else if (Engine::CanShoot(character) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
+                                            character.Add(Character::Status::IN_COMBAT);
+
                                             // do ranged attacks
                                             Interface::EnemyShoots(graphics, scene, battle, party, opponents, character, src);
                                         }
@@ -2361,6 +2372,8 @@ namespace BloodSword::Interface
                                                 }
                                                 else if (spell && cast == Spells::Type::PILLAR_OF_SALT)
                                                 {
+                                                    character.Add(Character::Status::IN_COMBAT);
+
                                                     if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, cast, true))
                                                     {
                                                         // spellcasting successful
@@ -2395,6 +2408,8 @@ namespace BloodSword::Interface
 
                                                     if (distance == 1)
                                                     {
+                                                        character.Add(Character::Status::IN_COMBAT);
+
                                                         Engine::ResetStatusAndSpells(character);
 
                                                         // fight
@@ -2421,6 +2436,8 @@ namespace BloodSword::Interface
                                                     {
                                                         if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(character.Shoot))
                                                         {
+                                                            character.Add(Character::Status::IN_COMBAT);
+
                                                             Engine::ResetStatus(character);
 
                                                             // shoot
@@ -2465,6 +2482,8 @@ namespace BloodSword::Interface
                                                         {
                                                             if (!battle.Opponents[battle.Map[control.Map].Id].IsImmune(cast))
                                                             {
+                                                                character.Add(Character::Status::IN_COMBAT);
+
                                                                 if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[control.Map].Id].Asset, cast, true))
                                                                 {
                                                                     // spellcasting successful
@@ -2583,6 +2602,8 @@ namespace BloodSword::Interface
 
                                                 if (opponents.size() == 1)
                                                 {
+                                                    character.Add(Character::Status::IN_COMBAT);
+
                                                     Engine::ResetStatusAndSpells(character);
 
                                                     fight = false;
@@ -2630,6 +2651,8 @@ namespace BloodSword::Interface
 
                                                     if (!battle.Opponents[targets[0].Id].IsImmune(character.Shoot))
                                                     {
+                                                        character.Add(Character::Status::IN_COMBAT);
+
                                                         Engine::ResetStatusAndSpells(character);
 
                                                         // shoot
@@ -2739,6 +2762,8 @@ namespace BloodSword::Interface
                                                                         }
                                                                         else if (!battle.Opponents[battle.Map[target].Id].IsImmune(cast))
                                                                         {
+                                                                            character.Add(Character::Status::IN_COMBAT);
+
                                                                             if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, battle.Opponents[battle.Map[target].Id].Asset, cast, true))
                                                                             {
                                                                                 // spellcasting successful
@@ -2780,6 +2805,8 @@ namespace BloodSword::Interface
                                                                 }
                                                                 else
                                                                 {
+                                                                    character.Add(Character::Status::IN_COMBAT);
+
                                                                     if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spellbook.Type, true))
                                                                     {
                                                                         // spellcasting successful

@@ -991,6 +991,14 @@ namespace BloodSword::Engine
         Engine::ResetSpells(character);
     }
 
+    void ResetCombatStatus(Party::Base &party)
+    {
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            party[i].Remove(Character::Status::IN_COMBAT);
+        }
+    }
+
     // resets all status except enthralment and fleeing
     void ResetAll(Party::Base &party)
     {
@@ -1000,6 +1008,7 @@ namespace BloodSword::Engine
                       Character::Status::ENTANGLED,
                       Character::Status::FLEEING,
                       Character::Status::PARALYZED,
+                      Character::Status::IN_COMBAT,
                       Character::Status::IN_BATTLE});
 
         party.ResetSpells();
