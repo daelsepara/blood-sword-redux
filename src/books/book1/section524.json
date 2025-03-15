@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 524
+    },
+    "text": "\"Arrant foolishness!\" she snarls as you step forwards to attack her. The folds of the toga part to reveal two slender hands covered with glowing rings. \"I am Larisha the Gift-Giver, and only with the aid that I had to offer might your quest have been successful. Now you have forfeited the right ot that aid by reason of your rank stupidity. Return to the Battlepits -- and die!\"\n\nShe swings the myriad rings to and fro, casting a spell before you can stop her. You are whisked off your feet by a sudden rush of air -- not a natural gale, you know, but the terrifying power of an elemental. The elemental carries you through a maze of rooms and tunnels faster than you can blink, finally hurling you to the floor of a red-carpeted corridor and departing in a roar of wind.",
+    "events": [
+        {
+            "type": "GAIN ATTRIBUTE",
+            "variables": [
+                "ALL",
+                "ENDURANCE",
+                "-1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 216
+            },
+            "variables": [
+                "Slowly, bruised and shaken, you stand and try to get your bearings"
+            ]
+        }
+    ]
+}

@@ -4402,6 +4402,11 @@ namespace BloodSword::Interface
         return !Engine::IsAlive(character) || (character.ItemLimit == Items::Unlimited) || (character.Items.size() <= character.ItemLimit);
     }
 
+    bool CanReceive(Character::Base &character)
+    {
+        return !Engine::IsAlive(character) || (character.ItemLimit == Items::Unlimited) || (character.Items.size() < character.ItemLimit);
+    }
+
     // check party item limit
     bool CheckItemLimit(Party::Base &party)
     {
@@ -4410,6 +4415,18 @@ namespace BloodSword::Interface
         for (auto i = 0; i < party.Count(); i++)
         {
             ok &= Interface::CheckItemLimit(party[i]);
+        }
+
+        return ok;
+    }
+
+    bool CanReceive(Party::Base &party)
+    {
+        auto ok = false;
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            ok |= Interface::CanReceive(party[i]);
         }
 
         return ok;

@@ -1,0 +1,45 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 453
+    },
+    "text": "You tell the strange woman which gift you have decided to accept and she hands it to you.\n\nYour words of thanks are cut short by a dismissive wave of her slender hand. \"Do not trouble to thank me, for I am a creature without a soul and I merely perform the duty that the Fates have assigned. Now, I must return you to the Battlepits.\"",
+    "choices": [
+        {
+            "text": "(TRICKSTER) You wish to do something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 147
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "(ENCHANTER) You wish to act",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 414
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Do nothing",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 203
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,48 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 274
+    },
+    "text": "She does not open her mouth, but her musical voice rings inside your thoughts. She is speaking to you telepathically. \"I am Larisha -- called by the ancients of Krarth, the Gift-Giver. Now that you have stumbled into my little bower, I am obliged to render a single gift to you.\"\n\nShe reaches into the sparkling waters of the fountain and holds up a silver poniard. \"This is the DAGGER OF VISLET, the Prince of Thieves.\" She allows it to fall into the water and then pulls out another item. \"This is the GOLDEN SNUFF-BOX used by the savant Shormiano, and this --\" she drops the snuff-box and takes a large gem from the water -- \"is the last breath of Astarandel the Dragonlord.\"\n\nYou notice a flicker of light in the green depths of the gem. \"The fiery energy of Astarandel's breath is contained by a mighty spell,\" explains Larisha. \"The spell takes the form of this gem, and if you were able to find some way of negating the spell you would unleash the searing flames of the Dragonlord's last exhalation.\"",
+    "choices": [
+        {
+            "text": "Take the DAGGER OF VISLET",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 453
+                },
+                "variables": [
+                    "DAGGER OF VISLET"
+                ]
+            }
+        },
+        {
+            "text": "Take the GOLDEN SNUFF-BOX",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 453
+                },
+                "variables": [
+                    "GOLDEN SNUFF-BOX"
+                ]
+            }
+        },
+        {
+            "text": "Take the DRAGONLORD GEM",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 453
+                },
+                "variables": [
+                    "DRAGONLORD GEM"
+                ]
+            }
+        }
+    ]
+}

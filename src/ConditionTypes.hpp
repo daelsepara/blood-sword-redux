@@ -75,7 +75,8 @@ namespace BloodSword::Conditions
         PERMANENT_ATTRIBUTE_GAIN,
         CHARGE,
         DISCHARGE,
-        KILL_PLAYER
+        KILL_PLAYER,
+        GAIN_ATTRIBUTE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -147,7 +148,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::PERMANENT_ATTRIBUTE_GAIN, "PERMANENT ATTRIBUTE GAIN"},
         {Conditions::Type::CHARGE, "CHARGE"},
         {Conditions::Type::DISCHARGE, "DISCHARGE"},
-        {Conditions::Type::KILL_PLAYER, "KILL PLAYER"}};
+        {Conditions::Type::KILL_PLAYER, "KILL PLAYER"},
+        {Conditions::Type::GAIN_ATTRIBUTE, "GAIN ATTRIBUTE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

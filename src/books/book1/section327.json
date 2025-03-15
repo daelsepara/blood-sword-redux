@@ -1,0 +1,27 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 327
+    },
+    "text": "(ENCHANTER) The faltyn  takes the item Larisha has just given to you. Having secured what it asked for, the faltyn flits invisibly into the fountain. A moment later it hovers at your side once more. \"The other items are beyond my reach,\" it whispers, \"but I tried to obtain them and that was what we agreed. I now depart.\"\n\n\"Wait!\" you snarl. \"Impudent imp! Malicious sprite!\" But it is too late. The faltyn has vanished, taking with it Larisha's gift.",
+    "background": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "ALL",
+                "DAGGER OF VISLET",
+                "GOLDEN SNUFF-BOX",
+                "DRAGONLORD GEM"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 203
+            }
+        }
+    ]
+}

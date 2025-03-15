@@ -614,7 +614,7 @@ namespace BloodSword::Conditions
                         {
                             party[character].Add(status);
 
-                            text = party[character].Name + " GAINS" + Character::StatusMapping[status];
+                            text = party[character].Name + " GAINS [" + Character::StatusMapping[status] + "]";
                         }
 
                         internal_error = false;
@@ -679,7 +679,7 @@ namespace BloodSword::Conditions
                         {
                             party[character].Remove(status);
 
-                            text = party[character].Name + " LOSES" + Character::StatusMapping[status];
+                            text = party[character].Name + " LOSES [" + Character::StatusMapping[status] + "]";
                         }
 
                         internal_error = false;
@@ -2346,6 +2346,8 @@ namespace BloodSword::Conditions
                     {
                         // unalive player
                         party[character].Value(Attribute::Type::ENDURANCE, 0);
+
+                        text = party[character].Name + " DIES.";
                     }
 
                     internal_error = false;
@@ -2364,29 +2366,101 @@ namespace BloodSword::Conditions
 
                 if (item != Item::Type::NONE && Items::Found(item))
                 {
-                    if (Interface::CheckItemLimit(party))
+                    if (Interface::CanReceive(party))
                     {
-                        std::string message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
+                        auto character = Engine::FirstClass(party);
 
-                        auto character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+                        if (Engine::Count(party) > 1)
+                        {
+                            std::string message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
 
-                        if (Interface::CheckItemLimit(party[character]))
+                            character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+                        }
+
+                        if (Interface::CanReceive(party[character]))
                         {
                             party[character].Add(Items::Defaults[item]);
+
+                            text = party[character].Name + " TAKES THE " + Item::TypeMapping[item] + ".";
 
                             result = true;
                         }
                         else
                         {
-                            text = Interface::Text[Interface::MSG_ITEMS].Text;
+                            text = Interface::Text[Interface::MSG_FULL].Text;
                         }
                     }
                     else
                     {
-                        text = Interface::Text[Interface::MSG_ITEMS].Text;
+                        text = Interface::Text[Interface::MSG_FULL].Text;
                     }
 
                     internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::GAIN_ATTRIBUTE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / ALL
+            // 1 - attribute
+            // 2 - points to gain/lose
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                auto gain = party.Number(condition.Variables[2]);
+
+                if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))) && attribute != Attribute::Type::NONE)
+                {
+                    if (is_party)
+                    {
+                        for (auto i = 0; i < party.Count(); i++)
+                        {
+                            if (Engine::IsAlive(party[i]))
+                            {
+                                auto value = party[i].Value(attribute) + gain;
+
+                                party[i].Value(attribute, value);
+                            }
+                        }
+
+                        auto plural = (Engine::Count(party) > 1);
+
+                        text = (plural ? std::string("EVERYONE ") : "YOU ") + (gain < 0 ? "LOSE" : "GAIN") + (plural ? "S" : "") + " " + std::to_string(gain) + " " + Attribute::TypeMapping[attribute] + ".";
+                    }
+                    else
+                    {
+                        auto value = party[character].Value(attribute) + gain;
+
+                        party[character].Value(attribute, value);
+
+                        text = party[character].Name + " " + (gain < 0 ? "LOSE" : "GAIN") + " " + std::to_string(gain) + " " + Attribute::TypeMapping[attribute] + ".";
+                    }
+
+                    result = true;
+
+                    internal_error = false;
+                }
+                else if (character != Character::Class::NONE && !party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
                 }
             }
             else if (!Engine::IsAlive(party))

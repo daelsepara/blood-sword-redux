@@ -40,7 +40,10 @@ namespace BloodSword::Item
         LOW_QUALITY_LEATHER_ARMOUR,
         JEWELLED_SWORD,
         BATTLE_AXE,
-        BRONZE_ARMOUR
+        BRONZE_ARMOUR,
+        DAGGER_OF_VISLET,
+        GOLDEN_SNUFF_BOX,
+        DRAGONLORD_GEM
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -74,7 +77,10 @@ namespace BloodSword::Item
         {Item::Type::LOW_QUALITY_LEATHER_ARMOUR, "LOW QUALITY LEATHER ARMOUR"},
         {Item::Type::JEWELLED_SWORD, "JEWELLED SWORD"},
         {Item::Type::BATTLE_AXE, "BATTLE AXE"},
-        {Item::Type::BRONZE_ARMOUR, "BRONZE ARMOUR"}};
+        {Item::Type::BRONZE_ARMOUR, "BRONZE ARMOUR"},
+        {Item::Type::DAGGER_OF_VISLET, "DAGGER OF VISLET"},
+        {Item::Type::GOLDEN_SNUFF_BOX, "GOLDEN SNUFF-BOX"},
+        {Item::Type::DRAGONLORD_GEM, "DRAGONLORD GEM"}};
 
     Item::Type Map(const char *item)
     {

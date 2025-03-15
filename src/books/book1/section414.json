@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 414
+    },
+    "text": "(ENCHANTER) On a whim, you summon a faltyn. It appears as a flickering image on the edge of your vision.\n\n[\"Larisha still has two objects concealed in her fountain,\" you tell it. \"Bring them to me.\"\n\nThe faltyn hesitates for a moment. \"Larisha is a powerful entity -- no, let us not prevaricate, she is a demon. I would require a generous payment for the risk I should be running. I will try to obtain the other two items, but you must let me have the item you already have been given.\"]",
+    "choices": [
+        {
+            "text": "Agree to this",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 327
+                }
+            }
+        },
+        {
+            "text": "Do not pay the falytn what it asks",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 203
+                },
+                "variables": [
+                    "The faltyn vanishes in a petulant flash of light"
+                ]
+            }
+        }
+    ]
+}

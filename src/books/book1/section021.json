@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 21
+    },
+    "text": "The right-hand corridor goes only a short distance and then opens out into a large chamber. The double doors at the far end of the chamber glimmer with a dull blue sheen. To either side of you, steps lead up to a balcony.\n\nThe most amazing feature of this room is a giant chessboard that has been constructed in the middle of the floor. The chessboard is eight metres along each side, and the pieces are as tall as you are.\n\nA glowing sphere hanging from the ceiling casts a flood of light on this playing area.",
+    "choices": [
+        {
+            "text": "Go back and take the left-hand passage instead",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 249
+                }
+            }
+        },
+        {
+            "text": "Go up the steps",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 82
+                }
+            }
+        },
+        {
+            "text": "Go and look at the chess pieces",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 422
+                }
+            }
+        }
+    ]
+}

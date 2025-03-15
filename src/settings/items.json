@@ -248,6 +248,21 @@
             ],
             "quantity": 1,
             "type": "BRONZE ARMOUR"
+        },
+        {
+            "name": "DAGGER OF VISLET",
+            "quantity": 1,
+            "type": "DAGGER OF VISLET"
+        },
+        {
+            "name": "GOLDEN SNUFF-BOX",
+            "quantity": 1,
+            "type": "GOLDEN SNUFF-BOX"
+        },
+        {
+            "name": "DRAGONLORD GEM",
+            "quantity": 1,
+            "type": "DRAGONLORD GEM"
         }
     ]
 }
