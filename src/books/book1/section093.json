@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 93
+    },
+    "text": "Larisha stands up, trailing her silk toga like a shadow. \"Return now to the magi's labyrinth,\" she says, lifting her hands to display dozens of jewelled rings. \"If I possessed a soul, perhaps I would wish you well.\"\n\nColours and sounds jangle and swirl about you. For a moment you are jerked off your feet, then you settle down on to a carpeted floor. The confusion of lights fades to reveal that you are now in a corridor lined with mirrors.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 326
+            }
+        }
+    ]
+}

@@ -22,6 +22,7 @@ namespace BloodSword::Conditions
         DROP_ITEM,
         TAKE_ITEM,
         GET_ITEM,
+        REVEAL_ITEM,
         TAKE_ITEMS,
         GAIN_ENDURANCE,
         LOSE_ENDURANCE,
@@ -149,7 +150,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::CHARGE, "CHARGE"},
         {Conditions::Type::DISCHARGE, "DISCHARGE"},
         {Conditions::Type::KILL_PLAYER, "KILL PLAYER"},
-        {Conditions::Type::GAIN_ATTRIBUTE, "GAIN ATTRIBUTE"}};
+        {Conditions::Type::GAIN_ATTRIBUTE, "GAIN ATTRIBUTE"},
+        {Conditions::Type::REVEAL_ITEM, "REVEAL ITEM"}};
 
     Conditions::Type Map(const char *Conditions)
     {

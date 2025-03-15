@@ -1,0 +1,12 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 323
+    },
+    "text": "You can open the SNUFF-BOX at the end of any combat that you won. You cannot open it after fleeing from a combat, nor at any other time. When you open it, each player rolls one die. On a roll of 1 or 2, the player loses 1D6 ENDURANCE. On a roll of 3 to 6, the player gains 1D6 ENDURANCE. The SNUFF-BOX then shuts itself and cannot be used again until you win another battle.",
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

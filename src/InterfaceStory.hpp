@@ -2,11 +2,11 @@
 #define __INTERFACE_STORY_HPP__
 
 #include "Choice.hpp"
-#include "Conditions.hpp"
 #include "Section.hpp"
 #include "Interface.hpp"
 #include "InterfaceInventory.hpp"
 #include "InterfaceBattle.hpp"
+#include "ConditionsEvaluate.hpp"
 
 namespace BloodSword::Interface
 {
@@ -28,56 +28,6 @@ namespace BloodSword::Interface
         Interface::LogSectionHeader("FIND", location, false);
 
         std::cerr << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
-    }
-
-    Conditions::Evaluation ProcessItemEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Conditions::Base &condition)
-    {
-        auto result = false;
-
-        auto text = std::string();
-
-        // TODO: Figure out a way to move this into Conditions namespace
-        if (condition.Type == Conditions::Type::ITEM_EFFECT)
-        {
-            // variables
-            // 0 - item (type)
-            if (condition.Variables.size() > 0)
-            {
-                auto item = Item::Map(condition.Variables[0]);
-
-                if (party.ChosenCharacter != Character::Class::NONE && party.Has(party.ChosenCharacter) && Engine::IsAlive(party[party.ChosenCharacter]) && item != Item::Type::NONE)
-                {
-                    auto &chosen = party[party.ChosenCharacter];
-
-                    if (chosen.Has(item))
-                    {
-                        Interface::ItemEffects(graphics, background, chosen, item);
-
-                        result = true;
-                    }
-                    else
-                    {
-                        text = Engine::NoItem(item);
-                    }
-                }
-                else if (party.ChosenCharacter == Character::Class::NONE || item == Item::Type::NONE)
-                {
-                    Conditions::InternalError(graphics, background, condition.Type);
-                }
-                else if (!party.Has(party.ChosenCharacter))
-                {
-                    text = Engine::NotInParty(party.ChosenCharacter);
-                }
-                else if (party.Has(party.ChosenCharacter) && !Engine::IsAlive(party[party.ChosenCharacter]))
-                {
-                    text = Engine::IsDead(party[party.ChosenCharacter]);
-                }
-            }
-        }
-
-        Conditions::Log(condition, result, false, text, Book::Undefined);
-
-        return Conditions::Evaluation(result, text);
     }
 
     Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choice::List &choices, bool after_battle = false)
@@ -232,17 +182,7 @@ namespace BloodSword::Interface
 
                     if (choice >= 0 && choice < choices.size())
                     {
-                        auto eval = Conditions::Evaluation();
-
-                        // TODO: Figure out a way to move this into Conditions namespace
-                        if (choices[choice].Condition.Type == Conditions::Type::ITEM_EFFECT)
-                        {
-                            eval = Interface::ProcessItemEvents(graphics, background, party, choices[choice].Condition);
-                        }
-                        else
-                        {
-                            eval = Conditions::Process(graphics, background, party, choices[choice].Condition);
-                        }
+                        auto eval = Conditions::Process(graphics, background, party, choices[choice].Condition);
 
                         if (eval.Failed)
                         {
@@ -331,18 +271,7 @@ namespace BloodSword::Interface
             {
                 if (Engine::IsAlive(party))
                 {
-                    auto eval = Conditions::Evaluation();
-
-                    // TODO: Figure out a way to move this into Conditions namespace
-                    if (condition.Type == Conditions::Type::ITEM_EFFECT)
-                    {
-                        // process item effects first
-                        eval = Interface::ProcessItemEvents(graphics, background, party, condition);
-                    }
-                    else
-                    {
-                        eval = Conditions::Process(graphics, background, party, condition);
-                    }
+                    auto eval = Conditions::Process(graphics, background, party, condition);
 
                     results.push_back(eval);
                 }
@@ -427,17 +356,7 @@ namespace BloodSword::Interface
                 // process through each condition
                 for (auto &condition : section.Next)
                 {
-                    auto eval = Conditions::Evaluation();
-
-                    // TODO: Figure out a way to move this into Conditions namespace
-                    if (condition.Type == Conditions::Type::ITEM_EFFECT)
-                    {
-                        eval = Interface::ProcessItemEvents(graphics, background, party, condition);
-                    }
-                    else
-                    {
-                        eval = Conditions::Process(graphics, background, party, condition);
-                    }
+                    auto eval = Conditions::Process(graphics, background, party, condition);
 
                     // handle 'NEXT' situations that behave like events
                     if (eval.Result && Book::IsDefined(condition.Location))

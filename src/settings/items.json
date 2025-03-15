@@ -262,11 +262,19 @@
         },
         {
             "name": "DAGGER OF VISLET",
+            "description": {
+                "book": "BOOK1",
+                "number": 214
+            },
             "quantity": 1,
             "type": "DAGGER OF VISLET"
         },
         {
             "name": "GOLDEN SNUFF-BOX",
+            "description": {
+                "book": "BOOK1",
+                "number": 323
+            },
             "quantity": 1,
             "type": "GOLDEN SNUFF-BOX"
         },
