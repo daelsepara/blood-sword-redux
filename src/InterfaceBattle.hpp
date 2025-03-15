@@ -327,8 +327,6 @@ namespace BloodSword::Interface
 
         auto down = (battle.Map.Y + battle.Map.ViewY < battle.Map.Height);
 
-        auto id_default = id - 1;
-
         // add controls to scene
         if (left)
         {
@@ -394,49 +392,53 @@ namespace BloodSword::Interface
             id++;
         }
 
+        auto mid_x = (battle.Map.ViewX / 2) - 1;
+
+        auto mid_y = (battle.Map.ViewY / 2) - 1;
+
         // fix control switching
         if (left)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_LEFT);
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : id_default;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : mid_x;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : id_default;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : (battle.Map.ViewY - 1) * battle.Map.ViewX + mid_x;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : id_default;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : mid_y * battle.Map.ViewX;
         }
 
         if (up)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_UP);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : id_default;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : mid_y * battle.Map.ViewX;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : id_default;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : mid_x;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : id_default;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : (mid_y + 1) * battle.Map.ViewX - 1;
         }
 
         if (right)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : id_default;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : (mid_y + 1) * battle.Map.ViewX - 1;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : id_default;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : mid_x;
 
-            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : id_default;
+            scene.Controls[my_id].Down = down ? Controls::Find(scene.Controls, Controls::Type::MAP_DOWN) : (battle.Map.ViewY - 1) * battle.Map.ViewX + mid_x;
         }
 
         if (down)
         {
             auto my_id = Controls::Find(scene.Controls, Controls::Type::MAP_DOWN);
 
-            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : id_default;
+            scene.Controls[my_id].Left = left ? Controls::Find(scene.Controls, Controls::Type::MAP_LEFT) : mid_y * battle.Map.ViewX;
 
-            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : id_default;
+            scene.Controls[my_id].Up = up ? Controls::Find(scene.Controls, Controls::Type::MAP_UP) : (battle.Map.ViewY - 1) * battle.Map.ViewX + mid_x;
 
-            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : id_default;
+            scene.Controls[my_id].Right = right ? Controls::Find(scene.Controls, Controls::Type::MAP_RIGHT) : (mid_y + 1) * battle.Map.ViewX - 1;
         }
     }
 
