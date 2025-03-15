@@ -2098,13 +2098,13 @@ namespace BloodSword::Conditions
 
                         if (dmg_rol > 0)
                         {
-                            auto rolls = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod);
+                            auto damage = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod);
 
-                            rolls -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
+                            damage -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
 
-                            if (rolls > 0)
+                            if (damage > 0)
                             {
-                                Engine::GainEndurance(party[character], -rolls);
+                                Engine::GainEndurance(party[character], -damage);
                             }
 
                             if (!Engine::IsAlive(party[character]))
