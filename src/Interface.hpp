@@ -4396,6 +4396,24 @@ namespace BloodSword::Interface
     {
         return Interface::GetCharacter(control) != Character::Class::NONE;
     }
+
+    bool CheckItemLimit(Character::Base &character)
+    {
+        return !Engine::IsAlive(character) || (character.ItemLimit == Items::Unlimited) || (character.Items.size() <= character.ItemLimit);
+    }
+
+    // check party item limit
+    bool CheckItemLimit(Party::Base &party)
+    {
+        auto ok = true;
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            ok &= Interface::CheckItemLimit(party[i]);
+        }
+
+        return ok;
+    }
 }
 
 #endif

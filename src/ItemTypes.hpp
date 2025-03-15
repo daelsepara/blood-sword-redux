@@ -37,7 +37,10 @@ namespace BloodSword::Item
         BRONZE_KEY,
         LARGE_STAMPED_GOLD_COIN,
         EMERALD_SCARAB,
-        LOW_QUALITY_LEATHER_ARMOUR
+        LOW_QUALITY_LEATHER_ARMOUR,
+        JEWELLED_SWORD,
+        BATTLE_AXE,
+        BRONZE_ARMOUR
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -68,7 +71,10 @@ namespace BloodSword::Item
         {Item::Type::BRONZE_KEY, "BRONZE KEY"},
         {Item::Type::LARGE_STAMPED_GOLD_COIN, "LARGE STAMPED GOLD COIN"},
         {Item::Type::EMERALD_SCARAB, "EMERALD SCARAB"},
-        {Item::Type::LOW_QUALITY_LEATHER_ARMOUR, "LOW QUALITY LEATHER ARMOUR"}};
+        {Item::Type::LOW_QUALITY_LEATHER_ARMOUR, "LOW QUALITY LEATHER ARMOUR"},
+        {Item::Type::JEWELLED_SWORD, "JEWELLED SWORD"},
+        {Item::Type::BATTLE_AXE, "BATTLE AXE"},
+        {Item::Type::BRONZE_ARMOUR, "BRONZE ARMOUR"}};
 
     Item::Type Map(const char *item)
     {

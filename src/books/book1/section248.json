@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 248
+    },
+    "text": "You race along the corridor with the barbarians close behind you screaming some berserker battle-cry that chills you to the marrow. Suddenly you have to leap over a fine JEWELLED SWORD that lies glinting in the middle of the floor in front of you.",
+    "choices": [
+        {
+            "text": "Stop and pick it up",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 91
+                },
+                "variables": [
+                    "JEWELLED SWORD"
+                ]
+            }
+        },
+        {
+            "text": "Carry on running",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 531
+                }
+            }
+        }
+    ]
+}

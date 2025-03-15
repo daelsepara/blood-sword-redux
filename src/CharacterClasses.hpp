@@ -50,7 +50,6 @@ namespace BloodSword::Character
         EXCLUDED,
         TACTICS,
         MESMERISED,
-        INSTANT_DEATH,
         ENTANGLED,
         DOUBLE_HEALING
     };
@@ -71,7 +70,6 @@ namespace BloodSword::Character
         {Character::Status::EXCLUDED, "EXCLUDED"},
         {Character::Status::TACTICS, "TACTICS"},
         {Character::Status::MESMERISED, "MESMERISED"},
-        {Character::Status::INSTANT_DEATH, "INSTANT DEATH"},
         {Character::Status::ENTANGLED, "ENTANGLED"},
         {Character::Status::DOUBLE_HEALING, "DOUBLE HEALING"}};
 
@@ -91,7 +89,6 @@ namespace BloodSword::Character
         {Character::Status::EXCLUDED, -1},
         {Character::Status::TACTICS, -1},
         {Character::Status::MESMERISED, -1},
-        {Character::Status::INSTANT_DEATH, -1},
         {Character::Status::ENTANGLED, -1},
         {Character::Status::DOUBLE_HEALING, 1}};
 

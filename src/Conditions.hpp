@@ -307,6 +307,51 @@ namespace BloodSword::Conditions
                 internal_error = false;
             }
         }
+        else if (condition.Type == Conditions::Type::DROP_ITEM)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / ALL
+            // 1 - item
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                if (item != Item::Type::NONE && (is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                {
+                    result = is_party ? party.Has(item) : party[character].Has(item);
+
+                    if (!result)
+                    {
+                        text = Engine::NoItem(item);
+                    }
+                    else
+                    {
+                        if (is_party)
+                        {
+                            party.Remove(item);
+                        }
+                        else
+                        {
+                            party[character].Remove(item);
+                        }
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
         else if (condition.Type == Conditions::Type::IN_PARTY_WITH_ITEM)
         {
             internal_error = true;
@@ -1084,7 +1129,7 @@ namespace BloodSword::Conditions
                 }
             }
         }
-        else if (condition.Type == Conditions::Type::DISCARD_ITEM)
+        else if (condition.Type == Conditions::Type::DISCARD_ITEMS)
         {
             // variables:
             // 0 - player / ALL
@@ -2305,6 +2350,50 @@ namespace BloodSword::Conditions
 
                     internal_error = false;
                 }
+            }
+        }
+        else if (condition.Type == Conditions::Type::TAKE_ITEM || condition.Type == Conditions::Type::GET_ITEM)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - item
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                if (item != Item::Type::NONE && Items::Found(item))
+                {
+                    if (Interface::CheckItemLimit(party))
+                    {
+                        std::string message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
+
+                        auto character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+
+                        if (Interface::CheckItemLimit(party[character]))
+                        {
+                            party[character].Add(Items::Defaults[item]);
+
+                            result = true;
+                        }
+                        else
+                        {
+                            text = Interface::Text[Interface::MSG_ITEMS].Text;
+                        }
+                    }
+                    else
+                    {
+                        text = Interface::Text[Interface::MSG_ITEMS].Text;
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)

@@ -6,25 +6,6 @@
 
 namespace BloodSword::Interface
 {
-    // check character item limit
-    bool CheckItemLimit(Character::Base &character)
-    {
-        return !Engine::IsAlive(character) || (character.ItemLimit == Items::Unlimited) || (character.Items.size() <= character.ItemLimit);
-    }
-
-    // check party item limit
-    bool CheckItemLimit(Party::Base &party)
-    {
-        auto ok = true;
-
-        for (auto i = 0; i < party.Count(); i++)
-        {
-            ok &= Interface::CheckItemLimit(party[i]);
-        }
-
-        return ok;
-    }
-
     void TransferItem(Graphics::Base &graphics, Scene::Base &background, std::string message, Uint32 border, Items::Inventory &destination, Items::Inventory &source, int id)
     {
         if (id >= 0 && id < source.size())

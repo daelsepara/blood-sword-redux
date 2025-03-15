@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 91
+    },
+    "text": "You throw yourself back down the corridor and snatch up the JEWELLED SWORD. In the same instant that you pick up the JEWELLED SWORD, a wall of solid stone appears behind you, blocking the corridor. The JEWELLED SWORD was a magical trap and you are now penned in at the end of a cul-de-sac. The barbarians are now almost on top of you.",
+    "choices": [
+        {
+            "text": "Drop the JEWELLED SWORD",
+            "condition": {
+                "type": "DROP ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 264
+                },
+                "variables": [
+                    "ALL",
+                    "JEWELLED SWORD"
+                ]
+            }
+        },
+        {
+            "text": "Keep hold of the JEWELLED SWORD and fight it out with them",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 314
+                }
+            }
+        }
+    ]
+}

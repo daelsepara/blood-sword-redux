@@ -11,8 +11,7 @@ namespace BloodSword::Interface
     BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
         {Skills::Type::NONE, Character::Status::NONE},
         {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
-        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED},
-        {Skills::Type::POISONED_DAGGER, Character::Status::INSTANT_DEATH}};
+        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED}};
 
     BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
         {Skills::Type::NONE, Controls::Type::NONE},
@@ -123,7 +122,7 @@ namespace BloodSword::Interface
     {
         std::cerr << "["
                   << group
-                  << "]"
+                  << "] "
                   << std::to_string(party.Count())
                   << " [LIVE] "
                   << std::to_string(Engine::Count(party))
@@ -165,6 +164,15 @@ namespace BloodSword::Interface
                   << std::to_string(id)
                   << "]"
                   << std::endl;
+    }
+
+    void LogBattleResults(Battle::Base &battle, Party::Base &party, Battle::Result initial, Battle::Result result)
+    {
+        std::cerr << "[BATTLE RESULTS] " << Battle::ResultMapping[initial] << std::endl
+                  << "[PARTY] " << (Engine::IsAlive(party) ? "ALIVE" : "INCAPACITATED") << std::endl
+                  << "[OPPONENTS] " << (Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) ? "ALIVE" : "INCAPACITATED") << std::endl
+                  << "[FLEEING] " << (Engine::IsFleeing(party) ? "YES" : "NO") << std::endl
+                  << "[FINAL RESULTS] " << Battle::ResultMapping[result] << std::endl;
     }
 
     // find map control
@@ -2029,7 +2037,7 @@ namespace BloodSword::Interface
                                         }
                                         else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
-                                            Interface::LogTargets("FIGHT", character.Target, battle.Map[src].Id, opponents.size());
+                                            Interface::LogTargets("FIGHT", character.Target, order[combatant].Id, opponents.size());
 
                                             Engine::ResetSpells(character);
 
@@ -2935,6 +2943,9 @@ namespace BloodSword::Interface
             BloodSword::Free(enemy_stats);
         }
 
+        // copy initial result
+        auto initial_result = result;
+
         // handle cases where this battle's location is not recorded
         if (!battle.Has(Battle::Condition::SKIP_LOCATION))
         {
@@ -3008,8 +3019,12 @@ namespace BloodSword::Interface
                 }
             }
 
+            // log battle survivors
             Interface::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, party.Survivors.size());
         }
+
+        // log battl results
+        Interface::LogBattleResults(battle, party, initial_result, result);
 
         return result;
     }

@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 264
+    },
+    "text": "You dropped the sword and, as you do, the wall blocking your progress disappears. Hastily you run on, away from the berserk barbarians.",
+    "events": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "ALL",
+                "JEWELLED SWORD"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 531
+            }
+        }
+    ]
+}

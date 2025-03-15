@@ -207,6 +207,47 @@
             "name": "EMERALD SCARAB",
             "quantity": 1,
             "type": "EMERALD SCARAB"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LOW QUALITY LEATHER ARMOUR"
+        },
+        {
+            "name": "JEWELLED SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "CANNOT DROP"
+            ],
+            "quantity": 1,
+            "type": "JEWELLED SWORD"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE ARMOUR"
         }
     ]
 }

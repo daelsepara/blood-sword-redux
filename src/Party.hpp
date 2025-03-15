@@ -224,6 +224,21 @@ namespace BloodSword::Party
             }
         }
 
+        // remove item from everyone
+        void Remove(Item::Type item)
+        {
+            if (item != Item::Type::NONE)
+            {
+                for (auto character = this->Members.begin(); character != this->Members.end(); character++)
+                {
+                    if (character->Has(item))
+                    {
+                        character->Remove(item);
+                    }
+                }
+            }
+        }
+
         void Clear()
         {
             this->Members.clear();

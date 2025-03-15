@@ -1,0 +1,125 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 234
+    },
+    "text": "The wall still blocks your progress, and you do not want to have to turn back. Perhaps, if you have it, you could use the STEEL SCEPTRE to blast through the wall?",
+    "items": [
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE ARMOUR"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE ARMOUR"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE ARMOUR"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE ARMOUR"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "GOLD PIECES",
+            "quantity": 20,
+            "type": "GOLD"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Use the STEEL SCEPTRE",
+            "condition": {
+                "type": "DISCHARGE",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 4
+                },
+                "variables": [
+                    "STEEL SCEPTRE",
+                    "CHARGE",
+                    "1"
+                ]
+            }
+        },
+        {
+            "text": "Drop the JEWELLED SWORD",
+            "condition": {
+                "type": "DROP ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 503
+                },
+                "variables": [
+                    "ALL",
+                    "JEWELLED SWORD"
+                ]
+            }
+        }
+    ]
+}

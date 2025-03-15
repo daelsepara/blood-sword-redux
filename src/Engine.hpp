@@ -868,10 +868,7 @@ namespace BloodSword::Engine
             {
                 if (status.second < 0)
                 {
-                    if (status.first != Character::Status::INSTANT_DEATH)
-                    {
-                        Active[status.first] = -1;
-                    }
+                    Active[status.first] = -1;
                 }
                 else if (status.second > 0)
                 {
@@ -883,12 +880,6 @@ namespace BloodSword::Engine
                     {
                         Active[status.first] = status.second;
                     }
-                }
-
-                // handle INSTANT DEATH
-                if (status.first == Character::Status::INSTANT_DEATH)
-                {
-                    character.Value(Attribute::Type::ENDURANCE, 0);
                 }
             }
 
@@ -1009,7 +1000,6 @@ namespace BloodSword::Engine
                       Character::Status::ENTANGLED,
                       Character::Status::FLEEING,
                       Character::Status::PARALYZED,
-                      Character::Status::INSTANT_DEATH,
                       Character::Status::IN_BATTLE});
 
         party.ResetSpells();

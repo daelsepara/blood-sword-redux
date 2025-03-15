@@ -6,7 +6,7 @@
     "text": "(SAGE) You are very careful not to splash any of the liquid on to your lips, knowing that assassins usually carry the most virulent poisons with them. In fact, you recognise it as a preparation of the drug VATRAVISH, a powerful stimulant that increases the user's speed and strength. Assassins sometimes use it because of their single-minded dedication to their cause, but you know that it can have unpleasant side-effects.",
     "events": [
         {
-            "type": "DISCARD ITEM",
+            "type": "DISCARD ITEMS",
             "variables": [
                 "ALL",
                 "MAUVE LIQUID"

@@ -409,8 +409,10 @@ namespace BloodSword::Interface
         return update;
     }
 
-    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items, int id)
+    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items, int id)
     {
+        auto update = false;
+
         auto assets = Asset::List();
 
         auto controls = Controls::Collection();
@@ -464,6 +466,8 @@ namespace BloodSword::Interface
                     if (character != Character::Class::NONE)
                     {
                         done = Interface::TransferItem(graphics, background, party[character], items, id);
+
+                        update = true;
                     }
                 }
                 else
@@ -472,6 +476,8 @@ namespace BloodSword::Interface
                 }
             }
         }
+
+        return update;
     }
 
     Interface::ItemResult ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
@@ -815,7 +821,7 @@ namespace BloodSword::Interface
 
                         if (choice >= 0 && choice < items.size())
                         {
-                            Interface::ManageItem(graphics, background, party, items, choice);
+                            update = Interface::ManageItem(graphics, background, party, items, choice);
                         }
 
                         // check if item list is unchanged
