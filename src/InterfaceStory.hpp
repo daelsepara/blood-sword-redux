@@ -977,6 +977,25 @@ namespace BloodSword::Interface
         return update;
     }
 
+    // global effects based on section FEATURES
+    void ApplyGlobalEffects(Section::Base &section, Party::Base &party)
+    {
+        if (section.Has(Feature::Type::DOUBLE_HEALING))
+        {
+            if (party.Has(Character::Class::SAGE) && Engine::IsAlive(party[Character::Class::SAGE]))
+            {
+                party[Character::Class::SAGE].Add(Character::Status::DOUBLE_HEALING);
+            }
+        }
+        else
+        {
+            if (Engine::IsAlive(party))
+            {
+                party.Remove(Character::Status::DOUBLE_HEALING);
+            }
+        }
+    }
+
     Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, std::string &text)
     {
         auto current = Story::CurrentBook.Find(party.Location);
@@ -1079,6 +1098,9 @@ namespace BloodSword::Interface
 
         // create captions textures
         auto textures = Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0));
+
+        // global effects (based on FEATURES of this section)
+        Interface::ApplyGlobalEffects(section, party);
 
         while (!done)
         {

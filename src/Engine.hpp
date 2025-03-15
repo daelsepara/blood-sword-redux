@@ -868,7 +868,10 @@ namespace BloodSword::Engine
             {
                 if (status.second < 0)
                 {
-                    Active[status.first] = -1;
+                    if (status.first != Character::Status::INSTANT_DEATH)
+                    {
+                        Active[status.first] = -1;
+                    }
                 }
                 else if (status.second > 0)
                 {
@@ -880,6 +883,12 @@ namespace BloodSword::Engine
                     {
                         Active[status.first] = status.second;
                     }
+                }
+
+                // handle INSTANT DEATH
+                if (status.first == Character::Status::INSTANT_DEATH)
+                {
+                    character.Value(Attribute::Type::ENDURANCE, 0);
                 }
             }
 

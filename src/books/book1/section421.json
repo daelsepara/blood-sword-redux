@@ -1,0 +1,45 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 421
+    },
+    "text": "Using the fiercely burning braziers from either side of the shrine, it does not take you long to melt away the ice encasing the body. The body is perfectly preserved; the warrior looks as though he may have been sleeping all the time he has been encased in the ice.\n\nHe has a LEATHER ARMOUR but no weapon.",
+    "items": [
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LOW QUALITY LEATHER ARMOUR"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Put the EMERALD SCARAB around its neck",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 124
+                },
+                "variables": [
+                    "EMERALD SCARAB"
+                ]
+            }
+        },
+        {
+            "text": "Continue on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 369
+                }
+            }
+        }
+    ]
+}

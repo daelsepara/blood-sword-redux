@@ -1,0 +1,28 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 42
+    },
+    "text": "You roll the heavy stones off the mound. The stones make an eerie clattering echo in the stillness of the cave as they roll away. Suddenly a dead white hand smashes through the rubble and grabs you by the wrist in a vice-like grip.\n\nYou are under psychic attack.",
+    "choices": [
+        {
+            "text": "Try to free yourself from the grip",
+            "condition": {
+                "type": "TEST ATTRIBUTE",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 447
+                },
+                "failure": {
+                    "book": "BOOK1",
+                    "number": 138
+                },
+                "variables": [
+                    "CHOSEN",
+                    "PSYCHIC ABILITY",
+                    "YOU FAILED TO FREE YOURSELF FROM THE GRIP!"
+                ]
+            }
+        }
+    ]
+}

@@ -1,0 +1,45 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 153
+    },
+    "features": [
+        "DOUBLE HEALING"
+    ],
+    "text": "(SAGE) You know the proper words of the prayer to this goddess. You speak them now, and the goddess reponds by suffusing your spirt with the energy to do great good.\n\n[HEALING restores twice the amount of ENDURANCE]",
+    "choices": [
+        {
+            "text": "Have a look at the ice block",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 334
+                }
+            }
+        },
+        {
+            "text": "Dig up one of the mounds",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 42
+                },
+                "variables": [
+                    "WHO IS DOING THE DIGGING?"
+                ]
+            }
+        },
+        {
+            "text": "Continue on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 279
+                }
+            }
+        }
+    ]
+}

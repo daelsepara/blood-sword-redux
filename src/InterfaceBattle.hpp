@@ -629,7 +629,9 @@ namespace BloodSword::Interface
                     if (hit > 0 && shot == Skills::Type::POISONED_DAGGER)
                     {
                         // instant death
-                        defender.Add(Character::Status::INSTANT_DEATH);
+                        defender.Value(Attribute::Type::ENDURANCE, 0);
+
+                        alive = false;
 
                         alive = false;
                     }

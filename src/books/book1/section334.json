@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 334
+    },
+    "text": "You can just make out the figure of a warrior clad in leather armour frozen into the ice block. A gauntleted hand portrudes from the side of the block where it looks as if someone has chipped away the ice and stolen his sword.",
+    "choices": [
+        {
+            "text": "Try melting the ice",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 421
+                }
+            }
+        },
+        {
+            "text": "Use an item",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 106
+                }
+            }
+        },
+        {
+            "text": "Do something else",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 369
+                }
+            }
+        }
+    ]
+}

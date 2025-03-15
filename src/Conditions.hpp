@@ -240,6 +240,8 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::CHOSEN_PLAYER)
         {
+            // variables
+            // 0 - player to check if they were chosen
             if (condition.Variables.size() > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
@@ -1411,7 +1413,7 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
-        else if (condition.Type == Conditions::Type::SELECT_PLAYER)
+        else if (condition.Type == Conditions::Type::SELECT_PLAYER || condition.Type == Conditions::Type::CHOOSE_PLAYER)
         {
             // variables:
             // 0 - message to display
@@ -1419,7 +1421,7 @@ namespace BloodSword::Conditions
             {
                 if (Engine::Count(party) > 1)
                 {
-                    auto message = condition.Variables[0].size() > 0 ? condition.Variables[0] : std::string("SELECT PLAYER");
+                    auto message = condition.Variables[0].size() > 0 ? condition.Variables[0] : std::string(Conditions::TypeMapping[condition.Type]);
 
                     party.ChosenCharacter = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                 }
@@ -2269,6 +2271,40 @@ namespace BloodSword::Conditions
                 text = Interface::DeathMessage(party);
 
                 internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::KILL_PLAYER)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            if (condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    result = party.Has(character);
+
+                    if (!result)
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+
+                        result = false;
+                    }
+                    else
+                    {
+                        // unalive player
+                        party[character].Value(Attribute::Type::ENDURANCE, 0);
+                    }
+
+                    internal_error = false;
+                }
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)

@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 369
+    },
+    "text": "You decide what to do next.",
+    "choices": [
+        {
+            "text": "Excavate one of the mounds of stone",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 42
+                },
+                "variables": [
+                    "WHO IS EXCAVATING THE MOUNDS?"
+                ]
+            }
+        },
+        {
+            "text": "Look at the shrine",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 71
+                }
+            }
+        },
+        {
+            "text": "Leave",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 279
+                }
+            }
+        }
+    ]
+}

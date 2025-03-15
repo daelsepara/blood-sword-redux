@@ -1436,6 +1436,11 @@ namespace BloodSword::Test
             Engine::GainEndurance(party[i], -8, false);
         }
 
+        if (party.Has(Character::Class::SAGE))
+        {
+            party[Character::Class::SAGE].Add(Character::Status::DOUBLE_HEALING);
+        }
+
         auto &character = party[Character::Class::SAGE];
 
         Interface::Heal(graphics, background, party, character, true);

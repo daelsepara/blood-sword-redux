@@ -1,0 +1,47 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 447
+    },
+    "text": "The hand goes limp as soon as it has made its magical attack. You warily prod it aside and then fling off the remaining stones to rifle the grave. You find a meagre treasure -- a single GOLD COIN of a sort you've never seen. It is quite large, and stamped with a spiral design on one side and five striations on the other. You decide that rifling another mound would not be worth the risk.",
+    "choices": [
+        {
+            "text": "Check out the altar",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 71
+                }
+            }
+        },
+        {
+            "text": "Have a look at the ice block",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 334
+                }
+            }
+        },
+        {
+            "text": "Leave via the tunnel",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 279
+                }
+            }
+        }
+    ],
+    "items": [
+        {
+            "contains": "NONE",
+            "name": "LARGE STAMPED GOLD COIN",
+            "quantity": 1,
+            "type": "LARGE STAMPED GOLD COIN"
+        }
+    ]
+}

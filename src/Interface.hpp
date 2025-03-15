@@ -3429,6 +3429,12 @@ namespace BloodSword::Interface
                                         }
                                         else
                                         {
+                                            // check if healing is doubled
+                                            if (character.Has(Character::Status::DOUBLE_HEALING))
+                                            {
+                                                score *= 2;
+                                            }
+
                                             while (!done)
                                             {
                                                 // distribute healing

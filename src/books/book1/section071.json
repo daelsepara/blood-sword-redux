@@ -1,0 +1,55 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 71
+    },
+    "text": "It is a simple shrine to Freya, the Mercanian fertility goddess.",
+    "choices": [
+        {
+            "text": "(SAGE) Say the appropriate words",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 153
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Investigate the block of ice",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 334
+                }
+            }
+        },
+        {
+            "text": "Investigate one the grave mounds",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 42
+                },
+                "variables": [
+                    "WHO IS EXPLORING THE MOUNDS?"
+                ]
+            }
+        },
+        {
+            "text": "Leave via the tunnel",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 279
+                }
+            }
+        }
+    ]
+}

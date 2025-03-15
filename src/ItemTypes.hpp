@@ -34,18 +34,10 @@ namespace BloodSword::Item
         FOOD,
         STEEL_SCEPTRE,
         CHARGE,
-        BRONZE_KEY
-    };
-
-    // for the magus kalugen's card game in battlepits
-    enum class CardType
-    {
-        NONE = -1,
-        KING_OF_SERPENTS,
-        ACE_OF_STARS,
-        ACE_OF_SWORDS,
-        ACE_OF_RINGS,
-        BUFFOON
+        BRONZE_KEY,
+        LARGE_STAMPED_GOLD_COIN,
+        EMERALD_SCARAB,
+        LOW_QUALITY_LEATHER_ARMOUR
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -73,15 +65,10 @@ namespace BloodSword::Item
         {Item::Type::FOOD, "FOOD"},
         {Item::Type::STEEL_SCEPTRE, "STEEL SCEPTRE"},
         {Item::Type::CHARGE, "CHARGE"},
-        {Item::Type::BRONZE_KEY, "BRONZE KEY"}};
-
-    BloodSword::Mapping<Item::CardType> CardMapping = {
-        {Item::CardType::NONE, "NONE"},
-        {Item::CardType::KING_OF_SERPENTS, "KING OF SERPENTS"},
-        {Item::CardType::ACE_OF_STARS, "ACE OF STARS"},
-        {Item::CardType::ACE_OF_SWORDS, "ACE OF SWORDS"},
-        {Item::CardType::ACE_OF_RINGS, "ACE OF RINGS"},
-        {Item::CardType::BUFFOON, "BUFFOON"}};
+        {Item::Type::BRONZE_KEY, "BRONZE KEY"},
+        {Item::Type::LARGE_STAMPED_GOLD_COIN, "LARGE STAMPED GOLD COIN"},
+        {Item::Type::EMERALD_SCARAB, "EMERALD SCARAB"},
+        {Item::Type::LOW_QUALITY_LEATHER_ARMOUR, "LOW QUALITY LEATHER ARMOUR"}};
 
     Item::Type Map(const char *item)
     {
@@ -92,6 +79,25 @@ namespace BloodSword::Item
     {
         return Item::Map(item.c_str());
     }
+
+    // for the magus kalugen's card game in battlepits
+    enum class CardType
+    {
+        NONE = -1,
+        KING_OF_SERPENTS,
+        ACE_OF_STARS,
+        ACE_OF_SWORDS,
+        ACE_OF_RINGS,
+        BUFFOON
+    };
+
+    BloodSword::Mapping<Item::CardType> CardMapping = {
+        {Item::CardType::NONE, "NONE"},
+        {Item::CardType::KING_OF_SERPENTS, "KING OF SERPENTS"},
+        {Item::CardType::ACE_OF_STARS, "ACE OF STARS"},
+        {Item::CardType::ACE_OF_SWORDS, "ACE OF SWORDS"},
+        {Item::CardType::ACE_OF_RINGS, "ACE OF RINGS"},
+        {Item::CardType::BUFFOON, "BUFFOON"}};
 
     Item::CardType MapCard(const char *item)
     {

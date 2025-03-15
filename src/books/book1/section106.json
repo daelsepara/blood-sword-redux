@@ -1,0 +1,47 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 106
+    },
+    "text": "You consider your items.",
+    "choices": [
+        {
+            "text": "Use a STEEL SCEPTRE",
+            "condition": {
+                "type": "HAS CHARGED ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 219
+                },
+                "variables": [
+                    "STEEL SCEPTRE",
+                    "CHARGE",
+                    "1"
+                ]
+            }
+        },
+        {
+            "text": "Use the EMERALD SCARAB",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 517
+                },
+                "variables": [
+                    "EMERALD SCARAB"
+                ]
+            }
+        },
+        {
+            "text": "You have neither item",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 369
+                }
+            }
+        }
+    ]
+}

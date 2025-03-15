@@ -196,6 +196,17 @@
             "name": "BRONZE KEY",
             "quantity": 1,
             "type": "BRONZE KEY"
+        },
+        {
+            "contains": "NONE",
+            "name": "LARGE STAMPED GOLD COIN",
+            "quantity": 1,
+            "type": "LARGE STAMPED GOLD COIN"
+        },
+        {
+            "name": "EMERALD SCARAB",
+            "quantity": 1,
+            "type": "EMERALD SCARAB"
         }
     ]
 }

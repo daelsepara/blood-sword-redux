@@ -1,0 +1,30 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 138
+    },
+    "text": "You stare in horror at the dead hand holding your arm. Suddenly you give a wail of utter despair and burst into night-black flames. Within seconds your body is consumed, shrivelled away like a leaf burnt in a bonfire.",
+    "events": [
+        {
+            "type": "KILL PLAYER",
+            "variables": [
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "HAVE COLLEAGUES",
+            "variables": [
+                "Your companions rake the sand of the beach over your ashes and go on with their quest."
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 447
+            }
+        }
+    ]
+}
