@@ -343,7 +343,7 @@ namespace BloodSword::Interface
 
                 if (control >= 0 && control < scene.Controls.size())
                 {
-                    scene.Controls[control].Right = id;
+                    scene.Controls[control].Left = id;
                 }
             }
 
@@ -2786,11 +2786,27 @@ namespace BloodSword::Interface
                                                 // toggles between move/hover mode
                                                 move = !move;
 
-                                                input = previous;
+                                                // cancel other modes
+                                                spell = false;
+
+                                                fight = false;
+
+                                                shoot = false;
+
+                                                if (actions)
+                                                {
+                                                    input = previous;
+                                                }
                                             }
                                             else if (input.Type == Controls::Type::FIGHT || input.Type == Controls::Type::QUARTERSTAFF)
                                             {
                                                 auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
+
+                                                spell = false;
+
+                                                move = false;
+
+                                                shoot = false;
 
                                                 if (opponents.size() == 1)
                                                 {
@@ -2822,7 +2838,10 @@ namespace BloodSword::Interface
 
                                                     fight = true;
 
-                                                    input = previous;
+                                                    if (actions)
+                                                    {
+                                                        input = previous;
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -2830,12 +2849,21 @@ namespace BloodSword::Interface
 
                                                     fight = false;
 
-                                                    input = previous;
+                                                    if (actions)
+                                                    {
+                                                        input = previous;
+                                                    }
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::SHOOT || input.Type == Controls::Type::SHURIKEN)
                                             {
                                                 auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+
+                                                spell = false;
+
+                                                fight = false;
+
+                                                move = false;
 
                                                 if (targets.size() == 1)
                                                 {
@@ -2866,18 +2894,30 @@ namespace BloodSword::Interface
                                                 {
                                                     shoot = true;
 
-                                                    input = previous;
+                                                    if (actions)
+                                                    {
+                                                        input = previous;
+                                                    }
                                                 }
                                                 else
                                                 {
                                                     shoot = false;
 
-                                                    input = previous;
+                                                    if (actions)
+                                                    {
+                                                        input = previous;
+                                                    }
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::SPELLS)
                                             {
                                                 spells = true;
+
+                                                shoot = false;
+
+                                                fight = false;
+
+                                                move = false;
                                             }
                                             else if (input.Type == Controls::Type::DEFEND)
                                             {
@@ -2888,9 +2928,25 @@ namespace BloodSword::Interface
                                                 refresh_textures = true;
 
                                                 performed_action = true;
+
+                                                spell = false;
+
+                                                shoot = false;
+
+                                                fight = false;
+
+                                                move = false;
                                             }
                                             else if (input.Type == Controls::Type::FLEE)
                                             {
+                                                spell = false;
+
+                                                shoot = false;
+
+                                                fight = false;
+
+                                                move = false;
+
                                                 if (!character.Is(Character::Status::FLEEING))
                                                 {
                                                     character.Add(Character::Status::FLEEING);
@@ -2904,7 +2960,18 @@ namespace BloodSword::Interface
                                             }
                                             else if (input.Type == Controls::Type::BACK)
                                             {
-                                                input = previous;
+                                                spell = false;
+
+                                                shoot = false;
+
+                                                fight = false;
+
+                                                move = false;
+
+                                                if (actions)
+                                                {
+                                                    input = previous;
+                                                }
                                             }
 
                                             actions = false;
