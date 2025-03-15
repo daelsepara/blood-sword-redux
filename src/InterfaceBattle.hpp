@@ -230,7 +230,8 @@ namespace BloodSword::Interface
                         controls.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                     }
                 }
-                else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
+
+                if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
                 {
                     if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                     {
@@ -238,7 +239,8 @@ namespace BloodSword::Interface
                         controls.push_back(Interface::ActionControls[character.Shoot]);
                     }
                 }
-                else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
+
+                if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
                 {
                     if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                     {
@@ -524,6 +526,12 @@ namespace BloodSword::Interface
 
         auto is_player = character.IsPlayer();
 
+        auto is_enthralled = character.Is(Character::Status::ENTHRALLED);
+
+        auto enthralled = !is_player && is_enthralled && battle.Map.Except(Map::Object::ENEMY, id).IsNone();
+
+        auto normal = !is_player && !is_enthralled && !battle.Map.Find(Map::Object::PLAYER).IsNone();
+
         Asset::List asset_list = {Asset::Type::EXIT, Asset::Type::CENTER};
 
         Controls::Collection controls_list = {Controls::Type::EXIT, Controls::Type::CENTER};
@@ -545,7 +553,7 @@ namespace BloodSword::Interface
 
             if (!battle.Has(Battle::Condition::NO_COMBAT))
             {
-                if (battle.Map.Adjacent(origin, Map::Object::ENEMY))
+                if (is_player && battle.Map.Adjacent(origin, Map::Object::ENEMY))
                 {
                     // can fight
                     asset_list.push_back(Asset::Type::FIGHT);
@@ -560,7 +568,16 @@ namespace BloodSword::Interface
                         controls_list.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                     }
                 }
-                else if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
+
+                if (!is_player && battle.Map.Adjacent(origin, Map::Object::PLAYER))
+                {
+                    // can fight
+                    asset_list.push_back(Asset::Type::FIGHT);
+
+                    controls_list.push_back(Controls::Type::FIGHT);
+                }
+
+                if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
                 {
                     if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                     {
@@ -570,7 +587,8 @@ namespace BloodSword::Interface
                         controls_list.push_back(Interface::ActionControls[character.Shoot]);
                     }
                 }
-                else if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
+
+                if ((enthralled || normal) && Engine::CanShoot(character))
                 {
                     if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                     {
@@ -1964,6 +1982,19 @@ namespace BloodSword::Interface
         BloodSword::Free(&tactics);
     }
 
+    void HighlightControl(Scene::Base &scene, SDL_Texture *texture, Controls::Type control)
+    {
+        auto index = Controls::Find(scene.Controls, control);
+
+        if (index >= 0 && index < scene.Controls.size())
+        {
+            auto &element = scene.Controls[index];
+
+            // blue control
+            scene.Add(Scene::Element(texture, element.X, element.Y));
+        }
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -2061,6 +2092,36 @@ namespace BloodSword::Interface
 
             // create captions textures
             auto captions = Graphics::CreateText(graphics, Graphics::GenerateTextList(captions_text, Fonts::Caption, Color::Active, 0));
+
+            Asset::List action_assets = {
+                Asset::Type::MOVE,
+                Asset::Type::SHOOT,
+                Asset::Type::SHURIKEN,
+                Asset::Type::FIGHT,
+                Asset::Type::QUARTERSTAFF,
+                Asset::Type::SPELLS};
+
+            Controls::Collection action_controls = {
+                Controls::Type::MOVE,
+                Controls::Type::SHOOT,
+                Controls::Type::SHURIKEN,
+                Controls::Type::FIGHT,
+                Controls::Type::QUARTERSTAFF,
+                Controls::Type::SPELLS};
+
+            BloodSword::UnorderedMap<Controls::Type, SDL_Texture *> highlight = {};
+
+            // store texture here so it can be freed later
+            auto action_textures = BloodSword::Textures();
+
+            for (auto i = 0; i < action_assets.size(); i++)
+            {
+                auto texture = Asset::Copy(graphics.Renderer, action_assets[i], Color::Highlight);
+
+                action_textures.push_back(texture);
+
+                highlight[action_controls[i]] = texture;
+            }
 
             auto infow = battle.Map.TileSize * 5;
 
@@ -2494,6 +2555,25 @@ namespace BloodSword::Interface
                                     else
                                     {
                                         input.Blink = !input.Blink;
+                                    }
+
+                                    if (move)
+                                    {
+                                        Interface::HighlightControl(scene, highlight[Controls::Type::MOVE], Controls::Type::MOVE);
+                                    }
+                                    else if (fight)
+                                    {
+                                        Interface::HighlightControl(scene, highlight[Controls::Type::FIGHT], Controls::Type::FIGHT);
+                                    }
+                                    else if (spell)
+                                    {
+                                        Interface::HighlightControl(scene, highlight[Controls::Type::SPELLS], Controls::Type::SPELLS);
+                                    }
+                                    else if (shoot)
+                                    {
+                                        Interface::HighlightControl(scene, highlight[Controls::Type::SHOOT], Controls::Type::SHOOT);
+
+                                        Interface::HighlightControl(scene, highlight[Controls::Type::SHURIKEN], Controls::Type::SHURIKEN);
                                     }
 
                                     // wait for input
@@ -3244,6 +3324,8 @@ namespace BloodSword::Interface
             BloodSword::Free(&texture);
 
             BloodSword::Free(&round_string);
+
+            BloodSword::Free(action_textures);
 
             BloodSword::Free(captions);
 
