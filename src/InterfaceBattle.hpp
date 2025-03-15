@@ -1942,6 +1942,7 @@ namespace BloodSword::Interface
 
             // clear any dropped items
             battle.Loot.clear();
+
             while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
             {
                 // battle order
@@ -3026,7 +3027,16 @@ namespace BloodSword::Interface
             Interface::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, party.Survivors.size());
         }
 
-        // log battl results
+        if ((result == Battle::Result::VICTORY || result == Battle::Result::ENTHRALLED) && battle.Loot.size() > 0)
+        {
+            // regnerate final scene
+            auto scene = BattleScene(battle, party);
+
+            // pick up any loot
+            Interface::ShowInventory(graphics, scene, party, battle.Loot);
+        }
+
+        // log battle results
         Interface::LogBattleResults(battle, party, initial_result, result);
 
         return result;
