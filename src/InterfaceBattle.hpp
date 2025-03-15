@@ -512,9 +512,9 @@ namespace BloodSword::Interface
     }
 
     // regenerate battle map (starting at point location)
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location, Character::Base &character, int character_id)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location, Character::Base &character, int id)
     {
-        auto id = int(battle.Map.ViewX * battle.Map.ViewY);
+        auto map = int(battle.Map.ViewX * battle.Map.ViewY);
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
@@ -524,7 +524,7 @@ namespace BloodSword::Interface
 
         auto is_player = character.IsPlayer();
 
-        auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, character_id) : battle.Map.Find(Map::Object::ENEMY, character_id);
+        auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, id) : battle.Map.Find(Map::Object::ENEMY, id);
 
         Asset::List asset_list = {Asset::Type::EXIT, Asset::Type::CENTER};
 
@@ -617,15 +617,15 @@ namespace BloodSword::Interface
 
             if (texture)
             {
-                auto new_id = id + i;
+                auto control = map + i;
 
-                auto lt = i > 0 ? (new_id - 1) : (new_id);
+                auto lt = i > 0 ? (control - 1) : (control);
 
-                auto rt = i < controls_list.size() - 1 ? (new_id + 1) : new_id;
+                auto rt = i < controls_list.size() - 1 ? (control + 1) : control;
 
-                auto up = i < battle.Map.ViewX ? new_id - battle.Map.ViewX : new_id;
+                auto up = i < battle.Map.ViewX ? control - battle.Map.ViewX : control;
 
-                controls.push_back(Controls::Base(controls_list[i], new_id, lt, rt, up, new_id, location.X + i * space, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+                controls.push_back(Controls::Base(controls_list[i], control, lt, rt, up, control, location.X + i * space, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
                 assets.push_back(Scene::Element(texture, location.X + i * space, bottom));
             }
@@ -634,9 +634,9 @@ namespace BloodSword::Interface
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
 
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int character_id)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int id)
     {
-        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, character_id);
+        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, id);
     }
 
     // generate status
