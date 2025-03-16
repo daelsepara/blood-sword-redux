@@ -369,13 +369,15 @@ namespace BloodSword::Conditions
                     {
                         auto test = Interface::Test(graphics, background, party[character], attribute);
 
-                        result = true;
-
                         if (!test)
                         {
                             failed = true;
 
                             text = condition.Variables[2];
+                        }
+                        else
+                        {
+                            result = true;
                         }
                     }
 
