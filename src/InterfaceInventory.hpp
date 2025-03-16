@@ -347,10 +347,6 @@ namespace BloodSword::Interface
                                     }
                                 }
                             }
-                            else
-                            {
-                                Interface::InternalError(graphics, background, std::string("Internal Error: TRADE"));
-                            }
                         }
                         else
                         {

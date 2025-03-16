@@ -692,7 +692,7 @@ namespace BloodSword::Test
 
         for (auto name : Palette::Names)
         {
-            collection.push_back(Graphics::RichText(name, Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width));
+            collection.push_back(Graphics::RichText(name.c_str(), Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width));
         }
 
         Graphics::TextList colors = {

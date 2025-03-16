@@ -25,6 +25,8 @@ namespace BloodSword
 
             Fonts::Load("settings/font-settings.json");
 
+            Palette::Load("settings/palettes.json");
+
             Palette::Switch(0);
 
             Interface::LoadTextures(this->graphics);

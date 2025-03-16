@@ -1,0 +1,112 @@
+{
+    "palettes": [
+        {
+            "name": "DEFAULT",
+            "colors": [
+                "FFFFFFFF",
+                "FF606060",
+                "FFFF0000",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "CGA (WHITE/MAGENTA/CYAN)",
+            "colors": [
+                "FF56FFFF",
+                "FFFFFFFF",
+                "FFFE02A2",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "CGA (GREEN/RED/BROWN)",
+            "colors": [
+                "FF00AA00",
+                "FFAA5500",
+                "FFAA0000",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "GAMEBOY",
+            "colors": [
+                "FFB5AF42",
+                "FF3A5122",
+                "FF5D782E",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "ANOTHER WORLD",
+            "colors": [
+                "FFF1EDCF",
+                "FF78938A",
+                "FF525E75",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "DESERT BROWN",
+            "colors": [
+                "FFA98C61",
+                "FF312915",
+                "FF6C3713",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "GREEN/YELLOW/ORANGE",
+            "colors": [
+                "FFFFCF42",
+                "FF007550",
+                "FFF79239",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "BLUE/RED/WHITE",
+            "colors": [
+                "FFFFFFFF",
+                "FF232D64",
+                "FFE61937",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "AQUAMARINE",
+            "colors": [
+                "FF92D8FC",
+                "FF12587C",
+                "FF1875FA",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "VIOLET/INDIGO/LAVENDER",
+            "colors": [
+                "FFC7A8FF",
+                "FFA270FF",
+                "FF5A0BED",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "FFBFEAFF/FF005178/FF0074AB",
+            "colors": [
+                "FFBFEAFF",
+                "FF005178",
+                "FF0074AB",
+                "FF000000"
+            ]
+        },
+        {
+            "name": "FFFF7F50/FF008080/FFD3D3D3",
+            "colors": [
+                "FFFF7F50",
+                "FF008080",
+                "FFD3D3D3",
+                "FF000000"
+            ]
+        }
+    ]
+}
