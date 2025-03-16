@@ -2144,35 +2144,47 @@ namespace BloodSword::Interface
 
             auto round_string = Graphics::CreateText(graphics, (std::string("ROUND: ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
-            auto spells = false;
-
-            auto cast = Spells::Type::NONE;
-
-            auto actions = false;
-
-            auto animating = false;
-
+            // move animation
             auto movement = Animation::Base();
 
-            auto previous = Controls::User();
-
-            auto input = Controls::User();
-
-            auto move = false;
-
-            auto exit = false;
-
-            // fight targetting
-            auto fight = false;
+            // spell to cast
+            auto cast = Spells::Type::NONE;
 
             // quarterstaff targetting
             auto knockout = Skills::Type::NONE;
+
+            // spells popup
+            auto spells = false;
+
+            // items popup
+            auto items = false;
+
+            // actions popup
+            auto actions = false;
+
+            // animation in progress
+            auto animating = false;
+
+            // select destination
+            auto move = false;
+
+            // fight targetting
+            auto fight = false;
 
             // shoot targetting
             auto shoot = false;
 
             // spell targetting
             auto spell = false;
+
+            // exit battle
+            auto exit = false;
+
+            // user input
+            auto input = Controls::User();
+
+            // previous user input
+            auto previous = Controls::User();
 
             auto pad = BloodSword::Pad;
 
@@ -2366,7 +2378,7 @@ namespace BloodSword::Interface
                                 {
                                     // player-controlled characters including enthralled enemies
 
-                                    if (!spells && !actions)
+                                    if (!actions && !items && !spells)
                                     {
                                         auto &control = scene.Controls[input.Current];
 
@@ -2493,29 +2505,29 @@ namespace BloodSword::Interface
                                             {
                                                 auto &control = overlay.Controls[input.Current];
 
-                                                auto &spell = character.Spells[control.Id];
+                                                auto &spell_caption = character.Spells[control.Id];
 
                                                 auto &popup = overlay.Elements[0];
 
-                                                if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
+                                                if (character.HasCalledToMind(spell_caption.Type) && spell_caption.IsBattle && !spell_caption.IsBasic())
                                                 {
                                                     overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell_caption.Type], control.X, control.Y + control.H + pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
                                                 }
-                                                else if (!spell.IsBasic() && spell.IsBattle)
+                                                else if (!spell_caption.IsBasic() && spell_caption.IsBattle)
                                                 {
                                                     overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell_caption.Type], control.X, control.Y + control.H + pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
                                                 }
                                                 else
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell_caption.Type], control.X, control.Y + control.H + pad));
                                                 }
                                             }
                                         }
@@ -2543,7 +2555,7 @@ namespace BloodSword::Interface
                                     }
 
                                     // focus cursor
-                                    if (!actions && !spells)
+                                    if (!actions && !items && !spells)
                                     {
                                         if (blinking)
                                         {
@@ -2576,11 +2588,18 @@ namespace BloodSword::Interface
 
                                         Interface::HighlightControl(scene, highlight[Controls::Type::SHURIKEN], Controls::Type::SHURIKEN);
                                     }
+                                    else if (items)
+                                    {
+                                        Interface::HighlightControl(scene, highlight[Controls::Type::ITEMS], Controls::Type::ITEMS);
+                                    }
 
                                     // wait for input
-                                    input = Input::WaitForInput(graphics, scene, overlay, input, (actions || spells), (actions || spells));
+                                    if (!items)
+                                    {
+                                        input = Input::WaitForInput(graphics, scene, overlay, input, (actions || spells), (actions || spells));
+                                    }
 
-                                    if (!actions && !spells)
+                                    if (!actions && !items && !spells)
                                     {
                                         auto blink_end = SDL_GetTicks64();
 
@@ -2594,29 +2613,27 @@ namespace BloodSword::Interface
 
                                     if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
                                     {
-                                        if (Input::IsValid(scene, input) && !actions && !spells && (Controls::Find(battle_actions, input.Type) == -1))
+                                        if (Input::IsValid(scene, input) && !actions && !items && !spells && (Controls::Find(battle_actions, input.Type) == -1))
                                         {
                                             auto &control = scene.Controls[input.Current];
 
                                             if (control.OnMap && battle.Map[scene.Controls[input.Current].Map].Id == order[combatant].Id && ((is_player && battle.Map[scene.Controls[input.Current].Map].IsPlayer()) || (is_enemy && battle.Map[scene.Controls[input.Current].Map].IsEnemy())))
                                             {
+                                                knockout = character.Fight;
+
                                                 previous = input;
 
                                                 actions = true;
 
-                                                spells = false;
-
-                                                move = false;
-
                                                 fight = false;
 
-                                                knockout = character.Fight;
+                                                items = false;
+
+                                                move = false;
 
                                                 shoot = false;
 
                                                 spell = false;
-
-                                                input.Current = -1;
                                             }
                                             else if (control.OnMap && battle.Map.IsValid(control.Map) && (input.Type == Controls::Type::LOCATION || input.Type == Controls::Type::MAP_EXIT))
                                             {
@@ -2649,19 +2666,21 @@ namespace BloodSword::Interface
                                                             Engine::Cancel(character, Character::Status::FLEEING);
 
                                                             refresh_textures = true;
-
-                                                            regenerate_scene = true;
                                                         }
                                                         else
                                                         {
                                                             // no route to destination
                                                             Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_MOVE), Color::Highlight);
                                                         }
+
+                                                        regenerate_scene = true;
                                                     }
                                                     else
                                                     {
                                                         // enemies nearby
                                                         Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_NEARBY), Color::Highlight);
+
+                                                        regenerate_scene = true;
                                                     }
 
                                                     move = !move;
@@ -2688,11 +2707,11 @@ namespace BloodSword::Interface
                                                         Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_CAST), Color::Highlight);
                                                     }
 
-                                                    spell = false;
-
                                                     cast = Spells::Type::NONE;
 
                                                     performed_action = true;
+
+                                                    spell = false;
                                                 }
                                             }
                                             else if (control.OnMap && battle.Map.IsValid(control.Map) && input.Type == Controls::Type::ENEMY)
@@ -2719,9 +2738,9 @@ namespace BloodSword::Interface
                                                         performed_action = true;
                                                     }
 
-                                                    fight = false;
-
                                                     knockout = Skills::Type::NONE;
+
+                                                    fight = false;
                                                 }
                                                 else if (shoot)
                                                 {
@@ -2749,21 +2768,25 @@ namespace BloodSword::Interface
                                                         else
                                                         {
                                                             Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_RANGED), Color::Highlight);
+
+                                                            regenerate_scene = true;
                                                         }
                                                     }
                                                     else
                                                     {
                                                         // enemies nearby
                                                         Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_NEARBY), Color::Highlight);
+
+                                                        regenerate_scene = true;
                                                     }
 
                                                     shoot = false;
                                                 }
                                                 else if (spell && cast != Spells::Type::NONE && cast != Spells::Type::PILLAR_OF_SALT)
                                                 {
-                                                    spell = false;
-
                                                     auto spellbook = character.Find(cast);
+
+                                                    spell = false;
 
                                                     if (spellbook != character.Spells.end())
                                                     {
@@ -2803,6 +2826,8 @@ namespace BloodSword::Interface
                                                             else
                                                             {
                                                                 Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_SPELL), Color::Highlight);
+
+                                                                regenerate_scene = true;
                                                             }
                                                         }
                                                     }
@@ -2810,23 +2835,9 @@ namespace BloodSword::Interface
                                                     cast = Spells::Type::NONE;
                                                 }
                                             }
-                                            else if (input.Type == Controls::Type::EXIT)
-                                            {
-                                                next = true;
-
-                                                end_turn = true;
-
-                                                exit = true;
-
-                                                result = Battle::Result::NONE;
-                                            }
                                             else if (input.Type == Controls::Type::CENTER)
                                             {
                                                 Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, order[combatant].Id);
-
-                                                input.Current = -1;
-
-                                                input.Selected = false;
 
                                                 regenerate_scene = true;
                                             }
@@ -2835,10 +2846,6 @@ namespace BloodSword::Interface
                                                 if (battle.Map.Y < (battle.Map.Height - battle.Map.ViewY))
                                                 {
                                                     battle.Map.Y++;
-
-                                                    input.Current = -1;
-
-                                                    input.Selected = false;
 
                                                     regenerate_scene = true;
                                                 }
@@ -2849,10 +2856,6 @@ namespace BloodSword::Interface
                                                 {
                                                     battle.Map.Y--;
 
-                                                    input.Current = -1;
-
-                                                    input.Selected = false;
-
                                                     regenerate_scene = true;
                                                 }
                                             }
@@ -2861,10 +2864,6 @@ namespace BloodSword::Interface
                                                 if (battle.Map.X > 0)
                                                 {
                                                     battle.Map.X--;
-
-                                                    input.Current = -1;
-
-                                                    input.Selected = false;
 
                                                     regenerate_scene = true;
                                                 }
@@ -2875,20 +2874,30 @@ namespace BloodSword::Interface
                                                 {
                                                     battle.Map.X++;
 
-                                                    input.Current = -1;
-
-                                                    input.Selected = false;
-
                                                     regenerate_scene = true;
                                                 }
                                             }
+                                            else if (input.Type == Controls::Type::EXIT)
+                                            {
+                                                result = Battle::Result::NONE;
+
+                                                end_turn = true;
+
+                                                next = true;
+
+                                                exit = true;
+                                            }
+
+                                            input.Selected = false;
+
+                                            input.Current = -1;
                                         }
-                                        else if ((actions && Input::IsValid(overlay, input)) || (!actions && !spells && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != -1))
+                                        else if ((actions && Input::IsValid(overlay, input)) || (!actions && !items && !spells && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != -1))
                                         {
                                             // regenerate controls
                                             if (!actions)
                                             {
-                                                scene = Interface::BattleScene(battle, party, character, order[combatant].Id, origin);
+                                                regenerate_scene = true;
                                             }
 
                                             fight = false;
@@ -2898,6 +2907,8 @@ namespace BloodSword::Interface
                                                 move = false;
                                             }
 
+                                            items = false;
+
                                             shoot = false;
 
                                             spells = false;
@@ -2906,7 +2917,7 @@ namespace BloodSword::Interface
 
                                             if (input.Type == Controls::Type::MOVE)
                                             {
-                                                // toggles between move/hover mode
+                                                // toggles between move / hover mode
                                                 move = !move;
 
                                                 if (actions)
@@ -2923,8 +2934,6 @@ namespace BloodSword::Interface
                                                     character.Add(Character::Status::IN_COMBAT);
 
                                                     Engine::ResetStatusAndSpells(character);
-
-                                                    fight = false;
 
                                                     knockout = ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF)) ? Skills::Type::QUARTERSTAFF : character.Fight;
 
@@ -2985,6 +2994,8 @@ namespace BloodSword::Interface
                                                     else
                                                     {
                                                         Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_RANGED), Color::Highlight);
+
+                                                        regenerate_scene = true;
                                                     }
                                                 }
                                                 else if (targets.size() > 1)
@@ -3026,23 +3037,7 @@ namespace BloodSword::Interface
                                             }
                                             else if (input.Type == Controls::Type::ITEMS)
                                             {
-                                                Interface::HighlightControl(scene, highlight[Controls::Type::ITEMS], Controls::Type::ITEMS);
-
-                                                auto update = Interface::ShowInventory(graphics, scene, character, battle.Loot);
-
-                                                scene = Interface::BattleScene(battle, party, character, order[combatant].Id, origin);
-
-                                                if (update)
-                                                {
-                                                    refresh_textures = true;
-
-                                                    performed_action = true;
-                                                }
-
-                                                if (actions)
-                                                {
-                                                    input = previous;
-                                                }
+                                                items = true;
                                             }
                                             else if (input.Type == Controls::Type::BACK)
                                             {
@@ -3095,6 +3090,8 @@ namespace BloodSword::Interface
                                                                         {
                                                                             // must be adjacent
                                                                             Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_ADJACENT), Color::Highlight);
+
+                                                                            regenerate_scene = true;
                                                                         }
                                                                         else if (!battle.Opponents[battle.Map[target].Id].IsImmune(cast))
                                                                         {
@@ -3121,6 +3118,8 @@ namespace BloodSword::Interface
                                                                         else
                                                                         {
                                                                             Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_SPELL), Color::Highlight);
+
+                                                                            regenerate_scene = true;
                                                                         }
                                                                     }
 
@@ -3141,6 +3140,8 @@ namespace BloodSword::Interface
                                                                 if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Has(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
                                                                 {
                                                                     Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_FLEE), Color::Highlight);
+
+                                                                    regenerate_scene = true;
                                                                 }
                                                                 else
                                                                 {
@@ -3189,6 +3190,32 @@ namespace BloodSword::Interface
                                             {
                                                 input = previous;
                                             }
+
+                                            // remove highlights
+                                            if (!spells && !spell)
+                                            {
+                                                regenerate_scene = true;
+                                            }
+                                        }
+                                        else if (items)
+                                        {
+                                            auto update = Interface::ShowInventory(graphics, scene, character, battle.Loot);
+
+                                            if (update)
+                                            {
+                                                refresh_textures = true;
+
+                                                performed_action = true;
+                                            }
+
+                                            if (actions)
+                                            {
+                                                input = previous;
+                                            }
+
+                                            items = false;
+
+                                            regenerate_scene = true;
                                         }
                                     }
                                 }
