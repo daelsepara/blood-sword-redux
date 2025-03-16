@@ -84,9 +84,9 @@
         {
             "name": "VIOLET/INDIGO/LAVENDER",
             "colors": [
-                "FFC7A8FF",
                 "FFA270FF",
                 "FF5A0BED",
+                "FFC7A8FF",
                 "FF000000"
             ]
         },
