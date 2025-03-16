@@ -126,9 +126,21 @@ namespace BloodSword::Interface
 
                 controls.push_back(Controls::Type::MONEY);
 
-                std::string gold_string = "GOLD: " + std::to_string(character.Quantity(Item::Type::GOLD));
+                std::string gold_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
 
                 captions.push_back(gold_string);
+            }
+
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1)
+            {
+                // money
+                assets.push_back(Asset::Type::QUIVER);
+
+                controls.push_back(Controls::Type::QUIVER);
+
+                std::string arrow_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
+
+                captions.push_back(arrow_string);
             }
 
             if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
@@ -296,19 +308,21 @@ namespace BloodSword::Interface
                             {
                                 std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
 
-                                auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(Item::Type::GOLD), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
+                                auto transfer_item = Item::Type::GOLD;
+
+                                auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
 
                                 if (transfer > 0)
                                 {
                                     if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                                     {
-                                        party[other_character].Add(Item::Type::GOLD, transfer);
+                                        party[other_character].Add(transfer_item, transfer);
 
-                                        character.Remove(Item::Type::GOLD, transfer);
+                                        character.Remove(transfer_item, transfer);
 
                                         done = true;
 
-                                        if (character.Quantity(Item::Type::GOLD) <= 0)
+                                        if (character.Quantity(transfer_item) <= 0)
                                         {
                                             exit = true;
 
@@ -325,6 +339,60 @@ namespace BloodSword::Interface
                         else
                         {
                             Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
+                        }
+                    }
+                    else if (input == Controls::Type::QUIVER)
+                    {
+                        if (Engine::IsAlive(party) && Engine::Count(party) > 1)
+                        {
+                            std::string message = "SELECT THE PLAYER TO RECEIVE ARROWS";
+
+                            auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
+
+                            if (character.Class != other_character)
+                            {
+                                if (party[other_character].Has(Item::Type::QUIVER))
+                                {
+                                    std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
+
+                                    auto transfer_item = Item::Type::ARROW;
+
+                                    auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Type::QUIVER, Asset::Type::UP, Asset::Type::DOWN);
+
+                                    if (transfer > 0)
+                                    {
+                                        if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
+                                        {
+                                            party[other_character].Add(transfer_item, transfer);
+
+                                            character.Remove(transfer_item, transfer);
+
+                                            done = true;
+
+                                            if (character.Quantity(transfer_item) <= 0)
+                                            {
+                                                exit = true;
+
+                                                update.Update = true;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Interface::InternalError(graphics, background, std::string("Internal Error: ARROWS"));
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    std::string quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
+
+                                    Interface::MessageBox(graphics, background, quiver, Color::Highlight);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Interface::InternalError(graphics, background, std::string("Internal Error: ARROWS"));
                         }
                     }
                     else if (input == Controls::Type::TRADE)

@@ -550,7 +550,7 @@ namespace BloodSword::Generate
 
             trickster.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}));
 
-            trickster.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER}, Item::Type::ARROW, 6));
+            trickster.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6));
 
             trickster.Add(Item::Base("LEATHER ARMOUR", Item::Type::LEATHER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
         }
@@ -565,7 +565,7 @@ namespace BloodSword::Generate
 
             sage.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}));
 
-            sage.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER}, Item::Type::ARROW, 6));
+            sage.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6));
 
             sage.Add(Item::Base("RINGMAIL", Item::Type::RINGMAIL, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
         }

@@ -69,6 +69,27 @@ namespace BloodSword::Interface
 
             result = true;
         }
+        else if (source[id].Type == Item::Type::ARROW)
+        {
+            if (receiver.Has(Item::Type::QUIVER))
+            {
+                std::string message = receiver.Name + " TAKES THE " + std::to_string(source[id].Quantity) + " " + source[id].Name;
+
+                Interface::MessageBox(graphics, background, message, Color::Active);
+
+                receiver.Add(source[id].Type, source[id].Quantity);
+
+                source.erase(source.begin() + id);
+
+                result = true;
+            }
+            else
+            {
+                std::string quiver = receiver.Name + " DOES NOT HAVE A QUIVER";
+
+                Interface::MessageBox(graphics, background, quiver, Color::Highlight);
+            }
+        }
         else if (Interface::CheckItemLimit(receiver) && (receiver.Items.size() < receiver.ItemLimit || receiver.ItemLimit == Items::Unlimited))
         {
             std::string message = receiver.Name + " TAKES THE " + source[id].Name;

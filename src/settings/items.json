@@ -80,7 +80,9 @@
             "limit": -1,
             "name": "QUIVER",
             "properties": [
-                "CONTAINER"
+                "CONTAINER",
+                "CANNOT DROP",
+                "CANNOT TRADE"
             ],
             "quantity": 1,
             "type": "QUIVER"

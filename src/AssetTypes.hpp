@@ -144,7 +144,8 @@ namespace BloodSword::Asset
         LOAD,
         SAVE,
         MUMMY_HEAD,
-        ROCK
+        ROCK,
+        QUIVER
     };
 
     template <typename T>
@@ -285,7 +286,8 @@ namespace BloodSword::Asset
         {Asset::Type::LOAD, "LOAD"},
         {Asset::Type::SAVE, "SAVE"},
         {Asset::Type::MUMMY_HEAD, "MUMMY HEAD"},
-        {Asset::Type::ROCK, "ROCK"}};
+        {Asset::Type::ROCK, "ROCK"},
+        {Asset::Type::QUIVER, "QUIVER"}};
 
     Asset::Type Map(const char *asset)
     {

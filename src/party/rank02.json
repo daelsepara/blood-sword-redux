@@ -159,7 +159,9 @@
                         "limit": -1,
                         "name": "QUIVER",
                         "properties": [
-                            "CONTAINER"
+                            "CONTAINER",
+                            "CANNOT DROP",
+                            "CANNOT TRADE"
                         ],
                         "quantity": 6,
                         "type": "QUIVER"
@@ -271,7 +273,9 @@
                         "limit": -1,
                         "name": "QUIVER",
                         "properties": [
-                            "CONTAINER"
+                            "CONTAINER",
+                            "CANNOT DROP",
+                            "CANNOT TRADE"
                         ],
                         "quantity": 6,
                         "type": "QUIVER"

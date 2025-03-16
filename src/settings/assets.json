@@ -483,6 +483,10 @@
         {
             "id": "ROCK",
             "path": "images/map/rock.png"
+        },
+        {
+            "id": "QUIVER",
+            "path": "images/items/quiver.png"
         }
     ]
 }

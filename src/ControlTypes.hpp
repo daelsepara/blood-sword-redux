@@ -97,7 +97,8 @@ namespace BloodSword::Controls
         DRINK,
         READ,
         EAT,
-        BATTLE_ORDER
+        BATTLE_ORDER,
+        QUIVER
     };
 
     typedef std::vector<Controls::Type> Collection;
