@@ -581,7 +581,7 @@ namespace BloodSword::Interface
 
             auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 
-            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::SmallPad;
+            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
             auto input = Controls::User();
 
@@ -589,7 +589,7 @@ namespace BloodSword::Interface
 
             auto frame_x = x - BloodSword::HalfTile;
 
-            auto frame_y = y - BloodSword::HalfTile;
+            auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
 
             auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
 
@@ -766,7 +766,7 @@ namespace BloodSword::Interface
 
             auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 
-            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::SmallPad;
+            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
             auto input = Controls::User();
 
@@ -774,7 +774,7 @@ namespace BloodSword::Interface
 
             auto frame_x = x - BloodSword::HalfTile;
 
-            auto frame_y = y - BloodSword::HalfTile;
+            auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
 
             auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
 
@@ -946,7 +946,7 @@ namespace BloodSword::Interface
 
             auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 
-            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::SmallPad;
+            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
             auto input = Controls::User();
 
@@ -954,7 +954,7 @@ namespace BloodSword::Interface
 
             auto frame_x = x - BloodSword::HalfTile;
 
-            auto frame_y = y - BloodSword::HalfTile;
+            auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
 
             auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
 
