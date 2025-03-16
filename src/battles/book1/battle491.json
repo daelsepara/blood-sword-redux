@@ -224,7 +224,6 @@
                     "target_probability": 50
                 }
             ]
-        },
-        "survivor_limit": 4
+        }
     }
 }

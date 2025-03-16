@@ -63,6 +63,7 @@
                     "target": "MAGUS VYL"
                 }
             ]
-        }
+        },
+        "survivor_limit": 6
     }
 }

@@ -495,13 +495,16 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        Scene::Elements assets = {
-            Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h),
-            Scene::Element(Asset::Get(Asset::Type::CENTER), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+        Scene::Elements assets = {Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h)};
 
-        Controls::List controls = {
-            Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
-            Controls::Base(Controls::Type::CENTER, id + 1, id, id + 1, (id + 1) - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+        Controls::List controls = {Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+
+        if (battle.Map.ViewX < battle.Map.Width || battle.Map.ViewY < battle.Map.Height)
+        {
+            assets.push_back(Scene::Element(Asset::Get(Asset::Type::CENTER), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h));
+
+            controls.push_back(Controls::Base(Controls::Type::CENTER, id + 1, id, id + 1, (id + 1) - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
+        }
 
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
@@ -531,9 +534,16 @@ namespace BloodSword::Interface
 
         auto normal = !is_player && !is_enthralled && !battle.Map.Find(Map::Object::PLAYER).IsNone();
 
-        Asset::List asset_list = {Asset::Type::EXIT, Asset::Type::CENTER};
+        Asset::List asset_list = {Asset::Type::EXIT};
 
-        Controls::Collection controls_list = {Controls::Type::EXIT, Controls::Type::CENTER};
+        Controls::Collection controls_list = {Controls::Type::EXIT};
+
+        if (battle.Map.ViewX < battle.Map.Width || battle.Map.ViewY < battle.Map.Height)
+        {
+            asset_list.push_back(Asset::Type::CENTER);
+
+            controls_list.push_back(Controls::Type::CENTER);
+        }
 
         if (!origin.IsNone())
         {
@@ -1633,7 +1643,7 @@ namespace BloodSword::Interface
                 // look for the survivors in the previous battle
                 for (auto i = 0; i < party.Survivors.size(); i++)
                 {
-                    if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source))
+                    if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source) && survivors.Count() < battle.SurvivorLimit)
                     {
                         Interface::LogGroupAction("SURVIVOR", "ADD", party.Survivors[i].Target, i);
 
@@ -2065,7 +2075,7 @@ namespace BloodSword::Interface
 
             std::vector<std::string> captions_text = {
                 "EXIT",
-                "CENTER ON COMBATANT",
+                "CENTER",
                 "MOVE",
                 "DEFEND",
                 "FIGHT",
@@ -2142,7 +2152,7 @@ namespace BloodSword::Interface
 
             int round = 0;
 
-            auto round_string = Graphics::CreateText(graphics, (std::string("ROUND: ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+            auto round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
             // move animation
             auto movement = Animation::Base();
@@ -3313,7 +3323,7 @@ namespace BloodSword::Interface
                 // regenerate round string
                 BloodSword::Free(&round_string);
 
-                round_string = Graphics::CreateText(graphics, (std::string("ROUND: ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
             }
 
             // round limit exceeded
@@ -3410,7 +3420,7 @@ namespace BloodSword::Interface
             // add survivors
             for (auto i = 0; i < battle.Opponents.Count(); i++)
             {
-                if (Engine::IsAlive(battle.Opponents[i]) && survivors < battle.SurvivorLimit)
+                if (Engine::IsAlive(battle.Opponents[i]))
                 {
                     party.Survivors.push_back(battle.Opponents[i]);
 
