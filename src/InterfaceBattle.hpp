@@ -2940,22 +2940,17 @@ namespace BloodSword::Interface
                                                     }
 
                                                     fight = true;
-
-                                                    if (actions)
-                                                    {
-                                                        input = previous;
-                                                    }
                                                 }
                                                 else
                                                 {
                                                     knockout = Skills::Type::NONE;
 
                                                     fight = false;
+                                                }
 
-                                                    if (actions)
-                                                    {
-                                                        input = previous;
-                                                    }
+                                                if (actions)
+                                                {
+                                                    input = previous;
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::SHOOT || input.Type == Controls::Type::SHURIKEN)
@@ -2996,20 +2991,15 @@ namespace BloodSword::Interface
                                                 else if (targets.size() > 1)
                                                 {
                                                     shoot = true;
-
-                                                    if (actions)
-                                                    {
-                                                        input = previous;
-                                                    }
                                                 }
                                                 else
                                                 {
                                                     shoot = false;
+                                                }
 
-                                                    if (actions)
-                                                    {
-                                                        input = previous;
-                                                    }
+                                                if (actions)
+                                                {
+                                                    input = previous;
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::SPELLS)
@@ -3205,12 +3195,18 @@ namespace BloodSword::Interface
                                                 }
                                                 else
                                                 {
-                                                    input = previous;
+                                                    if (actions)
+                                                    {
+                                                        input = previous;
+                                                    }
                                                 }
                                             }
                                             else
                                             {
-                                                input = previous;
+                                                if (actions)
+                                                {
+                                                    input = previous;
+                                                }
                                             }
                                         }
                                     }

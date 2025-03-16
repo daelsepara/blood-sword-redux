@@ -8,7 +8,6 @@
 #include "Graphics.hpp"
 #include "Item.hpp"
 #include "Party.hpp"
-#include "Scene.hpp"
 #include "Templates.hpp"
 #include "Interface.hpp"
 #include "InterfaceItems.hpp"
