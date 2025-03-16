@@ -3,7 +3,6 @@
 
 #include "Battle.hpp"
 #include "Graphics.hpp"
-#include "Interface.hpp"
 #include "InterfaceInventory.hpp"
 
 // battle engine
@@ -2330,7 +2329,7 @@ namespace BloodSword::Interface
                                             // fight
                                             auto defender_id = opponents[0].Id;
 
-                                            auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[opponents[0].Id] : battle.Opponents[opponents[0].Id]);
+                                            auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[defender_id] : battle.Opponents[defender_id]);
 
                                             Interface::LogAction("FIGHTS", character.Target, order[combatant].Id, defender.Target, defender_id);
 
@@ -2957,6 +2956,8 @@ namespace BloodSword::Interface
                                             {
                                                 auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
 
+                                                auto target_id = targets[0].Id;
+
                                                 spell = false;
 
                                                 fight = false;
@@ -2967,14 +2968,14 @@ namespace BloodSword::Interface
                                                 {
                                                     shoot = false;
 
-                                                    if (!battle.Opponents[targets[0].Id].IsImmune(character.Shoot))
+                                                    if (!battle.Opponents[target_id].IsImmune(character.Shoot))
                                                     {
                                                         character.Add(Character::Status::IN_COMBAT);
 
                                                         Engine::ResetStatusAndSpells(character);
 
                                                         // shoot
-                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[targets[0].Id], targets[0].Id);
+                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[target_id], target_id);
 
                                                         // checks if enthrallment is broken
                                                         Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
@@ -3061,7 +3062,7 @@ namespace BloodSword::Interface
 
                                                 move = false;
 
-                                                auto update = Interface::ShowInventory(graphics, scene, character, character.Items);
+                                                auto update = Interface::ShowInventory(graphics, scene, character, battle.Loot);
 
                                                 if (update)
                                                 {

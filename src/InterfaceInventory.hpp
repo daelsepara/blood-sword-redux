@@ -6,6 +6,7 @@
 // inventory management
 namespace BloodSword::Interface
 {
+    // manage item while in story mode
     Interface::ItemResult ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Items::Inventory &items, int id)
     {
         Interface::ItemResult update;
@@ -407,7 +408,8 @@ namespace BloodSword::Interface
         return update;
     }
 
-    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Items::Inventory &items, int id)
+    // (character) manage item while in battle
+    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Items::Inventory &loot, Character::Base &character, int id)
     {
         auto update = false;
 
@@ -440,7 +442,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
+            auto selection = Interface::SelectIcons(graphics, background, character.Items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
 
             if (selection.size() == 1)
             {
@@ -464,6 +466,7 @@ namespace BloodSword::Interface
         return update;
     }
 
+    // (party) manage item found in current section
     bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items, int id)
     {
         auto update = false;
@@ -535,6 +538,7 @@ namespace BloodSword::Interface
         return update;
     }
 
+    // (character) show inventory while in story mode
     Interface::ItemResult ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
     {
         Interface::ItemResult update = {false, Book::Undefined};
@@ -720,7 +724,8 @@ namespace BloodSword::Interface
         return update;
     }
 
-    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Items::Inventory &items)
+    // (character) show inventory while in battle
+    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Items::Inventory &loot)
     {
         auto update = false;
 
@@ -728,20 +733,20 @@ namespace BloodSword::Interface
 
         while (!exit)
         {
-            auto limit = std::min(4, int(items.size()));
+            auto limit = std::min(4, int(character.Items.size()));
 
             auto start = 0;
 
             auto last = start + limit;
 
-            auto options = int(items.size());
+            auto options = int(character.Items.size());
 
             // wrap length
             auto wrap = BloodSword::TileSize * 6;
 
             auto text_list = Graphics::TextList();
 
-            for (auto &item : items)
+            for (auto &item : character.Items)
             {
                 text_list.push_back(Graphics::RichText(item.String(true), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
             }
@@ -764,7 +769,7 @@ namespace BloodSword::Interface
                 h = std::max(BloodSword::Height(item) + pads, h);
             }
 
-            auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+            auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 
             auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -873,19 +878,19 @@ namespace BloodSword::Interface
 
                         auto choice = start + (input.Current - list);
 
-                        if (choice >= 0 && choice < items.size())
+                        if (choice >= 0 && choice < character.Items.size())
                         {
-                            update = Interface::ManageItem(graphics, background, character, items, choice);
+                            update = Interface::ManageItem(graphics, background, loot, character, choice);
                         }
 
                         // check if item list is unchanged
-                        if (items.size() == 0)
+                        if (character.Items.size() == 0)
                         {
                             done = true;
 
                             exit = true;
                         }
-                        else if (items.size() != options)
+                        else if (character.Items.size() != options)
                         {
                             done = true;
                         }
@@ -899,7 +904,7 @@ namespace BloodSword::Interface
         return update;
     }
 
-    // show inventory of a location / another player
+    // show inventory of a location
     bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items)
     {
         auto update = false;
@@ -1079,6 +1084,7 @@ namespace BloodSword::Interface
         return update;
     }
 
+    // (character) manage inventory while in story mode
     Interface::ItemResult ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
     {
         Interface::ItemResult update = {false, Book::Undefined};
@@ -1099,6 +1105,7 @@ namespace BloodSword::Interface
         return update;
     }
 
+    // (party) manage inventory while in story mode
     Interface::ItemResult ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, bool blur = true)
     {
         Interface::ItemResult update;
