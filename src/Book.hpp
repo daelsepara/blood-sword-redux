@@ -25,6 +25,8 @@ namespace BloodSword::Book
     // book location specifier: book and section number pair
     typedef std::pair<Book::Number, int> Location;
 
+    typedef std::vector<Book::Location> Locations;
+
     BloodSword::Mapping<Book::Number> Title = {
         {Book::Number::NONE, "Blood Sword"},
         {Book::Number::BOOK1, "The Battlepits of Krarth"},

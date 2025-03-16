@@ -3,7 +3,6 @@
 
 #include "Attribute.hpp"
 #include "Book.hpp"
-#include "Target.hpp"
 #include "CharacterClasses.hpp"
 #include "Character.hpp"
 #include "Skills.hpp"

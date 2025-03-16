@@ -103,6 +103,9 @@ namespace BloodSword::Battle
         // internal: dropped items during combat
         Items::Inventory Loot = {};
 
+        // message to display when fleeing
+        Book::Location FleeMessage = Book::Undefined;
+
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}
@@ -189,6 +192,11 @@ namespace BloodSword::Battle
                 this->SurvivorLimit = !data["survivor_limit"].is_null() ? int(data["survivor_limit"]) : 0;
 
                 this->MaxCasters = !data["max_casters"].is_null() ? int(data["max_casters"]) : Battle::Unlimited;
+
+                if (!data["flee_message"].is_null())
+                {
+                    this->FleeMessage = Book::Load(data["flee_message"]);
+                }
             }
         }
     };

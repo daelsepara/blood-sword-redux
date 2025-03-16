@@ -237,9 +237,12 @@ namespace BloodSword::Interface
 
                 if (eval.Failed)
                 {
-                    next = eval.Location;
+                    if (Book::IsDefined(eval.Location))
+                    {
+                        next = eval.Location;
 
-                    break;
+                        break;
+                    }
                 }
                 else if (eval.Result)
                 {

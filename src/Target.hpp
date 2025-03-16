@@ -12,6 +12,7 @@ namespace BloodSword::Target
     enum class Type
     {
         NONE = -1,
+        ANY,
         PLAYER,
         ENEMY,
         WARRIOR,
@@ -25,7 +26,9 @@ namespace BloodSword::Target
         NIGHT_ELF,
         MAGUS_VYL,
         MAN_IN_BLUE,
-        GIANT_SPIDER
+        GIANT_SPIDER,
+        GIANT,
+        NEBULARON
     };
 
     typedef std::vector<Target::Type> List;
@@ -45,7 +48,9 @@ namespace BloodSword::Target
         {Target::Type::NIGHT_ELF, "NIGHT ELF"},
         {Target::Type::MAGUS_VYL, "MAGUS VYL"},
         {Target::Type::MAN_IN_BLUE, "MAN IN BLUE"},
-        {Target::Type::GIANT_SPIDER, "GIANT SPIDER"}};
+        {Target::Type::GIANT_SPIDER, "GIANT SPIDER"},
+        {Target::Type::GIANT, "GIANT"},
+        {Target::Type::NEBULARON, "NEBULARON"}};
 
     Target::Type Map(const char *target)
     {

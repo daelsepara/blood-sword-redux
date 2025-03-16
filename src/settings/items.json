@@ -131,11 +131,16 @@
             "name": "BLUTGETRANKER",
             "properties": [
                 "WEAPON",
-                "PRIMARY",
-                "GIANT BANE"
+                "PRIMARY"
             ],
             "quantity": 1,
-            "type": "BLUTGETRANKER"
+            "type": "BLUTGETRANKER",
+            "damage_types": {
+                "GIANT": {
+                    "damage": 1,
+                    "modifier": 0
+                }
+            }
         },
         {
             "name": "OPAL MEDALLION",
@@ -266,8 +271,18 @@
                 "book": "BOOK1",
                 "number": 214
             },
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
             "quantity": 1,
-            "type": "DAGGER OF VISLET"
+            "type": "DAGGER OF VISLET",
+            "damage_types": {
+                "NEBULARON": {
+                    "damage": 1,
+                    "modifier": -2
+                }
+            }
         },
         {
             "name": "GOLDEN SNUFF-BOX",

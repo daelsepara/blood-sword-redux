@@ -2,6 +2,7 @@
 #define __ITEM_HPP__
 
 #include <fstream>
+
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -15,6 +16,18 @@
 namespace BloodSword::Item
 {
     const int Unlimited = -1;
+
+    // item damage modifier
+    struct Damage
+    {
+        int Value = 0;
+
+        int Modifier = 0;
+
+        Damage() {}
+
+        Damage(int value, int modifier) : Value(value), Modifier(modifier) {}
+    };
 
     // item base class
     class Base
@@ -46,8 +59,14 @@ namespace BloodSword::Item
         // item effects as sections
         Book::Location Effects = Book::Undefined;
 
+        // list of battlefield effects
+        std::vector<Book::Location> BattleEffects = {};
+
         // flag to check if it's revealed (i.e. with the SAGE)
         bool Revealed = false;
+
+        // for specific targetting
+        BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageTypes = {};
 
         Base() {}
 
@@ -448,6 +467,43 @@ namespace BloodSword::Item
         if (!data["effects"].is_null() && data["effects"].is_object())
         {
             item.Effects = Book::Load(data["effects"]);
+        }
+
+        if (!data["battle_effects"].is_null() && data["battle_effects"].is_array() && data["battle_effects"].size() > 0)
+        {
+            item.BattleEffects.clear();
+
+            for (auto i = 0; i < data["battle_effects"].size(); i++)
+            {
+                auto location = Book::Load(data["battle_effects"][i]);
+
+                if (Book::IsDefined(location))
+                {
+                    item.BattleEffects.push_back(location);
+                }
+            }
+        }
+
+        if (!data["damage_types"].is_null() && data["damage_types"].is_object())
+        {
+            item.DamageTypes.clear();
+
+            for (auto &[key, val] : data["damage_types"].items())
+            {
+                if (val.is_object())
+                {
+                    auto target = Target::Map(std::string(key));
+
+                    auto damage = !val["damage"].is_null() ? int(val["damage"]) : 0;
+
+                    auto modifier = !val["damage"].is_null() ? int(val["modifier"]) : 0;
+
+                    if (target != Target::Type::NONE)
+                    {
+                        item.DamageTypes[target] = Item::Damage(damage, modifier);
+                    }
+                }
+            }
         }
 
         // check whether or not description has been revealed

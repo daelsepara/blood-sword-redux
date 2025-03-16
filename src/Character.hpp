@@ -10,7 +10,6 @@
 #include "AssetTypes.hpp"
 #include "Attribute.hpp"
 #include "Book.hpp"
-#include "Target.hpp"
 #include "CharacterClasses.hpp"
 #include "ControlTypes.hpp"
 #include "Item.hpp"
