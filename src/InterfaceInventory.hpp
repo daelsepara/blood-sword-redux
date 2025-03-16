@@ -304,7 +304,7 @@ namespace BloodSword::Interface
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
-                            if (character.Class != other_character)
+                            if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
                                 std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
 
@@ -322,12 +322,9 @@ namespace BloodSword::Interface
 
                                         done = true;
 
-                                        if (character.Quantity(transfer_item) <= 0)
-                                        {
-                                            exit = true;
+                                        exit = true;
 
-                                            update.Update = true;
-                                        }
+                                        update.Update = true;
                                     }
                                     else
                                     {
@@ -349,7 +346,7 @@ namespace BloodSword::Interface
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
-                            if (character.Class != other_character)
+                            if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
                                 if (party[other_character].Has(Item::Type::QUIVER))
                                 {
@@ -369,12 +366,9 @@ namespace BloodSword::Interface
 
                                             done = true;
 
-                                            if (character.Quantity(transfer_item) <= 0)
-                                            {
-                                                exit = true;
+                                            exit = true;
 
-                                                update.Update = true;
-                                            }
+                                            update.Update = true;
                                         }
                                         else
                                         {
@@ -403,16 +397,13 @@ namespace BloodSword::Interface
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
-                            if (other_character != Character::Class::NONE)
+                            if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                if (other_character != character.Class && party.Has(other_character) && Engine::IsAlive(party[other_character]))
-                                {
-                                    done = Interface::TransferItem(graphics, background, party[other_character], items, id);
+                                done = Interface::TransferItem(graphics, background, party[other_character], items, id);
 
-                                    if (done)
-                                    {
-                                        exit = true;
-                                    }
+                                if (done)
+                                {
+                                    exit = true;
                                 }
                             }
                         }
