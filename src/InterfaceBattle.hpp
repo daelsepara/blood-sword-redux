@@ -199,11 +199,40 @@ namespace BloodSword::Interface
 
         auto overlay = Scene::Base();
 
-        auto is_player = party[id].IsPlayer();
-
         auto &character = party[id];
 
+        auto is_player = character.IsPlayer();
+
         auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, id) : battle.Map.Find(Map::Object::ENEMY, id);
+
+        auto is_enthralled = character.Is(Character::Status::ENTHRALLED);
+
+        // adjacency checks (inverted)
+        auto no_enemy = !battle.Map.Adjacent(src, Map::Object::ENEMY);
+
+        auto adj_enemy = !no_enemy;
+
+        auto no_player = !battle.Map.Adjacent(src, Map::Object::PLAYER);
+
+        auto adj_player = !no_player;
+
+        // enemies available
+        auto enemies = !battle.Map.Find(Map::Object::ENEMY).IsNone();
+
+        // targets among enemies
+        auto comrades = battle.Map.Except(Map::Object::ENEMY, id).IsNone();
+
+        // players available
+        auto players = !battle.Map.Find(Map::Object::PLAYER).IsNone();
+
+        // enemy can shoot
+        auto enthralled = !is_player && is_enthralled && comrades && no_enemy;
+
+        // not enthralled
+        auto normal = !is_player && !is_enthralled && players && no_player;
+
+        // exits
+        auto exits = !battle.Map.Find(Map::Object::EXIT).IsNone();
 
         if (!src.IsNone())
         {
@@ -218,7 +247,11 @@ namespace BloodSword::Interface
 
             if (!battle.Has(Battle::Condition::NO_COMBAT))
             {
-                if (battle.Map.Adjacent(src, Map::Object::ENEMY))
+                auto player_fighter = is_player && adj_enemy;
+
+                auto enemy_fighter = !is_player && adj_player;
+
+                if (player_fighter || enemy_fighter)
                 {
                     // can fight
                     controls.push_back(Controls::Type::FIGHT);
@@ -230,22 +263,14 @@ namespace BloodSword::Interface
                     }
                 }
 
-                if (is_player && !battle.Map.Find(Map::Object::ENEMY).IsNone() && Engine::CanShoot(character))
-                {
-                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
-                    {
-                        // can shoot
-                        controls.push_back(Interface::ActionControls[character.Shoot]);
-                    }
-                }
+                auto player_shooter = is_player && Engine::CanShoot(character) && enemies && no_enemy;
 
-                if (!is_player && !battle.Map.Except(Map::Object::ENEMY, id).IsNone() && Engine::CanShoot(character))
+                auto enemy_shooter = (enthralled || normal) && Engine::CanShoot(character);
+
+                if ((player_shooter || enemy_shooter) && Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                 {
-                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
-                    {
-                        // can shoot
-                        controls.push_back(Interface::ActionControls[character.Shoot]);
-                    }
+                    // can shoot
+                    controls.push_back(Interface::ActionControls[character.Shoot]);
                 }
 
                 // can cast spells
@@ -254,7 +279,7 @@ namespace BloodSword::Interface
                     controls.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
                 }
 
-                if (is_player && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
+                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
                 {
                     controls.push_back(Controls::Type::FLEE);
                 }
