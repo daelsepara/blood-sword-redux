@@ -65,6 +65,9 @@ namespace BloodSword::Item
         // flag to check if it's revealed (i.e. with the SAGE)
         bool Revealed = false;
 
+        // flag to see if it drops when used (e.g. thrown)
+        bool Drops = false;
+
         // for specific targetting
         BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageTypes = {};
 
@@ -508,6 +511,8 @@ namespace BloodSword::Item
 
         // check whether or not description has been revealed
         item.Revealed = (!data["revealed"].is_null() && data["revealed"].is_boolean()) ? data["revealed"].get<bool>() : false;
+
+        item.Drops = (!data["drops"].is_null() && data["drops"].is_boolean()) ? data["drops"].get<bool>() : false;
 
         return item;
     }

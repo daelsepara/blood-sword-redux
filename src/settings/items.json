@@ -282,7 +282,8 @@
                     "damage": 1,
                     "modifier": -2
                 }
-            }
+            },
+            "drops": true
         },
         {
             "name": "GOLDEN SNUFF-BOX",
