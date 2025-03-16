@@ -513,23 +513,12 @@ namespace BloodSword::Interface
         return scene;
     }
 
-    // regenerate battle map (starting at point location)
+    // regenerate battle map (starting at point location without controls)
     Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location)
     {
-        auto id = int(battle.Map.ViewX * battle.Map.ViewY);
+        Scene::Elements assets = {};
 
-        auto map_h = battle.Map.ViewY * battle.Map.TileSize;
-
-        Scene::Elements assets = {Scene::Element(Asset::Get(Asset::Type::EXIT), location.X, location.Y + map_h)};
-
-        Controls::List controls = {Controls::Base(Controls::Type::EXIT, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
-
-        if (battle.Map.ViewX < battle.Map.Width || battle.Map.ViewY < battle.Map.Height)
-        {
-            assets.push_back(Scene::Element(Asset::Get(Asset::Type::CENTER), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h));
-
-            controls.push_back(Controls::Base(Controls::Type::CENTER, id + 1, id, id + 1, (id + 1) - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active));
-        }
+        Controls::List controls = {};
 
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
