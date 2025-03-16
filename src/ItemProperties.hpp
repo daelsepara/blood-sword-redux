@@ -28,7 +28,8 @@ namespace BloodSword::Item
         GIANT_BANE,
         INVISIBLE,
         READABLE,
-        EDIBLE
+        EDIBLE,
+        COMBAT
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -50,7 +51,8 @@ namespace BloodSword::Item
         {Item::Property::GIANT_BANE, "GIANT BANE"},
         {Item::Property::INVISIBLE, "INVISIBLE"},
         {Item::Property::READABLE, "READABLE"},
-        {Item::Property::EDIBLE, "EDIBLE"}};
+        {Item::Property::EDIBLE, "EDIBLE"},
+        {Item::Property::COMBAT, "COMBAT"}};
 
     Item::Properties Invisible = {
         Item::Property::NONE,
@@ -58,7 +60,8 @@ namespace BloodSword::Item
         Item::Property::LIQUID,
         Item::Property::READABLE,
         Item::Property::CANNOT_DROP,
-        Item::Property::CANNOT_TRADE};
+        Item::Property::CANNOT_TRADE,
+        Item::Property::COMBAT};
 
     Item::Property MapProperty(const char *property)
     {

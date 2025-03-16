@@ -1,13 +1,12 @@
 #ifndef __INTERFACE_STORY_HPP__
 #define __INTERFACE_STORY_HPP__
 
-#include "Interface.hpp"
-#include "InterfaceInventory.hpp"
 #include "InterfaceBattle.hpp"
 #include "ConditionsEvaluate.hpp"
 
 namespace BloodSword::Interface
 {
+    // log major story events
     void LogSectionHeader(const char *header, Book::Location location, bool newline = true)
     {
         std::cerr << "["
@@ -21,6 +20,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // log story search results
     void LogSearch(Book::Location location, int current)
     {
         Interface::LogSectionHeader("FIND", location, false);
@@ -28,6 +28,7 @@ namespace BloodSword::Interface
         std::cerr << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
     }
 
+    // render story section choices (if present)
     Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choice::List &choices, bool after_battle = false)
     {
         Book::Location next = Book::Undefined;
@@ -302,7 +303,7 @@ namespace BloodSword::Interface
         }
     }
 
-    // get next location
+    // get next location (story jump)
     Book::Location NextSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto current = Story::CurrentBook.Find(party.Location);
@@ -395,6 +396,7 @@ namespace BloodSword::Interface
         return next;
     }
 
+    // generate (default) story controls
     void StoryControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
         auto current = Story::CurrentBook.Find(party.Location);
@@ -562,6 +564,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // generate character inventory controls when no image is rendered on the left pane
     void InventoryControls(Scene::Base &overlay, Party::Base &party, SDL_Texture *image, Point origin)
     {
         auto id = overlay.Controls.size();
@@ -592,6 +595,7 @@ namespace BloodSword::Interface
         overlay.Controls[next_control].Up = id - 1;
     }
 
+    // generate story controls when processing an item effect
     void ItemControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
         auto current = Story::CurrentBook.Find(party.Location);
@@ -708,6 +712,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // generate story controls when at a story ending and / or party is incapacitated
     void EndingControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
         auto elements = overlay.Elements.size();
@@ -800,6 +805,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // show spellbook popup
     bool RenderGrimoire(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         auto update = false;
@@ -917,6 +923,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // render story section
     Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, std::string &text)
     {
         auto current = Story::CurrentBook.Find(party.Location);
@@ -1319,6 +1326,7 @@ namespace BloodSword::Interface
         return next;
     }
 
+    // play current story section
     Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int current)
     {
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
@@ -1360,6 +1368,7 @@ namespace BloodSword::Interface
         return next;
     }
 
+    // play the current loaded book
     void ProcessStory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int current = 0)
     {
         auto &story = Story::CurrentBook;

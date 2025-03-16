@@ -440,6 +440,8 @@ namespace BloodSword::Interface
 
         auto done = false;
 
+        auto &item = character.Items[id];
+
         while (!done)
         {
             auto selection = Interface::SelectIcons(graphics, background, character.Items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
@@ -454,7 +456,25 @@ namespace BloodSword::Interface
                 }
                 else if (input == Controls::Type::USE)
                 {
-                    Interface::NotImplemented(graphics, background);
+                    if (item.Is(Item::Property::WEAPON) || item.Is(Item::Property::ARMOUR))
+                    {
+                        if (item.Is(Item::Property::EQUIPPED))
+                        {
+                            Interface::MessageBox(graphics, background, "EQUIPMENT IS ALREADY IN USE", Color::Active);
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, background, "YOU CANNOT CHANGE EQUIPMENT WHILE IN BATTLE!", Color::Highlight);
+                        }
+                    }
+                    else if (!item.Has(Item::Property::COMBAT))
+                    {
+                        Interface::MessageBox(graphics, background, "YOU CANNOT USE THIS IN BATTLE!", Color::Highlight);
+                    }
+                    else
+                    {
+                        Interface::NotImplemented(graphics, background);
+                    }
                 }
                 else
                 {

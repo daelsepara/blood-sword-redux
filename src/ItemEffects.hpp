@@ -76,6 +76,7 @@ namespace BloodSword::Interface
             {
                 auto id = -1;
 
+                // search for id in inventory
                 for (auto i = 0; i < character.Items.size(); i++)
                 {
                     if (character.Items[i].Type == item)
@@ -119,10 +120,6 @@ namespace BloodSword::Interface
 
                 Interface::MessageBox(graphics, background, message, Color::Highlight);
             }
-        }
-        else
-        {
-            Interface::ErrorMessage(graphics, background, MSG_DIED);
         }
 
         // display death message

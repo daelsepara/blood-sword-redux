@@ -3178,7 +3178,8 @@ namespace BloodSword::Interface
     // internal error
     void InternalError(Graphics::Base &graphics, Scene::Base &background, std::string message)
     {
-        Interface::MessageBox(graphics, background, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Highlight, true);
+        // do not blur on internal error
+        Interface::MessageBox(graphics, background, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Highlight, false);
     }
 
     void NotImplemented(Graphics::Base &graphics, Scene::Base &overlay)
@@ -3498,13 +3499,10 @@ namespace BloodSword::Interface
                         Interface::ErrorMessage(graphics, background, Interface::MSG_BATTLE);
                     }
                 }
-                else
+                else if (Engine::Healed(party))
                 {
-                    if (Engine::Healed(party))
-                    {
-                        // everyone is at maximum endurance
-                        Interface::Notify(graphics, background, Interface::MSG_MAX);
-                    }
+                    // everyone is at maximum endurance
+                    Interface::Notify(graphics, background, Interface::MSG_MAX);
                 }
             }
             else

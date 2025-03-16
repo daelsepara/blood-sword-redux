@@ -2098,7 +2098,8 @@ namespace BloodSword::Interface
                 Asset::Type::SHURIKEN,
                 Asset::Type::FIGHT,
                 Asset::Type::QUARTERSTAFF,
-                Asset::Type::SPELLS};
+                Asset::Type::SPELLS,
+                Asset::Type::ITEMS};
 
             Controls::Collection action_controls = {
                 Controls::Type::MOVE,
@@ -2106,7 +2107,8 @@ namespace BloodSword::Interface
                 Controls::Type::SHURIKEN,
                 Controls::Type::FIGHT,
                 Controls::Type::QUARTERSTAFF,
-                Controls::Type::SPELLS};
+                Controls::Type::SPELLS,
+                Controls::Type::ITEMS};
 
             BloodSword::UnorderedMap<Controls::Type, SDL_Texture *> highlight = {};
 
@@ -2564,7 +2566,7 @@ namespace BloodSword::Interface
                                     {
                                         Interface::HighlightControl(scene, highlight[Controls::Type::FIGHT], Controls::Type::FIGHT);
                                     }
-                                    else if (spell)
+                                    else if (spell || spells)
                                     {
                                         Interface::HighlightControl(scene, highlight[Controls::Type::SPELLS], Controls::Type::SPELLS);
                                     }
@@ -2881,19 +2883,31 @@ namespace BloodSword::Interface
                                                 }
                                             }
                                         }
-                                        else if ((actions && Input::IsValid(overlay, input)) || (!actions && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != -1))
+                                        else if ((actions && Input::IsValid(overlay, input)) || (!actions && !spells && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != -1))
                                         {
+                                            // regenerate controls
+                                            if (!actions)
+                                            {
+                                                scene = Interface::BattleScene(battle, party, character, order[combatant].Id, origin);
+                                            }
+
+                                            fight = false;
+
+                                            if (input.Type != Controls::Type::MOVE)
+                                            {
+                                                move = false;
+                                            }
+
+                                            shoot = false;
+
+                                            spells = false;
+
+                                            spell = false;
+
                                             if (input.Type == Controls::Type::MOVE)
                                             {
                                                 // toggles between move/hover mode
                                                 move = !move;
-
-                                                // cancel other modes
-                                                spell = false;
-
-                                                fight = false;
-
-                                                shoot = false;
 
                                                 if (actions)
                                                 {
@@ -2903,12 +2917,6 @@ namespace BloodSword::Interface
                                             else if (input.Type == Controls::Type::FIGHT || input.Type == Controls::Type::QUARTERSTAFF)
                                             {
                                                 auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
-
-                                                spell = false;
-
-                                                move = false;
-
-                                                shoot = false;
 
                                                 if (opponents.size() == 1)
                                                 {
@@ -2943,8 +2951,6 @@ namespace BloodSword::Interface
                                                 else
                                                 {
                                                     knockout = Skills::Type::NONE;
-
-                                                    fight = false;
                                                 }
 
                                                 if (actions)
@@ -2958,16 +2964,8 @@ namespace BloodSword::Interface
 
                                                 auto target_id = targets[0].Id;
 
-                                                spell = false;
-
-                                                fight = false;
-
-                                                move = false;
-
                                                 if (targets.size() == 1)
                                                 {
-                                                    shoot = false;
-
                                                     if (!battle.Opponents[target_id].IsImmune(character.Shoot))
                                                     {
                                                         character.Add(Character::Status::IN_COMBAT);
@@ -2993,10 +2991,6 @@ namespace BloodSword::Interface
                                                 {
                                                     shoot = true;
                                                 }
-                                                else
-                                                {
-                                                    shoot = false;
-                                                }
 
                                                 if (actions)
                                                 {
@@ -3006,12 +3000,6 @@ namespace BloodSword::Interface
                                             else if (input.Type == Controls::Type::SPELLS)
                                             {
                                                 spells = true;
-
-                                                shoot = false;
-
-                                                fight = false;
-
-                                                move = false;
                                             }
                                             else if (input.Type == Controls::Type::DEFEND)
                                             {
@@ -3022,25 +3010,9 @@ namespace BloodSword::Interface
                                                 refresh_textures = true;
 
                                                 performed_action = true;
-
-                                                spell = false;
-
-                                                shoot = false;
-
-                                                fight = false;
-
-                                                move = false;
                                             }
                                             else if (input.Type == Controls::Type::FLEE)
                                             {
-                                                spell = false;
-
-                                                shoot = false;
-
-                                                fight = false;
-
-                                                move = false;
-
                                                 if (!character.Is(Character::Status::FLEEING))
                                                 {
                                                     character.Add(Character::Status::FLEEING);
@@ -3054,15 +3026,11 @@ namespace BloodSword::Interface
                                             }
                                             else if (input.Type == Controls::Type::ITEMS)
                                             {
-                                                spell = false;
-
-                                                shoot = false;
-
-                                                fight = false;
-
-                                                move = false;
+                                                Interface::HighlightControl(scene, highlight[Controls::Type::ITEMS], Controls::Type::ITEMS);
 
                                                 auto update = Interface::ShowInventory(graphics, scene, character, battle.Loot);
+
+                                                scene = Interface::BattleScene(battle, party, character, order[combatant].Id, origin);
 
                                                 if (update)
                                                 {
@@ -3078,14 +3046,6 @@ namespace BloodSword::Interface
                                             }
                                             else if (input.Type == Controls::Type::BACK)
                                             {
-                                                spell = false;
-
-                                                shoot = false;
-
-                                                fight = false;
-
-                                                move = false;
-
                                                 if (actions)
                                                 {
                                                     input = previous;
@@ -3099,6 +3059,8 @@ namespace BloodSword::Interface
                                             auto ptr = Interface::ControlSpellMapping.find(input.Type);
 
                                             spells = false;
+
+                                            spell = false;
 
                                             if (Engine::IsSpell(input.Type) && ptr != Interface::ControlSpellMapping.end())
                                             {
@@ -3116,14 +3078,11 @@ namespace BloodSword::Interface
                                                         {
                                                             if (spellbook.RequiresTarget())
                                                             {
-                                                                // select target
-                                                                spell = true;
-
                                                                 cast = spellbook.Type;
 
-                                                                // unless there is only one valid target
                                                                 auto targets = Engine::SpellTargets(battle.Map, battle.Opponents, src, true, false);
 
+                                                                // cast immediate if there is only one target
                                                                 if (targets.size() == 1 && cast != Spells::Type::PILLAR_OF_SALT)
                                                                 {
                                                                     auto target = battle.Map.Find(Map::Object::ENEMY, targets[0].Id);
@@ -3165,16 +3124,19 @@ namespace BloodSword::Interface
                                                                         }
                                                                     }
 
-                                                                    spell = false;
-
                                                                     cast = Spells::Type::NONE;
+                                                                }
+                                                                else
+                                                                {
+                                                                    // select target
+                                                                    spell = true;
                                                                 }
                                                             }
                                                             else
                                                             {
-                                                                spell = false;
-
                                                                 cast = Spells::Type::NONE;
+
+                                                                spell = false;
 
                                                                 if (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE && (battle.Has(Battle::Condition::CANNOT_FLEE) || battle.Map.Find(Map::Object::EXIT).IsNone()))
                                                                 {
@@ -3218,20 +3180,14 @@ namespace BloodSword::Interface
                                                         }
                                                     }
                                                 }
-                                                else
-                                                {
-                                                    if (actions)
-                                                    {
-                                                        input = previous;
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                if (actions)
+                                                else if (actions)
                                                 {
                                                     input = previous;
                                                 }
+                                            }
+                                            else if (actions)
+                                            {
+                                                input = previous;
                                             }
                                         }
                                     }
