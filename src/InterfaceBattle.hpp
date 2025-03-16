@@ -585,7 +585,11 @@ namespace BloodSword::Interface
 
             if (!battle.Has(Battle::Condition::NO_COMBAT))
             {
-                if (is_player && adj_enemy)
+                auto player_fighter = is_player && adj_enemy;
+
+                auto enemy_fighter = !is_player && adj_player;
+
+                if (player_fighter || enemy_fighter)
                 {
                     // can fight
                     asset_list.push_back(Asset::Type::FIGHT);
@@ -601,42 +605,23 @@ namespace BloodSword::Interface
                     }
                 }
 
-                if (!is_player && adj_player)
-                {
-                    // can fight
-                    asset_list.push_back(Asset::Type::FIGHT);
+                auto player_shooter = is_player && Engine::CanShoot(character) && enemies && no_enemy;
 
-                    controls_list.push_back(Controls::Type::FIGHT);
-                }
+                auto enemy_shooter = (enthralled || normal) && Engine::CanShoot(character);
 
-                if (is_player && Engine::CanShoot(character) && enemies && no_enemy)
+                if ((player_shooter || enemy_shooter) && Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                 {
-                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                    // can shoot
+                    if (character.Shoot == Skills::Type::SHURIKEN)
                     {
-                        // can shoot
-                        if (character.Shoot == Skills::Type::SHURIKEN)
-                        {
-                            asset_list.push_back(Asset::Type::SHURIKEN);
-                        }
-                        else
-                        {
-                            asset_list.push_back(Asset::Type::SHOOT);
-                        }
-
-                        controls_list.push_back(Interface::ActionControls[character.Shoot]);
+                        asset_list.push_back(Asset::Type::SHURIKEN);
                     }
-                }
-
-                // enemy can shoot
-                if ((enthralled || normal) && Engine::CanShoot(character))
-                {
-                    if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
+                    else
                     {
-                        // can shoot
                         asset_list.push_back(Asset::Type::SHOOT);
-
-                        controls_list.push_back(Interface::ActionControls[character.Shoot]);
                     }
+
+                    controls_list.push_back(Interface::ActionControls[character.Shoot]);
                 }
 
                 // can cast spells
