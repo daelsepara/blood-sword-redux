@@ -2122,14 +2122,9 @@ namespace BloodSword::Interface
 
             BloodSword::UnorderedMap<Controls::Type, SDL_Texture *> highlight = {};
 
-            // store texture here so it can be freed later
-            auto action_textures = BloodSword::Textures();
-
             for (auto i = 0; i < action_assets.size(); i++)
             {
                 auto texture = Asset::Copy(graphics.Renderer, action_assets[i], Color::Highlight);
-
-                action_textures.push_back(texture);
 
                 highlight[action_controls[i]] = texture;
             }
@@ -3340,8 +3335,6 @@ namespace BloodSword::Interface
             BloodSword::Free(&round_string);
 
             BloodSword::Free(highlight);
-
-            BloodSword::Free(action_textures);
 
             BloodSword::Free(captions);
 
