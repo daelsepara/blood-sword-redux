@@ -1599,6 +1599,11 @@ namespace BloodSword::Test
 
         auto menu = RegenerateMenu(graphics, width);
 
+        for (auto &texture : menu)
+        {
+            height = std::max(height, BloodSword::Height(texture));
+        }
+
         auto title = RegenerateTitle(graphics, width);
 
         auto start = 0;

@@ -399,6 +399,8 @@ namespace BloodSword::Interface
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
+                                update.Update = items[id].Has(Item::Property::EQUIPPED);
+                                
                                 done = Interface::TransferItem(graphics, background, party[other_character], items, id);
 
                                 if (done)
