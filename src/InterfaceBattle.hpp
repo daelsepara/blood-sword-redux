@@ -614,7 +614,14 @@ namespace BloodSword::Interface
                     if (Interface::ActionControls[character.Shoot] != Controls::Type::NONE)
                     {
                         // can shoot
-                        asset_list.push_back(Asset::Type::SHOOT);
+                        if (character.Shoot == Skills::Type::SHURIKEN)
+                        {
+                            asset_list.push_back(Asset::Type::SHURIKEN);
+                        }
+                        else
+                        {
+                            asset_list.push_back(Asset::Type::SHOOT);
+                        }
 
                         controls_list.push_back(Interface::ActionControls[character.Shoot]);
                     }
