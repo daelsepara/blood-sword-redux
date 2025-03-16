@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <vector>
 
-#include "nlohmann/json.hpp"
 #include "Book.hpp"
 #include "Graphics.hpp"
 #include "Item.hpp"
