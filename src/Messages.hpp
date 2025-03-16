@@ -100,6 +100,11 @@ namespace BloodSword::Interface
 
     const int MSG_FULL = 29;
 
+    void FreeMessages()
+    {
+        BloodSword::Free(Message);
+    }
+
     void InitializeMessages(Graphics::Base &graphics)
     {
         // initialize battle messages
@@ -111,14 +116,9 @@ namespace BloodSword::Interface
             text.Color = Color::S(Color::Active);
         }
 
-        BloodSword::Free(Message);
+        Interface::FreeMessages();
 
         Message = Graphics::CreateText(graphics, Text);
-    }
-
-    void FreeMessages()
-    {
-        BloodSword::Free(Message);
     }
 }
 
