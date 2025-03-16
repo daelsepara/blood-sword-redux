@@ -1989,7 +1989,7 @@ namespace BloodSword::Interface
         {
             auto &element = scene.Controls[index];
 
-            // blue control
+            // highlight control (by putting another texture on top)
             scene.Add(Scene::Element(texture, element.X, element.Y));
         }
     }
