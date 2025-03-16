@@ -189,7 +189,7 @@ namespace BloodSword::Interface
                             Interface::MessageBox(graphics, background, Graphics::RichText(eval.Text.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
 
                             // jumps to next destination
-                            next = eval.Location;
+                            next = choices[choice].Condition.Failure;
 
                             done = true;
                         }
@@ -237,9 +237,9 @@ namespace BloodSword::Interface
 
                 if (eval.Failed)
                 {
-                    if (Book::IsDefined(eval.Location))
+                    if (Book::IsDefined(condition.Failure))
                     {
-                        next = eval.Location;
+                        next = condition.Failure;
 
                         break;
                     }
@@ -365,16 +365,33 @@ namespace BloodSword::Interface
                     auto eval = Conditions::Process(graphics, background, party, condition);
 
                     // handle 'NEXT' situations that behave like events
-                    if (eval.Result && Book::IsDefined(condition.Location))
+                    if (eval.Result)
                     {
                         if (!eval.Text.empty())
                         {
                             Interface::MessageBox(graphics, background, eval.Text, Color::Active);
                         }
 
-                        next = condition.Location;
+                        if (Book::IsDefined(condition.Location))
+                        {
+                            next = condition.Location;
 
-                        break;
+                            break;
+                        }
+                    }
+                    else if (eval.Failed)
+                    {
+                        if (!eval.Text.empty())
+                        {
+                            Interface::MessageBox(graphics, background, eval.Text, Color::Highlight);
+                        }
+
+                        if (Book::IsDefined(condition.Failure))
+                        {
+                            next = condition.Failure;
+
+                            break;
+                        }
                     }
                 }
             }

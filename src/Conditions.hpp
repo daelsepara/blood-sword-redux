@@ -66,6 +66,12 @@ namespace BloodSword::Conditions
                 condition.Location = Book::Load(data["location"]);
             }
 
+            // load alternate location
+            if (!data["failure"].is_null())
+            {
+                condition.Failure = Book::Load(data["failure"]);
+            }
+
             // set condition type
             condition.Type = !data["type"].is_null() ? Conditions::Map(std::string(data["type"])) : Conditions::Type::NONE;
 
@@ -84,12 +90,6 @@ namespace BloodSword::Conditions
 
             // set invert condition
             condition.Invert = (!data["invert"].is_null() && data["invert"].is_boolean()) ? data["invert"].get<bool>() : false;
-        }
-
-        // load alternate location
-        if (!data["failure"].is_null())
-        {
-            condition.Failure = Book::Load(data["failure"]);
         }
 
         return condition;

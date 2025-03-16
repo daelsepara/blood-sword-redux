@@ -22,15 +22,12 @@ namespace BloodSword::Conditions
 
         bool Failed = false;
 
-        // destination on failure
-        Book::Location Location = Book::Undefined;
-
         // text (usually on failure)
         std::string Text = std::string();
 
         Evaluation() {}
 
-        Evaluation(bool result, bool failed, Book::Location location, std::string text) : Result(result), Failed(failed), Location(location), Text(text) {}
+        Evaluation(bool result, bool failed, std::string text) : Result(result), Failed(failed), Text(text) {}
 
         Evaluation(bool result, std::string text) : Result(result), Text(text) {}
 
@@ -44,7 +41,7 @@ namespace BloodSword::Conditions
         Interface::InternalError(graphics, background, message);
     }
 
-    void Log(Conditions::Base &condition, bool result, bool failed, std::string text, Book::Location location)
+    void Log(Conditions::Base &condition, bool result, bool failed, std::string text)
     {
         // debug info
         std::cerr << "[CONDITION] "
@@ -57,11 +54,6 @@ namespace BloodSword::Conditions
         if (text.size() > 0)
         {
             std::cerr << ", [TEXT] " << text;
-        }
-
-        if (Book::IsDefined(location))
-        {
-            std::cerr << ", [LOCATION] " << Book::String(location);
         }
 
         std::cerr << ")" << std::endl;
@@ -77,8 +69,6 @@ namespace BloodSword::Conditions
         auto internal_error = false;
 
         auto text = std::string();
-
-        Book::Location location = Book::Undefined;
 
         if (condition.Type == Conditions::Type::NORMAL)
         {
@@ -384,8 +374,6 @@ namespace BloodSword::Conditions
                         if (!test)
                         {
                             failed = true;
-
-                            location = condition.Failure;
 
                             text = condition.Variables[2];
                         }
@@ -2077,8 +2065,6 @@ namespace BloodSword::Conditions
                         }
 
                         failed = true;
-
-                        location = condition.Failure;
                     }
                 }
                 else if (!party.Has(character))
@@ -2483,9 +2469,9 @@ namespace BloodSword::Conditions
 
         result = condition.Invert ? !result : result;
 
-        Conditions::Log(condition, result, failed, text, location);
+        Conditions::Log(condition, result, failed, text);
 
-        return failed ? Conditions::Evaluation(result, failed, location, text) : Conditions::Evaluation(result, text);
+        return failed ? Conditions::Evaluation(result, failed, text) : Conditions::Evaluation(result, text);
     }
 }
 
