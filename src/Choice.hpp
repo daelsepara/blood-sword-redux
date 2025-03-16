@@ -5,12 +5,7 @@
 #include <vector>
 
 #include "nlohmann/json.hpp"
-#include "Book.hpp"
-#include "Attribute.hpp"
-#include "CharacterClasses.hpp"
-#include "Item.hpp"
 #include "Conditions.hpp"
-#include "Graphics.hpp"
 
 // classes and functions for managing story choices
 namespace BloodSword::Choice

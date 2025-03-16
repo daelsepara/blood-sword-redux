@@ -1,7 +1,6 @@
 #ifndef __INTERFACE_ITEMS_HPP__
 #define __INTERFACE_ITEMS_HPP__
 
-#include "Section.hpp"
 #include "Interface.hpp"
 
 namespace BloodSword::Interface

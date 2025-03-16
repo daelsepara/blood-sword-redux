@@ -6,10 +6,7 @@
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
 #include "Choice.hpp"
-#include "Conditions.hpp"
 #include "Feature.hpp"
-#include "Primitives.hpp"
-#include "Templates.hpp"
 #include "Position.hpp"
 #include "Battle.hpp"
 

@@ -1,8 +1,6 @@
 #ifndef __INTERFACE_STORY_HPP__
 #define __INTERFACE_STORY_HPP__
 
-#include "Choice.hpp"
-#include "Section.hpp"
 #include "Interface.hpp"
 #include "InterfaceInventory.hpp"
 #include "InterfaceBattle.hpp"

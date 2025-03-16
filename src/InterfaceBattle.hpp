@@ -3051,6 +3051,30 @@ namespace BloodSword::Interface
 
                                                 performed_action = true;
                                             }
+                                            else if (input.Type == Controls::Type::ITEMS)
+                                            {
+                                                spell = false;
+
+                                                shoot = false;
+
+                                                fight = false;
+
+                                                move = false;
+
+                                                auto update = Interface::ShowInventory(graphics, scene, character, character.Items);
+
+                                                if (update)
+                                                {
+                                                    refresh_textures = true;
+
+                                                    performed_action = true;
+                                                }
+
+                                                if (actions)
+                                                {
+                                                    input = previous;
+                                                }
+                                            }
                                             else if (input.Type == Controls::Type::BACK)
                                             {
                                                 spell = false;

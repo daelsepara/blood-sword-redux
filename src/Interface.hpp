@@ -11,6 +11,7 @@
 #include "Maze.hpp"
 #include "Messages.hpp"
 #include "Palette.hpp"
+#include "Section.hpp"
 
 namespace BloodSword::Interface
 {
