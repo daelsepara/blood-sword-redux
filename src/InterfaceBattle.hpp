@@ -3339,6 +3339,8 @@ namespace BloodSword::Interface
 
             BloodSword::Free(&round_string);
 
+            BloodSword::Free(highlight);
+
             BloodSword::Free(action_textures);
 
             BloodSword::Free(captions);

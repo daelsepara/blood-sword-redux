@@ -167,7 +167,7 @@ namespace BloodSword
     // free surface
     void Free(SDL_Surface **surface)
     {
-        if (*surface)
+        if (*surface != nullptr)
         {
             SDL_FreeSurface(*surface);
 
@@ -178,7 +178,7 @@ namespace BloodSword
     // free texture
     void Free(SDL_Texture **texture)
     {
-        if (*texture)
+        if (*texture != nullptr)
         {
             SDL_DestroyTexture(*texture);
 
@@ -194,6 +194,20 @@ namespace BloodSword
             for (auto &texture : textures)
             {
                 BloodSword::Free(&texture);
+            }
+
+            textures.clear();
+        }
+    }
+
+    template <typename T>
+    void Free(std::unordered_map<T, SDL_Texture *> &textures)
+    {
+        if (!textures.empty())
+        {
+            for (auto &texture : textures)
+            {
+                BloodSword::Free(&texture.second);
             }
 
             textures.clear();

@@ -741,14 +741,14 @@ namespace BloodSword::Graphics
     // close graphics system
     void Quit(Base &graphics)
     {
-        if (graphics.Renderer)
+        if (graphics.Renderer != nullptr)
         {
             SDL_DestroyRenderer(graphics.Renderer);
 
             graphics.Renderer = nullptr;
         }
 
-        if (graphics.Window)
+        if (graphics.Window != nullptr)
         {
             SDL_DestroyWindow(graphics.Window);
 

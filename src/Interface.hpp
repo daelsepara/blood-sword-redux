@@ -254,54 +254,20 @@ namespace BloodSword::Interface
     // unload all textures allocated by this module
     void FreeTextures()
     {
-        for (auto &skill : SkillCaptionsActive)
-        {
-            BloodSword::Free(&skill.second);
-        }
+        BloodSword::Free(SkillCaptionsActive);
 
-        for (auto &skill : SkillCaptionsInactive)
-        {
-            BloodSword::Free(&skill.second);
-        }
+        BloodSword::Free(SkillCaptionsInactive);
 
-        for (auto &skill : SkillsTexturesInactive)
-        {
-            BloodSword::Free(&skill.second);
-        }
+        BloodSword::Free(SkillsTexturesInactive);
 
-        for (auto &spell : SpellCaptionsActive)
-        {
-            BloodSword::Free(&spell.second);
-        }
+        BloodSword::Free(SpellCaptionsActive);
 
-        for (auto &spell : SpellCaptionsInactive)
-        {
-            BloodSword::Free(&spell.second);
-        }
+        BloodSword::Free(SpellCaptionsInactive);
 
-        for (auto &spell : SpellsTexturesInactive)
-        {
-            BloodSword::Free(&spell.second);
-        }
+        BloodSword::Free(SpellsTexturesInactive);
 
-        for (auto &control : BattleControlCaptions)
-        {
-            BloodSword::Free(&control.second);
-        }
+        BloodSword::Free(BattleControlCaptions);
 
-        SkillCaptionsActive.clear();
-
-        SkillCaptionsInactive.clear();
-
-        SkillsTexturesInactive.clear();
-
-        SpellCaptionsActive.clear();
-
-        SpellCaptionsInactive.clear();
-
-        SpellsTexturesInactive.clear();
-
-        BattleControlCaptions.clear();
 
         BloodSword::Free(&NoSkills);
 
