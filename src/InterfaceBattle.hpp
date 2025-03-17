@@ -3004,48 +3004,62 @@ namespace BloodSword::Interface
                                             }
                                             else if (input.Type == Controls::Type::SHOOT || input.Type == Controls::Type::SHURIKEN)
                                             {
-                                                auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
-
-                                                auto target_id = targets[0].Id;
-
-                                                if (targets.size() == 1)
+                                                if (battle.Has(Controls::Type::SHOOT))
                                                 {
-                                                    if (!battle.Opponents[target_id].IsImmune(character.Shoot))
-                                                    {
-                                                        character.Add(Character::Status::IN_COMBAT);
-
-                                                        Engine::ResetStatusAndSpells(character);
-
-                                                        // shoot
-                                                        Interface::Shoot(graphics, scene, battle, character, battle.Opponents[target_id], target_id);
-
-                                                        // checks if enthrallment is broken
-                                                        Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
-
-                                                        refresh_textures = true;
-
-                                                        performed_action = true;
-                                                    }
-                                                    else
-                                                    {
-                                                        Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_RANGED), Color::Highlight);
-
-                                                        regenerate_scene = true;
-                                                    }
+                                                    Interface::ShowBookDescription(graphics, scene, battle.ActionCancels[Controls::Type::SHOOT]);
                                                 }
-                                                else if (targets.size() > 1)
+                                                else
                                                 {
-                                                    shoot = true;
-                                                }
+                                                    auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
 
-                                                if (actions)
-                                                {
-                                                    input = previous;
+                                                    auto target_id = targets[0].Id;
+
+                                                    if (targets.size() == 1)
+                                                    {
+                                                        if (!battle.Opponents[target_id].IsImmune(character.Shoot))
+                                                        {
+                                                            character.Add(Character::Status::IN_COMBAT);
+
+                                                            Engine::ResetStatusAndSpells(character);
+
+                                                            // shoot
+                                                            Interface::Shoot(graphics, scene, battle, character, battle.Opponents[target_id], target_id);
+
+                                                            // checks if enthrallment is broken
+                                                            Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
+
+                                                            refresh_textures = true;
+
+                                                            performed_action = true;
+                                                        }
+                                                        else
+                                                        {
+                                                            Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_RANGED), Color::Highlight);
+
+                                                            regenerate_scene = true;
+                                                        }
+                                                    }
+                                                    else if (targets.size() > 1)
+                                                    {
+                                                        shoot = true;
+                                                    }
+
+                                                    if (actions)
+                                                    {
+                                                        input = previous;
+                                                    }
                                                 }
                                             }
                                             else if (input.Type == Controls::Type::SPELLS)
                                             {
-                                                spells = true;
+                                                if (battle.Has(Controls::Type::SPELLS))
+                                                {
+                                                    Interface::ShowBookDescription(graphics, scene, battle.ActionCancels[Controls::Type::SPELLS]);
+                                                }
+                                                else
+                                                {
+                                                    spells = true;
+                                                }
                                             }
                                             else if (input.Type == Controls::Type::DEFEND)
                                             {
@@ -3059,20 +3073,20 @@ namespace BloodSword::Interface
                                             }
                                             else if (input.Type == Controls::Type::FLEE)
                                             {
-                                                if (Book::IsDefined(battle.FleeMessage))
+                                                if (battle.Has(Controls::Type::FLEE))
                                                 {
-                                                    Interface::ShowBookDescription(graphics, scene, battle.FleeMessage);
+                                                    Interface::ShowBookDescription(graphics, scene, battle.ActionCancels[Controls::Type::FLEE]);
                                                 }
                                                 else if (!character.Is(Character::Status::FLEEING))
                                                 {
                                                     character.Add(Character::Status::FLEEING);
+
+                                                    Engine::ResetSpells(character);
+
+                                                    refresh_textures = true;
+
+                                                    performed_action = true;
                                                 }
-
-                                                Engine::ResetSpells(character);
-
-                                                refresh_textures = true;
-
-                                                performed_action = true;
                                             }
                                             else if (input.Type == Controls::Type::ITEMS)
                                             {

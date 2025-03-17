@@ -499,7 +499,7 @@ namespace BloodSword::Item
 
                     auto damage = !val["damage"].is_null() ? int(val["damage"]) : 0;
 
-                    auto modifier = !val["damage"].is_null() ? int(val["modifier"]) : 0;
+                    auto modifier = !val["modifier"].is_null() ? int(val["modifier"]) : 0;
 
                     if (target != Target::Type::NONE)
                     {

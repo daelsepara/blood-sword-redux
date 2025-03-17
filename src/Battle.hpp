@@ -103,8 +103,8 @@ namespace BloodSword::Battle
         // internal: dropped items during combat
         Items::Inventory Loot = {};
 
-        // message to display when fleeing
-        Book::Location FleeMessage = Book::Undefined;
+        // message to display when cancelling a battle action
+        BloodSword::UnorderedMap<Controls::Type, Book::Location> ActionCancels = {};
 
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
@@ -125,6 +125,15 @@ namespace BloodSword::Battle
             }
 
             return result;
+        }
+
+        bool Has(Controls::Type action)
+        {
+            auto actions = (this->ActionCancels.size() > 0);
+
+            auto cancel = (this->ActionCancels.find(action) != this->ActionCancels.end());
+
+            return (actions && cancel && Book::IsDefined(this->ActionCancels[action]));
         }
 
         bool IsDefined()
@@ -193,9 +202,21 @@ namespace BloodSword::Battle
 
                 this->MaxCasters = !data["max_casters"].is_null() ? int(data["max_casters"]) : Battle::Unlimited;
 
-                if (!data["flee_message"].is_null())
+                if (!data["action_cancels"].is_null() && data["action_cancels"].is_object())
                 {
-                    this->FleeMessage = Book::Load(data["flee_message"]);
+                    this->ActionCancels.clear();
+
+                    for (auto &[key, val] : data["action_cancels"].items())
+                    {
+                        auto action = Controls::MapType(key);
+
+                        auto cancel = val.is_null() ? Book::Load(val) : Book::Undefined;
+
+                        if (action != Controls::Type::NONE && Book::IsDefined(cancel))
+                        {
+                            this->ActionCancels[action] = cancel;
+                        }
+                    }
                 }
             }
         }

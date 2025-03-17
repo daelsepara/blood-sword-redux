@@ -120,5 +120,26 @@ namespace BloodSword::Controls
         Controls::Type::SUMMON_FALTYN,
         Controls::Type::PREDICTION,
         Controls::Type::DETECT_ENCHANTMENT};
+
+    BloodSword::Mapping<Controls::Type> TypeMapping = {
+        {Controls::Type::NONE, "NONE"},
+        {Controls::Type::MOVE, "MOVE"},
+        {Controls::Type::FIGHT, "FIGHT"},
+        {Controls::Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Controls::Type::SHOOT, "SHOOT"},
+        {Controls::Type::SHURIKEN, "SHURIKEN"},
+        {Controls::Type::FLEE, "FLEE"},
+        {Controls::Type::SPELLS, "SPELLS"},
+        {Controls::Type::ITEMS, "ITEMS"}};
+
+    Controls::Type MapType(const char *control)
+    {
+        return BloodSword::Find(Controls::TypeMapping, control);
+    }
+
+    Controls::Type MapType(std::string control)
+    {
+        return Controls::MapType(control.c_str());
+    }
 }
 #endif

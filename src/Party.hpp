@@ -212,7 +212,7 @@ namespace BloodSword::Party
             if (!this->Has(character_class))
             {
                 std::string missing = "CHARACTER: " + std::string(Character::ClassMapping[character_class]) + " NOT IN PARTY!";
-                
+
                 throw std::invalid_argument(missing);
             }
 

@@ -1,0 +1,12 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 363
+    },
+    "text": "(ENCHANTER) Spells are useless agains NEBULARON. He is cloked in an 'anti-magic field' that automatically negates sorcery, so you can cast the spell but it simply fizzles out.",
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

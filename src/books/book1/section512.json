@@ -1,0 +1,12 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 512
+    },
+    "text": "The door is sealed fast, held shut by the immense power of the demon-god's will. You will have to fight NEBULARON if you have any hope of getting out of here alive.",
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}
