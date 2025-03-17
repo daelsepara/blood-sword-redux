@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 34
+    },
+    "text": "You search for a concealed spring that might open the mirror. Finding none, you wrap your forearm in your cloak and smash hard at the mirror. It shatters once, showering broken glass on the red carpet. Immediately a hulking shape launches itself from a secret alcove behind where the mirror hung. Amost before you can react, a slavering corpse is battling with you, swinging its great iron mace madly from side to side.",
+    "battle": "battles/book1/battle034.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 2
+            }
+        },
+        {
+            "type": "BATTLE FLEE",
+            "location": {
+                "book": "BOOK1",
+                "number": 456
+            }
+        }
+    ]
+}

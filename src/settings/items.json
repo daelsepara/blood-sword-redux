@@ -300,6 +300,11 @@
             "name": "DRAGONLORD GEM",
             "quantity": 1,
             "type": "DRAGONLORD GEM"
+        },
+        {
+            "name": "RUBY RING",
+            "quantity": 1,
+            "type": "RUBY RING"
         }
     ]
 }

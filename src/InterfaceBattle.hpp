@@ -3077,9 +3077,12 @@ namespace BloodSword::Interface
                                                 {
                                                     Interface::ShowBookDescription(graphics, scene, battle.ActionCancels[Controls::Type::FLEE]);
                                                 }
-                                                else if (!character.Is(Character::Status::FLEEING))
+                                                else
                                                 {
-                                                    character.Add(Character::Status::FLEEING);
+                                                    if (!character.Is(Character::Status::FLEEING))
+                                                    {
+                                                        character.Add(Character::Status::FLEEING);
+                                                    }
 
                                                     Engine::ResetSpells(character);
 

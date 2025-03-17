@@ -45,13 +45,5 @@
                 }
             }
         }
-    ],
-    "next": [
-        {
-            "type": "SELECT PLAYER",
-            "variables": [
-                "WHO SHALL EXAMINE THE MIRRORS?"
-            ]
-        }
     ]
 }

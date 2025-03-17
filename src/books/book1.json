@@ -3,6 +3,7 @@
     "description": "Every thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.",
     "sections": [
         "books/book1/section001.json",
+        "books/book1/section002.json",
         "books/book1/section003.json",
         "books/book1/section006.json",
         "books/book1/section007.json",
@@ -14,6 +15,7 @@
         "books/book1/section024.json",
         "books/book1/section028.json",
         "books/book1/section029.json",
+        "books/book1/section034.json",
         "books/book1/section036.json",
         "books/book1/section037.json",
         "books/book1/section041.json",
@@ -79,6 +81,7 @@
         "books/book1/section226.json",
         "books/book1/section227.json",
         "books/book1/section228.json",
+        "books/book1/section231.json",
         "books/book1/section232.json",
         "books/book1/section233.json",
         "books/book1/section234.json",

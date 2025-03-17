@@ -1,0 +1,311 @@
+{
+    "battle": {
+        "duration": -1,
+        "endurance": -1,
+        "map": "maps/book1/map034.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "CORPSE",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 2
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "NONE",
+                    "item_limit": 10,
+                    "moves": 2,
+                    "name": "CORPSE",
+                    "rank": 0,
+                    "target": "CORPSE"
+                },
+                {
+                    "asset": "CORPSE",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 2
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "NONE",
+                    "item_limit": 10,
+                    "moves": 2,
+                    "name": "CORPSE",
+                    "rank": 0,
+                    "target": "CORPSE"
+                },
+                {
+                    "asset": "CORPSE",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 2
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "NONE",
+                    "item_limit": 10,
+                    "moves": 2,
+                    "name": "CORPSE",
+                    "rank": 0,
+                    "target": "CORPSE"
+                },
+                {
+                    "asset": "CORPSE",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 2
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "NONE",
+                    "item_limit": 10,
+                    "moves": 2,
+                    "name": "CORPSE",
+                    "rank": 0,
+                    "target": "CORPSE"
+                },
+                {
+                    "asset": "CORPSE",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 2
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "NONE",
+                    "item_limit": 10,
+                    "moves": 2,
+                    "name": "CORPSE",
+                    "rank": 0,
+                    "target": "CORPSE"
+                },
+                {
+                    "asset": "CORPSE",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 2
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 4
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "NONE",
+                    "item_limit": 10,
+                    "moves": 2,
+                    "name": "CORPSE",
+                    "rank": 0,
+                    "target": "CORPSE"
+                }
+            ]
+        }
+    }
+}
