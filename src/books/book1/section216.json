@@ -21,11 +21,14 @@
         {
             "text": "Look behind the mirrors anyway",
             "condition": {
-                "type": "NORMAL",
+                "type": "SELECT PLAYER",
                 "location": {
                     "book": "BOOK1",
                     "number": 76
-                }
+                },
+                "variables": [
+                    "WHO IS EXAMINING THE MIRRORS?"
+                ]
             }
         },
         {
@@ -34,7 +37,7 @@
                 "type": "NORMAL",
                 "location": {
                     "book": "BOOK1",
-                    "number": 256
+                    "number": 456
                 }
             }
         }

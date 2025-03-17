@@ -77,7 +77,8 @@ namespace BloodSword::Conditions
         CHARGE,
         DISCHARGE,
         KILL_PLAYER,
-        GAIN_ATTRIBUTE
+        GAIN_ATTRIBUTE,
+        DAMAGE_PLAYER
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -151,7 +152,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::DISCHARGE, "DISCHARGE"},
         {Conditions::Type::KILL_PLAYER, "KILL PLAYER"},
         {Conditions::Type::GAIN_ATTRIBUTE, "GAIN ATTRIBUTE"},
-        {Conditions::Type::REVEAL_ITEM, "REVEAL ITEM"}};
+        {Conditions::Type::REVEAL_ITEM, "REVEAL ITEM"},
+        {Conditions::Type::DAMAGE_PLAYER, "DAMAGE PLAYER"}};
 
     Conditions::Type Map(const char *Conditions)
     {
