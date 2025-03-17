@@ -1581,7 +1581,7 @@ namespace BloodSword::Test
              Graphics::RichText("16 VARIABLES\n\n\nRead/Write in-game variables", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("17 EAT FOOD\n\n\nEat Food", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("18 TAKE ITEMS\n\n\nTake Items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("19 BATTLE (PREFERRED TARGETS)\n\n\nEnemies can target one aonther", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("19 BATTLE (PREFERRED TARGETS)\n\n\nEnemies can target one another", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
