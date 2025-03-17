@@ -30,7 +30,8 @@ namespace BloodSword::Skills
         IGNORE_ARMOUR,
         PARALYZING_TOUCH,
         POISONED_DAGGER,
-        ATTACKS_ENGAGED
+        ATTACKS_ENGAGED,
+        MAGIC_IMMUNITY
     };
 
     template <typename T>
@@ -53,7 +54,8 @@ namespace BloodSword::Skills
         {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
         {Skills::Type::PARALYZING_TOUCH, "PARALYZING TOUCH"},
         {Skills::Type::POISONED_DAGGER, "POISONED DAGGER"},
-        {Skills::Type::ATTACKS_ENGAGED, "ATTACKS ENGAGED"}};
+        {Skills::Type::ATTACKS_ENGAGED, "ATTACKS ENGAGED"},
+        {Skills::Type::MAGIC_IMMUNITY, "MAGIC IMMUNITY"}};
 
     typedef std::vector<Skills::Type> List;
 
@@ -65,7 +67,8 @@ namespace BloodSword::Skills
         Skills::Type::SHURIKEN,
         Skills::Type::IGNORE_ARMOUR,
         Skills::Type::PARALYZING_TOUCH,
-        Skills::Type::POISONED_DAGGER};
+        Skills::Type::POISONED_DAGGER,
+        Skills::Type::MAGIC_IMMUNITY};
 
     Skills::List RangedAttack = {
         Skills::Type::ARCHERY,

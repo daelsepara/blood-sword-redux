@@ -62,6 +62,9 @@
                     "moves": 1000,
                     "name": "NEBULARON",
                     "rank": 0,
+                    "skills": [
+                        "MAGIC IMMUNITY"
+                    ],
                     "target": "NEBULARON"
                 }
             ]
