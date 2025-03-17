@@ -305,6 +305,12 @@
             "name": "RUBY RING",
             "quantity": 1,
             "type": "RUBY RING"
+        },
+        {
+            "contains": "NONE",
+            "name": "BIRCH-BARK SCROLL",
+            "quantity": 1,
+            "type": "BIRCH-BARK SCROLL"
         }
     ]
 }

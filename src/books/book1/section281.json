@@ -1,0 +1,109 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 281
+    },
+    "text": "The spoils of the battle are as follows:\n\nFour SWORDS\n\nFour BOWS\n\nThirteen ARROWS\n\nTwelve GOLD pieces\n\nA BIRCH-BARK SCROLL.",
+    "items": [
+        {
+            "contains": "NONE",
+            "name": "BIRCH-BARK SCROLL",
+            "quantity": 1,
+            "type": "BIRCH-BARK SCROLL"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "BOW",
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
+            "quantity": 1,
+            "type": "BOW"
+        },
+        {
+            "name": "BOW",
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
+            "quantity": 1,
+            "type": "BOW"
+        },
+        {
+            "name": "BOW",
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
+            "quantity": 1,
+            "type": "BOW"
+        },
+        {
+            "name": "BOW",
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
+            "quantity": 1,
+            "type": "BOW"
+        },
+        {
+            "name": "GOLD PIECES",
+            "quantity": 12,
+            "type": "GOLD"
+        },
+        {
+            "name": "ARROW",
+            "quantity": 13,
+            "type": "ARROW"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 492
+            },
+            "variables": [
+                "You descend the steps"
+            ]
+        }
+    ]
+}

@@ -45,7 +45,8 @@ namespace BloodSword::Item
         DAGGER_OF_VISLET,
         GOLDEN_SNUFF_BOX,
         DRAGONLORD_GEM,
-        RUBY_RING
+        RUBY_RING,
+        BIRCH_BARK_SCROLL
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -84,7 +85,8 @@ namespace BloodSword::Item
         {Item::Type::DAGGER_OF_VISLET, "DAGGER OF VISLET"},
         {Item::Type::GOLDEN_SNUFF_BOX, "GOLDEN SNUFF-BOX"},
         {Item::Type::DRAGONLORD_GEM, "DRAGONLORD GEM"},
-        {Item::Type::RUBY_RING, "RUBY RING"}};
+        {Item::Type::RUBY_RING, "RUBY RING"},
+        {Item::Type::BIRCH_BARK_SCROLL, "BIRCH-BARK SCROLL"}};
 
     Item::Type Map(const char *item)
     {

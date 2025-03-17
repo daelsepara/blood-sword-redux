@@ -10,14 +10,14 @@
             "type": "BATTLE VICTORY",
             "location": {
                 "book": "BOOK1",
-                "number": 48
+                "number": 281
             }
         },
         {
             "type": "BATTLE FLEE",
             "location": {
                 "book": "BOOK1",
-                "number": 281
+                "number": 48
             }
         }
     ]
