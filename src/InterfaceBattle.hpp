@@ -2034,6 +2034,23 @@ namespace BloodSword::Interface
         }
     }
 
+    // searches for a player with IN COMBAT status to target
+    void SearchNewTargets(Battle::Base &battle, Party::Base &party, Engine::Queue order, int combatant)
+    {
+        battle.InCombatTarget = Character::Class::NONE;
+
+        if (battle.InCombatTarget == Character::Class::NONE || (party.Has(battle.InCombatTarget) && !Engine::CanTarget(party[battle.InCombatTarget], true)))
+        {
+            for (auto i = 0; i < combatant; i++)
+            {   
+                if (Engine::IsPlayer(order, i) && Engine::CanTarget(party[order[i].Id], true) && party[order[i].Id].Is(Character::Status::IN_COMBAT))
+                {
+                    battle.InCombatTarget = party[order[i].Id].Class;
+                }
+            }
+        }
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -2331,6 +2348,8 @@ namespace BloodSword::Interface
 
                     auto end_turn = false;
 
+                    Interface::SearchNewTargets(battle, party, order, combatant);
+
                     while (!end_turn && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
                     {
                         auto overlay = Scene::Base();
@@ -2366,6 +2385,24 @@ namespace BloodSword::Interface
 
                                             // cast or call to mind spell
                                             Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);
+                                        }
+                                        else if (character.Has(Skills::Type::ATTACKS_ENGAGED))
+                                        {
+                                            if (Engine::CanShoot(character) && opponents.size() == 0)
+                                            {
+                                                auto target_id = party.Index(battle.InCombatTarget);
+
+                                                if (target_id >= 0 && target_id < party.Count() && Engine::CanTarget(party[target_id], true))
+                                                {
+                                                    // shoot at IN COMBAT target
+                                                    Interface::Shoot(graphics, scene, battle, character, party[target_id], target_id);
+
+                                                    if (!Engine::CanTarget(party[target_id], true))
+                                                    {
+                                                        Interface::SearchNewTargets(battle, party, order, combatant);
+                                                    }
+                                                }   
+                                            }
                                         }
                                         else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {

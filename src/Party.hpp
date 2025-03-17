@@ -102,6 +102,24 @@ namespace BloodSword::Party
             return this->Find(character_class) != this->Members.end();
         }
 
+        // returns index of character in party
+        int Index(Character::Class character_class)
+        {
+            auto index = -1;
+
+            for (auto i = 0; i < this->Members.size(); i++)
+            {
+                if (this->Members[i].Class == character_class)
+                {
+                    index = i;
+
+                    break;
+                }
+            }
+
+            return index;
+        }
+
         // find index of party member that is a valid target
         int Find(Target::Type target)
         {

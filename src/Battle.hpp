@@ -124,6 +124,9 @@ namespace BloodSword::Battle
         // fleeing damage
         Battle::FleeDamage FleeDamage = {};
 
+        // internal: target that is IN COMBAT status
+        Character::Class InCombatTarget = Character::Class::NONE;
+
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}
