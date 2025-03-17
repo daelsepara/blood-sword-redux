@@ -22,7 +22,10 @@ namespace BloodSword::BattleBoard
         Story::Load("books/book1.json");
 
         // set battle order
-        Interface::BattleOrder(graphics, scene, party);
+        if (party.Count() > 1)
+        {
+            Interface::BattleOrder(graphics, scene, party);
+        }
 
         if (battle.IsDefined())
         {
