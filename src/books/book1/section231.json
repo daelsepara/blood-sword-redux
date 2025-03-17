@@ -4,18 +4,23 @@
         "number": 231
     },
     "text": "You prise the mirror away from the wall. As its fastenings give, you see there is indeed a passage beyond. Suddenly the mirror cracks and shivers into a thousand fragments. A tinkling noise reverberates down the corridor. At this, the other mirrors burst outwards in a shower of broken glass, and hordes of shambling corpses pour out into the corridor. You waste no time in scrambling into the narrow passage you have discovered -- it looks too low for the hulking corpses but you are struck by the nearest of the undead.",
-    "next": [
+    "events": [
         {
             "type": "LOSE ENDURANCE",
-            "location": {
-                "book": "BOOK1",
-                "number": 379
-            },
             "variables": [
                 "LAST",
                 "5",
                 "FALSE"
             ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 379
+            }
         }
     ]
 }

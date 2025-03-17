@@ -2544,7 +2544,7 @@ namespace BloodSword::Conditions
 
                         if (endurance < 0)
                         {
-                            text = party[character].Name + " LOSES " + std::to_string(endurance) + " ENDURANCE";
+                            text = party[character].Name + " LOSES " + std::to_string(-endurance) + " ENDURANCE";
                         }
                         else if (endurance > 0)
                         {
