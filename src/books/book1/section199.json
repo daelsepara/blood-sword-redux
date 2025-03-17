@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 199
     },
-    "text": "(SAGE) This beign that calls himself NEBULARON is in fact one of the lesser demon-gods of Krarthian mythology. His particular power, if the old legends are true, is his immunity to magic. Any spell cast at Nebularon is automatically nullified before it can reach him. Essentially, he is surrounded by a zone that cancels out magic.",
+    "text": "(SAGE) This being that calls himself NEBULARON is in fact one of the lesser demon-gods of Krarthian mythology. His particular power, if the old legends are true, is his immunity to magic. Any spell cast at Nebularon is automatically nullified before it can reach him.\n\nEssentially, he is surrounded by a zone that cancels out magic.",
     "next": [
         {
             "type": "NORMAL",
