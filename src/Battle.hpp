@@ -210,7 +210,7 @@ namespace BloodSword::Battle
                     {
                         auto action = Controls::MapType(key);
 
-                        auto cancel = val.is_null() ? Book::Load(val) : Book::Undefined;
+                        auto cancel = !val.is_null() ? Book::Load(val) : Book::Undefined;
 
                         if (action != Controls::Type::NONE && Book::IsDefined(cancel))
                         {

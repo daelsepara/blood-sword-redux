@@ -51,6 +51,7 @@ namespace BloodSword::Asset
         VERTICAL_SURFACE,
         WINDOW,
         DOOR,
+        DOORWAY,
         LEDGE,
         ROCKS,
         CHASM,
@@ -145,7 +146,8 @@ namespace BloodSword::Asset
         SAVE,
         MUMMY_HEAD,
         ROCK,
-        QUIVER
+        QUIVER,
+        CENSER
     };
 
     template <typename T>
@@ -194,6 +196,7 @@ namespace BloodSword::Asset
         {Asset::Type::VERTICAL_SURFACE, "VERTICAL SURFACE"},
         {Asset::Type::WINDOW, "WINDOW"},
         {Asset::Type::DOOR, "DOOR"},
+        {Asset::Type::DOORWAY, "DOORWAY"},
         {Asset::Type::LEDGE, "LEDGE"},
         {Asset::Type::ROCKS, "ROCKS"},
         {Asset::Type::CHASM, "CHASM"},
@@ -287,7 +290,8 @@ namespace BloodSword::Asset
         {Asset::Type::SAVE, "SAVE"},
         {Asset::Type::MUMMY_HEAD, "MUMMY HEAD"},
         {Asset::Type::ROCK, "ROCK"},
-        {Asset::Type::QUIVER, "QUIVER"}};
+        {Asset::Type::QUIVER, "QUIVER"},
+        {Asset::Type::CENSER, "CENSER"}};
 
     Asset::Type Map(const char *asset)
     {

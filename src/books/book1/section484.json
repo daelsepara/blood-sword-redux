@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 484
+    },
+    "text": "You are about to fight NEBULARON, a mighty demon-god of the underworld.",
+    "battle": "battles/book1/battle484.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 457
+            }
+        }
+    ]
+}

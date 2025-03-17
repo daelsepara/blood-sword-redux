@@ -1,0 +1,857 @@
+{
+    "drawx": 96,
+    "drawy": 96,
+    "height": 10,
+    "origins": [
+        {
+            "x": 4,
+            "y": 6
+        },
+        {
+            "x": 5,
+            "y": 7
+        },
+        {
+            "x": 4,
+            "y": 8
+        },
+        {
+            "x": 5,
+            "y": 8
+        }
+    ],
+    "spawn": [
+        {
+            "x": 5,
+            "y": 4
+        }
+    ],
+    "tiles": [
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "DOORWAY",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "EXIT"
+            },
+            {
+                "asset": "DOORWAY",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "EXIT"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "CENSER",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "CENSER",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "CENSER",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "CENSER",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "DOORWAY",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "DOORWAY",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "WALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ]
+    ],
+    "tilesize": 64,
+    "viewx": 10,
+    "viewy": 10,
+    "width": 10,
+    "x": 0,
+    "y": 0
+}
