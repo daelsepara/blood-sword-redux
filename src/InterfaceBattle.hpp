@@ -3059,7 +3059,11 @@ namespace BloodSword::Interface
                                             }
                                             else if (input.Type == Controls::Type::FLEE)
                                             {
-                                                if (!character.Is(Character::Status::FLEEING))
+                                                if (Book::IsDefined(battle.FleeMessage))
+                                                {
+                                                    Interface::ShowBookDescription(graphics, scene, battle.FleeMessage);
+                                                }
+                                                else if (!character.Is(Character::Status::FLEEING))
                                                 {
                                                     character.Add(Character::Status::FLEEING);
                                                 }

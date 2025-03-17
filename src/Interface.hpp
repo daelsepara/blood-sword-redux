@@ -2469,6 +2469,21 @@ namespace BloodSword::Interface
         TextBox(graphics, scene, message.c_str(), wrap);
     }
 
+    // displays text from a section of the current book
+    void ShowBookDescription(Graphics::Base &graphics, Scene::Base &background, Book::Location location)
+    {
+        auto description = Story::CurrentBook.Find(location);
+
+        if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+        {
+            auto text_description = Story::CurrentBook.Sections[description].Text;
+
+            auto wrap = graphics.Width - BloodSword::TileSize * 8;
+
+            Interface::TextBox(graphics, background, text_description, wrap);
+        }
+    }
+
     // draws a confirmation message box on screen
     bool Confirm(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {

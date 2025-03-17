@@ -256,18 +256,9 @@ namespace BloodSword::Interface
                             {
                                 if (items[id].Revealed)
                                 {
-                                    auto description = Story::CurrentBook.Find(items[id].Description);
+                                    Interface::ShowBookDescription(graphics, background, items[id].Description);
 
-                                    if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
-                                    {
-                                        auto item_description = Story::CurrentBook.Sections[description].Text;
-
-                                        auto wrap = graphics.Width - BloodSword::TileSize * 8;
-
-                                        Interface::TextBox(graphics, background, item_description, wrap);
-
-                                        done = true;
-                                    }
+                                    done = true;
                                 }
                                 else
                                 {
@@ -400,7 +391,7 @@ namespace BloodSword::Interface
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
                                 update.Update = items[id].Has(Item::Property::EQUIPPED);
-                                
+
                                 done = Interface::TransferItem(graphics, background, party[other_character], items, id);
 
                                 if (done)
