@@ -457,7 +457,7 @@ namespace BloodSword::Interface
     }
 
     // (character) manage item while in battle
-    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Items::Inventory &loot, Character::Base &character, int id)
+    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id)
     {
         auto update = false;
 
@@ -793,7 +793,7 @@ namespace BloodSword::Interface
     }
 
     // (character) show inventory while in battle
-    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Items::Inventory &loot)
+    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character)
     {
         auto update = false;
 
@@ -948,7 +948,7 @@ namespace BloodSword::Interface
 
                         if (choice >= 0 && choice < character.Items.size())
                         {
-                            update = Interface::ManageItem(graphics, background, loot, character, choice);
+                            update = Interface::ManageItem(graphics, background, battle, party, character, choice);
                         }
 
                         // check if item list is unchanged

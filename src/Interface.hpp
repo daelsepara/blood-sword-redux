@@ -4463,17 +4463,25 @@ namespace BloodSword::Interface
             }
         }
 
+        for (auto i = 0; i < targets.size(); i++)
+        {
+            std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
+        }
+
         for (auto i = 0; i < rounds; i++)
         {
-            // shuffle
-            std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
-
-            Interface::DamagePlayer(graphics, background, party[targets[0]], roll, modifier, ignore_armour, in_battle, display);
+            if (targets.size() > 0)
+            {
+                Interface::DamagePlayer(graphics, background, party[targets[0]], roll, modifier, ignore_armour, in_battle, display);
+            }
 
             if (!Engine::IsAlive(party[targets[0]]))
             {
                 targets.erase(targets.begin());
             }
+
+            // shuffle
+            std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
         }
     }
 }

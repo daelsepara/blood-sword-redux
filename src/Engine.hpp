@@ -161,6 +161,32 @@ namespace BloodSword::Engine
         return count;
     }
 
+    // counts live characters with skill
+    int Count(Party::Base &party, Skills::Type skill)
+    {
+        auto count = 0;
+
+        for (int i = 0; i < party.Count(); i++)
+        {
+            count += (Engine::IsAlive(party[i]) && party[i].Has(skill)) ? 1: 0;
+        }
+
+        return count;
+    }
+
+    // counts live characters without skill
+    int Without(Party::Base &party, Skills::Type skill)
+    {
+        auto count = 0;
+
+        for (int i = 0; i < party.Count(); i++)
+        {
+            count += (Engine::IsAlive(party[i]) && !party[i].Has(skill)) ? 1: 0;
+        }
+
+        return count;
+    }
+
     int Quantity(Party::Base &party, Item::Type item)
     {
         auto quantity = 0;

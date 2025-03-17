@@ -92,7 +92,8 @@ namespace BloodSword::Character
         {Character::Status::TACTICS, -1},
         {Character::Status::MESMERISED, -1},
         {Character::Status::ENTANGLED, -1},
-        {Character::Status::DOUBLE_HEALING, 1}};
+        {Character::Status::DOUBLE_HEALING, 1},
+        {Character::Status::IN_COMBAT, 1}};
 
     Character::Status MapStatus(const char *status)
     {

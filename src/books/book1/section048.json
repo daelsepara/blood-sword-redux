@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 48
+    },
+    "text": "You return to the gothic-arched vestibule. Looking again at the shining countenance on the wall, you wonder if it is indicating that you should take the left-hand passage. If so, you intend to do as it suggests.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 249
+            },
+            "variables": [
+                "You advance down the passage"
+            ]
+        }
+    ]
+}

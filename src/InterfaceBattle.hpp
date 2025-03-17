@@ -1,7 +1,6 @@
 #ifndef __INTERFACE_BATTLE_HPP__
 #define __INTERFACE_BATTLE_HPP__
 
-#include "Battle.hpp"
 #include "Graphics.hpp"
 #include "InterfaceInventory.hpp"
 
@@ -821,6 +820,11 @@ namespace BloodSword::Interface
         }
         else if (!defender.Is(Character::Status::KNOCKED_OUT) && !defender.Is(Character::Status::DEFENDING))
         {
+            if (defender.IsPlayer())
+            {
+                defender.Add(Character::Status::IN_COMBAT);
+            }
+            
             // retaliate only if not knocked out, and defending
 
             // reset alive checks
@@ -2037,17 +2041,24 @@ namespace BloodSword::Interface
     // searches for a player with IN COMBAT status to target
     void SearchNewTargets(Battle::Base &battle, Party::Base &party, Engine::Queue order, int combatant)
     {
-        battle.InCombatTarget = Character::Class::NONE;
-
-        if (battle.InCombatTarget == Character::Class::NONE || (party.Has(battle.InCombatTarget) && !Engine::CanTarget(party[battle.InCombatTarget], true)))
+        if (battle.InCombatTarget == Character::Class::NONE || !party.Has(battle.InCombatTarget) || (party.Has(battle.InCombatTarget) && (!Engine::CanTarget(party[battle.InCombatTarget], true) || !party[battle.InCombatTarget].Is(Character::Status::IN_COMBAT))))
         {
-            for (auto i = 0; i < combatant; i++)
-            {   
+            battle.InCombatTarget = Character::Class::NONE;
+            
+            for (auto i = 0; i < order.size(); i++)
+            {
                 if (Engine::IsPlayer(order, i) && Engine::CanTarget(party[order[i].Id], true) && party[order[i].Id].Is(Character::Status::IN_COMBAT))
                 {
                     battle.InCombatTarget = party[order[i].Id].Class;
+
+                    break;
                 }
             }
+        }
+
+        if (battle.InCombatTarget != Character::Class::NONE)
+        {
+            std::cerr << "[IN COMBAT] [" << Character::ClassMapping[battle.InCombatTarget] << "]" << std::endl;
         }
     }
 
@@ -2370,6 +2381,9 @@ namespace BloodSword::Interface
                                 // can perform action
                                 auto has_actions = !character.Is(Character::Status::PARALYZED) && !character.Is(Character::Status::AWAY) && character.Is(Character::Status::IN_BATTLE) && Engine::IsAlive(character);
 
+                                // full engage
+                                auto full_engage = Engine::Count(battle.Opponents, Skills::Type::ATTACKS_ENGAGED) >= Engine::Count(battle.Opponents);
+
                                 // enemy action (fight/shoot/cast/move)
                                 if (is_enemy && !character.Is(Character::Status::ENTHRALLED))
                                 {
@@ -2385,24 +2399,6 @@ namespace BloodSword::Interface
 
                                             // cast or call to mind spell
                                             Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);
-                                        }
-                                        else if (character.Has(Skills::Type::ATTACKS_ENGAGED))
-                                        {
-                                            if (Engine::CanShoot(character) && opponents.size() == 0)
-                                            {
-                                                auto target_id = party.Index(battle.InCombatTarget);
-
-                                                if (target_id >= 0 && target_id < party.Count() && Engine::CanTarget(party[target_id], true))
-                                                {
-                                                    // shoot at IN COMBAT target
-                                                    Interface::Shoot(graphics, scene, battle, character, party[target_id], target_id);
-
-                                                    if (!Engine::CanTarget(party[target_id], true))
-                                                    {
-                                                        Interface::SearchNewTargets(battle, party, order, combatant);
-                                                    }
-                                                }   
-                                            }
                                         }
                                         else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
@@ -2420,6 +2416,26 @@ namespace BloodSword::Interface
                                             Interface::LogAction("FIGHTS", character.Target, order[combatant].Id, defender.Target, defender_id);
 
                                             Interface::Fight(graphics, scene, battle, character, order[combatant].Id, defender, defender_id, character.Fight);
+                                        }
+                                        else if (character.Has(Skills::Type::ATTACKS_ENGAGED) && !full_engage)
+                                        {
+                                            if (Engine::CanShoot(character) && opponents.size() == 0)
+                                            {
+                                                auto target_id = party.Index(battle.InCombatTarget);
+
+                                                if (target_id >= 0 && target_id < party.Count() && Engine::CanTarget(party[target_id], true))
+                                                {
+                                                    // shoot at IN COMBAT target
+                                                    Interface::LogAction("SHOOTS", character.Target, order[combatant].Id, party[target_id].Target, target_id);
+
+                                                    Interface::Shoot(graphics, scene, battle, character, party[target_id], target_id);
+
+                                                    if (!Engine::CanTarget(party[target_id], true))
+                                                    {
+                                                        Interface::SearchNewTargets(battle, party, order, combatant);
+                                                    }
+                                                }
+                                            }
                                         }
                                         else if (Engine::CanShoot(character) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
@@ -3292,7 +3308,7 @@ namespace BloodSword::Interface
                                         }
                                         else if (items)
                                         {
-                                            auto update = Interface::ShowInventory(graphics, scene, character, battle.Loot);
+                                            auto update = Interface::ShowInventory(graphics, scene, battle, party, character);
 
                                             if (update)
                                             {
