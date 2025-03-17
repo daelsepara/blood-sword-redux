@@ -3411,6 +3411,13 @@ namespace BloodSword::Interface
         // check if party flees
         if (Engine::IsFleeing(party))
         {
+            if (battle.FleeDamage.Rounds > 0)
+            {
+                auto scene = BattleScene(battle, party);
+
+                Interface::DamageParty(graphics, scene, party, battle.FleeDamage.Rounds, battle.FleeDamage.Value, battle.FleeDamage.Modifier, battle.FleeDamage.IgnoreArmour, true, true);
+            }
+
             // kill abandoned players
             Engine::KillAllParalyzed(party);
 

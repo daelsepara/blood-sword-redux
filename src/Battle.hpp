@@ -65,6 +65,21 @@ namespace BloodSword::Battle
 
     typedef std::vector<Battle::Condition> Conditions;
 
+    struct FleeDamage
+    {
+        int Rounds = 0;
+
+        int Value = 0;
+
+        int Modifier = 0;
+
+        bool IgnoreArmour = false;
+
+        FleeDamage() {}
+
+        FleeDamage(int rounds, int value, int modifier, bool ignore_armour) : Rounds(rounds), Value(value), Modifier(modifier), IgnoreArmour(false) {}
+    };
+
     class Base
     {
     public:
@@ -105,6 +120,9 @@ namespace BloodSword::Battle
 
         // message to display when cancelling a battle action
         BloodSword::UnorderedMap<Controls::Type, Book::Location> ActionCancels = {};
+
+        // fleeing damage
+        Battle::FleeDamage FleeDamage = {};
 
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
@@ -217,6 +235,19 @@ namespace BloodSword::Battle
                             this->ActionCancels[action] = cancel;
                         }
                     }
+                }
+
+                if (!data["flee_damage"].is_null() && data["flee_damage"].is_object())
+                {
+                    auto rounds = !data["flee_damage"]["rounds"].is_null() ? int(data["flee_damage"]["rounds"]) : 0;
+
+                    auto value = !data["flee_damage"]["value"].is_null() ? int(data["flee_damage"]["value"]) : 0;
+
+                    auto modifier = !data["flee_damage"]["modifier"].is_null() ? int(data["flee_damage"]["modifier"]) : 0;
+
+                    auto ignore_armour = (!data["flee_damage"]["ignore_armour"].is_null() && data["flee_damage"]["ignore_armour"].is_boolean()) ? data["flee_damage"]["ignore_armour"].get<bool>() : false;
+
+                    this->FleeDamage = Battle::FleeDamage(rounds, value, modifier, ignore_armour);
                 }
             }
         }

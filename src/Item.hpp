@@ -618,6 +618,50 @@ namespace BloodSword::Items
                 data["effects"] = Book::Data(item.Effects);
             }
 
+            if (item.BattleEffects.size() > 0)
+            {
+                nlohmann::json battle_effects;
+
+                for (auto &battle_effect : item.BattleEffects)
+                {
+                    if (Book::IsDefined(battle_effect))
+                    {
+                        auto location = Book::Data(battle_effect);
+
+                        battle_effects.push_back(location);
+                    }
+                }
+
+                if (battle_effects.size() > 0)
+                {
+                    data["battle_effects"] = battle_effects;
+                }
+            }
+
+            if (item.DamageTypes.size() > 0)
+            {
+                nlohmann::json damage_types;
+
+                for (auto &damage : item.DamageTypes)
+                {
+                    nlohmann::json damage_type;
+
+                    auto target = std::string(Target::Mapping[damage.first]);
+
+                    auto value = damage.second.Value;
+
+                    auto modifier = damage.second.Modifier;
+
+                    damage_type.emplace("value", value);
+
+                    damage_type.emplace("modifier", modifier);
+
+                    damage_types.emplace(target, damage_type);
+                }
+
+                row["damage_types"] = damage_types;
+            }
+
             data.push_back(row);
         }
 
