@@ -2456,6 +2456,63 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::DAMAGE_PLAYER)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - roll
+            // 2 - modifier
+            // 3 - ignore armour
+            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto roll = party.Number(condition.Variables[1]);
+
+                auto modifier = party.Number(condition.Variables[2]);
+
+                auto ignore_armour = (Engine::ToUpper(condition.Variables[3]) == "TRUE");
+
+                if (character != Character::Class::NONE)
+                {
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
+                    {
+                        auto damage = Interface::DamagePlayer(graphics, background, party[character], roll, modifier, ignore_armour, false, false);
+
+                        if (damage > 0)
+                        {
+                            text = party[character].Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
+                        }
+                        else
+                        {
+                            text = party[character].Name + " IS UNHARMED";
+                        }
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+
+                        result = false;
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;

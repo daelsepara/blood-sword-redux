@@ -4411,29 +4411,47 @@ namespace BloodSword::Interface
         return ok;
     }
 
-    // Deal random damage to character
-    void DamagePlayer(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int roll, int modifier, bool ignore_armour = false, bool in_battle = false)
+    // deal random damage to character (display)
+    int DamagePlayer(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int roll, int modifier, bool ignore_armour = false, bool in_battle = false, bool display = true)
     {
-        auto damage = Interface::Roll(graphics, background, character.Asset, Asset::Type::DAMAGE, roll, modifier);
+        auto damage = 0;
 
-        damage -= ignore_armour ? 0 : Engine::Score(character, Attribute::Type::ARMOUR, in_battle);
-
-        if (damage > 0)
+        if (display)
         {
-            std::string message = character.Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
-
-            Interface::MessageBox(graphics, background, message, Color::Highlight);
+            damage = Interface::Roll(graphics, background, character.Asset, Asset::Type::DAMAGE, roll, modifier);
         }
         else
         {
-            std::string message = character.Name + " UNHARMED";
+            auto roll_result = Engine::Roll(roll, modifier);
 
-            Interface::MessageBox(graphics, background, message, Color::Inactive);
+            damage = roll_result.Sum;
         }
+
+        damage -= ignore_armour ? 0 : Engine::Score(character, Attribute::Type::ARMOUR, in_battle);
+
+        if (display)
+        {
+            if (damage > 0)
+            {
+                Engine::GainEndurance(character, -damage, in_battle);
+
+                std::string message = character.Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
+
+                Interface::MessageBox(graphics, background, message, Color::Highlight);
+            }
+            else
+            {
+                std::string message = character.Name + " UNHARMED";
+
+                Interface::MessageBox(graphics, background, message, Color::Inactive);
+            }
+        }
+
+        return damage;
     }
 
-    // Deal damage to memberes of party (selected at random) for several rounds
-    void DamageParty(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int rounds, int roll, int modifier, bool ignore_armour = false, bool in_battle = false)
+    // deal damage to memberes of party (selected at random) for several rounds (display)
+    void DamageParty(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int rounds, int roll, int modifier, bool ignore_armour = false, bool in_battle = false, bool display = true)
     {
         auto targets = std::vector<int>();
 
@@ -4450,7 +4468,7 @@ namespace BloodSword::Interface
             // shuffle
             std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
 
-            Interface::DamagePlayer(graphics, background, party[targets[0]], roll, modifier, ignore_armour, in_battle);
+            Interface::DamagePlayer(graphics, background, party[targets[0]], roll, modifier, ignore_armour, in_battle, display);
 
             if (!Engine::IsAlive(party[targets[0]]))
             {
