@@ -13,9 +13,16 @@ namespace BloodSword::BattleBoard
     {
         auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
 
+        // load specific battle
         auto battle = Battle::Load(battle_file);
 
         auto scene = Scene::Base();
+
+        // load story (items)
+        Story::Load("books/book1.json");
+
+        // set battle order
+        Interface::BattleOrder(graphics, scene, party);
 
         if (battle.IsDefined())
         {
