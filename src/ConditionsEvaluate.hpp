@@ -1905,7 +1905,7 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
-        else if (condition.Type == Conditions::Type::SHOW_MESSAGE)
+        else if (condition.Type == Conditions::Type::SHOW_MESSAGE || condition.Type == Conditions::Type::TEXTBOX)
         {
             // variables:
             // 0 - message
@@ -1935,7 +1935,14 @@ namespace BloodSword::Conditions
                     border = Color::Active;
                 }
 
-                Interface::MessageBox(graphics, background, condition.Variables[0], border);
+                if (condition.Type == Conditions::Type::SHOW_MESSAGE)
+                {
+                    Interface::MessageBox(graphics, background, condition.Variables[0], border);
+                }
+                else if (condition.Type == Conditions::Type::TEXTBOX)
+                {
+                    Interface::TextBox(graphics, background, condition.Variables[0], border, BloodSword::TileSize * 8);
+                }
 
                 result = true;
             }
@@ -2570,6 +2577,79 @@ namespace BloodSword::Conditions
                 }
             }
             else
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::FAIL_THEN_DIE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - attribute
+            // 2 - failure message
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                if (is_party || (character != Character::Class::NONE && attribute != Attribute::Type::NONE && !Book::IsUndefined(condition.Failure)))
+                {
+                    if (!is_party && !party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!is_party && !Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                    else
+                    {
+                        std::vector<Character::Class> characters = {};
+
+                        if (!is_party)
+                        {
+                            characters = {character};
+                        }
+                        else
+                        {
+                            for (auto i = 0; i < party.Count(); i++)
+                            {
+                                if (Engine::IsAlive(party[i]))
+                                {
+                                    characters.push_back(party[i].Class);
+                                }
+                            }
+                        }
+
+                        for (auto i = 0; i < characters.size(); i++)
+                        {
+                            auto test = Interface::Test(graphics, background, party[characters[i]], attribute);
+
+                            if (!test)
+                            {
+                                std::string message = party[characters[i]].Name + " " + condition.Variables[2];
+
+                                Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+                                // unalive player
+                                party[characters[i]].Value(Attribute::Type::ENDURANCE, 0);
+                            }
+                        }
+
+                        result = true;
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
             {
                 text = Interface::DeathMessage(party);
 

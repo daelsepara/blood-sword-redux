@@ -1,0 +1,28 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 480
+    },
+    "text": "Mist wraiths surround you, clawing wildly in their hatred of all living things.",
+    "next": [
+        {
+            "type": "FAIL THEN DIE",
+            "variables": [
+                "ALL",
+                "PSYCHIC ABILITY",
+                "IS INSTANTLY SLAIN BY THE WRAITHS"
+            ]
+        },
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 503
+            },
+            "variables": [
+                "As the fog disperses, you find that the dead bodies of the elves have been taken by the wraiths who called upon them.\n\nYou make your way along the corridor.",
+                "ACTIVE"
+            ]
+        }
+    ]
+}

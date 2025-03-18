@@ -4,7 +4,6 @@
 #include "nlohmann/json.hpp"
 #include "Asset.hpp"
 #include "Palette.hpp"
-#include "Engine.hpp"
 #include "Fonts.hpp"
 #include "Graphics.hpp"
 #include "Interface.hpp"

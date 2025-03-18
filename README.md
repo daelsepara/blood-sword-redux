@@ -90,13 +90,17 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Battle 444](/screenshots/story-mode-magus-vyl-444.png)
 
-### Section 328: Frey's Roosters Game agains Kalugen
+### Section 328: Frey's Roosters Game against Kalugen
 
 ![Section 328](/screenshots/freys-roosters-1.png)
 
 ![Section 328 Select Cards](/screenshots/freys-roosters-2.png)
 
 ![Section 349](/screenshots/freys-roosters-3.png)
+
+### Section 484: Party vs. Nebularon
+
+![Section 484](/screenshots/vs-nebularon.png)
 
 # Copyright Information
 ```

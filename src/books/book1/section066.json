@@ -1,0 +1,155 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 66
+    },
+    "text": "(SAGE) The elf called upon the spirit-gods of his ancestors as he died. These are the eerie beings that now surround you in the fog, and they have come to wreak vengeance on you for slaying their blood-kin. You lose no time focusing on your energy on exorcising them, and fortunately it works. The spirts draw back and the fog disappears.\n\nYou see examine on the elves' bodies. They have the following equipment:\n\nSix SWORDS\n\nOne BOW\n\nEight ARROWS\n\nSix LEATHER JERKINS",
+    "items": [
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER JERKIN",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER JERKIN"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER JERKIN",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER JERKIN"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER JERKIN",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER JERKIN"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER JERKIN",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER JERKIN"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER JERKIN",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER JERKIN"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER JERKIN",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER JERKIN"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        },
+        {
+            "name": "BOW",
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
+            "quantity": 1,
+            "type": "BOW"
+        },
+        {
+            "name": "ARROW",
+            "quantity": 8,
+            "type": "ARROW"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 503
+            },
+            "variables": [
+                "You start to walk along the corridor"
+            ]
+        }
+    ]
+}

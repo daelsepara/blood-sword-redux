@@ -216,17 +216,6 @@
             "type": "EMERALD SCARAB"
         },
         {
-            "attributes": {
-                "ARMOUR": 1
-            },
-            "name": "LEATHER ARMOUR",
-            "properties": [
-                "ARMOUR"
-            ],
-            "quantity": 1,
-            "type": "LOW QUALITY LEATHER ARMOUR"
-        },
-        {
             "name": "JEWELLED SWORD",
             "properties": [
                 "WEAPON",
@@ -311,6 +300,17 @@
             "name": "BIRCH-BARK SCROLL",
             "quantity": 1,
             "type": "BIRCH-BARK SCROLL"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "LEATHER JERKIN",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER JERKIN"
         }
     ]
 }

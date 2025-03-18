@@ -364,39 +364,42 @@ namespace BloodSword::Interface
                 {
                     auto eval = Conditions::Process(graphics, background, party, condition);
 
-                    // handle 'NEXT' situations that behave like events
-                    if (eval.Result)
+                    if (Engine::IsAlive(party))
                     {
-                        if (!eval.Text.empty())
+                        // handle 'NEXT' situations that behave like events
+                        if (eval.Result)
                         {
-                            Interface::MessageBox(graphics, background, eval.Text, Color::Active);
+                            if (!eval.Text.empty())
+                            {
+                                Interface::MessageBox(graphics, background, eval.Text, Color::Active);
+                            }
+
+                            if (Book::IsDefined(condition.Location))
+                            {
+                                next = condition.Location;
+
+                                break;
+                            }
                         }
-
-                        if (Book::IsDefined(condition.Location))
+                        else if (eval.Failed)
                         {
-                            next = condition.Location;
+                            if (!eval.Text.empty())
+                            {
+                                Interface::MessageBox(graphics, background, eval.Text, Color::Highlight);
+                            }
 
-                            break;
-                        }
-                    }
-                    else if (eval.Failed)
-                    {
-                        if (!eval.Text.empty())
-                        {
-                            Interface::MessageBox(graphics, background, eval.Text, Color::Highlight);
-                        }
+                            if (Book::IsDefined(condition.Failure))
+                            {
+                                next = condition.Failure;
 
-                        if (Book::IsDefined(condition.Failure))
-                        {
-                            next = condition.Failure;
-
-                            break;
+                                break;
+                            }
                         }
                     }
                 }
             }
 
-            if ((!Book::IsDefined(next) && section.Choices.size() > 0))
+            if (Engine::IsAlive(party) && !Book::IsDefined(next) && section.Choices.size() > 0)
             {
                 // process through any choices
                 while (true)

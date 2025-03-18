@@ -69,6 +69,7 @@ namespace BloodSword::Conditions
         SHOW_VARIABLES,
         EAT_FOOD,
         SHOW_MESSAGE,
+        TEXTBOX,
         COUNT_ITEMS,
         PSYCHIC_SPELL,
         IS_DEAD,
@@ -78,7 +79,8 @@ namespace BloodSword::Conditions
         DISCHARGE,
         KILL_PLAYER,
         GAIN_ATTRIBUTE,
-        DAMAGE_PLAYER
+        DAMAGE_PLAYER,
+        FAIL_THEN_DIE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -143,6 +145,7 @@ namespace BloodSword::Conditions
         {Conditions::Type::SHOW_VARIABLES, "SHOW VARIABLES"},
         {Conditions::Type::EAT_FOOD, "EAT FOOD"},
         {Conditions::Type::SHOW_MESSAGE, "SHOW MESSAGE"},
+        {Conditions::Type::TEXTBOX, "TEXTBOX"},
         {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"},
         {Conditions::Type::PSYCHIC_SPELL, "PSYCHIC SPELL"},
         {Conditions::Type::IS_DEAD, "IS DEAD"},
@@ -153,7 +156,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::KILL_PLAYER, "KILL PLAYER"},
         {Conditions::Type::GAIN_ATTRIBUTE, "GAIN ATTRIBUTE"},
         {Conditions::Type::REVEAL_ITEM, "REVEAL ITEM"},
-        {Conditions::Type::DAMAGE_PLAYER, "DAMAGE PLAYER"}};
+        {Conditions::Type::DAMAGE_PLAYER, "DAMAGE PLAYER"},
+        {Conditions::Type::FAIL_THEN_DIE, "FAIL THEN DIE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

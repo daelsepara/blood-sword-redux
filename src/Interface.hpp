@@ -2460,12 +2460,22 @@ namespace BloodSword::Interface
 
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap)
     {
-        TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
     }
 
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap)
     {
-        TextBox(graphics, scene, message.c_str(), wrap);
+        Interface::TextBox(graphics, scene, message.c_str(), wrap);
+    }
+
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap)
+    {
+        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, true);
+    }
+
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap)
+    {
+        Interface::TextBox(graphics, scene, message.c_str(), border, wrap);
     }
 
     // displays text from a section of the current book
