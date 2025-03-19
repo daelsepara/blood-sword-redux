@@ -4226,7 +4226,7 @@ namespace BloodSword::Interface
         {
             std::string message = std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " TO " + std::to_string(attributes) + " ATTRIBUTE" + (attributes > 1 ? "S" : "");
 
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, attributes, attributes, Asset::Type::NONE, false, false);
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, attributes, attributes, Asset::Type::NONE, false, true);
 
             if (selection.size() == attributes)
             {
