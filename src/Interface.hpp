@@ -3653,6 +3653,10 @@ namespace BloodSword::Interface
 
         overlay.Add(Scene::Element(screen, popup_w, popup_h, background, border, border_size));
 
+        auto size_icons = (assets.size() + ((button != Controls::Type::NONE && asset != Asset::Type::NONE) ? 1 : 0)) * (BloodSword::TileSize + pad) - pad;
+
+        auto offset = popup_w > size_icons ? (popup_w - size_icons) / 2 : 0;
+
         for (auto i = 0; i < assets.size(); i++)
         {
             auto texture = Asset::Get(assets[i]);
@@ -3674,9 +3678,11 @@ namespace BloodSword::Interface
                     rt = i < assets.size() - 1 ? i + 1 : i;
                 }
 
-                overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+                auto icon_x = screen.X + i * texture_w + pad + offset;
 
-                overlay.VerifyAndAdd(Scene::Element(texture, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile));
+                overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, icon_x, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+                overlay.VerifyAndAdd(Scene::Element(texture, icon_x, screen.Y + pad + BloodSword::HalfTile));
             }
         }
 
@@ -3687,7 +3693,7 @@ namespace BloodSword::Interface
 
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), screen.X + assets.size() * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
 
-            overlay.Add(Controls::Base(button, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+            overlay.Add(Controls::Base(button, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * BloodSword::TileSize + pad + offset, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
         }
 
         return overlay;
@@ -3779,6 +3785,11 @@ namespace BloodSword::Interface
                                 {
                                     // center texture
                                     center = (control.W - BloodSword::Width(texture_ordering[j])) / 2;
+
+                                    if ((control.X + center < (popup.X + BloodSword::QuarterTile)) && input.Current == 0)
+                                    {
+                                        center = 0;
+                                    }
                                 }
 
                                 overlay.VerifyAndAdd(Scene::Element(texture_ordering[j], control.X + center, control.Y + control.H + BloodSword::Pad));
@@ -3800,10 +3811,15 @@ namespace BloodSword::Interface
                         auto center = 0;
 
                         // do not center caption on first icon
-                        if (centered && input.Current > 0)
+                        if (centered)
                         {
                             // center texture
                             center = (control.W - BloodSword::Width(texture_captions[input.Current])) / 2;
+
+                            if ((control.X + center < (popup.X + BloodSword::QuarterTile)) && input.Current == 0)
+                            {
+                                center = 0;
+                            }
                         }
 
                         overlay.VerifyAndAdd(Scene::Element(texture_captions[input.Current], control.X + center, control.Y + control.H + BloodSword::Pad));
