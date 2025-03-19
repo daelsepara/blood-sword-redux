@@ -4215,7 +4215,7 @@ namespace BloodSword::Interface
 
             assets.push_back(Attribute::Assets[attribute]);
 
-            captions.push_back(Attribute::TypeMapping[attribute]);
+            captions.push_back(Attribute::Abbreviations[attribute]);
 
             values.push_back(i);
         }
@@ -4226,7 +4226,7 @@ namespace BloodSword::Interface
         {
             std::string message = std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " TO " + std::to_string(attributes) + " ATTRIBUTE" + (attributes > 1 ? "S" : "");
 
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, {}, attributes, attributes, Asset::Type::NONE, false, false);
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, attributes, attributes, Asset::Type::NONE, false, false);
 
             if (selection.size() == attributes)
             {
@@ -4495,9 +4495,9 @@ namespace BloodSword::Interface
         }
     }
 
-    int SelectDice(Graphics::Base &graphics, Scene::Base &background, int number)
+    Engine::RollResult SelectDice(Graphics::Base &graphics, Scene::Base &background, std::string message, int number)
     {
-        auto sum = 0;
+        auto result = Engine::RollResult();
 
         Asset::List assets = {
             Asset::Type::DICE1,
@@ -4506,29 +4506,39 @@ namespace BloodSword::Interface
             Asset::Type::DICE4,
             Asset::Type::DICE5,
             Asset::Type::DICE6};
-        
-        std::vector<int> values = {1, 2, 3, 4, 5, 6};
 
-        std::string message = "CHOOSE " + std::to_string(number);
+        std::vector<int> values = {0, 1, 2, 3, 4, 5};
 
         auto done = false;
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, number, number, Asset::Type::NONE, false, false);
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, {}, number, number, Asset::Type::NONE, false, false);
 
             if (selection.size() == number)
             {
-                for (auto i = 0; i < selctions.size(); i++)
+                for (auto i = 0; i < selection.size(); i++)
                 {
-                    sum += values[selection[i]];
+                    if (selection[i] >= 0 && selection[i] < values.size())
+                    {
+                        result.Sum += (values[selection[i]] + 1);
+
+                        result.Rolls.push_back(values[selection[i]] + 1);
+                    }
                 }
 
                 done = true;
             }
         }
 
-        return sum;
+        return result;
+    }
+
+    int SelectDice(Graphics::Base &graphics, Scene::Base &background, std::string message)
+    {
+        auto result = Interface::SelectDice(graphics, background, message, 1);
+
+        return result.Sum;
     }
 }
 

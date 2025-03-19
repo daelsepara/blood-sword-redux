@@ -1,0 +1,37 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 26
+    },
+    "text": "The being spreads his hands over the surface of the table. As he draws them back, fourteen gleaming gold coins are revealed: seven in a line in front of him, seven on your side of the table. Beside each line of coins rests a six-sided die. All the coins are showing heads.\n\n\"I am called Klef,\" says the mysterious being. \"I am the Grandmaster of this game, which the True Magi called the Spiral of Gold. Pay close attention as I explain it to you.\n\n\"We play in rounds, called Spirals. In the first Spiral I shall secretly select a number on my die, placing it under my hand with the number I have chosen uppermost. You do the same. Then we reveal and compare our chosen numbers. Suppose that I have the higher number. In this case you would lose some of your coins -- equal to the difference between our two chosen numbers. I do not get the coins you lose; they just vanish. All right, so in our example you've lost some of your coins. I wouldn't lose any, but the number I displayed on my die is the number of coins I have to flip over from heads to tails. So if I displayed a four and you displayed a three, you'd lose one coin and I'd have to flip over four coins from heads to tails.\n\n\"We then start the next Spiral by recovering -- that is, if either player has any coins showing tails, he can flip one of them over to heads again. Then we select numbers as before and play proceeds until one player has no heads showing at the end of a Spiral. Then he's lost.\"\n\n\"There are three other rules you must remember. You cannot choose a number on your die that is equal to or greater than the number of heads you have showing. That means that we can each put any number from one to six on the first Spiral, since we start with seven coins, all heads up. But if at some later point in the game I had only five heads showing, I'd have to choose a number from one to four. Secondly, if we both choose the same number then that Spiral is a draw and neither player loses anything. Lastly, when you have to lose a number of coins you must take them from the heads, not the tails, among the coins you have left.\n\n\"So, do you understand how to play?\"",
+    "next": [
+        {
+            "type": "SELECT PLAYER",
+            "variables": [
+                "WHO SHALL PLAY AGAINST KLEF?"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "You're ready for a game",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 15
+                }
+            }
+        },
+        {
+            "text": "Tell him you've no idea what this game is about",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 10
+                }
+            }
+        }
+    ]
+}

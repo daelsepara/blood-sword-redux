@@ -80,7 +80,9 @@ namespace BloodSword::Conditions
         KILL_PLAYER,
         GAIN_ATTRIBUTE,
         DAMAGE_PLAYER,
-        FAIL_THEN_DIE
+        FAIL_THEN_DIE,
+        SELECT_DICE,
+        MULTIPLE_DICE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -157,7 +159,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::GAIN_ATTRIBUTE, "GAIN ATTRIBUTE"},
         {Conditions::Type::REVEAL_ITEM, "REVEAL ITEM"},
         {Conditions::Type::DAMAGE_PLAYER, "DAMAGE PLAYER"},
-        {Conditions::Type::FAIL_THEN_DIE, "FAIL THEN DIE"}};
+        {Conditions::Type::FAIL_THEN_DIE, "FAIL THEN DIE"},
+        {Conditions::Type::SELECT_DICE, "SELECT DICE"},
+        {Conditions::Type::MULTIPLE_DICE, "MULTIPLE DICE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

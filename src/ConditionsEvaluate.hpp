@@ -1802,9 +1802,11 @@ namespace BloodSword::Conditions
         {
             // variables:
             // 0 - N variables to show
-            if (Engine::IsAlive(party) > 0 && condition.Variables.size())
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
                 auto wrap = BloodSword::TileSize * 5;
+
+                auto message = std::string();
 
                 for (auto i = 0; i < condition.Variables.size(); i++)
                 {
@@ -1812,18 +1814,18 @@ namespace BloodSword::Conditions
 
                     if (!variable.empty())
                     {
-                        if (!text.empty())
+                        if (!message.empty())
                         {
-                            text += "\n";
+                            message += "\n";
                         }
 
-                        text += condition.Variables[i] + ": " + variable;
+                        message += condition.Variables[i] + ": " + variable;
                     }
                 }
 
-                if (text.size() > 0)
+                if (message.size() > 0)
                 {
-                    Interface::TextBox(graphics, background, text, wrap);
+                    Interface::TextBox(graphics, background, message, wrap);
                 }
 
                 result = true;
@@ -2472,7 +2474,8 @@ namespace BloodSword::Conditions
             // 1 - roll
             // 2 - modifier
             // 3 - ignore armour
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            // 4 - display
+            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -2482,19 +2485,36 @@ namespace BloodSword::Conditions
 
                 auto ignore_armour = (Engine::ToUpper(condition.Variables[3]) == "TRUE");
 
+                auto display = (Engine::ToUpper(condition.Variables[4]) == "TRUE");
+
                 if (character != Character::Class::NONE)
                 {
                     if (party.Has(character) && Engine::IsAlive(party[character]))
                     {
-                        auto damage = Interface::DamagePlayer(graphics, background, party[character], roll, modifier, ignore_armour, false, false);
+                        auto damage = Interface::DamagePlayer(graphics, background, party[character], roll, modifier, ignore_armour, false, display);
+
+                        auto color = Color::Inactive;
+
+                        auto message = std::string();
 
                         if (damage > 0)
                         {
-                            text = party[character].Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
+                            message = party[character].Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
+
+                            color = Color::Highlight;
                         }
                         else
                         {
-                            text = party[character].Name + " IS UNHARMED";
+                            message = party[character].Name + " IS UNHARMED";
+                        }
+
+                        if (display)
+                        {
+                            Interface::MessageBox(graphics, background, text, color);
+                        }
+                        else
+                        {
+                            text = message;
                         }
 
                         result = true;
@@ -2654,6 +2674,88 @@ namespace BloodSword::Conditions
                 text = Interface::DeathMessage(party);
 
                 internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::SELECT_DICE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - message
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
+                    {
+                        party.ChosenNumber = Interface::SelectDice(graphics, background, condition.Variables[1]);
+    
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::MULTIPLE_DICE)
+        {
+            // variables
+            // 0 - player
+            // 1 - message
+            // 2 - number of dice to select
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto message = condition.Variables[1];
+
+                auto number = party.Number(condition.Variables[2]);
+
+                if (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]) && number >= 1 && number <= 6)
+                {
+                    auto choice = Interface::SelectDice(graphics, background, message, number);
+
+                    party.ChosenNumber = choice.Sum;
+
+                    result = true;
+                }
+                else if (!party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (!Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
