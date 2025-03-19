@@ -4215,7 +4215,7 @@ namespace BloodSword::Interface
 
             assets.push_back(Attribute::Assets[attribute]);
 
-            captions.push_back(Attribute::Abbreviations[attribute]);
+            captions.push_back(Attribute::TypeMapping[attribute]);
 
             values.push_back(i);
         }
@@ -4224,7 +4224,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            std::string message = std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " TO " + std::to_string(attributes) + " ATTRIBUTE" + (attributes > 1 ? "S" : "");
+            std::string message = std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " POINT" + (gain > 1 ? "S" : "") + " TO " + std::to_string(attributes) + " ATTRIBUTE" + (attributes > 1 ? "S" : "") + " (PERMANENT)";
 
             auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, attributes, attributes, Asset::Type::NONE, false, true);
 
