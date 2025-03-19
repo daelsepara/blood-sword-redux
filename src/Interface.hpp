@@ -3767,7 +3767,7 @@ namespace BloodSword::Interface
                     // highlight current selection
                     overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, BloodSword::Pixel));
 
-                    if (!has_captions)
+                    if (!has_captions && max_select > 1)
                     {
                         for (auto j = 0; j < selected_symbols.size(); j++)
                         {
@@ -4493,6 +4493,42 @@ namespace BloodSword::Interface
             // shuffle
             std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
         }
+    }
+
+    int SelectDice(Graphics::Base &graphics, Scene::Base &background, int number)
+    {
+        auto sum = 0;
+
+        Asset::List assets = {
+            Asset::Type::DICE1,
+            Asset::Type::DICE2,
+            Asset::Type::DICE3,
+            Asset::Type::DICE4,
+            Asset::Type::DICE5,
+            Asset::Type::DICE6};
+        
+        std::vector<int> values = {1, 2, 3, 4, 5, 6};
+
+        std::string message = "CHOOSE " + std::to_string(number);
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, number, number, Asset::Type::NONE, false, false);
+
+            if (selection.size() == number)
+            {
+                for (auto i = 0; i < selctions.size(); i++)
+                {
+                    sum += values[selection[i]];
+                }
+
+                done = true;
+            }
+        }
+
+        return sum;
     }
 }
 
