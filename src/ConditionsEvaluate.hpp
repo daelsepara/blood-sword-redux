@@ -2692,7 +2692,7 @@ namespace BloodSword::Conditions
                     if (party.Has(character) && Engine::IsAlive(party[character]))
                     {
                         party.ChosenNumber = Interface::SelectDice(graphics, background, condition.Variables[1]);
-    
+
                         result = true;
                     }
                     else if (!party.Has(character))
