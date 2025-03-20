@@ -52,7 +52,8 @@ namespace BloodSword::Character
         MESMERISED,
         ENTANGLED,
         DOUBLE_HEALING,
-        IN_COMBAT
+        IN_COMBAT,
+        POISONED
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -73,7 +74,8 @@ namespace BloodSword::Character
         {Character::Status::MESMERISED, "MESMERISED"},
         {Character::Status::ENTANGLED, "ENTANGLED"},
         {Character::Status::DOUBLE_HEALING, "DOUBLE HEALING"},
-        {Character::Status::IN_COMBAT, "IN COMBAT"}};
+        {Character::Status::IN_COMBAT, "IN COMBAT"},
+        {Character::Status::POISONED, "POISONED"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -93,7 +95,8 @@ namespace BloodSword::Character
         {Character::Status::MESMERISED, -1},
         {Character::Status::ENTANGLED, -1},
         {Character::Status::DOUBLE_HEALING, 1},
-        {Character::Status::IN_COMBAT, 1}};
+        {Character::Status::IN_COMBAT, 1},
+        {Character::Status::POISONED, -1}};
 
     Character::Status MapStatus(const char *status)
     {

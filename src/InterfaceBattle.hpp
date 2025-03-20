@@ -10,7 +10,8 @@ namespace BloodSword::Interface
     BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
         {Skills::Type::NONE, Character::Status::NONE},
         {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
-        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED}};
+        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED},
+        {Skills::Type::POISONED_DAGGER, Character::Status::POISONED}};
 
     BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
         {Skills::Type::NONE, Controls::Type::NONE},
