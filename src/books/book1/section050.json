@@ -1,0 +1,49 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 50
+    },
+    "text": "\"Probably you see that you now cannot win by any strategy,\" he says smugly. Your three coins are all heads. He, after recovering for the next Spiral, has three heads and four tails. \n\nBefore you can say anything, he reaches out and sweeps the remaining coins off the table.",
+    "next": [
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "HEADS (YOU)",
+                "4"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "HEADS (KLEF)",
+                "4"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "+",
+                "TAILS (KLEF)",
+                "4"
+            ]
+        },
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "HEADS (KLEF)",
+                "TAILS (KLEF)",
+                "HEADS (YOU)",
+                "TAILS (YOU)"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 55
+            }
+        }
+    ]
+}

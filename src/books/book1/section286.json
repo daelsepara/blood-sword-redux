@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 286
+    },
+    "text": "You have played an invalid Spiral. You are not allowed to choose a number that is higher than or equal to the number of heads your coins are showing at the time.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 10
+            }
+        }
+    ]
+}

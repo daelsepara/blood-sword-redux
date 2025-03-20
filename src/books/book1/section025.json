@@ -1,0 +1,51 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 25
+    },
+    "text": "After recovering at the start of the second Spiral, you have two heads and five tails. Grandmaster Klef has six coins, all heads.\n\n\"Allow me to point out something that cannot have escaped your notice,\" he says as you study the coins. \"You can display only one now. That means that if I display anything more than two on my die, you must lose. I hardly think we need to play on, do you?\"",
+    "next": [
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "HEADS (YOU)",
+                "5"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "+",
+                "TAILS (YOU)",
+                "5"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "HEADS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "HEADS (KLEF)",
+                "HEADS (YOU)",
+                "TAILS (YOU)"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 55
+            },
+            "variables": [
+                "HE SWEEPS THE COINS OFF THE TABLE"
+            ]
+        }
+    ]
+}

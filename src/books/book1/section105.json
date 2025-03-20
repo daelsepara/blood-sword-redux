@@ -1,0 +1,60 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 105
+    },
+    "text": "After recovering for the next Spiral, he has three heads and three tails. You have only two heads and two tails, a situation that forces you to play a one this time.",
+    "next": [
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "TAILS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "TAILS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "HEADS (YOU)",
+                "2"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "+",
+                "TAILS (YOU)",
+                "2"
+            ]
+        },
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "HEADS (KLEF)",
+                "TAILS (KLEF)",
+                "HEADS (YOU)",
+                "TAILS (YOU)"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 120
+            },
+            "variables": [
+                "SMILING, KLEF OPENS HIS HAND TO SHOW A TWO"
+            ]
+        }
+    ]
+}

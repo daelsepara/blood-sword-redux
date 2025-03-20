@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 55
+    },
+    "text": "Grandmaster Klef stands, unfolding himself from his chair like a great robed stick-insect. \"Our game is at an end,\" he declares. \"It is time for your transition to the lower levels.\"\n\nHis hands come up, showering a web of sparks around you. You feel an acrid taste in your mouth, but no pain. For a moment you wonder what he has done to you, then you see. You are sinking into the floor of the amphitheatre!",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 5
+            }
+        }
+    ]
+}

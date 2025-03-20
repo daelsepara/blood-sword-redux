@@ -1,0 +1,53 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 45
+    },
+    "text": "After recovering for the next Spiral, he has three heads and four tails. You have only four coins, all heads. Choose your number for the next Spiral.",
+    "next": [
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "HEADS (YOU)",
+                "3"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "HEADS (KLEF)",
+                "4"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "+",
+                "TAILS (KLEF)",
+                "4"
+            ]
+        },
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "HEADS (KLEF)",
+                "TAILS (KLEF)",
+                "HEADS (YOU)",
+                "TAILS (YOU)"
+            ]
+        },
+        {
+            "type": "SELECT DICE",
+            "location": {
+                "book": "BOOK1",
+                "number": 90
+            },
+            "variables": [
+                "CHOSEN",
+                "CHOOSE YOUR NEXT NUMBER"
+            ]
+        }
+    ]
+}

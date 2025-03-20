@@ -1,0 +1,44 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 100
+    },
+    "text": "A draw. The next Spiral sees him recoveringg to four heads aand three tails. You have lost any advantage you mayhave had, because you have four heads out of a total of four coins. You grit your teeth, dtermined to win back his gain in the next Spiral.",
+    "next": [
+        {
+            "type": "MATH",
+            "variables": [
+                "+",
+                "HEADS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "TAILS (KLEF)",
+                "1"
+            ] 
+        },
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "HEADS (KLEF)",
+                "TAILS (KLEF)",
+                "HEADS (YOU)"
+            ]
+        },
+        {
+            "type": "SELECT DICE",
+            "location": {
+                "book": "BOOK1",
+                "number": 125
+            },
+            "variables": [
+                "CHOSEN",
+                "CHOOSE YOUR NEXT NUMBER"
+            ]
+        }
+    ]
+}
