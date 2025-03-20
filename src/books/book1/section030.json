@@ -1,0 +1,27 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 30
+    },
+    "text": "\"A draw,\" Says Klef flatly. \"Neither player loses. The next Spiral begins.\"",
+    "next": [
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "HEADS (KLEF)",
+                "HEADS (YOU)"
+            ]
+        },
+        {
+            "type": "SELECT DICE",
+            "location": {
+                "book": "BOOK1",
+                "number": 310
+            },
+            "variables": [
+                "CHOSEN",
+                "CHOOSE YOUR NUMBER"
+            ]
+        }
+    ]
+}
