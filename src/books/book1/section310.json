@@ -4,6 +4,15 @@
         "number": 310
     },
     "text": "Again he displays a five.",
+    "events": [
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "5"
+            ]
+        }
+    ],
     "next": [
         {
             "type": "IF",

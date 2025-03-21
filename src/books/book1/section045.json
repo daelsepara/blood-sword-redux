@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 45
     },
-    "text": "After recovering for the next Spiral, he has three heads and four tails. You have only four coins, all heads. Choose your number for the next Spiral.",
+    "text": "After recovering for the next Spiral, he has three heads and four tails. You have only four coins, all heads.",
     "events": [
         {
             "type": "SET",
@@ -188,7 +188,7 @@
             },
             "variables": [
                 "CHOSEN",
-                "CHOOSE YOUR NEXT NUMBER"
+                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
             ]
         }
     ]

@@ -1,9 +1,9 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 400
+        "number": 200
     },
-    "text": "He sits back and gestures at the coins.",
+    "text": "After recovering for the next Spiral, he has four heads and two tails. Your five coins show two heads and three tails.",
     "events": [
         {
             "type": "SET",
@@ -181,13 +181,13 @@
             ]
         },
         {
-            "type": "NORMAL",
+            "type": "TEXTBOX",
             "location": {
                 "book": "BOOK1",
                 "number": 55
             },
             "variables": [
-                "\"You have lost, my friend,\" he drawls. \"To play on from this position would be unnecessary.\"",
+                "He holds up a long finger and points at the coins. \"Notice the situation,\" he says. \"You can only a one now. If I play a three, which I can and shall, then you'll end this Spiral with no heads. I don't think we need to continue, do you?\" He sweeps the coins from the table.",
                 "INACTIVE"
             ]
         }

@@ -16,14 +16,14 @@
             ]
         },
         {
-            "type": "SHOW MESSAGE",
+            "type": "TEXTBOX",
             "location": {
                 "book": "BOOK1",
                 "number": 5
             },
             "variables": [
                 "You begin to sink into the floor.",
-                "HIGHLIGHT"
+                "INACTIVE"
             ]
         }
     ]

@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 330
     },
-    "text": "The situation after recovering is that you have bouth four heads and one tail. \"Good,\" says Klef, nodding vigorously. \"You are preventing me from gaining ground. Play on.\"",
+    "text": "The situation after recovering is that you have both four heads and one tail. \"Good,\" says Klef, nodding vigorously. \"You are preventing me from gaining ground. Play on.\"",
     "events": [
         {
             "type": "SET",

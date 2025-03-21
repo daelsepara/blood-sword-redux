@@ -4,7 +4,7 @@
         "number": 15
     },
     "text": "\"Excellent.\" He conceals his die behind a slender hand and smiles across the table at you as he considers his opening gambit. Grandmaster Klef is ready.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
@@ -32,7 +32,9 @@
                 "TAILS (YOU)",
                 "0"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "SHOW VARIABLES",
             "variables": [
