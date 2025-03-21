@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 180
+    },
+    "text": "This time his number is four.",
+    "next": [
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "4"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 455
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 460
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 260
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "3"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

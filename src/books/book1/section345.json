@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 345
+    },
+    "text": "His number this Spiral is three.",
+    "next": [
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "3"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 350
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 195
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 355
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "3"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

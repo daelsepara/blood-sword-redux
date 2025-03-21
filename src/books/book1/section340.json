@@ -1,0 +1,58 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 340
+    },
+    "text": "Recovery for the next Spiral leaves both Klef and you with two heads and two tails.\n\n\"We must both put one this Spiral,\" he says, flipping over another coin. You do the same. Now you each have three heads and one tail.",
+    "next": [
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (KLEF)",
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (YOU)",
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "1"
+            ]
+        },
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "KLEF",
+                "HEADS (KLEF)",
+                "",
+                "PLAYER",
+                "HEADS (YOU)"
+            ]
+        },
+        {
+            "type": "SELECT DICE",
+            "location": {
+                "book": "BOOK1",
+                "number": 360
+            },
+            "variables": [
+                "CHOSEN",
+                "DECIDE ON YOUR NEXT NUMBER"
+            ]
+        }
+    ]
+}

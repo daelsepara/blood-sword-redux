@@ -1,0 +1,71 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 205
+    },
+    "text": "He opens his hand to show a 4.",
+    "next": [
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "4"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 130
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 95
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 65
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "3"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 210
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "4"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

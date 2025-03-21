@@ -6,6 +6,13 @@
     "text": "He chose a two.",
     "next": [
         {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "2"
+            ]
+        },
+        {
             "type": "IF",
             "location": {
                 "book": "BOOK1",

@@ -1,0 +1,229 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 325
+    },
+    "text": "The situation after recovering is that he has two heads and three tails. You are in a slightly stronger position, perhaps with three heads and one tail. At any rate, you know that he can only put down a one for this Spiral.",
+    "events": [
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF DIFFERENCE",
+                "0"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "+",
+                "HEADS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "-",
+                "TAILS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (YOU)",
+                "0",
+                "+",
+                "HEADS (YOU)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (YOU)",
+                "0",
+                "-",
+                "TAILS (YOU)",
+                "1"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "KLEF",
+                "HEADS (KLEF)",
+                "TAILS (KLEF)",
+                "",
+                "PLAYER",
+                "HEADS (YOU)",
+                "TAILS (YOU)"
+            ]
+        },
+        {
+            "type": "SELECT DICE",
+            "variables": [
+                "CHOSEN",
+                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 335
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 340
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 240
+    },
+    "text": "This time he put a one.",
+    "next": [
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 245
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 250
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

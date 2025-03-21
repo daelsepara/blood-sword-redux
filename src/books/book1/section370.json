@@ -1,0 +1,191 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 370
+    },
+    "text": "You and the Grandmaster are again equal, each with four heads. He looks up at you with sparkling eyes. \"Certainly you are an admirable opponent. I feel this game has been a true contest of wills.\"",
+    "events": [
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF DIFFERENCE",
+                "0"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "+",
+                "HEADS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "-",
+                "TAILS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (YOU)",
+                "0",
+                "+",
+                "HEADS (YOU)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (YOU)",
+                "0",
+                "-",
+                "TAILS (YOU)",
+                "1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "KLEF",
+                "HEADS (KLEF)",
+                "TAILS (KLEF)",
+                "",
+                "PLAYER",
+                "HEADS (YOU)",
+                "TAILS (YOU)"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 315
+            }
+        }
+    ]
+}

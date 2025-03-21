@@ -4,35 +4,170 @@
         "number": 150
     },
     "text": "After recovering for the next Spiral, he has six heads and one tail. You have only four coins left, but at least they are all heads. Behind his thin hand, Klef sets the die to his chosen number.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
-                "HEADS (KLEF)",
-                "6"
+                "KLEF DIFFERENCE",
+                "0"
             ]
         },
         {
-            "type": "SET",
+            "type": "IF MATH",
             "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "+",
+                "HEADS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "-",
                 "TAILS (KLEF)",
                 "1"
             ]
         },
         {
-            "type": "SET",
+            "type": "IF MATH",
             "variables": [
+                ">",
+                "TAILS (YOU)",
+                "0",
+                "+",
                 "HEADS (YOU)",
-                "4"
+                "1"
             ]
         },
         {
-            "type": "SET",
+            "type": "IF MATH",
             "variables": [
+                ">",
                 "TAILS (YOU)",
-                "0"
+                "0",
+                "-",
+                "TAILS (YOU)",
+                "1"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "SHOW VARIABLES",
             "variables": [

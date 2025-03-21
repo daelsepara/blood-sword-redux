@@ -4,35 +4,170 @@
         "number": 25
     },
     "text": "After recovering at the start of the second Spiral, you have two heads and five tails. Grandmaster Klef has six coins, all heads.\n\n\"Allow me to point out something that cannot have escaped your notice,\" he says as you study the coins. \"You can display only one now. That means that if I display anything more than two on my die, you must lose. I hardly think we need to play on, do you?\"",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
-                "HEADS (KLEF)",
-                "6"
-            ]
-        },
-        {
-            "type": "SET",
-            "variables": [
-                "TAILS (KLEF)",
+                "KLEF DIFFERENCE",
                 "0"
             ]
         },
         {
-            "type": "SET",
+            "type": "IF MATH",
             "variables": [
-                "HEADS (YOU)",
-                "2"
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
             ]
         },
         {
-            "type": "SET",
+            "type": "IF MATH",
             "variables": [
-                "TAILS (YOU)",
-                "5"
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
             ]
         },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "KLEF DIFFERENCE",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "KLEF DIFFERENCE",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF DIFFERENCE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "-",
+                "HEADS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (KLEF)",
+                "KLEF CHOICE"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                "<",
+                "KLEF CHOICE",
+                "CHOSEN",
+                "+",
+                "TAILS (YOU)",
+                "CHOSEN"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "+",
+                "HEADS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (KLEF)",
+                "0",
+                "-",
+                "TAILS (KLEF)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (YOU)",
+                "0",
+                "+",
+                "HEADS (YOU)",
+                "1"
+            ]
+        },
+        {
+            "type": "IF MATH",
+            "variables": [
+                ">",
+                "TAILS (YOU)",
+                "0",
+                "-",
+                "TAILS (YOU)",
+                "1"
+            ]
+        }
+    ],
+    "next": [
         {
             "type": "SHOW VARIABLES",
             "variables": [

@@ -6,6 +6,13 @@
     "text": "Klef's number this time is three.",
     "next": [
         {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "3"
+            ]
+        },
+        {
             "type": "IF",
             "location": {
                 "book": "BOOK1",

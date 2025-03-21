@@ -1,0 +1,62 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 250
+    },
+    "text": "Recovery for the next Spiral leaves Klef with two heads and three tails, while you have two heads and two tails. You both have to put a one this time, and after the next recovery he has three heads and two tails to your three heads and one tail.",
+    "events": [
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (KLEF)",
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (KLEF)",
+                "2"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (YOU)",
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "SHOW VARIABLES",
+            "variables": [
+                "KLEF",
+                "HEADS (KLEF)",
+                "TAILS (KLEF)",
+                "",
+                "PLAYER",
+                "HEADS (YOU)",
+                "TAILS (YOU)"
+            ]
+        },
+        {
+            "type": "SELECT DICE",
+            "location": {
+                "book": "BOOK1",
+                "number": 465
+            },
+            "variables": [
+                "CHOSEN",
+                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
+            ]
+        }
+    ]
+}

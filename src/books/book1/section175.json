@@ -6,6 +6,13 @@
     "text": "Klef opens his hand to reaveal a six. You start to reveal your number, then realise that it doesn't make any difference. He's beaten you.",
     "next": [
         {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "6"
+            ]
+        },
+        {
             "type": "NORMAL",
             "location": {
                 "book": "BOOK1",

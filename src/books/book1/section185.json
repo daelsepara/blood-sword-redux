@@ -6,6 +6,13 @@
     "text": "Klef enters this Spiral with a three. You reveal your number.",
     "next": [
         {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "3"
+            ]
+        },
+        {
             "type": "IF",
             "location": {
                 "book": "BOOK1",

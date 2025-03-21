@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 80
     },
-    "text": "After recovering for the next Spiral, he has two heads and three tails. You have the same. This position only allows you both to play a 1 on the next Spiral, so you then each have three heads and two tails.",
+    "text": "After recovering for the next Spiral, he has two heads and three tails. You have the same. This position only allows you both to play a one on the next Spiral, so you then each have three heads and two tails.",
     "next": [
         {
             "type": "SET",

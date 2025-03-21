@@ -6,6 +6,13 @@
     "text": "Klef opens his hand to display a five.",
     "next": [
         {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "5"
+            ]
+        },
+        {
             "type": "IF",
             "location": {
                 "book": "BOOK1",
