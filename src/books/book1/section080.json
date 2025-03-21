@@ -38,9 +38,11 @@
             "variables": [
                 "KLEF",
                 "HEADS (KLEF)",
+                "TAILS (KLEF)",
                 "",
                 "PLAYER",
-                "HEADS (YOU)"
+                "HEADS (YOU)",
+                "TAILS (YOU)"
             ]
         },
         {

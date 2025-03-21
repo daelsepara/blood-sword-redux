@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 530
     },
-    "text": "The situation after recovering is that he has three heads and one tail as opposed to your two heads and two tails. You can only play a one, which he counters with a two. Another recovery thus leaves him with two heads and two tails, while you now have two heads and one tail.\n\nNow neither of you has a choice. You both play one, a draw that allows him to recover to three heads and one tail.\n\nYou now have three heads sowing.",
+    "text": "The situation after recovering is that he has three heads and one tail as opposed to your two heads and two tails. You can only play a one, which he counters with a two. Another recovery thus leaves him with two heads and two tails, while you now have two heads and one tail.\n\nNow neither of you has a choice. You both play one, a draw that allows him to recover to three heads and one tail.\n\nYou now have three heads showing.",
     "next": [
         {
             "type": "SET",
@@ -38,9 +38,11 @@
             "variables": [
                 "KLEF",
                 "HEADS (KLEF)",
+                "TAILS (KLEF)",
                 "",
                 "PLAYER",
-                "HEADS (YOU)"
+                "HEADS (YOU)",
+                "TAILS (YOU)"
             ]
         },
         {
