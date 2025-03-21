@@ -19,13 +19,16 @@
                 "-",
                 "TAILS (KLEF)",
                 "1"
-            ] 
+            ]
         },
         {
             "type": "SHOW VARIABLES",
             "variables": [
+                "KLEF",
                 "HEADS (KLEF)",
                 "TAILS (KLEF)",
+                "",
+                "PLAYER",
                 "HEADS (YOU)"
             ]
         },

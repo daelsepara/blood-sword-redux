@@ -10,6 +10,13 @@
             "variables": [
                 "WHO SHALL PLAY AGAINST KLEF?"
             ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "PLAYER",
+                "-"
+            ]
         }
     ],
     "choices": [

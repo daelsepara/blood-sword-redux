@@ -492,6 +492,19 @@ namespace BloodSword::Party
                         std::cerr << "[CHOSEN NUMBER] <--- " << value << std::endl;
                     }
                 }
+                else if (variable == "PLAYER")
+                {
+                    auto index = this->Index(this->ChosenCharacter);
+
+                    if (this->ChosenCharacter != Character::Class::NONE && index != -1)
+                    {
+                        value = this->Members[index].Name;
+
+                        this->Variables[variable] = value;
+
+                        std::cerr << "[VARIABLE PLAYER] <--- " << value << std::endl;
+                    }
+                }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = value;

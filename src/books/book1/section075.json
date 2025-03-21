@@ -1,26 +1,10 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 105
+        "number": 75
     },
-    "text": "After recovering for the next Spiral, he has three heads and three tails. You have only two heads and two tails, a situation that forces you to play a one this time.",
+    "text": "After recovering for the next Spiral, he has three heads and three tails. Your five coins now show three heads and two tails. \"Our positions are rather close, are they not?\" says Klef with a broad smile.",
     "next": [
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
-                "TAILS (KLEF)",
-                "1"
-            ]
-        },
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
-                "TAILS (KLEF)",
-                "1"
-            ]
-        },
         {
             "type": "MATH",
             "variables": [
@@ -38,6 +22,14 @@
             ]
         },
         {
+            "type": "MATH",
+            "variables": [
+                "-",
+                "TAILS (KLEF)",
+                "1"
+            ]
+        },
+        {
             "type": "SHOW VARIABLES",
             "variables": [
                 "KLEF",
@@ -50,13 +42,14 @@
             ]
         },
         {
-            "type": "NORMAL",
+            "type": "SELECT DICE",
             "location": {
                 "book": "BOOK1",
-                "number": 120
+                "number": 225
             },
             "variables": [
-                "SMILING, KLEF OPENS HIS HAND TO SHOW A TWO"
+                "CHOSEN",
+                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
             ]
         }
     ]

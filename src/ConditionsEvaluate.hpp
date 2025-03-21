@@ -1810,16 +1810,48 @@ namespace BloodSword::Conditions
 
                 for (auto i = 0; i < condition.Variables.size(); i++)
                 {
-                    auto variable = party.Get(condition.Variables[i]);
+                    auto value = party.Get(condition.Variables[i]);
 
-                    if (!variable.empty())
+                    if (!condition.Variables[i].empty())
                     {
-                        if (!message.empty())
+                        if (!value.empty() && condition.Variables[i] != value)
                         {
-                            message += "\n";
-                        }
+                            if (!message.empty())
+                            {
+                                message += "\n";
+                            }
 
-                        message += condition.Variables[i] + ": " + variable;
+                            if (Engine::ToUpper(condition.Variables[i]) != "PLAYER")
+                            {
+                                auto n = condition.Variables[i].find(" (");
+
+                                if (n != std::string::npos)
+                                {
+                                    message += condition.Variables[i].substr(0, n);
+                                }
+                                else
+                                {
+                                    // show value
+                                    message += condition.Variables[i];
+                                }
+
+                                message += ": " + value;
+                            }
+                            else
+                            {
+                                message += value;
+                            }
+                        }
+                        else
+                        {
+                            // assume variable is a literal
+                            message += condition.Variables[i];
+                        }
+                    }
+                    else
+                    {
+                        // assume a blank is for spacing
+                        message += "\n";
                     }
                 }
 

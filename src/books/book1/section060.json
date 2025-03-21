@@ -1,0 +1,64 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 60
+    },
+    "text": "This time he opens his hand to reveal a two.",
+    "next": [
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 65
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 70
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 75
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "3"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 80
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "4"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

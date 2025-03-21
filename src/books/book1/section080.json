@@ -1,38 +1,34 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 105
+        "number": 80
     },
-    "text": "After recovering for the next Spiral, he has three heads and three tails. You have only two heads and two tails, a situation that forces you to play a one this time.",
+    "text": "After recovering for the next Spiral, he has two heads and three tails. You have the same. This position only allows you both to play a 1 on the next Spiral, so you then each have three heads and two tails.",
     "next": [
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "-",
-                "TAILS (KLEF)",
-                "1"
+                "HEADS (KLEF)",
+                "3"
             ]
         },
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "-",
                 "TAILS (KLEF)",
-                "1"
-            ]
-        },
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
-                "HEADS (YOU)",
                 "2"
             ]
         },
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "+",
+                "HEADS (YOU)",
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
                 "TAILS (YOU)",
                 "2"
             ]
@@ -42,21 +38,20 @@
             "variables": [
                 "KLEF",
                 "HEADS (KLEF)",
-                "TAILS (KLEF)",
                 "",
                 "PLAYER",
-                "HEADS (YOU)",
-                "TAILS (YOU)"
+                "HEADS (YOU)"
             ]
         },
         {
-            "type": "NORMAL",
+            "type": "SELECT DICE",
             "location": {
                 "book": "BOOK1",
-                "number": 120
+                "number": 320
             },
             "variables": [
-                "SMILING, KLEF OPENS HIS HAND TO SHOW A TWO"
+                "CHOSEN",
+                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
             ]
         }
     ]

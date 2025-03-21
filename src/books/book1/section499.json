@@ -85,6 +85,7 @@
             "type": "SHOW VARIABLES",
             "variables": [
                 "STAKED GOLD",
+                "",
                 "HOUSE STAKE"
             ]
         },

@@ -1,40 +1,24 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 105
+        "number": 65
     },
-    "text": "After recovering for the next Spiral, he has three heads and three tails. You have only two heads and two tails, a situation that forces you to play a one this time.",
+    "text": "After recovering for the next Sprial, he has two heads and five tails. You have only four coins left, but all are heads. He can play only a one now, so you automatically win.",
     "next": [
         {
             "type": "MATH",
             "variables": [
                 "-",
-                "TAILS (KLEF)",
+                "HEADS (KLEF)",
                 "1"
-            ]
-        },
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
-                "TAILS (KLEF)",
-                "1"
-            ]
-        },
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
-                "HEADS (YOU)",
-                "2"
             ]
         },
         {
             "type": "MATH",
             "variables": [
                 "+",
-                "TAILS (YOU)",
-                "2"
+                "TAILS (KLEF)",
+                "1"
             ]
         },
         {
@@ -53,11 +37,8 @@
             "type": "NORMAL",
             "location": {
                 "book": "BOOK1",
-                "number": 120
-            },
-            "variables": [
-                "SMILING, KLEF OPENS HIS HAND TO SHOW A TWO"
-            ]
+                "number": 85
+            }
         }
     ]
 }

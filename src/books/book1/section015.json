@@ -36,7 +36,10 @@
         {
             "type": "SHOW VARIABLES",
             "variables": [
+                "KLEF",
                 "HEADS (KLEF)",
+                "",
+                "PLAYER",
                 "HEADS (YOU)"
             ]
         },

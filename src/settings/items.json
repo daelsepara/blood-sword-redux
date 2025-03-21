@@ -311,6 +311,12 @@
             ],
             "quantity": 1,
             "type": "LEATHER JERKIN"
+        },
+        {
+            "contains": "NONE",
+            "name": "BLUE ICE JEWEL",
+            "quantity": 1,
+            "type": "BLUE ICE JEWEL"
         }
     ]
 }
