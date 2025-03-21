@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 495
+    },
+    "text": "\"This is most impressive,\" says Klef suddenly. \"You struggle against me with dogged determination. If I may say so, you have the quality of a true hero never to submit in the face of any adversity. The Spiral of Gold often reveals such things.\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 315
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 460
+    },
+    "text": "\"I think,\" declare Klef, \"that you can see I've won. Playing on from this hopeless position would hardly be worthwhile.\" He scoops up the coins.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 55
+            }
+        }
+    ]
+}
