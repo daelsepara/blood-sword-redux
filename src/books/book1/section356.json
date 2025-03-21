@@ -1,0 +1,20 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 356
+    },
+    "text": "You start to make the descent. The steps soon emerge on to a perilous ledge that snaks down the back wall of a vast underground cave. You look out for a moment, awestruck, at the unearthly panorama before you. The cavern stretches away for two kilometres or more, and the ceiling is a hundred meters high in places. The basin below is the crater of a dorman volcano, and a deep-red glow illuminates the cave from valcanic geysers that splutter and gurgle lava through cracks in the cave floor.\n\nThe ceiling is supported by gigantic basalt pillars that reach up into the dizzying gloom. You feel that your are below the very foundations of Kalugen's Keep, and the though of the sorcery that keeps the ravenous volcano in check takes your breath away. Here and there from rents in the rock ceiling, trickles of noxious liquid spray down. These are the outlets of the Keep's sewers, and the volcanic fires burn with a resentful green light when one of these streams hits them.\n\nThe bottom of the crater, far below the ledge on which you cling, rolls with a greenish white mist that makes it difficult to see anything but the splutter of red fires. Three pinnacles rise out of this sea of fog. The first of these is joined to a platform at the bottom of your ledge by two narrow bridges. The crossing looks perilous, as you have only to miss a step and you would plummet into a gorge where there flows a roaring torrent of evil-smelling water.\n\nAcross the bridge you see a soot-blackened temple atop the first pinnacle. Foul hags caper out on the terrace in front of the temple as you wend your way down the ledge. A welcoming party? No, they are pointing up at a host of winged dirges that are swooping down through the unwholesome air. They've come out to watch the show, then.",
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 318
+            },
+            "variables": [
+                "You wryly reflect that perhaps you'll give them a spectacle",
+                "INACTIVE"            
+            ]
+        }
+    ]
+}

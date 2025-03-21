@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 318
+    },
+    "text": "The dirges are screeching hungrily as they soar in to attack you. These dingy creatures fly on the up-draughts of hot foetid air rising from the geyser pools far below. You spare a glance of hatred for the hags who have gathered to watch your desperate battle. You see them cackling, but you cannot hear them over the noise of the river flooding down the gorge.",
+    "choices": [
+        {
+            "text": "Use an item before the dirges close to attack",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 89
+                }
+            }
+        },
+        {
+            "text": "Race down the ledge to the platform to fight them there",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 407
+                }
+            }
+        },
+        {
+            "text": "Make your stand here on the ledge",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 112
+                }
+            }
+        }
+    ]
+}
