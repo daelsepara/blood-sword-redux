@@ -23,14 +23,14 @@
             "type": "SET",
             "variables": [
                 "HEADS (YOU)",
-                "5"
+                "3"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "TAILS (YOU)",
-                "0"
+                "2"
             ]
         },
         {
