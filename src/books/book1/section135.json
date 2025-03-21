@@ -1,29 +1,29 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 95
+        "number": 135
     },
-    "text": "After recovering for the next Spiral, he has two heads and four tails. You have lost a coin, leaving you with three heads.",
+    "text": "You drew. After recovering for the next Spiral, this leaves him with five heads and two tails. You have no coins to recover from tails, so you still have four heads.",
     "next": [
         {
             "type": "SET",
             "variables": [
                 "HEADS (KLEF)",
-                "2"
+                "5"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "TAILS (KLEF)",
-                "4"
+                "2"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "HEADS (YOU)",
-                "3"
+                "4"
             ]
         },
         {
@@ -49,11 +49,11 @@
             "type": "SELECT DICE",
             "location": {
                 "book": "BOOK1",
-                "number": 110
+                "number": 140
             },
             "variables": [
                 "CHOSEN",
-                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
+                "CHOOSE YOUR NEXT NUMBER"
             ]
         }
     ]

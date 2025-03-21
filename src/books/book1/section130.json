@@ -1,9 +1,9 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 95
+        "number": 130
     },
-    "text": "After recovering for the next Spiral, he has two heads and four tails. You have lost a coin, leaving you with three heads.",
+    "text": "After recovering for the next Spiral, He has two heads and five tails. You have only two heads.",
     "next": [
         {
             "type": "SET",
@@ -16,14 +16,14 @@
             "type": "SET",
             "variables": [
                 "TAILS (KLEF)",
-                "4"
+                "5"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "HEADS (YOU)",
-                "3"
+                "2"
             ]
         },
         {
@@ -46,14 +46,14 @@
             ]
         },
         {
-            "type": "SELECT DICE",
+            "type": "TEXTBOX",
             "location": {
                 "book": "BOOK1",
-                "number": 110
+                "number": 55
             },
             "variables": [
-                "CHOSEN",
-                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
+                "You are wondering whether you have any chance of winning when Klef says: \"No, you don't. We have reached a Converging Spiral, where playing on would only delay your inevitable defeat.\" He gathers the coins.",
+                "INACTIVE"
             ]
         }
     ]

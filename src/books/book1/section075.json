@@ -6,27 +6,31 @@
     "text": "After recovering for the next Spiral, he has three heads and three tails. Your five coins now show three heads and two tails. \"Our positions are rather close, are they not?\" says Klef with a broad smile.",
     "next": [
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "-",
-                "HEADS (YOU)",
-                "2"
+                "HEADS (KLEF)",
+                "3"
             ]
         },
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "+",
-                "TAILS (YOU)",
-                "2"
-            ]
-        },
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
                 "TAILS (KLEF)",
-                "1"
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (YOU)",
+                "5"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "0"
             ]
         },
         {

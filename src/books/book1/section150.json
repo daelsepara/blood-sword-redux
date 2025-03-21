@@ -1,29 +1,29 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 95
+        "number": 150
     },
-    "text": "After recovering for the next Spiral, he has two heads and four tails. You have lost a coin, leaving you with three heads.",
+    "text": "After recovering for the next Spiral, he has six heads and one tail. You have only four coins left, but at least they are all heads. Behind his thin hand, Klef sets the die to his chosen number.",
     "next": [
         {
             "type": "SET",
             "variables": [
                 "HEADS (KLEF)",
-                "2"
+                "6"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "TAILS (KLEF)",
-                "4"
+                "1"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "HEADS (YOU)",
-                "3"
+                "4"
             ]
         },
         {
@@ -49,11 +49,11 @@
             "type": "SELECT DICE",
             "location": {
                 "book": "BOOK1",
-                "number": 110
+                "number": 155
             },
             "variables": [
                 "CHOSEN",
-                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
+                "CHOOSE YOUR NEXT NUMBER"
             ]
         }
     ]

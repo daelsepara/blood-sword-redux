@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 155
+    },
+    "text": "Klef's number this time is three.",
+    "next": [
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 160
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 165
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 170
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "3"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

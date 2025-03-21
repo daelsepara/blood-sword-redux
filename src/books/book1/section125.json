@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 125
+    },
+    "text": "Klef reveals his number: a 3.",
+    "next": [
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 130
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 95
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 135
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "3"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

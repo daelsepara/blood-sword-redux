@@ -6,27 +6,31 @@
     "text": "\"Probably you see that you now cannot win by any strategy,\" he says smugly. Your three coins are all heads. He, after recovering for the next Spiral, has three heads and four tails. \n\nBefore you can say anything, he reaches out and sweeps the remaining coins off the table.",
     "next": [
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "-",
-                "HEADS (YOU)",
-                "4"
-            ]
-        },
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
                 "HEADS (KLEF)",
-                "4"
+                "3"
             ]
         },
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "+",
                 "TAILS (KLEF)",
                 "4"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (YOU)",
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "0"
             ]
         },
         {

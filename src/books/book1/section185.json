@@ -1,0 +1,64 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 185
+    },
+    "text": "Klef enters this Spiral with a three. You reveal your number.",
+    "next": [
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 95
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "1"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 65
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "2"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 190
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "3"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 200
+            },
+            "variables": [
+                "=",
+                "CHOSEN",
+                "4"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 286
+            }
+        }
+    ]
+}

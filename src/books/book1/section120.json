@@ -1,9 +1,9 @@
 {
     "location": {
         "book": "BOOK1",
-        "number": 95
+        "number": 120
     },
-    "text": "After recovering for the next Spiral, he has two heads and four tails. You have lost a coin, leaving you with three heads.",
+    "text": "After recovering for the next Spiral, he has two heads and four tails. Your coins now show two heads and two tails. You both must play a one.",
     "next": [
         {
             "type": "SET",
@@ -23,14 +23,14 @@
             "type": "SET",
             "variables": [
                 "HEADS (YOU)",
-                "3"
+                "2"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "TAILS (YOU)",
-                "0"
+                "4"
             ]
         },
         {
@@ -46,15 +46,11 @@
             ]
         },
         {
-            "type": "SELECT DICE",
+            "type": "NORMAL",
             "location": {
                 "book": "BOOK1",
-                "number": 110
-            },
-            "variables": [
-                "CHOSEN",
-                "CHOOSE YOUR NUMBER FOR THE NEXT SPIRAL"
-            ]
+                "number": 115
+            }
         }
     ]
 }

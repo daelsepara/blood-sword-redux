@@ -3,22 +3,34 @@
         "book": "BOOK1",
         "number": 100
     },
-    "text": "A draw. The next Spiral sees him recoveringg to four heads aand three tails. You have lost any advantage you mayhave had, because you have four heads out of a total of four coins. You grit your teeth, dtermined to win back his gain in the next Spiral.",
+    "text": "A draw. The next Spiral sees him recovering to four heads and three tails. You have lost any advantage you may have had, because you have four heads out of a total of four coins. You grit your teeth, determined to win back his gain in the next Spiral.",
     "next": [
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "+",
                 "HEADS (KLEF)",
-                "1"
+                "4"
             ]
         },
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "-",
                 "TAILS (KLEF)",
-                "1"
+                "3"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (YOU)",
+                "4"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "0"
             ]
         },
         {

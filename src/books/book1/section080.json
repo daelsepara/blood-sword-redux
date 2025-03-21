@@ -9,28 +9,28 @@
             "type": "SET",
             "variables": [
                 "HEADS (KLEF)",
-                "3"
+                "2"
             ]
         },
         {
             "type": "SET",
             "variables": [
                 "TAILS (KLEF)",
-                "2"
-            ]
-        },
-        {
-            "type": "SET",
-            "variables": [
-                "HEADS (YOU)",
                 "3"
             ]
         },
         {
             "type": "SET",
             "variables": [
-                "TAILS (YOU)",
+                "HEADS (YOU)",
                 "2"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "3"
             ]
         },
         {

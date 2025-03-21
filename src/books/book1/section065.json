@@ -6,19 +6,31 @@
     "text": "After recovering for the next Sprial, he has two heads and five tails. You have only four coins left, but all are heads. He can play only a one now, so you automatically win.",
     "next": [
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "-",
                 "HEADS (KLEF)",
-                "1"
+                "2"
             ]
         },
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "+",
                 "TAILS (KLEF)",
-                "1"
+                "5"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (YOU)",
+                "4"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "0"
             ]
         },
         {

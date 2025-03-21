@@ -6,27 +6,31 @@
     "text": "After recovering for the next Spiral, he has three heads and four tails. You have five coins, all heads. Choose your number for the next Spiral.",
     "next": [
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "-",
-                "HEADS (YOU)",
-                "2"
-            ]
-        },
-        {
-            "type": "MATH",
-            "variables": [
-                "-",
                 "HEADS (KLEF)",
                 "3"
             ]
         },
         {
-            "type": "MATH",
+            "type": "SET",
             "variables": [
-                "+",
                 "TAILS (KLEF)",
                 "4"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "HEADS (YOU)",
+                "5"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "TAILS (YOU)",
+                "0"
             ]
         },
         {

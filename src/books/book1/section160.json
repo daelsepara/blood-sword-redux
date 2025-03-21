@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 160
+    },
+    "text": "Klef shakes his head and mutters something, then scoops up the remaining coins. \"Well,\" he says as you give a grunt of surprise, \"surely you could see that you'd lose?\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 55
+            }
+        }
+    ]
+}
