@@ -4,14 +4,16 @@
         "number": 140
     },
     "text": "His number is 3.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "3"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

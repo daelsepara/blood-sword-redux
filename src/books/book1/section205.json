@@ -4,14 +4,16 @@
         "number": 205
     },
     "text": "He opens his hand to show a 4.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "4"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

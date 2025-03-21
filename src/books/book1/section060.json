@@ -4,14 +4,16 @@
         "number": 60
     },
     "text": "This time he opens his hand to reveal a two.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "2"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

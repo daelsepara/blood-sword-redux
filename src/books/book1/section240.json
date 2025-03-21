@@ -4,14 +4,16 @@
         "number": 240
     },
     "text": "This time he put a one.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "1"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

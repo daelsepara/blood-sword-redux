@@ -4,14 +4,16 @@
         "number": 510
     },
     "text": "He lifts his hand from the die to show you his number: three.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "3"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

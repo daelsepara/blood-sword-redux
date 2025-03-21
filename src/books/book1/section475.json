@@ -4,14 +4,16 @@
         "number": 475
     },
     "text": "Klef's number is revealed: a two.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "2"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

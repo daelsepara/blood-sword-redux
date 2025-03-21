@@ -3,15 +3,17 @@
         "book": "BOOK1",
         "number": 175
     },
-    "text": "Klef opens his hand to reaveal a six. You start to reveal your number, then realise that it doesn't make any difference. He's beaten you.",
-    "next": [
+    "text": "Klef opens his hand to reveal a six. You start to reveal your number, then realise that it doesn't make any difference. He's beaten you.",
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "6"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "NORMAL",
             "location": {

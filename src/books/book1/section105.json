@@ -172,6 +172,13 @@
                 "CHOSEN",
                 "1"
             ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "KLEF CHOICE",
+                "2"
+            ]
         }
     ],
     "next": [

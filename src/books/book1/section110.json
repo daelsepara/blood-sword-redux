@@ -4,14 +4,16 @@
         "number": 110
     },
     "text": "His number this time is a one, of course.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "1"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

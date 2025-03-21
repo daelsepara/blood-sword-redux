@@ -4,14 +4,16 @@
         "number": 20
     },
     "text": "Klef opens his hand to display a five.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "5"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

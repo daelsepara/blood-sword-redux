@@ -4,14 +4,16 @@
         "number": 125
     },
     "text": "Klef reveals his number: a 3.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "3"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

@@ -4,14 +4,16 @@
         "number": 185
     },
     "text": "Klef enters this Spiral with a three. You reveal your number.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "3"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

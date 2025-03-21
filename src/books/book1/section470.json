@@ -4,14 +4,16 @@
         "number": 470
     },
     "text": "Klef chose a six.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "6"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

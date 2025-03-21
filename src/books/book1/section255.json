@@ -4,14 +4,16 @@
         "number": 255
     },
     "text": "He put down a two.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
-                "1"
+                "2"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

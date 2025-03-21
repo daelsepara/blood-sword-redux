@@ -4,14 +4,16 @@
         "number": 435
     },
     "text": "He adjusts the die, then lifts his hand to reveal a four.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "4"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {

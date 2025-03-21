@@ -4,14 +4,16 @@
         "number": 450
     },
     "text": "He decides on five this time.",
-    "next": [
+    "events": [
         {
             "type": "SET",
             "variables": [
                 "KLEF CHOICE",
                 "5"
             ]
-        },
+        }
+    ],
+    "next": [
         {
             "type": "IF",
             "location": {
