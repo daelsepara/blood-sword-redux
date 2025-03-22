@@ -82,7 +82,11 @@ namespace BloodSword::Conditions
         DAMAGE_PLAYER,
         FAIL_THEN_DIE,
         SELECT_DICE,
-        MULTIPLE_DICE
+        MULTIPLE_DICE,
+        IS_ALIVE,
+        IF_TRUE_SET,
+        IF_FALSE_SET,
+        COMPUTE_VICTORY_POINTS
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -161,7 +165,11 @@ namespace BloodSword::Conditions
         {Conditions::Type::DAMAGE_PLAYER, "DAMAGE PLAYER"},
         {Conditions::Type::FAIL_THEN_DIE, "FAIL THEN DIE"},
         {Conditions::Type::SELECT_DICE, "SELECT DICE"},
-        {Conditions::Type::MULTIPLE_DICE, "MULTIPLE DICE"}};
+        {Conditions::Type::MULTIPLE_DICE, "MULTIPLE DICE"},
+        {Conditions::Type::IS_ALIVE, "IS ALIVE"},
+        {Conditions::Type::IF_TRUE_SET, "IF TRUE SET"},
+        {Conditions::Type::IF_FALSE_SET, "IF FALSE SET"},
+        {Conditions::Type::COMPUTE_VICTORY_POINTS, "COMPUTE VICTORY POINTS"}};
 
     Conditions::Type Map(const char *Conditions)
     {

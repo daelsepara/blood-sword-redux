@@ -1,0 +1,37 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 384
+    },
+    "events": [
+        {
+            "type": "IS ALIVE",
+            "variables": [
+                "WARRIOR",
+                "(WARRIOR) Running from a ritual death-duel is not exactly in accordance with the warrior ethic. You rejoin your companions."
+            ]
+        },
+        {
+            "type": "IF TRUE SET",
+            "variables": [
+                "WARRIOR FLEES FROM RANGER",
+                "-100"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "variables": [
+                "You retrace your steps and approach the ornamental doorway."
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 246
+            }
+        }
+    ]
+}

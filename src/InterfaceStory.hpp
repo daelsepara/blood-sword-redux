@@ -218,6 +218,15 @@ namespace BloodSword::Interface
         return next;
     }
 
+    // set variable based on results of last evaluated condition 
+    void SetVariable(Party::Base &party, Conditions::Base &condition, bool result)
+    {
+        if (((condition.Type == Conditions::Type::IF_TRUE_SET && result) || (condition.Type == Conditions::Type::IF_FALSE_SET && !result)) && condition.Variables.size() > 1)
+        {
+            party.Set(condition.Variables[0], condition.Variables[1]);
+        }
+    }
+
     // process background events
     Book::Location ProcessBackground(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
@@ -231,28 +240,39 @@ namespace BloodSword::Interface
         {
             Interface::LogSectionHeader("BACKGROUND", section.Location);
 
+            auto last_result = false;
+
             for (auto &condition : section.Background)
             {
-                auto eval = Conditions::Process(graphics, background, party, condition);
-
-                if (eval.Failed)
+                if (condition.Type != Conditions::Type::IF_TRUE_SET && condition.Type != Conditions::Type::IF_FALSE_SET)
                 {
-                    if (Book::IsDefined(condition.Failure))
-                    {
-                        next = condition.Failure;
+                    auto eval = Conditions::Process(graphics, background, party, condition);
 
-                        break;
+                    last_result = (eval.Failed || eval.Result);
+
+                    if (eval.Failed)
+                    {
+                        if (Book::IsDefined(condition.Failure))
+                        {
+                            next = condition.Failure;
+
+                            break;
+                        }
+                    }
+                    else if (eval.Result)
+                    {
+                        // process multiple background events until they resolve into a new location
+                        if (Book::IsDefined(condition.Location))
+                        {
+                            next = condition.Location;
+
+                            break;
+                        }
                     }
                 }
-                else if (eval.Result)
+                else
                 {
-                    // process multiple background events until they resolve into a new location
-                    if (Book::IsDefined(condition.Location))
-                    {
-                        next = condition.Location;
-
-                        break;
-                    }
+                    Interface::SetVariable(party, condition, last_result);
                 }
             }
         }
@@ -273,13 +293,24 @@ namespace BloodSword::Interface
         {
             Interface::LogSectionHeader("EVENT", section.Location);
 
+            auto last_result = false;
+
             for (auto &condition : section.Events)
             {
                 if (Engine::IsAlive(party))
                 {
-                    auto eval = Conditions::Process(graphics, background, party, condition);
+                    if (condition.Type != Conditions::Type::IF_TRUE_SET && condition.Type != Conditions::Type::IF_FALSE_SET)
+                    {
+                        auto eval = Conditions::Process(graphics, background, party, condition);
 
-                    results.push_back(eval);
+                        last_result = (eval.Result || eval.Failed);
+
+                        results.push_back(eval);
+                    }
+                    else
+                    {
+                        Interface::SetVariable(party, condition, last_result);
+                    }
                 }
             }
         }
@@ -359,41 +390,52 @@ namespace BloodSword::Interface
             {
                 Interface::LogSectionHeader("NEXT", section.Location);
 
+                auto last_result = false;
+
                 // process through each condition
                 for (auto &condition : section.Next)
                 {
-                    auto eval = Conditions::Process(graphics, background, party, condition);
-
                     if (Engine::IsAlive(party))
                     {
-                        // handle 'NEXT' situations that behave like events
-                        if (eval.Result)
+                        if (condition.Type != Conditions::Type::IF_TRUE_SET && condition.Type != Conditions::Type::IF_FALSE_SET)
                         {
-                            if (!eval.Text.empty())
+                            auto eval = Conditions::Process(graphics, background, party, condition);
+
+                            last_result = (eval.Result || eval.Failed);
+
+                            // handle 'NEXT' situations that behave like events
+                            if (eval.Result)
                             {
-                                Interface::MessageBox(graphics, background, eval.Text, Color::Active);
+                                if (!eval.Text.empty())
+                                {
+                                    Interface::MessageBox(graphics, background, eval.Text, Color::Active);
+                                }
+
+                                if (Book::IsDefined(condition.Location))
+                                {
+                                    next = condition.Location;
+
+                                    break;
+                                }
                             }
-
-                            if (Book::IsDefined(condition.Location))
+                            else if (eval.Failed)
                             {
-                                next = condition.Location;
+                                if (!eval.Text.empty())
+                                {
+                                    Interface::MessageBox(graphics, background, eval.Text, Color::Highlight);
+                                }
 
-                                break;
+                                if (Book::IsDefined(condition.Failure))
+                                {
+                                    next = condition.Failure;
+
+                                    break;
+                                }
                             }
                         }
-                        else if (eval.Failed)
+                        else
                         {
-                            if (!eval.Text.empty())
-                            {
-                                Interface::MessageBox(graphics, background, eval.Text, Color::Highlight);
-                            }
-
-                            if (Book::IsDefined(condition.Failure))
-                            {
-                                next = condition.Failure;
-
-                                break;
-                            }
+                            Interface::SetVariable(party, condition, last_result);
                         }
                     }
                 }

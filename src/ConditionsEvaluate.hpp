@@ -477,7 +477,7 @@ namespace BloodSword::Conditions
                 // 0 - text to display on success
                 text = condition.Variables[0];
             }
-            else if (condition.Variables.empty())
+            else if (!result && condition.Variables.empty())
             {
                 // when used in a choice
                 text = "YOU ARE ALONE!";
@@ -493,7 +493,7 @@ namespace BloodSword::Conditions
                 // 0 - text to display on success
                 text = condition.Variables[0];
             }
-            else if (condition.Variables.empty())
+            else if (!result && condition.Variables.empty())
             {
                 text = "YOU ARE NOT ALONE!";
             }
@@ -2775,6 +2775,39 @@ namespace BloodSword::Conditions
             else
             {
                 internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::IS_ALIVE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / ALL
+            // 1 - message / text
+            if (condition.Variables.size() > 0)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (is_party || (character != Character::Class::NONE))
+                {
+                    if (is_party || party.Has(character))
+                    {
+                        result = is_party ? Engine::IsAlive(party) : Engine::IsAlive(party[character]);
+
+                        if (result && condition.Variables.size() > 1 && !condition.Variables[1].empty())
+                        {
+                            text = condition.Variables[1];
+                        }
+                    }
+                    else if (!is_party)
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+
+                    internal_error = false;
+                }
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
