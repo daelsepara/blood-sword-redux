@@ -2115,7 +2115,14 @@ namespace BloodSword::Interface
 
             if (current >= 0 && current < attacker.Items.size() && attacker.Items[current].Has(Item::Property::RUSTY))
             {
-                if (rolls.Sum == (roll * Engine::Dice))
+                auto sum = 0;
+
+                for (auto i = 0; i < rolls.Rolls.size(); i++)
+                {
+                    sum += rolls.Rolls[i];
+                }
+
+                if (sum == (roll * Engine::Dice))
                 {
                     attacker.Items[current].Add(Item::Property::BROKEN);
 
