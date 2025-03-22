@@ -2837,6 +2837,80 @@ namespace BloodSword::Conditions
 
             result = true;
         }
+        else if (condition.Type == Conditions::Type::TEST_DISCHARGE_ITEM)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - character (in party able to test)
+            // 1 - item (in current section)
+            // 2 - charge type
+            // 3 - amount to discharge (on failure)
+            // 4 - message on success (not discharged)
+            // 5 - message on failure
+            if (Engine::IsAlive(party) && condition.Variables.size() > 5)
+            {
+                auto current = Story::CurrentBook.Find(party.Location);
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                auto charge = Item::Map(condition.Variables[2]);
+
+                auto discharge = party.Number(condition.Variables[3]);
+
+                if (item != Item::Type::NONE && charge != Item::Type::NONE && discharge > 0)
+                {
+                    if (current >= 0 && current < Story::CurrentBook.Sections.size() && Story::CurrentBook.Sections[current].Items.size() > 0)
+                    {
+                        auto &section = Story::CurrentBook.Sections[current];
+
+                        auto found = Items::Find(section.Items, item, charge);
+
+                        auto available = (found != section.Items.end() && (*found).Quantity >= discharge);
+
+                        if (available)
+                        {
+                            if (!party.Has(character) || !Engine::IsAlive(party[character]))
+                            {
+                                (*found).Quantity -= discharge;
+
+                                (*found).Quantity = std::min(0, (*found).Quantity);
+
+                                text = condition.Variables[5];
+                            }
+                            else
+                            {
+                                text = condition.Variables[4];
+                            }
+
+                            result = true;
+                        }
+                        else if (found == section.Items.end())
+                        {
+                            text = "NOTHING TO TEST HERE";
+                        }
+                        else
+                        {
+                            text = std::string(Item::TypeMapping[charge]) + " EXHAUSTED";
+                        }
+                    }
+                    else if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                    {
+                        text = "NOTHING TO TEST HERE";
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;
