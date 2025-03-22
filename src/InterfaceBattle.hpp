@@ -2340,16 +2340,8 @@ namespace BloodSword::Interface
                 }
                 else if (battle.Has(Battle::Condition::AMBUSH_NPC_RANGED) && round < battle.AmbushRounds)
                 {
-                    for (auto i = 0; i < battle.AmbushRounds; i++)
-                    {
-                        // enemies get a free ranged attack
-                        Interface::RenderAmbushRangedAttack(graphics, battle, party);
-
-                        // move round
-                        round++;
-                    }
-
-                    ambush = false;
+                    // enemies get a free ranged attack
+                    Interface::RenderAmbushRangedAttack(graphics, battle, party);
                 }
                 else
                 {
@@ -2389,6 +2381,12 @@ namespace BloodSword::Interface
 
                 while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
                 {
+                    // move to next round
+                    if (order.size() <= 0)
+                    {
+                        break;
+                    }
+
                     auto is_enemy = Engine::IsEnemy(order, combatant);
 
                     auto is_player = Engine::IsPlayer(order, combatant);
