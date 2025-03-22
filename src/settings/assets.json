@@ -499,6 +499,10 @@
         {
             "id": "CENSER",
             "path": "images/map/fire-bowl.png"
+        },
+        {
+            "id": "STEEL SCEPTRE",
+            "path": "images/items/crystal-wand.png"
         }
     ]
 }

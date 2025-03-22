@@ -204,7 +204,9 @@ namespace BloodSword::Interface
 
                         auto is_melee = is_weapon && items[id].Is(Item::Property::PRIMARY);
 
-                        auto weapon_type = is_weapon ? (is_melee ? Item::Property::PRIMARY : Item::Property::RANGED) : Item::Property::NONE;
+                        auto is_secondary = is_weapon && items[id].Is(Item::Property::SECONDARY);
+
+                        auto weapon_type = is_weapon ? ((is_melee || is_secondary) ? (is_secondary ? Item::Property::SECONDARY : Item::Property::PRIMARY) : Item::Property::RANGED) : Item::Property::NONE;
 
                         auto equipped = is_weapon ? character.EquippedWeapon(weapon_type) : (is_armour ? character.EquippedArmour() : -1);
 

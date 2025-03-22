@@ -194,7 +194,9 @@
             "limit": 2,
             "name": "STEEL SCEPTRE",
             "properties": [
-                "CONTAINER"
+                "CONTAINER",
+                "WEAPON",
+                "SECONDARY"
             ],
             "quantity": 0,
             "type": "STEEL SCEPTRE"

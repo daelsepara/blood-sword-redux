@@ -476,7 +476,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && !item->Has(Item::Property::BROKEN) && item->Type == weapon)
+                if (item->HasAll({Item::Property::WEAPON, Item::Property::EQUIPPED}) && !item->Has(Item::Property::BROKEN) && item->Type == weapon)
                 {
                     armed = true;
 
@@ -488,13 +488,13 @@ namespace BloodSword::Character
         }
 
         // is the character armed?
-        bool IsArmed()
+        bool IsArmed(Item::Property weapon)
         {
             auto armed = false;
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && !item->Has(Item::Property::BROKEN) && item->Type != Item::Type::BOW)
+                if (item->HasAll({Item::Property::WEAPON, Item::Property::EQUIPPED, weapon}) && !item->Has(Item::Property::BROKEN))
                 {
                     armed = true;
 
@@ -503,6 +503,11 @@ namespace BloodSword::Character
             }
 
             return armed;
+        }
+
+        bool IsArmed()
+        {
+            return this->IsArmed(Item::Property::PRIMARY);
         }
 
         // is character armed with a ranged weapon?

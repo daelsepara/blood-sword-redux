@@ -147,7 +147,8 @@ namespace BloodSword::Asset
         MUMMY_HEAD,
         ROCK,
         QUIVER,
-        CENSER
+        CENSER,
+        STEEL_SCEPTRE
     };
 
     template <typename T>
@@ -291,7 +292,8 @@ namespace BloodSword::Asset
         {Asset::Type::MUMMY_HEAD, "MUMMY HEAD"},
         {Asset::Type::ROCK, "ROCK"},
         {Asset::Type::QUIVER, "QUIVER"},
-        {Asset::Type::CENSER, "CENSER"}};
+        {Asset::Type::CENSER, "CENSER"},
+        {Asset::Type::STEEL_SCEPTRE, "STEEL SCEPTRE"}};
 
     Asset::Type Map(const char *asset)
     {
