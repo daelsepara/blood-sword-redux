@@ -2071,13 +2071,16 @@ namespace BloodSword::Interface
 
             for (auto i = 0; i < order.size(); i++)
             {
-                auto &target = party[order[i].Id];
-
-                if (Engine::IsPlayer(order, i) && Engine::CanTarget(target, true) && target.Is(Character::Status::IN_COMBAT))
+                if (order[i].Id >= 0 && order[i].Id < party.Count())
                 {
-                    battle.InCombatTarget = target.Class;
+                    auto &target = party[order[i].Id];
 
-                    break;
+                    if (Engine::IsPlayer(order, i) && Engine::CanTarget(target, true) && target.Is(Character::Status::IN_COMBAT))
+                    {
+                        battle.InCombatTarget = target.Class;
+
+                        break;
+                    }
                 }
             }
         }
