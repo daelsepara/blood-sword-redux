@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 16
+    },
+    "text": "The tunnel is long and sinuous. At last it opens out into a cave where black water laps a shore of pebbles. Skirting this lake, you pass several mounds of large rocks which look distinctly lke graves. Passing further across the cave, you discover a large block of murky ice, and beyond that you can see a kind of primitive shrine where ritual braziers burn fiercely. There are no other exists from the cave.",
+    "choices": [
+        {
+            "text": "Dig up a mound",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 42
+                },
+                "variables": [
+                    "WHO IS DIGGING UP A MOUND?"
+                ]
+            }
+        },
+        {
+            "text": "Look at the shrine",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 71
+                }
+            }
+        },
+        {
+            "text": "Investigate the ice block",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 334
+                }
+            }
+        },
+        {
+            "text": "Leave the way you've just come",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 279
+                }
+            }
+        }
+    ]
+}

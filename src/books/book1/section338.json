@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 338
+    },
+    "text": "You hear loud voices coming from the distance behind you. You are straining to hear what they are saying when suddenly they lapse into silence. \"Hey!\" says one of them distinctly. \"I can see someone up ahead.\" Obviously their eyes are keener than yours, because you can't see them yet.\n\nAnother voice cuts through the gloom \"I see 'em too. Come on. Hey sucker, just you wait right there, huh?\"\n\nThey are running madly down the corridor towards you, whooping and shrieking in their delight at the thought of battle. You can see now that they are barbarians, probably high on bloodlust. You won't be able to reason with them.",
+    "choices": [
+        {
+            "text": "Stand your ground",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 491
+                }
+            }
+        },
+        {
+            "text": "Run for it",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 248
+                }
+            }
+        }
+    ]
+}
