@@ -494,7 +494,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && item->Type != Item::Type::BOW)
+                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && !item->Has(Item::Property::BROKEN) && item->Type != Item::Type::BOW)
                 {
                     armed = true;
 
@@ -517,7 +517,7 @@ namespace BloodSword::Character
 
             auto found = this->Find({Item::Property::WEAPON, Item::Property::EQUIPPED, weapon_type});
 
-            if (found != this->Items.end())
+            if (found != this->Items.end() && !found->Has(Item::Property::BROKEN))
             {
                 modifier = found->Modifier(attribute);
             }

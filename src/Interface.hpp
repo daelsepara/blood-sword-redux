@@ -307,6 +307,165 @@ namespace BloodSword::Interface
         InitializeMessages(graphics);
     }
 
+    // draws a message box on screen
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto box = Scene::Base();
+
+        auto pad = BloodSword::QuarterTile;
+
+        if (message)
+        {
+            auto texture_w = 0;
+
+            auto texture_h = 0;
+
+            BloodSword::Size(message, &texture_w, &texture_h);
+
+            auto box_w = texture_w + pad * 2;
+
+            auto box_h = texture_h + pad * 3 + BloodSword::TileSize;
+
+            auto location = offset + (Point(width, height) - Point(box_w, box_h)) / 2;
+
+            auto confirm = location + Point(pad + texture_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
+
+            auto input = Controls::User();
+
+            box.Add(Scene::Element(location, box_w, box_h, background, border, border_size));
+
+            box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
+
+            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
+
+            box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, confirm.X, confirm.Y, BloodSword::TileSize, BloodSword::TileSize, highlight));
+
+            while (true)
+            {
+                input = Input::WaitForInput(graphics, scene, box, input, true, blur);
+
+                if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+                {
+                    if (input.Type == Controls::Type::CONFIRM)
+                    {
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    // draws a message box over a scene
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point origin, int width, int height, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        if (texture)
+        {
+            Interface::MessageBox(graphics, scene, origin, width, height, texture, background, border, border_size, highlight, blur);
+
+            BloodSword::Free(&texture);
+        }
+    }
+
+    // draws a message box over a scene
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        Interface::MessageBox(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, message, background, border, border_size, highlight, blur);
+    }
+
+    // draws a message box over a scene
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        if (texture)
+        {
+            Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
+
+            BloodSword::Free(&texture);
+        }
+    }
+
+    // generic message box
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border)
+    {
+        auto texture = Graphics::CreateText(graphics, message.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        if (texture)
+        {
+            Interface::MessageBox(graphics, scene, texture, Color::Background, border, BloodSword::Border, border == Color::Active ? Color::Highlight : Color::Active, true);
+
+            BloodSword::Free(&texture);
+        }
+    }
+
+    // draws a message box
+    void MessageBox(Graphics::Base &graphics, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
+
+        if (texture)
+        {
+            auto scene = Scene::Base();
+
+            Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
+
+            BloodSword::Free(&texture);
+        }
+    }
+
+    // draws a message box
+    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, const char *message, TTF_Font *font, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
+    }
+
+    // draws a text box (multi-line)
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, int wrap, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, message, font, color, style, wrap);
+
+        if (texture)
+        {
+            auto text_w = 0;
+
+            auto text_h = 0;
+
+            BloodSword::Size(texture, &text_w, &text_h);
+
+            text_w += BloodSword::Pad * 2;
+
+            text_h += BloodSword::Pad * 3 + BloodSword::TileSize;
+
+            auto origin = Point(graphics.Width - text_w, graphics.Height - text_h) / 2;
+
+            Interface::MessageBox(graphics, scene, origin, text_w, text_h, texture, background, border, border_size, highlight, blur);
+
+            BloodSword::Free(&texture);
+        }
+    }
+
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap)
+    {
+        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+    }
+
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap)
+    {
+        Interface::TextBox(graphics, scene, message.c_str(), wrap);
+    }
+
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap)
+    {
+        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, true);
+    }
+
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap)
+    {
+        Interface::TextBox(graphics, scene, message.c_str(), border, wrap);
+    }
+
     // add map to the scene
     Scene::Base Map(Map::Base &map, Party::Base &party, Party::Base &enemies, int num_bottom_buttons)
     {
@@ -1770,11 +1929,11 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check (with target)
-    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, Item::Property weapon = Item::Property::NONE)
+    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, Item::Property weapon = Item::Property::NONE)
     {
         auto result = false;
 
-        std::string attribute_string = Attribute::TypeMapping[attribute] + std::string(": ") + Interface::ScoreString(character, attribute, in_battle);
+        std::string attribute_string = Attribute::TypeMapping[attribute] + std::string(": ") + Interface::ScoreString(attacker, attribute, in_battle);
 
         attribute_string += "\nDIFFICULTY: " + std::to_string(roll) + "D";
 
@@ -1798,7 +1957,7 @@ namespace BloodSword::Interface
 
         auto end = Graphics::CreateText(graphics, {Graphics::RichText(" DONE ", Fonts::Normal, Color::S(Color::Background), TTF_STYLE_NORMAL, 0)});
 
-        auto score = Engine::Score(character, attribute, in_battle, weapon);
+        auto score = Engine::Score(attacker, attribute, in_battle, weapon);
 
         auto stage = Engine::RollStage::START;
 
@@ -1816,16 +1975,16 @@ namespace BloodSword::Interface
         if (attribute == Attribute::Type::FIGHTING_PROWESS)
         {
             // handle cases where player fights with certain skills instead of being armed
-            if (in_battle && !character.IsArmed() && character.Fight == Skills::Type::NONE)
+            if (in_battle && !attacker.IsArmed() && attacker.Fight == Skills::Type::NONE)
             {
                 score -= 2;
             }
 
-            if (character.Has(Character::Status::FPR_PLUS2))
+            if (attacker.Has(Character::Status::FPR_PLUS2))
             {
                 score += 2;
             }
-            else if (character.Has(Character::Status::FPR_PLUS1))
+            else if (attacker.Has(Character::Status::FPR_PLUS1))
             {
                 score += 1;
             }
@@ -1863,7 +2022,7 @@ namespace BloodSword::Interface
             }
 
             // add character icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(character.Asset), origin_character));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin_character));
 
             // set up icon
             if (asset == Asset::Type::NONE)
@@ -1945,6 +2104,24 @@ namespace BloodSword::Interface
                     {
                         done = true;
                     }
+                }
+            }
+        }
+
+        // check if RUSTY weapon breaks
+        if (weapon != Item::Property::NONE)
+        {
+            auto current = attacker.EquippedWeapon(weapon);
+
+            if (current >= 0 && current < attacker.Items.size() && attacker.Items[current].Has(Item::Property::RUSTY))
+            {
+                if (rolls.Sum == (roll * Engine::Dice))
+                {
+                    attacker.Items[current].Add(Item::Property::BROKEN);
+
+                    auto message = attacker.Items[current].Name + " BREAKS!";
+
+                    Interface::MessageBox(graphics, background, message, Color::Highlight);
                 }
             }
         }
@@ -2213,114 +2390,6 @@ namespace BloodSword::Interface
         return Interface::CombatDamage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle, ignore_armour);
     }
 
-    // draws a message box on screen
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        auto box = Scene::Base();
-
-        auto pad = BloodSword::QuarterTile;
-
-        if (message)
-        {
-            auto texture_w = 0;
-
-            auto texture_h = 0;
-
-            BloodSword::Size(message, &texture_w, &texture_h);
-
-            auto box_w = texture_w + pad * 2;
-
-            auto box_h = texture_h + pad * 3 + BloodSword::TileSize;
-
-            auto location = offset + (Point(width, height) - Point(box_w, box_h)) / 2;
-
-            auto confirm = location + Point(pad + texture_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
-
-            auto input = Controls::User();
-
-            box.Add(Scene::Element(location, box_w, box_h, background, border, border_size));
-
-            box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
-
-            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
-
-            box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, confirm.X, confirm.Y, BloodSword::TileSize, BloodSword::TileSize, highlight));
-
-            while (true)
-            {
-                input = Input::WaitForInput(graphics, scene, box, input, true, blur);
-
-                if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
-                {
-                    if (input.Type == Controls::Type::CONFIRM)
-                    {
-                        break;
-                    }
-                }
-            }
-        }
-    }
-
-    // draws a message box over a scene
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point origin, int width, int height, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
-
-        if (texture)
-        {
-            Interface::MessageBox(graphics, scene, origin, width, height, texture, background, border, border_size, highlight, blur);
-
-            BloodSword::Free(&texture);
-        }
-    }
-
-    // draws a message box over a scene
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        Interface::MessageBox(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, message, background, border, border_size, highlight, blur);
-    }
-
-    // draws a message box over a scene
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
-
-        if (texture)
-        {
-            Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
-
-            BloodSword::Free(&texture);
-        }
-    }
-
-    // generic message box
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border)
-    {
-        auto texture = Graphics::CreateText(graphics, message.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-
-        if (texture)
-        {
-            Interface::MessageBox(graphics, scene, texture, Color::Background, border, BloodSword::Border, border == Color::Active ? Color::Highlight : Color::Active, true);
-
-            BloodSword::Free(&texture);
-        }
-    }
-
-    // draws a message box
-    void MessageBox(Graphics::Base &graphics, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
-
-        if (texture)
-        {
-            auto scene = Scene::Base();
-
-            Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
-
-            BloodSword::Free(&texture);
-        }
-    }
-
     // generic character class selector
     Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, bool names = false, bool back = false, bool show_skills = true, bool show_stats = true, bool blur = true)
     {
@@ -2426,56 +2495,6 @@ namespace BloodSword::Interface
         BloodSword::Free(captions);
 
         return character_class;
-    }
-
-    // draws a message box
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, const char *message, TTF_Font *font, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
-    }
-
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, int wrap, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        auto texture = Graphics::CreateText(graphics, message, font, color, style, wrap);
-
-        if (texture)
-        {
-            auto text_w = 0;
-
-            auto text_h = 0;
-
-            BloodSword::Size(texture, &text_w, &text_h);
-
-            text_w += BloodSword::Pad * 2;
-
-            text_h += BloodSword::Pad * 3 + BloodSword::TileSize;
-
-            auto origin = Point(graphics.Width - text_w, graphics.Height - text_h) / 2;
-
-            Interface::MessageBox(graphics, scene, origin, text_w, text_h, texture, background, border, border_size, highlight, blur);
-
-            BloodSword::Free(&texture);
-        }
-    }
-
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap)
-    {
-        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
-    }
-
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap)
-    {
-        Interface::TextBox(graphics, scene, message.c_str(), wrap);
-    }
-
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap)
-    {
-        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, true);
-    }
-
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap)
-    {
-        Interface::TextBox(graphics, scene, message.c_str(), border, wrap);
     }
 
     // displays text from a section of the current book

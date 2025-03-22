@@ -50,11 +50,14 @@ namespace BloodSword::Engine
 
     auto Percentile = Random::Base();
 
+    // dice type
+    const int Dice = 6;
+
     // initialize RNG
     void InitializeRNG()
     {
         // fix integer RNG to 1D6
-        Random.UniformIntDistribution(1, 6);
+        Random.UniformIntDistribution(1, Engine::Dice);
 
         // fix floating point RNG to [0.0, 1.0)
         Random.UniformDistribution(0, 1.0);
