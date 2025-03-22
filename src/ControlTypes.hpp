@@ -98,7 +98,8 @@ namespace BloodSword::Controls
         READ,
         EAT,
         BATTLE_ORDER,
-        QUIVER
+        QUIVER,
+        STEEL_SCEPTRE
     };
 
     typedef std::vector<Controls::Type> Collection;
@@ -130,7 +131,8 @@ namespace BloodSword::Controls
         {Controls::Type::SHURIKEN, "SHURIKEN"},
         {Controls::Type::FLEE, "FLEE"},
         {Controls::Type::SPELLS, "SPELLS"},
-        {Controls::Type::ITEMS, "ITEMS"}};
+        {Controls::Type::ITEMS, "ITEMS"},
+        {Controls::Type::STEEL_SCEPTRE, "STEEL SCEPTRE"}};
 
     Controls::Type MapType(const char *control)
     {
