@@ -2455,6 +2455,17 @@ namespace BloodSword::Conditions
             {
                 auto item = Item::Map(condition.Variables[0]);
 
+                if (item != Item::Type::NONE && party.ChosenCharacter == Character::Class::NONE)
+                {
+                    for (auto i = 0; i < party.Count(); i++)
+                    {
+                        if (Engine::IsAlive(party[i]) && party[i].Has(item))
+                        {
+                            party.ChosenCharacter = party[i].Class;
+                        }
+                    }
+                }
+
                 if (party.ChosenCharacter != Character::Class::NONE && party.Has(party.ChosenCharacter) && Engine::IsAlive(party[party.ChosenCharacter]) && item != Item::Type::NONE)
                 {
                     auto &chosen = party[party.ChosenCharacter];

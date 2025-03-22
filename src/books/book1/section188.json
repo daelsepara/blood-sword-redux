@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 188
+    },
+    "text": "You emerge from the hall into a marble corridor. Directly ahead you see a bronze-bound door, but you soon discover that this is securely locked.",
+    "choices": [
+        {
+            "text": "Go left",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 404
+                }
+            }
+        },
+        {
+            "text": "Go right",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 77
+                }
+            }
+        }
+    ]
+}

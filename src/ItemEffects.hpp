@@ -18,7 +18,12 @@ namespace BloodSword::Interface
 
         auto ether = Items::Inventory();
 
-        if (item.Type == Item::Type::MAUVE_LIQUID)
+        if (item.Has(Item::Property::CURSED))
+        {
+            // cursed items destroy others items
+            character.Items = {character.Items[id]};
+        }
+        else if (item.Type == Item::Type::MAUVE_LIQUID)
         {
             auto result = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0);
 

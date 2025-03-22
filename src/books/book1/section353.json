@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 353
+    },
+    "text": "You peer into the golden liquid. The surface of the pool seems to trap all light in the room and focus it at a point of almost blinding briliance. Shielding your eyes, you watch the spot of light swell until it shines like the sun, then it begins to swim and alter until you are gazing on the shining face of a man. He smiles -- a strong, comradely smile -- and then slowly turns to look to his right. Two spots of darkness spread beneath him, finally blotting out his profile altogether. Then the surface of the pool is back to normal and you look away, dazzled, wondering whether you really saw anything in it at all.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 188
+            },
+            "variables": [
+                "Silently you continue on your way"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 139
+    },
+    "text": "(SAGE) This is a shrine to Vactris, the ravenous household god of Magus Tor. Possibly you recall the party Tor engaged as champions, as you saw them on your way from Balhazar's mansion.\n\n[Certainly the shrine will be charged with accursed demon-magic and you should not stay here any longer than you have to.]",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 476
+            }
+        }
+    ]
+}

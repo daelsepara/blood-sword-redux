@@ -327,6 +327,21 @@
             ],
             "quantity": 1,
             "type": "SWORD"
+        },
+        {
+            "name": "BRONZE KNIFE",
+            "attributes": {
+                "FIGHTING PROWESS": 1,
+                "DAMAGE": 1
+            },
+            "quantity": 1,
+            "type": "BRONZE KNIFE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "CURSED",
+                "CANNOT DROP"
+            ]
         }
     ]
 }

@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 77
+    },
+    "text": "The corridor brings you to a T-junction. From here you can go straight on along the corridor or you can turn right down the narrow tunnel that joins it.",
+    "choices": [
+        {
+            "text": "Continue heading straight on",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 338
+                }
+            }
+        },
+        {
+            "text": "Take the tunnel to the right",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 16
+                }
+            }
+        }
+    ]
+}

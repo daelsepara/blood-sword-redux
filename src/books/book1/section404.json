@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 404
+    },
+    "text": "You tread quietly along the corridor. It soon ends in a bronze portal which is barred from the other side. In an alcove next to the portal you notice an altar of orange-red marble on which is a dark shape lies motionless. There is a sweet stench in the air, an when you take a closer look at the shape on the altar your suspicions are confirmed: it is a disembowelled human corpse. Its viscera have been placed in the maw of a giant bronze idol that adorns the back wall of the alcove.",
+    "next": [
+        {
+            "type": "IN PARTY",
+            "variables": [
+                "SAGE"
+            ],
+            "location": {
+                "book": "BOOK1",
+                "number": 139
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 476
+            }
+        }
+    ]
+}

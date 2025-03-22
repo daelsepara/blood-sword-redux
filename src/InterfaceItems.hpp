@@ -96,6 +96,15 @@ namespace BloodSword::Interface
 
             Interface::TransferItem(graphics, background, message, Color::Active, receiver.Items, source, id);
 
+            // process CURSED items
+            for (auto i = 0; i < receiver.Items.size(); i++)
+            {
+                if (receiver.Items[i].Has(Item::Property::CURSED))
+                {
+                    Interface::ItemEffects(graphics, background, receiver, receiver.Items[i].Type);
+                }
+            }
+
             result = true;
         }
         else

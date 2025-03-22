@@ -30,7 +30,8 @@ namespace BloodSword::Item
         EDIBLE,
         COMBAT,
         RUSTY,
-        BROKEN
+        BROKEN,
+        CURSED
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -54,7 +55,8 @@ namespace BloodSword::Item
         {Item::Property::EDIBLE, "EDIBLE"},
         {Item::Property::COMBAT, "COMBAT"},
         {Item::Property::RUSTY, "RUSTY"},
-        {Item::Property::BROKEN, "BROKEN"}};
+        {Item::Property::BROKEN, "BROKEN"},
+        {Item::Property::CURSED, "CURSED"}};
 
     Item::Properties Invisible = {
         Item::Property::NONE,

@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 476
+    },
+    "text": "A sharp BRONZE KNIFE lies on the altar. It looks like the instrument that was used to disembowel the corpse lying on the altar.",
+    "choices": [
+        {
+            "text": "Take the BRONZE KNIFE",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 168
+                },
+                "variables": [
+                    "BRONZE KNIFE"
+                ]
+            }
+        },
+        {
+            "text": "Leave it and retrace your steps to take the other route",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 77
+                }
+            }
+        }
+    ]
+}
