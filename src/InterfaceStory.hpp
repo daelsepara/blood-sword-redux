@@ -218,7 +218,7 @@ namespace BloodSword::Interface
         return next;
     }
 
-    // set variable based on results of last evaluated condition 
+    // set variable based on results of last evaluated condition
     void SetVariable(Party::Base &party, Conditions::Base &condition, bool result)
     {
         if (((condition.Type == Conditions::Type::IF_TRUE_SET && result) || (condition.Type == Conditions::Type::IF_FALSE_SET && !result)) && condition.Variables.size() > 1)
