@@ -191,14 +191,14 @@
         },
         {
             "contains": "CHARGE",
-            "limit": 2,
+            "limit": 4,
             "name": "STEEL SCEPTRE",
             "properties": [
                 "CONTAINER",
                 "WEAPON",
                 "SECONDARY"
             ],
-            "quantity": 0,
+            "quantity": 4,
             "type": "STEEL SCEPTRE"
         },
         {

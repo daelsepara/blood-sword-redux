@@ -208,7 +208,7 @@ namespace BloodSword::Interface
         auto is_enthralled = character.Is(Character::Status::ENTHRALLED);
 
         // adjacency checks (inverted)
-        auto no_enemy = !battle.Map.Adjacent(src, Map::Object::ENEMY);
+        auto no_enemy = (!battle.Map.Adjacent(src, Map::Object::ENEMY) || ranged);
 
         auto adj_enemy = !no_enemy;
 
@@ -551,7 +551,7 @@ namespace BloodSword::Interface
         auto is_enthralled = character.Is(Character::Status::ENTHRALLED);
 
         // adjacency checks (inverted)
-        auto no_enemy = !battle.Map.Adjacent(origin, Map::Object::ENEMY);
+        auto no_enemy = (!battle.Map.Adjacent(origin, Map::Object::ENEMY) || ranged);
 
         auto adj_enemy = !no_enemy;
 
@@ -2321,34 +2321,42 @@ namespace BloodSword::Interface
                 // generate spell casters this turn
                 Interface::GenerateCasters(battle, party);
 
-                auto ambush = true;
+                auto ambush = false;
+
+                auto shot_ambush = false;
 
                 if (battle.Has(Battle::Condition::AMBUSH_PLAYER) && round < battle.AmbushRounds)
                 {
                     // players get a free initial turn
                     order = Engine::Build(party, Attribute::Type::AWARENESS, true, true);
+
+                    ambush = true;
                 }
                 else if (battle.Has(Battle::Condition::AMBUSH_NPC) && round < battle.AmbushRounds)
                 {
                     // enemy combatants get a free initial turn
                     order = Engine::Build(battle.Opponents, Attribute::Type::AWARENESS, true, true);
+
+                    ambush = true;
                 }
                 else if (battle.Has(Battle::Condition::AMBUSH_PLAYER_RANGED) && round < battle.AmbushRounds)
                 {
                     // ranged attackers get a free initial turn
                     order = Engine::Shooters(party, Attribute::Type::AWARENESS, true, true);
+
+                    shot_ambush = true;
                 }
                 else if (battle.Has(Battle::Condition::AMBUSH_NPC_RANGED) && round < battle.AmbushRounds)
                 {
                     // enemies get a free ranged attack
                     Interface::RenderAmbushRangedAttack(graphics, battle, party);
+
+                    shot_ambush = true;
                 }
                 else
                 {
                     // otherwise create battle order (default)
                     order = Engine::Build(party, battle.Opponents, Attribute::Type::AWARENESS, true, true);
-
-                    ambush = false;
                 }
 
                 // regenerate round string
@@ -2397,14 +2405,11 @@ namespace BloodSword::Interface
 
                     auto origin = battle.Map.Find(is_player ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
 
-                    // flag for ranged attacks only
-                    auto ranged_only = battle.Has(Battle::Condition::AMBUSH_PLAYER_RANGED) && round < battle.AmbushRounds;
-
                     // center map on player
                     Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
 
                     // regenerate scene
-                    auto scene = Interface::BattleScene(battle, party, character, character_id, origin, ranged_only);
+                    auto scene = Interface::BattleScene(battle, party, character, character_id, origin, shot_ambush);
 
                     // start of character turn
                     if (round > 0 && Engine::CoolDown(character))
@@ -2683,7 +2688,7 @@ namespace BloodSword::Interface
                                     else if (actions)
                                     {
                                         // actions popup
-                                        overlay = Interface::BattleActions(draw, map_w, map_h, battle, is_player ? party : battle.Opponents, character_id, Color::Background, Color::Active, BloodSword::Border, ranged_only);
+                                        overlay = Interface::BattleActions(draw, map_w, map_h, battle, is_player ? party : battle.Opponents, character_id, Color::Background, Color::Active, BloodSword::Border, shot_ambush);
 
                                         // round number
                                         overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
@@ -2902,7 +2907,7 @@ namespace BloodSword::Interface
                                                     // target chosen
                                                     auto distance = battle.Map.Distance(src, control.Map);
 
-                                                    if (distance > 1)
+                                                    if ((distance > 1) || shot_ambush)
                                                     {
                                                         auto shooter = battle.Map[control.Map].Id;
 
@@ -3155,7 +3160,16 @@ namespace BloodSword::Interface
                                                 }
                                                 else
                                                 {
-                                                    auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+                                                    Engine::Queue targets = {};
+
+                                                    if (shot_ambush)
+                                                    {
+                                                        targets = Engine::MoveTargets(battle.Map, battle.Opponents, src, true);
+                                                    }
+                                                    else
+                                                    {
+                                                        targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+                                                    }
 
                                                     auto target_id = targets[0].Id;
 
@@ -3477,7 +3491,7 @@ namespace BloodSword::Interface
                         else if (regenerate_scene)
                         {
                             // regenerate scene (on map movement, movement, etc.)
-                            scene = Interface::BattleScene(battle, party, character, character_id, origin, ranged_only);
+                            scene = Interface::BattleScene(battle, party, character, character_id, origin, shot_ambush);
                         }
                     }
 

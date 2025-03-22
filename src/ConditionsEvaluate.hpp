@@ -2875,7 +2875,7 @@ namespace BloodSword::Conditions
                             {
                                 (*found).Quantity -= discharge;
 
-                                (*found).Quantity = std::min(0, (*found).Quantity);
+                                (*found).Quantity = std::max(0, (*found).Quantity);
 
                                 text = condition.Variables[4];
                             }
