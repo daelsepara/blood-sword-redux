@@ -516,6 +516,12 @@ namespace BloodSword::Character
             return this->Has(container, content, 1) && this->Has(weapon);
         }
 
+        // is character armed with a charged weapon?
+        bool IsArmed(Item::Type weapon, Item::Type content)
+        {
+            return this->IsArmed(weapon, weapon, content);
+        }
+
         int WeaponModifier(Item::Property weapon_type, Attribute::Type attribute)
         {
             auto modifier = 0;

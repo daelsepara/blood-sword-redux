@@ -263,7 +263,7 @@ namespace BloodSword::Interface
                     }
 
                     // has steel sceptre
-                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
+                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
                     {
                         controls.push_back(Controls::Type::STEEL_SCEPTRE);
                     }
@@ -625,7 +625,7 @@ namespace BloodSword::Interface
                     }
 
                     // has steel sceptre
-                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
+                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
                     {
                         controls_list.push_back(Controls::Type::STEEL_SCEPTRE);
                     }
@@ -3082,7 +3082,7 @@ namespace BloodSword::Interface
 
                                                     knockout = ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF)) ? Skills::Type::QUARTERSTAFF : character.Fight;
 
-                                                    fight_item = ((input.Type == Controls::Type::STEEL_SCEPTRE)) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE) ? Item::Type::STEEL_SCEPTRE : Item::Type::NONE;
+                                                    fight_item = ((input.Type == Controls::Type::STEEL_SCEPTRE)) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE) ? Item::Type::STEEL_SCEPTRE : Item::Type::NONE;
 
                                                     // fight
                                                     if (fight_item == Item::Type::NONE)
@@ -3104,7 +3104,7 @@ namespace BloodSword::Interface
                                                     {
                                                         knockout = Skills::Type::QUARTERSTAFF;
                                                     }
-                                                    else if ((input.Type == Controls::Type::STEEL_SCEPTRE) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
+                                                    else if ((input.Type == Controls::Type::STEEL_SCEPTRE) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
                                                     {
                                                         fight_item = Item::Type::STEEL_SCEPTRE;
                                                     }
