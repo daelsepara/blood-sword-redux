@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 209
+    },
+    "text": "You had not noticed it at first, but each of the mysterious creatures is shackled by one leg to the back of an alcove. The chains are arranged so that they pay out, allowing the creatures to emerge into the corridor. Obvously the mechanism is linked to the grille you have just unlocked though, because the chains have stopped extending now that you've opened it. The creatures stand half way out of the alcoves, wrenching madly at the chains around their ankles and gnashing their fanged gums.\n\nWalking along the corridor to the door at the far end would mean running the gauntlet of creatures, and some of them are far enough out of the alcoves to be able to snatch as you go past.",
+    "choices": [
+        {
+            "text": "Risk it",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 388
+                }
+            }
+        },
+        {
+            "text": "Go through the now-open grille and along the tunnel beyond",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 279
+                }
+            }
+        }
+    ]
+}
