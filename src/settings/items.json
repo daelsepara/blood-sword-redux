@@ -317,6 +317,16 @@
             "name": "BLUE ICE JEWEL",
             "quantity": 1,
             "type": "BLUE ICE JEWEL"
+        },
+        {
+            "name": "RUSTY SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "RUSTY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
         }
     ]
 }

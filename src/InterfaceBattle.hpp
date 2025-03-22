@@ -2292,7 +2292,7 @@ namespace BloodSword::Interface
             // clear any dropped items
             battle.Loot.clear();
 
-            while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
+            while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && (Engine::InBattle(party) > 0) && !exit)
             {
                 // battle order
                 Engine::Queue order = {};
@@ -3514,7 +3514,13 @@ namespace BloodSword::Interface
         else if (result == Battle::Result::DETERMINE)
         {
             // determine results of battle
-            if (Engine::IsAlive(party))
+            if (Engine::InBattle(party) == 0 && Engine::Count(party) > 0)
+            {
+                result = battle.Has(Battle::Condition::CANNOT_FLEE) ? Battle::Result::DEFEAT : Battle::Result::FLEE;
+
+                Engine::KillAllParalyzed(party);
+            }
+            else if (Engine::IsAlive(party))
             {
                 auto enthralled = Engine::Count(battle.Opponents, Character::ControlType::NPC, Character::Status::ENTHRALLED);
 

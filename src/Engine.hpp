@@ -149,6 +149,25 @@ namespace BloodSword::Engine
         return live;
     }
 
+    int InBattle(Party::Base &party)
+    {
+        auto in_battle = 0;
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            if (Engine::IsAlive(party[character]))
+            {
+                auto is_away = party[character].Is(Character::Status::AWAY) && (party[character].Status[Character::Status::AWAY] < 0);
+
+                auto is_paralyzed = party[character].Is(Character::Status::PARALYZED);
+
+                in_battle += (!is_away && !is_paralyzed) ? 1 : 0;
+            }
+        }
+
+        return in_battle;
+    }
+
     int Count(Party::Base &party, Character::ControlType control, Character::Status status)
     {
         auto count = 0;

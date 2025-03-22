@@ -1,0 +1,55 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 278
+    },
+    "text": "As you approach the figure in the gloom you see it as a soldier of Kalugen's Battalion of Torment -- the militia of the dungeons. Often the soldiers of this company may spend months or years, without seeing the light of day, stalking the underworld. He wars jet-black ringmail armour with an ochre tabard. Here and there spots of rust show through the iron links of his armour, and the stench of the grave clings to his clothing. He has no helmet, and the sight of his stubbed chin, badly cropped hair and crazed eyes tell you that he is one of the psychopathic tomb rangers assigned to suicidal missions in the underworld.",
+    "choices": [
+        {
+            "text": "Creep back and try the ornamental doorway",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 246
+                }
+            }
+        },
+        {
+            "text": "(WARRIOR) Try something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 514
+                },
+                "variables": [
+                    "WARRIOR"
+                ]
+            }
+        },
+        {
+            "text": "(TRICKSTER) Try something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 262
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Take him out in a headlong rush",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 192
+                }
+            }
+        }
+    ]
+}

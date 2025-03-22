@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 218
+    },
+    "text": "As he realises you are not alone, the ranger gives a grunt of surprise. \"Honorable duel?\" he spits, turning to flee. \"You troll=spawned cur!\" He runs to a door. By the time he flings it open you have nearly caught up with him. The door leads to a small room in which a STEEL SCEPTRE rests on the granite and turns to face you as you enter the room. \"This little baby should equalise the odds,\" he says, grinning.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 367
+            }
+        }
+    ]
+}

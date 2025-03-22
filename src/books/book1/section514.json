@@ -1,0 +1,44 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 514
+    },
+    "text": "(WARRIOR) You stride boldly forwards. The tomb ranger turns a mad stare on you, but does not unfold his arms. He seems almost contemptuous of you.\n\n\"I have sum the Mergeld Sea through the ice-floes of winder,\" you declare. I lifted the ogre Urksben Treeneck a full metre clear of the ground in a wrestling contest. When the Masters of Death spat their poisoned fangs at me, I swept them aside in mid-air.\"\n\nYou go on declaiming some of your more outstanding victories, real or imagined, then issue the formal challenge to combat of the warrior caste.\n\n\"Well, me,\" says the tomb ranger lazily, \"I've done nothing grand or heroic. All I do is kill.\" As he responds with the ritual answer to your challenge, he plucks up a rusty sword that lies beside him on the ground and tosses it to you. You catch it. \"I don't suppose it'll do you any more good than the last sucker,\" sneers the ranger, \"but there's no fun getting a toothless pig.\"\n\nYou square off for your battle with the veteran ranger.",
+    "items": [
+        {
+            "name": "RUSTY SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "RUSTY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Fight the ranger with the entire party",
+            "condition": {
+                "type": "HAVE COLLEAGUES",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 218
+                }
+            }
+        },
+        {
+            "text": "(WARRIOR) Fight him alone",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 418
+                },
+                "variables": [
+                    "WARRIOR"
+                ]
+            }
+        }
+    ]
+}

@@ -469,46 +469,33 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::HAVE_COLLEAGUES)
         {
-            result = (party.Count() > 1);
+            result = (Engine::Count(party) > 1);
 
-            if (result)
+            if (result && condition.Variables.size() > 0)
             {
                 // variables (when used in an event):
                 // 0 - text to display on success
-                if (condition.Variables.size() > 0)
-                {
-                    text = condition.Variables[0];
-                }
+                text = condition.Variables[0];
             }
-            else
+            else if (condition.Variables.empty())
             {
                 // when used in a choice
-                if (condition.Variables.empty())
-                {
-                    text = "YOU ARE ALONE!";
-                }
+                text = "YOU ARE ALONE!";
             }
         }
         else if (condition.Type == Conditions::Type::SOLO)
         {
             result = (party.Count() == 1);
 
-            if (result)
+            if (result && condition.Variables.size() > 0)
             {
                 // variables (when used in an event):
                 // 0 - text to display on success
-                if (condition.Variables.size() > 0)
-                {
-                    text = condition.Variables[0];
-                }
+                text = condition.Variables[0];
             }
-            else
+            else if (condition.Variables.empty())
             {
-                // when used in a choice
-                if (condition.Variables.empty())
-                {
-                    text = "YOU ARE NOT ALONE!";
-                }
+                text = "YOU ARE NOT ALONE!";
             }
         }
         else if (condition.Type == Conditions::Type::GAIN_STATUS)
