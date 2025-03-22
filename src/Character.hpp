@@ -476,7 +476,7 @@ namespace BloodSword::Character
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
             {
-                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && item->Type == weapon)
+                if (item->Has(Item::Property::WEAPON) && item->Has(Item::Property::EQUIPPED) && !item->Has(Item::Property::BROKEN) && item->Type == weapon)
                 {
                     armed = true;
 

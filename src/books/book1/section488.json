@@ -1,0 +1,40 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 488
+    },
+    "text": "As he dies, the ranger lifts himself up on one elbow. \"Take my sword,\" he splutters, coughing blood. \"No use to me now, but I'd like to think someone else will be putting it to good use once I've gone down the last chute. Also, listen to me -- where you see the god's face above two passages, go the way he's facing. The other's just a dead end with nothing to --\" He tries to draw breath, emits a choked cry and sinks lifeless to the floor.\n\nWhere will you go now?",
+    "items": [
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Go to the end of this passage",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 151
+                }
+            }
+        },
+        {
+            "text": "Try the ornamental doorway",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 246
+                }
+            }
+        }
+    ]
+}

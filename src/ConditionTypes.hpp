@@ -86,7 +86,8 @@ namespace BloodSword::Conditions
         IS_ALIVE,
         IF_TRUE_SET,
         IF_FALSE_SET,
-        COMPUTE_VICTORY_POINTS
+        COMPUTE_VICTORY_POINTS,
+        GAIN_EXPERIENCE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -169,6 +170,7 @@ namespace BloodSword::Conditions
         {Conditions::Type::IS_ALIVE, "IS ALIVE"},
         {Conditions::Type::IF_TRUE_SET, "IF TRUE SET"},
         {Conditions::Type::IF_FALSE_SET, "IF FALSE SET"},
+        {Conditions::Type::GAIN_EXPERIENCE, "GAIN EXPERIENCE"},
         {Conditions::Type::COMPUTE_VICTORY_POINTS, "COMPUTE VICTORY POINTS"}};
 
     Conditions::Type Map(const char *Conditions)

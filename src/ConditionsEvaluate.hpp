@@ -2810,6 +2810,22 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::GAIN_EXPERIENCE)
+        {
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto experience = std::stoi(condition.Variables[0], nullptr, 10);
+
+                if (experience > 0 && Engine::Count(party) != 0)
+                {
+                    auto share = experience / Engine::Count(party);
+
+                    Engine::GainExperience(party, share);
+                }
+            }
+
+            result = true;
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;

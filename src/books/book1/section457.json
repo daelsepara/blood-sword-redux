@@ -1,0 +1,37 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 457
+    },
+    "text": "You have overcome the might of one of the demon-gods of Krarth. Though he was only a lesser god-thing, NEBULARON was still a foe to be reckoned with.\n\nNow you are able to carry on from this chamber. You swing open the doors at the far end and advance along a wide gallery. At one point you pass a skeleton -- perhaps a long-dead adventurer who somehow escaped NEBULARON's clutches only to die of his wounds after reaching safety? There is no way to tell, and though you search the musty bones thoroughly you find nothing of interest. Passing on, you reach a hall where a golden pool throws flickering patterns of torchlight across the walls and ceiling.",
+    "events": [
+        {
+            "type": "GAIN EXPERIENCE",
+            "variables": [
+                "140"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Look into the pool",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 353
+                }
+            }
+        },
+        {
+            "text": "Press further on",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 188
+                }
+            }
+        }
+    ]
+}

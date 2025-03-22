@@ -878,6 +878,22 @@ namespace BloodSword::Engine
         return Engine::IsAlive(character);
     }
 
+    void GainExperience(Character::Base &character, int gain)
+    {
+        if (Engine::IsAlive(character))
+        {
+            character.Experience += gain;
+        }
+    }
+
+    void GainExperience(Party::Base &party, int gain)
+    {
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            Engine::GainExperience(party[character], gain);
+        }
+    }
+
     bool Transition(Character::Base &character, Character::Status from, Character::Status to)
     {
         auto update = false;
