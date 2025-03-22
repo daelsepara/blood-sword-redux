@@ -2844,11 +2844,10 @@ namespace BloodSword::Conditions
             // variables
             // 0 - character (in party able to test)
             // 1 - item (in current section)
-            // 2 - charge type
-            // 3 - amount to discharge (on failure)
-            // 4 - message on success (not discharged)
-            // 5 - message on failure
-            if (Engine::IsAlive(party) && condition.Variables.size() > 5)
+            // 2 - amount to discharge (on failure)
+            // 3 - message on success (not discharged)
+            // 4 - message on failure
+            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
             {
                 auto current = Story::CurrentBook.Find(party.Location);
 
@@ -2856,9 +2855,9 @@ namespace BloodSword::Conditions
 
                 auto item = Item::Map(condition.Variables[1]);
 
-                auto charge = Item::Map(condition.Variables[2]);
+                auto charge = Item::Requirements(item);
 
-                auto discharge = party.Number(condition.Variables[3]);
+                auto discharge = party.Number(condition.Variables[2]);
 
                 if (item != Item::Type::NONE && charge != Item::Type::NONE && discharge > 0)
                 {
@@ -2878,11 +2877,11 @@ namespace BloodSword::Conditions
 
                                 (*found).Quantity = std::min(0, (*found).Quantity);
 
-                                text = condition.Variables[5];
+                                text = condition.Variables[4];
                             }
                             else
                             {
-                                text = condition.Variables[4];
+                                text = condition.Variables[3];
                             }
 
                             result = true;

@@ -19,7 +19,8 @@ namespace BloodSword::Battle
         AMBUSH_NPC,
         CANNOT_FLEE,
         SURVIVORS,
-        AMBUSH_RANGED,
+        AMBUSH_NPC_RANGED,
+        AMBUSH_PLAYER_RANGED,
         WARRIOR_AWAY,
         TRICKSTER_AWAY,
         SAGE_AWAY,
@@ -41,7 +42,8 @@ namespace BloodSword::Battle
         {Battle::Condition::AMBUSH_NPC, "AMBUSH NPC"},
         {Battle::Condition::CANNOT_FLEE, "CANNOT FLEE"},
         {Battle::Condition::SURVIVORS, "SURVIVORS"},
-        {Battle::Condition::AMBUSH_RANGED, "AMBUSH RANGED"},
+        {Battle::Condition::AMBUSH_NPC_RANGED, "AMBUSH NPC RANGED"},
+        {Battle::Condition::AMBUSH_PLAYER_RANGED, "AMBUSH PLAYER RANGED"},
         {Battle::Condition::WARRIOR_AWAY, "WARRIOR AWAY"},
         {Battle::Condition::TRICKSTER_AWAY, "TRICKSTER AWAY"},
         {Battle::Condition::SAGE_AWAY, "SAGE AWAY"},
@@ -121,6 +123,9 @@ namespace BloodSword::Battle
         // message to display when cancelling a battle action
         BloodSword::UnorderedMap<Controls::Type, Book::Location> ActionCancels = {};
 
+        // number of rounds for ambush
+        int AmbushRounds = 0;
+
         // fleeing damage
         Battle::FleeDamage FleeDamage = {};
 
@@ -187,6 +192,8 @@ namespace BloodSword::Battle
                 this->Duration = !data["duration"].is_null() ? int(data["duration"]) : Battle::Unlimited;
 
                 this->Endurance = !data["endurance"].is_null() ? int(data["endurance"]) : Battle::Unlimited;
+
+                this->AmbushRounds = !data["ambush_rounds"].is_null() ? int(data["ambush_rounds"]) : 0;
 
                 // initialize map from file
                 if (!data["map"].is_null())

@@ -1,7 +1,8 @@
 {
     "battle": {
+        "ambush_rounds": 1,
         "conditions": [
-            "AMBUSH RANGED",
+            "AMBUSH NPC RANGED",
             "SURVIVORS"
         ],
         "duration": -1,

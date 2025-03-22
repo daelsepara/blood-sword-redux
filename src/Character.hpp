@@ -469,9 +469,39 @@ namespace BloodSword::Character
             return modifiers;
         }
 
+        // is character armed with a ranged weapon?
+        bool IsArmed(Item::Type weapon, Item::Type container, Item::Type content)
+        {
+            return this->Has(container, content, 1) && this->Has(weapon);
+        }
+
+        // is character armed with a charged weapon?
+        bool IsArmed(Item::Type weapon, Item::Type content)
+        {
+            auto container = Item::Container(weapon);
+
+            return this->IsArmed(weapon, container, content);
+        }
+
         // is armed with a specific weapon
         bool IsArmed(Item::Type weapon)
         {
+            auto melee = Item::Requirements(weapon);
+
+            auto ranged = Item::Requirements(weapon, true);
+
+            if (melee != Item::Type::NONE || ranged != Item::Type::NONE)
+            {
+                if (melee != Item::Type::NONE)
+                {
+                    return this->IsArmed(weapon, melee);
+                }
+                else if (ranged != Item::Type::NONE)
+                {
+                    return this->IsArmed(weapon, ranged);
+                }
+            }
+
             auto armed = false;
 
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
@@ -508,18 +538,6 @@ namespace BloodSword::Character
         bool IsArmed()
         {
             return this->IsArmed(Item::Property::PRIMARY);
-        }
-
-        // is character armed with a ranged weapon?
-        bool IsArmed(Item::Type weapon, Item::Type container, Item::Type content)
-        {
-            return this->Has(container, content, 1) && this->Has(weapon);
-        }
-
-        // is character armed with a charged weapon?
-        bool IsArmed(Item::Type weapon, Item::Type content)
-        {
-            return this->IsArmed(weapon, weapon, content);
         }
 
         int WeaponModifier(Item::Property weapon_type, Attribute::Type attribute)

@@ -1,3 +1,2 @@
 #!/bin/bash
 grep -h "number\":" books/book1/section*.json | cut -d":" -f2 | sort -u
-

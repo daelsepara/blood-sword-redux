@@ -1,7 +1,9 @@
 {
     "battle": {
+        "ambush_rounds": 1,
         "conditions": [
-            "CANNOT FLEE"
+            "CANNOT FLEE",
+            "AMBUSH PLAYER RANGED"
         ],
         "duration": -1,
         "map": {

@@ -193,7 +193,7 @@ namespace BloodSword::Interface
         return result;
     }
 
-    Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size)
+    Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size, bool ranged = false)
     {
         Controls::Collection controls = {};
 
@@ -237,7 +237,7 @@ namespace BloodSword::Interface
         if (!src.IsNone())
         {
             // can move
-            if (Move::Available(battle.Map, src) && !character.Is(Character::Status::ENTANGLED))
+            if (Move::Available(battle.Map, src) && !character.Is(Character::Status::ENTANGLED) && !ranged)
             {
                 controls.push_back(Controls::Type::MOVE);
             }
@@ -251,7 +251,7 @@ namespace BloodSword::Interface
 
                 auto enemy_fighter = !is_player && adj_player;
 
-                if (player_fighter || enemy_fighter)
+                if ((player_fighter || enemy_fighter) && !ranged)
                 {
                     // can fight
                     controls.push_back(Controls::Type::FIGHT);
@@ -263,7 +263,7 @@ namespace BloodSword::Interface
                     }
 
                     // has steel sceptre
-                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
+                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Requirements(Item::Type::STEEL_SCEPTRE)))
                     {
                         controls.push_back(Controls::Type::STEEL_SCEPTRE);
                     }
@@ -280,17 +280,17 @@ namespace BloodSword::Interface
                 }
 
                 // can cast spells
-                if (character.Has(Skills::Type::SPELLS))
+                if (character.Has(Skills::Type::SPELLS) && !ranged)
                 {
                     controls.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
                 }
 
-                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
+                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id) && !ranged)
                 {
                     controls.push_back(Controls::Type::FLEE);
                 }
 
-                if (is_player && character.Items.size() > 0)
+                if (is_player && character.Items.size() > 0 && !ranged)
                 {
                     controls.push_back(Controls::Type::ITEMS);
                 }
@@ -536,7 +536,7 @@ namespace BloodSword::Interface
     }
 
     // regenerate battle map (starting at point location)
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location, Character::Base &character, int id, Point origin)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location, Character::Base &character, int id, Point origin, bool ranged = false)
     {
         auto map = int(battle.Map.ViewX * battle.Map.ViewY);
 
@@ -591,7 +591,7 @@ namespace BloodSword::Interface
         if (!origin.IsNone())
         {
             // can move
-            if (Move::Available(battle.Map, origin) && !character.Is(Character::Status::ENTANGLED))
+            if (Move::Available(battle.Map, origin) && !character.Is(Character::Status::ENTANGLED) && !ranged)
             {
                 asset_list.push_back(Asset::Type::MOVE);
 
@@ -609,7 +609,7 @@ namespace BloodSword::Interface
 
                 auto enemy_fighter = !is_player && adj_player;
 
-                if (player_fighter || enemy_fighter)
+                if ((player_fighter || enemy_fighter) && !ranged)
                 {
                     // can fight
                     asset_list.push_back(Asset::Type::FIGHT);
@@ -651,21 +651,21 @@ namespace BloodSword::Interface
                 }
 
                 // can cast spells
-                if (character.Has(Skills::Type::SPELLS))
+                if (character.Has(Skills::Type::SPELLS) && !ranged)
                 {
                     asset_list.push_back(Asset::Type::SPELLS);
 
                     controls_list.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
                 }
 
-                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id))
+                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id) && !ranged)
                 {
                     asset_list.push_back(Asset::Type::FLEE);
 
                     controls_list.push_back(Controls::Type::FLEE);
                 }
 
-                if (is_player && character.Items.size() > 0)
+                if (is_player && character.Items.size() > 0 && !ranged)
                 {
                     asset_list.push_back(Asset::Type::ITEMS);
 
@@ -701,9 +701,9 @@ namespace BloodSword::Interface
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
 
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int id, Point origin)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int id, Point origin, bool ranged = false)
     {
-        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, id, origin);
+        return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, id, origin, ranged);
     }
 
     // generate status
@@ -917,7 +917,7 @@ namespace BloodSword::Interface
 
         if (Engine::CanShoot(attacker) && attacker.Shoot == Skills::Type::ARCHERY)
         {
-            attacker.Remove(Item::Type::ARROW, 1);
+            attacker.Remove(Item::Requirements(Item::Type::BOW, true), 1);
         }
 
         if (!alive)
@@ -2234,7 +2234,7 @@ namespace BloodSword::Interface
 
             int round = 0;
 
-            auto round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+            SDL_Texture *round_string = nullptr;
 
             // move animation
             auto movement = Animation::Base();
@@ -2321,27 +2321,48 @@ namespace BloodSword::Interface
                 // generate spell casters this turn
                 Interface::GenerateCasters(battle, party);
 
-                if (round == 0 && battle.Has(Battle::Condition::AMBUSH_PLAYER))
+                auto ambush = true;
+
+                if (battle.Has(Battle::Condition::AMBUSH_PLAYER) && round < battle.AmbushRounds)
                 {
                     // players get a free initial turn
                     order = Engine::Build(party, Attribute::Type::AWARENESS, true, true);
                 }
-                else if (round == 0 && battle.Has(Battle::Condition::AMBUSH_NPC))
+                else if (battle.Has(Battle::Condition::AMBUSH_NPC) && round < battle.AmbushRounds)
                 {
                     // enemy combatants get a free initial turn
                     order = Engine::Build(battle.Opponents, Attribute::Type::AWARENESS, true, true);
+                }
+                else if (battle.Has(Battle::Condition::AMBUSH_PLAYER_RANGED) && round < battle.AmbushRounds)
+                {
+                    // ranged attackers get a free initial turn
+                    order = Engine::Shooters(party, Attribute::Type::AWARENESS, true, true);
+                }
+                else if (battle.Has(Battle::Condition::AMBUSH_NPC_RANGED) && round < battle.AmbushRounds)
+                {
+                    for (auto i = 0; i < battle.AmbushRounds; i++)
+                    {
+                        // enemies get a free ranged attack
+                        Interface::RenderAmbushRangedAttack(graphics, battle, party);
+
+                        // move round
+                        round++;
+                    }
+
+                    ambush = false;
                 }
                 else
                 {
                     // otherwise create battle order (default)
                     order = Engine::Build(party, battle.Opponents, Attribute::Type::AWARENESS, true, true);
+
+                    ambush = false;
                 }
 
-                // enemies get a free ranged attack
-                if (round == 0 && battle.Has(Battle::Condition::AMBUSH_RANGED))
-                {
-                    Interface::RenderAmbushRangedAttack(graphics, battle, party);
-                }
+                // regenerate round string
+                BloodSword::Free(&round_string);
+
+                round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1) + (ambush ? std::string(" (AMBUSH)") : "")).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
                 // start of round effects
                 auto next = false;
@@ -2378,11 +2399,14 @@ namespace BloodSword::Interface
 
                     auto origin = battle.Map.Find(is_player ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
 
+                    // flag for ranged attacks only
+                    auto ranged_only = battle.Has(Battle::Condition::AMBUSH_PLAYER_RANGED) && round < battle.AmbushRounds;
+
                     // center map on player
                     Interface::Center(battle, is_player ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
 
                     // regenerate scene
-                    auto scene = Interface::BattleScene(battle, party, character, character_id, origin);
+                    auto scene = Interface::BattleScene(battle, party, character, character_id, origin, ranged_only);
 
                     // start of character turn
                     if (round > 0 && Engine::CoolDown(character))
@@ -2661,7 +2685,7 @@ namespace BloodSword::Interface
                                     else if (actions)
                                     {
                                         // actions popup
-                                        overlay = Interface::BattleActions(draw, map_w, map_h, battle, is_player ? party : battle.Opponents, character_id, Color::Background, Color::Active, BloodSword::Border);
+                                        overlay = Interface::BattleActions(draw, map_w, map_h, battle, is_player ? party : battle.Opponents, character_id, Color::Background, Color::Active, BloodSword::Border, ranged_only);
 
                                         // round number
                                         overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
@@ -2775,8 +2799,6 @@ namespace BloodSword::Interface
                                                     auto no_opponents = (opponents.size() == 0);
 
                                                     auto has_defended = (is_player && character.Is(Character::Status::DEFENDED));
-
-                                                    auto ambush = (round == 0 && battle.Has(Battle::Condition::AMBUSH_PLAYER));
 
                                                     auto can_move = (opponents.size() > 0 && (is_enemy || has_defended || ambush));
 
@@ -3457,7 +3479,7 @@ namespace BloodSword::Interface
                         else if (regenerate_scene)
                         {
                             // regenerate scene (on map movement, movement, etc.)
-                            scene = Interface::BattleScene(battle, party, character, character_id, origin);
+                            scene = Interface::BattleScene(battle, party, character, character_id, origin, ranged_only);
                         }
                     }
 
@@ -3492,11 +3514,6 @@ namespace BloodSword::Interface
 
                 // move to next round
                 round++;
-
-                // regenerate round string
-                BloodSword::Free(&round_string);
-
-                round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
             }
 
             // round limit exceeded

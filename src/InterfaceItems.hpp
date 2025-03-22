@@ -71,7 +71,7 @@ namespace BloodSword::Interface
         }
         else if (source[id].Type == Item::Type::ARROW)
         {
-            if (receiver.Has(Item::Type::QUIVER))
+            if (receiver.Has(Item::Container(Item::Type::ARROW)))
             {
                 std::string message = receiver.Name + " TAKES THE " + std::to_string(source[id].Quantity) + " " + source[id].Name;
 

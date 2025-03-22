@@ -190,7 +190,7 @@ namespace BloodSword::Engine
 
         for (int i = 0; i < party.Count(); i++)
         {
-            count += (Engine::IsAlive(party[i]) && party[i].Has(skill)) ? 1: 0;
+            count += (Engine::IsAlive(party[i]) && party[i].Has(skill)) ? 1 : 0;
         }
 
         return count;
@@ -203,7 +203,7 @@ namespace BloodSword::Engine
 
         for (int i = 0; i < party.Count(); i++)
         {
-            count += (Engine::IsAlive(party[i]) && !party[i].Has(skill)) ? 1: 0;
+            count += (Engine::IsAlive(party[i]) && !party[i].Has(skill)) ? 1 : 0;
         }
 
         return count;
@@ -354,9 +354,7 @@ namespace BloodSword::Engine
         {
             auto knocked_out = party[i].Is(Character::Status::KNOCKED_OUT);
 
-            auto paralyzed = party[i].Is(Character::Status::PARALYZED);
-
-            if (Engine::CanTarget(party[i], in_battle) && !paralyzed)
+            if (Engine::CanTarget(party[i], in_battle))
             {
                 queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
             }
@@ -371,11 +369,9 @@ namespace BloodSword::Engine
         {
             auto knocked_out = party[i].Is(Character::Status::KNOCKED_OUT);
 
-            auto paralyzed = party[i].Is(Character::Status::PARALYZED);
-
             auto skilled = party[i].Has(skill);
 
-            if (Engine::CanTarget(party[i], in_battle) && !paralyzed && skilled)
+            if (Engine::CanTarget(party[i], in_battle) && skilled)
             {
                 queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
             }
@@ -1005,7 +1001,7 @@ namespace BloodSword::Engine
 
         if (shot == Skills::Type::ARCHERY)
         {
-            can_shoot &= character.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW);
+            can_shoot &= character.IsArmed(Item::Type::BOW, Item::Requirements(Item::Type::BOW, true));
         }
 
         return can_shoot;
@@ -1015,6 +1011,27 @@ namespace BloodSword::Engine
     bool CanShoot(Character::Base &character)
     {
         return Engine::CanShoot(character, character.Shoot);
+    }
+
+    // build a queue of shooters
+    Engine::Queue Shooters(Party::Base &party, Attribute::Type attribute, bool in_battle = false, bool descending = false)
+    {
+        Engine::Queue queue = {};
+
+        // add characters in party to queue
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto knocked_out = party[i].Is(Character::Status::KNOCKED_OUT);
+
+            if (Engine::CanTarget(party[i], in_battle) && Engine::CanShoot(party[i]))
+            {
+                queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
+            }
+        }
+
+        Engine::Sort(queue, descending);
+
+        return queue;
     }
 
     // generic reset

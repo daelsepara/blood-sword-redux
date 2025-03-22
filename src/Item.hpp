@@ -409,6 +409,29 @@ namespace BloodSword::Item
         }
     };
 
+    Item::Type Requirements(Item::Type item, bool ranged = false)
+    {
+        auto requirement = Item::Type::NONE;
+
+        if (ranged)
+        {
+            requirement = BloodSword::Find(Item::RangedRequirements, item);
+        }
+        else
+        {
+            requirement = BloodSword::Find(Item::MeleeRequirements, item);
+        }
+
+        return requirement;
+    }
+
+    Item::Type Container(Item::Type item)
+    {
+        auto container = BloodSword::Find(Item::StorageRequirements, item);
+
+        return container != Item::Type::NONE ? container : item;
+    }
+
     BloodSword::IntMapping<Attribute::Type> LoadAttributes(nlohmann::json &data)
     {
         BloodSword::IntMapping<Attribute::Type> attributes = {};

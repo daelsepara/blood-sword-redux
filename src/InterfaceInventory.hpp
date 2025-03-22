@@ -341,7 +341,7 @@ namespace BloodSword::Interface
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                if (party[other_character].Has(Item::Type::QUIVER))
+                                if (party[other_character].Has(Item::Container(Item::Type::ARROW)))
                                 {
                                     std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
 

@@ -1,5 +1,6 @@
 {
     "battle": {
+        "ambush_rounds": 1,
         "conditions": [
             "TACTICS",
             "AMBUSH PLAYER",

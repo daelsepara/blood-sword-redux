@@ -1084,14 +1084,16 @@ namespace BloodSword::Test
 
             if (Engine::Score(player, Attribute::Type::AWARENESS, true) >= Engine::Score(enemy, Attribute::Type::AWARENESS, true))
             {
-                if (player.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
+                auto requirement = Item::Requirements(Item::Type::BOW, true);
+
+                if (player.IsArmed(Item::Type::BOW, requirement))
                 {
                     // player turn
                     scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
                     alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
 
-                    player.Remove(Item::Type::ARROW, 1);
+                    player.Remove(requirement, 1);
                 }
                 else
                 {
@@ -1119,13 +1121,15 @@ namespace BloodSword::Test
                 // player turn
                 if (alive)
                 {
-                    if (player.IsArmed(Item::Type::BOW, Item::Type::QUIVER, Item::Type::ARROW))
+                    auto requirement = Item::Requirements(Item::Type::BOW, true);
+
+                    if (player.IsArmed(Item::Type::BOW, requirement))
                     {
                         scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
                         alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
 
-                        player.Remove(Item::Type::ARROW, 1);
+                        player.Remove(requirement, 1);
                     }
                     else
                     {
