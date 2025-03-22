@@ -2121,7 +2121,9 @@ namespace BloodSword::Interface
 
                     auto message = attacker.Items[current].Name + " BREAKS!";
 
-                    Interface::MessageBox(graphics, background, message, Color::Highlight);
+                    auto color = attacker.IsPlayer() ? Color::Highlight : Color::Active;
+
+                    Interface::MessageBox(graphics, background, message, color);
                 }
             }
         }
