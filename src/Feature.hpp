@@ -16,7 +16,12 @@ namespace BloodSword::Feature
         ENDING,
         BAD_ENDING,
         ITEM_EFFECT,
-        DOUBLE_HEALING
+        DOUBLE_HEALING,
+        TASK,
+        TASK_WARRIOR,
+        TASK_TRICKSTER,
+        TASK_SAGE,
+        TASK_ENCHANTER
     };
 
     BloodSword::Mapping<Feature::Type> TypeMapping = {
@@ -28,7 +33,12 @@ namespace BloodSword::Feature
         {Feature::Type::ENDING, "ENDING"},
         {Feature::Type::BAD_ENDING, "BAD ENDING"},
         {Feature::Type::ITEM_EFFECT, "ITEM EFFECT"},
-        {Feature::Type::DOUBLE_HEALING, "DOUBLE HEALING"}};
+        {Feature::Type::DOUBLE_HEALING, "DOUBLE HEALING"},
+        {Feature::Type::TASK, "TASK"},
+        {Feature::Type::TASK_WARRIOR, "TASK WARRIOR"},
+        {Feature::Type::TASK_TRICKSTER, "TASK TRICKSTER"},
+        {Feature::Type::TASK_SAGE, "TASK SAGE"},
+        {Feature::Type::TASK_ENCHANTER, "TASK ENCHANTER"}};
 
     Feature::Type Map(const char *feature)
     {

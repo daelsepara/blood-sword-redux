@@ -2962,7 +2962,7 @@ namespace BloodSword::Conditions
 
                             if (!result)
                             {
-                                if (!is_party && Engine::IsAlive(party[character]))
+                                if (!is_party && !Engine::IsAlive(party[character]))
                                 {
                                     text = Engine::IsDead(party[character]);
                                 }

@@ -30,7 +30,11 @@ namespace BloodSword::Battle
         LAST_BATTLE,
         SKIP_LOCATION,
         ENTANGLED,
-        REPLICATE
+        REPLICATE,
+        CLONE_WARRIOR,
+        CLONE_TRICKSTER,
+        CLONE_SAGE,
+        CLONE_ENCHANTER,
     };
 
     const int Unlimited = -1;
@@ -53,7 +57,11 @@ namespace BloodSword::Battle
         {Battle::Condition::LAST_BATTLE, "LAST BATTLE"},
         {Battle::Condition::SKIP_LOCATION, "SKIP LOCATION"},
         {Battle::Condition::ENTANGLED, "ENTANGLED"},
-        {Battle::Condition::REPLICATE, "REPLICATE"}};
+        {Battle::Condition::REPLICATE, "REPLICATE"},
+        {Battle::Condition::CLONE_WARRIOR, "CLONE WARRIOR"},
+        {Battle::Condition::CLONE_TRICKSTER, "CLONE TRICKSTER"},
+        {Battle::Condition::CLONE_SAGE, "CLONE SAGE"},
+        {Battle::Condition::CLONE_ENCHANTER, "CLONE ENCHANTER"}};
 
     Battle::Condition MapCondition(const char *condition)
     {

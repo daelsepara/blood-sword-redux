@@ -2091,6 +2091,72 @@ namespace BloodSword::Interface
         }
     }
 
+    // clones character's attributes
+    void CloneCharacters(Battle::Base &battle, Party::Base &party)
+    {
+        std::vector<Battle::Condition> cloning = {
+            Battle::Condition::CLONE_WARRIOR,
+            Battle::Condition::CLONE_TRICKSTER,
+            Battle::Condition::CLONE_SAGE,
+            Battle::Condition::CLONE_ENCHANTER};
+
+        for (auto clone : cloning)
+        {
+            if (battle.Has(clone))
+            {
+                auto character_class = Character::Class::NONE;
+
+                switch (clone)
+                {
+                case Battle::Condition::CLONE_WARRIOR:
+                    character_class = Character::Class::WARRIOR;
+                    break;
+                case Battle::Condition::CLONE_TRICKSTER:
+                    character_class = Character::Class::TRICKSTER;
+                    break;
+                case Battle::Condition::CLONE_SAGE:
+                    character_class = Character::Class::SAGE;
+                    break;
+                case Battle::Condition::CLONE_ENCHANTER:
+                    character_class = Character::Class::ENCHANTER;
+                    break;
+                default:
+                    break;
+                }
+
+                if (character_class != Character::Class::NONE)
+                {
+                    if (party.Has(character_class) && Engine::IsAlive(party[character_class]))
+                    {
+                        auto &character = party[character_class];
+
+                        Attribute::Types attributes = {
+                            Attribute::Type::FIGHTING_PROWESS,
+                            Attribute::Type::PSYCHIC_ABILITY,
+                            Attribute::Type::AWARENESS,
+                            Attribute::Type::ENDURANCE,
+                            Attribute::Type::DAMAGE,
+                        };
+
+                        for (auto i = 0; i < battle.Opponents.Count(); i++)
+                        {
+                            for (auto attribute : attributes)
+                            {
+                                auto modifier = battle.Opponents[i].Modifier(attribute);
+
+                                // set maximum attibute value
+                                battle.Opponents[i].Maximum(attribute, character.Maximum(attribute) + modifier);
+
+                                // clone attributes
+                                battle.Opponents[i].Set(attribute, character.Maximum(attribute) + modifier, character.Modifier(attribute));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -2121,6 +2187,9 @@ namespace BloodSword::Interface
 
         if (battle.Duration != 0 && Engine::IsAlive(party))
         {
+            // check if there are characters to clone
+            Interface::CloneCharacters(battle, party);
+
             if (battle.Has(Battle::Condition::TACTICS) || party.Has(Character::Status::TACTICS))
             {
                 // setup player locations

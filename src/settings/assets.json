@@ -17,6 +17,10 @@
             "path": "images/players/hooded-assassin.png"
         },
         {
+            "id": "ENEMY",
+            "path": "images/enemies/character.png"
+        },
+        {
             "id": "UP",
             "path": "images/map/up.png"
         },
@@ -503,6 +507,10 @@
         {
             "id": "STEEL SCEPTRE",
             "path": "images/items/crystal-wand.png"
+        },
+        {
+            "id": "BEORN",
+            "path": "images/enemies/brutal-helm.png"
         }
     ]
 }

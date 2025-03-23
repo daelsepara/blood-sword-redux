@@ -1,0 +1,91 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 88
+    },
+    "text": "You reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
+    "next": [
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 478
+            },
+            "variables": [
+                "WARRIOR",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "WARRIOR has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 113
+            },
+            "variables": [
+                "TRICKSTER",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "TRICKSTER has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 426
+            },
+            "variables": [
+                "SAGE",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "SAGE has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 252
+            },
+            "variables": [
+                "ENCHANTER",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "ENCHANTER has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "IS",
+            "location": {
+                "book": "BOOK1",
+                "number": 519
+            },
+            "variables": [
+                "=",
+                "WITH IMRAGARN",
+                "YES"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 98
+            },
+            "variables": [
+                "WARRIOR",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "COMPLETE",
+                ""
+            ]
+        }
+    ]
+}
