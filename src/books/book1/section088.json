@@ -62,15 +62,13 @@
             ]
         },
         {
-            "type": "IS",
+            "type": "IN PARTY",
             "location": {
                 "book": "BOOK1",
                 "number": 519
             },
             "variables": [
-                "=",
-                "WITH IMRAGARN",
-                "YES"
+                "OTHERS"
             ]
         },
         {

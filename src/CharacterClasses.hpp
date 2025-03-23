@@ -115,7 +115,8 @@ namespace BloodSword::Character
         WARRIOR,
         TRICKSTER,
         SAGE,
-        ENCHANTER
+        ENCHANTER,
+        OTHERS
     };
 
     typedef std::vector<Character::Class> Classes;
@@ -125,7 +126,8 @@ namespace BloodSword::Character
         {Character::Class::WARRIOR, "WARRIOR"},
         {Character::Class::TRICKSTER, "TRICKSTER"},
         {Character::Class::SAGE, "SAGE"},
-        {Character::Class::ENCHANTER, "ENCHANTER"}};
+        {Character::Class::ENCHANTER, "ENCHANTER"},
+        {Character::Class::OTHERS, "OTHERS"}};
 
     Character::Classes All = {
         Character::Class::WARRIOR,

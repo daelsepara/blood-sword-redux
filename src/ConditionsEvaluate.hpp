@@ -2462,6 +2462,8 @@ namespace BloodSword::Conditions
                         if (Engine::IsAlive(party[i]) && party[i].Has(item))
                         {
                             party.ChosenCharacter = party[i].Class;
+
+                            break;
                         }
                     }
                 }
@@ -2986,6 +2988,88 @@ namespace BloodSword::Conditions
                 text = Interface::DeathMessage(party);
 
                 internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::LOSE_UNEQUIPPED)
+        {
+            // variables
+            // 0 - player / ALL
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (is_party || character != Character::Class::NONE)
+                {
+                    std::vector<Character::Class> characters = {};
+
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
+                    {
+                        if (is_party)
+                        {
+                            for (auto i = 0; i < party.Count(); i++)
+                            {
+                                if (Engine::IsAlive(party[i]))
+                                {
+                                    characters.push_back(party[i].Class);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            characters = {character};
+                        }
+
+                        for (auto character_class : characters)
+                        {
+                            auto items = Items::Inventory();
+
+                            auto &current = party[character_class];
+
+                            // drop items that are either not equipped or can be dropped
+                            for (auto i = 0; i < current.Items.size(); i++)
+                            {
+                                auto equipped = current.Items[i].Is(Item::Property::EQUIPPED);
+
+                                auto cannot_drop = current.Items[i].Is(Item::Property::CANNOT_DROP);
+
+                                auto weapon = current.Items[i].Is(Item::Property::WEAPON);
+
+                                auto armour = current.Items[i].Is(Item::Property::ARMOUR);
+
+                                if ((equipped || cannot_drop) && (weapon || armour))
+                                {
+                                    items.push_back(current.Items[i]);
+                                }
+                            }
+
+                            current.Items = items;
+                        }
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                }
+                else
+                {
+                    text = Interface::DeathMessage(party);
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)

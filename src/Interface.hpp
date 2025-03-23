@@ -78,7 +78,8 @@ namespace BloodSword::Interface
         {Character::Class::WARRIOR, Controls::Type::WARRIOR},
         {Character::Class::TRICKSTER, Controls::Type::TRICKSTER},
         {Character::Class::SAGE, Controls::Type::SAGE},
-        {Character::Class::ENCHANTER, Controls::Type::ENCHANTER}};
+        {Character::Class::ENCHANTER, Controls::Type::ENCHANTER},
+        {Character::Class::OTHERS, Controls::Type::OTHERS}};
 
     Controls::Mapped<Asset::Type> BattleControls = {
         {Controls::Type::MOVE, Asset::Type::MOVE},

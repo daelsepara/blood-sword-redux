@@ -641,6 +641,28 @@ namespace BloodSword::Map
             return point;
         }
 
+        bool Next(Point src, Map::Object occupant, int id)
+        {
+            auto next = false;
+
+            if (this->IsValid(src) && !(*this)[src].IsOccupied())
+            {
+                for (auto &direction : Map::Directions)
+                {
+                    auto neighbor = src + direction;
+
+                    if (this->IsValid(neighbor) && (*this)[neighbor].Occupant == occupant && (*this)[neighbor].Id != id)
+                    {
+                        next = true;
+
+                        break;
+                    }
+                }
+            }
+
+            return next;
+        }
+
         // computes the manhattan distance between two points on the map
         int Distance(Point src, Point dst)
         {

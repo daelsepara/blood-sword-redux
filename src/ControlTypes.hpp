@@ -13,6 +13,7 @@ namespace BloodSword::Controls
         TRICKSTER,
         SAGE,
         ENCHANTER,
+        OTHERS,
         SCROLL_UP,
         SCROLL_DOWN,
         MAP_NONE,

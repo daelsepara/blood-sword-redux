@@ -1585,7 +1585,7 @@ namespace BloodSword::Interface
             // set party starting locations
             for (auto i = 0; i < party.Count(); i++)
             {
-                if (Engine::IsAlive(party[i]))
+                if (Engine::IsAlive(party[i]) && party[i].Class != Character::Class::OTHERS)
                 {
                     if (!party[i].Is(Character::Status::AWAY) && !party[i].Is(Character::Status::EXCLUDED))
                     {
@@ -1823,6 +1823,207 @@ namespace BloodSword::Interface
         }
     }
 
+    void PlayerTactics(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, Character::Class character)
+    {
+        auto location = Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad);
+
+        auto id = int(battle.Map.ViewX * battle.Map.ViewY);
+
+        auto map_h = battle.Map.ViewY * battle.Map.TileSize;
+
+        Scene::Elements assets = {
+            Scene::Element(Asset::Get(Asset::Type::CONFIRM), location.X, location.Y + map_h),
+            Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+
+        Controls::List controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
+                                   Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto map = Interface::BattleScene(battle, party, assets, controls, location);
+
+        auto pad = BloodSword::SmallPad;
+
+        auto info_x = battle.Map.DrawX + (battle.Map.ViewX * 2 + 1) * battle.Map.TileSize / 2 + pad;
+
+        auto info_y = battle.Map.DrawY - pad;
+
+        auto tactics_x = battle.Map.DrawX;
+
+        auto tactics_y = battle.Map.DrawY - (BloodSword::TileSize + BloodSword::HalfTile);
+
+        auto tactics = Graphics::CreateText(graphics, "TACTICS PHASE", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto texture = Graphics::CreateText(graphics, "SELECT LOCATION FOR", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto player = -1;
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (Engine::IsAlive(party[i]) && party[i].Class == character)
+            {
+                player = i;
+
+                break;
+            }
+        }
+
+        if (player == -1)
+        {
+            return;
+        }
+
+        while (!done)
+        {
+            auto regenerate_scene = false;
+
+            auto overlay = Scene::Base();
+
+            overlay.VerifyAndAdd(Scene::Element(tactics, Point(tactics_x, tactics_y)));
+
+            if (player >= 0 && player < party.Count())
+            {
+                overlay.VerifyAndAdd(Scene::Element(texture, Point(info_x, info_y)));
+
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(party[player].Asset), Point(info_x, info_y + pad * 8)));
+            }
+
+            input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);
+
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            {
+                if (Input::IsValid(map, input))
+                {
+                    auto &control = map.Controls[input.Current];
+
+                    if (control.OnMap && battle.Map[control.Map].IsOccupied())
+                    {
+                        Interface::MessageBox(graphics, map, "THIS SPACE IS OCCUPIED", Color::Highlight);
+                    }
+                    else if (control.OnMap && battle.Map[control.Map].IsPassable() && !battle.Map[control.Map].IsExit())
+                    {
+                        auto dst = control.Map;
+
+                        if (battle.Map.Next(dst, Map::Object::PLAYER, player))
+                        {
+                            auto src = battle.Map.Find(Map::Object::PLAYER, player);
+
+                            if (!src.IsNone())
+                            {
+                                // remove from another location
+                                battle.Map.Remove(Map::Object::PLAYER, player);
+                            }
+
+                            battle.Map.Put(dst, Map::Object::PLAYER, player);
+
+                            regenerate_scene = true;
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, map, "THERE ARE NO ADJACENT PLAYERS HERE", Color::Highlight);
+                        }
+
+                        input.Selected = false;
+                    }
+                    else if (input.Type == Controls::Type::CONFIRM)
+                    {
+                        auto dst = battle.Map.Find(Map::Object::PLAYER, player);
+
+                        if (!dst.IsNone())
+                        {
+                            if (!Interface::Confirm(graphics, map, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true))
+                            {
+                                input.Selected = false;
+
+                                regenerate_scene = true;
+                            }
+                            else
+                            {
+                                done = true;
+                            }
+                        }
+                        else
+                        {
+                            std::string message = "YOU HAVE NOT PLACED THE " + std::string(Character::ClassMapping[character]);
+
+                            Interface::MessageBox(graphics, map, message, Color::Highlight);
+                        }
+                    }
+                    else if (input.Type == Controls::Type::BACK)
+                    {
+                        battle.Map.Remove(Map::Object::PLAYER, player);
+
+                        input.Selected = false;
+
+                        regenerate_scene = true;
+                    }
+                    else if (input.Type == Controls::Type::MAP_DOWN)
+                    {
+                        if (battle.Map.Y < (battle.Map.Height - battle.Map.ViewY))
+                        {
+                            battle.Map.Y++;
+
+                            input.Selected = false;
+
+                            regenerate_scene = true;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::MAP_UP)
+                    {
+                        if (battle.Map.Y > 0)
+                        {
+                            battle.Map.Y--;
+
+                            input.Selected = false;
+
+                            regenerate_scene = true;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::MAP_LEFT)
+                    {
+                        if (battle.Map.X > 0)
+                        {
+                            battle.Map.X--;
+
+                            input.Selected = false;
+
+                            regenerate_scene = true;
+                        }
+                    }
+                    else if (input.Type == Controls::Type::MAP_RIGHT)
+                    {
+                        if (battle.Map.X < (battle.Map.Width - battle.Map.ViewX))
+                        {
+                            battle.Map.X++;
+
+                            input.Current = -1;
+
+                            input.Selected = false;
+
+                            regenerate_scene = true;
+                        }
+                    }
+                }
+            }
+
+            if (regenerate_scene)
+            {
+                map = Interface::BattleScene(battle, party, assets, controls, location);
+
+                if (input.Type == Controls::Type::MAP_DOWN || input.Type == Controls::Type::MAP_UP || input.Type == Controls::Type::MAP_LEFT || input.Type == Controls::Type::MAP_RIGHT)
+                {
+                    input.Current = Controls::Find(map.Controls, input.Type);
+                }
+            }
+        }
+
+        BloodSword::Free(&texture);
+
+        BloodSword::Free(&tactics);
+    }
+
     // select placement of characters
     void Tactics(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -1892,18 +2093,18 @@ namespace BloodSword::Interface
                 {
                     auto &control = map.Controls[input.Current];
 
-                    if (control.OnMap && battle.Map[map.Controls[input.Current].Map].IsOccupied())
+                    if (control.OnMap && battle.Map[control.Map].IsOccupied())
                     {
                         Interface::MessageBox(graphics, map, "THIS SPACE IS OCCUPIED", Color::Highlight);
                     }
-                    else if (control.OnMap && battle.Map[map.Controls[input.Current].Map].IsPassable() && !battle.Map[map.Controls[input.Current].Map].IsExit())
+                    else if (control.OnMap && battle.Map[control.Map].IsPassable() && !battle.Map[control.Map].IsExit())
                     {
                         auto remove = -1;
 
                         // check if this has been added already
                         for (auto i = 0; i < origins.size(); i++)
                         {
-                            if (origins[i] == map.Controls[input.Current].Map)
+                            if (origins[i] == control.Map)
                             {
                                 remove = i;
 
@@ -1916,9 +2117,9 @@ namespace BloodSword::Interface
                             if (current < party.Count())
                             {
                                 // add location
-                                origins.push_back(map.Controls[input.Current].Map);
+                                origins.push_back(control.Map);
 
-                                battle.Map[map.Controls[input.Current].Map].Asset = Asset::Type::SELECT;
+                                battle.Map[control.Map].Asset = Asset::Type::SELECT;
 
                                 regenerate_scene = true;
 
@@ -1934,7 +2135,7 @@ namespace BloodSword::Interface
                             // remove location
                             origins.erase(origins.begin() + remove);
 
-                            battle.Map[map.Controls[input.Current].Map].Asset = Asset::Type::NONE;
+                            battle.Map[control.Map].Asset = Asset::Type::NONE;
 
                             regenerate_scene = true;
 
@@ -2225,6 +2426,12 @@ namespace BloodSword::Interface
 
             // set enemy starting locations
             Interface::SetEnemyLocations(battle, party);
+
+            // place OTHERS adjacent to other party members
+            if (party.Has(Character::Class::OTHERS) && party.Count() > 1)
+            {
+                Interface::PlayerTactics(graphics, battle, party, Character::Class::OTHERS);
+            }
 
             // final checks on placement of all combatants
             Interface::FinalLocationChecks(battle, party);

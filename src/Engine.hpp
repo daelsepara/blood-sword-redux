@@ -147,7 +147,10 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            live += Engine::IsAlive(party[character]) ? 1 : 0;
+            if (party[character].Class != Character::Class::OTHERS)
+            {
+                live += Engine::IsAlive(party[character]) ? 1 : 0;
+            }
         }
 
         return live;
@@ -159,7 +162,7 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            if (Engine::IsAlive(party[character]))
+            if (Engine::IsAlive(party[character]) && party[character].Class != Character::Class::OTHERS)
             {
                 auto is_away = party[character].Is(Character::Status::AWAY) && (party[character].Status[Character::Status::AWAY] < 0);
 
@@ -178,7 +181,7 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            count += party[character].ControlType == control && party[character].Is(status) ? 1 : 0;
+            count += (party[character].ControlType == control && party[character].Is(status) && party[character].Class != Character::Class::OTHERS) ? 1 : 0;
         }
 
         return count;
@@ -255,7 +258,7 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            if (party[character].ControlType == Character::ControlType::PLAYER && Engine::IsAlive(party[character]))
+            if (party[character].ControlType == Character::ControlType::PLAYER && Engine::IsAlive(party[character]) && party[character].Class != Character::Class::OTHERS)
             {
                 fleeing += party[character].Is(Character::Status::FLEEING) ? 1 : 0;
 
@@ -302,7 +305,7 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            live += (Engine::CanTarget(party[character], in_battle) && !party[character].Is(Character::Status::EXCLUDED)) ? 1 : 0;
+            live += (Engine::CanTarget(party[character], in_battle) && !party[character].Is(Character::Status::EXCLUDED) && party[character].Class != Character::Class::OTHERS) ? 1 : 0;
         }
 
         return live;
@@ -1239,7 +1242,7 @@ namespace BloodSword::Engine
     {
         auto status = Task::Status::NONE;
 
-        if (!task.empty() && character != Character::Class::NONE)
+        if (!task.empty() && character != Character::Class::NONE && character != Character::Class::OTHERS)
         {
             task = Engine::ToUpper(task);
 
@@ -1257,7 +1260,7 @@ namespace BloodSword::Engine
     // start a task (or mark as incomplete for a dead character)
     void StartTask(Party::Base &party, Character::Class character, std::string task)
     {
-        if (!task.empty() && character != Character::Class::NONE)
+        if (!task.empty() && character != Character::Class::NONE && character != Character::Class::OTHERS)
         {
             task = Engine::ToUpper(task);
 
@@ -1298,7 +1301,7 @@ namespace BloodSword::Engine
         {
             Engine::StartTask(party, character, task);
         }
-        else if (!task.empty() && character != Character::Class::NONE && status != Task::Status::NONE)
+        else if (!task.empty() && character != Character::Class::NONE && character != Character::Class::OTHERS && status != Task::Status::NONE)
         {
             task = Engine::ToUpper(task);
 
@@ -1343,7 +1346,7 @@ namespace BloodSword::Engine
     {
         auto result = false;
 
-        if (!task.empty() && character != Character::Class::NONE)
+        if (!task.empty() && character != Character::Class::NONE && character != Character::Class::OTHERS)
         {
             task = Engine::ToUpper(task);
 
