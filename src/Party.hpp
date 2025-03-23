@@ -455,7 +455,13 @@ namespace BloodSword::Party
 
             if (!variable.empty())
             {
-                if (variable == "CHOSEN")
+                if (variable == "PARTY")
+                {
+                    value = std::to_string(this->Count());
+
+                    std::cerr << "[PARTY] ---> " << value << std::endl;
+                }
+                else if (variable == "CHOSEN")
                 {
                     value = std::to_string(this->ChosenNumber);
 
@@ -539,7 +545,11 @@ namespace BloodSword::Party
 
             if (!variable.empty())
             {
-                if (variable != "CHOSEN")
+                if (variable == "PARTY")
+                {
+                    value = this->Count();
+                }
+                else if (variable != "CHOSEN")
                 {
                     if (this->IsANumber(variable))
                     {

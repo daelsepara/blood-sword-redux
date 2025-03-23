@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 478
+    },
+    "text": "(WARRIOR) You are about to cross one of the bridges spanning the gorge. The bridges look identical.",
+    "choices": [
+        {
+            "text": "Cross the bridge nearer to you",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 169
+                },
+                "variables": [
+                    "WARRIOR"
+                ]
+            }
+        },
+        {
+            "text": "Step through the waterfall to take the other bridge",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 336
+                },
+                "variables": [
+                    "WARRIOR"
+                ]
+            }
+        }
+    ]
+}

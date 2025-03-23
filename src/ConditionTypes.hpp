@@ -88,7 +88,8 @@ namespace BloodSword::Conditions
         IF_FALSE_SET,
         COMPUTE_VICTORY_POINTS,
         GAIN_EXPERIENCE,
-        TEST_DISCHARGE_ITEM
+        TEST_DISCHARGE_ITEM,
+        TASK
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -173,7 +174,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::IF_FALSE_SET, "IF FALSE SET"},
         {Conditions::Type::GAIN_EXPERIENCE, "GAIN EXPERIENCE"},
         {Conditions::Type::COMPUTE_VICTORY_POINTS, "COMPUTE VICTORY POINTS"},
-        {Conditions::Type::TEST_DISCHARGE_ITEM, "TEST DISCHARGE ITEM"}};
+        {Conditions::Type::TEST_DISCHARGE_ITEM, "TEST DISCHARGE ITEM"},
+        {Conditions::Type::TASK, "TASK"}};
 
     Conditions::Type Map(const char *Conditions)
     {

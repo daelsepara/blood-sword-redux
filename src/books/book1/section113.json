@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 113
+    },
+    "text": "(TRICKSTER) You have to decide which of thee two bridges to use. They appear identical, but in order to reach the further of the two you must first pass through the waterfall issuing from the gargoyle's mouth.",
+    "choices": [
+        {
+            "text": "Cross via the nearer bridge",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 267
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Go through the waterfall to the other bridge",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 464
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        }
+    ]
+}

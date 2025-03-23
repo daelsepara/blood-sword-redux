@@ -2910,6 +2910,84 @@ namespace BloodSword::Conditions
                 internal_error = false;
             }
         }
+        else if (condition.Type == Conditions::Type::TASK)
+        {
+            internal_error = true;
+            // variables
+            // 0 - player / ALL
+            // 1 - task
+            // 2 - CHECK/SET
+            // 3 - STATUS
+            // 4 - message on failure
+            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto task = Engine::ToUpper(condition.Variables[1]);
+
+                auto check = (Engine::ToUpper(condition.Variables[2]) == "CHECK");
+
+                auto set = (Engine::ToUpper(condition.Variables[2]) == "SET");
+
+                auto status = Task::Map(condition.Variables[3]);
+
+                if ((is_party || (character != Character::Class::NONE)) && (check || set) && !task.empty() && status != Task::Status::NONE)
+                {
+                    if (is_party || party.Has(character))
+                    {
+                        if (set)
+                        {
+                            if (is_party)
+                            {
+                                Engine::TaskStatus(party, task, status);
+
+                                result = true;
+                            }
+                            else if (Engine::IsAlive(party[character]))
+                            {
+                                Engine::TaskStatus(party, character, task, status);
+
+                                result = true;
+                            }
+                            else
+                            {
+                                text = Engine::IsDead(party[character]);
+                            }
+                        }
+                        else if (check)
+                        {
+                            result = is_party ? Engine::CheckTask(party, task, status) : Engine::CheckTask(party, character, task, status);
+
+                            if (!result)
+                            {
+                                if (!is_party && Engine::IsAlive(party[character]))
+                                {
+                                    text = Engine::IsDead(party[character]);
+                                }
+                                else
+                                {
+                                    text = condition.Variables[4];
+                                }
+                            }
+                        }
+                    }
+                    else if (!is_party && !party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
         else if (condition.Type == Conditions::Type::PREVIOUS_LOCATION)
         {
             condition.Location = party.PreviousLocation;

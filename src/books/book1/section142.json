@@ -1,0 +1,77 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 142
+    },
+    "text": "The platform is a wide shelf of rock jutting out from the cave wall. Across the deep gorge you jeer at the ugly hags, who are incensed that you have defeated their 'pets'. The only way to get across the gorge is via one of two bridges that span the distance to the temple terrace. A waterfall cascades over the middle of the platform, bisecting it and cutting you off from the further of the two bridges. Looking up, you see a huge gargoyle head carved into the cave wall near the roof. The water issues from its mouth, cascades down in a torrent across the middle of the platform, then pours down into the swirling river far beneath you.\n\nAs you consider the two bridges, a booming voice makes you look up once more. The mouth of the gargoyle is moving and by listening hard you can make sense out of the deep rumbling words. Over and over, it intones: \"Face that which you fear most, or confront a lesser foe.\"\n\nPresumably it is referring to the two bridges. You could cross the nearer bridge with no apparent trouble, but to get to the further one you must step through the waterfall. The gargoy's words are weighty with ambiguity. Which to choose?",
+    "events": [
+        {
+            "type": "TASK",
+            "variables": [
+                "ALL",
+                "CROSSED BRIDGED",
+                "SET",
+                "START",
+                ""
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 478
+            },
+            "variables": [
+                "WARRIOR",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "WARRIOR has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 113
+            },
+            "variables": [
+                "TRICKSTER",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "TRICKSTER has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 426
+            },
+            "variables": [
+                "SAGE",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "SAGE has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 252
+            },
+            "variables": [
+                "ENCHANTER",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "ENCHANTER has already crossed the bridge or died in the attempt"
+            ]
+        }
+    ]
+}

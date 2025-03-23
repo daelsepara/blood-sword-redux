@@ -13,6 +13,7 @@
 #include "Random.hpp"
 #include "Spells.hpp"
 #include "Generator.hpp"
+#include "Task.hpp"
 
 // functions and classes for handling gameplay logic
 namespace BloodSword::Engine
@@ -1232,6 +1233,150 @@ namespace BloodSword::Engine
         }
 
         return healed;
+    }
+
+    Task::Status TaskStatus(Party::Base &party, Character::Class character, std::string task)
+    {
+        auto status = Task::Status::NONE;
+
+        if (!task.empty() && character != Character::Class::NONE)
+        {
+            task = Engine::ToUpper(task);
+
+            std::string variable = task + " " + Character::ClassMapping[character];
+
+            if (party.IsPresent(variable))
+            {
+                status = Task::Map(party.Get(variable));
+            }
+        }
+
+        return status;
+    }
+
+    // start a task (or mark as incomplete for a dead character)
+    void StartTask(Party::Base &party, Character::Class character, std::string task)
+    {
+        if (!task.empty() && character != Character::Class::NONE)
+        {
+            task = Engine::ToUpper(task);
+
+            if (party.Has(character))
+            {
+                std::string variable = task + " " + Character::ClassMapping[character];
+
+                if (!party.IsPresent(variable))
+                {
+                    party.Set(variable, Task::Mapping[Task::Status::START]);
+                }
+
+                if (!Engine::IsAlive(party[character]))
+                {
+                    party.Set(variable, Task::Mapping[Task::Status::INCOMPLETE]);
+                }
+            }
+        }
+    }
+
+    // start a task (or mark as incomplete for dead characters)
+    void StartTask(Party::Base &party, std::string task)
+    {
+        if (!task.empty())
+        {
+            task = Engine::ToUpper(task);
+
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                Engine::StartTask(party, party[i].Class, task);
+            }
+        }
+    }
+
+    void TaskStatus(Party::Base &party, Character::Class character, std::string task, Task::Status status)
+    {
+        if (status == Task::Status::START)
+        {
+            Engine::StartTask(party, character, task);
+        }
+        else if (!task.empty() && character != Character::Class::NONE && status != Task::Status::NONE)
+        {
+            task = Engine::ToUpper(task);
+
+            std::string variable = task + " " + Character::ClassMapping[character];
+
+            if (party.IsPresent(variable))
+            {
+                if (party.Has(character))
+                {
+                    if (Engine::IsAlive(party[character]))
+                    {
+                        party.Set(variable, Task::Mapping[status]);
+                    }
+                    else
+                    {
+                        party.Set(variable, Task::Mapping[Task::Status::INCOMPLETE]);
+                    }
+                }
+            }
+        }
+    }
+
+    void TaskStatus(Party::Base &party, std::string task, Task::Status status)
+    {
+        if (status == Task::Status::START)
+        {
+            Engine::StartTask(party, task);
+        }
+        else
+        {
+            if (!task.empty() && status != Task::Status::NONE)
+            {
+                for (auto i = 0; i < party.Count(); i++)
+                {
+                    Engine::TaskStatus(party, party[i].Class, task, status);
+                }
+            }
+        }
+    }
+
+    bool CheckTask(Party::Base &party, Character::Class character, std::string task, Task::Status status)
+    {
+        auto result = false;
+
+        if (!task.empty() && character != Character::Class::NONE)
+        {
+            task = Engine::ToUpper(task);
+
+            if (party.Has(character))
+            {
+                std::string variable = task + " " + Character::ClassMapping[character];
+
+                if (party.IsPresent(variable))
+                {
+                    return (status == Engine::TaskStatus(party, character, task));
+                }
+            }
+        }
+
+        return result;
+    }
+
+    bool CheckTask(Party::Base &party, std::string task, Task::Status status)
+    {
+        auto result = 0;
+
+        if (!task.empty())
+        {
+            task = Engine::ToUpper(task);
+
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                result += (Engine::CheckTask(party, party[i].Class, task, status) ? 1 : 0);
+            }
+        }
+
+        // check only against live characters
+        return (result >= Engine::Count(party));
     }
 }
 

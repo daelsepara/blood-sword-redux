@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 252
+    },
+    "text": "(ENCHANTER) You can cross the gorge by either of the two bridges. To reach the further bridge, however, you would have to step through the waterfall.",
+    "choices": [
+        {
+            "text": "Use the nearer of the bridges",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 128
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Step through the waterfall to use the other bridge",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 494
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        }
+    ]
+}

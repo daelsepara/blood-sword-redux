@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 426
+    },
+    "text": "(SAGE) Which of the bridges do you cross?",
+    "choices": [
+        {
+            "text": "Pass through the waterfall",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 373
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Cross via the nearer bridge",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 157
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        }
+    ]
+}
