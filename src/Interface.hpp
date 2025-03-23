@@ -4387,7 +4387,7 @@ namespace BloodSword::Interface
             {
                 character = party.ChosenCharacter;
             }
-            else if (character_string == "SELECT")
+            else if (character_string == "SELECT" || character_string == "CHOOSE")
             {
                 if (Engine::Count(party) == 1)
                 {
@@ -4397,6 +4397,11 @@ namespace BloodSword::Interface
                 {
                     character = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER", true, false, false, false, true);
                 }
+            }
+            else if (party.IsPresent(character_string))
+            {
+                // check if variable is present in internal variables
+                character = Character::Map(party.Get(character_string));
             }
             else
             {
