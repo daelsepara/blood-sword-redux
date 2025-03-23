@@ -1,0 +1,21 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 112
+    },
+    "text": "You wedge yourself back against some rock outcroppings on the ledge to give you partial cover from the DIRGES' attack.",
+    "battle": "battles/book1/battle112.json",
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 142
+            },
+            "variables": [
+                "You continue down the ledge to the platform.",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

@@ -2362,7 +2362,7 @@ namespace BloodSword::Interface
                 // regenerate round string
                 BloodSword::Free(&round_string);
 
-                round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1) + (ambush ? std::string(" (AMBUSH)") : "")).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1) + ((ambush || shot_ambush) ? std::string(" (AMBUSH)") : "")).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
                 // start of round effects
                 auto next = false;
