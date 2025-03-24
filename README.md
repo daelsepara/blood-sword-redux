@@ -102,6 +102,16 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Section 484](/screenshots/vs-nebularon.png)
 
+### Section 142: Party Crosses the Bridge
+
+![WARRIOR](/screenshots/warrior-vs-beorn.png)
+
+![TRICKSTER](/screenshots/trickster-vs-hurondus.png)
+
+![SAGE](/screenshots/sage-vs-initiate.png)
+
+![ENCHANTER](/screenshots/enchanter-vs-guillarme.png)
+
 # Copyright Information
 ```
             Originally published 1987 by Knight Books

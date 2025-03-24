@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 449
     },
-    "text": "(TRICKSTER) You evade Hurondus's sword-thrust and place your hand on his shoulder, intending to vault over his head and run to the end of the bridge. He realises what you're doing, however, and suddenly grabs your hand, shifting his weight heavily against you as he does so.\n\n\"Nice to live again,\" he hisses, his face pressed close to yours, \"but that isn't as important as killing you.\" Holding tightly to your arm, he leaps out into space, and the two of you fall to your doom together in the gorge below.",
+    "text": "(TRICKSTER) You evade HURONDUS's sword-thrust and place your hand on his shoulder, intending to vault over his head and run to the end of the bridge. He realises what you're doing, however, and suddenly grabs your hand, shifting his weight heavily against you as he does so.\n\n\"Nice to live again,\" he hisses, his face pressed close to yours, \"but that isn't as important as killing you.\" Holding tightly to your arm, he leaps out into space, and the two of you fall to your doom together in the gorge below.",
     "features": [
         "TASK",
         "TASK TRICKSTER"
