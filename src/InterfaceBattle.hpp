@@ -2373,13 +2373,15 @@ namespace BloodSword::Interface
                         {
                             for (auto attribute : attributes)
                             {
+                                auto value = battle.Opponents[i].Value(attribute);
+
                                 auto modifier = battle.Opponents[i].Modifier(attribute);
 
                                 // set maximum attibute value
-                                battle.Opponents[i].Maximum(attribute, character.Maximum(attribute) + modifier);
+                                battle.Opponents[i].Maximum(attribute, character.Maximum(attribute) + value);
 
                                 // clone attributes
-                                battle.Opponents[i].Set(attribute, character.Maximum(attribute) + modifier, character.Modifier(attribute));
+                                battle.Opponents[i].Set(attribute, character.Maximum(attribute) + value, character.Modifier(attribute) + modifier);
                             }
                         }
                     }

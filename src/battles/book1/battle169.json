@@ -35,9 +35,9 @@
                         },
                         {
                             "maximum": 48,
-                            "modifier": -6,
+                            "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 0
+                            "value": -6
                         },
                         {
                             "maximum": 0,
@@ -47,9 +47,9 @@
                         },
                         {
                             "maximum": 3,
-                            "modifier": 1,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 0
+                            "value": 1
                         }
                     ],
                     "class": "NONE",

@@ -23,15 +23,15 @@
                         },
                         {
                             "maximum": 7,
-                            "modifier": 1,
+                            "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 0
+                            "value": 1
                         },
                         {
                             "maximum": 7,
-                            "modifier": -1,
+                            "modifier": 0,
                             "type": "AWARENESS",
-                            "value": 0
+                            "value": -1
                         },
                         {
                             "maximum": 48,
