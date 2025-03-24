@@ -13,7 +13,7 @@
         "opponents": {
             "members": [
                 {
-                    "asset": "ENEMY",
+                    "asset": "NEMESIS",
                     "attributes": [
                         {
                             "maximum": 8,

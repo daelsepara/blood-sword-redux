@@ -511,6 +511,18 @@
         {
             "id": "BEORN",
             "path": "images/enemies/brutal-helm.png"
+        },
+        {
+            "id": "KNIGHT",
+            "path": "images/enemies/visored-helm.png"
+        },
+        {
+            "id": "NEMESIS",
+            "path": "images/enemies/woman-elf-face.png"
+        },
+        {
+            "id": "PERSION",
+            "path": "images/enemies/person.png"
         }
     ]
 }

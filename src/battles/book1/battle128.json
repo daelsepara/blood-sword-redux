@@ -2,53 +2,54 @@
     "battle": {
         "conditions": [
             "CANNOT FLEE",
+            "WARRIOR AWAY",
             "TRICKSTER AWAY",
             "SAGE AWAY",
-            "ENCHANTER AWAY"
+            "CLONE ENCHANTER"
         ],
         "duration": -1,
         "endurance": -1,
-        "map": "maps/book1/map336.json",
+        "map": "maps/book1/map128.json",
         "opponents": {
             "members": [
                 {
-                    "asset": "ADVENTURER",
+                    "asset": "KNIGHT",
                     "attributes": [
                         {
-                            "maximum": 6,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "FIGHTING PROWESS",
-                            "value": 6
+                            "value": 1
                         },
                         {
-                            "maximum": 6,
+                            "maximum": 9,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 6
+                            "value": -2
                         },
                         {
-                            "maximum": 6,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "AWARENESS",
-                            "value": 6
+                            "value": 0
                         },
                         {
-                            "maximum": 6,
+                            "maximum": 40,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 6
+                            "value": 0
                         },
                         {
                             "maximum": 0,
-                            "modifier": 0,
+                            "modifier": 3,
                             "type": "ARMOUR",
                             "value": 0
                         },
                         {
-                            "maximum": 1,
-                            "modifier": 1,
+                            "maximum": 2,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 1
+                            "value": 0
                         }
                     ],
                     "class": "NONE",
@@ -56,7 +57,7 @@
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
-                    "name": "YOUTH",
+                    "name": "GUILLARME",
                     "rank": 0,
                     "shoot": "NONE",
                     "target": "ENEMY"

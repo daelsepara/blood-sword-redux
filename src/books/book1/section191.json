@@ -1,0 +1,116 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 191
+    },
+    "text": "You stoop over the bodies, searching them for items of interest. The scrap of parchment they were looking at is now soaked in blood, making it unreadable. You find twenty GOLD PIECES, four AXES and four BRONZE BREASTPLATES.\n\nYou head down the corridor and reach a point where it divides in two; on the left is a black-tiled corridor, and on the right is one floored in white marble.\n\nWhich way do you go?",
+    "items": [
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "GOLD PIECES",
+            "quantity": 20,
+            "type": "GOLD"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Go left down the black corridor",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 354
+                }
+            }
+        },
+        {
+            "text": "Go right down the white corridor",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 424
+                }
+            }
+        }
+    ]
+}

@@ -15,7 +15,8 @@ namespace BloodSword::Asset
         TRICKSTER,
         SAGE,
         ENCHANTER,
-        ENEMY,
+        GENERIC,
+        PERSON,
         ASSASSIN,
         BARBARIAN,
         DIRGE_MAN,
@@ -150,7 +151,9 @@ namespace BloodSword::Asset
         QUIVER,
         CENSER,
         STEEL_SCEPTRE,
-        BEORN
+        BEORN,
+        KNIGHT,
+        NEMESIS
     };
 
     template <typename T>
@@ -164,7 +167,7 @@ namespace BloodSword::Asset
         {Asset::Type::TRICKSTER, "TRICKSTER"},
         {Asset::Type::SAGE, "SAGE"},
         {Asset::Type::ENCHANTER, "ENCHANTER"},
-        {Asset::Type::ENEMY, "ENEMY"},
+        {Asset::Type::GENERIC, "GENERIC"},
         {Asset::Type::ASSASSIN, "ASSASSIN"},
         {Asset::Type::BARBARIAN, "BARBARIAN"},
         {Asset::Type::DIRGE_MAN, "DIRGE MAN"},
@@ -297,7 +300,10 @@ namespace BloodSword::Asset
         {Asset::Type::QUIVER, "QUIVER"},
         {Asset::Type::CENSER, "CENSER"},
         {Asset::Type::STEEL_SCEPTRE, "STEEL SCEPTRE"},
-        {Asset::Type::BEORN, "BEORN"}};
+        {Asset::Type::BEORN, "BEORN"},
+        {Asset::Type::KNIGHT, "KNIGHT"},
+        {Asset::Type::NEMESIS, "NEMESIS"},
+        {Asset::Type::PERSON, "PERSON"}};
 
     Asset::Type Map(const char *asset)
     {

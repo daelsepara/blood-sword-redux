@@ -2,17 +2,17 @@
     "battle": {
         "conditions": [
             "CANNOT FLEE",
+            "WARRIOR AWAY",
             "TRICKSTER AWAY",
-            "SAGE AWAY",
-            "ENCHANTER AWAY"
+            "SAGE AWAY"
         ],
         "duration": -1,
         "endurance": -1,
-        "map": "maps/book1/map336.json",
+        "map": "maps/book1/map494.json",
         "opponents": {
             "members": [
                 {
-                    "asset": "ADVENTURER",
+                    "asset": "NEMESIS",
                     "attributes": [
                         {
                             "maximum": 6,
@@ -21,10 +21,10 @@
                             "value": 6
                         },
                         {
-                            "maximum": 6,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 6
+                            "value": 7
                         },
                         {
                             "maximum": 6,
@@ -33,10 +33,10 @@
                             "value": 6
                         },
                         {
-                            "maximum": 6,
+                            "maximum": 5,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 6
+                            "value": 5
                         },
                         {
                             "maximum": 0,
@@ -56,9 +56,32 @@
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
-                    "name": "YOUTH",
+                    "name": "SORCERESS",
                     "rank": 0,
                     "shoot": "NONE",
+                    "skills": [
+                        "SPELLS"
+                    ],
+                    "spell_strategy": [
+                        {
+                            "spell": "WHITE FIRE",
+                            "uses": 10,
+                            "min": 1,
+                            "max": 4,
+                            "already_cast": "NONE",
+                            "count": 1
+                        }
+                    ],
+                    "spells": [
+                        {
+                            "battle": true,
+                            "class": "BLASTING",
+                            "complexity": 1,
+                            "duration": -1,
+                            "ranged": true,
+                            "type": "WHITE FIRE"
+                        }
+                    ],
                     "target": "ENEMY"
                 }
             ]
