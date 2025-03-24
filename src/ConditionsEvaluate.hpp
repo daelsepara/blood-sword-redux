@@ -1791,7 +1791,7 @@ namespace BloodSword::Conditions
             // 0 - N variables to show
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
-                auto wrap = BloodSword::TileSize * 5;
+                auto wrap = BloodSword::TileSize * 8;
 
                 auto message = std::string();
 
@@ -2836,6 +2836,8 @@ namespace BloodSword::Conditions
             // 2 - display in textbox (TRUE / FALSE)
             if (condition.Variables.size() > 1)
             {
+                auto wrap = BloodSword::TileSize * 8;
+
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
@@ -2852,7 +2854,7 @@ namespace BloodSword::Conditions
                         {
                             if (display)
                             {
-                                Interface::TextBox(graphics, background, condition.Variables[1], Color::Inactive);
+                                Interface::TextBox(graphics, background, condition.Variables[1], Color::Inactive, wrap);
                             }
                             else
                             {
