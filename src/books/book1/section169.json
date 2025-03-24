@@ -14,7 +14,7 @@
             "type": "TASK",
             "variables": [
                 "WARRIOR",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "SET",
                 "PROGRESS",
                 ""
@@ -26,10 +26,18 @@
             "type": "TASK",
             "variables": [
                 "WARRIOR",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "SET",
                 "COMPLETE",
                 ""
+            ]
+        },
+        {
+            "type": "IS ALIVE",
+            "variables": [
+                "WARRIOR",
+                "You reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
+                "TRUE"
             ]
         },
         {

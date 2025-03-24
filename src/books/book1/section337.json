@@ -13,7 +13,7 @@
             "type": "TASK",
             "variables": [
                 "TRICKSTER",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "SET",
                 "COMPLETE",
                 ""
@@ -22,15 +22,19 @@
     ],
     "next": [
         {
-            "type": "TEXTBOX",
+            "type": "IS ALIVE",
+            "variables": [
+                "TRICKSTER",
+                "You continue to the end of the bridge, where the hags stand goggling. \"So much for Hurondus,\" you tell them.\n\nYou reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "NORMAL",
             "location": {
                 "book": "BOOK1",
                 "number": 88
-            },
-            "variables": [
-                "You continue to the end of the bridge, where the hags stand goggling. \"So much for Hurondus,\" you tell them.",
-                "ACTIVE"
-            ]
+            }
         }
     ]
 }

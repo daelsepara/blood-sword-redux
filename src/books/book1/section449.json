@@ -19,7 +19,7 @@
             "type": "TASK",
             "variables": [
                 "TRICKSTER",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "SET",
                 "COMPLETE",
                 ""
@@ -28,70 +28,11 @@
     ],
     "next": [
         {
-            "type": "TASK",
+            "type": "NORMAL",
             "location": {
                 "book": "BOOK1",
-                "number": 478
-            },
-            "variables": [
-                "WARRIOR",
-                "CROSSED BRIDGED",
-                "CHECK",
-                "START",
-                "WARRIOR has already crossed the bridge or died in the attempt"
-            ]
-        },
-        {
-            "type": "TASK",
-            "location": {
-                "book": "BOOK1",
-                "number": 426
-            },
-            "variables": [
-                "SAGE",
-                "CROSSED BRIDGED",
-                "CHECK",
-                "START",
-                "SAGE has already crossed the bridge or died in the attempt"
-            ]
-        },
-        {
-            "type": "TASK",
-            "location": {
-                "book": "BOOK1",
-                "number": 252
-            },
-            "variables": [
-                "ENCHANTER",
-                "CROSSED BRIDGED",
-                "CHECK",
-                "START",
-                "ENCHANTER has already crossed the bridge or died in the attempt"
-            ]
-        },
-        {
-            "type": "IN PARTY",
-            "location": {
-                "book": "BOOK1",
-                "number": 519
-            },
-            "variables": [
-                "OTHERS"
-            ]
-        },
-        {
-            "type": "TASK",
-            "location": {
-                "book": "BOOK1",
-                "number": 98
-            },
-            "variables": [
-                "ALL",
-                "CROSSED BRIDGED",
-                "CHECK",
-                "COMPLETE",
-                ""
-            ]
+                "number": 88
+            }
         }
     ]
 }

@@ -2833,11 +2833,14 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player / ALL
             // 1 - message / text
-            if (condition.Variables.size() > 0)
+            // 2 - display in textbox (TRUE / FALSE)
+            if (condition.Variables.size() > 1)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto display = (Engine::ToUpper(condition.Variables[2]) == "TRUE");
 
                 if (is_party || (character != Character::Class::NONE))
                 {
@@ -2847,7 +2850,14 @@ namespace BloodSword::Conditions
 
                         if (result && condition.Variables.size() > 1 && !condition.Variables[1].empty())
                         {
-                            text = condition.Variables[1];
+                            if (display)
+                            {
+                                Interface::TextBox(graphics, background, condition.Variables[1], Color::Inactive);
+                            }
+                            else
+                            {
+                                text = condition.Variables[1];
+                            }
                         }
                     }
                     else if (!is_party)

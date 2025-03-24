@@ -3,8 +3,8 @@
         "book": "BOOK1",
         "number": 88
     },
-    "text": "You reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
-    "next": [
+    "text": "The adventure ends here.",
+    "background": [
         {
             "type": "TASK",
             "location": {
@@ -13,7 +13,7 @@
             },
             "variables": [
                 "WARRIOR",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "CHECK",
                 "START",
                 "WARRIOR has already crossed the bridge or died in the attempt"
@@ -27,7 +27,7 @@
             },
             "variables": [
                 "TRICKSTER",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "CHECK",
                 "START",
                 "TRICKSTER has already crossed the bridge or died in the attempt"
@@ -41,7 +41,7 @@
             },
             "variables": [
                 "SAGE",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "CHECK",
                 "START",
                 "SAGE has already crossed the bridge or died in the attempt"
@@ -55,35 +55,28 @@
             },
             "variables": [
                 "ENCHANTER",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "CHECK",
                 "START",
                 "ENCHANTER has already crossed the bridge or died in the attempt"
             ]
         },
         {
-            "type": "IN PARTY",
+            "type": "TASK",
             "location": {
                 "book": "BOOK1",
                 "number": 519
             },
             "variables": [
-                "OTHERS"
-            ]
-        },
-        {
-            "type": "TASK",
-            "location": {
-                "book": "BOOK1",
-                "number": 98
-            },
-            "variables": [
                 "ALL",
-                "CROSSED BRIDGED",
+                "CROSSED BRIDGE",
                 "CHECK",
                 "COMPLETE",
                 ""
             ]
         }
+    ],
+    "features": [
+        "ENDING"
     ]
 }

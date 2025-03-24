@@ -8,7 +8,8 @@
             "type": "IS ALIVE",
             "variables": [
                 "WARRIOR",
-                "(WARRIOR) Running from a ritual death-duel is not exactly in accordance with the warrior ethic. You rejoin your companions."
+                "(WARRIOR) Running from a ritual death-duel is not exactly in accordance with the warrior ethic. You rejoin your companions.",
+                "FALSE"
             ]
         },
         {

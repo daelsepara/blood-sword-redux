@@ -6,10 +6,14 @@
     "text": "IMRAGARN looks around in confusion, trying to decide between the two bridges. You call out across the gorge to advise him, but he cannot hear you youver the dull, reverberating roar of the river below. The hags bray with laughter, sputtering phlegm over their cyanic lips as they rub their hands in vicious merriment. They anticipate a tragedy.\n\nThey are not disappointed this time. IMRAGARN chooses the first bridge and edges nervously along it. He is a stocky man, not light on his feet. As he nears the middle of the bridge, the gargoyle head booms its summos: \"Relinquish the grave.\" In answer to the summons, tendrils of fire appear in a dazzling blossom below the bridge and lick upwards, gradually dying down to reveal a dark-cowled woman of majestic stature. She steps towards the trembling figure of IMRAGARN, and by her gait the gruesome goddess is revealed. Hela, Queen of the Dead.\n\n\"IMRAGARN,\" she says in a voice to chill the blood. \"I am the greatest foe you have ever bested, for I am Death and you belong to me.\"\n\nIMRAGARN starts to raise his hands, but it is a futile gesture, a gesture not of defiance but of resignation. \"It is true,\" he groans. \"I have no right to oppose you, even if I could, because I have had a second lease of life and this is more than any man may claim.\"\n\nHela reaches for him with lean white hands. The look on IMRAGARN's face is one of adoration, which is strange because the dread queen appears to you only as a grinning monstrosity of bone and gristle. Perhaps he sees her other aspect, which some claim is beautiful beyond description. They fade away, leaving the bridge stark and empty.",
     "background": [
         {
-            "type": "LOSE STATUS",
+            "type": "IN PARTY",
+            "invert": true,
+            "location": {
+                "book": "BOOK1",
+                "number": 98
+            },
             "variables": [
-                "ALL",
-                "TASK"
+                "OTHERS"
             ]
         },
         {
