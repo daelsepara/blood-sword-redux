@@ -1,0 +1,68 @@
+{
+    "battle": {
+        "conditions": [
+            "CANNOT FLEE",
+            "WARRIOR AWAY",
+            "TRICKSTER AWAY",
+            "ENCHANTER AWAY",
+            "CLONE SAGE"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "maps/book1/map157.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "ENEMY",
+                    "attributes": [
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 40,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 3,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 0
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "item_limit": 10,
+                    "moves": 1000,
+                    "name": "NEMESIS",
+                    "rank": 0,
+                    "shoot": "NONE",
+                    "target": "ENEMY"
+                }
+            ]
+        }
+    }
+}
