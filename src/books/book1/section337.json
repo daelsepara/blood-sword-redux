@@ -26,7 +26,8 @@
             "variables": [
                 "TRICKSTER",
                 "You continue to the end of the bridge, where the hags stand goggling. \"So much for HURONDUS,\" you tell them.\n\nYou reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
-                "TRUE"
+                "TRUE",
+                "ACTIVE"
             ]
         },
         {

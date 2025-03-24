@@ -38,6 +38,7 @@
         {
             "type": "SHOW VARIABLES",
             "variables": [
+                "ACTIVE",
                 "KLEF",
                 "HEADS (KLEF)",
                 "",

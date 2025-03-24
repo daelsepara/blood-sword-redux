@@ -1158,6 +1158,31 @@ namespace BloodSword::Engine
         return upper;
     }
 
+    // parse color from string
+    Uint32 Color(std::string color)
+    {
+        auto border = Color::Active;
+
+        if (Engine::ToUpper(color) == "INACTIVE")
+        {
+            border = Color::Inactive;
+        }
+        else if (Engine::ToUpper(color) == "HIGHLIGHT")
+        {
+            border = Color::Highlight;
+        }
+        else if (Engine::ToUpper(color) == "BACKGROUND")
+        {
+            border = Color::Background;
+        }
+        else if (Engine::ToUpper(color) == "TRANSPARENT")
+        {
+            border = Color::Transparent;
+        }
+
+        return border;
+    }
+
     // returns index (in party) of first live character
     int First(Party::Base &party)
     {

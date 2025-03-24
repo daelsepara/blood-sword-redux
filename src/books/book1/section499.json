@@ -84,6 +84,7 @@
         {
             "type": "SHOW VARIABLES",
             "variables": [
+                "ACTIVE",
                 "STAKED GOLD",
                 "",
                 "HOUSE STAKE"

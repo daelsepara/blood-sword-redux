@@ -26,7 +26,8 @@
             "variables": [
                 "SAGE",
                 "You glance down into the gorge, but your opponent's body has been swept away by the crashing river. With a sigh, you continue over the bridge.\n\nYou reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
-                "TRUE"
+                "TRUE",
+                "ACTIVE"
             ]
         },
         {

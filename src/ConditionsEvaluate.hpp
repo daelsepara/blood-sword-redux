@@ -1795,14 +1795,17 @@ namespace BloodSword::Conditions
         else if (condition.Type == Conditions::Type::SHOW_VARIABLES)
         {
             // variables:
-            // 0 - N variables to show
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            // 0 - border color
+            // 1 - N variables to show
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
             {
                 auto wrap = BloodSword::TileSize * 8;
 
+                auto border = Engine::Color(condition.Variables[0]);
+
                 auto message = std::string();
 
-                for (auto i = 0; i < condition.Variables.size(); i++)
+                for (auto i = 1; i < condition.Variables.size(); i++)
                 {
                     auto value = party.Get(condition.Variables[i]);
 
@@ -1851,7 +1854,7 @@ namespace BloodSword::Conditions
 
                 if (message.size() > 0)
                 {
-                    Interface::TextBox(graphics, background, message, wrap);
+                    Interface::TextBox(graphics, background, message, border, wrap);
                 }
 
                 result = true;
@@ -1940,28 +1943,7 @@ namespace BloodSword::Conditions
             // 1 - border color (ACTIVE, HIGHLIGHT, INACTIVE, BACKGROUND, TRANSPARENT)
             if (condition.Variables.size() > 1 && !condition.Variables[0].empty())
             {
-                auto border = Color::Active;
-
-                if (Engine::ToUpper(condition.Variables[1]) == "INACTIVE")
-                {
-                    border = Color::Inactive;
-                }
-                else if (Engine::ToUpper(condition.Variables[1]) == "HIGHLIGHT")
-                {
-                    border = Color::Highlight;
-                }
-                else if (Engine::ToUpper(condition.Variables[1]) == "BACKGROUND")
-                {
-                    border = Color::Background;
-                }
-                else if (Engine::ToUpper(condition.Variables[1]) == "TRANSPARENT")
-                {
-                    border = Color::Transparent;
-                }
-                else
-                {
-                    border = Color::Active;
-                }
+                auto border = Engine::Color(condition.Variables[1]);
 
                 if (condition.Type == Conditions::Type::SHOW_MESSAGE)
                 {
@@ -2841,7 +2823,8 @@ namespace BloodSword::Conditions
             // 0 - player / ALL
             // 1 - message / text
             // 2 - display in textbox (TRUE / FALSE)
-            if (condition.Variables.size() > 1)
+            // 3 - border color on display
+            if (condition.Variables.size() > 2)
             {
                 auto wrap = BloodSword::TileSize * 8;
 
@@ -2861,7 +2844,9 @@ namespace BloodSword::Conditions
                         {
                             if (display)
                             {
-                                Interface::TextBox(graphics, background, condition.Variables[1], Color::Inactive, wrap);
+                                auto border = Engine::Color(condition.Variables[3]);
+
+                                Interface::TextBox(graphics, background, condition.Variables[1], border, wrap);
                             }
                             else
                             {
