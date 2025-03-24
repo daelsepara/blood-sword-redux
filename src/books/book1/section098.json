@@ -1,0 +1,58 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 98
+    },
+    "text": "Now that the show is over, the disgusting hags lope back to their cauldrons. You move across the terrace, feeling their rheumy eyes on you. Their repulsive familiars rush about under your feet -- rotting crows with eyes dangling from sockets, yellow-fanged rats, warty malformed toads with human faces, scuttling objects that suggest entrails on legs. They clutch at your heels as you walk past, and you feel you would prefer to be back on the bridge fighting than endure this horror. The hags themselves crouch on the temple steps, gabbling to one another and shrieking with insane laughter.",
+    "background": [
+        {
+            "type": "LOSE STATUS",
+            "variables": [
+                "ALL",
+                "TASK"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Talk to the hags",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 212
+                }
+            }
+        },
+        {
+            "text": "Go up the steps into the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 298
+                }
+            }
+        },
+        {
+            "text": "Take the path around to the right of the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 56
+                }
+            }
+        },
+        {
+            "text": "Walk around the temple to the left",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 357
+                }
+            }
+        }
+    ]
+}

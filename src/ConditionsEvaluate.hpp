@@ -2331,6 +2331,42 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::REMOVE_PLAYER)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            if (condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    result = party.Has(character);
+
+                    if (!result)
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+
+                        result = false;
+                    }
+                    else
+                    {
+                        // remove player from party
+                        party.Remove(character);
+
+                        text = condition.Variables[1];
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::TAKE_ITEM || condition.Type == Conditions::Type::GET_ITEM)
         {
             internal_error = true;
