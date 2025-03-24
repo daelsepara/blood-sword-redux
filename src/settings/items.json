@@ -344,6 +344,16 @@
                 "CURSED",
                 "CANNOT DROP"
             ]
+        },
+        {
+            "contains": "NONE",
+            "name": "PHIAL OF CHIMERA-SPITTLE",
+            "properties": [
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "revealed": false,
+            "type": "CHIMERA-SPITTLE"
         }
     ]
 }

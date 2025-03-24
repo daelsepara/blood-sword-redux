@@ -319,8 +319,10 @@ namespace BloodSword::Interface
     }
 
     // process events before battle
-    void ProcessBattleEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    Book::Location ProcessBattleEvents(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
+        auto next = Book::Undefined;
+
         auto current = Story::CurrentBook.Find(party.Location);
 
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
@@ -332,9 +334,25 @@ namespace BloodSword::Interface
             for (auto &condition : section.BattleEvents)
             {
                 // ignore results
-                Conditions::Process(graphics, background, party, condition);
+                auto eval = Conditions::Process(graphics, background, party, condition);
+
+                if ((eval.Result && Book::IsDefined(condition.Location)) || (eval.Failed  && Book::IsDefined(condition.Failure)))
+                {
+                    if (eval.Failed)
+                    {
+                        next = condition.Failure;
+                    }
+                    else if (eval.Result)
+                    {
+                        next = condition.Location;
+                    }
+
+                    break;
+                }
             }
         }
+
+        return next;
     }
 
     // get next location (story jump)
@@ -353,13 +371,13 @@ namespace BloodSword::Interface
         if (section.BattleEvents.size() > 0 && !section.ProcessedBattleEvents)
         {
             // process this only once
-            Interface::ProcessBattleEvents(graphics, background, party);
+            next = Interface::ProcessBattleEvents(graphics, background, party);
 
             section.ProcessedBattleEvents = true;
         }
 
         // fight battle
-        if (Engine::IsAlive(party) && section.Battle.IsDefined())
+        if (Engine::IsAlive(party) && section.Battle.IsDefined() && Book::IsUndefined(next))
         {
             Interface::LogSectionHeader("BATTLE", section.Location);
 
@@ -384,7 +402,7 @@ namespace BloodSword::Interface
             }
         }
 
-        if (Engine::IsAlive(party) && !exit_battle)
+        if (Engine::IsAlive(party) && !exit_battle && Book::IsUndefined(next))
         {
             if (section.Next.size() > 0)
             {

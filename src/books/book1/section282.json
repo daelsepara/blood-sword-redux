@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 282
+    },
+    "text": "(SAGE) The power of LEVITATION is perhaps the most difficult of all your psionic disciplines. It requires you to realise the unreality of mass and wieght, which is no easy thing when one is surrounded by the physical world. You clear your mind, reaching towards the perfect understanding of Enlightenment.",
+    "features": [
+        "TASK",
+        "TASK SAGE"
+    ],
+    "choices": [
+        {
+            "text": "You desire your foe's death above all else",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 534
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "You feel that victory and defeat are in fact equivalent",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 173
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        }
+    ]
+}

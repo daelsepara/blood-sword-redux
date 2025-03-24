@@ -1,0 +1,61 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 373
+    },
+    "text": "(SAGE) You make up your mind to risk passing under the waterfall. It is cold, but refreshingly so. However, it is obviously imbued with baneful sorcery because when you emerge on the far side you find you have lost all your possessions.\n\nAt the same time you advance on to the bridge, a portly figure steps on to it at the far end and, hitching up his long tunic, plods quickly along the slender walkway to confront you. \"Greetings,\" he says breathlessly. \"I am Theodoric, an Initiate of the Mystic Way of the Eye Unveiled. I am here to establish the superiority and innate truth of my own mistic order above all others by defeating you.\"\n\n\"Nothing is true, everything is permitted,\" you tell him, quoting the southern Ta'ashim texts. \"Therefore, if you will permit me to pass, nothing will happen that you might truly regret.\"\n\n\"Why, this is heresy!\" blusters the portly Initiate. \"Blasphemy! Sacrilege! Your words offend my inner soul, and thus -- prepare yourself for death.\"\n\n\"I am prepared for death,\" you reply softly. \"But I do not think he will come for me just yet.\"\n\nYou easily evade his first clumsy blow.",
+    "features": [
+        "TASK",
+        "TASK SAGE"
+    ],
+    "events": [
+        {
+            "type": "TASK",
+            "variables": [
+                "SAGE",
+                "CROSSED BRIDGED",
+                "SET",
+                "PROGRESS",
+                ""
+            ]
+        },
+        {
+            "type": "LOSE EVERYTHING",
+            "variables": [
+                "SAGE"
+            ]
+        }
+    ],
+    "battle_events": [
+        {
+            "type": "CONFIRM",
+            "location": {
+                "book": "BOOK1",
+                "number": 282
+            },
+            "variables": [
+                "Use power of LEVITATION to avoid this crazy foe?"
+            ]
+        }
+    ],
+    "battle": "battles/book1/battle373.json",
+    "next": [
+        {
+            "type": "TASK",
+            "variables": [
+                "SAGE",
+                "CROSSED BRIDGED",
+                "SET",
+                "COMPLETE",
+                ""
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 88
+            }
+        }
+    ]
+}

@@ -1,0 +1,28 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 104
+    },
+    "text": "(TRICKSTER) Unseen fingers grope at your backpack and belt as you pass through the waterfall. They are stealing from you -- a fact you realise too late when you emerge on the other side stripped of all your possessions.",
+    "features": [
+        "TASK",
+        "TASK TRICKSTER"
+    ],
+    "events": [
+        {
+            "type": "LOSE EVERYTHING",
+            "variables": [
+                "TRICKSTER"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 267
+            }
+        }
+    ]
+}

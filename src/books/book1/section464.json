@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 464
+    },
+    "text": "(TRICKSTER) You flip a coin, then decide to take the further bridge. Stepping into the waterfall, you feel a stange tingling across your skin as some fay sorcery seeps out of the cold water.",
+    "features": [
+        "TASK",
+        "TASK TRICKSTER"
+    ],
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 143
+            },
+            "failure": {
+                "book": "BOOK1",
+                "number": 104
+            },
+            "variables": [
+                "TRICKSTER",
+                "AWARENESS",
+                "YOU ARE CAUGHT UNAWARES"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,97 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 534
+    },
+    "text": "(SAGE) You strive too hard, and for that reason fail. You are still too firmly rooted in the physical reality of your surroundings when, a moment later, your foe takes advantage of your passive stance to shove you off the bridge. You plumment in the torrent below.",
+    "features": [
+        "TASK",
+        "TASK SAGE"
+    ],
+    "events": [
+        {
+            "type": "KILL PLAYER",
+            "variables": [
+                "SAGE"
+            ]
+        },
+        {
+            "type": "TASK",
+            "variables": [
+                "SAGE",
+                "CROSSED BRIDGED",
+                "SET",
+                "COMPLETE",
+                ""
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 478
+            },
+            "variables": [
+                "WARRIOR",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "WARRIOR has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 113
+            },
+            "variables": [
+                "TRICKSTER",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "TRICKSTER has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 252
+            },
+            "variables": [
+                "ENCHANTER",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "START",
+                "ENCHANTER has already crossed the bridge or died in the attempt"
+            ]
+        },
+        {
+            "type": "IN PARTY",
+            "location": {
+                "book": "BOOK1",
+                "number": 519
+            },
+            "variables": [
+                "OTHERS"
+            ]
+        },
+        {
+            "type": "TASK",
+            "location": {
+                "book": "BOOK1",
+                "number": 98
+            },
+            "variables": [
+                "ALL",
+                "CROSSED BRIDGED",
+                "CHECK",
+                "COMPLETE",
+                ""
+            ]
+        }
+    ]
+}
