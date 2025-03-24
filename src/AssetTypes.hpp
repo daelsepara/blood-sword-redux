@@ -153,7 +153,12 @@ namespace BloodSword::Asset
         STEEL_SCEPTRE,
         BEORN,
         KNIGHT,
-        NEMESIS
+        NEMESIS,
+        WATERFALL,
+        ROPE_BRIDGE,
+        ROPE_BRIDGE_INVERTED,
+        WAVES,
+        WAVE_CREST
     };
 
     template <typename T>
@@ -303,7 +308,12 @@ namespace BloodSword::Asset
         {Asset::Type::BEORN, "BEORN"},
         {Asset::Type::KNIGHT, "KNIGHT"},
         {Asset::Type::NEMESIS, "NEMESIS"},
-        {Asset::Type::PERSON, "PERSON"}};
+        {Asset::Type::PERSON, "PERSON"},
+        {Asset::Type::WATERFALL, "WATERFALL"},
+        {Asset::Type::ROPE_BRIDGE, "ROPE BRIDGE"},
+        {Asset::Type::ROPE_BRIDGE_INVERTED, "ROPE BRIDGE INVERTED"},
+        {Asset::Type::WAVES, "WAVES"},
+        {Asset::Type::WAVE_CREST, "WAVE CREST"}};
 
     Asset::Type Map(const char *asset)
     {

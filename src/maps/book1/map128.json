@@ -17,60 +17,118 @@
     "tiles": [
         [
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "ROPE BRIDGE INVERTED",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROPE BRIDGE INVERTED",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROPE BRIDGE INVERTED",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROPE BRIDGE INVERTED",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROPE BRIDGE INVERTED",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROPE BRIDGE INVERTED",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROPE BRIDGE INVERTED",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
             }
         ],
         [
@@ -249,176 +307,118 @@
         ],
         [
             {
-                "asset": "NONE",
+                "asset": "ROPE BRIDGE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROPE BRIDGE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROPE BRIDGE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROPE BRIDGE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROPE BRIDGE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROPE BRIDGE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROPE BRIDGE",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             }
         ],
         [
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "WAVE CREST",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            }
-        ],
-        [
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             }
         ]
     ],

@@ -521,8 +521,28 @@
             "path": "images/enemies/woman-elf-face.png"
         },
         {
-            "id": "PERSION",
+            "id": "PERSON",
             "path": "images/enemies/person.png"
+        },
+        {
+            "id": "WATERFALL",
+            "path": "images/map/waterfall.png"
+        },
+        {
+            "id": "ROPE BRIDGE",
+            "path": "images/map/rope-bridge.png"
+        },
+        {
+            "id": "ROPE BRIDGE INVERTED",
+            "path": "images/map/rope-bridge-inverted.png"
+        },
+        {
+            "id": "WAVES",
+            "path": "images/map/waves.png"
+        },
+        {
+            "id": "WAVE CREST",
+            "path": "images/map/wave-crest.png"
         }
     ]
 }

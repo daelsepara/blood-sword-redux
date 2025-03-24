@@ -17,12 +17,128 @@
     "tiles": [
         [
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "WATERFALL",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
             },
             {
                 "asset": "NONE",
@@ -75,12 +191,12 @@
         ],
         [
             {
-                "asset": "NONE",
+                "asset": "WATERFALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
                 "asset": "NONE",
@@ -133,12 +249,12 @@
         ],
         [
             {
-                "asset": "NONE",
+                "asset": "WATERFALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
                 "asset": "NONE",
@@ -191,234 +307,118 @@
         ],
         [
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             }
         ],
         [
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             },
             {
-                "asset": "NONE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
                 "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            }
-        ],
-        [
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            }
-        ],
-        [
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
-            },
-            {
-                "asset": "NONE",
-                "id": -1,
-                "lifetime": -1,
-                "occupant": "NONE",
-                "temporary_asset": "NONE",
-                "type": "PASSABLE"
+                "type": "OBSTACLE"
             }
         ]
     ],
