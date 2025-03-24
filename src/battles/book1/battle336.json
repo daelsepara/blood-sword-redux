@@ -12,7 +12,7 @@
         "opponents": {
             "members": [
                 {
-                    "asset": "ADVENTURER",
+                    "asset": "GEAR",
                     "attributes": [
                         {
                             "maximum": 6,

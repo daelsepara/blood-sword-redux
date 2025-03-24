@@ -543,6 +543,10 @@
         {
             "id": "WAVE CREST",
             "path": "images/map/wave-crest.png"
+        },
+        {
+            "id": "GEAR",
+            "path": "images/system/battle-gear.png"
         }
     ]
 }
