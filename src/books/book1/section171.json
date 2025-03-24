@@ -1,0 +1,43 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 171
+    },
+    "text": "(TRICKSTER) Horundus stalks forwards, sniffing the air and listending for your every moment. You find that an energy-barrier behind you cuts off any possibility of retreat, so you must face him in the death-duel he longs for.",
+    "features": [
+        "TASK",
+        "TASK TRICKSTER"
+    ],
+    "battle": "battles/book1/battle171.json",
+    "events": [
+        {
+            "type": "TASK",
+            "variables": [
+                "TRICKSTER",
+                "CROSSED BRIDGED",
+                "SET",
+                "PROGRESS",
+                ""
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TASK",
+            "variables": [
+                "TRICKSTER",
+                "CROSSED BRIDGED",
+                "SET",
+                "COMPLETE",
+                ""
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 88
+            }
+        }
+    ]
+}

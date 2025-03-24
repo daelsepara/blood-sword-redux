@@ -90,6 +90,21 @@ namespace BloodSword::Interface
                   << std::endl;
     }
 
+    void LogNoSpellTargets(Spells::Type spell)
+    {
+        std::cerr << "[SPELL] [" << Spells::TypeMapping[spell] << "] NO VALID TARGETS" << std::endl;
+    }
+
+    void LogSpellMissing(Spells::Type spell)
+    {
+        std::cerr << "[SPELL] [" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE!" << std::endl;
+    }
+
+    void LogSpellUnusable(Spells::Type spell)
+    {
+        std::cerr << "[SPELL] [" << Spells::TypeMapping[spell] << "] CANNOT BE USED IN BATTLE!" << std::endl;
+    }
+
     void LogAction(const char *action, Target::Type attacker, int id, Target::Type target, int target_id)
     {
         std::cerr << "["
@@ -1285,7 +1300,7 @@ namespace BloodSword::Interface
 
                 auto status = BloodSword::Find(Interface::SpellEffects, spell);
 
-                if (Engine::IsAlive(character) && status != Character::Status::NONE && !character.Has(status))
+                if (Engine::IsAlive(character) && (status == Character::Status::NONE || (status != Character::Status::NONE && !character.Has(status))))
                 {
                     target = i;
 
@@ -1435,7 +1450,6 @@ namespace BloodSword::Interface
                         {
                             if (targets.size() > 0)
                             {
-                                // filter spell targets further
                                 auto target = Interface::SelectSpellTargets(battle, party, targets, spell);
 
                                 if (target >= 0 && target < targets.size())
@@ -1450,9 +1464,25 @@ namespace BloodSword::Interface
 
                                     Interface::ResolveSpell(graphics, battle, scene, character, defender, target_id, spell);
                                 }
+                                else
+                                {
+                                    Interface::LogNoSpellTargets(spell);
+                                }
+                            }
+                            else
+                            {
+                                Interface::LogNoSpellTargets(spell);
                             }
                         }
                     }
+                    else
+                    {
+                        Interface::LogSpellUnusable(spell);
+                    }
+                }
+                else
+                {
+                    Interface::LogSpellMissing(spell);
                 }
             }
             else

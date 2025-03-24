@@ -1,0 +1,67 @@
+{
+    "battle": {
+        "conditions": [
+            "CANNOT FLEE",
+            "TRICKSTER AWAY",
+            "SAGE AWAY",
+            "ENCHANTER AWAY"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "maps/book1/map336.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "ENEMY",
+                    "attributes": [
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 1,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "item_limit": 10,
+                    "moves": 1000,
+                    "name": "YOUTH",
+                    "rank": 0,
+                    "shoot": "NONE",
+                    "target": "ENEMY"
+                }
+            ]
+        }
+    }
+}

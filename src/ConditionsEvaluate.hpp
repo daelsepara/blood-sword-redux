@@ -3038,7 +3038,7 @@ namespace BloodSword::Conditions
 
                                 auto armour = current.Items[i].Is(Item::Property::ARMOUR);
 
-                                if ((equipped || cannot_drop) && (weapon || armour))
+                                if ((equipped || cannot_drop) || (!weapon && !armour))
                                 {
                                     items.push_back(current.Items[i]);
                                 }

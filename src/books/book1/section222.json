@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 222
+    },
+    "text": "(TRICKSTER) \"Dearest foe?\" you reply, feigning astonishment. \"This may be your understanding of our relationship, Hurondus, but it is not mine. Candidly, I slew you only by accident and have no recollection of our ever having met before that time. Certainly, Wenneba the Prophetess was a far deadlier enemy of mine than you were. Also Guthar Redbeard. Oh, and Laktan of Crescentium. And then there was --\"\n\nHurondus has heard enough. He gives a furious bellow and charges down the bridge towards you, thrusting his sword forwards like a lance.\n\nYou must time your next action perfectly.",
+    "features": [
+        "TASK",
+        "TASK TRICKSTER"
+    ],
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 337
+            },
+            "failure": {
+                "book": "BOOK1",
+                "number": 449
+            },
+            "variables": [
+                "TRICKSTER",
+                "AWARENESS",
+                "YOU HAVE FAILED IN TIMING IT PERFECTLY!"
+            ]
+        }
+    ]
+}
