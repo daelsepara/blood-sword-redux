@@ -56,7 +56,14 @@ namespace BloodSword::Conditions
             std::cerr << ", [TEXT] " << text;
         }
 
-        std::cerr << ")" << std::endl;
+        std::cerr << ")";
+
+        if (condition.Invert)
+        {
+            std::cerr << " [INVERTED]";
+        }
+
+        std::cerr << std::endl;
     }
 
     // routine to validate "condition"
