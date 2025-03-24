@@ -526,6 +526,15 @@ namespace BloodSword::Interface
             id++;
         }
 
+        // inventory management and hotpost
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::INVENTORY), buttons.X + num_buttons * button_spacing, buttons.Y));
+
+        overlay.Add(Controls::Base(Controls::Type::INVENTORY, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        num_buttons++;
+
+        id++;
+
         // game functions
         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::GAME), buttons.X + num_buttons * button_spacing, buttons.Y));
 
@@ -1133,6 +1142,61 @@ namespace BloodSword::Interface
         }
     }
 
+    // story controls
+    void SetupControls(Scene::Base &overlay, Section::Base &section, Party::Base &party, SDL_Texture *image, Point origin, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
+    {
+        if (section.Has(Feature::Type::ENDING) || !Engine::IsAlive(party))
+        {
+            // section is an ending and/or entire party has been incapacitated
+            Interface::EndingControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+        }
+        else if (section.Has(Feature::Type::TASK))
+        {
+            // section is party of a class-specific task
+            auto character = Character::Class::NONE;
+
+            if (section.Has(Feature::Type::TASK_WARRIOR))
+            {
+                character = Character::Class::WARRIOR;
+            }
+            else if (section.Has(Feature::Type::TASK_TRICKSTER))
+            {
+                character = Character::Class::TRICKSTER;
+            }
+            else if (section.Has(Feature::Type::TASK_SAGE))
+            {
+                character = Character::Class::SAGE;
+            }
+            else if (section.Has(Feature::Type::TASK_ENCHANTER))
+            {
+                character = Character::Class::ENCHANTER;
+            }
+
+            Interface::TaskControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn, character);
+
+            if (section.ImageAsset.length() == 0)
+            {
+                Interface::InventoryControls(overlay, party, image, origin);
+            }
+        }
+        else if (section.Has(Feature::Type::ITEM_EFFECT))
+        {
+            // section is an item effect
+            Interface::ItemControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+        }
+        else
+        {
+            // default
+            Interface::StoryControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
+
+            if (section.ImageAsset.length() == 0)
+            {
+                // setup character inventories
+                Interface::InventoryControls(overlay, party, image, origin);
+            }
+        }
+    }
+
     // render story section
     Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, std::string &text)
     {
@@ -1268,46 +1332,7 @@ namespace BloodSword::Interface
             auto arrow_dn = text_h < texture_h && offset < (texture_h - text_h);
 
             // add story controls
-            if (section.Has(Feature::Type::ENDING) || !Engine::IsAlive(party))
-            {
-                Interface::EndingControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
-            }
-            else if (section.Has(Feature::Type::TASK))
-            {
-                auto character = Character::Class::NONE;
-
-                if (section.Has(Feature::Type::TASK_WARRIOR))
-                {
-                    character = Character::Class::WARRIOR;
-                }
-                else if (section.Has(Feature::Type::TASK_TRICKSTER))
-                {
-                    character = Character::Class::TRICKSTER;
-                }
-                else if (section.Has(Feature::Type::TASK_SAGE))
-                {
-                    character = Character::Class::SAGE;
-                }
-                else if (section.Has(Feature::Type::TASK_ENCHANTER))
-                {
-                    character = Character::Class::ENCHANTER;
-                }
-
-                Interface::TaskControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn, character);
-            }
-            else if (section.Has(Feature::Type::ITEM_EFFECT))
-            {
-                Interface::ItemControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
-            }
-            else
-            {
-                Interface::StoryControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
-
-                if (section.ImageAsset.length() == 0)
-                {
-                    Interface::InventoryControls(overlay, party, image, origin);
-                }
-            }
+            Interface::SetupControls(overlay, section, party, image, origin, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
 
             if (scroll_up)
             {
@@ -1436,7 +1461,38 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::INVENTORY)
                 {
-                    auto update = Interface::ManageInventory(graphics, overlay, party, true);
+                    Interface::ItemResult update;
+
+                    if (section.Has(Feature::Type::TASK))
+                    {
+                        auto character = Character::Class::NONE;
+
+                        if (section.Has(Feature::Type::TASK_WARRIOR))
+                        {
+                            character = Character::Class::WARRIOR;
+                        }
+                        else if (section.Has(Feature::Type::TASK_TRICKSTER))
+                        {
+                            character = Character::Class::TRICKSTER;
+                        }
+                        else if (section.Has(Feature::Type::TASK_SAGE))
+                        {
+                            character = Character::Class::SAGE;
+                        }
+                        else if (section.Has(Feature::Type::TASK_ENCHANTER))
+                        {
+                            character = Character::Class::ENCHANTER;
+                        }
+
+                        if (character != Character::Class::NONE)
+                        {
+                            update = Interface::ManageInventory(graphics, overlay, party, character, true);
+                        }
+                    }
+                    else
+                    {
+                        update = Interface::ManageInventory(graphics, overlay, party, true);
+                    }
 
                     if (update.Update && section.ImageAsset.empty())
                     {
@@ -1463,28 +1519,59 @@ namespace BloodSword::Interface
 
                     if (character != Character::Class::NONE && party.Has(character))
                     {
-                        if (Engine::IsAlive(party[character]))
+                        auto in_task = Character::Class::NONE;
+
+                        if (section.Has(Feature::Type::TASK))
                         {
-                            auto update = Interface::ManageInventory(graphics, overlay, party, party[character], true);
-
-                            if (update.Update && section.ImageAsset.empty())
+                            if (section.Has(Feature::Type::TASK_WARRIOR))
                             {
-                                BloodSword::Free(&image);
-
-                                // regenerate party stats
-                                image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                                in_task = Character::Class::WARRIOR;
                             }
-
-                            if (Book::IsDefined(update.Next))
+                            else if (section.Has(Feature::Type::TASK_TRICKSTER))
                             {
-                                next = update.Next;
-
-                                done = true;
+                                in_task = Character::Class::TRICKSTER;
+                            }
+                            else if (section.Has(Feature::Type::TASK_SAGE))
+                            {
+                                in_task = Character::Class::SAGE;
+                            }
+                            else if (section.Has(Feature::Type::TASK_ENCHANTER))
+                            {
+                                in_task = Character::Class::ENCHANTER;
                             }
                         }
-                        else
+
+                        if (in_task == Character::Class::NONE || (in_task != Character::Class::NONE && character == in_task))
                         {
-                            Interface::MessageBox(graphics, overlay, Engine::IsDead(party[character]), Color::Highlight);
+                            if (Engine::IsAlive(party[character]))
+                            {
+                                auto update = Interface::ManageInventory(graphics, overlay, party, party[character], true);
+
+                                if (update.Update && section.ImageAsset.empty())
+                                {
+                                    BloodSword::Free(&image);
+
+                                    // regenerate party stats
+                                    image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                                }
+
+                                if (Book::IsDefined(update.Next))
+                                {
+                                    next = update.Next;
+
+                                    done = true;
+                                }
+                            }
+                            else
+                            {
+                                Interface::MessageBox(graphics, overlay, Engine::IsDead(party[character]), Color::Highlight);
+                            }
+                        }
+                        else if (in_task != Character::Class::NONE && character != in_task)
+                        {
+                            std::string message = party[character].Name + " IS AWAY";
+
+                            Interface::MessageBox(graphics, overlay, message, Color::Highlight);
                         }
                     }
 

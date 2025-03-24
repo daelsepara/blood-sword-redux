@@ -4,6 +4,19 @@
         "number": 426
     },
     "text": "(SAGE) Which of the bridges do you cross?",
+    "features": [
+        "TASK",
+        "TASK SAGE"
+    ],
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "SAGE",
+                "TASK"
+            ]
+        }
+    ],
     "choices": [
         {
             "text": "Pass through the waterfall",

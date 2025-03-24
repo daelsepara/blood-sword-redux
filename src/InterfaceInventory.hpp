@@ -119,7 +119,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1)
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1 && !character.Has(Character::Status::TASK))
             {
                 // money
                 assets.push_back(Asset::Type::MONEY);
@@ -131,7 +131,7 @@ namespace BloodSword::Interface
                 captions.push_back(gold_string);
             }
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1)
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1 && !character.Has(Character::Status::TASK))
             {
                 // money
                 assets.push_back(Asset::Type::QUIVER);
@@ -143,7 +143,7 @@ namespace BloodSword::Interface
                 captions.push_back(arrow_string);
             }
 
-            if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
+            if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE) && !character.Has(Character::Status::TASK))
             {
                 // trade
                 assets.push_back(Asset::Type::TRADE);
@@ -153,7 +153,7 @@ namespace BloodSword::Interface
                 captions.push_back("TRADE");
             }
 
-            if (!items[id].Has(Item::Property::CANNOT_DROP))
+            if (!items[id].Has(Item::Property::CANNOT_DROP) && !character.Has(Character::Status::TASK))
             {
                 assets.push_back(Asset::Type::DROP);
 
@@ -299,30 +299,39 @@ namespace BloodSword::Interface
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
-
-                                auto transfer_item = Item::Type::GOLD;
-
-                                auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
-
-                                if (transfer > 0)
+                                if (!party[other_character].Has(Character::Status::TASK))
                                 {
-                                    if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
+                                    std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
+
+                                    auto transfer_item = Item::Type::GOLD;
+
+                                    auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
+
+                                    if (transfer > 0)
                                     {
-                                        party[other_character].Add(transfer_item, transfer);
+                                        if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
+                                        {
+                                            party[other_character].Add(transfer_item, transfer);
 
-                                        character.Remove(transfer_item, transfer);
+                                            character.Remove(transfer_item, transfer);
 
-                                        done = true;
+                                            done = true;
 
-                                        exit = true;
+                                            exit = true;
 
-                                        update.Update = true;
+                                            update.Update = true;
+                                        }
+                                        else
+                                        {
+                                            Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
+                                        }
                                     }
-                                    else
-                                    {
-                                        Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
-                                    }
+                                }
+                                else
+                                {
+                                    message = party[other_character].Name + " IS AWAY";
+
+                                    Interface::MessageBox(graphics, background, message, Color::Highlight);
                                 }
                             }
                         }
@@ -341,39 +350,48 @@ namespace BloodSword::Interface
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                if (party[other_character].Has(Item::Container(Item::Type::ARROW)))
+                                if (!party[other_character].Has(Character::Status::TASK))
                                 {
-                                    std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
-
-                                    auto transfer_item = Item::Type::ARROW;
-
-                                    auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Type::QUIVER, Asset::Type::UP, Asset::Type::DOWN);
-
-                                    if (transfer > 0)
+                                    if (party[other_character].Has(Item::Container(Item::Type::ARROW)))
                                     {
-                                        if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
+                                        std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
+
+                                        auto transfer_item = Item::Type::ARROW;
+
+                                        auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Type::QUIVER, Asset::Type::UP, Asset::Type::DOWN);
+
+                                        if (transfer > 0)
                                         {
-                                            party[other_character].Add(transfer_item, transfer);
+                                            if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
+                                            {
+                                                party[other_character].Add(transfer_item, transfer);
 
-                                            character.Remove(transfer_item, transfer);
+                                                character.Remove(transfer_item, transfer);
 
-                                            done = true;
+                                                done = true;
 
-                                            exit = true;
+                                                exit = true;
 
-                                            update.Update = true;
+                                                update.Update = true;
+                                            }
+                                            else
+                                            {
+                                                Interface::InternalError(graphics, background, std::string("Internal Error: ARROWS"));
+                                            }
                                         }
-                                        else
-                                        {
-                                            Interface::InternalError(graphics, background, std::string("Internal Error: ARROWS"));
-                                        }
+                                    }
+                                    else
+                                    {
+                                        std::string quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
+
+                                        Interface::MessageBox(graphics, background, quiver, Color::Highlight);
                                     }
                                 }
                                 else
                                 {
-                                    std::string quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
+                                    message = party[other_character].Name + " IS AWAY";
 
-                                    Interface::MessageBox(graphics, background, quiver, Color::Highlight);
+                                    Interface::MessageBox(graphics, background, message, Color::Highlight);
                                 }
                             }
                         }
@@ -392,13 +410,22 @@ namespace BloodSword::Interface
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                update.Update = items[id].Has(Item::Property::EQUIPPED);
-
-                                done = Interface::TransferItem(graphics, background, party[other_character], items, id);
-
-                                if (done)
+                                if (!party[other_character].Has(Character::Status::TASK))
                                 {
-                                    exit = true;
+                                    update.Update = items[id].Has(Item::Property::EQUIPPED);
+
+                                    done = Interface::TransferItem(graphics, background, party[other_character], items, id);
+
+                                    if (done)
+                                    {
+                                        exit = true;
+                                    }
+                                }
+                                else
+                                {
+                                    message = party[other_character].Name + " IS AWAY";
+
+                                    Interface::MessageBox(graphics, background, message, Color::Highlight);
                                 }
                             }
                         }
@@ -1209,6 +1236,41 @@ namespace BloodSword::Interface
                 {
                     break;
                 }
+            }
+        }
+
+        return update;
+    }
+
+    Interface::ItemResult ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Class character, bool blur = true)
+    {
+        Interface::ItemResult update;
+
+        if (character != Character::Class::NONE)
+        {
+            if (party.Has(character))
+            {
+                if (Engine::IsAlive(party[character]))
+                {
+                    update = Interface::ManageInventory(graphics, background, party, party[character], blur);
+
+                    if (!Engine::IsAlive(party[character]))
+                    {
+                        update.Update = true;
+                    }
+                }
+                else
+                {
+                    auto message = Engine::IsDead(party[character]);
+
+                    Interface::MessageBox(graphics, background, message, Color::Highlight);
+                }
+            }
+            else
+            {
+                auto message = Engine::NotInParty(character);
+
+                Interface::MessageBox(graphics, background, message, Color::Highlight);
             }
         }
 

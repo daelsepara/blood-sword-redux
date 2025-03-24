@@ -4,6 +4,19 @@
         "number": 252
     },
     "text": "(ENCHANTER) You can cross the gorge by either of the two bridges. To reach the further bridge, however, you would have to step through the waterfall.",
+    "features": [
+        "TASK",
+        "TASK ENCHANTER"
+    ],
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "ENCHANTER",
+                "TASK"
+            ]
+        }
+    ],
     "choices": [
         {
             "text": "Use the nearer of the bridges",

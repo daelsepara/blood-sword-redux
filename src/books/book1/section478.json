@@ -4,6 +4,19 @@
         "number": 478
     },
     "text": "(WARRIOR) You are about to cross one of the bridges spanning the gorge. The bridges look identical.",
+    "features": [
+        "TASK",
+        "TASK WARRIOR"
+    ],
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "WARRIOR",
+                "TASK"
+            ]
+        }
+    ],
     "choices": [
         {
             "text": "Cross the bridge nearer to you",

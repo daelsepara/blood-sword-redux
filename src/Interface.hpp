@@ -3463,22 +3463,31 @@ namespace BloodSword::Interface
 
                                                 if (party[target].Value(Attribute::Type::ENDURANCE) > 0 && party[target].Value(Attribute::Type::ENDURANCE) < party[target].Maximum(Attribute::Type::ENDURANCE))
                                                 {
-                                                    std::string heal_string = "HEAL " + party[target].Name;
-
-                                                    auto max_healing = std::min(score, party[target].Maximum(Attribute::Type::ENDURANCE) - party[target].Value(Attribute::Type::ENDURANCE));
-
-                                                    // heal
-                                                    auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, max_healing, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
-
-                                                    if (heal > 0)
+                                                    if (!character.Has(Character::Status::TASK) || target == character.Class)
                                                     {
-                                                        // heal selected character
-                                                        Engine::GainEndurance(party[target], heal, false);
+                                                        std::string heal_string = "HEAL " + party[target].Name;
 
-                                                        Interface::Notify(graphics, background, Interface::MSG_HEALED);
+                                                        auto max_healing = std::min(score, party[target].Maximum(Attribute::Type::ENDURANCE) - party[target].Value(Attribute::Type::ENDURANCE));
+
+                                                        // heal
+                                                        auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, max_healing, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+
+                                                        if (heal > 0)
+                                                        {
+                                                            // heal selected character
+                                                            Engine::GainEndurance(party[target], heal, false);
+
+                                                            Interface::Notify(graphics, background, Interface::MSG_HEALED);
+                                                        }
+
+                                                        score -= heal;
                                                     }
+                                                    else
+                                                    {
+                                                        std::string message = party[target].Name + " IS AWAY";
 
-                                                    score -= heal;
+                                                        Interface::MessageBox(graphics, background, message, Color::Highlight);
+                                                    }
                                                 }
                                                 else if (!Engine::IsAlive(party[target]))
                                                 {
