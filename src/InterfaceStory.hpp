@@ -336,7 +336,7 @@ namespace BloodSword::Interface
                 // ignore results
                 auto eval = Conditions::Process(graphics, background, party, condition);
 
-                if ((eval.Result && Book::IsDefined(condition.Location)) || (eval.Failed  && Book::IsDefined(condition.Failure)))
+                if ((eval.Result && Book::IsDefined(condition.Location)) || (eval.Failed && Book::IsDefined(condition.Failure)))
                 {
                     if (eval.Failed)
                     {
@@ -479,8 +479,8 @@ namespace BloodSword::Interface
         return next;
     }
 
-    // when character is in a task
-    void TaskControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn, Character::Class character)
+    // when character is in a task / alone
+    void CharacterStoryControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn, Character::Class character)
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
@@ -1168,29 +1168,29 @@ namespace BloodSword::Interface
             // section is an ending and/or entire party has been incapacitated
             Interface::EndingControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
         }
-        else if (section.Has(Feature::Type::TASK))
+        else if (section.Has(Feature::Type::TASK) || section.Has(Feature::Type::ALONE))
         {
             // section is party of a class-specific task
             auto character = Character::Class::NONE;
 
-            if (section.Has(Feature::Type::TASK_WARRIOR))
+            if (section.Has(Feature::Type::TASK_WARRIOR) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
             {
                 character = Character::Class::WARRIOR;
             }
-            else if (section.Has(Feature::Type::TASK_TRICKSTER))
+            else if (section.Has(Feature::Type::TASK_TRICKSTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::TRICKSTER)
             {
                 character = Character::Class::TRICKSTER;
             }
-            else if (section.Has(Feature::Type::TASK_SAGE))
+            else if (section.Has(Feature::Type::TASK_SAGE) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::SAGE)
             {
                 character = Character::Class::SAGE;
             }
-            else if (section.Has(Feature::Type::TASK_ENCHANTER))
+            else if (section.Has(Feature::Type::TASK_ENCHANTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::ENCHANTER)
             {
                 character = Character::Class::ENCHANTER;
             }
 
-            Interface::TaskControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn, character);
+            Interface::CharacterStoryControls(party, overlay, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn, character);
 
             if (section.ImageAsset.length() == 0)
             {
@@ -1481,23 +1481,23 @@ namespace BloodSword::Interface
                 {
                     Interface::ItemResult update;
 
-                    if (section.Has(Feature::Type::TASK))
+                    if (section.Has(Feature::Type::TASK) || section.Has(Feature::Type::ALONE))
                     {
                         auto character = Character::Class::NONE;
 
-                        if (section.Has(Feature::Type::TASK_WARRIOR))
+                        if (section.Has(Feature::Type::TASK_WARRIOR) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
                         {
                             character = Character::Class::WARRIOR;
                         }
-                        else if (section.Has(Feature::Type::TASK_TRICKSTER))
+                        else if (section.Has(Feature::Type::TASK_TRICKSTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::TRICKSTER)
                         {
                             character = Character::Class::TRICKSTER;
                         }
-                        else if (section.Has(Feature::Type::TASK_SAGE))
+                        else if (section.Has(Feature::Type::TASK_SAGE) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::SAGE)
                         {
                             character = Character::Class::SAGE;
                         }
-                        else if (section.Has(Feature::Type::TASK_ENCHANTER))
+                        else if (section.Has(Feature::Type::TASK_ENCHANTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::ENCHANTER)
                         {
                             character = Character::Class::ENCHANTER;
                         }
@@ -1539,21 +1539,21 @@ namespace BloodSword::Interface
                     {
                         auto in_task = Character::Class::NONE;
 
-                        if (section.Has(Feature::Type::TASK))
+                        if (section.Has(Feature::Type::TASK) || section.Has(Feature::Type::ALONE))
                         {
-                            if (section.Has(Feature::Type::TASK_WARRIOR))
+                            if (section.Has(Feature::Type::TASK_WARRIOR) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
                             {
                                 in_task = Character::Class::WARRIOR;
                             }
-                            else if (section.Has(Feature::Type::TASK_TRICKSTER))
+                            else if (section.Has(Feature::Type::TASK_TRICKSTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
                             {
                                 in_task = Character::Class::TRICKSTER;
                             }
-                            else if (section.Has(Feature::Type::TASK_SAGE))
+                            else if (section.Has(Feature::Type::TASK_SAGE) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
                             {
                                 in_task = Character::Class::SAGE;
                             }
-                            else if (section.Has(Feature::Type::TASK_ENCHANTER))
+                            else if (section.Has(Feature::Type::TASK_ENCHANTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
                             {
                                 in_task = Character::Class::ENCHANTER;
                             }

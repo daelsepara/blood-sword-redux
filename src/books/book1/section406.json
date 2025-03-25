@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 406
+    },
+    "text": "You push open the door and peer inside. In a glimmer of soft candlelight you see a FIRE-BLACKENED SKULL resting on a plinth. The dust of the floor has been recently distrubed by footprints. You see no other exits.",
+    "choices": [
+        {
+            "text": "Stop and pick it up",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 38
+                },
+                "variables": [
+                    "FIRE-BLACKENED SKULL"
+                ]
+            }
+        },
+        {
+            "text": "Pass by and continue down the tunnel",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 249
+                }
+            }
+        }
+    ]
+}

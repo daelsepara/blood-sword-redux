@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 266
+    },
+    "text": "(SAGE) You can make some sense of of the sigils.\n\n[They include glyphs representing Knowledge and Power in the High Cabbandari script of  Krarth.]",
+    "choices": [
+        {
+            "text": "Go through the door",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 406
+                }
+            }
+        },
+        {
+            "text": "Pass by and continue down the tunnel",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 249
+                }
+            }
+        }
+    ]
+}

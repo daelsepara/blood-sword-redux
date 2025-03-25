@@ -1204,6 +1204,27 @@ namespace BloodSword::Engine
         return first;
     }
 
+    // returns index (in party) of first character with STATUS
+    int First(Party::Base &party, Character::Status status)
+    {
+        auto first = -1;
+
+        if (Engine::IsAlive(party))
+        {
+            for (auto i = 0; i < party.Count(); i++)
+            {
+                if (Engine::IsAlive(party[i]) && party[i].Has(status))
+                {
+                    first = i;
+
+                    break;
+                }
+            }
+        }
+
+        return first;
+    }
+
     // returns index (in party) of the last (battle order) live character
     int Last(Party::Base &party)
     {
@@ -1225,6 +1246,27 @@ namespace BloodSword::Engine
         return last;
     }
 
+    // returns index (in party) of last (battle order) of character with STATUS
+    int Last(Party::Base &party, Character::Status status)
+    {
+        auto last = -1;
+
+        if (Engine::IsAlive(party))
+        {
+            for (auto i = (party.Count() - 1); i >= 0; i--)
+            {
+                if (Engine::IsAlive(party[i]) && party[i].Has(status))
+                {
+                    last = i;
+
+                    break;
+                }
+            }
+        }
+
+        return last;
+    }
+
     // returns class of first live character in party
     Character::Class FirstClass(Party::Base &party)
     {
@@ -1233,10 +1275,26 @@ namespace BloodSword::Engine
         return character != -1 ? party[character].Class : Character::Class::NONE;
     }
 
+    // returns index (in party) of first character with STATUS
+    Character::Class FirstClass(Party::Base &party, Character::Status status)
+    {
+        auto character = Engine::First(party, status);
+
+        return character != -1 ? party[character].Class : Character::Class::NONE;
+    }
+
     // returns class of the last (battle order) live character
     Character::Class LastClass(Party::Base &party)
     {
         auto character = Engine::Last(party);
+
+        return character != -1 ? party[character].Class : Character::Class::NONE;
+    }
+
+    // returns index (in party) of last (battle order) of character with STATUS
+    Character::Class LastClass(Party::Base &party, Character::Status status)
+    {
+        auto character = Engine::Last(party, status);
 
         return character != -1 ? party[character].Class : Character::Class::NONE;
     }

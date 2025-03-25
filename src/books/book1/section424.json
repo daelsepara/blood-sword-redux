@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 424
+    },
+    "text": "You reach the door and fling it open, only to find that you are now standing right in front of three wiry assassins dressed in jet-black tunics and face maks. They are standing over the blood-drenched body of a warrior that it would appear they have just slain.",
+    "battle": "battles/book1/battle424.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 127
+            }
+        },
+        {
+            "type": "BATTLE FLEE",
+            "location": {
+                "book": "BOOK1",
+                "number": 354
+            }
+        }
+    ]
+}

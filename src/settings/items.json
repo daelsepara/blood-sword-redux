@@ -354,6 +354,15 @@
             "quantity": 1,
             "revealed": false,
             "type": "CHIMERA-SPITTLE"
+        },
+        {
+            "name": "FIRE-BLACKENED SKULL",
+            "properties": [
+                "CANNOT DROP",
+                "CANNOT TRADE"
+            ],
+            "quantity": 1,
+            "type": "FIRE-BLACKENED SKULL"
         }
     ]
 }

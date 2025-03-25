@@ -21,7 +21,8 @@ namespace BloodSword::Feature
         TASK_WARRIOR,
         TASK_TRICKSTER,
         TASK_SAGE,
-        TASK_ENCHANTER
+        TASK_ENCHANTER,
+        ALONE
     };
 
     BloodSword::Mapping<Feature::Type> TypeMapping = {
@@ -38,7 +39,8 @@ namespace BloodSword::Feature
         {Feature::Type::TASK_WARRIOR, "TASK WARRIOR"},
         {Feature::Type::TASK_TRICKSTER, "TASK TRICKSTER"},
         {Feature::Type::TASK_SAGE, "TASK SAGE"},
-        {Feature::Type::TASK_ENCHANTER, "TASK ENCHANTER"}};
+        {Feature::Type::TASK_ENCHANTER, "TASK ENCHANTER"},
+        {Feature::Type::ALONE, "ALONE"}};
 
     Feature::Type Map(const char *feature)
     {

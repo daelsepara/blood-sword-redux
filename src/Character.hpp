@@ -11,11 +11,12 @@
 #include "Attribute.hpp"
 #include "Book.hpp"
 #include "CharacterClasses.hpp"
+#include "CharacterStatus.hpp"
 #include "ControlTypes.hpp"
+#include "Target.hpp"
 #include "Item.hpp"
 #include "Skills.hpp"
 #include "Spells.hpp"
-#include "Templates.hpp"
 
 namespace BloodSword::Character
 {
