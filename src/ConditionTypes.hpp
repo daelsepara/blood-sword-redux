@@ -93,7 +93,8 @@ namespace BloodSword::Conditions
         TEST_DISCHARGE_ITEM,
         TASK,
         CONFIRM,
-        LOSE_EVERYTHING
+        LOSE_EVERYTHING,
+        TAKE_FROM_LIST
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -183,7 +184,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::TEST_DISCHARGE_ITEM, "TEST DISCHARGE ITEM"},
         {Conditions::Type::TASK, "TASK"},
         {Conditions::Type::CONFIRM, "CONFIRM"},
-        {Conditions::Type::LOSE_EVERYTHING, "LOSE EVERYTHING"}};
+        {Conditions::Type::LOSE_EVERYTHING, "LOSE EVERYTHING"},
+        {Conditions::Type::TAKE_FROM_LIST, "TAKE FROM LIST"}};
 
     Conditions::Type Map(const char *Conditions)
     {

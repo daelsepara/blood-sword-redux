@@ -546,6 +546,8 @@ namespace BloodSword::Items
     // default stats/properties for in-game items
     BloodSword::UnorderedMap<Item::Type, Item::Base> Defaults = {};
 
+    BloodSword::UnorderedMap<Item::Type, std::string> Descriptions = {};
+
     typedef std::vector<Item::Base> Inventory;
 
     typedef std::vector<Item::CardType> Deck;
@@ -754,9 +756,46 @@ namespace BloodSword::Items
         }
     }
 
+    void LoadDescriptions(const char *filename)
+    {
+        // clear global map
+        Items::Descriptions.clear();
+
+        std::ifstream file(filename);
+
+        if (file.good())
+        {
+            auto data = nlohmann::json::parse(file);
+
+            if (!data["descriptions"].is_null() && data["descriptions"].is_array() && data["descriptions"].size() > 0)
+            {
+                for (auto i = 0; i < data["descriptions"].size(); i++)
+                {
+                    auto item = !data["descriptions"][i]["item"].is_null() ? Item::Map(data["descriptions"][i]["item"]) : Item::Type::NONE;
+
+                    std::string description = !data["descriptions"][i]["description"].is_null() ? data["descriptions"][i]["description"] : "";
+
+                    if (item != Item::Type::NONE)
+                    {
+                        Items::Descriptions[item] = description;
+                    }
+                }
+
+                std::cerr << "[LOADED] " << Items::Descriptions.size() << " descriptions" << std::endl;
+            }
+
+            file.close();
+        }
+    }
+
     bool Found(Item::Type item)
     {
         return Items::Defaults.find(item) != Items::Defaults.end();
+    }
+
+    bool FoundDescription(Item::Type item)
+    {
+        return Items::Descriptions.find(item) != Items::Descriptions.end();
     }
 
     Items::Inventory::iterator Find(Items::Inventory &items, Item::Type container, Item::Type type)

@@ -2522,6 +2522,16 @@ namespace BloodSword::Interface
         }
     }
 
+    void ShowBookDescription(Graphics::Base &graphics, Scene::Base &background, Item::Type item)
+    {
+        if (item != Item::Type::NONE && Items::FoundDescription(item))
+        {
+            auto wrap = graphics.Width - BloodSword::TileSize * 8;
+
+            Interface::TextBox(graphics, background, Items::Descriptions[item], wrap);
+        }
+    }
+
     // draws a confirmation message box on screen
     bool Confirm(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {

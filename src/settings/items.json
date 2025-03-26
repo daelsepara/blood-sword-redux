@@ -363,6 +363,51 @@
             ],
             "quantity": 1,
             "type": "FIRE-BLACKENED SKULL"
+        },
+        {
+            "name": "SCROLL: INVISIBILITY",
+            "properties": [
+                "READABLE"
+            ],
+            "quantity": 1,
+            "type": "SCROLL: INVISIBILITY",
+            "revealed": true
+        },
+        {
+            "name": "SCROLL: HEALING",
+            "properties": [
+                "READABLE"
+            ],
+            "quantity": 1,
+            "type": "SCROLL: HEALING",
+            "revealed": true
+        },
+        {
+            "name": "SCROLL: ADJUST",
+            "properties": [
+                "READABLE"
+            ],
+            "quantity": 1,
+            "type": "SCROLL: ADJUST",
+            "revealed": true
+        },
+        {
+            "name": "SCROLL: TIME BLINK",
+            "properties": [
+                "READABLE"
+            ],
+            "quantity": 1,
+            "type": "SCROLL: TIME BLINK",
+            "revealed": true
+        },
+        {
+            "name": "SCROLL: PRECOGNITION",
+            "properties": [
+                "READABLE"
+            ],
+            "quantity": 1,
+            "type": "SCROLL: PRCOGNITION",
+            "revealed": true
         }
     ]
 }

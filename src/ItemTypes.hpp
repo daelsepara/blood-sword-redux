@@ -51,6 +51,11 @@ namespace BloodSword::Item
         BLUE_ICE_JEWEL,
         BRONZE_KNIFE,
         FIRE_BLACKENED_SKULL,
+        SCROLL_INVISIBILITY,
+        SCROLL_HEALING,
+        SCROLL_ADJUST,
+        SCROLL_TIME_BLINK,
+        SCROLL_PRECOGNITION
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -94,7 +99,12 @@ namespace BloodSword::Item
         {Item::Type::BIRCH_BARK_SCROLL, "BIRCH-BARK SCROLL"},
         {Item::Type::BLUE_ICE_JEWEL, "BLUE ICE JEWEL"},
         {Item::Type::BRONZE_KNIFE, "BRONZE KNIFE"},
-        {Item::Type::FIRE_BLACKENED_SKULL, "FIRE-BLACKENED SKULL"}};
+        {Item::Type::FIRE_BLACKENED_SKULL, "FIRE-BLACKENED SKULL"},
+        {Item::Type::SCROLL_INVISIBILITY, "SCROLL: INVISIBILITY"},
+        {Item::Type::SCROLL_HEALING, "SCROLL: HEALING"},
+        {Item::Type::SCROLL_ADJUST, "SCROLL: ADJUST"},
+        {Item::Type::SCROLL_TIME_BLINK, "SCROLL: TIME BLINK"},
+        {Item::Type::SCROLL_PRECOGNITION, "SCROLL: PRECOGNITION"}};
 
     Item::Type Map(const char *item)
     {

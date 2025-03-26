@@ -35,6 +35,9 @@ namespace BloodSword
             // load item defaults
             Items::LoadDefaults("settings/items.json");
 
+            // load item descriptions
+            Items::LoadDescriptions("settings/item-descriptions.json");
+
             Input::Flush();
         }
 
