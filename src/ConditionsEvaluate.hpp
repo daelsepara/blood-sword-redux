@@ -492,7 +492,7 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::SOLO)
         {
-            result = (party.Count() == 1);
+            result = (Engine::Count(party) == 1);
 
             if (result && condition.Variables.size() > 0)
             {
@@ -512,6 +512,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player (or ALL)
             // 1 - status
+            // 2 - TRUE/FALSE hide message (optional)
             if (condition.Variables.size() > 1)
             {
                 auto status = Character::MapStatus(condition.Variables[1]);
@@ -525,13 +526,16 @@ namespace BloodSword::Conditions
 
                         result = true;
 
-                        if (party.Count() > 1)
+                        if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
                         {
-                            text = "EVERYONE GAINS [" + std::string(Character::StatusMapping[status]) + "]";
-                        }
-                        else
-                        {
-                            text = "YOU GAIN [" + std::string(Character::StatusMapping[status]) + "]";
+                            if (Engine::Count(party) > 1)
+                            {
+                                text = "EVERYONE GAINS [" + std::string(Character::StatusMapping[status]) + "]";
+                            }
+                            else
+                            {
+                                text = "YOU GAIN [" + std::string(Character::StatusMapping[status]) + "]";
+                            }
                         }
 
                         internal_error = false;
@@ -559,7 +563,10 @@ namespace BloodSword::Conditions
                         {
                             party[character].Add(status);
 
-                            text = party[character].Name + " GAINS [" + Character::StatusMapping[status] + "]";
+                            if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
+                            {
+                                text = party[character].Name + " GAINS [" + Character::StatusMapping[status] + "]";
+                            }
                         }
 
                         internal_error = false;
@@ -574,6 +581,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player (or ALL)
             // 1 - status
+            // 2 - TRUE/FALSE hide message (optional)
             if (condition.Variables.size() > 1)
             {
                 auto status = Character::MapStatus(condition.Variables[1]);
@@ -589,13 +597,16 @@ namespace BloodSword::Conditions
 
                             result = true;
 
-                            if (party.Count() > 1)
+                            if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
                             {
-                                text = "EVERYONE LOSES [" + std::string(Character::StatusMapping[status]) + "]";
-                            }
-                            else
-                            {
-                                text = "YOU LOSE [" + std::string(Character::StatusMapping[status]) + "]";
+                                if (Engine::Count(party) > 1)
+                                {
+                                    text = "EVERYONE LOSES [" + std::string(Character::StatusMapping[status]) + "]";
+                                }
+                                else
+                                {
+                                    text = "YOU LOSE [" + std::string(Character::StatusMapping[status]) + "]";
+                                }
                             }
                         }
 
@@ -624,7 +635,10 @@ namespace BloodSword::Conditions
                         {
                             party[character].Remove(status);
 
-                            text = party[character].Name + " LOSES [" + Character::StatusMapping[status] + "]";
+                            if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
+                            {
+                                text = party[character].Name + " LOSES [" + Character::StatusMapping[status] + "]";
+                            }
                         }
 
                         internal_error = false;
@@ -2381,6 +2395,9 @@ namespace BloodSword::Conditions
 
                         if (Interface::CanReceive(party[character]))
                         {
+                            // preserve choice
+                            party.ChosenCharacter = character;
+
                             party[character].Add(Items::Defaults[item]);
 
                             text = party[character].Name + " TAKES THE " + Item::TypeMapping[item] + ".";
@@ -3187,6 +3204,61 @@ namespace BloodSword::Conditions
                 else
                 {
                     text = Interface::DeathMessage(party);
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::TAKE_FROM_LIST)
+        {
+            // variables
+            // 0 - player
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))
+                {
+                    Items::List items = {};
+
+                    for (auto i = 1; i < condition.Variables.size(); i++)
+                    {
+                        auto item = Item::Map(condition.Variables[i]);
+
+                        if (item != Item::Type::NONE)
+                        {
+                            items.push_back(item);
+                        }
+                    }
+
+                    if (items.size() > 0)
+                    {
+                        Interface::TakeFromInfiniteList(graphics, background, party, character, items, true);
+
+                        result = true;
+                    }
+                    else
+                    {
+                        internal_error = true;
+                    }
+                }
+                else if (!party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (!Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
+                }
+                else
+                {
+                    internal_error = true;
                 }
             }
             else if (!Engine::IsAlive(party))

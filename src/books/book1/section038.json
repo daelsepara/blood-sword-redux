@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 38
+    },
+    "text": "The moment you lift the SKULL, its empty eye-sockets seem to glare at you, and the outlines of the room wash away like a watercoulour in the rain. Suddenly you find yourself standing alone in a room filled with scrolls. The SKULL is no longer in your hands, but rests on an oak table beside you.",
+    "features": [
+        "ALONE"
+    ],
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "CHOSEN",
+                "ALONE",
+                "TRUE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TAKE FROM LIST",
+            "variables": [
+                "CHOSEN",
+                "SCROLL: INVISIBILITY",
+                "SCROLL: HEALING",
+                "SCROLL: ADJUST",
+                "SCROLL: TIME BLINK",
+                "SCROLL: PRCOGNITION"
+            ]
+        },
+        {
+            "type": "LOSE STATUS",
+            "variables": [
+                "CHOSEN",
+                "ALONE",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "DROP ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 97
+            },
+            "variables": [
+                "CHOSEN",
+                "FIRE-BLACKENED SKULL"
+            ]
+        }
+    ]
+}

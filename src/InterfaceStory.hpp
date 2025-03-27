@@ -1545,15 +1545,15 @@ namespace BloodSword::Interface
                             {
                                 in_task = Character::Class::WARRIOR;
                             }
-                            else if (section.Has(Feature::Type::TASK_TRICKSTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
+                            else if (section.Has(Feature::Type::TASK_TRICKSTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::TRICKSTER)
                             {
                                 in_task = Character::Class::TRICKSTER;
                             }
-                            else if (section.Has(Feature::Type::TASK_SAGE) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
+                            else if (section.Has(Feature::Type::TASK_SAGE) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::SAGE)
                             {
                                 in_task = Character::Class::SAGE;
                             }
-                            else if (section.Has(Feature::Type::TASK_ENCHANTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::WARRIOR)
+                            else if (section.Has(Feature::Type::TASK_ENCHANTER) || Engine::FirstClass(party, Character::Status::ALONE) == Character::Class::ENCHANTER)
                             {
                                 in_task = Character::Class::ENCHANTER;
                             }

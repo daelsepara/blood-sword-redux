@@ -2626,6 +2626,55 @@ namespace BloodSword::Interface
         return Interface::Confirm(graphics, scene, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), background, border, border_size, highlight, blur);
     }
 
+    // draws a confirm text box message over a scene
+    bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, int wrap, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
+    {
+        auto result = false;
+
+        auto texture = Graphics::CreateText(graphics, message, font, color, style, wrap);
+
+        if (texture)
+        {
+            auto text_w = 0;
+
+            auto text_h = 0;
+
+            BloodSword::Size(texture, &text_w, &text_h);
+
+            text_w += BloodSword::Pad * 2;
+
+            text_h += BloodSword::Pad * 3 + BloodSword::TileSize;
+
+            auto origin = Point(graphics.Width - text_w, graphics.Height - text_h) / 2;
+
+            result = Interface::Confirm(graphics, scene, origin, text_w, text_h, texture, background, border, border_size, highlight, blur);
+
+            BloodSword::Free(&texture);
+        }
+
+        return result;
+    }
+
+    bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap)
+    {
+        return Interface::TextBoxConfirm(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+    }
+
+    bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap)
+    {
+        return Interface::TextBoxConfirm(graphics, scene, message.c_str(), wrap);
+    }
+
+    bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap)
+    {
+        return Interface::TextBoxConfirm(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, true);
+    }
+
+    bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap)
+    {
+        return Interface::TextBoxConfirm(graphics, scene, message.c_str(), border, wrap);
+    }
+
     // focus cursor on character on the map
     void Focus(Map::Base &map, Engine::Queue &order, int &character, Scene::Base &overlay)
     {
@@ -4151,70 +4200,6 @@ namespace BloodSword::Interface
         }
     }
 
-    // take (default) items
-    void TakeItems(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type item, Asset::Type asset, int limit = Item::Unlimited)
-    {
-        if (Engine::IsAlive(party))
-        {
-            auto done = false;
-
-            auto items_left = limit;
-
-            if (Items::Found(item))
-            {
-                while (!done || (limit != Item::Unlimited && items_left > 0))
-                {
-                    auto taker = Engine::FirstClass(party);
-
-                    if (Engine::Count(party) > 1)
-                    {
-                        std::string message = "WHO IS TAKING THE " + Items::Defaults[item].Name + ((limit == Items::Unlimited || items_left > 1) ? "S?" : "?");
-
-                        taker = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
-                    }
-
-                    if (taker != Character::Class::NONE)
-                    {
-                        auto max_take = (limit != Item::Unlimited) ? items_left : party[taker].SpaceLeft();
-
-                        std::string message = "HOW MANY " + Items::Defaults[item].Name + (items_left > 1 ? "S" : "") + " TO TAKE?";
-
-                        auto taken = Interface::GetNumber(graphics, background, message.c_str(), 0, std::min(max_take, party[taker].SpaceLeft()), asset, Asset::Type::UP, Asset::Type::DOWN);
-
-                        if (taken > 0)
-                        {
-                            for (auto i = 0; i < taken; i++)
-                            {
-                                party[taker].Add(Items::Defaults[item]);
-                            }
-
-                            if (limit != Item::Unlimited)
-                            {
-                                items_left -= taken;
-                            }
-                        }
-                    }
-
-                    if (Engine::Count(party) == 1 || taker == Character::Class::NONE || items_left == 0)
-                    {
-                        if (Interface::Confirm(graphics, background, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
-                        {
-                            done = true;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                Interface::InternalError(graphics, background, "Internal Error: ITEM NOT FOUND");
-            }
-        }
-        else
-        {
-            Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
-        }
-    }
-
     // change battle order
     bool BattleOrder(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
@@ -4488,6 +4473,275 @@ namespace BloodSword::Interface
         }
 
         return ok;
+    }
+
+    // take (default) items
+    void TakeItems(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type item, Asset::Type asset, int limit = Item::Unlimited)
+    {
+        if (Engine::IsAlive(party))
+        {
+            auto done = false;
+
+            auto items_left = limit;
+
+            if (Items::Found(item))
+            {
+                while (!done || (limit != Item::Unlimited && items_left > 0))
+                {
+                    auto taker = Engine::FirstClass(party);
+
+                    if (Engine::Count(party) > 1)
+                    {
+                        std::string message = "WHO IS TAKING THE " + Items::Defaults[item].Name + ((limit == Items::Unlimited || items_left > 1) ? "S?" : "?");
+
+                        taker = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
+                    }
+
+                    if (taker != Character::Class::NONE)
+                    {
+                        auto max_take = (limit != Item::Unlimited) ? items_left : party[taker].SpaceLeft();
+
+                        std::string message = "HOW MANY " + Items::Defaults[item].Name + (items_left > 1 ? "S" : "") + " TO TAKE?";
+
+                        auto taken = Interface::GetNumber(graphics, background, message.c_str(), 0, std::min(max_take, party[taker].SpaceLeft()), asset, Asset::Type::UP, Asset::Type::DOWN);
+
+                        if (taken > 0)
+                        {
+                            for (auto i = 0; i < taken; i++)
+                            {
+                                party[taker].Add(Items::Defaults[item]);
+                            }
+
+                            if (limit != Item::Unlimited)
+                            {
+                                items_left -= taken;
+                            }
+                        }
+                    }
+
+                    if (Engine::Count(party) == 1 || taker == Character::Class::NONE || items_left == 0)
+                    {
+                        if (Interface::Confirm(graphics, background, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                        {
+                            done = true;
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Interface::InternalError(graphics, background, "Internal Error: ITEM NOT FOUND");
+            }
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
+        }
+    }
+
+    // take / read items. each item has an infinite amount of supply, similar to take food, take item
+    void TakeFromInfiniteList(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Class character, std::vector<Item::Type> items, bool blur = true)
+    {
+        if (character == Character::Class::NONE || items.size() == 0 || !party.Has(character) || !Engine::IsAlive(party[character]))
+        {
+            auto message = std::string();
+
+            if (character == Character::Class::NONE || items.size() == 0)
+            {
+                Interface::InternalError(graphics, background, std::string("Internal Error: TakeFromInfiniteList"));
+            }
+            else if (!party.Has(character))
+            {
+                message = Engine::NotInParty(character);
+            }
+            else if (!Engine::IsAlive(party[character]))
+            {
+                message = Engine::IsDead(party[character]);
+            }
+
+            Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+            return;
+        }
+
+        auto limit = std::min(4, int(items.size()));
+
+        auto start = 0;
+
+        auto last = start + limit;
+
+        auto options = int(items.size());
+
+        // wrap length
+        auto wrap = BloodSword::TileSize * 6;
+
+        auto text_list = Graphics::TextList();
+
+        for (auto &item : items)
+        {
+            std::string item_string = Item::TypeMapping[item];
+
+            text_list.push_back(Graphics::RichText(item_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
+        }
+
+        auto menu = Graphics::CreateText(graphics, text_list);
+
+        // default width
+        auto w = wrap;
+
+        // default height
+        auto h = BloodSword::TileSize;
+
+        // padding
+        auto pads = BloodSword::Pad * 2;
+
+        for (auto &item : menu)
+        {
+            w = std::max(BloodSword::Width(item) + pads, wrap);
+
+            h = std::max(BloodSword::Height(item) + pads, h);
+        }
+
+        auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+
+        auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto frame_x = x - BloodSword::HalfTile;
+
+        auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
+
+        auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+
+        auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+
+        while (!done)
+        {
+            auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
+
+            // add frame at the back
+            overlay.Elements.insert(overlay.Elements.begin(), Scene::Element(frame_x, frame_y, frame_w, frame_h, Color::Background, Color::Active, BloodSword::Border));
+
+            auto &lastControl = overlay.Controls.back();
+
+            auto id = lastControl.Id + 1;
+
+            auto first = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+            auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
+
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+
+            overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            if (input.Up)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
+
+                input.Up = false;
+            }
+            else if (input.Down)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
+
+                input.Down = false;
+            }
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (start > 0)
+                    {
+                        start -= 1;
+
+                        if (start < 0)
+                        {
+                            start = 0;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (options - last > 0)
+                    {
+                        if (start < options - limit)
+                        {
+                            start += 1;
+                        }
+
+                        if (start > options - limit)
+                        {
+                            start = options - limit;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Down = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::CHOICE)
+                {
+                    auto list = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                    auto choice = start + (input.Current - list);
+
+                    if (choice >= 0 && choice < items.size())
+                    {
+                        // Take / Info
+                        if (Items::FoundDescription(items[choice]) && Items::Found(items[choice]))
+                        {
+                            auto text = Items::Defaults[items[choice]].Name + "\n\n" + Items::Descriptions[items[choice]];
+
+                            if (Interface::TextBoxConfirm(graphics, background, text, Color::Active, BloodSword::TileSize * 8))
+                            {
+                                if (Interface::CanReceive(party[character]))
+                                {
+                                    party[character].Add(Items::Defaults[items[choice]]);
+
+                                    auto message = party[character].Name + " TAKES THE " + Item::TypeMapping[items[choice]] + ".";
+
+                                    Interface::MessageBox(graphics, background, message, Color::Active);
+                                }
+                                else
+                                {
+                                    Interface::ErrorMessage(graphics, background, MSG_FULL);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Interface::InternalError(graphics, background, std::string("Internal Error: TakeFromInfiniteList"));
+                        }
+                    }
+                }
+            }
+        }
+
+        BloodSword::Free(menu);
     }
 
     // deal random damage to character (display)

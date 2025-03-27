@@ -98,6 +98,10 @@ namespace BloodSword::Interface
                     {
                         Interface::ShowBookDescription(graphics, background, character.Items[id].Effects);
                     }
+                    else if (Items::FoundDescription(character.Items[id].Type))
+                    {
+                        Interface::ShowBookDescription(graphics, background, character.Items[id].Type);
+                    }
 
                     // process effects
                     Interface::ProcessEffects(graphics, background, character, id);
