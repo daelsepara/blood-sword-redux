@@ -187,7 +187,8 @@
                 "EDIBLE"
             ],
             "quantity": 1,
-            "type": "FOOD"
+            "type": "FOOD",
+            "revealed": true
         },
         {
             "contains": "CHARGE",

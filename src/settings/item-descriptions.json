@@ -2,23 +2,23 @@
     "descriptions": [
         {
             "item": "FOOD",
-            "description": "Heals 1 ENDURANCE."
+            "description": "Heals 1 ENDURANCE"
         },
         {
             "item": "SCROLL: INVISIBILITY",
-            "description": "When read during combat, this allows all players to take the FLEE option (if there is one) on the next round, without first having to move."
+            "description": "When read during combat, this allows all players to take the FLEE option (if there is one) on the next round, without first having to move"
         },
         {
             "item": "SCROLL: HEALING",
-            "description": "This can be read at any time. It restores 2-12 Endurance points to the player who reads it, up to his or her initial ENDURANCE maximum."
+            "description": "This can be read at any time. It restores 2-12 Endurance points to the player who reads it, up to his or her initial ENDURANCE maximum"
         },
         {
             "item": "SCROLL: ADJUST",
-            "description": "The player who reads this can take one point from FIGHTING PROWESS, AWARENESS, or PSYCHIC ABILITY and transfer it to another of those three attributes. The effect is permanent."
+            "description": "The player who reads this can take one point from FIGHTING PROWESS, AWARENESS, or PSYCHIC ABILITY and transfer it to another of those three attributes. The effect is permanent"
         },
         {
             "item": "SCROLL: TIME BLINK",
-            "description": "This can be read in combat, when it has the effect of returning time to the point when the combat started. The ENDURANCE of both player(s) and opponent(s) are restored to what they were at the start of the combat."
+            "description": "This can be read in combat, when it has the effect of returning time to the point when the combat started. The ENDURANCE of both player(s) and opponent(s) are restored to what they were at the start of the combat"
         },
         {
             "item": "SCROLL: PRECOGNITION",

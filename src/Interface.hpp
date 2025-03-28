@@ -447,24 +447,24 @@ namespace BloodSword::Interface
         }
     }
 
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap)
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap, bool blur = true)
     {
-        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, blur);
     }
 
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap)
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap, bool blur = true)
     {
-        Interface::TextBox(graphics, scene, message.c_str(), wrap);
+        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, blur);
     }
 
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap)
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap, bool blur = true)
     {
-        Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, true);
+        Interface::TextBox(graphics, scene, message.c_str(), border, wrap, blur);
     }
 
-    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap)
+    void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap, bool blur = true)
     {
-        Interface::TextBox(graphics, scene, message.c_str(), border, wrap);
+        Interface::TextBox(graphics, scene, message, Color::Active, wrap, blur);
     }
 
     // add map to the scene
@@ -2518,7 +2518,7 @@ namespace BloodSword::Interface
 
             auto wrap = graphics.Width - BloodSword::TileSize * 8;
 
-            Interface::TextBox(graphics, background, text_description, wrap);
+            Interface::TextBox(graphics, background, text_description, Color::Active, wrap);
         }
     }
 
@@ -2528,7 +2528,7 @@ namespace BloodSword::Interface
         {
             auto wrap = graphics.Width - BloodSword::TileSize * 8;
 
-            Interface::TextBox(graphics, background, Items::Descriptions[item], wrap);
+            Interface::TextBox(graphics, background, Items::Descriptions[item], Color::Active, wrap);
         }
     }
 
