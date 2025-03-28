@@ -1,6 +1,10 @@
 {
     "descriptions": [
         {
+            "item": "FOOD",
+            "description": "Heals 1 ENDURANCE."
+        },
+        {
             "item": "SCROLL: INVISIBILITY",
             "description": "When read during combat, this allows all players to take the FLEE option (if there is one) on the next round, without first having to move."
         },

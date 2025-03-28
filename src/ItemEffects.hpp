@@ -71,6 +71,27 @@ namespace BloodSword::Interface
                 Interface::MessageBox(graphics, background, message, Color::Inactive);
             }
         }
+        else if (item.Type == Item::Type::SCROLL_HEALING)
+        {
+            if (!Engine::Healed(character))
+            {
+                auto rolls = Engine::Roll(2, 0);
+
+                std::string message = "HEALED " + std::to_string(rolls.Sum) + " ENDURANCE";
+
+                Interface::MessageBox(graphics, background, message, Color::Active);
+
+                Engine::GainEndurance(character, rolls.Sum);
+
+                Interface::ConsumeItem(character, id);
+            }
+            else
+            {
+                std::string message = character.Name + " IS AT MAXIMUM ENDURANCE";
+
+                Interface::MessageBox(graphics, background, message, Color::Inactive);
+            }
+        }
     }
 
     void ItemEffects(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Item::Type item)
