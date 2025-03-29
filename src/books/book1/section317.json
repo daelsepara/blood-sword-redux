@@ -1,0 +1,21 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 317
+    },
+    "features": [
+        "ITEM EFFECT"
+    ],
+    "text": "You drink the liquid eagerly. Suddenly a burning sensation pierces your throat and your stomach as the liquid works its way down. The excruciating agony makes you black out before the acid eats its way right through you. You are dead.",
+    "next": [
+        {
+            "type": "ITEM EFFECT",
+            "variables": [
+                "BLACK LIQUID"
+            ]
+        },
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

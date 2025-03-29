@@ -1,0 +1,82 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 127
+    },
+    "text": "You slay the assassins. They have three daggers. Their SHURIKEN throwing-spikes are useless to you as you are not trained to use them.\n\nYou also find a vial of BLACK LIQUID.",
+    "items": [
+        {
+            "contains": "NONE",
+            "name": "SHURIKEN",
+            "quantity": 7,
+            "type": "SHURIKEN"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "contains": "NONE",
+            "effects": {
+                "book": "BOOK1",
+                "number": 317
+            },
+            "name": "VIAL OF BLACK LIQUID",
+            "properties": [
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "revealed": false,
+            "type": "BLACK LIQUID"
+        }
+    ],
+    "choices": [
+        {
+            "text": "(SAGE) Try to identify the PHIAL OF BLACK LIQUID",
+            "condition": {
+                "type": "IN PARTY WITH ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 463
+                },
+                "variables": [
+                    "SAGE",
+                    "BLACK LIQUID"
+                ]
+            }
+        },
+        {
+            "text": "Have a look around the room",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 236
+                }
+            }
+        }
+    ]
+}

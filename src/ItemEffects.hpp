@@ -54,6 +54,16 @@ namespace BloodSword::Interface
 
             Interface::ConsumeItem(character, id);
         }
+        else if (item.Type == Item::Type::BLACK_LIQUID)
+        {
+            auto message = Engine::IsDead(character);
+
+            Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+            character.Value(Attribute::Type::ENDURANCE, 0);
+
+            Interface::ConsumeItem(character, id);
+        }
         else if (item.Type == Item::Type::FOOD)
         {
             if (!Engine::Healed(character))

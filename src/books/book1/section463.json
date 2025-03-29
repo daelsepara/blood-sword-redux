@@ -1,0 +1,31 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 463
+    },
+    "text": "(SAGE) You identify the liquid inside the phial as a deadly poison. Anyone drinking it will be automaticall killed, and there is no antidote.",
+    "events": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "ALL",
+                "BLACK LIQUID"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "variables": [
+                "You quickly throw the phial to the floor, smashing it."
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 236
+            }
+        }
+    ]
+}

@@ -409,6 +409,29 @@
             "quantity": 1,
             "type": "SCROLL: PRCOGNITION",
             "revealed": true
+        },
+        {
+            "contains": "NONE",
+            "effects": {
+                "book": "BOOK1",
+                "number": 317
+            },
+            "name": "VIAL OF BLACK LIQUID",
+            "properties": [
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "revealed": false,
+            "type": "BLACK LIQUID"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
         }
     ]
 }
