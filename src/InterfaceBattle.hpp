@@ -2698,6 +2698,9 @@ namespace BloodSword::Interface
                 // start with current character
                 battle.Combatant = 0;
 
+                // save current map/party/opponents this round
+                battle.SaveRound(party);
+
                 while (!battle.NextRound && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !battle.ExitBattle)
                 {
                     // move to next round

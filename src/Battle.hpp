@@ -158,6 +158,15 @@ namespace BloodSword::Battle
         // internal: end current combatant's turn
         bool EndTurn = false;
 
+        // internal: battle map
+        Map::Base RoundMap;
+
+        // internal: enemy combatants
+        Party::Base RoundOpponents;
+
+        // internal: party
+        Party::Base RoundParty;
+
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}
@@ -191,6 +200,15 @@ namespace BloodSword::Battle
         bool IsDefined()
         {
             return (this->Opponents.Count() > 0 || Book::IsDefined(this->Survivors) || this->Has(Battle::Condition::LAST_BATTLE)) && Map.IsValid();
+        }
+
+        void SaveRound(Party::Base &party)
+        {
+            this->RoundOpponents = this->Opponents;
+
+            this->RoundMap = this->Map;
+
+            this->RoundParty = party;
         }
 
         // initialize battle from data
