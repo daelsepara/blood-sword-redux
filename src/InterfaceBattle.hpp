@@ -944,9 +944,9 @@ namespace BloodSword::Interface
     }
 
     // helper function (next character in battle order)
-    bool NextCharacter(Battle::Base &battle, Scene::Base &scene, Party::Base &party, Engine::Queue &order, int &combatant, Controls::User &input, bool &endturn)
+    bool NextCharacter(Battle::Base &battle, Scene::Base &scene, Party::Base &party, Engine::Queue &order, int &combatant, Controls::User &input, bool &end_turn)
     {
-        auto next = Engine::NextInQueue(order, combatant);
+        auto next_round = Engine::NextInQueue(order, combatant);
 
         auto character = order[combatant].Id;
 
@@ -959,9 +959,9 @@ namespace BloodSword::Interface
             input.Current = Interface::Find(battle.Map, scene.Controls, Controls::Type::ENEMY, character);
         }
 
-        endturn = true;
+        end_turn = true;
 
-        return next;
+        return next_round;
     }
 
     // generate stats
@@ -2468,6 +2468,12 @@ namespace BloodSword::Interface
             // final checks on placement of all combatants
             Interface::FinalLocationChecks(battle, party);
 
+            // round string or status messages
+            SDL_Texture *round_string = nullptr;
+
+            // current tile
+            SDL_Texture *texture = nullptr;
+
             std::vector<std::string> captions_text = {
                 "EXIT",
                 "CENTER",
@@ -2515,6 +2521,18 @@ namespace BloodSword::Interface
                 Controls::Type::SPELLS,
                 Controls::Type::ITEMS};
 
+            // controls list
+            Controls::Collection battle_actions = {
+                Controls::Type::MOVE,
+                Controls::Type::DEFEND,
+                Controls::Type::FIGHT,
+                Controls::Type::QUARTERSTAFF,
+                Controls::Type::SHOOT,
+                Controls::Type::SHURIKEN,
+                Controls::Type::FLEE,
+                Controls::Type::SPELLS,
+                Controls::Type::ITEMS};
+
             BloodSword::UnorderedMap<Controls::Type, SDL_Texture *> highlight = {};
 
             for (auto i = 0; i < action_assets.size(); i++)
@@ -2534,15 +2552,9 @@ namespace BloodSword::Interface
 
             auto party_status = Interface::GenerateStatus(graphics, party, infow);
 
-            SDL_Texture *texture = nullptr;
-
             auto asset = Asset::Type::NONE;
 
             auto lifetime = -1;
-
-            int round = 0;
-
-            SDL_Texture *round_string = nullptr;
 
             // move animation
             auto movement = Animation::Base();
@@ -2580,9 +2592,6 @@ namespace BloodSword::Interface
             // spell targetting
             auto spell = false;
 
-            // exit battle
-            auto exit = false;
-
             // user input
             auto input = Controls::User();
 
@@ -2618,10 +2627,16 @@ namespace BloodSword::Interface
             // clear any dropped items
             battle.Loot.clear();
 
-            while ((round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && (Engine::InBattle(party) > 0) && !exit)
+            // initialize round
+            battle.Round = 0;
+
+            // exit battle flag
+            battle.ExitBattle = false;
+
+            while ((battle.Round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && (Engine::InBattle(party) > 0) && !battle.ExitBattle)
             {
-                // battle order
-                Engine::Queue order = {};
+                // initialize battle order
+                battle.Order = {};
 
                 // spells already cast by NPC players
                 battle.AlreadyCast.clear();
@@ -2633,28 +2648,28 @@ namespace BloodSword::Interface
 
                 auto shot_ambush = false;
 
-                if (battle.Has(Battle::Condition::AMBUSH_PLAYER) && round < battle.AmbushRounds)
+                if (battle.Has(Battle::Condition::AMBUSH_PLAYER) && battle.Round < battle.AmbushRounds)
                 {
                     // players get a free initial turn
-                    order = Engine::Build(party, Attribute::Type::AWARENESS, true, true);
+                    battle.Order = Engine::Build(party, Attribute::Type::AWARENESS, true, true);
 
                     ambush = true;
                 }
-                else if (battle.Has(Battle::Condition::AMBUSH_NPC) && round < battle.AmbushRounds)
+                else if (battle.Has(Battle::Condition::AMBUSH_NPC) && battle.Round < battle.AmbushRounds)
                 {
                     // enemy combatants get a free initial turn
-                    order = Engine::Build(battle.Opponents, Attribute::Type::AWARENESS, true, true);
+                    battle.Order = Engine::Build(battle.Opponents, Attribute::Type::AWARENESS, true, true);
 
                     ambush = true;
                 }
-                else if (battle.Has(Battle::Condition::AMBUSH_PLAYER_RANGED) && round < battle.AmbushRounds)
+                else if (battle.Has(Battle::Condition::AMBUSH_PLAYER_RANGED) && battle.Round < battle.AmbushRounds)
                 {
                     // ranged attackers get a free initial turn
-                    order = Engine::Shooters(party, Attribute::Type::AWARENESS, true, true);
+                    battle.Order = Engine::Shooters(party, Attribute::Type::AWARENESS, true, true);
 
                     shot_ambush = true;
                 }
-                else if (battle.Has(Battle::Condition::AMBUSH_NPC_RANGED) && round < battle.AmbushRounds)
+                else if (battle.Has(Battle::Condition::AMBUSH_NPC_RANGED) && battle.Round < battle.AmbushRounds)
                 {
                     // enemies get a free ranged attack
                     Interface::RenderAmbushRangedAttack(graphics, battle, party);
@@ -2664,50 +2679,38 @@ namespace BloodSword::Interface
                 else
                 {
                     // otherwise create battle order (default)
-                    order = Engine::Build(party, battle.Opponents, Attribute::Type::AWARENESS, true, true);
+                    battle.Order = Engine::Build(party, battle.Opponents, Attribute::Type::AWARENESS, true, true);
                 }
 
                 // regenerate round string
                 BloodSword::Free(&round_string);
 
-                round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(round + 1) + ((ambush || shot_ambush) ? std::string(" (AMBUSH)") : "")).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-
-                // start of round effects
-                auto next = false;
+                round_string = Graphics::CreateText(graphics, (std::string("ROUND ") + std::to_string(battle.Round + 1) + ((ambush || shot_ambush) ? std::string(" (AMBUSH)") : "")).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
                 // reset IN COMBAT status
                 Engine::ResetCombatStatus(party);
 
                 Engine::ResetCombatStatus(battle.Opponents);
 
+                // start of round effects
+                battle.NextRound = false;
+
                 // start with current character
-                auto combatant = 0;
+                battle.Combatant = 0;
 
-                // controls list
-                Controls::Collection battle_actions = {
-                    Controls::Type::MOVE,
-                    Controls::Type::DEFEND,
-                    Controls::Type::FIGHT,
-                    Controls::Type::QUARTERSTAFF,
-                    Controls::Type::SHOOT,
-                    Controls::Type::SHURIKEN,
-                    Controls::Type::FLEE,
-                    Controls::Type::SPELLS,
-                    Controls::Type::ITEMS};
-
-                while (!next && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
+                while (!battle.NextRound && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !battle.ExitBattle)
                 {
                     // move to next round
-                    if (order.size() <= 0)
+                    if (battle.Order.size() <= 0)
                     {
                         break;
                     }
 
-                    auto is_enemy = Engine::IsEnemy(order, combatant);
+                    auto is_enemy = Engine::IsEnemy(battle.Order, battle.Combatant);
 
-                    auto is_player = Engine::IsPlayer(order, combatant);
+                    auto is_player = Engine::IsPlayer(battle.Order, battle.Combatant);
 
-                    auto character_id = order[combatant].Id;
+                    auto character_id = battle.Order[battle.Combatant].Id;
 
                     auto &character = is_player ? party[character_id] : battle.Opponents[character_id];
 
@@ -2720,17 +2723,17 @@ namespace BloodSword::Interface
                     auto scene = Interface::BattleScene(battle, party, character, character_id, origin, shot_ambush);
 
                     // start of character turn
-                    if (round > 0 && Engine::CoolDown(character))
+                    if (battle.Round > 0 && Engine::CoolDown(character))
                     {
                         // regenerate stats
                         Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
                     }
 
-                    auto end_turn = false;
+                    battle.EndTurn = false;
 
-                    Interface::SearchInCombatTargets(battle, party, order, combatant);
+                    Interface::SearchInCombatTargets(battle, party, battle.Order, battle.Combatant);
 
-                    while (!end_turn && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !exit)
+                    while (!battle.EndTurn && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !battle.ExitBattle)
                     {
                         auto overlay = Scene::Base();
 
@@ -2743,7 +2746,7 @@ namespace BloodSword::Interface
                         // main loop
                         if (!animating)
                         {
-                            auto src = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
+                            auto src = battle.Map.Find(Engine::IsPlayer(battle.Order, battle.Combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
 
                             if (!src.IsNone())
                             {
@@ -2801,7 +2804,7 @@ namespace BloodSword::Interface
 
                                                     if (!Engine::CanTarget(party[target_id], true))
                                                     {
-                                                        Interface::SearchInCombatTargets(battle, party, order, combatant);
+                                                        Interface::SearchInCombatTargets(battle, party, battle.Order, battle.Combatant);
                                                     }
                                                 }
                                             }
@@ -3021,7 +3024,7 @@ namespace BloodSword::Interface
                                         if (blinking)
                                         {
                                             // focus cursor
-                                            Interface::Focus(battle.Map, order, combatant, overlay);
+                                            Interface::Focus(battle.Map, battle.Order, battle.Combatant, overlay);
                                         }
 
                                         input.Blink = false;
@@ -3115,7 +3118,7 @@ namespace BloodSword::Interface
 
                                                     if (no_opponents || can_move || battle.Has(Battle::Condition::NO_COMBAT))
                                                     {
-                                                        auto start = battle.Map.Find(Engine::IsPlayer(order, combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
+                                                        auto start = battle.Map.Find(Engine::IsPlayer(battle.Order, battle.Combatant) ? Map::Object::PLAYER : Map::Object::ENEMY, character_id);
 
                                                         auto end = control.Map;
 
@@ -3355,11 +3358,11 @@ namespace BloodSword::Interface
                                             {
                                                 result = Battle::Result::NONE;
 
-                                                end_turn = true;
+                                                battle.EndTurn = true;
 
-                                                next = true;
+                                                battle.NextRound = true;
 
-                                                exit = true;
+                                                battle.ExitBattle = true;
                                             }
 
                                             input.Selected = false;
@@ -3794,7 +3797,7 @@ namespace BloodSword::Interface
                         if (performed_action)
                         {
                             // next character in battle order
-                            next = Interface::NextCharacter(battle, scene, party, order, combatant, input, end_turn);
+                            battle.NextRound = Interface::NextCharacter(battle, scene, party, battle.Order, battle.Combatant, input, battle.EndTurn);
                         }
                         else if (regenerate_scene)
                         {
@@ -3810,21 +3813,21 @@ namespace BloodSword::Interface
                         {
                             result = Battle::Result::VICTORY;
 
-                            exit = true;
+                            battle.ExitBattle = true;
 
-                            next = true;
+                            battle.NextRound = true;
 
-                            end_turn = true;
+                            battle.EndTurn = true;
                         }
                         else if (Engine::Min(party, Attribute::Type::ENDURANCE, true) <= battle.Endurance)
                         {
                             result = Battle::Result::DEFEAT;
 
-                            exit = true;
+                            battle.ExitBattle = true;
 
-                            next = true;
+                            battle.NextRound = true;
 
-                            end_turn = true;
+                            battle.EndTurn = true;
                         }
                     }
                 }
@@ -3833,11 +3836,11 @@ namespace BloodSword::Interface
                 battle.Map.CoolDown();
 
                 // move to next round
-                round++;
+                battle.Round++;
             }
 
             // round limit exceeded
-            if (battle.Duration != Battle::Unlimited && round >= battle.Duration)
+            if (battle.Duration != Battle::Unlimited && battle.Round >= battle.Duration)
             {
                 // regenerate final battle scene
                 auto scene = BattleScene(battle, party);

@@ -140,6 +140,24 @@ namespace BloodSword::Battle
         // internal: target that is IN COMBAT status
         Character::Class InCombatTarget = Character::Class::NONE;
 
+        // internal: round tracker
+        int Round = 0;
+
+        // internal: battle order
+        Engine::Queue Order = {};
+
+        // internal: current combatant in battle order
+        int Combatant = 0;
+
+        // internal: start next round
+        bool NextRound = false;
+
+        // internal: exit from battle
+        bool ExitBattle = false;
+
+        // internal: end current combatant's turn
+        bool EndTurn = false;
+
         Base(Battle::Conditions conditions, Map::Base &map, Party::Base &opponents, int duration) : Conditions(conditions), Map(map), Opponents(opponents), Duration(duration) {}
 
         Base() {}
