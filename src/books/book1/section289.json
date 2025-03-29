@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 289
     },
-    "text": "(ENCHANTER) You quickly adopt the mind-set necessary to cast this simple spell. A voice speaks to you from the astral world where faltyns dwell.\n\n[\"I prefer not to enter your mortal plane just at the moment,\" says the faltyn quaveringly. \"There will be  no charge for having called upon me, of course.\"]",
+    "text": "(ENCHANTER) You quickly adopt the mind-set necessary to cast this simple spell. A voice speaks to you from the astral world where faltyns dwell.\n\n[\"I prefer not to enter your mortal plane just at the moment,\" says the faltyn quaveringly. \"There will be no charge for having called upon me, of course.\"]",
     "background": [
         {
             "type": "FORGET SPELL",

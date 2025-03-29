@@ -522,7 +522,7 @@ namespace BloodSword::Engine
         return location;
     }
 
-    // BloodSword Engine Simple Intelligence Logger"
+    // BloodSword Engine "Simple Intelligence Logger"
     void Log(const char *action, const char *attacker, const char *target, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
     {
         std::cerr << "[" << attacker << "]"
@@ -546,14 +546,15 @@ namespace BloodSword::Engine
             std::cerr << " [PROB] "
                       << std::to_string(prob)
                       << " "
-                      << ((prob <= threshold) ? "<= " : "> ")
+                      << (prob <= threshold ? "<=" : ">")
+                      << " "
                       << std::to_string(threshold);
         }
 
         std::cerr << std::endl;
     }
 
-    // helper function
+    // log enemy action and target
     void Log(const char *action, Target::Type attacker, int id, Target::Type target, int target_id, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
     {
         auto action_string = std::string(action) + " TARGET " + std::to_string(target_id);
@@ -565,7 +566,7 @@ namespace BloodSword::Engine
         Engine::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln, prob, threshold);
     }
 
-    // helper function
+    // log enemy action and target
     void Log(const char *action, Target::Type target, int id, int target_id, int dist, int path = -1, int vuln = -1)
     {
         auto action_string = std::string(action) + " TARGET " + std::to_string(target_id);
