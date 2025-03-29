@@ -1445,6 +1445,45 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::SET_CHOSEN)
+        {
+            // variables:
+            // 0 - player to set as CHOSEN
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
+                    {
+                        party.ChosenCharacter = character;
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
         else if (condition.Type == Conditions::Type::STAKE)
         {
             // variables
@@ -2473,11 +2512,11 @@ namespace BloodSword::Conditions
 
                     internal_error = false;
                 }
-                else if (character != Character::Class::NONE && !party.Has(character))
+                else if (!party.Has(character))
                 {
                     text = Engine::NotInParty(character);
                 }
-                else if (character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                else if (!Engine::IsAlive(party[character]))
                 {
                     text = Engine::IsDead(party[character]);
                 }
@@ -2802,21 +2841,24 @@ namespace BloodSword::Conditions
 
                 auto number = party.Number(condition.Variables[2]);
 
-                if (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]) && number >= 1 && number <= 6)
+                if (character != Character::Class::NONE)
                 {
-                    auto choice = Interface::SelectDice(graphics, background, message, number);
+                    if (party.Has(character) && Engine::IsAlive(party[character]) && number >= 1 && number <= 6)
+                    {
+                        auto choice = Interface::SelectDice(graphics, background, message, number);
 
-                    party.ChosenNumber = choice.Sum;
+                        party.ChosenNumber = choice.Sum;
 
-                    result = true;
-                }
-                else if (!party.Has(character))
-                {
-                    text = Engine::NotInParty(character);
-                }
-                else if (!Engine::IsAlive(party[character]))
-                {
-                    text = Engine::IsDead(party[character]);
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
                 }
                 else
                 {
@@ -3223,38 +3265,37 @@ namespace BloodSword::Conditions
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
-                if (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))
+                if (character != Character::Class::NONE)
                 {
-                    Items::List items = {};
-
-                    for (auto i = 1; i < condition.Variables.size(); i++)
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
                     {
-                        auto item = Item::Map(condition.Variables[i]);
+                        Items::List items = {};
 
-                        if (item != Item::Type::NONE)
+                        for (auto i = 1; i < condition.Variables.size(); i++)
                         {
-                            items.push_back(item);
+                            auto item = Item::Map(condition.Variables[i]);
+
+                            if (item != Item::Type::NONE)
+                            {
+                                items.push_back(item);
+                            }
+                        }
+
+                        if (items.size() > 0)
+                        {
+                            Interface::TakeFromInfiniteList(graphics, background, party, character, items, true);
+
+                            result = true;
                         }
                     }
-
-                    if (items.size() > 0)
+                    else if (!party.Has(character))
                     {
-                        Interface::TakeFromInfiniteList(graphics, background, party, character, items, true);
-
-                        result = true;
+                        text = Engine::NotInParty(character);
                     }
-                    else
+                    else if (!Engine::IsAlive(party[character]))
                     {
-                        internal_error = true;
+                        text = Engine::IsDead(party[character]);
                     }
-                }
-                else if (!party.Has(character))
-                {
-                    text = Engine::NotInParty(character);
-                }
-                else if (!Engine::IsAlive(party[character]))
-                {
-                    text = Engine::IsDead(party[character]);
                 }
                 else
                 {

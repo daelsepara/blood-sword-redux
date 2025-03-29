@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 83
+    },
+    "text": "(TRICKSTER) You are too long in the tooth to be caught out here. Obviously the 'statues' are previous adventurers. But they must have thought there was something of interest in the alcoves to take the risk. Peering into an alcove, you notice a secret door at the back. Possibly you could open it and step through without touching the floor of the dais -- perhaps evading the petrifying spell. Then again, you may be wrong. And who wants to spend eternity as a lump of stone?",
+    "choices": [
+        {
+            "text": "(TRICKSTER) You are prepared to run the risk",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 533
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Return and take the other corridor",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 354
+                }
+            }
+        }
+    ]
+}

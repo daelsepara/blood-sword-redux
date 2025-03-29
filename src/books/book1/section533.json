@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 533
+    },
+    "text": "(TRICKSTER) You are about to risk it.",
+    "background": [
+        {
+            "type": "SET CHOSEN",
+            "variables": [
+                "TRICKSTER"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 102
+            },
+            "failure": {
+                "book": "BOOK1",
+                "number": 372
+            },
+            "variables": [
+                "TRICKSTER",
+                "AWARENESS",
+                "YOU ACCIDENTALLY TREAD ON THE FLOOR OF THE ALCOVE!"
+            ]
+        }
+    ]
+}

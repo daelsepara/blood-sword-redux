@@ -2,7 +2,7 @@
 #define __INTERFACE_BATTLE_HPP__
 
 #include "Graphics.hpp"
-#include "InterfaceInventory.hpp"
+#include "InterfaceBattleItems.hpp"
 
 // battle engine
 namespace BloodSword::Interface

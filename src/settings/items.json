@@ -432,6 +432,17 @@
             ],
             "quantity": 1,
             "type": "DAGGER"
+        },
+        {
+            "contains": "CHARGE",
+            "limit": 4,
+            "name": "RING OF WARDING",
+            "properties": [
+                "CONTAINER"
+            ],
+            "quantity": 4,
+            "type": "RING OF WARDING",
+            "revealed": true
         }
     ]
 }

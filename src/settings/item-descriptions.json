@@ -23,6 +23,10 @@
         {
             "item": "SCROLL: PRECOGNITION",
             "description": "This scroll, which can be read at any time, gives you a glimpse into the past or future -- or one possible past or future."
+        },
+        {
+            "item": "RING OF WARDING",
+            "description": "Each charge increases ARMOUR by 1 for the duration of one combat."
         }
     ]
 }

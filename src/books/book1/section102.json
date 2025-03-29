@@ -1,0 +1,48 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 102
+    },
+    "text": "(TRICKSTER) You flip the catch of the secret door and step over the dais carefully without setting foot on the floor of the alcove. The door leads to a narrow compartment where you find a gold ring.\n\n[Slipping this on, you sense that it is a RING OF WARDING. It has four charges, and each charge increases the ARMOUR rating by 1 for the duration of one combat.]",
+    "features": [
+        "ALONE"
+    ],
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "TRICKSTER",
+                "ALONE",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "TRICKSTER",
+                "NONE",
+                "RING OF WARDING"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "LOSE STATUS",
+            "variables": [
+                "TRICKSTER",
+                "ALONE",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 354
+            },
+            "variables": [
+                "You step back into the room and return to try the passage of black marble"
+            ]
+        }
+    ]
+}

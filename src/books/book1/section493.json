@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 493
+    },
+    "text": "The statues look too lifelike: in fact, they look like petriefied humans more than works of art carved from stone.",
+    "next": [
+        {
+            "type": "IN PARTY",
+            "location": {
+                "book": "BOOK1",
+                "number": 83
+            },
+            "variables": [
+                "TRICKSTER"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 354
+            },
+            "variables": [
+                "You turn back to take the other corridor"
+            ]
+        }
+    ]
+}

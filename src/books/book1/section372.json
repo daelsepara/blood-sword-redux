@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 372
+    },
+    "text": "The moment you enter into the alcove, you turn into stone.",
+    "background": [
+        {
+            "type": "KILL PLAYER",
+            "variables": [
+                "CHOSEN"
+            ]
+        }
+    ],
+    "events": [
+        {
+            "type": "NORMAL",
+            "variables": [
+                "You come into a stark realisation as to why the statues are so lifelike -- and why most of them are facing the wall."
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 354
+            },
+            "variables": [
+                "You return to take the other corridor"
+            ]
+        }
+    ]
+}

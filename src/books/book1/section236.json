@@ -18,11 +18,14 @@
         {
             "text": "Step into an unoccupied alcove",
             "condition": {
-                "type": "NORMAL",
+                "type": "SELECT PLAYER",
                 "location": {
                     "book": "BOOK1",
                     "number": 372
-                }
+                },
+                "variables": [
+                    "WHO STEPS INTO THE ALCOVE?"
+                ]
             }
         },
         {

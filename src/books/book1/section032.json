@@ -1,0 +1,167 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 32
+    },
+    "text": "You loot all the bodies in the room, quickly finding:\n\nfour AXES\ntwenty GOLD PIECES\nfour BREASTPLATES\nthree DAGGERS\nthirteen SHURIKENS\na vial of BLACK LIQUID",
+    "items": [
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "GOLD PIECES",
+            "quantity": 20,
+            "type": "GOLD"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "contains": "NONE",
+            "name": "SHURIKEN",
+            "quantity": 13,
+            "type": "SHURIKEN"
+        },
+        {
+            "contains": "NONE",
+            "effects": {
+                "book": "BOOK1",
+                "number": 317
+            },
+            "name": "VIAL OF BLACK LIQUID",
+            "properties": [
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "revealed": false,
+            "type": "BLACK LIQUID"
+        }
+    ],
+    "choices": [
+        {
+            "text": "(SAGE) Try to identify the PHIAL OF BLACK LIQUID",
+            "condition": {
+                "type": "IN PARTY WITH ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 463
+                },
+                "variables": [
+                    "SAGE",
+                    "BLACK LIQUID"
+                ]
+            }
+        },
+        {
+            "text": "Have a look around the room",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 236
+                }
+            }
+        }
+    ]
+}
