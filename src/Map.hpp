@@ -424,19 +424,19 @@ namespace BloodSword::Map
         }
 
         // load map from json file
-        bool Load(const char *filename)
+        bool Load(const char *map)
         {
             auto LoadError = false;
 
-            std::ifstream file(filename);
+            std::ifstream ifs(map);
 
-            if (file.good())
+            if (ifs.good())
             {
-                auto data = nlohmann::json::parse(file);
+                auto data = nlohmann::json::parse(ifs);
 
                 LoadError = this->Setup(data);
 
-                file.close();
+                ifs.close();
             }
             else
             {
@@ -539,13 +539,13 @@ namespace BloodSword::Map
                 map["away_opponents"] = this->Points(this->AwayOpponents);
             }
 
-            std::ofstream file(filename);
+            std::ofstream ofs(filename);
 
-            if (file.is_open())
+            if (ofs.is_open())
             {
-                file << map.dump();
+                ofs << map.dump();
 
-                file.close();
+                ofs.close();
             }
         }
 

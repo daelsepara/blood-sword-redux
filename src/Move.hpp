@@ -5,7 +5,7 @@
 #include <memory>
 
 #include "Map.hpp"
-#include "Templates.hpp"
+#include "Random.hpp"
 
 // A C++ version of A* pathfinding algorithm from https://dotnetcoretutorials.com/2020/07/25/a-search-pathfinding-algorithm-in-c/
 // Most of the comments from the original version are preserved and/or have minor modifications.
@@ -13,6 +13,8 @@
 // This version uses smart pointers
 namespace BloodSword::Move
 {
+    auto Random = Random::Base();
+
     // Path found by A* algorithm
     class Path
     {
@@ -138,9 +140,16 @@ namespace BloodSword::Move
     {
         auto traversable = Moves();
 
+        auto directions = Map::Directions;
+
+        if (is_enemy)
+        {
+            std::shuffle(directions.begin(), directions.end(), Move::Random.Generator());
+        }
+
         if (map.Width > 0 && map.Height > 0)
         {
-            for (auto &neighbor : Map::Directions)
+            for (auto &neighbor : directions)
             {
                 auto next = current + neighbor;
 
@@ -205,6 +214,8 @@ namespace BloodSword::Move
 
             auto is_enemy = map[src].IsEnemy();
 
+            auto min_distance = map.Distance(src, dst);
+
             path.Closest = src;
 
             while (!active.empty())
@@ -236,6 +247,18 @@ namespace BloodSword::Move
 
                 visited.push_back(check);
 
+                auto test = Point(check->X, check->Y);
+
+                auto dist = map.Distance(test, dst);
+
+                // check if this is closest point to destination
+                if (dist < min_distance)
+                {
+                    path.Closest = test;
+
+                    min_distance = dist;
+                }
+
                 Move::Remove(active, check);
 
                 auto nodes = Move::Nodes(map, check, end, is_enemy, unrestricted, enemy_target);
@@ -264,26 +287,6 @@ namespace BloodSword::Move
                     {
                         // We've never seen this node before so add it to the list.
                         active.push_back(node);
-                    }
-                }
-            }
-
-            // if there is no direct path, select closest
-            if (path.Points.size() == 0)
-            {
-                auto min_distance = map.Distance(src, dst);
-
-                for (auto node : visited)
-                {
-                    auto test = Point(node->X, node->Y);
-
-                    auto dist = map.Distance(test, dst);
-
-                    if (dist < min_distance)
-                    {
-                        path.Closest = test;
-
-                        min_distance = dist;
                     }
                 }
             }

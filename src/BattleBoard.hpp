@@ -17,7 +17,7 @@ namespace BloodSword::BattleBoard
         auto scene = Scene::Base();
 
         // load story (items)
-        Story::Load("books/book1.json");
+        Story::Load(Interface::Settings["adventure"]);
 
         // set battle order
         if (party.Count() > 1)

@@ -17,10 +17,10 @@ namespace BloodSword
     {
         auto game = BloodSword::Game();
 
-        game.Initialize();
-
         try
         {
+            game.Initialize();
+
             BattleBoard::Menu(game.graphics, battle_file);
         }
         catch (std::exception &e)

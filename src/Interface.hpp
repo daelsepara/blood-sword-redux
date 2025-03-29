@@ -2,8 +2,11 @@
 #define __INTERFACE_HPP__
 
 #include <algorithm>
+#include <fstream>
+#include <string>
 #include <utility>
 
+#include "nlohmann/json.hpp"
 #include "Animation.hpp"
 #include "Asset.hpp"
 #include "Engine.hpp"
@@ -15,6 +18,8 @@
 
 namespace BloodSword::Interface
 {
+    nlohmann::json Settings;
+
     Skills::Mapped<SDL_Texture *> SkillsTexturesInactive = {};
 
     Skills::Mapped<SDL_Texture *> SkillCaptionsActive = {};
@@ -210,6 +215,27 @@ namespace BloodSword::Interface
                   << std::endl;
     }
 
+    void Initialize(const char *settings)
+    {
+        std::ifstream ifs(settings);
+
+        if (ifs.good())
+        {
+            auto data = nlohmann::json::parse(ifs);
+
+            if (!data["settings"].is_null() && data["settings"].is_object() && data["settings"].size() > 0)
+            {
+                Interface::Settings = data["settings"];
+            }
+
+            ifs.close();
+        }
+        else
+        {
+            throw std::invalid_argument("Unable to load settings!");
+        }
+    }
+
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
     {
@@ -289,7 +315,7 @@ namespace BloodSword::Interface
     // load all textures
     void LoadTextures(Graphics::Base &graphics)
     {
-        Asset::Load(graphics.Renderer, "settings/assets.json");
+        Asset::Load(graphics.Renderer, Interface::Settings["assets"]);
 
         Graphics::InitializeTextures(graphics);
 

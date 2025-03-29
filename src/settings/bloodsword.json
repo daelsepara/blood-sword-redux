@@ -1,0 +1,11 @@
+{
+    "settings": {
+        "assets": "settings/assets.json",
+        "fonts": "settings/font-settings.json",
+        "palettes": "settings/palettes.json",
+        "palette": 0,
+        "items": "settings/items.json",
+        "item_descriptions": "settings/item-descriptions.json",
+        "adventure": "books/book1.json"
+    }
+}

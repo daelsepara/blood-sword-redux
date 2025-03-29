@@ -308,18 +308,18 @@ namespace BloodSword::Battle
     {
         Battle::Base battle;
 
-        std::ifstream file(filename);
+        std::ifstream ifs(filename);
 
-        if (file.good())
+        if (ifs.good())
         {
-            auto data = nlohmann::json::parse(file);
+            auto data = nlohmann::json::parse(ifs);
 
             if (!data["battle"].is_null())
             {
                 battle.Initialize(data["battle"]);
             }
 
-            file.close();
+            ifs.close();
         }
 
         return battle;

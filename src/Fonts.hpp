@@ -2,6 +2,7 @@
 #define __FONTS_HPP__
 
 #include <fstream>
+#include <string>
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -67,11 +68,11 @@ namespace BloodSword::Fonts
     }
 
     // load font definitions from settings file
-    bool Load(const char *settings)
+    bool Load(const char *fonts)
     {
         auto result = false;
 
-        std::ifstream ifs(settings);
+        std::ifstream ifs(fonts);
 
         if (ifs.good())
         {
@@ -94,6 +95,11 @@ namespace BloodSword::Fonts
         }
 
         return result;
+    }
+
+    bool Load(std::string fonts)
+    {
+        return Fonts::Load(fonts.c_str());
     }
 
     TTF_Font *Set(Fonts::ID id)

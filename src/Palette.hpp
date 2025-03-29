@@ -39,11 +39,11 @@ namespace BloodSword::Palette
     // current palette set
     int Current = 0;
 
-    bool Load(const char *settings)
+    bool Load(const char *palettes)
     {
         auto result = false;
 
-        std::ifstream ifs(settings);
+        std::ifstream ifs(palettes);
 
         if (ifs.good())
         {
@@ -96,6 +96,11 @@ namespace BloodSword::Palette
         }
 
         return result;
+    }
+
+    bool Load(std::string palettes)
+    {
+        return Palette::Load(palettes.c_str());
     }
 
     // switch palette

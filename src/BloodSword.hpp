@@ -18,21 +18,23 @@ namespace BloodSword
 
             Engine::InitializeRNG();
 
-            Fonts::Load("settings/font-settings.json");
+            Interface::Initialize("settings/bloodsword.json");
 
-            Palette::Load("settings/palettes.json");
+            Fonts::Load(Interface::Settings["fonts"]);
 
-            Palette::Switch(0);
+            Palette::Load(Interface::Settings["palettes"]);
+
+            Palette::Switch(int(Interface::Settings["palette"]));
 
             Interface::LoadTextures(this->graphics);
 
             Input::InitializeGamePads();
 
             // load item defaults
-            Items::LoadDefaults("settings/items.json");
+            Items::LoadDefaults(Interface::Settings["items"]);
 
             // load item descriptions
-            Items::LoadDescriptions("settings/item-descriptions.json");
+            Items::LoadDescriptions(Interface::Settings["item_descriptions"]);
 
             Input::Flush();
         }

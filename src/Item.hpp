@@ -722,16 +722,16 @@ namespace BloodSword::Items
     }
 
     // loads defaults for items
-    void LoadDefaults(const char *filename)
+    void LoadDefaults(const char *items)
     {
         // clear global map
         Items::Defaults.clear();
 
-        std::ifstream file(filename);
+        std::ifstream ifs(items);
 
-        if (file.good())
+        if (ifs.good())
         {
-            auto data = nlohmann::json::parse(file);
+            auto data = nlohmann::json::parse(ifs);
 
             if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
             {
@@ -748,20 +748,25 @@ namespace BloodSword::Items
                 std::cerr << "[LOADED] " << Items::Defaults.size() << " items" << std::endl;
             }
 
-            file.close();
+            ifs.close();
         }
     }
 
-    void LoadDescriptions(const char *filename)
+    void LoadDefaults(std::string filename)
+    {
+        Items::LoadDefaults(filename.c_str());
+    }
+
+    void LoadDescriptions(const char *items)
     {
         // clear global map
         Items::Descriptions.clear();
 
-        std::ifstream file(filename);
+        std::ifstream ifs(items);
 
-        if (file.good())
+        if (ifs.good())
         {
-            auto data = nlohmann::json::parse(file);
+            auto data = nlohmann::json::parse(ifs);
 
             if (!data["descriptions"].is_null() && data["descriptions"].is_array() && data["descriptions"].size() > 0)
             {
@@ -780,8 +785,13 @@ namespace BloodSword::Items
                 std::cerr << "[LOADED] " << Items::Descriptions.size() << " descriptions" << std::endl;
             }
 
-            file.close();
+            ifs.close();
         }
+    }
+
+    void LoadDescriptions(std::string items)
+    {
+        Items::LoadDescriptions(items.c_str());
     }
 
     bool Found(Item::Type item)

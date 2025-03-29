@@ -796,13 +796,13 @@ namespace BloodSword::Party
 
         data.emplace(std::string(name), Party::Data(party));
 
-        std::ofstream file(filename);
+        std::ofstream ifs(filename);
 
-        if (file.is_open())
+        if (ifs.is_open())
         {
-            file << data.dump();
+            ifs << data.dump();
 
-            file.close();
+            ifs.close();
         }
     }
 
@@ -810,15 +810,15 @@ namespace BloodSword::Party
     {
         auto party = Party::Base();
 
-        std::ifstream file(filename);
+        std::ifstream ifs(filename);
 
-        if (file.good())
+        if (ifs.good())
         {
-            auto data = nlohmann::json::parse(file);
+            auto data = nlohmann::json::parse(ifs);
 
             party = Party::Initialize(data[std::string(name)]);
 
-            file.close();
+            ifs.close();
         }
 
         return party;

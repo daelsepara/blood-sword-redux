@@ -1228,7 +1228,7 @@ namespace BloodSword::Test
 
         auto save_party = party;
 
-        Story::Load("books/book1.json");
+        Story::Load(Interface::Settings["adventure"]);
 
         auto &story = Story::CurrentBook;
 
@@ -1402,7 +1402,7 @@ namespace BloodSword::Test
                         party = save_party;
 
                         // reload story
-                        Story::Load("books/book1.json");
+                        Story::Load(Interface::Settings["adventure"]);
                     }
                 }
             }

@@ -238,15 +238,15 @@ namespace BloodSword::Story
     // global "book" variable to save on passing by reference all the time
     Story::Base CurrentBook = Story::Base();
 
-    void Load(const char *filename)
+    void Load(const char *story)
     {
         // re-initalize
         Story::CurrentBook = Story::Base();
 
         // make a reference
-        auto &story = Story::CurrentBook;
+        auto &book = Story::CurrentBook;
 
-        std::ifstream ifs(filename);
+        std::ifstream ifs(story);
 
         if (ifs.good())
         {
@@ -254,9 +254,9 @@ namespace BloodSword::Story
 
             if (!data.is_null() && data.is_object())
             {
-                story.Title = !data["title"].is_null() ? std::string(data["title"]) : "Blood Sword";
+                book.Title = !data["title"].is_null() ? std::string(data["title"]) : "Blood Sword";
 
-                story.Description = !data["description"].is_null() ? std::string(data["description"]) : "Blood Sword gamebook";
+                book.Description = !data["description"].is_null() ? std::string(data["description"]) : "Blood Sword gamebook";
 
                 if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
                 {
@@ -286,7 +286,7 @@ namespace BloodSword::Story
 
                     if (sections.size() > 0)
                     {
-                        story.Sections = sections;
+                        book.Sections = sections;
                     }
                 }
             }
@@ -294,7 +294,12 @@ namespace BloodSword::Story
             ifs.close();
         }
 
-        std::cerr << "[LOADED] " << story.Sections.size() << " SECTIONS" << std::endl;
+        std::cerr << "[LOADED] " << book.Sections.size() << " SECTIONS" << std::endl;
+    }
+
+    void Load(std::string story)
+    {
+        Story::Load(story.c_str());
     }
 }
 #endif

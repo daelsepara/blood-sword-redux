@@ -138,6 +138,11 @@ namespace BloodSword::Asset
         return result;
     }
 
+    bool Load(SDL_Renderer *renderer, std::string assets)
+    {
+        return Asset::Load(renderer, assets.c_str());
+    }
+
     // get texture associated with the asset type
     SDL_Texture *Get(Asset::Type asset)
     {
