@@ -1,12 +1,9 @@
 #ifndef __BATTLE_HPP__
 #define __BATTLE_HPP__
 
-#include <vector>
-
 #include "nlohmann/json.hpp"
 #include "BattleResults.hpp"
-#include "Map.hpp"
-#include "Party.hpp"
+#include "Engine.hpp"
 
 // classes for describing battle (combatants, map, conditions)
 namespace BloodSword::Battle

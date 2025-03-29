@@ -2,11 +2,9 @@
 #define __CONDITIONS_HPP__
 
 #include <algorithm>
-#include <vector>
 
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
-#include "Templates.hpp"
 #include "ConditionTypes.hpp"
 
 namespace BloodSword::Conditions

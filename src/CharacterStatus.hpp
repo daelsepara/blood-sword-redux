@@ -1,9 +1,6 @@
 #ifndef __CHARACTER_STATUS_HPP__
 #define __CHARACTER_STATUS_HPP__
 
-#include <string>
-#include <vector>
-
 #include "Templates.hpp"
 
 namespace BloodSword::Character

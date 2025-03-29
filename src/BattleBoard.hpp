@@ -1,9 +1,7 @@
 #ifndef __BATTLE_BOARD_HPP__
 #define __BATTLE_BOARD_HPP__
 
-#include "Fonts.hpp"
-#include "Graphics.hpp"
-#include "Interface.hpp"
+#include "BloodSword.hpp"
 #include "InterfaceBattle.hpp"
 
 // framework for Battle Board

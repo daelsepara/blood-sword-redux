@@ -3,7 +3,6 @@
 
 #include <algorithm>
 #include <memory>
-#include <vector>
 
 #include "Map.hpp"
 #include "Templates.hpp"

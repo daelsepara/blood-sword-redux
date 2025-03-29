@@ -1,7 +1,6 @@
 #ifndef __MESSAGES_HPP__
 #define __MESSAGES_HPP__
 
-#include "Graphics.hpp"
 #include "RichText.hpp"
 
 namespace BloodSword::Interface

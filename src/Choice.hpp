@@ -1,9 +1,6 @@
 #ifndef __CHOICE_HPP__
 #define __CHOICE_HPP__
 
-#include <string>
-#include <vector>
-
 #include "nlohmann/json.hpp"
 #include "Conditions.hpp"
 

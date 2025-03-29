@@ -1,8 +1,6 @@
 #ifndef __ANIMATION_HPP__
 #define __ANIMATION_HPP__
 
-#include <vector>
-
 #include "Primitives.hpp"
 #include "Color.hpp"
 #include "Scene.hpp"

@@ -2,8 +2,6 @@
 #define __PALETTE_HPP__
 
 #include <SDL.h>
-#include <string>
-#include <vector>
 
 #include "nlohmann/json.hpp"
 #include "Color.hpp"

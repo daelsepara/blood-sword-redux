@@ -1,8 +1,6 @@
 #ifndef __TARGET_HPP__
 #define __TARGET_HPP__
 
-#include <vector>
-
 #include "nlohmann/json.hpp"
 #include "Templates.hpp"
 

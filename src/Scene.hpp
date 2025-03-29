@@ -1,11 +1,9 @@
 #ifndef __SCENE_HPP__
 #define __SCENE_HPP__
 
-#include <vector>
 #include <SDL.h>
 
 #include "Controls.hpp"
-#include "Primitives.hpp"
 
 // classes and functions to define objects that will be rendered on screen
 namespace BloodSword::Scene

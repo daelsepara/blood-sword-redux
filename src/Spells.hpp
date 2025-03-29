@@ -1,10 +1,7 @@
 #ifndef __SPELLS_HPP__
 #define __SPELLS_HPP__
 
-#include <string>
-
 #include "nlohmann/json.hpp"
-#include "Templates.hpp"
 #include "AssetTypes.hpp"
 
 namespace BloodSword::Spells

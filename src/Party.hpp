@@ -2,7 +2,6 @@
 #define __PARTY_HPP__
 
 #include <stdexcept>
-#include <vector>
 #include <fstream>
 
 #include "nlohmann/json.hpp"

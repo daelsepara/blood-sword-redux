@@ -1,7 +1,6 @@
 #ifndef __INTERFACE_BATTLE_HPP__
 #define __INTERFACE_BATTLE_HPP__
 
-#include "Graphics.hpp"
 #include "InterfaceBattleItems.hpp"
 
 // battle engine

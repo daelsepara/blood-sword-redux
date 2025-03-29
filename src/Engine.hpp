@@ -1,8 +1,6 @@
 #ifndef __ENGINE_HPP__
 #define __ENGINE_HPP__
 
-#include <vector>
-
 #include "Attribute.hpp"
 #include "Book.hpp"
 #include "Character.hpp"

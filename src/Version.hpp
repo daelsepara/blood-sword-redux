@@ -1,8 +1,8 @@
 #ifndef __VERSION_HPP__
 #define __VERSION_HPP__
 
-#include <string>
 #include <sstream>
+#include <string>
 
 namespace BloodSword
 {

@@ -1,10 +1,6 @@
 #ifndef __ITEM_PROPERTIES_HPP__
 #define __ITEM_PROPERTIES_HPP__
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-
 #include "Templates.hpp"
 
 namespace BloodSword::Item

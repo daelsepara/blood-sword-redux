@@ -1,4 +1,3 @@
-#include "BloodSword.hpp"
 #include "BattleBoard.hpp"
 
 bool compare(std::string s1, std::string s2)

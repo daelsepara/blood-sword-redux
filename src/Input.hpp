@@ -2,7 +2,6 @@
 #define __INPUT_HPP__
 
 #include <iostream>
-#include <vector>
 
 #include "Controls.hpp"
 #include "Graphics.hpp"

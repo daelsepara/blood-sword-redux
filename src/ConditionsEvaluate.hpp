@@ -2,10 +2,8 @@
 #define __CONDITIONS_EVALUATE_HPP__
 
 #include <algorithm>
-#include <vector>
 
 #include "Book.hpp"
-#include "Graphics.hpp"
 #include "Item.hpp"
 #include "Party.hpp"
 #include "Templates.hpp"

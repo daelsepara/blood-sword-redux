@@ -1,8 +1,6 @@
 #ifndef __ITEM_TYPES_HPP__
 #define __ITEM_TYPES_HPP__
 
-#include <string>
-
 #include "Templates.hpp"
 
 namespace BloodSword::Item

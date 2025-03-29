@@ -1,12 +1,7 @@
 #ifndef __SKILLS_HPP__
 #define __SKILLS_HPP__
 
-#include <string>
-#include <unordered_map>
-#include <vector>
-
 #include "nlohmann/json.hpp"
-#include "Templates.hpp"
 #include "AssetTypes.hpp"
 
 namespace BloodSword::Skills

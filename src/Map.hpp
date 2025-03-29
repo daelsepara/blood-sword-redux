@@ -2,11 +2,9 @@
 #define __MAP_HPP__
 
 #include <fstream>
-#include <vector>
 
 #include "nlohmann/json.hpp"
-#include "Primitives.hpp"
-#include "Asset.hpp"
+#include "AssetTypes.hpp"
 #include "MapObjects.hpp"
 #include "Party.hpp"
 

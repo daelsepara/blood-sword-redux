@@ -1,9 +1,6 @@
 #ifndef __CONTROLS_HPP__
 #define __CONTROLS_HPP__
 
-#include <string>
-#include <unordered_map>
-#include <vector>
 #include <SDL.h>
 
 #include "ControlTypes.hpp"

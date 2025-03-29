@@ -2,9 +2,7 @@
 #define __GRAPHICS_HPP__
 
 #include <iostream>
-#include <vector>
 
-#include "Color.hpp"
 #include "Animation.hpp"
 #include "Controls.hpp"
 #include "RichText.hpp"

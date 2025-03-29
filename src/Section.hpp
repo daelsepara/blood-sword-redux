@@ -1,8 +1,6 @@
 #ifndef __SECTION_HPP__
 #define __SECTION_HPP__
 
-#include <string>
-
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
 #include "Choice.hpp"

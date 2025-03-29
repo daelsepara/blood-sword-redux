@@ -1,8 +1,6 @@
 #ifndef __ASSET_TYPES_HPP__
 #define __ASSET_TYPES_HPP__
 
-#include <string>
-
 #include "Templates.hpp"
 
 namespace BloodSword::Asset

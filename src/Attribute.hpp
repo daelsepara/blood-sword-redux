@@ -1,9 +1,6 @@
 #ifndef __ATTRIBUTE_HPP__
 #define __ATTRIBUTE_HPP__
 
-#include <string>
-#include <vector>
-
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"
 #include "Templates.hpp"

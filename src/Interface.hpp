@@ -5,8 +5,8 @@
 #include <utility>
 
 #include "Animation.hpp"
+#include "Asset.hpp"
 #include "Engine.hpp"
-#include "Graphics.hpp"
 #include "Input.hpp"
 #include "Maze.hpp"
 #include "Messages.hpp"

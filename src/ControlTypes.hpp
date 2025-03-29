@@ -1,7 +1,7 @@
 #ifndef __CONTROL_TYPES_HPP__
 #define __CONTROL_TYPES_HPP__
 
-#include <vector>
+#include "Templates.hpp"
 
 namespace BloodSword::Controls
 {

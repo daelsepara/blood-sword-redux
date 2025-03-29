@@ -2,8 +2,6 @@
 #define __CHARACTER_HPP__
 
 #include <algorithm>
-#include <string>
-#include <vector>
 
 #include "nlohmann/json.hpp"
 #include "Primitives.hpp"

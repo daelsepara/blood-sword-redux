@@ -1,11 +1,7 @@
 #ifndef __GENERATOR_HPP__
 #define __GENERATOR_HPP__
 
-#include "Attribute.hpp"
-#include "Book.hpp"
-#include "CharacterClasses.hpp"
 #include "Character.hpp"
-#include "Skills.hpp"
 
 // functions for generating characters
 namespace BloodSword::Generate

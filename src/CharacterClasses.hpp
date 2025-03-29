@@ -1,9 +1,6 @@
 #ifndef __CHARACTER_TYPES_HPP__
 #define __CHARACTER_TYPES_HPP__
 
-#include <string>
-#include <vector>
-
 #include "nlohmann/json.hpp"
 #include "Templates.hpp"
 

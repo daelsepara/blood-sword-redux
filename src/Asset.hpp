@@ -2,7 +2,6 @@
 #define __ASSET_HPP__
 
 #include <fstream>
-#include <string>
 
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"

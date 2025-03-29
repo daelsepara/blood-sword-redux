@@ -1,8 +1,6 @@
 #ifndef __MAP_OBJECTS_HPP__
 #define __MAP_OBJECTS_HPP__
 
-#include <string>
-
 #include "Templates.hpp"
 
 namespace BloodSword::Map
