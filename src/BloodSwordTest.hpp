@@ -228,7 +228,7 @@ namespace BloodSword::Test
 
             auto x = map.DrawX;
 
-            auto y = map.DrawY + map.ViewY * map.TileSize;
+            auto y = map.DrawY + map.ViewY * map.TileSize + BloodSword::Pad;
 
             auto arrow_up = offset > 0;
 
