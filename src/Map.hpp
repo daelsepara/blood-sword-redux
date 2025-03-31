@@ -6,6 +6,7 @@
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"
 #include "MapObjects.hpp"
+#include "Primitives.hpp"
 
 namespace BloodSword::Map
 {
