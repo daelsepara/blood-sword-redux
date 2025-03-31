@@ -197,7 +197,7 @@
             "properties": [
                 "CONTAINER",
                 "COMBAT",
-                "BLASTING"
+                "REQUIRES TARGET"
             ],
             "quantity": 4,
             "type": "STEEL SCEPTRE",
@@ -267,8 +267,8 @@
                 "number": 214
             },
             "properties": [
-                "WEAPON",
-                "RANGED"
+                "COMBAT",
+                "REQUIRES TARGET"
             ],
             "quantity": 1,
             "type": "DAGGER OF VISLET",

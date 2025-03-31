@@ -12,7 +12,7 @@
             "properties": [
                 "CONTAINER",
                 "COMBAT",
-                "BLASTING"
+                "REQUIRES TARGET"
             ],
             "quantity": 4,
             "type": "STEEL SCEPTRE",

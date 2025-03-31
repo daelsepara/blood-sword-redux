@@ -68,7 +68,7 @@ namespace BloodSword::Interface
                     {
                         Interface::MessageBox(graphics, background, "YOU CANNOT USE THIS IN BATTLE!", Color::Highlight);
                     }
-                    else if (!item.Has(Item::Property::BLASTING))
+                    else if (!item.Has(Item::Property::REQUIRES_TARGET))
                     {
                         Interface::ItemEffects(graphics, background, character, item.Type);
                     }
