@@ -11,11 +11,12 @@
             "name": "STEEL SCEPTRE",
             "properties": [
                 "CONTAINER",
-                "WEAPON",
-                "SECONDARY"
+                "COMBAT",
+                "BLASTING"
             ],
             "quantity": 4,
-            "type": "STEEL SCEPTRE"
+            "type": "STEEL SCEPTRE",
+            "drops": true
         }
     ],
     "events": [
