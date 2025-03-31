@@ -140,14 +140,14 @@ namespace BloodSword::Battle
         // internal: target that is IN COMBAT status
         Character::Class InCombatTarget = Character::Class::NONE;
 
-        // internal: round tracker
-        int Round = 0;
-
         // internal: battle order
         Engine::Queue Order = {};
 
         // internal: current combatant in battle order
         int Combatant = 0;
+
+        // internal: round tracker
+        int Round = 0;
 
         // internal: start next round
         bool NextRound = false;
