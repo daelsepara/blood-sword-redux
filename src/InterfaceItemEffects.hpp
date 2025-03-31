@@ -1,5 +1,5 @@
-#ifndef __ITEM_EFFECTS_HPP__
-#define __ITEM_EFFECTS_HPP__
+#ifndef __INTERFACE_ITEM_EFFECTS_HPP__
+#define __INTERFACE_ITEM_EFFECTS_HPP__
 
 #include "Interface.hpp"
 

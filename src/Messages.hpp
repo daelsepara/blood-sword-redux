@@ -35,7 +35,8 @@ namespace BloodSword::Interface
         Graphics::RichText("THE FIGHT IS OVER!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("YOU ARE CARRYING TOO MANY ITEMS!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("YOU ARE NOT ABLE TO IDENTIFY THIS!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("INVENTORY FULL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+        Graphics::RichText("INVENTORY FULL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("YOU MUST BE ADJACENT TO AN ENEMY!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     BloodSword::Textures Message = {};
 
@@ -98,6 +99,8 @@ namespace BloodSword::Interface
     const int MSG_IDENTIFY = 28;
 
     const int MSG_FULL = 29;
+
+    const int MSG_ENEMIES = 30;
 
     void FreeMessages()
     {

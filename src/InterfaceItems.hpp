@@ -1,7 +1,7 @@
 #ifndef __INTERFACE_ITEMS_HPP__
 #define __INTERFACE_ITEMS_HPP__
 
-#include "ItemEffects.hpp"
+#include "InterfaceItemEffects.hpp"
 
 namespace BloodSword::Interface
 {

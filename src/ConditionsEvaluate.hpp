@@ -7,7 +7,7 @@
 #include "Item.hpp"
 #include "Party.hpp"
 #include "Templates.hpp"
-#include "ItemEffects.hpp"
+#include "InterfaceItemEffects.hpp"
 #include "Conditions.hpp"
 
 namespace BloodSword::Conditions

@@ -6,6 +6,7 @@
 #include "nlohmann/json.hpp"
 #include "Book.hpp"
 #include "Attribute.hpp"
+#include "ItemTargetEffects.hpp"
 #include "ItemProperties.hpp"
 #include "ItemTypes.hpp"
 
@@ -64,8 +65,11 @@ namespace BloodSword::Item
         // flag to see if it drops when used (e.g. thrown)
         bool Drops = false;
 
-        // for specific targetting
+        // for specific targetting (damage rolls/modifiers)
         BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageTypes = {};
+
+        // for specific targetting effects
+        BloodSword::UnorderedMap<Target::Type, Item::TargetEffect> TargetEffects = {};
 
         Base() {}
 

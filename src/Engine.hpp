@@ -520,6 +520,11 @@ namespace BloodSword::Engine
         return location;
     }
 
+    int Find(Party::Base &party, Character::Base &character)
+    {
+        return party.Index(character.Class);
+    }
+
     // BloodSword Engine "Simple Intelligence Logger"
     void Log(const char *action, const char *attacker, const char *target, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
     {

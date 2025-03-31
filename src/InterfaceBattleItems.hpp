@@ -5,6 +5,24 @@
 
 namespace BloodSword::Interface
 {
+    void ShowBattleEffect(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, int id)
+    {
+        auto &item = character.Items[id];
+
+        if (item.BattleEffects.size() > 0)
+        {
+            for (auto effect = 0; effect < item.BattleEffects.size(); effect++)
+            {
+                if (Book::IsDefined(item.BattleEffects[effect]) && Book::Equal(item.BattleEffects[effect], party.Location))
+                {
+                    Interface::ShowBookDescription(graphics, background, item.BattleEffects[effect]);
+
+                    break;
+                }
+            }
+        }
+    }
+
     // (character) manage item while in battle
     bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id)
     {
@@ -74,7 +92,39 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        Interface::NotImplemented(graphics, background);
+                        auto src = battle.Map.Find(Map::Object::PLAYER, Engine::Find(party, character));
+
+                        auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
+
+                        auto ranged = item.Has(Item::Property::RANGED);
+                        
+                        Engine::Queue targets = {};
+
+                        if (ranged)
+                        {
+                            targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+
+                            if (opponents.size() > 0)
+                            {
+                                Interface::MessageBox(graphics, background, Interface::GetText(Interface::MSG_NEARBY), Color::Highlight);
+                            }
+                            else
+                            {
+                                // do something
+                                update = true;
+                            }
+                        }
+                        else
+                        {
+                            if (opponents.size() == 0)
+                            {
+                                Interface::MessageBox(graphics, background, Interface::GetText(Interface::MSG_ENEMIES), Color::Highlight);
+                            }
+                            else
+                            {
+                                update = true;
+                            }
+                        }
                     }
                 }
                 else

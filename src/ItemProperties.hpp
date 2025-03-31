@@ -63,7 +63,8 @@ namespace BloodSword::Item
         Item::Property::READABLE,
         Item::Property::CANNOT_DROP,
         Item::Property::CANNOT_TRADE,
-        Item::Property::COMBAT};
+        Item::Property::COMBAT,
+        Item::Property::REQUIRES_TARGET};
 
     Item::Property MapProperty(const char *property)
     {
