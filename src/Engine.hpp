@@ -917,46 +917,67 @@ namespace BloodSword::Engine
         return update;
     }
 
+    // cooldown specific status
+    bool CoolDown(Character::Base &character, Character::Status status)
+    {
+        auto update = false;
+
+        if (status == Character::Status::DEFENDING)
+        {
+            update = Engine::Transition(character, Character::Status::DEFENDING, Character::Status::DEFENDED);
+        }
+        else if (character.Has(status))
+        {
+            auto duration = character.Status[status];
+
+            if (duration < 0)
+            {
+                duration = -1;
+            }
+            else if (duration > 0)
+            {
+                duration--;
+            }
+
+            if (duration != 0)
+            {
+                character.Status[status] = duration;
+            }
+            else
+            {
+                character.Remove(status);
+            }
+
+            update = true;
+        }
+
+        return update;
+    }
+
     // cooldown status effects
     bool CoolDown(Character::Base &character)
     {
         auto update = false;
 
-        // cool down status effects
-        if (Engine::Transition(character, Character::Status::DEFENDING, Character::Status::DEFENDED))
+        auto active = character.Status.size();
+
+        auto status_types = std::vector<Character::Status>();
+
+        // get all status
+        for (auto status : character.Status)
+        {
+            status_types.push_back(status.first);
+        }
+
+        // cooldown each status
+        for (auto status : status_types)
+        {
+            update |= Engine::CoolDown(character, status);
+        }
+
+        if (active != character.Status.size())
         {
             update = true;
-        }
-        else
-        {
-            BloodSword::IntMapping<Character::Status> Active = {};
-
-            // cooldown other status effects
-            for (auto &status : character.Status)
-            {
-                if (status.second < 0)
-                {
-                    Active[status.first] = -1;
-                }
-                else if (status.second > 0)
-                {
-                    update = true;
-
-                    status.second--;
-
-                    if (status.second > 0)
-                    {
-                        Active[status.first] = status.second;
-                    }
-                }
-            }
-
-            if (Active.size() != character.Status.size())
-            {
-                update = true;
-            }
-
-            character.Status = Active;
         }
 
         return update;
@@ -990,7 +1011,7 @@ namespace BloodSword::Engine
                         adjacent = (Engine::IsAlive(party[id]) && party[id].Is(Character::Status::FLEEING));
                     }
 
-                    if ((map.IsValid(neighbor) && map[neighbor].Type == Map::Object::EXIT) || adjacent)
+                    if ((map.IsValid(neighbor) && map[neighbor].Type == Map::Object::EXIT && !map[neighbor].IsEnemy() && !map[neighbor].IsTemporarilyBlocked()) || adjacent)
                     {
                         flee = true;
 

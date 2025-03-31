@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 389
+    },
+    "text": "You make your way along the black corridor. Eventually you come to a door in the left wall.",
+    "choices": [
+        {
+            "text": "Go in",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 211
+                }
+            }
+        },
+        {
+            "text": "Continue along",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 249
+                }
+            }
+        }
+    ]
+}

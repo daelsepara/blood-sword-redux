@@ -6,7 +6,6 @@
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"
 #include "MapObjects.hpp"
-#include "Party.hpp"
 
 namespace BloodSword::Map
 {
@@ -774,21 +773,6 @@ namespace BloodSword::Map
                         }
                     }
                 }
-            }
-        }
-
-        void ResetLocations(Party::Base &party, Map::Object type, BloodSword::Points origins)
-        {
-            for (auto i = 0; i < party.Count(); i++)
-            {
-                auto location = this->Find(type, i);
-
-                if (!location.IsNone())
-                {
-                    this->Put(location, Map::Object::NONE, -1);
-                }
-
-                this->Put(origins[i], type, i);
             }
         }
     };

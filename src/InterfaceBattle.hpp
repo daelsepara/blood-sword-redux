@@ -812,7 +812,7 @@ namespace BloodSword::Interface
     {
         if (!Engine::IsAlive(character))
         {
-            for (auto item = 0; character.Items.size(); item++)
+            for (auto item = 0; item < character.Items.size(); item++)
             {
                 if (character.Items[item].Drops)
                 {
@@ -2399,6 +2399,23 @@ namespace BloodSword::Interface
         }
     }
 
+    // cooldown AWAY status (since they are not part of the queue while they are AWAY)
+    bool CoolDownStatus(Party::Base &party, Character::Status status)
+    {
+        auto update = false;
+
+        // cooldown AWAY status
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            if (Engine::IsAlive(party[character]) && party[character].Is(status))
+            {
+                update |= Engine::CoolDown(party[character], status);
+            }
+        }
+
+        return update;
+    }
+
     // fight battle
     Battle::Result RenderBattle(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
@@ -3815,6 +3832,17 @@ namespace BloodSword::Interface
                             battle.EndTurn = true;
                         }
                     }
+                }
+
+                // cool down AWAY status
+                auto cooldown_party = Interface::CoolDownStatus(party, Character::Status::AWAY);
+
+                auto cooldown_enemy = Interface::CoolDownStatus(battle.Opponents, Character::Status::AWAY);
+
+                if (cooldown_party || cooldown_enemy)
+                {
+                    // regenerate stats
+                    Interface::RegenerateStats(graphics, battle, party, party_stats, party_status, enemy_stats, enemy_status);
                 }
 
                 // end of round effects

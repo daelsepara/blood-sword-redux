@@ -1,0 +1,27 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 211
+    },
+    "text": "They rush in towards you. There are four of them.",
+    "battle": "battles/book1/battle211.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 87
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 249
+            },
+            "variables": [
+                "You flee out of the room and along the black tunnel"
+            ]
+        }
+    ]
+}

@@ -1065,7 +1065,7 @@ namespace BloodSword::Interface
         {
             if (status.second != 0)
             {
-                if ((in_battle && status.first != Character::Status::IN_BATTLE && status.first != Character::Status::AWAY) || !in_battle)
+                if ((in_battle && status.first != Character::Status::IN_BATTLE) || !in_battle)
                 {
                     if (list.length() > 0)
                     {
