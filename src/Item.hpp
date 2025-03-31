@@ -57,7 +57,7 @@ namespace BloodSword::Item
         Book::Location Effects = Book::Undefined;
 
         // list of battlefield effects
-        std::vector<Book::Location> BattleEffects = {};
+        std::vector<Book::Location> BattleDescriptions = {};
 
         // flag to check if it's revealed (i.e. with the SAGE)
         bool Revealed = false;
@@ -495,17 +495,17 @@ namespace BloodSword::Item
             item.Effects = Book::Load(data["effects"]);
         }
 
-        if (!data["battle_effects"].is_null() && data["battle_effects"].is_array() && data["battle_effects"].size() > 0)
+        if (!data["battle_descriptions"].is_null() && data["battle_descriptions"].is_array() && data["battle_descriptions"].size() > 0)
         {
-            item.BattleEffects.clear();
+            item.BattleDescriptions.clear();
 
-            for (auto i = 0; i < data["battle_effects"].size(); i++)
+            for (auto i = 0; i < data["battle_descriptions"].size(); i++)
             {
-                auto location = Book::Load(data["battle_effects"][i]);
+                auto location = Book::Load(data["battle_descriptions"][i]);
 
                 if (Book::IsDefined(location))
                 {
-                    item.BattleEffects.push_back(location);
+                    item.BattleDescriptions.push_back(location);
                 }
             }
         }
@@ -528,6 +528,23 @@ namespace BloodSword::Item
                     {
                         item.DamageTypes[target] = Item::Damage(damage, modifier);
                     }
+                }
+            }
+        }
+
+        if (!data["target_effects"].is_null() && data["target_effects"].is_object())
+        {
+            item.TargetEffects.clear();
+
+            for (auto &[key, val] : data["target_effects"].items())
+            {
+                auto target = Target::Map(std::string(key));
+
+                auto effect = Item::MapTargetEffect(std::string(val));
+
+                if (target != Target::Type::NONE && effect != Item::TargetEffect::NONE)
+                {
+                    item.TargetEffects[target] = effect;
                 }
             }
         }
@@ -643,23 +660,23 @@ namespace BloodSword::Items
                 data["effects"] = Book::Data(item.Effects);
             }
 
-            if (item.BattleEffects.size() > 0)
+            if (item.BattleDescriptions.size() > 0)
             {
-                nlohmann::json battle_effects;
+                nlohmann::json battle_descriptions;
 
-                for (auto &battle_effect : item.BattleEffects)
+                for (auto &battle_effect : item.BattleDescriptions)
                 {
                     if (Book::IsDefined(battle_effect))
                     {
                         auto location = Book::Data(battle_effect);
 
-                        battle_effects.push_back(location);
+                        battle_descriptions.push_back(location);
                     }
                 }
 
-                if (battle_effects.size() > 0)
+                if (battle_descriptions.size() > 0)
                 {
-                    data["battle_effects"] = battle_effects;
+                    data["battle_descriptions"] = battle_descriptions;
                 }
             }
 
@@ -685,6 +702,27 @@ namespace BloodSword::Items
                 }
 
                 row["damage_types"] = damage_types;
+            }
+
+            if (item.TargetEffects.size() > 0)
+            {
+                nlohmann::json target_effects;
+
+                for (auto &targets : item.TargetEffects)
+                {
+                    nlohmann::json target_effect;
+
+                    auto target = std::string(Target::Mapping[targets.first]);
+
+                    auto effect = std::string(Item::TargetEffectMapping[targets.second]);
+
+                    target_effects.emplace(target, effect);
+                }
+
+                if (target_effects.size() > 0)
+                {
+                    row["target_effects"] = target_effects;
+                }
             }
 
             data.push_back(row);

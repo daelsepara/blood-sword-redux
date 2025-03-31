@@ -1,5 +1,5 @@
-#ifndef __ITEM_BATTLE_EFFECTS_HPP__
-#define __ITEM_BATTLE_EFFECTS_HPP__
+#ifndef __ITEM_TARGET_EFFECTS_HPP__
+#define __ITEM_TARGET_EFFECTS_HPP__
 
 #include "Templates.hpp"
 
@@ -10,13 +10,15 @@ namespace BloodSword::Item
     {
         NONE = -1,
         KILL_TARGET,
+        DAMAGE_TARGET
     };
 
     typedef std::vector<Item::TargetEffect> TargetEffects;
 
     BloodSword::Mapping<Item::TargetEffect> TargetEffectMapping = {
         {Item::TargetEffect::NONE, "NONE"},
-        {Item::TargetEffect::KILL_TARGET, "KILL TARGET"}};
+        {Item::TargetEffect::KILL_TARGET, "KILL TARGET"},
+        {Item::TargetEffect::DAMAGE_TARGET, "DAMAGE TARGET"}};
 
     Item::TargetEffect MapTargetEffect(const char *target_effect)
     {

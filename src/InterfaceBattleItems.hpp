@@ -5,17 +5,17 @@
 
 namespace BloodSword::Interface
 {
-    void ShowBattleEffect(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, int id)
+    void ShowBattleDescription(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, int id)
     {
         auto &item = character.Items[id];
 
-        if (item.BattleEffects.size() > 0)
+        if (item.BattleDescriptions.size() > 0)
         {
-            for (auto effect = 0; effect < item.BattleEffects.size(); effect++)
+            for (auto description = 0; description < item.BattleDescriptions.size(); description++)
             {
-                if (Book::IsDefined(item.BattleEffects[effect]) && Book::Equal(item.BattleEffects[effect], party.Location))
+                if (Book::IsDefined(item.BattleDescriptions[description]) && Book::Equal(item.BattleDescriptions[description], party.Location))
                 {
-                    Interface::ShowBookDescription(graphics, background, item.BattleEffects[effect]);
+                    Interface::ShowBookDescription(graphics, background, item.BattleDescriptions[description]);
 
                     break;
                 }
@@ -97,18 +97,16 @@ namespace BloodSword::Interface
                         auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
 
                         auto ranged = item.Has(Item::Property::RANGED);
-                        
-                        Engine::Queue targets = {};
 
                         if (ranged)
                         {
-                            targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+                            auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
 
                             if (opponents.size() > 0)
                             {
                                 Interface::MessageBox(graphics, background, Interface::GetText(Interface::MSG_NEARBY), Color::Highlight);
                             }
-                            else
+                            else if (targets.size() > 0)
                             {
                                 // do something
                                 update = true;
