@@ -275,12 +275,6 @@ namespace BloodSword::Interface
                     {
                         controls.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                     }
-
-                    // has steel sceptre
-                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Requirements(Item::Type::STEEL_SCEPTRE)))
-                    {
-                        controls.push_back(Controls::Type::STEEL_SCEPTRE);
-                    }
                 }
 
                 auto player_shooter = is_player && Engine::CanShoot(character) && enemies && no_enemy;
@@ -637,12 +631,6 @@ namespace BloodSword::Interface
 
                         controls_list.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                     }
-
-                    // has steel sceptre
-                    if (character.IsArmed(Item::Property::SECONDARY) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
-                    {
-                        controls_list.push_back(Controls::Type::STEEL_SCEPTRE);
-                    }
                 }
 
                 auto player_shooter = is_player && Engine::CanShoot(character) && enemies && no_enemy;
@@ -820,6 +808,20 @@ namespace BloodSword::Interface
         return alive;
     }
 
+    void DropItemsOnDeath(Battle::Base &battle, Character::Base &character)
+    {
+        if (!Engine::IsAlive(character))
+        {
+            for (auto item = 0; character.Items.size(); item++)
+            {
+                if (character.Items[item].Drops)
+                {
+                    battle.Loot.push_back(character.Items[item]);
+                }
+            }
+        }
+    }
+
     // Fight helper function
     void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, Skills::Type melee)
     {
@@ -836,6 +838,8 @@ namespace BloodSword::Interface
 
         if (!alive)
         {
+            Interface::DropItemsOnDeath(battle, defender);
+
             battle.Map.Remove(defender.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, defender_id);
 
             Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
@@ -861,6 +865,8 @@ namespace BloodSword::Interface
 
             if (!alive)
             {
+                Interface::DropItemsOnDeath(battle, attacker);
+
                 battle.Map.Remove(attacker.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, attacker_id);
 
                 Interface::MessageBox(graphics, background, attacker.Name + " KILLED!", attacker.IsPlayer() ? Color::Highlight : Color::Active);
@@ -936,6 +942,8 @@ namespace BloodSword::Interface
 
         if (!alive)
         {
+            Interface::DropItemsOnDeath(battle, defender);
+
             battle.Map.Remove(defender.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, defenderid);
 
             Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
@@ -1136,6 +1144,8 @@ namespace BloodSword::Interface
 
         if (!alive)
         {
+            Interface::DropItemsOnDeath(battle, target);
+
             battle.Map.Remove(target.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, targetid);
 
             Interface::MessageBox(graphics, background, target.Name + " KILLED!", target.IsPlayer() ? Color::Highlight : Color::Active);
@@ -2564,9 +2574,6 @@ namespace BloodSword::Interface
             // quarterstaff targetting
             auto knockout = Skills::Type::NONE;
 
-            // for fighting with an item
-            auto fight_item = Item::Type::NONE;
-
             // spells popup
             auto spells = false;
 
@@ -3085,8 +3092,6 @@ namespace BloodSword::Interface
 
                                             if (control.OnMap && battle.Map[scene.Controls[input.Current].Map].Id == character_id && ((is_player && battle.Map[scene.Controls[input.Current].Map].IsPlayer()) || (is_enemy && battle.Map[scene.Controls[input.Current].Map].IsEnemy())))
                                             {
-                                                fight_item = Item::Type::NONE;
-
                                                 knockout = character.Fight;
 
                                                 previous = input;
@@ -3196,10 +3201,7 @@ namespace BloodSword::Interface
                                                         auto fighter = battle.Map[control.Map].Id;
 
                                                         // fight
-                                                        if (fight_item == Item::Type::NONE)
-                                                        {
-                                                            Interface::Fight(graphics, scene, battle, character, character_id, battle.Opponents[fighter], fighter, knockout);
-                                                        }
+                                                        Interface::Fight(graphics, scene, battle, character, character_id, battle.Opponents[fighter], fighter, knockout);
 
                                                         // checks if enthrallment is broken
                                                         Interface::CheckEnthrallment(graphics, battle, scene, character, Interface::Text[Interface::MSG_ENTHRAL]);
@@ -3210,8 +3212,6 @@ namespace BloodSword::Interface
                                                     }
 
                                                     knockout = Skills::Type::NONE;
-
-                                                    fight_item = Item::Type::NONE;
 
                                                     fight = false;
                                                 }
@@ -3379,8 +3379,6 @@ namespace BloodSword::Interface
                                                 regenerate_scene = true;
                                             }
 
-                                            fight_item = Item::Type::NONE;
-
                                             knockout = character.Fight;
 
                                             fight = false;
@@ -3408,7 +3406,7 @@ namespace BloodSword::Interface
                                                     input = previous;
                                                 }
                                             }
-                                            else if (input.Type == Controls::Type::FIGHT || input.Type == Controls::Type::QUARTERSTAFF || input.Type == Controls::Type::STEEL_SCEPTRE)
+                                            else if (input.Type == Controls::Type::FIGHT || input.Type == Controls::Type::QUARTERSTAFF)
                                             {
                                                 auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
 
@@ -3420,17 +3418,8 @@ namespace BloodSword::Interface
 
                                                     knockout = ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF)) ? Skills::Type::QUARTERSTAFF : character.Fight;
 
-                                                    fight_item = ((input.Type == Controls::Type::STEEL_SCEPTRE)) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE) ? Item::Type::STEEL_SCEPTRE : Item::Type::NONE;
-
                                                     // fight
-                                                    if (fight_item == Item::Type::NONE)
-                                                    {
-                                                        Interface::Fight(graphics, scene, battle, character, character_id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout);
-                                                    }
-                                                    else
-                                                    {
-                                                        // fight with item
-                                                    }
+                                                    Interface::Fight(graphics, scene, battle, character, character_id, battle.Opponents[opponents[0].Id], opponents[0].Id, knockout);
 
                                                     refresh_textures = true;
 
@@ -3442,10 +3431,6 @@ namespace BloodSword::Interface
                                                     {
                                                         knockout = Skills::Type::QUARTERSTAFF;
                                                     }
-                                                    else if ((input.Type == Controls::Type::STEEL_SCEPTRE) && character.IsArmed(Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE))
-                                                    {
-                                                        fight_item = Item::Type::STEEL_SCEPTRE;
-                                                    }
                                                     else
                                                     {
                                                         knockout = character.Fight;
@@ -3456,8 +3441,6 @@ namespace BloodSword::Interface
                                                 else
                                                 {
                                                     knockout = Skills::Type::NONE;
-
-                                                    fight_item = Item::Type::NONE;
                                                 }
 
                                                 if (actions)
