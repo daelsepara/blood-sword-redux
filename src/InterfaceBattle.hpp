@@ -2436,11 +2436,6 @@ namespace BloodSword::Interface
         // set initial result (DETERMINE = battle result to be determined)
         auto result = Battle::Result::DETERMINE;
 
-        // save original battle and party
-        auto copy_battle = battle;
-
-        auto copy_party = party;
-
         // adjust battle UI dimensions and locations
         auto total_w = graphics.Width - 12 * BloodSword::TileSize;
 
@@ -3965,12 +3960,6 @@ namespace BloodSword::Interface
             Engine::ResetAll(party);
 
             Engine::ResetAll(battle.Opponents);
-        }
-        else if (result == Battle::Result::NONE)
-        {
-            party = copy_party;
-
-            battle = copy_battle;
         }
 
         if (result != Battle::Result::NONE && battle.Has(Battle::Condition::SURVIVORS))

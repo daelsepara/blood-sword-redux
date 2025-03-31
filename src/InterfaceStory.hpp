@@ -368,18 +368,22 @@ namespace BloodSword::Interface
 
         auto exit_battle = false;
 
-        if (section.BattleEvents.size() > 0 && !section.ProcessedBattleEvents)
-        {
-            // process this only once
-            next = Interface::ProcessBattleEvents(graphics, background, party);
+        // save original battle and party
+        auto copy_battle = section.Battle;
 
-            section.ProcessedBattleEvents = true;
+        auto copy_party = party;
+
+        if (section.BattleEvents.size() > 0)
+        {
+            Interface::LogSectionHeader("PRE-BATTLE EVENTS", section.Location);
+
+            next = Interface::ProcessBattleEvents(graphics, background, party);
         }
 
         // fight battle
         if (Engine::IsAlive(party) && section.Battle.IsDefined() && Book::IsUndefined(next))
         {
-            Interface::LogSectionHeader("BATTLE", section.Location);
+            Interface::LogSectionHeader("BATTLE", section.Battle.Location);
 
             auto result = Interface::RenderBattle(graphics, section.Battle, party);
 
@@ -398,6 +402,10 @@ namespace BloodSword::Interface
             }
             else
             {
+                party = copy_party;
+
+                section.Battle = copy_battle;
+
                 exit_battle = true;
             }
         }

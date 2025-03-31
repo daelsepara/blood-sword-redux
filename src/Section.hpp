@@ -38,9 +38,6 @@ namespace BloodSword::Section
 
         Conditions::List BattleEvents = {};
 
-        // flag to indicate that battle events have been processed already
-        bool ProcessedBattleEvents = false;
-
         Base() {}
 
         bool Has(Feature::Type feature)
