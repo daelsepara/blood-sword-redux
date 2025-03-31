@@ -242,6 +242,7 @@ namespace BloodSword::Interface
 
             auto last_result = false;
 
+            // process each background event
             for (auto &condition : section.Background)
             {
                 if (condition.Type != Conditions::Type::IF_TRUE_SET && condition.Type != Conditions::Type::IF_FALSE_SET)
@@ -295,6 +296,7 @@ namespace BloodSword::Interface
 
             auto last_result = false;
 
+            // process each event
             for (auto &condition : section.Events)
             {
                 if (Engine::IsAlive(party))
@@ -331,23 +333,35 @@ namespace BloodSword::Interface
         {
             Interface::LogSectionHeader("PRE-BATTLE", section.Location);
 
+            auto last_result = false;
+
+            // process each pre-battle event
             for (auto &condition : section.BattleEvents)
             {
-                // ignore results
-                auto eval = Conditions::Process(graphics, background, party, condition);
-
-                if ((eval.Result && Book::IsDefined(condition.Location)) || (eval.Failed && Book::IsDefined(condition.Failure)))
+                if (condition.Type != Conditions::Type::IF_TRUE_SET && condition.Type != Conditions::Type::IF_FALSE_SET)
                 {
-                    if (eval.Failed)
-                    {
-                        next = condition.Failure;
-                    }
-                    else if (eval.Result)
-                    {
-                        next = condition.Location;
-                    }
+                    // ignore results
+                    auto eval = Conditions::Process(graphics, background, party, condition);
 
-                    break;
+                    last_result = (eval.Failed || eval.Result);
+
+                    if ((eval.Result && Book::IsDefined(condition.Location)) || (eval.Failed && Book::IsDefined(condition.Failure)))
+                    {
+                        if (eval.Failed)
+                        {
+                            next = condition.Failure;
+                        }
+                        else if (eval.Result)
+                        {
+                            next = condition.Location;
+                        }
+
+                        break;
+                    }
+                }
+                else
+                {
+                    Interface::SetVariable(party, condition, last_result);
                 }
             }
         }
@@ -418,7 +432,7 @@ namespace BloodSword::Interface
 
                 auto last_result = false;
 
-                // process through each condition
+                // process each next event
                 for (auto &condition : section.Next)
                 {
                     if (Engine::IsAlive(party))
