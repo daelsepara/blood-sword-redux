@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 388
+    },
+    "text": "You dash along the corridor. The grey beings shriek and gibber, stretching out to try to seize you. Six of them pull far enough out of their alcoves before the chain mechanism locks to be able to swipe at you as you go past.",
+    "next": [
+        {
+            "type": "GAUNTLET",
+            "location": {
+                "book": "BOOK1",
+                "number": 31
+            },
+            "failure": {
+                "book": "BOOK1",
+                "number": 249
+            },
+            "variables": [
+                "6",
+                "3",
+                "0",
+                "7",
+                "3",
+                "0",
+                "GHASTLY TOUCH",
+                "THE CREATURE WAS ABLE TO SWIPE AT ",
+                "You reach the door at the end of the corridor",
+                "You turn back and take the tunnel beyond the open grille"
+            ]
+        }
+    ]
+}

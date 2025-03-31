@@ -3309,6 +3309,75 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::GAUNTLET)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - rounds
+            // 1 - rolls
+            // 2 - roll modifier
+            // 3 - difficulty
+            // 4 - damage
+            // 5 - damage modifier
+            // 6 - asset
+            // 7 - damage prefix
+            // 8 - success message
+            // 9 - failure message
+            if (Engine::IsAlive(party) && condition.Variables.size() > 9)
+            {
+                Interface::Gauntlet gauntlet;
+
+                gauntlet.Rounds = party.Number(condition.Variables[0]);
+
+                gauntlet.Rolls = party.Number(condition.Variables[1]);
+
+                gauntlet.RollModifier = party.Number(condition.Variables[2]);
+
+                gauntlet.Difficulty = party.Number(condition.Variables[3]);
+
+                gauntlet.Damage = party.Number(condition.Variables[4]);
+
+                gauntlet.DamageModifier = party.Number(condition.Variables[5]);
+
+                auto asset = Asset::Map(condition.Variables[6]);
+
+                auto prefix = condition.Variables[7];
+
+                if (gauntlet.Rounds > 0 && gauntlet.Rolls > 0 && gauntlet.Difficulty > 0 && gauntlet.Damage > 0 && asset != Asset::Type::NONE && !prefix.empty())
+                {
+                    result = Interface::RunGauntlet(graphics, background, party, gauntlet, asset, prefix);
+
+                    if (result)
+                    {
+                        if (!condition.Variables[8].empty())
+                        {
+                            Interface::TextBox(graphics, background, condition.Variables[8], Color::Active, BloodSword::TileSize * 6, true);
+                        }
+                    }
+                    else
+                    {
+                        if (Engine::IsAlive(party))
+                        {
+                            failed = true;
+
+                            if (!condition.Variables[9].empty())
+                            {
+                                Interface::TextBox(graphics, background, condition.Variables[9], Color::Inactive, BloodSword::TileSize * 6, true);
+                            }
+                        }
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)

@@ -135,6 +135,23 @@ namespace BloodSword::Interface
         Book::Location Next = Book::Undefined;
     };
 
+    struct Gauntlet
+    {
+        int Rounds = 1;
+
+        int Rolls = 2;
+
+        int RollModifier = 0;
+
+        int Difficulty = 2;
+
+        int Damage = 2;
+
+        int DamageModifier = 0;
+
+        int IgnoreArmour = false;
+    };
+
     void LogSpellFailure(Character::Base &caster, Spells::Type spell)
     {
         if (!caster.HasCalledToMind(spell))
@@ -4888,6 +4905,71 @@ namespace BloodSword::Interface
         auto result = Interface::SelectDice(graphics, background, message, 1);
 
         return result.Sum;
+    }
+
+    void GauntletRound(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Gauntlet gauntlet, Asset::Type asset, std::string prefix)
+    {
+        auto wrap = BloodSword::TileSize * 6;
+
+        if (Engine::IsAlive(party))
+        {
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                if (Engine::IsAlive(party[character]))
+                {
+                    auto roll_result = Interface::Roll(graphics, background, party[character].Asset, asset, gauntlet.Rolls, gauntlet.RollModifier);
+
+                    if (roll_result < gauntlet.Difficulty)
+                    {
+                        std::string message = prefix + " " + party[character].Name + "!";
+
+                        Interface::TextBox(graphics, background, message, Color::Highlight, wrap, true);
+
+                        Interface::DamagePlayer(graphics, background, party[character], gauntlet.Damage, gauntlet.DamageModifier, gauntlet.IgnoreArmour, false, true);
+                    }
+                }
+            }
+        }
+    }
+
+    bool RunGauntlet(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Gauntlet gauntlet, Asset::Type asset, std::string prefix)
+    {
+        auto result = false;
+
+        if (Engine::IsAlive(party))
+        {
+            auto passed = 0;
+
+            for (auto round = 0; round < gauntlet.Rounds; round++)
+            {
+                Interface::GauntletRound(graphics, background, party, gauntlet, asset, prefix);
+
+                passed = round + 1;
+
+                if (!Engine::IsAlive(party) || !Interface::Confirm(graphics, background, "CONTINUE?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                {
+                    break;
+                }
+            }
+
+            if (Engine::IsAlive(party) && passed != gauntlet.Rounds)
+            {
+                for (auto round = 0; round < passed; round++)
+                {
+                    Interface::GauntletRound(graphics, background, party, gauntlet, asset, prefix);
+                }
+            }
+            else
+            {
+                result = true;
+            }
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, Interface::DeathMessage(party), Color::Highlight);
+        }
+
+        return result;
     }
 }
 

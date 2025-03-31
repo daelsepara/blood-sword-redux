@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 31
+    },
+    "text": "The door opens and you enter a small cavern. A man lies dead on the stone floor nearby. Another of Kalugen's guards, by the look of it, probably sent on some mad suicide mission through the underworld by his evil master. Your evil master, too, come to that.\n\nHe has something clutched in his hand. It is an OCTAGONAL PRISM of coloured glass. Nearby there is a marble dais.",
+    "items": [
+        {
+            "name": "OCTAGONAL GLASS PRISM",
+            "quantity": 1,
+            "type": "OCTAGONAL GLASS PRISM"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Step onto the dais",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 386
+                }
+            }
+        },
+        {
+            "text": "Return and take the tunnel beyond the grille.",
+            "condition": {
+                "type": "GAUNTLET",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 249
+                },
+                "failure": {
+                    "book": "BOOK1",
+                    "number": 31
+                },
+                "variables": [
+                    "6",
+                    "3",
+                    "0",
+                    "7",
+                    "3",
+                    "0",
+                    "GHASTLY TOUCH",
+                    "THE CREATURE WAS ABLE TO SWIPE AT ",
+                    "You are able to make it back to the cavern",
+                    "You turn back to consider taking a different action"
+                ]
+            }
+        }
+    ]
+}

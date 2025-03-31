@@ -95,7 +95,8 @@ namespace BloodSword::Conditions
         TASK,
         CONFIRM,
         LOSE_EVERYTHING,
-        TAKE_FROM_LIST
+        TAKE_FROM_LIST,
+        GAUNTLET
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -187,7 +188,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::TASK, "TASK"},
         {Conditions::Type::CONFIRM, "CONFIRM"},
         {Conditions::Type::LOSE_EVERYTHING, "LOSE EVERYTHING"},
-        {Conditions::Type::TAKE_FROM_LIST, "TAKE FROM LIST"}};
+        {Conditions::Type::TAKE_FROM_LIST, "TAKE FROM LIST"},
+        {Conditions::Type::GAUNTLET, "GAUNTLET"}};
 
     Conditions::Type Map(const char *Conditions)
     {
