@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 316
+        },
         "conditions": [
             "CANNOT FLEE",
             "ENTANGLED",

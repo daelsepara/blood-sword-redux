@@ -1680,7 +1680,14 @@ namespace BloodSword::Interface
         if (battle.Opponents.Count() > 0)
         {
             // set opposing party's location
-            battle.Opponents.Set(party.Location);
+            if (Book::IsDefined(battle.Location))
+            {
+                battle.Opponents.Set(battle.Location);
+            }
+            else
+            {
+                battle.Opponents.Set(party.Location);
+            }
 
             if (battle.Map.Spawn.size() >= battle.Opponents.Count())
             {
@@ -1774,7 +1781,14 @@ namespace BloodSword::Interface
                     for (auto i = 0; i < survivors.Count(); i++)
                     {
                         // set current location
-                        survivors[i].Location = party.Location;
+                        if (Book::IsDefined(battle.Location))
+                        {
+                            survivors[i].Set(battle.Location);
+                        }
+                        else
+                        {
+                            survivors[i].Set(party.Location);
+                        }
 
                         if (battle.Has(Battle::Condition::HEAL_SURVIVORS))
                         {
@@ -3885,7 +3899,14 @@ namespace BloodSword::Interface
         if (!battle.Has(Battle::Condition::SKIP_LOCATION))
         {
             // set location of last battle
-            party.BattleLocation = party.Location;
+            if (Book::IsDefined(battle.Location))
+            {
+                party.BattleLocation = battle.Location;
+            }
+            else
+            {
+                party.BattleLocation = party.Location;
+            }
         }
 
         // check if party flees

@@ -90,6 +90,9 @@ namespace BloodSword::Battle
     class Base
     {
     public:
+        // battle location
+        Book::Location Location = Book::Undefined;
+
         // battle conditions (see Battle::Condition types)
         Battle::Conditions Conditions = {};
 
@@ -213,6 +216,11 @@ namespace BloodSword::Battle
         {
             if (!data.is_null())
             {
+                if (!data["location"].is_null())
+                {
+                    this->Location = Book::Load(data["location"]);
+                }
+
                 if (!data["conditions"].is_null() && data["conditions"].is_array() && data["conditions"].size() > 0)
                 {
                     auto conditions = Battle::Conditions();

@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 73
+        },
         "ambush_rounds": 1,
         "conditions": [
             "AMBUSH PLAYER",

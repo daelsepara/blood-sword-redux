@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 14
+        },
         "conditions": [
             "LAST BATTLE",
             "HEAL SURVIVORS"

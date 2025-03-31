@@ -273,7 +273,7 @@ namespace BloodSword::Party
 
             for (auto &member : this->Members)
             {
-                member.Location = location;
+                member.Set(location);
             }
         }
 

@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 211
+        },
         "duration": -1,
         "map": "maps/book1/map211.json",
         "opponents": {

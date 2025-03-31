@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 484
+        },
         "action_cancels": {
             "FLEE": {
                 "book": "BOOK1",

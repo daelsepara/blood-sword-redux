@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 241
+        },
         "conditions": [
             "WARRIOR AWAY",
             "SAGE AWAY",

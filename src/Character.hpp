@@ -271,6 +271,11 @@ namespace BloodSword::Character
             }
         }
 
+        void Set(Book::Location location)
+        {
+            this->Location = location;
+        }
+
         void Set(Attribute::Type type, int value, int modifier, int maximum)
         {
             auto attribute = this->Attribute(type);

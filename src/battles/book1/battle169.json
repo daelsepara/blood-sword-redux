@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 169
+        },
         "conditions": [
             "CANNOT FLEE",
             "TRICKSTER AWAY",

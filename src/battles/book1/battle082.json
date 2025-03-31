@@ -1,5 +1,9 @@
 {
     "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 82
+        },
         "duration": -1,
         "endurance": -1,
         "flee_damage": {
