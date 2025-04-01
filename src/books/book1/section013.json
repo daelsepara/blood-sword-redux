@@ -4,6 +4,7 @@
         "number": 13
     },
     "text": "The alcove is not very deep and is covered with a beautiful array of gold and blue mosaics that sparkle in the torchlight. You step into it, hoping to find a hidden door or niche. Instead you are momentarily blinded as the mosaics let out a blinding flash of light. You feel the room spinning uncontrollably. Lights dance and whirl across the walls, and there is an instant of confusion. You realise, too late, that you have walked into a teleportation spell.\n\nIn an instant the spinning ceases and you are now in an ornate garden under a roof of coloured gems. Sitting on the edge of a gently bubbling fountain is an elfin-featured girl wrapped in a toga of green silk.",
+    "image_asset": "images/books/book1/elfin-lady.png",
     "choices": [
         {
             "text": "Attack her",
