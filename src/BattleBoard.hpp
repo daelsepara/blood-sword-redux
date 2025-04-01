@@ -31,7 +31,7 @@ namespace BloodSword::BattleBoard
             {
                 party.Set(battle.Location);
             }
-            
+
             auto result = Interface::RenderBattle(graphics, battle, party);
 
             Graphics::RichText message;
