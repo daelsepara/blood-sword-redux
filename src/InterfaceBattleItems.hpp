@@ -230,7 +230,7 @@ namespace BloodSword::Interface
 
                                 if (item.Type == Item::Type::DAGGER_OF_VISLET)
                                 {
-                                    asset = Asset::Type::POISONED_DAGGER;
+                                    asset = Asset::Type::DAGGER_OF_VISLET;
                                 }
 
                                 auto target = Point(-1, -1);

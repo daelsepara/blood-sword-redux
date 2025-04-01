@@ -157,7 +157,8 @@ namespace BloodSword::Asset
         ROPE_BRIDGE_INVERTED,
         WAVES,
         WAVE_CREST,
-        GEAR
+        GEAR,
+        DAGGER_OF_VISLET
     };
 
     template <typename T>
@@ -313,7 +314,8 @@ namespace BloodSword::Asset
         {Asset::Type::ROPE_BRIDGE_INVERTED, "ROPE BRIDGE INVERTED"},
         {Asset::Type::WAVES, "WAVES"},
         {Asset::Type::WAVE_CREST, "WAVE CREST"},
-        {Asset::Type::GEAR, "GEAR"}};
+        {Asset::Type::GEAR, "GEAR"},
+        {Asset::Type::DAGGER_OF_VISLET, "DAGGER OF VISLET"}};
 
     Asset::Type Map(const char *asset)
     {
