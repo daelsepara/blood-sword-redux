@@ -28,7 +28,9 @@ namespace BloodSword::Character
         IN_COMBAT,
         POISONED,
         TASK,
-        ALONE
+        ALONE,
+        AMBUSH_RANGED,
+        SLOW_MURDER
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -52,7 +54,9 @@ namespace BloodSword::Character
         {Character::Status::IN_COMBAT, "IN COMBAT"},
         {Character::Status::POISONED, "POISONED"},
         {Character::Status::TASK, "TASK"},
-        {Character::Status::ALONE, "ALONE"}};
+        {Character::Status::ALONE, "ALONE"},
+        {Character::Status::AMBUSH_RANGED, "AMBUSH RANGED"},
+        {Character::Status::SLOW_MURDER, "SLOW MURDER"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -75,7 +79,8 @@ namespace BloodSword::Character
         {Character::Status::IN_COMBAT, 1},
         {Character::Status::POISONED, -1},
         {Character::Status::TASK, -1},
-        {Character::Status::ALONE, -1}};
+        {Character::Status::ALONE, -1},
+        {Character::Status::SLOW_MURDER, -1}};
 
     Character::Status MapStatus(const char *status)
     {

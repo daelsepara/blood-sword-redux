@@ -1121,6 +1121,7 @@ namespace BloodSword::Engine
                       Character::Status::ENTANGLED,
                       Character::Status::FLEEING,
                       Character::Status::PARALYZED,
+                      Character::Status::SLOW_MURDER,
                       Character::Status::IN_COMBAT,
                       Character::Status::IN_BATTLE});
 

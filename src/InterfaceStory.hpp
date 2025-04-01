@@ -1288,9 +1288,13 @@ namespace BloodSword::Interface
         // get actual dimension
         BloodSword::Size(texture, &texture_w, &texture_h);
 
-        if (section.ImageAsset.length() > 0)
+        auto image_location = origin + Point(BloodSword::Pad, BloodSword::Pad);
+
+        if (!section.ImageAsset.empty())
         {
-            image = Asset::Create(graphics.Renderer, section.ImageAsset.c_str());
+            image = Graphics::ScaledImage(graphics, section.ImageAsset, panel_w - BloodSword::Pad * 2, panel_h - BloodSword::Pad * 2);
+
+            image_location.X += (panel_w - BloodSword::Width(image)) / 2;
         }
         else
         {
@@ -1354,7 +1358,7 @@ namespace BloodSword::Interface
             if (image)
             {
                 // add left panel
-                overlay.VerifyAndAdd(Scene::Element(image, origin + Point(BloodSword::Pad, BloodSword::Pad)));
+                overlay.VerifyAndAdd(Scene::Element(image, image_location));
             }
 
             // text panel border

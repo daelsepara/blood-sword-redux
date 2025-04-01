@@ -1573,7 +1573,7 @@ namespace BloodSword::Test
              Graphics::RichText("07 ATTRIBUTES TEST\n\n\nAttribute difficulty checks", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("08 FIGHT\n\n\nFighting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("09 SHOOT\n\n\nShooting and damage resolution", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("10 BATTLE\n\n\nBattles on a map (moving/fighting/shooting/spells/items)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("10 BATTLE\n\n\nBattles on a map (move/fight/shoot/spells/items)", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("11 STORY\n\n\nStory sections", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("12 TEXT INPUT\n\n\nInput text inside a message box", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("13 HEALING\n\n\nHealing ability", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),

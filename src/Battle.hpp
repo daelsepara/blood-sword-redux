@@ -32,6 +32,7 @@ namespace BloodSword::Battle
         CLONE_TRICKSTER,
         CLONE_SAGE,
         CLONE_ENCHANTER,
+        SLOW_MURDER
     };
 
     const int Unlimited = -1;
@@ -58,7 +59,8 @@ namespace BloodSword::Battle
         {Battle::Condition::CLONE_WARRIOR, "CLONE WARRIOR"},
         {Battle::Condition::CLONE_TRICKSTER, "CLONE TRICKSTER"},
         {Battle::Condition::CLONE_SAGE, "CLONE SAGE"},
-        {Battle::Condition::CLONE_ENCHANTER, "CLONE ENCHANTER"}};
+        {Battle::Condition::CLONE_ENCHANTER, "CLONE ENCHANTER"},
+        {Battle::Condition::SLOW_MURDER, "SLOW MURDER"}};
 
     Battle::Condition MapCondition(const char *condition)
     {

@@ -979,6 +979,15 @@ namespace BloodSword::Interface
                 party.Remove(Character::Status::TACTICS);
             }
 
+            if (party.Has(Character::Status::AMBUSH_RANGED) && battle.Has(Battle::Condition::AMBUSH_PLAYER_RANGED))
+            {
+                // add additional RANGED ambush attacks
+                battle.AmbushRounds++;
+
+                // remove AMBUSH RANGED status from party
+                party.Remove(Character::Status::AMBUSH_RANGED);
+            }
+
             if (battle.Has(Battle::Condition::ENTANGLED))
             {
                 // apply ENTANGLED
@@ -1179,6 +1188,18 @@ namespace BloodSword::Interface
 
             while ((battle.Round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && (Engine::InBattle(party) > 0) && !battle.ExitBattle)
             {
+                // activate SLOW MURDER before building the queue
+                for (auto i = 0; i < party.Count(); i++)
+                {
+                    if (Engine::IsAlive(party[i]) && party[i].Has(Character::Status::SLOW_MURDER))
+                    {
+                        if (!Engine::GainEndurance(party[i], -1, true))
+                        {
+                            battle.Map.Remove(Map::Object::PLAYER, i);
+                        }
+                    }
+                }
+
                 // initialize battle order
                 battle.Order = {};
 
@@ -1312,7 +1333,34 @@ namespace BloodSword::Interface
                                         // check if there are adjacent player combatants
                                         auto opponents = Interface::EnemyFights(battle, party, character, src);
 
-                                        if (Interface::CanCastSpells(battle, party, character, character_id) && !battle.Has(Battle::Condition::NO_COMBAT))
+                                        if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Type::MISTS_OF_DEATH, 1, 0) == 1)
+                                        {
+                                            std::string slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
+
+                                            Interface::MessageBox(graphics, scene, slow_murder, Color::Highlight);
+
+                                            for (auto i = 0; i < party.Count(); i++)
+                                            {
+                                                std::string resists = party[i].Name + " RESISTS THE SLOW MURDER SPELL!";
+
+                                                std::string succumb = party[i].Name + " SUCCUMBS TO THE SLOW MURDER SPELL!";
+
+                                                if (Engine::CanTarget(party[i], true) && !party[i].Has(Character::Status::SLOW_MURDER))
+                                                {
+                                                    if (!Interface::Test(graphics, scene, party[i], Attribute::Type::PSYCHIC_ABILITY))
+                                                    {
+                                                        Interface::MessageBox(graphics, scene, succumb, Color::Highlight);
+
+                                                        party[i].Add(Character::Status::SLOW_MURDER);
+                                                    }
+                                                    else
+                                                    {
+                                                        Interface::MessageBox(graphics, scene, resists, Color::Active);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if (Interface::CanCastSpells(battle, party, character, character_id) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             character.Add(Character::Status::IN_COMBAT);
 

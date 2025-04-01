@@ -3451,6 +3451,13 @@ namespace BloodSword::Conditions
         {
             condition.Location = party.PreviousLocation;
 
+            // variables
+            // 0 - text to display (when used in an event)
+            if (condition.Variables.size() > 0)
+            {
+                text = condition.Variables[0];
+            }
+
             result = true;
         }
 
