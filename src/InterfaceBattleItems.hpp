@@ -226,7 +226,7 @@ namespace BloodSword::Interface
                             }
                             else if (targets.size() > 0)
                             {
-                                auto asset = Asset::Type::ARCHERY;
+                                auto asset = Asset::Type::SHOOT;
 
                                 if (item.Type == Item::Type::DAGGER_OF_VISLET)
                                 {
