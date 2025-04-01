@@ -167,6 +167,12 @@ namespace BloodSword::Graphics
         // load image from a file as a surface
         auto original = BloodSword::Load(filename.c_str());
 
+        // render in current palette
+        if (original)
+        {
+            SDL_SetSurfaceColorMod(original, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
+        }
+
         // aspect ratio
         auto ratio_w = (double)original->w / target_w;
 

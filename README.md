@@ -78,6 +78,10 @@ A slower, more methodical pace is being adopted to bring the new engine to fruit
 
 ![Section](/screenshots/story-mode-2.png)
 
+### Story / Palettes / Page Image
+
+![Section](/screenshots/story-mode-palettes-image.png)
+
 ### Choices
 
 ![Choices](/screenshots/story-mode-choices.png)

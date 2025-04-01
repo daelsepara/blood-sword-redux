@@ -4,6 +4,7 @@
         "number": 54
     },
     "text": "You come to a door and shoulder it open. Three wiry men dressed all in black look up from a dead body that is bloody with the marks of their daggers. Assassins! To make matters worse, you can hear the barbarians charging in pursuit. A moment later they burst into the room just behind you.",
+    "image_asset": "images/books/book1/assassins.png",
     "battle": "battles/book1/battle054.json",
     "next": [
         {
