@@ -922,11 +922,7 @@ namespace BloodSword::Engine
     {
         auto update = false;
 
-        if (status == Character::Status::DEFENDING)
-        {
-            update = Engine::Transition(character, Character::Status::DEFENDING, Character::Status::DEFENDED);
-        }
-        else if (character.Has(status))
+        if (character.Has(status))
         {
             auto duration = character.Status[status];
 
@@ -961,23 +957,30 @@ namespace BloodSword::Engine
 
         auto active = character.Status.size();
 
-        auto status_types = std::vector<Character::Status>();
-
-        // get all status
-        for (auto status : character.Status)
+        if (character.Is(Character::Status::DEFENDING))
         {
-            status_types.push_back(status.first);
+            update = Engine::Transition(character, Character::Status::DEFENDING, Character::Status::DEFENDED);
         }
-
-        // cooldown each status
-        for (auto status : status_types)
+        else
         {
-            update |= Engine::CoolDown(character, status);
-        }
+            auto status_types = std::vector<Character::Status>();
 
-        if (active != character.Status.size())
-        {
-            update = true;
+            // get all status
+            for (auto status : character.Status)
+            {
+                status_types.push_back(status.first);
+            }
+
+            // cooldown each status
+            for (auto status : status_types)
+            {
+                update |= Engine::CoolDown(character, status);
+            }
+
+            if (active != character.Status.size())
+            {
+                update = true;
+            }
         }
 
         return update;

@@ -1889,7 +1889,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(action), origin_pad + Point(tile_pad, 0)));
 
             // add roll string
-            overlay.VerifyAndAdd(Scene::Element(roll_texture, origin_pad + Point(pad, tile_pad)));
+            overlay.VerifyAndAdd(Scene::Element(roll_texture, origin_pad + Point(0, tile_pad)));
 
             if (stage == Engine::RollStage::START)
             {
