@@ -1,7 +1,7 @@
 #ifndef __INTERFACE_BATTLE_ITEMS_HPP__
 #define __INTERFACE_BATTLE_ITEMS_HPP__
 
-#include "InterfaceInventory.hpp"
+#include "InterfaceBattleScene.hpp"
 
 namespace BloodSword::Interface
 {
@@ -23,8 +23,88 @@ namespace BloodSword::Interface
         }
     }
 
+    bool TargetAction(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id, Point target)
+    {
+        auto used = false;
+
+        auto is_player = battle.Map.IsValid(target) && battle.Map[target].IsPlayer() && Engine::CanTarget(party[battle.Map[target].Id], true);
+
+        auto is_enemy = battle.Map.IsValid(target) && battle.Map[target].IsEnemy() && Engine::CanTarget(battle.Opponents[battle.Map[target].Id], true);
+
+        auto valid = (is_enemy || is_player);
+
+        auto &item = character.Items[id];
+
+        if (!target.IsNone() && valid)
+        {
+            auto target_id = battle.Map[target].Id;
+
+            auto &defender = character.IsPlayer() ? battle.Opponents[target_id] : party[target_id];
+
+            auto target_type = character.Items[id].HasEffect(defender.Target) ? defender.Target : (character.Items[id].HasEffect(Target::Type::ENEMY) ? Target::Type::ENEMY : Target::Type::NONE);
+
+            // check if it is a blasting / weapon
+            if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::DAMAGE_TARGET)
+            {
+                if ((character.IsPlayer() && is_enemy) || (character.IsEnemy() && is_player))
+                {
+                    auto charged = item.Contains == Item::Type::CHARGE;
+
+                    auto has_charges = item.IsCharged(Item::Type::CHARGE, 1);
+
+                    auto usable = (charged && has_charges) || !charged;
+
+                    if (usable)
+                    {
+                        auto rolls = item.DamageTypes[target_type].Value;
+
+                        auto modifier = item.DamageTypes[target_type].Modifier;
+
+                        auto ignore_armour = item.DamageTypes[target_type].IgnoreArmour;
+
+                        Interface::DamagePlayer(graphics, background, defender, rolls, modifier, ignore_armour, true, true);
+
+                        if (!Engine::IsAlive(defender))
+                        {
+                            battle.Map.Remove(defender.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, target_id);
+
+                            Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
+
+                            if (charged && has_charges)
+                            {
+                                item.Remove(Item::Type::CHARGE, 1);
+                            }
+                            else if (item.Drops)
+                            {
+                                battle.Loot.push_back(item);
+
+                                Interface::ConsumeItem(character, id);
+                            }
+
+                            used = true;
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
+                        }
+                    }
+                    else if (!has_charges)
+                    {
+                        Interface::MessageBox(graphics, background, "NO CHARGES LEFT!", Color::Highlight);
+                    }
+                }
+                else
+                {
+                    Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
+                }
+            }
+        }
+
+        return used;
+    }
+
     // (character) manage item while in battle
-    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id)
+    bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, Point src, int id)
     {
         auto update = false;
 
@@ -108,8 +188,19 @@ namespace BloodSword::Interface
                             }
                             else if (targets.size() > 0)
                             {
+                                auto asset = Asset::Type::ARCHERY;
+
                                 // do something
-                                update = true;
+                                auto target = Interface::SelectTarget(graphics, battle, party, item.Name, asset, Controls::Type::ENEMY);
+
+                                if (target.IsNone() || battle.Map.Distance(src, target) < 2)
+                                {
+                                    Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
+                                }
+                                else
+                                {
+                                    update = true;
+                                }
                             }
                         }
                         else
@@ -120,9 +211,39 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                update = true;
+                                auto asset = Asset::Type::FIGHT;
+
+                                if (item.Type == Item::Type::STEEL_SCEPTRE)
+                                {
+                                    asset = Asset::Type::STEEL_SCEPTRE;
+                                }
+
+                                auto target = Point(-1, -1);
+
+                                if (opponents.size() > 1)
+                                {
+                                    target = Interface::SelectTarget(graphics, battle, party, item.Name, asset, Controls::Type::ENEMY);
+                                }
+                                else
+                                {
+                                    target = battle.Map.Find(opponents[0].Type == Character::ControlType::PLAYER ? Map::Object::PLAYER : Map::Object::ENEMY, opponents[0].Id);
+                                }
+
+                                if (target.IsNone() || battle.Map.Distance(src, target) > 1)
+                                {
+                                    Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
+                                }
+                                else
+                                {
+                                    update = Interface::TargetAction(graphics, background, battle, party, character, id, target);
+                                }
                             }
                         }
+                    }
+
+                    if (update)
+                    {
+                        done = true;
                     }
                 }
                 else
@@ -136,7 +257,7 @@ namespace BloodSword::Interface
     }
 
     // (character) show inventory while in battle
-    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character)
+    bool ShowInventory(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, Point src)
     {
         auto update = false;
 
@@ -291,19 +412,15 @@ namespace BloodSword::Interface
 
                         if (choice >= 0 && choice < character.Items.size())
                         {
-                            update = Interface::ManageItem(graphics, background, battle, party, character, choice);
+                            update = Interface::ManageItem(graphics, background, battle, party, character, src, choice);
                         }
 
                         // check if item list is unchanged
-                        if (character.Items.size() == 0)
+                        if (character.Items.size() == 0 || character.Items.size() != options || update)
                         {
                             done = true;
 
                             exit = true;
-                        }
-                        else if (character.Items.size() != options)
-                        {
-                            done = true;
                         }
                     }
                 }

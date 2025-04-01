@@ -21,9 +21,13 @@ namespace BloodSword::Item
 
         int Modifier = 0;
 
+        bool IgnoreArmour = false;
+
         Damage() {}
 
         Damage(int value, int modifier) : Value(value), Modifier(modifier) {}
+
+        Damage(int value, int modifier, bool ignore_armour) : Value(value), Modifier(modifier), IgnoreArmour(ignore_armour) {}
     };
 
     // item base class
@@ -160,6 +164,11 @@ namespace BloodSword::Item
             return this->Attributes.find(attribute) != this->Attributes.end();
         }
 
+        bool HasEffect(Target::Type target)
+        {
+            return this->TargetEffects.find(target) != this->TargetEffects.end();
+        }
+
         bool HasAll(Item::Properties properties)
         {
             auto has = true;
@@ -212,6 +221,11 @@ namespace BloodSword::Item
             }
 
             return result;
+        }
+
+        bool IsCharged(Item::Type charge, int quantity)
+        {
+            return (this->Contains == charge && this->Quantity >= quantity);
         }
 
         // return attribute-modifier value of this item, if any
@@ -524,9 +538,11 @@ namespace BloodSword::Item
 
                     auto modifier = !val["modifier"].is_null() ? int(val["modifier"]) : 0;
 
+                    auto ignore_armour = (!val["ignore_armour"].is_null() && val["ignore_armour"].is_boolean()) ? val["ignore_armour"].get<bool>() : false;
+
                     if (target != Target::Type::NONE)
                     {
-                        item.DamageTypes[target] = Item::Damage(damage, modifier);
+                        item.DamageTypes[target] = Item::Damage(damage, modifier, ignore_armour);
                     }
                 }
             }

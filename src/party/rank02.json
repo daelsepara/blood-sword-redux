@@ -80,6 +80,28 @@
                         ],
                         "quantity": 10,
                         "type": "POUCH"
+                    },
+                    {
+                        "contains": "CHARGE",
+                        "limit": 4,
+                        "name": "STEEL SCEPTRE",
+                        "properties": [
+                            "CONTAINER",
+                            "COMBAT",
+                            "REQUIRES TARGET"
+                        ],
+                        "quantity": 4,
+                        "type": "STEEL SCEPTRE",
+                        "drops": true,
+                        "damage_types": {
+                            "ENEMY": {
+                                "damage": 5,
+                                "modifier": 0
+                            }
+                        },
+                        "target_effects": {
+                            "ENEMY": "DAMAGE TARGET"
+                        }
                     }
                 ],
                 "moves": 1000,

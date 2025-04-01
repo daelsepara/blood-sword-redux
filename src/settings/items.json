@@ -201,6 +201,15 @@
             ],
             "quantity": 4,
             "type": "STEEL SCEPTRE",
+            "damage_types": {
+                "ENEMY": {
+                    "damage": 5,
+                    "modifier": 0
+                }
+            },
+            "target_effects": {
+                "ENEMY": "DAMAGE TARGET"
+            },
             "drops": true
         },
         {
@@ -276,7 +285,15 @@
                 "NEBULARON": {
                     "damage": 1,
                     "modifier": -2
+                },
+                "ENEMY": {
+                    "damage": 1,
+                    "modifier": 0
                 }
+            },
+            "target_effects": {
+                "NEBULARON": "THROW",
+                "ENEMY": "THROW"
             },
             "drops": true
         },

@@ -204,7 +204,7 @@ namespace BloodSword::Party
 
             for (auto character = this->Members.begin(); character != this->Members.end(); character++)
             {
-                if (character->HasCharged(item, charge, quantity < 0 ? quantity : 0))
+                if (character->HasCharged(item, charge, quantity < 0 ? -quantity : 0))
                 {
                     character->AddCharge(item, charge, quantity);
                 }

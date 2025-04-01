@@ -349,7 +349,7 @@ namespace BloodSword::Character
 
         bool AddCharge(Item::Type item, Item::Type charge, int quantity)
         {
-            auto result = this->HasCharged(item, charge, quantity);
+            auto result = this->HasCharged(item, charge, quantity < 0 ? -quantity : 0);
 
             if (result)
             {
