@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 363
     },
-    "text": "(ENCHANTER) Spells are useless against NEBULARON. He is cloaked in an 'anti-magic field' that automatically negates sorcery, so you can cast the spell but it simply fizzles out.",
+    "text": "(ENCHANTER) Spells are useless against Nebularon. He is cloaked in an 'anti-magic field' that automatically negates sorcery, so you can cast the spell but it simply fizzles out.",
     "next": [
         {
             "type": "PREVIOUS LOCATION"

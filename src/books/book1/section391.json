@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 391
+    },
+    "text": "You wave the PRISM at the onrushing dirges. Perhaps you hope it will produce some burst of destructive magic, but nothing happens. The scabrous beak of the first dirge knocks the PRISM from your hand and sends it bouncing down on the stone ledge. It shatters into a dozen shards, but you have no time to worry about its loss.",
+    "background": [
+        {
+            "type": "DROP ITEM",
+            "variables": [
+                "CHOSEN",
+                "OCTAGONAL GLASS PRISM"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 112
+            },
+            "variables": [
+                "The squawking monsters are upon you!",
+                "HIGHLIGHT"
+            ]
+        }
+    ]
+}

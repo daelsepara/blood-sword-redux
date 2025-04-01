@@ -187,7 +187,7 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
-        else if (condition.Type == Conditions::Type::HAS_ITEM)
+        else if (condition.Type == Conditions::Type::PARTY_HAS_ITEM)
         {
             internal_error = true;
 
@@ -218,8 +218,6 @@ namespace BloodSword::Conditions
         }
         else if (condition.Type == Conditions::Type::DROP_ITEM)
         {
-            internal_error = true;
-
             // variables
             // 0 - player / ALL
             // 1 - item
@@ -250,15 +248,71 @@ namespace BloodSword::Conditions
                             party[character].Remove(item);
                         }
                     }
-
-                    internal_error = false;
+                }
+                else if (item != Item::Type::NONE && character != Character::Class::NONE && !party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (item != Item::Type::NONE && character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
+                }
+                else
+                {
+                    internal_error = true;
                 }
             }
             else if (!Engine::IsAlive(party))
             {
                 text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::HAS_ITEM)
+        {
+            // variables
+            // 0 - player / ALL
+            // 1 - item
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
-                internal_error = false;
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                if (item != Item::Type::NONE && (is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                {
+                    result = is_party ? party.Has(item) : party[character].Has(item);
+
+                    if (!result)
+                    {
+                        text = Engine::NoItem(item);
+                    }
+                }
+                else if (item != Item::Type::NONE && character != Character::Class::NONE && !party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (item != Item::Type::NONE && character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::REVEAL_ITEM)

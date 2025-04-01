@@ -1,0 +1,75 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 89
+    },
+    "text": "Which item will you use?",
+    "choices": [
+        {
+            "text": "Use an ICE JEWEL",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 99
+                },
+                "variables": [
+                    "SELECT",
+                    "BLUE ICE JEWEL"
+                ]
+            }
+        },
+        {
+            "text": "Use a VELLUM SCROLL",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 312
+                },
+                "variables": [
+                    "SELECT",
+                    "VELLUM SCROLL"
+                ]
+            }
+        },
+        {
+            "text": "Use an OCTAGONAL PRISM",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 391
+                },
+                "variables": [
+                    "SELECT",
+                    "OCTAGONAL GLASS PRISM"
+                ]
+            }
+        },
+        {
+            "text": "Use a RUBY RING",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 237
+                },
+                "variables": [
+                    "SELECT",
+                    "RUBY RING"
+                ]
+            }
+        },
+        {
+            "text": "You do not have any of these or choose not to use them",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 112
+                }
+            }
+        }
+    ]
+}

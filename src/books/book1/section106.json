@@ -23,7 +23,7 @@
         {
             "text": "Use the EMERALD SCARAB",
             "condition": {
-                "type": "HAS ITEM",
+                "type": "PARTY HAS ITEM",
                 "location": {
                     "book": "BOOK1",
                     "number": 517

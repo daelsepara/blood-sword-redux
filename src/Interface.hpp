@@ -4415,7 +4415,7 @@ namespace BloodSword::Interface
         return update;
     }
 
-    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable)
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable, std::string message)
     {
         auto character_string = Engine::ToUpper(variable);
 
@@ -4443,7 +4443,7 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    character = Interface::SelectCharacter(graphics, background, party, "SELECT PLAYER", true, false, false, false, true);
+                    character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                 }
             }
             else if (party.IsPresent(character_string))
@@ -4458,7 +4458,17 @@ namespace BloodSword::Interface
             }
         }
 
+        if (character != Character::Class::NONE)
+        {
+            party.ChosenCharacter = character;
+        }
+
         return character;
+    }
+
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable)
+    {
+        return Interface::SelectCharacter(graphics, background, party, variable, "SELECT PLAYER");
     }
 
     Character::Class GetCharacter(Controls::Type control)

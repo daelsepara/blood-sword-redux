@@ -21,7 +21,7 @@
         {
             "text": "Put the EMERALD SCARAB around its neck",
             "condition": {
-                "type": "HAS ITEM",
+                "type": "PARTY HAS ITEM",
                 "location": {
                     "book": "BOOK1",
                     "number": 124

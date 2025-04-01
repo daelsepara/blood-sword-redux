@@ -8,7 +8,7 @@
         {
             "text": "Use a BRONZE KEY",
             "condition": {
-                "type": "HAS ITEM",
+                "type": "PARTY HAS ITEM",
                 "location": {
                     "book": "BOOK1",
                     "number": 221

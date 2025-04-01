@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 99
+    },
+    "text": "You fling the ICE JEWEL out from the ledge, calling upon its power. It chills the warm air currents that enable the dirges to stay aloft, and they spiral down out of control into the mist-shrouded river that courses along the gorge far below.",
+    "background": [
+        {
+            "type": "DROP ITEM",
+            "variables": [
+                "CHOSEN",
+                "BLUE ICE JEWEL"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 142
+            },
+            "variables": [
+                "Breathing a sigh of relief, you make your way down to the platform at the bottom of the ledge",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

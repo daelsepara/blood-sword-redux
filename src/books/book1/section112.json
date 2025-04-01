@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 112
     },
-    "text": "You wedge yourself back against some rock outcroppings on the ledge to give you partial cover from the DIRGES' attack.",
+    "text": "You wedge yourself back against some rock outcroppings on the ledge to give you partial cover from the dirges' attack.",
     "battle": "battles/book1/battle112.json",
     "next": [
         {
