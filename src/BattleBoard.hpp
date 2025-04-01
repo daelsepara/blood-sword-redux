@@ -27,6 +27,11 @@ namespace BloodSword::BattleBoard
 
         if (battle.IsDefined())
         {
+            if (Book::IsDefined(battle.Location))
+            {
+                party.Set(battle.Location);
+            }
+            
             auto result = Interface::RenderBattle(graphics, battle, party);
 
             Graphics::RichText message;
