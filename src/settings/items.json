@@ -277,7 +277,8 @@
             },
             "properties": [
                 "COMBAT",
-                "REQUIRES TARGET"
+                "REQUIRES TARGET",
+                "RANGED"
             ],
             "quantity": 1,
             "type": "DAGGER OF VISLET",

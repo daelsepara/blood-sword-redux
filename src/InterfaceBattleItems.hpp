@@ -27,11 +27,11 @@ namespace BloodSword::Interface
     {
         auto used = false;
 
-        auto is_player = battle.Map.IsValid(target) && battle.Map[target].IsPlayer() && Engine::CanTarget(party[battle.Map[target].Id], true);
+        auto target_player = battle.Map.IsValid(target) && battle.Map[target].IsPlayer() && Engine::CanTarget(party[battle.Map[target].Id], true);
 
-        auto is_enemy = battle.Map.IsValid(target) && battle.Map[target].IsEnemy() && Engine::CanTarget(battle.Opponents[battle.Map[target].Id], true);
+        auto target_enemy = battle.Map.IsValid(target) && battle.Map[target].IsEnemy() && Engine::CanTarget(battle.Opponents[battle.Map[target].Id], true);
 
-        auto valid = (is_enemy || is_player);
+        auto valid = (target_enemy || target_player);
 
         auto &item = character.Items[id];
 
@@ -46,7 +46,7 @@ namespace BloodSword::Interface
             // check if it is a blasting / weapon
             if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::DAMAGE_TARGET)
             {
-                if ((character.IsPlayer() && is_enemy) || (character.IsEnemy() && is_player))
+                if ((character.IsPlayer() && target_enemy) || (character.IsEnemy() && target_player))
                 {
                     auto charged = item.Contains == Item::Type::CHARGE;
 
@@ -80,18 +80,56 @@ namespace BloodSword::Interface
 
                                 Interface::ConsumeItem(character, id);
                             }
+                        }
 
-                            used = true;
-                        }
-                        else
-                        {
-                            Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
-                        }
+                        used = true;
                     }
                     else if (!has_charges)
                     {
                         Interface::MessageBox(graphics, background, "NO CHARGES LEFT!", Color::Highlight);
                     }
+                }
+                else
+                {
+                    Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
+                }
+            }
+            else if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::THROW)
+            {
+                if ((character.IsPlayer() && target_enemy) || (character.IsEnemy() && target_player))
+                {
+                    if (Interface::Test(graphics, background, character, Attribute::Type::FIGHTING_PROWESS))
+                    {
+                        Interface::MessageBox(graphics, background, item.Name + " HITS " + defender.Name, character.IsPlayer() ? Color::Active : Color::Highlight);
+
+                        auto rolls = item.DamageTypes[target_type].Value;
+
+                        auto modifier = item.DamageTypes[target_type].Modifier;
+
+                        auto ignore_armour = item.DamageTypes[target_type].IgnoreArmour;
+
+                        Interface::DamagePlayer(graphics, background, defender, rolls, modifier, ignore_armour, true, true);
+
+                        if (!Engine::IsAlive(defender))
+                        {
+                            battle.Map.Remove(defender.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, target_id);
+
+                            Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
+                        }
+                    }
+                    else
+                    {
+                        Interface::MessageBox(graphics, background, character.Name + " MISSED!", character.IsPlayer() ? Color::Highlight : Color::Active);
+                    }
+
+                    if (item.Drops)
+                    {
+                        battle.Loot.push_back(item);
+
+                        Interface::ConsumeItem(character, id);
+                    }
+
+                    used = true;
                 }
                 else
                 {
@@ -190,8 +228,22 @@ namespace BloodSword::Interface
                             {
                                 auto asset = Asset::Type::ARCHERY;
 
+                                if (item.Type == Item::Type::DAGGER_OF_VISLET)
+                                {
+                                    asset = Asset::Type::POISONED_DAGGER;
+                                }
+
+                                auto target = Point(-1, -1);
+
                                 // do something
-                                auto target = Interface::SelectTarget(graphics, battle, party, item.Name, asset, Controls::Type::ENEMY);
+                                if (targets.size() > 1)
+                                {
+                                    target = Interface::SelectTarget(graphics, battle, party, item.Name, asset, Controls::Type::ENEMY);
+                                }
+                                else
+                                {
+                                    target = battle.Map.Find(opponents[0].Type == Character::ControlType::PLAYER ? Map::Object::PLAYER : Map::Object::ENEMY, opponents[0].Id);
+                                }
 
                                 if (target.IsNone() || battle.Map.Distance(src, target) < 2)
                                 {
@@ -199,7 +251,7 @@ namespace BloodSword::Interface
                                 }
                                 else
                                 {
-                                    update = true;
+                                    update = Interface::TargetAction(graphics, background, battle, party, character, id, target);
                                 }
                             }
                         }

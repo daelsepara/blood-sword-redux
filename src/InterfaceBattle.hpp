@@ -2319,6 +2319,9 @@ namespace BloodSword::Interface
 
                         if (performed_action)
                         {
+                            // clear input
+                            input.Selected = false;
+
                             // next character in battle order
                             battle.NextRound = Interface::NextCharacter(battle, scene, party, battle.Order, battle.Combatant, input, battle.EndTurn);
                         }

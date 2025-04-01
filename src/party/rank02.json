@@ -211,6 +211,35 @@
                         ],
                         "quantity": 10,
                         "type": "POUCH"
+                    },
+                    {
+                        "name": "DAGGER OF VISLET",
+                        "description": {
+                            "book": "BOOK1",
+                            "number": 214
+                        },
+                        "properties": [
+                            "COMBAT",
+                            "REQUIRES TARGET",
+                            "RANGED"
+                        ],
+                        "quantity": 1,
+                        "type": "DAGGER OF VISLET",
+                        "damage_types": {
+                            "NEBULARON": {
+                                "damage": 1,
+                                "modifier": -2
+                            },
+                            "ENEMY": {
+                                "damage": 1,
+                                "modifier": 0
+                            }
+                        },
+                        "target_effects": {
+                            "NEBULARON": "THROW",
+                            "ENEMY": "THROW"
+                        },
+                        "drops": true
                     }
                 ],
                 "moves": 1000,
