@@ -298,10 +298,6 @@ namespace BloodSword::Interface
                         done = true;
                     }
                 }
-                else
-                {
-                    Interface::NotImplemented(graphics, background);
-                }
             }
         }
 
