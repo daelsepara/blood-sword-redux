@@ -551,6 +551,10 @@
         {
             "id": "DAGGER OF VISLET",
             "path": "images/items/broad-dagger.png"
+        },
+        {
+            "id": "SMEABORG",
+            "path": "images/enemies/horned-helm.png"
         }
     ]
 }

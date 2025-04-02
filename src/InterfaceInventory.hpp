@@ -478,6 +478,26 @@ namespace BloodSword::Interface
 
                         exit = true;
                     }
+                    else if (input == Controls::Type::READ)
+                    {
+                        if (Book::IsDefined(items[id].Effects))
+                        {
+                            party.ChosenCharacter = character.Class;
+
+                            update.Next = items[id].Effects;
+                        }
+                        else
+                        {
+                            // handles effects such as potion of healing, etc.
+                            Interface::ItemEffects(graphics, background, character, items[id].Type);
+                        }
+
+                        update.Update = true;
+
+                        done = true;
+
+                        exit = true;
+                    }
                     else
                     {
                         Interface::NotImplemented(graphics, background);
@@ -488,7 +508,6 @@ namespace BloodSword::Interface
 
         return update;
     }
-
 
     // (party) manage item found in current section
     bool ManageItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Items::Inventory &items, int id)

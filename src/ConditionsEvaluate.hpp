@@ -1794,6 +1794,50 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::IF_TRUE_RETURN || condition.Type == Conditions::Type::IF_FALSE_RETURN)
+        {
+            // variables
+            // 0 - operation (=, !=, <>, >, <, >=. <=)
+            // 1 - first variable / value
+            // 2 - second variable / value
+            // 3 - message on failure
+            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            {
+                auto ops = condition.Variables[0];
+
+                auto first = condition.Variables[1];
+
+                auto second = condition.Variables[2];
+
+                if (!ops.empty() && !first.empty() && !second.empty())
+                {
+                    result = party.If(ops, first, second);
+
+                    if ((condition.Type == Conditions::Type::IF_TRUE_RETURN && result) || (condition.Type == Conditions::Type::IF_FALSE_RETURN && !result))
+                    {
+                        condition.Location = party.PreviousLocation;
+
+                        result = true;
+                    }
+                    else
+                    {
+                        text = condition.Variables[3];
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
         else if (condition.Type == Conditions::Type::AND || condition.Type == Conditions::Type::OR)
         {
             // variables
@@ -3313,6 +3357,7 @@ namespace BloodSword::Conditions
         {
             // variables
             // 0 - player
+            // 1 - N items
             if (Engine::IsAlive(party) && condition.Variables.size() > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
@@ -3430,6 +3475,116 @@ namespace BloodSword::Conditions
                 text = Interface::DeathMessage(party);
 
                 internal_error = false;
+            }
+        }
+        else if (condition.Type == Conditions::Type::ORDER_FRONT || condition.Type == Conditions::Type::ORDER_FIRST)
+        {
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
+                    {
+                        auto new_order = std::vector<Character::Base>();
+
+                        // put selected CHARACTER at the front
+                        new_order.push_back(party[character]);
+
+                        for (auto i = 0; i < party.Count(); i++)
+                        {
+                            if (party[i].Class != character)
+                            {
+                                new_order.push_back(party[i]);
+                            }
+                        }
+
+                        party.Clear();
+
+                        for (auto i = 0; i < new_order.size(); i++)
+                        {
+                            party.Add(new_order[i]);
+                        }
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
+        else if (condition.Type == Conditions::Type::ORDER_BACK || condition.Type == Conditions::Type::ORDER_LAST)
+        {
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
+                    {
+                        auto new_order = std::vector<Character::Base>();
+
+                        for (auto i = 0; i < party.Count(); i++)
+                        {
+                            if (party[i].Class != character)
+                            {
+                                new_order.push_back(party[i]);
+                            }
+                        }
+
+                        // put selected CHARACTER at the back
+                        new_order.push_back(party[character]);
+
+                        party.Clear();
+
+                        for (auto i = 0; i < new_order.size(); i++)
+                        {
+                            party.Add(new_order[i]);
+                        }
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
             }
         }
         else if (condition.Type == Conditions::Type::CONFIRM)

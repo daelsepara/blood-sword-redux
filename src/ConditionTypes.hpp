@@ -90,6 +90,8 @@ namespace BloodSword::Conditions
         IS_ALIVE,
         IF_TRUE_SET,
         IF_FALSE_SET,
+        IF_TRUE_RETURN,
+        IF_FALSE_RETURN,
         COMPUTE_VICTORY_POINTS,
         GAIN_EXPERIENCE,
         TEST_DISCHARGE_ITEM,
@@ -99,7 +101,9 @@ namespace BloodSword::Conditions
         TAKE_FROM_LIST,
         GAUNTLET,
         ORDER_FRONT,
-        ORDER_BACK
+        ORDER_FIRST,
+        ORDER_BACK,
+        ORDER_LAST
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -195,7 +199,11 @@ namespace BloodSword::Conditions
         {Conditions::Type::TAKE_FROM_LIST, "TAKE FROM LIST"},
         {Conditions::Type::GAUNTLET, "GAUNTLET"},
         {Conditions::Type::ORDER_FRONT, "ORDER FRONT"},
-        {Conditions::Type::ORDER_BACK, "ORDER BACK"}};
+        {Conditions::Type::ORDER_FIRST, "ORDER FIRST"},
+        {Conditions::Type::ORDER_BACK, "ORDER BACK"},
+        {Conditions::Type::ORDER_LAST, "ORDER LAST"},
+        {Conditions::Type::IF_TRUE_RETURN, "IF TRUE RETURN"},
+        {Conditions::Type::IF_FALSE_RETURN, "IF FALSE RETURN"}};
 
     Conditions::Type Map(const char *Conditions)
     {

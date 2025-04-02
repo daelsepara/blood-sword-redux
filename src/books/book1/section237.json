@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 237
+    },
+    "text": "The ring gives a momentary flare of red light, much to your amazement. The dirges claw air for a moment, surprised and frightened of the power the ring might contain. Seeing no further glare of light, they soon recover and swoop in again towards you.",
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "TRICKSTER",
+                "AMBUSH RANGED"
+            ]
+        },
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "SAGE",
+                "AMBUSH RANGED"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 112
+            }
+        }
+    ]
+}
