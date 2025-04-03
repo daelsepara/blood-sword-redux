@@ -30,7 +30,8 @@ namespace BloodSword::Character
         TASK,
         ALONE,
         AMBUSH_RANGED,
-        SLOW_MURDER
+        SLOW_MURDER,
+        SKIP_EVENTS
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -56,7 +57,8 @@ namespace BloodSword::Character
         {Character::Status::TASK, "TASK"},
         {Character::Status::ALONE, "ALONE"},
         {Character::Status::AMBUSH_RANGED, "AMBUSH RANGED"},
-        {Character::Status::SLOW_MURDER, "SLOW MURDER"}};
+        {Character::Status::SLOW_MURDER, "SLOW MURDER"},
+        {Character::Status::SKIP_EVENTS, "SKIP EVENTS"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -80,7 +82,8 @@ namespace BloodSword::Character
         {Character::Status::POISONED, -1},
         {Character::Status::TASK, -1},
         {Character::Status::ALONE, -1},
-        {Character::Status::SLOW_MURDER, -1}};
+        {Character::Status::SLOW_MURDER, -1},
+        {Character::Status::SKIP_EVENTS, -1}};
 
     Character::Status MapStatus(const char *status)
     {

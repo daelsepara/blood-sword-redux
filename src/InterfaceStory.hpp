@@ -1703,7 +1703,13 @@ namespace BloodSword::Interface
         // set party location (previous, current)
         party.Set(section.Location);
 
-        auto next = Interface::ProcessBackground(graphics, background, party);
+        Book::Location next = Book::Undefined;
+
+        // check if background events need to be skipped
+        if (!party.Has(Character::Status::SKIP_EVENTS))
+        {
+            next = Interface::ProcessBackground(graphics, background, party);
+        }
 
         // skip this section if background events redirect to another location
         if (Book::IsUndefined(next))
@@ -1711,20 +1717,27 @@ namespace BloodSword::Interface
             // process events
             auto section_text = section.Text;
 
-            auto results = Interface::ProcessEvents(graphics, background, party);
-
-            for (auto result : results)
+            // check if events are to be skipped
+            if (!party.Has(Character::Status::SKIP_EVENTS))
             {
-                if ((result.Result || result.Failed) && !result.Text.empty())
-                {
-                    if (!section_text.empty())
-                    {
-                        section_text += "\n\n";
-                    }
+                auto results = Interface::ProcessEvents(graphics, background, party);
 
-                    section_text += result.Text;
+                for (auto result : results)
+                {
+                    if ((result.Result || result.Failed) && !result.Text.empty())
+                    {
+                        if (!section_text.empty())
+                        {
+                            section_text += "\n\n";
+                        }
+
+                        section_text += result.Text;
+                    }
                 }
             }
+
+            // enable events
+            party.Remove(Character::Status::SKIP_EVENTS);
 
             next = Interface::RenderSection(graphics, background, party, saved_party, section_text);
         }

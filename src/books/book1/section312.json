@@ -25,6 +25,14 @@
     ],
     "next": [
         {
+            "type": "GAIN STATUS",
+            "variables": [
+                "ALL",
+                "SKIP EVENTS",
+                "TRUE"
+            ]
+        },
+        {
             "type": "PREVIOUS LOCATION",
             "variables": [
                 "The spell that holds you in his deathly kingdom is broken"
