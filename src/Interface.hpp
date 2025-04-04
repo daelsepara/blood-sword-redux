@@ -746,6 +746,8 @@ namespace BloodSword::Interface
                 modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
 
                 modifier += character.Has(Character::Status::FPR_PLUS1) ? 1 : 0;
+
+                modifier -= character.Has(Character::Status::BURNED) ? 1 : 0;
             }
 
             stats += std::to_string(value);

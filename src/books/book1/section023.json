@@ -1,0 +1,15 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 23
+    },
+    "text": "You hurl the dagger. However, it doesn't return to you. While close to Nebularon, the spell that returns it to your hand is stifled by his anti-magical protection. You can retrieve it after the fight -- assuming you defeat him.",
+    "features": [
+        "ITEM EFFECT"
+    ],
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

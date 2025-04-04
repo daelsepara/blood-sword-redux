@@ -120,6 +120,11 @@ namespace BloodSword::Engine
                 modifier -= 2;
             }
 
+            if (attribute == Attribute::Type::FIGHTING_PROWESS && character.Has(Character::Status::BURNED))
+            {
+                modifier -= 1;
+            }
+
             score = value + modifier;
         }
         else if (in_battle && character.IsArmed() && weapon != Item::Property::NONE)
@@ -1122,6 +1127,7 @@ namespace BloodSword::Engine
                       Character::Status::FLEEING,
                       Character::Status::PARALYZED,
                       Character::Status::SLOW_MURDER,
+                      Character::Status::BURNED,
                       Character::Status::IN_COMBAT,
                       Character::Status::IN_BATTLE});
 

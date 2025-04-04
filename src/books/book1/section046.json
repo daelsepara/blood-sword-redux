@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 46
+    },
+    "text": "You take out the sparkling emerald gem that Larisha gave you. According to her, it is the last deadly breath of Astarandel the Dragonlord -- contained, she said, within a crystalline spell of confinement. You hurl the gem at Nebularon, diving back to take cover behind a pillar. The gem lands at his dusky feet and begins to shimmer, fading as his protective anti-magical power cancels out the confinement spell.\n\n\"Fool,\" roars Nebularon, glancing down at it. \"How is this pebble meant to harm--?\n\nThere is a blinding flash of white light. Even sheltered by the pillar, you nearly black out in the wave of intense heat. Astarandel's last breath sounds like the eruption of a volcano. It is very much louder than Nebularon's dying screams.",
+    "features": [
+        "ITEM EFFECT"
+    ],
+    "background": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "CHOSEN",
+                "DRAGONLORD GEM"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

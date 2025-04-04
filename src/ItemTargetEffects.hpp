@@ -11,7 +11,8 @@ namespace BloodSword::Item
         NONE = -1,
         KILL_TARGET,
         DAMAGE_TARGET,
-        THROW
+        THROW,
+        SELF_BURN
     };
 
     typedef std::vector<Item::TargetEffect> TargetEffects;
@@ -20,7 +21,8 @@ namespace BloodSword::Item
         {Item::TargetEffect::NONE, "NONE"},
         {Item::TargetEffect::KILL_TARGET, "KILL TARGET"},
         {Item::TargetEffect::DAMAGE_TARGET, "DAMAGE TARGET"},
-        {Item::TargetEffect::THROW, "THROW"}};
+        {Item::TargetEffect::THROW, "THROW"},
+        {Item::TargetEffect::SELF_BURN, "SELF BURN"}};
 
     Item::TargetEffect MapTargetEffect(const char *target_effect)
     {

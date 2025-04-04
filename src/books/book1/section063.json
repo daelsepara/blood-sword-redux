@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 63
+    },
+    "text": "As you point the ring at Nebularon, it bursts into flame. Nebularon laughs -- a harsh, hollow roar -- and mocks you: \"Come, mortal!\" Such tawdry babubles are of no use to you now.\"",
+    "features": [
+        "ITEM EFFECT"
+    ],
+    "events": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "CHOSEN",
+                "RUBY RING"
+            ]
+        },
+        {
+            "type": "LOSE ENDURANCE",
+            "variables": [
+                "CHOSEN",
+                "1",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "CHOSEN",
+                "BURNED"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

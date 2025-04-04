@@ -1,0 +1,61 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 259
+    },
+    "text": "Which item will you use?",
+    "choices": [
+        {
+            "text": "DAGGER OF VISLET",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 23
+                },
+                "variables": [
+                    "SELECT",
+                    "DAGGER OF VISLET"
+                ]
+            }
+        },
+        {
+            "text": "DRAGONLORD GEM",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 46
+                },
+                "variables": [
+                    "SELECT",
+                    "DRAGONLORD GEM"
+                ]
+            }
+        },
+        {
+            "text": "RUBY RING",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 63
+                },
+                "variables": [
+                    "SELECT",
+                    "RUBY RING"
+                ]
+            }
+        },
+        {
+            "text": "You have none of those",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 484
+                }
+            }
+        }
+    ]
+}

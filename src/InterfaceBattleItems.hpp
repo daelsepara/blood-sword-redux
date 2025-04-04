@@ -43,6 +43,12 @@ namespace BloodSword::Interface
 
             auto target_type = character.Items[id].HasEffect(defender.Target) ? defender.Target : (character.Items[id].HasEffect(Target::Type::ENEMY) ? Target::Type::ENEMY : Target::Type::NONE);
 
+            // display any target specific description
+            if (target_type != Target::Type::NONE && target_type != Target::Type::ENEMY)
+            {
+                Interface::ShowBattleDescription(graphics, background, party, character, id);
+            }
+
             // check if it is a blasting / weapon
             if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::DAMAGE_TARGET)
             {
@@ -136,6 +142,69 @@ namespace BloodSword::Interface
                     Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
                 }
             }
+            else if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::KILL_TARGET)
+            {
+                if ((character.IsPlayer() && target_enemy) || (character.IsEnemy() && target_player))
+                {
+                    // unalive player
+                    defender.Value(Attribute::Type::ENDURANCE, 0);
+
+                    battle.Map.Remove(defender.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, target_id);
+
+                    Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
+
+                    if (item.Drops)
+                    {
+                        battle.Loot.push_back(item);
+                    }
+
+                    Interface::ConsumeItem(character, id);
+
+                    used = true;
+                }
+                else
+                {
+                    Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
+                }
+            }
+            else if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::SELF_BURN)
+            {
+                if ((character.IsPlayer() && target_enemy) || (character.IsEnemy() && target_player))
+                {
+                    auto my_id = party.Index(character.Class);
+
+                    // damage self
+                    Engine::GainEndurance(character, -1, true);
+
+                    if (!Engine::IsAlive(character))
+                    {
+                        battle.Map.Remove(character.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, my_id);
+
+                        Interface::MessageBox(graphics, background, character.Name + " KILLED!", character.IsPlayer() ? Color::Highlight : Color::Active);
+                    }
+
+                    character.Add(Character::Status::BURNED);
+
+                    if (item.Drops)
+                    {
+                        battle.Loot.push_back(item);
+                    }
+
+                    Interface::ConsumeItem(character, id);
+
+                    used = true;
+                }
+                else
+                {
+                    Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
+                }
+            }
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, "NOTHING HAPPENS!", Color::Highlight);
+
+            used = true;
         }
 
         return used;

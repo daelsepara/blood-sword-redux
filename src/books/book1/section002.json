@@ -1,17 +1,25 @@
 {
-    "items": [
-        {
-            "contains": "NONE",
-            "name": "RUBY RING",
-            "quantity": 1,
-            "type": "RUBY RING"
-        }
-    ],
     "location": {
         "book": "BOOK1",
         "number": 2
     },
     "text": "You look down with disgust on the gory, bloated bodies of the corpses, now oozing a vile pus that stains the carpet hideously. On one of the dead hands you notice a RUBY RING.\n\nOne of the mirrors remains unbroken. There was no corpse behind this one, and when you go closer to inspect it you realise that it is actually a disguised secret door.",
+    "items": [
+        {
+            "name": "RUBY RING",
+            "quantity": 1,
+            "type": "RUBY RING",
+            "battle_descriptions": [
+                {
+                    "book": "BOOK1",
+                    "number": 63
+                }
+            ],
+            "target_effects": {
+                "NEBULARON": "SELF BURN"
+            }
+        }
+    ],
     "choices": [
         {
             "text": "Slide back the mirror and see what lies beyond",

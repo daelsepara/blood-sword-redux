@@ -282,6 +282,12 @@
             ],
             "quantity": 1,
             "type": "DAGGER OF VISLET",
+            "battle_descriptions": [
+                {
+                    "book": "BOOK1",
+                    "number": 23
+                }
+            ],
             "damage_types": {
                 "NEBULARON": {
                     "damage": 1,
@@ -310,12 +316,30 @@
         {
             "name": "DRAGONLORD GEM",
             "quantity": 1,
-            "type": "DRAGONLORD GEM"
+            "type": "DRAGONLORD GEM",
+            "battle_descriptions": [
+                {
+                    "book": "BOOK1",
+                    "number": 46
+                }
+            ],
+            "target_effects": {
+                "NEBULARON": "KILL TARGET"
+            }
         },
         {
             "name": "RUBY RING",
             "quantity": 1,
-            "type": "RUBY RING"
+            "type": "RUBY RING",
+            "battle_descriptions": [
+                {
+                    "book": "BOOK1",
+                    "number": 63
+                }
+            ],
+            "target_effects": {
+                "NEBULARON": "SELF BURN"
+            }
         },
         {
             "contains": "NONE",
