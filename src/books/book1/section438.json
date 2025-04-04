@@ -1,0 +1,27 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 438
+    },
+    "text": "You retrace your steps to the ornamental doorway.",
+    "items": [
+        {
+            "name": "SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 246
+            }
+        }
+    ]
+}
