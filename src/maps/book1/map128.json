@@ -75,7 +75,7 @@
         ],
         [
             {
-                "asset": "ROPE BRIDGE INVERTED",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -83,7 +83,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE INVERTED",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -91,7 +91,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE INVERTED",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -99,7 +99,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE INVERTED",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -107,7 +107,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE INVERTED",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -115,7 +115,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE INVERTED",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -123,7 +123,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE INVERTED",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -307,7 +307,7 @@
         ],
         [
             {
-                "asset": "ROPE BRIDGE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -315,7 +315,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -323,7 +323,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -331,7 +331,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -339,7 +339,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -347,7 +347,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -355,7 +355,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "ROPE BRIDGE",
+                "asset": "ROCK",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
