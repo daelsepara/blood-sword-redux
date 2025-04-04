@@ -315,6 +315,11 @@
         },
         {
             "name": "DRAGONLORD GEM",
+            "properties": [
+                "COMBAT",
+                "REQUIRES TARGET",
+                "RANGED"
+            ],
             "quantity": 1,
             "type": "DRAGONLORD GEM",
             "battle_descriptions": [
