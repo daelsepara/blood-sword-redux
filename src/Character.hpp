@@ -347,6 +347,30 @@ namespace BloodSword::Character
             return has_item && has_charge;
         }
 
+        int HasChargedWeapon(Item::Type charge, int quantity, bool melee)
+        {
+            auto found = -1;
+
+            Item::Properties properties = {Item::Property::CONTAINER, Item::Property::CONTAINER};
+
+            if (!melee)
+            {
+                properties.push_back(Item::Property::RANGED);
+            }
+
+            for (auto i = 0; i < this->Items.size(); i++)
+            {
+                if (this->Items[i].HasAll(properties) && this->Items[i].Contains == charge && this->Items[i].Quantity >= quantity)
+                {
+                    found = i;
+
+                    break;
+                }
+            }
+
+            return found;
+        }
+
         bool AddCharge(Item::Type item, Item::Type charge, int quantity)
         {
             auto result = this->HasCharged(item, charge, quantity < 0 ? -quantity : 0);

@@ -23,6 +23,26 @@ namespace BloodSword::Interface
         }
     }
 
+    Target::Type GetTargetType(Item::Base &item, Target::Type target)
+    {
+        auto type = Target::Type::NONE;
+
+        if (item.HasEffect(target))
+        {
+            type = target;
+        }
+        else if (item.HasEffect(Target::Type::ENEMY))
+        {
+            type = Target::Type::ENEMY;
+        }
+        else if (item.HasEffect(Target::Type::PLAYER))
+        {
+            type = Target::Type::PLAYER;
+        }
+
+        return type;
+    }
+
     bool TargetAction(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id, Point target)
     {
         auto used = false;
@@ -41,7 +61,7 @@ namespace BloodSword::Interface
 
             auto &defender = character.IsPlayer() ? battle.Opponents[target_id] : party[target_id];
 
-            auto target_type = character.Items[id].HasEffect(defender.Target) ? defender.Target : (character.Items[id].HasEffect(Target::Type::ENEMY) ? Target::Type::ENEMY : Target::Type::NONE);
+            auto target_type = Interface::GetTargetType(character.Items[id], defender.Target);
 
             // display any target specific description
             if (target_type != Target::Type::NONE && target_type != Target::Type::ENEMY)

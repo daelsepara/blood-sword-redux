@@ -542,7 +542,7 @@ namespace BloodSword::Interface
 
     int SelectSpellTargets(Battle::Base &battle, Party::Base &party, Engine::Queue &spell_targets, Spells::Type spell)
     {
-        auto target = -1;
+        auto target = Target::NotFound;
 
         if (spell != Spells::Type::NONE)
         {
@@ -771,12 +771,12 @@ namespace BloodSword::Interface
 
         if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
-            // preferred targetting
+            // PREFERRED TARGET
             targets = Engine::RangedTargets(battle.Map, battle.Opponents, party, src, true);
         }
         else
         {
-            // default
+            // DEFAULT
             targets = Engine::RangedTargets(battle.Map, party, src, true, false);
         }
 
@@ -847,7 +847,7 @@ namespace BloodSword::Interface
         // check if enemy can move towards the player-controlled characters
         if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
-            // PREFERRED TARGET:
+            // PREFERRED TARGET
             return Engine::FightTargets(battle.Map, battle.Opponents, party, src, true);
         }
         else
@@ -1110,7 +1110,7 @@ namespace BloodSword::Interface
 
             auto asset = Asset::Type::NONE;
 
-            auto lifetime = -1;
+            auto lifetime = Battle::Unlimited;
 
             // move animation
             auto movement = Animation::Base();
@@ -1359,6 +1359,24 @@ namespace BloodSword::Interface
                                                     }
                                                 }
                                             }
+                                        }
+                                        else if (opponents.size() > 0 && character.HasChargedWeapon(Item::Type::CHARGE, 1, true) != Item::NotFound)
+                                        {
+                                            // enemy has charged melee weapon
+                                            character.Add(Character::Status::IN_COMBAT);
+
+                                            auto target_id = opponents[0].Id;
+
+                                            auto &defender = (opponents[0].Type == Character::ControlType::PLAYER) ? party[target_id] : battle.Opponents[target_id];
+
+                                            Interface::LogAction("BLASTS", character.Target, character_id, defender.Target, target_id);
+
+                                            auto item_id = character.HasChargedWeapon(Item::Type::CHARGE, 1, true);
+
+                                            auto target = battle.Map.Find(opponents[0].Type == Character::ControlType::PLAYER ? Map::Object::PLAYER : Map::Object::ENEMY, target_id);
+
+                                            // discharge weapon
+                                            Interface::TargetAction(graphics, scene, battle, party, character, item_id, target);
                                         }
                                         else if (Interface::CanCastSpells(battle, party, character, character_id) && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
@@ -1672,7 +1690,7 @@ namespace BloodSword::Interface
 
                                     if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
                                     {
-                                        if (Input::IsValid(scene, input) && !actions && !items && !spells && (Controls::Find(battle_actions, input.Type) == -1))
+                                        if (Input::IsValid(scene, input) && !actions && !items && !spells && (Controls::Find(battle_actions, input.Type) == Controls::NotFound))
                                         {
                                             auto &control = scene.Controls[input.Current];
 
@@ -1955,9 +1973,9 @@ namespace BloodSword::Interface
 
                                             input.Selected = false;
 
-                                            input.Current = -1;
+                                            input.Current = Controls::NotFound;
                                         }
-                                        else if ((actions && Input::IsValid(overlay, input)) || (!actions && !items && !spells && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != -1))
+                                        else if ((actions && Input::IsValid(overlay, input)) || (!actions && !items && !spells && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != Controls::NotFound))
                                         {
                                             // regenerate controls
                                             if (!actions)
@@ -2351,7 +2369,7 @@ namespace BloodSword::Interface
 
                                 Input::Flush();
 
-                                input.Current = -1;
+                                input.Current = Controls::NotFound;
 
                                 input.Selected = false;
 

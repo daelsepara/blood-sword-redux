@@ -138,7 +138,7 @@ namespace BloodSword::Interface
                     }
                 }
 
-                if (item_id != -1)
+                if (item_id != Item::NotFound)
                 {
                     if (Book::IsDefined(character.Items[item_id].Effects) && !Book::Equal(character.Location, character.Items[item_id].Effects))
                     {

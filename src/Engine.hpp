@@ -709,15 +709,15 @@ namespace BloodSword::Engine
                         {
                             auto location = Engine::Location(map, opponents[i], i);
 
-                            auto distance = -1;
+                            auto distance = Map::Unlimited;
 
                             auto prob = Engine::Percentile.NextInt();
 
                             if (move)
                             {
-                                auto path = Move::FindPath(map, src, location, false, (in_party ? i : -1));
+                                auto path = Move::FindPath(map, src, location, (in_party ? i : Map::NotFound));
 
-                                distance = Move::Count(map, path, is_enemy, (in_party ? i : -1));
+                                distance = Move::Count(map, path, is_enemy, (in_party ? i : Map::Unlimited));
 
                                 if (path.Points.size() == 0)
                                 {

@@ -7,6 +7,8 @@
 // for specific targetting
 namespace BloodSword::Target
 {
+    const int NotFound = -1;
+
     enum class Type
     {
         NONE = -1,

@@ -1,0 +1,28 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 367
+    },
+    "text": "The grizzled Tomb Ranger stands in front of you wielding the steel sceptre, which is now beginning to glow at the tip.",
+    "battle": "battles/book1/battle367.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 438
+            }
+        },
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 246
+            },
+            "variables": [
+                "You flee back to the ornamental doorway",
+                "ACTIVE"
+            ]
+        }
+    ]
+}

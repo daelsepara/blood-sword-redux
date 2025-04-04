@@ -10,6 +10,10 @@
 
 namespace BloodSword::Map
 {
+    const int Unlimited = -1;
+
+    const int NotFound = -1;
+
     // Define neighbors (X, Y): Up, Down, Left, Right
     const Points Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
 
@@ -30,10 +34,10 @@ namespace BloodSword::Map
         Asset::Type TemporaryAsset = Asset::Type::NONE;
 
         // lifetime of the temporary occupant, -1 if none
-        int Lifetime = -1;
+        int Lifetime = Map::Unlimited;
 
         // Id of the current occupant, -1 if none
-        int Id = -1;
+        int Id = Map::NotFound;
 
         // tile is occupied by an enemy
         bool IsEnemy()
@@ -741,7 +745,7 @@ namespace BloodSword::Map
                 {
                     (*this)[remove].Occupant = Map::Object::NONE;
 
-                    (*this)[remove].Id = -1;
+                    (*this)[remove].Id = Map::NotFound;
                 }
                 else
                 {
@@ -768,9 +772,9 @@ namespace BloodSword::Map
 
                             tile.Occupant = Map::Object::NONE;
 
-                            tile.Lifetime = -1;
+                            tile.Lifetime = Map::Unlimited;
 
-                            tile.Id = -1;
+                            tile.Id = Map::NotFound;
                         }
                     }
                 }

@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 192
+    },
+    "text": "You break from the cover of the shadows and rush towards the Ranger. He wastes only a split-second gaping as you approach, then recovers his wits and turns to run. You see him reach a door at the end of the passage and start to swing it open. As you run to catch him, you pass a RUSTY SWORD which is lying on the flagstones.",
+    "items": [
+        {
+            "name": "RUSTY SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "RUSTY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 367
+            },
+            "variables": [
+                "The door leads into a small room with no other exits. The Ranger seems to have been cornered, but maybe that was his intention. He seizes a STEEL SCEPTRE from a table of red stone and turns to face you. \"End of the line,\" he mutters wryly.",
+                "ACTIVE"
+            ]
+        }
+    ]
+}

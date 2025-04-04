@@ -1728,7 +1728,7 @@ namespace BloodSword::Interface
         auto enemy_target = (enemy && map.IsValid(end) && map[end].IsEnemy()) ? map[end].Id : -1;
 
         // find a direct path to the destination
-        auto path = Move::FindPath(map, start, end, false, enemy_target);
+        auto path = Move::FindPath(map, start, end, enemy_target);
 
         auto closer = false;
 

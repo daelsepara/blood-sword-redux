@@ -8,6 +8,8 @@
 
 namespace BloodSword::Controls
 {
+    const int NotFound = -1;
+
     template <typename T>
     using Mapped = std::unordered_map<Controls::Type, T>;
 

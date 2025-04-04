@@ -14,6 +14,8 @@ namespace BloodSword::Item
 {
     const int Unlimited = -1;
 
+    const int NotFound = -1;
+
     // item damage modifier
     struct Damage
     {
