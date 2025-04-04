@@ -2310,19 +2310,39 @@ namespace BloodSword::Conditions
         else if (condition.Type == Conditions::Type::PERMANENT_ATTRIBUTE_GAIN)
         {
             // variables
-            // 0 - number of attributes to update
-            // 1 - gain (+/-)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            // 0 - player / all
+            // 1 - number of attributes to update
+            // 2 - gain (+/-)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
             {
-                auto attributes = party.Number(condition.Variables[0]);
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
-                auto gain = party.Number(condition.Variables[1]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
-                if (attributes > 0 && gain != 0)
+                auto attributes = party.Number(condition.Variables[1]);
+
+                auto gain = party.Number(condition.Variables[2]);
+
+                if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))) && attributes > 0 && gain != 0)
                 {
-                    Interface::PermanentAttributeGain(graphics, background, party, attributes, gain);
+                    if (is_party)
+                    {
+                        Interface::PermanentAttributeGain(graphics, background, party, attributes, gain);
+                    }
+                    else
+                    {
+                        Interface::PermanentAttributeGain(graphics, background, party[character], attributes, gain);
+                    }
 
                     result = true;
+                }
+                else if (!party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (!Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
                 }
                 else
                 {

@@ -6,17 +6,15 @@
 namespace BloodSword::Interface
 {
     // removes item from inventory
-    void ConsumeItem(Character::Base &character, int id)
+    void ConsumeItem(Character::Base &character, int item_id)
     {
-        character.Items.erase(character.Items.begin() + id);
+        character.Items.erase(character.Items.begin() + item_id);
     }
 
     // individual item effects
-    void ProcessEffects(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int id)
+    void ProcessEffects(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int item_id)
     {
-        auto &item = character.Items[id];
-
-        auto ether = Items::Inventory();
+        auto &item = character.Items[item_id];
 
         if (item.Has(Item::Property::CURSED))
         {
@@ -54,7 +52,7 @@ namespace BloodSword::Interface
                 character.Value(Attribute::Type::ENDURANCE, 0);
             }
 
-            Interface::ConsumeItem(character, id);
+            Interface::ConsumeItem(character, item_id);
         }
         else if (item.Type == Item::Type::BLACK_LIQUID)
         {
@@ -64,7 +62,7 @@ namespace BloodSword::Interface
 
             character.Value(Attribute::Type::ENDURANCE, 0);
 
-            Interface::ConsumeItem(character, id);
+            Interface::ConsumeItem(character, item_id);
         }
         else if (item.Type == Item::Type::FOOD)
         {
@@ -74,7 +72,7 @@ namespace BloodSword::Interface
 
                 Engine::GainEndurance(character, 1);
 
-                Interface::ConsumeItem(character, id);
+                Interface::ConsumeItem(character, item_id);
             }
             else
             {
@@ -95,13 +93,28 @@ namespace BloodSword::Interface
 
                 Engine::GainEndurance(character, rolls.Sum);
 
-                Interface::ConsumeItem(character, id);
+                Interface::ConsumeItem(character, item_id);
             }
             else
             {
                 std::string message = character.Name + " IS AT MAXIMUM ENDURANCE";
 
                 Interface::MessageBox(graphics, background, message, Color::Inactive);
+            }
+        }
+        else if (item.Type == Item::Type::SCROLL_ADJUST)
+        {
+            if (Engine::IsAlive(character))
+            {
+                Interface::PermanentAttributeGain(graphics, background, character, 1, -1);
+
+                Interface::PermanentAttributeGain(graphics, background, character, 1, 1);
+
+                Interface::ConsumeItem(character, item_id);
+            }
+            else
+            {
+                Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
             }
         }
     }
@@ -112,32 +125,32 @@ namespace BloodSword::Interface
         {
             if (item != Item::Type::NONE && character.Has(item))
             {
-                auto id = -1;
+                auto item_id = -1;
 
                 // search for id in inventory
                 for (auto i = 0; i < character.Items.size(); i++)
                 {
                     if (character.Items[i].Type == item)
                     {
-                        id = i;
+                        item_id = i;
 
                         break;
                     }
                 }
 
-                if (id != -1)
+                if (item_id != -1)
                 {
-                    if (Book::IsDefined(character.Items[id].Effects) && !Book::Equal(character.Location, character.Items[id].Effects))
+                    if (Book::IsDefined(character.Items[item_id].Effects) && !Book::Equal(character.Location, character.Items[item_id].Effects))
                     {
-                        Interface::ShowBookDescription(graphics, background, character.Items[id].Effects);
+                        Interface::ShowBookDescription(graphics, background, character.Items[item_id].Effects);
                     }
-                    else if (Items::FoundDescription(character.Items[id].Type))
+                    else if (Items::FoundDescription(character.Items[item_id].Type))
                     {
-                        Interface::ShowBookDescription(graphics, background, character.Items[id].Type);
+                        Interface::ShowBookDescription(graphics, background, character.Items[item_id].Type);
                     }
 
                     // process effects
-                    Interface::ProcessEffects(graphics, background, character, id);
+                    Interface::ProcessEffects(graphics, background, character, item_id);
                 }
                 else
                 {

@@ -4289,7 +4289,7 @@ namespace BloodSword::Interface
     }
 
     // permanetly gain or lose attribute points
-    void PermanentAttributeGain(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int attributes, int gain)
+    void PermanentAttributeGain(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int attributes, int gain)
     {
         std::vector<Attribute::Type> attribute_list = {
             Attribute::Type::FIGHTING_PROWESS,
@@ -4314,36 +4314,54 @@ namespace BloodSword::Interface
             values.push_back(i);
         }
 
-        auto done = false;
-
-        while (!done)
+        if (Engine::IsAlive(character))
         {
-            std::string message = std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " POINT" + (gain > 1 ? "S" : "") + " TO " + std::to_string(attributes) + " ATTRIBUTE" + (attributes > 1 ? "S" : "") + " (PERMANENT)";
-
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, attributes, attributes, Asset::Type::NONE, false, true);
-
-            if (selection.size() == attributes)
+            for (auto i = 0; i < attributes; i++)
             {
-                for (auto selected = 0; selected < selection.size(); selected++)
+                auto done = false;
+
+                while (!done)
                 {
-                    auto attribute = attribute_list[selection[selected]];
+                    std::string message = character.Name + ":" + " " + std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " POINT" + (gain > 1 ? "S" : "") + " TO ONE ATTRIBUTE (PERMANENT)";
 
-                    for (auto i = 0; i < party.Count(); i++)
+                    auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+
+                    if (selection.size() == 1)
                     {
-                        if (Engine::IsAlive(party[i]))
+                        auto attribute = attribute_list[selection[0]];
+
+                        if (gain > 0 || (gain < 0 && character.Value(attribute) > 0 && character.Maximum(attribute) > 0))
                         {
-                            auto max_value = party[i].Maximum(attribute);
+                            auto max_value = character.Maximum(attribute);
 
-                            auto value = party[i].Value(attribute);
+                            auto value = character.Value(attribute);
 
-                            party[i].Maximum(attribute, max_value + gain);
+                            character.Maximum(attribute, max_value + gain);
 
-                            party[i].Value(attribute, value + gain);
+                            character.Value(attribute, value + gain);
+
+                            done = true;
+                        }
+                        else
+                        {
+                            std::string error = std::string("CANNOT ADJUST ") + Attribute::TypeMapping[attribute] + " CANNOT BE ADJUSTED FURTHER!";
+
+                            Interface::MessageBox(graphics, background, error, Color::Highlight);
                         }
                     }
                 }
+            }
+        }
+    }
 
-                done = true;
+    // permanetly gain or lose attribute points
+    void PermanentAttributeGain(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int attributes, int gain)
+    {
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            if (Engine::IsAlive(party[character]))
+            {
+                Interface::PermanentAttributeGain(graphics, background, party[character], attributes, gain);
             }
         }
     }

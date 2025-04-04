@@ -15,6 +15,7 @@
         {
             "type": "PERMANENT ATTRIBUTE GAIN",
             "variables": [
+                "ALL",
                 "1",
                 "-1"
             ]
