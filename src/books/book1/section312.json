@@ -10,6 +10,16 @@
     ],
     "background": [
         {
+            "type": "IF FALSE RETURN",
+            "variables": [
+                "=",
+                "IN BATTLEPLITS",
+                "TRUE",
+                "You unfurl the scroll. However nothing happens.",
+                "INACTIVE"
+            ]
+        },
+        {
             "type": "DISCARD ITEMS",
             "variables": [
                 "ALL",
