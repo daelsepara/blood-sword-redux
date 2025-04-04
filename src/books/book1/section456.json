@@ -4,6 +4,7 @@
         "number": 456
     },
     "text": "The bronze doors swing back and admit you to a long hall lit by glowing censers in which a thick incense burns with the sullen red glow of hot coals. Suddenly the doors slam shut behind you with a resounding clang. From the shadows at the far end of the hall a huge figure strides forwards bearing a scimitar of black metal in each of his four hands. He is jet black, a figure of soldi shadow apart from the gleaming blue slits of his eyes.\n\n\"You have strayed into the Hall of Nebularon, Drinker of Souls, Swallower of Sorcery, He Whose Heart is Night.\" The four scimitars flash darkly in the light of the embers. \"Prepare to die.\"",
+    "image_asset": "images/books/book1/nebularon.png",
     "next": [
         {
             "type": "IN PARTY",

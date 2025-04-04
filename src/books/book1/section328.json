@@ -4,6 +4,7 @@
         "number": 328
     },
     "text": "Kalugen beckons one of his servants, who hobbles over bearing a pack of ivory cards of the sort used in Krarth. \"Behold, an unmarked deck,\" points out Kalugen. \"I remove five cards -- the King of Serpents, the Ace of Stars, the Ace of Swords, the Ace of Rings, and the Buffoon. The King of Serpents represents the god Frey. The three aces are his prize roosters, which you intend to steal. The Buffoon may help you to do this.\"\n\nKalugen places the cards face down on the table. \"You can take up to three cards. When you look at them, you see the results of your raid on Frey's farmyard. Three aces mans Frey caught you in the act, and you lose your hand unless you also picked up the Buffoon in the same hand, in which case he keeps the god busy until you get away with the ace -- assuming you took a third cad. The Buffoon on his own, or with one or two aces, has no effect.\"\n\nKalugen mutters a spell and the cards float in the air with their back to you, then swirl about until you have no idea which is which.",
+    "image_asset": "images/books/book1/kalugen.png",
     "next": [
         {
             "type": "KALUGEN SELECT",
