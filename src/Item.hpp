@@ -30,6 +30,18 @@ namespace BloodSword::Item
         Damage(int value, int modifier, bool ignore_armour) : Value(value), Modifier(modifier), IgnoreArmour(ignore_armour) {}
     };
 
+    class BattleDescription
+    {
+    public:
+        Book::Location Battle = Book::Undefined;
+
+        Book::Location Description = Book::Undefined;
+
+        BattleDescription() {}
+
+        BattleDescription(Book::Location battle, Book::Location description) : Battle(battle), Description(description) {}
+    };
+
     // item base class
     class Base
     {
@@ -61,7 +73,7 @@ namespace BloodSword::Item
         Book::Location Effects = Book::Undefined;
 
         // list of battlefield effects
-        std::vector<Book::Location> BattleDescriptions = {};
+        std::vector<Item::BattleDescription> BattleDescriptions = {};
 
         // flag to check if it's revealed (i.e. with the SAGE)
         bool Revealed = false;
@@ -515,11 +527,13 @@ namespace BloodSword::Item
 
             for (auto i = 0; i < data["battle_descriptions"].size(); i++)
             {
-                auto location = Book::Load(data["battle_descriptions"][i]);
+                auto battle = Book::Load(data["battle_descriptions"][i]["battle"]);
 
-                if (Book::IsDefined(location))
+                auto description = Book::Load(data["battle_descriptions"][i]["description"]);
+
+                if (Book::IsDefined(battle) && Book::IsDefined(description))
                 {
-                    item.BattleDescriptions.push_back(location);
+                    item.BattleDescriptions.push_back(Item::BattleDescription(battle, description));
                 }
             }
         }
@@ -680,13 +694,17 @@ namespace BloodSword::Items
             {
                 nlohmann::json battle_descriptions;
 
-                for (auto &battle_effect : item.BattleDescriptions)
+                for (auto battle_item : item.BattleDescriptions)
                 {
-                    if (Book::IsDefined(battle_effect))
+                    if (Book::IsDefined(battle_item.Battle) && Book::IsDefined(battle_item.Description))
                     {
-                        auto location = Book::Data(battle_effect);
+                        nlohmann::json battle_description;
 
-                        battle_descriptions.push_back(location);
+                        battle_description.emplace("battle", Book::Data(battle_item.Battle));
+
+                        battle_description.emplace("description", Book::Data(battle_item.Description));
+
+                        battle_descriptions.push_back(battle_description);
                     }
                 }
 

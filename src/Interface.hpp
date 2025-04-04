@@ -2561,7 +2561,7 @@ namespace BloodSword::Interface
         {
             auto text_description = Story::CurrentBook.Sections[description].Text;
 
-            auto wrap = graphics.Width - BloodSword::TileSize * 8;
+            auto wrap = graphics.Width - BloodSword::TileSize * 6;
 
             Interface::TextBox(graphics, background, text_description, Color::Active, wrap);
         }
@@ -2571,7 +2571,7 @@ namespace BloodSword::Interface
     {
         if (item != Item::Type::NONE && Items::FoundDescription(item))
         {
-            auto wrap = graphics.Width - BloodSword::TileSize * 8;
+            auto wrap = graphics.Width - BloodSword::TileSize * 6;
 
             Interface::TextBox(graphics, background, Items::Descriptions[item], Color::Active, wrap);
         }

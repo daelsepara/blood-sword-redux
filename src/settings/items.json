@@ -284,8 +284,14 @@
             "type": "DAGGER OF VISLET",
             "battle_descriptions": [
                 {
-                    "book": "BOOK1",
-                    "number": 23
+                    "battle": {
+                        "book": "BOOK1",
+                        "number": 484
+                    },
+                    "description": {
+                        "book": "BOOK1",
+                        "number": 23
+                    }
                 }
             ],
             "damage_types": {
@@ -324,8 +330,14 @@
             "type": "DRAGONLORD GEM",
             "battle_descriptions": [
                 {
-                    "book": "BOOK1",
-                    "number": 46
+                    "battle": {
+                        "book": "BOOK1",
+                        "number": 484
+                    },
+                    "description": {
+                        "book": "BOOK1",
+                        "number": 46
+                    }
                 }
             ],
             "target_effects": {
@@ -338,8 +350,14 @@
             "type": "RUBY RING",
             "battle_descriptions": [
                 {
-                    "book": "BOOK1",
-                    "number": 63
+                    "battle": {
+                        "book": "BOOK1",
+                        "number": 484
+                    },
+                    "description": {
+                        "book": "BOOK1",
+                        "number": 63
+                    }
                 }
             ],
             "target_effects": {

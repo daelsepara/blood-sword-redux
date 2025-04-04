@@ -11,11 +11,11 @@ namespace BloodSword::Interface
 
         if (item.BattleDescriptions.size() > 0)
         {
-            for (auto description = 0; description < item.BattleDescriptions.size(); description++)
+            for (auto &descriptions : item.BattleDescriptions)
             {
-                if (Book::IsDefined(item.BattleDescriptions[description]) && Book::Equal(item.BattleDescriptions[description], party.Location))
+                if (Book::IsDefined(descriptions.Description) && Book::Equal(descriptions.Battle, party.Location))
                 {
-                    Interface::ShowBookDescription(graphics, background, item.BattleDescriptions[description]);
+                    Interface::ShowBookDescription(graphics, background, descriptions.Description);
 
                     break;
                 }
@@ -311,7 +311,7 @@ namespace BloodSword::Interface
                                 }
                                 else
                                 {
-                                    target = battle.Map.Find(opponents[0].Type == Character::ControlType::PLAYER ? Map::Object::PLAYER : Map::Object::ENEMY, opponents[0].Id);
+                                    target = battle.Map.Find(targets[0].Type == Character::ControlType::PLAYER ? Map::Object::PLAYER : Map::Object::ENEMY, targets[0].Id);
                                 }
 
                                 if (target.IsNone() || battle.Map.Distance(src, target) < 2)

@@ -20,8 +20,10 @@ namespace BloodSword::Interface
 
         if (item.Has(Item::Property::CURSED))
         {
+            auto cursed_item = item;
+
             // cursed items destroy others items
-            character.Items = {character.Items[id]};
+            character.Items = {cursed_item};
         }
         else if (item.Type == Item::Type::MAUVE_LIQUID)
         {
