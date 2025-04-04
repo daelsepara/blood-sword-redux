@@ -1698,6 +1698,8 @@ namespace BloodSword::Interface
         Interface::LogSectionHeader("SECTION", section.Location);
 
         // save a copy party prior to background and events (for save game functionality)
+        party.SaveLocation = section.Location;
+
         auto saved_party = party;
 
         // set party location (previous, current)

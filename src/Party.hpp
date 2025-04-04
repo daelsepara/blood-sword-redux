@@ -23,7 +23,11 @@ namespace BloodSword::Party
         // current book and section number
         Book::Location Location = Book::Undefined;
 
+        // previous book and section number
         Book::Location PreviousLocation = Book::Undefined;
+
+        // save location
+        Book::Location SaveLocation = Book::Undefined;
 
         // for choices / conditions requiring a selected character
         Character::Class ChosenCharacter = Character::Class::NONE;
@@ -360,6 +364,12 @@ namespace BloodSword::Party
             if (!data["previous_location"].is_null())
             {
                 this->PreviousLocation = Book::Load(data["previous_location"]);
+            }
+
+            // get saved location
+            if (!data["save_location"].is_null())
+            {
+                this->SaveLocation = Book::Load(data["save_location"]);
             }
 
             this->ChosenNumber = !data["chosen_number"].is_null() ? int(data["chosen_number"]) : -1;
@@ -734,6 +744,11 @@ namespace BloodSword::Party
         if (Book::IsDefined(party.PreviousLocation))
         {
             data["previous_location"] = Book::Data(party.PreviousLocation);
+        }
+
+        if (Book::IsDefined(party.SaveLocation))
+        {
+            data["save_location"] = Book::Data(party.SaveLocation);
         }
 
         if (party.LastBattle != Battle::Result::NONE)

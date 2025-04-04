@@ -1800,8 +1800,9 @@ namespace BloodSword::Conditions
             // 0 - operation (=, !=, <>, >, <, >=. <=)
             // 1 - first variable / value
             // 2 - second variable / value
-            // 3 - message on failure
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            // 3 - message on return
+            // 4 - border
+            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
             {
                 auto ops = condition.Variables[0];
 
@@ -1811,17 +1812,22 @@ namespace BloodSword::Conditions
 
                 if (!ops.empty() && !first.empty() && !second.empty())
                 {
-                    result = party.If(ops, first, second);
+                    auto check = party.If(ops, first, second);
 
-                    if ((condition.Type == Conditions::Type::IF_TRUE_RETURN && result) || (condition.Type == Conditions::Type::IF_FALSE_RETURN && !result))
+                    if ((condition.Type == Conditions::Type::IF_TRUE_RETURN && check) || (condition.Type == Conditions::Type::IF_FALSE_RETURN && !check))
                     {
                         condition.Location = party.PreviousLocation;
 
+                        // do not trigger previous events
+                        party.Add(Character::Status::SKIP_EVENTS);
+
+                        // get border
+                        auto border = Engine::Color(condition.Variables[4]);
+
+                        // show message
+                        Interface::TextBox(graphics, background, condition.Variables[3], border);
+
                         result = true;
-                    }
-                    else
-                    {
-                        text = condition.Variables[3];
                     }
                 }
                 else
@@ -3612,6 +3618,9 @@ namespace BloodSword::Conditions
             {
                 text = condition.Variables[0];
             }
+
+            // do not trigger previous events upon return
+            party.Add(Character::Status::SKIP_EVENTS);
 
             result = true;
         }
