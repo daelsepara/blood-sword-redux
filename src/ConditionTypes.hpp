@@ -103,7 +103,8 @@ namespace BloodSword::Conditions
         ORDER_FRONT,
         ORDER_FIRST,
         ORDER_BACK,
-        ORDER_LAST
+        ORDER_LAST,
+        DAMAGE_ON_FAIL
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -203,7 +204,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::ORDER_BACK, "ORDER BACK"},
         {Conditions::Type::ORDER_LAST, "ORDER LAST"},
         {Conditions::Type::IF_TRUE_RETURN, "IF TRUE RETURN"},
-        {Conditions::Type::IF_FALSE_RETURN, "IF FALSE RETURN"}};
+        {Conditions::Type::IF_FALSE_RETURN, "IF FALSE RETURN"},
+        {Conditions::Type::DAMAGE_ON_FAIL, "DAMAGE ON FAIL"}};
 
     Conditions::Type Map(const char *Conditions)
     {

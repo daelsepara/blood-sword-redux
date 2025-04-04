@@ -3615,6 +3615,52 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::DAMAGE_ON_FAIL)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - attribute
+            // 2 - damage
+            if (condition.Variables.size() > 2)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE && !Book::IsUndefined(condition.Failure))
+                {
+                    if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                    else
+                    {
+                        auto test = Interface::Test(graphics, background, party[character], attribute);
+
+                        if (!test)
+                        {
+                            failed = true;
+
+                            auto endurance = party.Number(condition.Variables[2]);
+
+                            Engine::GainEndurance(party[character], -endurance, false);
+                        }
+                        else
+                        {
+                            result = true;
+                        }
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)
