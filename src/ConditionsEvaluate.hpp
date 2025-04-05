@@ -115,6 +115,32 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::ADD_CHARACTER)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            if (condition.Variables.size() > 0)
+            {
+                auto character = Character::Map(condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    result = Party::Characters.Has(character);
+
+                    if (result)
+                    {
+                        if (!party.Has(character) && Character::OtherClass(character))
+                        {
+                            party.Add(Party::Characters[character]);
+                        }
+
+                        internal_error = false;
+                    }
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::IS_DEAD)
         {
             internal_error = true;
