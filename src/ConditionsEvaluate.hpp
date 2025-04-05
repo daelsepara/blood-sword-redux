@@ -216,6 +216,40 @@ namespace BloodSword::Conditions
                 internal_error = false;
             }
         }
+        else if (condition.Type == Conditions::Type::ITEM_IN_ENVIRONMENT || condition.Type == Conditions::Type::ITEM_IN_SECTION)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - item
+            // 1 - message if found
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto current = Story::CurrentBook.Find(party.Location);
+
+                auto item = Item::Map(condition.Variables[0]);
+
+                if (item != Item::Type::NONE && current >= 0 && current < Story::CurrentBook.Sections.size())
+                {
+                    auto &section = Story::CurrentBook.Sections[current];
+
+                    result = (section.Items.size() > 0 && Items::Find(section.Items, item) != section.Items.end());
+
+                    if (result)
+                    {
+                        text = condition.Variables[1];
+                    }
+
+                    internal_error = false;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+
+                internal_error = false;
+            }
+        }
         else if (condition.Type == Conditions::Type::DROP_ITEM)
         {
             // variables
@@ -3631,7 +3665,7 @@ namespace BloodSword::Conditions
 
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
-                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE && !Book::IsUndefined(condition.Failure))
+                if (character != Character::Class::NONE && attribute != Attribute::Type::NONE)
                 {
                     if (!party.Has(character))
                     {

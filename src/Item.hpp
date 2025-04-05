@@ -919,6 +919,26 @@ namespace BloodSword::Items
         return result;
     }
 
+    // has any item with all the properties
+    Items::Inventory::iterator Find(Items::Inventory &items, Item::Type type)
+    {
+        auto result = items.end();
+
+        for (auto item = items.begin(); item != items.end(); item++)
+        {
+            auto has = (*item).Type == type;
+
+            if (has)
+            {
+                result = item;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
     void Add(Items::Inventory &items, Item::Base item)
     {
         if (item.Type != Item::Type::NONE && item.Name.size() > 0)

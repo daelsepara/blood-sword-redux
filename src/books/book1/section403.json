@@ -3,12 +3,21 @@
         "book": "BOOK1",
         "number": 403
     },
-    "text": "You haul the lid of the sarcophagus aside. The body within long ago returned to dust. All you find is a GREY PEARL.",
+    "text": "You haul the lid of the sarcophagus aside. The body within long ago returned to dust.",
     "items": [
         {
             "name": "GREY PEARL",
             "quantity": 1,
             "type": "GREY PEARL"
+        }
+    ],
+    "events": [
+        {
+            "type": "ITEM IN ENVIRONMENT",
+            "variables": [
+                "GREY PEARL",
+                "All you find is a GREY PEARL."
+            ]
         }
     ],
     "choices": [

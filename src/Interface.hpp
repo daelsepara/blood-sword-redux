@@ -4454,6 +4454,11 @@ namespace BloodSword::Interface
             else if (character_string == "CHOSEN")
             {
                 character = party.ChosenCharacter;
+
+                if (character == Character::Class::NONE || Engine::Count(party) == 1)
+                {
+                    character = Engine::FirstClass(party);
+                }
             }
             else if (character_string == "SELECT" || character_string == "CHOOSE")
             {
@@ -4470,6 +4475,11 @@ namespace BloodSword::Interface
             {
                 // check if variable is present in internal variables
                 character = Character::Map(party.Get(character_string));
+
+                if (character == Character::Class::NONE || Engine::Count(party) == 1)
+                {
+                    character = Engine::FirstClass(party);
+                }
             }
             else
             {

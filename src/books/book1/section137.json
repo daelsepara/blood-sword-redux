@@ -3,12 +3,21 @@
         "book": "BOOK1",
         "number": 137
     },
-    "text": "You wrench the huge stone lid of the sarcophagus aside. A slight breeze across the cavern stirs the old bones and mouldering grave-clothes, swiftly reducing them to ash. A small item gleams dully amid the decayed remnants of the mummy. It is a BRONZE KEY.",
+    "text": "You wrench the huge stone lid of the sarcophagus aside. A slight breeze across the cavern stirs the old bones and mouldering grave-clothes, swiftly reducing them to ash.",
     "items": [
         {
             "name": "BRONZE KEY",
             "quantity": 1,
             "type": "BRONZE KEY"
+        }
+    ],
+    "events": [
+        {
+            "type": "ITEM IN ENVIRONMENT",
+            "variables": [
+                "BRONZE KEY",
+                "A small item gleams dully amid the decayed remnants of the mummy. It is a BRONZE KEY."
+            ]
         }
     ],
     "choices": [
