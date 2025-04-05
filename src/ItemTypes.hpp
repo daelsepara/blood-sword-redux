@@ -56,7 +56,8 @@ namespace BloodSword::Item
         SCROLL_PRECOGNITION,
         DAGGER,
         BLACK_LIQUID,
-        RING_OF_WARDING
+        RING_OF_WARDING,
+        GREY_PEARL
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -108,7 +109,8 @@ namespace BloodSword::Item
         {Item::Type::SCROLL_PRECOGNITION, "SCROLL: PRECOGNITION"},
         {Item::Type::BLACK_LIQUID, "BLACK LIQUID"},
         {Item::Type::DAGGER, "DAGGER"},
-        {Item::Type::RING_OF_WARDING, "RING OF WARDING"}};
+        {Item::Type::RING_OF_WARDING, "RING OF WARDING"},
+        {Item::Type::GREY_PEARL, "GREY PEARL"}};
 
     Item::Type Map(const char *item)
     {

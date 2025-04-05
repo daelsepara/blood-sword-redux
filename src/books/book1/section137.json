@@ -1,0 +1,68 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 137
+    },
+    "text": "You wrench the huge stone lid of the sarcophagus aside. A slight breeze across the cavern stirs the old bones and mouldering grave-clothes, swiftly reducing them to ash. A small item gleams dully amid the decayed remnants of the mummy. It is a BRONZE KEY.",
+    "items": [
+        {
+            "name": "BRONZE KEY",
+            "quantity": 1,
+            "type": "BRONZE KEY"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Open the first sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 351
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the second sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 186
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the third sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 403
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "You have enough of grave-rifling",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 293
+                },
+                "variables": [
+                    "You proceed to the beach"
+                ]
+            }
+        }
+    ]
+}

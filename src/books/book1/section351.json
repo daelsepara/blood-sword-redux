@@ -1,0 +1,61 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 351
+    },
+    "text": "With much effort, you slide the lid back. Inside you find a pile of mouldered bones swathed in tissue-fine linen. Exposure to the air after so many centuries has a startling effect on these remains. In front of your eyes they crumble away into a fine sere ash, which is soon scattered on a faint breeze that wafts through the cavern.",
+    "choices": [
+        {
+            "text": "Open the second sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 186
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the third sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 403
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the fourth sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 137
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "You have enough of grave-rifling",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 293
+                },
+                "variables": [
+                    "You proceed to the beach"
+                ]
+            }
+        }
+    ]
+}

@@ -3623,7 +3623,9 @@ namespace BloodSword::Conditions
             // 0 - player
             // 1 - attribute
             // 2 - damage
-            if (condition.Variables.size() > 2)
+            // 3 - message on success
+            // 4 - message on fail
+            if (condition.Variables.size() > 4)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -3650,9 +3652,13 @@ namespace BloodSword::Conditions
                             auto endurance = party.Number(condition.Variables[2]);
 
                             Engine::GainEndurance(party[character], -endurance, false);
+
+                            text = condition.Variables[4];
                         }
                         else
                         {
+                            text = condition.Variables[3];
+
                             result = true;
                         }
                     }

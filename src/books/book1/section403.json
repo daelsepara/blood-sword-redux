@@ -1,0 +1,68 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 403
+    },
+    "text": "You haul the lid of the sarcophagus aside. The body within long ago returned to dust. All you find is a GREY PEARL.",
+    "items": [
+        {
+            "name": "GREY PEARL",
+            "quantity": 1,
+            "type": "GREY PEARL"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Open the first sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 351
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the second sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 186
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the fourth sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 137
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "You have enough of grave-rifling",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 293
+                },
+                "variables": [
+                    "You proceed to the beach"
+                ]
+            }
+        }
+    ]
+}

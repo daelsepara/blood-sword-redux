@@ -223,6 +223,11 @@
             "type": "BRONZE KEY"
         },
         {
+            "name": "GREY PEARL",
+            "quantity": 1,
+            "type": "GREY PEARL"
+        },
+        {
             "contains": "NONE",
             "name": "LARGE STAMPED GOLD COIN",
             "quantity": 1,

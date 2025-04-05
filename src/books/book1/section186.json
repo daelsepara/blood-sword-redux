@@ -1,0 +1,79 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 186
+    },
+    "text": "You pull at a brass handle that is set into the sarcophagus lid. The whole lid suddenly crashes down towards you in a cloud of dust.",
+    "events": [
+        {
+            "type": "DAMAGE ON FAIL",
+            "variables": [
+                "CHOSEN",
+                "AWARENESS",
+                "4",
+                "You managed to avoid the falling masonry.",
+                "You got hit by the falling masonry."
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "variables": [
+                "Behind the gaping hole left in the sarcophagus, you see a number of ancient pots. On closer inspection each of thse contains a fragment of a skeleton, but nothing else of any interest."
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Open the first sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 351
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the third sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 403
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "Open the fourth sarcophagi",
+            "condition": {
+                "type": "SELECT PLAYER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 137
+                },
+                "variables": [
+                    "WHO OPENS THE SARCOPHAGI?"
+                ]
+            }
+        },
+        {
+            "text": "You have enough of grave-rifling",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 293
+                },
+                "variables": [
+                    "You proceed to the beach"
+                ]
+            }
+        }
+    ]
+}
