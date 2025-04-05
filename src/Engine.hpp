@@ -112,6 +112,8 @@ namespace BloodSword::Engine
         if (attribute == Attribute::Type::ARMOUR)
         {
             score = modifier;
+
+            modifier = 0;
         }
         else if (attribute != Attribute::Type::DAMAGE)
         {
@@ -124,15 +126,17 @@ namespace BloodSword::Engine
             {
                 modifier -= 1;
             }
-
-            score = value + modifier;
+        }
+        else if (attribute == Attribute::Type::DAMAGE && !character.IsArmed())
+        {
+            modifier -= 2;
         }
         else if (in_battle && character.IsArmed() && weapon != Item::Property::NONE)
         {
             modifier += character.WeaponModifier(weapon, attribute);
-
-            score = value + modifier;
         }
+
+        score = value + modifier;
 
         return (in_battle && character.IsArmed() && weapon != Item::Property::NONE) ? score : std::max(0, score);
     }
