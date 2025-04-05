@@ -3727,6 +3727,15 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::COMBAT_TASK || condition.Type == Conditions::Type::COMBAT_MISSION)
+        {
+            // variables
+            // 0 - status
+            // 1 - limit (to number of players doing the task)
+            // 2 - rounds (number of rounds before BATTLE stops)
+            // 3 - mission prompt (message)
+            // 4 - character selection prompt (message)
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)

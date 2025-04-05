@@ -107,7 +107,9 @@ namespace BloodSword::Conditions
         DAMAGE_ON_FAIL,
         ITEM_IN_ENVIRONMENT,
         ITEM_IN_SECTION,
-        ADD_CHARACTER
+        ADD_CHARACTER,
+        COMBAT_TASK,
+        COMBAT_MISSION
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -211,7 +213,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::DAMAGE_ON_FAIL, "DAMAGE ON FAIL"},
         {Conditions::Type::ITEM_IN_ENVIRONMENT, "ITEM IN ENVIRONMENT"},
         {Conditions::Type::ITEM_IN_SECTION, "ITEM IN SECTION"},
-        {Conditions::Type::ADD_CHARACTER, "ADD CHARACTER"}};
+        {Conditions::Type::ADD_CHARACTER, "ADD CHARACTER"},
+        {Conditions::Type::COMBAT_TASK, "COMBAT TASK"},
+        {Conditions::Type::COMBAT_MISSION, "COMBAT MISSION"}};
 
     Conditions::Type Map(const char *Conditions)
     {

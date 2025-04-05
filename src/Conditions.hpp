@@ -27,6 +27,9 @@ namespace BloodSword::Conditions
         // alternate location
         Book::Location Failure = Book::Undefined;
 
+        // additional text to display
+        Book::Location AdditionalText = Book::Undefined;
+
         Base() {}
 
         Base(Conditions::Type type,
@@ -68,6 +71,12 @@ namespace BloodSword::Conditions
             if (!data["failure"].is_null())
             {
                 condition.Failure = Book::Load(data["failure"]);
+            }
+
+            // load additional text
+            if (!data["additional_text"].is_null())
+            {
+                condition.AdditionalText = Book::Load(data["additional_text"]);
             }
 
             // set condition type

@@ -3635,7 +3635,7 @@ namespace BloodSword::Interface
         }
     }
 
-    // select multiple characters
+    // select multiple characters (apply STATUS to selected and EXCLUDE status otherwise)
     void SelectMultiple(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Character::Status preselect, Character::Status status_selected, Character::Status status_excluded, bool names = false)
     {
         auto selection = std::vector<bool>(party.Count());
@@ -3769,6 +3769,123 @@ namespace BloodSword::Interface
         BloodSword::Free(status);
 
         BloodSword::Free(stats);
+    }
+
+    // select multiple characters then apply status
+    void SelectMultiple(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Character::Status status_selected, int limit, bool names = false)
+    {
+        if (status_selected != Character::Status::NONE)
+        {
+            auto selection = std::vector<bool>(party.Count());
+
+            auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
+
+            auto status = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
+
+            auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+            auto captions = names ? Interface::GenerateNameCaptions(graphics, party) : Interface::GenerateCharacterClassCaptions(graphics, party);
+
+            auto pad = BloodSword::OddPad;
+
+            auto input = Controls::User();
+
+            auto done = false;
+
+            auto popup_pad = BloodSword::QuarterTile;
+
+            auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+
+            auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+
+            auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
+            while (!done)
+            {
+                auto overlay = Scene::Base();
+
+                if (popup_h > 0)
+                {
+                    overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+                }
+                else
+                {
+                    overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+                }
+
+                // title
+                overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+
+                for (auto i = 0; i < selection.size(); i++)
+                {
+                    if (selection[i])
+                    {
+                        auto &control = overlay.Controls[i];
+
+                        // highlight current selection
+                        overlay.Add(Scene::Element(Point(control.X + 2 * control.Pixels, control.Y + 2 * control.Pixels), control.W - 4 * control.Pixels, control.H - 4 * control.Pixels, Color::Transparent, Color::Active, BloodSword::Pixel));
+                    }
+                }
+
+                if (Input::IsValid(overlay, input))
+                {
+                    // party popup captions
+                    if (input.Type != Controls::Type::CONFIRM && input.Current >= 0 && input.Current < party.Count())
+                    {
+                        auto &control = overlay.Controls[input.Current];
+
+                        overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+
+                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
+
+                        if (status[input.Current])
+                        {
+                            auto status_x = popup.X + (popup_w + pad * 2);
+
+                            overlay.Add(Scene::Element(status_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+
+                            overlay.VerifyAndAdd(Scene::Element(status[input.Current], status_x, popup.Y));
+                        }
+                    }
+                }
+
+                input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+
+                if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+                {
+                    if (input.Type == Controls::Type::CONFIRM)
+                    {
+                        done = Interface::Confirm(graphics, background, Graphics::RichText("PROCEED?", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                    }
+                    else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
+                    {
+                        if (std::count(selection.begin(), selection.end(), true) < limit || selection[input.Current])
+                        {
+                            selection[input.Current] = !selection[input.Current];
+                        }
+                    }
+
+                    input.Selected = false;
+                }
+            }
+
+            // update party status
+            for (auto i = 0; i < selection.size(); i++)
+            {
+                if (Engine::IsAlive(party[i]) && selection[i])
+                {
+                    party[i].Add(status_selected);
+                }
+            }
+
+            BloodSword::Free(captions);
+
+            BloodSword::Free(&select);
+
+            BloodSword::Free(status);
+
+            BloodSword::Free(stats);
+        }
     }
 
     // generate horizontal icon menu
