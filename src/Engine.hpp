@@ -154,7 +154,7 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            if (!Character::OtherClass(party[character].Class))
+            if (!Character::OtherClass(party[character].Class) || party[character].ControlType == Character::ControlType::NPC)
             {
                 live += Engine::IsAlive(party[character]) ? 1 : 0;
             }
