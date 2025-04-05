@@ -836,6 +836,8 @@ namespace BloodSword::Party
             party = Party::Initialize(data[std::string(name)]);
 
             ifs.close();
+
+            std::cerr << "[LOADED] " << std::to_string(party.Count()) << " characters" << std::endl;
         }
 
         return party;
