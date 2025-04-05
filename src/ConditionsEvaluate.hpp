@@ -375,6 +375,60 @@ namespace BloodSword::Conditions
                 internal_error = true;
             }
         }
+        else if (condition.Type == Conditions::Type::HAS_ALL_ITEMS)
+        {
+            // variables
+            // 0 - player / ALL
+            // 1 - N items
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto items = Items::List();
+
+                for (auto i = 1; i < condition.Variables.size(); i++)
+                {
+                    auto item = Item::Map(condition.Variables[i]);
+
+                    if (item != Item::Type::NONE)
+                    {
+                        items.push_back(item);
+                    }
+                }
+
+                if (items.size() > 0 && items.size() == (condition.Variables.size() - 1)  && (is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                {
+                    result = is_party ? party.HasAll(items) : party[character].HasAll(items);
+
+                    if (!result)
+                    {
+                        text = "YOU DO NOT HAVE EVERYTING";
+                    }
+                }
+                else if (items.size() > 0 && items.size() == (condition.Variables.size() - 1) && character != Character::Class::NONE && !party.Has(character))
+                {
+                    text = Engine::NotInParty(character);
+                }
+                else if (items.size() > 0 && items.size() == (condition.Variables.size() - 1) && character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
+                }
+                else
+                {
+                    internal_error = true;
+                }
+            }
+            else if (!Engine::IsAlive(party))
+            {
+                text = Interface::DeathMessage(party);
+            }
+            else
+            {
+                internal_error = true;
+            }
+        }
         else if (condition.Type == Conditions::Type::REVEAL_ITEM)
         {
             internal_error = true;

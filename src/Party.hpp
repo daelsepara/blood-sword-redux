@@ -225,6 +225,23 @@ namespace BloodSword::Party
             return result;
         }
 
+        bool HasAll(Items::List items)
+        {
+            auto result = true;
+
+            for (auto item : items)
+            {
+                result &= this->Has(item);
+
+                if (!result)
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
+
         // check if party has charged item of type (charge) with enough quantity
         bool HasChargedItem(Item::Type item, Item::Type charge, int quantity)
         {

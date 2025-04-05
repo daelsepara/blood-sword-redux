@@ -329,6 +329,18 @@ namespace BloodSword::Character
             return this->Find(item) != this->Items.end();
         }
 
+        bool HasAll(Items::List items)
+        {
+            auto has_all = true;
+
+            for (auto item : items)
+            {
+                has_all &= this->Has(item);
+            }
+
+            return has_all;
+        }
+
         bool HasCharged(Item::Type item, Item::Type charge, int quantity)
         {
             auto found = this->Find(item);
