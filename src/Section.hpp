@@ -42,9 +42,7 @@ namespace BloodSword::Section
 
         bool Has(Feature::Type feature)
         {
-            auto search = BloodSword::Find(this->Features, feature);
-
-            return (search != this->Features.end()) && (*search != Feature::Type::NONE);
+            return BloodSword::Has(this->Features, feature);
         }
     };
 

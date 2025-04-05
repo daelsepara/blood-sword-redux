@@ -148,7 +148,7 @@ namespace BloodSword::Character
         // does a character have this status?
         bool Has(Character::Status status)
         {
-            auto has_status = this->Status.find(status) != this->Status.end();
+            auto has_status = BloodSword::Has(this->Status, status);
 
             auto is_active = this->Status[status] != 0;
 
@@ -690,7 +690,7 @@ namespace BloodSword::Character
         // check if spell was called to mind
         bool HasCalledToMind(Spells::Type spell)
         {
-            return this->CalledToMind.size() > 0 && BloodSword::Find(this->CalledToMind, spell) != this->CalledToMind.end();
+            return this->CalledToMind.size() > 0 && BloodSword::Has(this->CalledToMind, spell);
         }
 
         // call a spell to mind

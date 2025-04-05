@@ -80,7 +80,7 @@ namespace BloodSword::Item
 
     bool IsInvisible(Item::Property property)
     {
-        return property != Item::Property::NONE && BloodSword::Find(Item::Invisible, property) != Item::Invisible.end();
+        return property != Item::Property::NONE && BloodSword::Has(Item::Invisible, property);
     }
 }
 

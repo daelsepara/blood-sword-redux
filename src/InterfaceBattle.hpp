@@ -574,7 +574,7 @@ namespace BloodSword::Interface
         auto opponents = caster.ControlType == Character::ControlType::NPC ? Engine::Count(party) : Engine::Count(battle.Opponents);
 
         // determine if this is the caster's turn to cast spells (also check if list is being generated)
-        auto my_turn = (std::find(battle.Casters.begin(), battle.Casters.end(), caster_id) != battle.Casters.end()) || (battle.Casters.size() == 0);
+        auto my_turn = (BloodSword::Has(battle.Casters, caster_id) || battle.Casters.size() == 0);
 
         if (Engine::IsAlive(caster) && caster.Has(Skills::Type::SPELLS) && my_turn)
         {
@@ -1628,11 +1628,9 @@ namespace BloodSword::Interface
                                             // actions popup captions
                                             auto &control = overlay.Controls[input.Current];
 
-                                            auto ptr = Interface::BattleControlCaptions.find(control.Type);
-
-                                            if (ptr != Interface::BattleControlCaptions.end())
+                                            if (BloodSword::Has(Interface::BattleControlCaptions, control.Type))
                                             {
-                                                overlay.VerifyAndAdd(Scene::Element(ptr->second, control.X, control.Y + control.H + pad));
+                                                overlay.VerifyAndAdd(Scene::Element(Interface::BattleControlCaptions[control.Type], control.X, control.Y + control.H + pad));
                                             }
                                         }
                                     }
@@ -2172,15 +2170,13 @@ namespace BloodSword::Interface
                                         }
                                         else if (spells && Input::IsValid(overlay, input))
                                         {
-                                            auto ptr = Interface::ControlSpellMapping.find(input.Type);
-
                                             spells = false;
 
                                             spell = false;
 
-                                            if (Engine::IsSpell(input.Type) && ptr != Interface::ControlSpellMapping.end())
+                                            if (Engine::IsSpell(input.Type) && BloodSword::Has(Interface::ControlSpellMapping, input.Type))
                                             {
-                                                auto &type = ptr->second;
+                                                auto &type = Interface::ControlSpellMapping[input.Type];
 
                                                 auto search = character.Find(type);
 

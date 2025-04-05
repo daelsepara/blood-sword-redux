@@ -54,6 +54,12 @@ namespace BloodSword
         return std::find(vector.begin(), vector.end(), key);
     }
 
+    template <typename T>
+    bool Has(std::vector<T> &vector, T &key)
+    {
+        return BloodSword::Find(vector, key) != vector.end();
+    }
+
     // search for a key in a vector (of type/objects) and use a custom compare function
     template <typename T, typename R = typename std::vector<T>::const_iterator>
     R Find(std::vector<T> &vector, T &key, bool F(T &, T &))
@@ -86,6 +92,12 @@ namespace BloodSword
         }
 
         return result;
+    }
+
+    template <typename T, typename R>
+    bool Has(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
+    {
+        return (unordered_map.find(key) != unordered_map.end());
     }
 }
 

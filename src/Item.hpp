@@ -175,12 +175,12 @@ namespace BloodSword::Item
         // check if item has this attribute
         bool Has(Attribute::Type attribute)
         {
-            return this->Attributes.find(attribute) != this->Attributes.end();
+            return BloodSword::Has(this->Attributes, attribute);
         }
 
         bool HasEffect(Target::Type target)
         {
-            return this->TargetEffects.find(target) != this->TargetEffects.end();
+            return BloodSword::Has(this->TargetEffects, target);
         }
 
         bool HasAll(Item::Properties properties)
@@ -874,12 +874,12 @@ namespace BloodSword::Items
 
     bool Found(Item::Type item)
     {
-        return Items::Defaults.find(item) != Items::Defaults.end();
+        return BloodSword::Has(Items::Defaults, item);
     }
 
     bool FoundDescription(Item::Type item)
     {
-        return Items::Descriptions.find(item) != Items::Descriptions.end();
+        return BloodSword::Has(Items::Descriptions, item);
     }
 
     Items::Inventory::iterator Find(Items::Inventory &items, Item::Type container, Item::Type type)

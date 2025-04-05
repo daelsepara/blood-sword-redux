@@ -194,7 +194,7 @@ namespace BloodSword::Battle
         {
             auto actions = (this->ActionCancels.size() > 0);
 
-            auto cancel = (this->ActionCancels.find(action) != this->ActionCancels.end());
+            auto cancel = BloodSword::Has(this->ActionCancels, action);
 
             return (actions && cancel && Book::IsDefined(this->ActionCancels[action]));
         }

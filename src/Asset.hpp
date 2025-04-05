@@ -148,11 +148,9 @@ namespace BloodSword::Asset
     {
         SDL_Texture *texture = nullptr;
 
-        auto ptr = Asset::Textures.find(asset);
-
-        if (ptr != Asset::Textures.end())
+        if (BloodSword::Has(Asset::Textures, asset))
         {
-            texture = ptr->second;
+            texture = Asset::Textures[asset];
         }
 
         return texture;
@@ -176,11 +174,9 @@ namespace BloodSword::Asset
     {
         SDL_Texture *texture = nullptr;
 
-        auto ptr = Asset::Locations.find(asset);
-
-        if (ptr != Asset::Locations.end())
+        if (BloodSword::Has(Asset::Locations, asset))
         {
-            texture = Asset::Create(renderer, ptr->second.c_str());
+            texture = Asset::Create(renderer, Asset::Locations[asset].c_str());
         }
 
         return texture;

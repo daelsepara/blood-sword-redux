@@ -111,7 +111,7 @@ namespace BloodSword::Skills
 
     bool In(Skills::List &list, Skills::Type skill)
     {
-        return list.size() > 0 && BloodSword::Find(list, skill) != list.end();
+        return list.size() > 0 && BloodSword::Has(list, skill);
     }
 
     bool IsBattleSkill(Skills::Type skill)

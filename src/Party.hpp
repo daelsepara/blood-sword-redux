@@ -492,7 +492,7 @@ namespace BloodSword::Party
         // check if variable is in internal table
         bool IsPresent(std::string variable)
         {
-            auto result = !variable.empty() && (this->Variables.find(variable) != this->Variables.end());
+            auto result = !variable.empty() && BloodSword::Has(this->Variables, variable);
 
             std::cerr << "[VARIABLE " << variable << "] IS " << (result ? "PRE" : "AB") << "SENT" << std::endl;
 
@@ -626,7 +626,7 @@ namespace BloodSword::Party
 
         bool IsValid(std::vector<std::string> list, std::string item)
         {
-            auto result = BloodSword::Find(list, item) != list.end();
+            auto result = BloodSword::Has(list, item);
 
             std::cerr << "[CHECK " << item << "] IS " << (result ? "VALID" : "INVALID") << std::endl;
 

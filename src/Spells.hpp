@@ -228,7 +228,7 @@ namespace BloodSword::Spells
 
     bool In(Spells::List &list, Spells::Type spell)
     {
-        return list.size() > 0 && BloodSword::Find(list, spell) != list.end();
+        return list.size() > 0 && BloodSword::Has(list, spell);
     }
 
     // spell base class

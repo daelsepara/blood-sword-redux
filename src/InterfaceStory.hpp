@@ -1124,11 +1124,9 @@ namespace BloodSword::Interface
                 if (input.Type != Controls::Type::BACK)
                 {
                     // call/uncall to/from mind
-                    auto ptr = Interface::ControlSpellMapping.find(input.Type);
-
-                    if (Engine::IsSpell(input.Type) && ptr != Interface::ControlSpellMapping.end())
+                    if (Engine::IsSpell(input.Type) && BloodSword::Has(Interface::ControlSpellMapping, input.Type))
                     {
-                        auto &type = ptr->second;
+                        auto &type = Interface::ControlSpellMapping[input.Type];
 
                         auto search = character.Find(type);
 
