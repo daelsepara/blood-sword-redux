@@ -648,19 +648,7 @@ namespace BloodSword::Character
         // recall the spell that was called to mind
         Spells::List::iterator Recall(Spells::Type spell)
         {
-            auto found = this->CalledToMind.end();
-
-            for (auto search = this->CalledToMind.begin(); search != this->CalledToMind.end(); search++)
-            {
-                if (*search == spell)
-                {
-                    found = search;
-
-                    break;
-                }
-            }
-
-            return found;
+            return BloodSword::Search(this->CalledToMind, spell);
         }
 
         // search for spell in grimoire

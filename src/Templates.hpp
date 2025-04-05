@@ -68,6 +68,12 @@ namespace BloodSword
                             { return F(key, f); });
     }
 
+    template <typename T, typename R = typename std::vector<T>::iterator>
+    R Search(std::vector<T> &vector, T &key)
+    {
+        return std::find(vector.begin(), vector.end(), key);
+    }
+
     // check if the vector contains the key/object
     template <typename T>
     bool Found(std::vector<T> &vector, T &key)
