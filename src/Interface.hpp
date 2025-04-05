@@ -585,7 +585,7 @@ namespace BloodSword::Interface
                             {
                                 scene.VerifyAndAdd(Scene::Element(Asset::Get(party[tile.Id].Asset), screen));
 
-                                if (std::find(Interface::CharacterControls.begin(), Interface::CharacterControls.end(), party[tile.Id].Class) != Interface::CharacterControls.end())
+                                if (Interface::CharacterControls.find(party[tile.Id].Class) != Interface::CharacterControls.end())
                                 {
                                     type = Interface::CharacterControls[party[tile.Id].Class];
                                 }
