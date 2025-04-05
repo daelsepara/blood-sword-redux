@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 219
+    },
+    "text": "With a horrible splintering crash the ice block and the body inside it are blown to smithereens. You regard the end of the sceptre rather stupidly, not expecting it to have caused such wholesale destruction.",
+    "background": [
+        {
+            "type": "DISCHARGE",
+            "variables": [
+                "STEEL SCEPTRE",
+                "CHARGE",
+                "1"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 369
+            }
+        }
+    ]
+}

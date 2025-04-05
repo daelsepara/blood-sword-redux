@@ -235,6 +235,9 @@
         },
         {
             "name": "EMERALD SCARAB",
+            "properties": [
+                "RESURRECTION"
+            ],
             "quantity": 1,
             "type": "EMERALD SCARAB"
         },

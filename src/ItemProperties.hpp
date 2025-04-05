@@ -28,7 +28,8 @@ namespace BloodSword::Item
         RUSTY,
         BROKEN,
         CURSED,
-        REQUIRES_TARGET
+        REQUIRES_TARGET,
+        RESURRECTION
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -54,7 +55,8 @@ namespace BloodSword::Item
         {Item::Property::RUSTY, "RUSTY"},
         {Item::Property::BROKEN, "BROKEN"},
         {Item::Property::CURSED, "CURSED"},
-        {Item::Property::REQUIRES_TARGET, "REQUIRES TARGET"}};
+        {Item::Property::REQUIRES_TARGET, "REQUIRES TARGET"},
+        {Item::Property::RESURRECTION, "RESURRECTION"}};
 
     Item::Properties Invisible = {
         Item::Property::NONE,
