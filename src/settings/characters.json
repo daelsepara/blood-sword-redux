@@ -2,7 +2,7 @@
     "characters": {
         "members": [
             {
-                "asset": "WARRIOR",
+                "asset": "PERSON",
                 "attributes": [
                     {
                         "maximum": 8,

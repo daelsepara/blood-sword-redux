@@ -585,22 +585,9 @@ namespace BloodSword::Interface
                             {
                                 scene.VerifyAndAdd(Scene::Element(Asset::Get(party[tile.Id].Asset), screen));
 
-                                switch (party[tile.Id].Class)
+                                if (std::find(Interface::CharacterControls.begin(), Interface::CharacterControls.end(), party[tile.Id].Class) != Interface::CharacterControls.end())
                                 {
-                                case Character::Class::WARRIOR:
-                                    type = Controls::Type::WARRIOR;
-                                    break;
-                                case Character::Class::TRICKSTER:
-                                    type = Controls::Type::TRICKSTER;
-                                    break;
-                                case Character::Class::SAGE:
-                                    type = Controls::Type::SAGE;
-                                    break;
-                                case Character::Class::ENCHANTER:
-                                    type = Controls::Type::ENCHANTER;
-                                    break;
-                                default:
-                                    break;
+                                    type = Interface::CharacterControls[party[tile.Id].Class];
                                 }
 
                                 color = Color::Active;

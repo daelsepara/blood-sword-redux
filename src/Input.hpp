@@ -512,7 +512,7 @@ namespace BloodSword::Input
 
     bool IsPlayer(Controls::User &input)
     {
-        return (input.Type == Controls::Type::WARRIOR || input.Type == Controls::Type::TRICKSTER || input.Type == Controls::Type::SAGE || input.Type == Controls::Type::ENCHANTER);
+        return std::find(Controls::Players.begin(), Controls::Players.end(), input.Type) != Controls::Players.end();
     }
 
     bool IsEnemy(Controls::User &input)

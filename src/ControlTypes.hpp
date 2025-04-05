@@ -135,6 +135,14 @@ namespace BloodSword::Controls
         {Controls::Type::ITEMS, "ITEMS"},
         {Controls::Type::STEEL_SCEPTRE, "STEEL SCEPTRE"}};
 
+    Controls::Collection Players = {
+        Controls::Type::WARRIOR,
+        Controls::Type::TRICKSTER,
+        Controls::Type::SAGE,
+        Controls::Type::ENCHANTER,
+        Controls::Type::IMRAGARN,
+    };
+
     Controls::Type MapType(const char *control)
     {
         return BloodSword::Find(Controls::TypeMapping, control);
