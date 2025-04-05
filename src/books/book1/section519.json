@@ -13,13 +13,13 @@
                 "number": 98
             },
             "variables": [
-                "OTHERS"
+                "IMRAGARN"
             ]
         },
         {
             "type": "REMOVE PLAYER",
             "variables": [
-                "OTHERS",
+                "IMRAGARN",
                 "Hela, the Queen of the Dead has reclaimed the Imragarn"
             ]
         }

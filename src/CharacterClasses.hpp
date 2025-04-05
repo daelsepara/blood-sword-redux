@@ -36,7 +36,7 @@ namespace BloodSword::Character
         TRICKSTER,
         SAGE,
         ENCHANTER,
-        OTHERS
+        IMRAGARN
     };
 
     typedef std::vector<Character::Class> Classes;
@@ -47,7 +47,7 @@ namespace BloodSword::Character
         {Character::Class::TRICKSTER, "TRICKSTER"},
         {Character::Class::SAGE, "SAGE"},
         {Character::Class::ENCHANTER, "ENCHANTER"},
-        {Character::Class::OTHERS, "OTHERS"}};
+        {Character::Class::IMRAGARN, "IMRAGARN"}};
 
     Character::Classes All = {
         Character::Class::WARRIOR,
@@ -63,6 +63,23 @@ namespace BloodSword::Character
     Character::Class Map(std::string character_class)
     {
         return Character::Map(character_class.c_str());
+    }
+
+    bool OtherClass(Character::Class character)
+    {
+        auto found = true;
+
+        for (auto normal : Character::All)
+        {
+            if (normal == character)
+            {
+                found = false;
+
+                break;
+            }
+        }
+
+        return found;
     }
 }
 

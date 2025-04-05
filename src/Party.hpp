@@ -105,6 +105,24 @@ namespace BloodSword::Party
             return this->Find(character_class) != this->Members.end();
         }
 
+        // party has characters that are not in standard list (WARRIOR, TRICKSTER, SAGE, ENCHANTER)
+        bool HasOthers()
+        {
+            auto found = false;
+
+            for (auto character = 0; character < this->Members.size(); character++)
+            {
+                found |= Character::OtherClass(this->Members[character].Class);
+
+                if (found)
+                {
+                    break;
+                }
+            }
+
+            return found;
+        }
+
         // returns index of character in party
         int Index(Character::Class character_class)
         {
@@ -163,6 +181,30 @@ namespace BloodSword::Party
         bool Has(Target::Type target)
         {
             return (this->Find(target) != -1);
+        }
+
+        // search by name
+        int Find(std::string name)
+        {
+            auto found = -1;
+
+            for (auto i = 0; i < this->Members.size(); i++)
+            {
+                if (this->Members[i].Name == name)
+                {
+                    found = i;
+
+                    break;
+                }
+            }
+
+            return found;
+        }
+
+        // has a character with NAME
+        bool Has(std::string name)
+        {
+            return (this->Find(name) != -1);
         }
 
         // check if party has an item of type

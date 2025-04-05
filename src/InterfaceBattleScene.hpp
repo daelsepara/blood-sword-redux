@@ -817,7 +817,7 @@ namespace BloodSword::Interface
             // set party starting locations
             for (auto i = 0; i < party.Count(); i++)
             {
-                if (Engine::IsAlive(party[i]) && party[i].Class != Character::Class::OTHERS)
+                if (Engine::IsAlive(party[i]) && !Character::OtherClass(party[i].Class))
                 {
                     if (!party[i].Is(Character::Status::AWAY) && !party[i].Is(Character::Status::EXCLUDED))
                     {
@@ -1070,7 +1070,7 @@ namespace BloodSword::Interface
         }
     }
 
-    // put OTHER players in positions adjacent to other PLAYER characters
+    // put other players in positions adjacent to other PLAYER characters
     void PlayerTactics(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, Character::Class character)
     {
         auto location = Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad);

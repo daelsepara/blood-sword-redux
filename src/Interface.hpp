@@ -84,7 +84,7 @@ namespace BloodSword::Interface
         {Character::Class::TRICKSTER, Controls::Type::TRICKSTER},
         {Character::Class::SAGE, Controls::Type::SAGE},
         {Character::Class::ENCHANTER, Controls::Type::ENCHANTER},
-        {Character::Class::OTHERS, Controls::Type::OTHERS}};
+        {Character::Class::IMRAGARN, Controls::Type::IMRAGARN}};
 
     Controls::Mapped<Asset::Type> BattleControls = {
         {Controls::Type::MOVE, Asset::Type::MOVE},
@@ -4475,10 +4475,15 @@ namespace BloodSword::Interface
             {
                 // check if variable is present in internal variables
                 character = Character::Map(party.Get(character_string));
+            }
+            else if (party.Has(character_string))
+            {
+                // check if there is named character in the party
+                auto named = party.Find(character_string);
 
-                if (character == Character::Class::NONE || Engine::Count(party) == 1)
+                if (named >= 0 && named < party.Count())
                 {
-                    character = Engine::FirstClass(party);
+                    character = party[named].Class;
                 }
             }
             else

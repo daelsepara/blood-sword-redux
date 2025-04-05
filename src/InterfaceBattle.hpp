@@ -1015,10 +1015,16 @@ namespace BloodSword::Interface
             // set enemy starting locations
             Interface::SetEnemyLocations(battle, party);
 
-            // place OTHERS adjacent to other party members
-            if (party.Has(Character::Class::OTHERS) && party.Count() > 1)
+            // place other characters adjacent to other party members
+            if (party.HasOthers() && party.Count() > 1)
             {
-                Interface::PlayerTactics(graphics, battle, party, Character::Class::OTHERS);
+                for (auto i = 0; i < party.Count(); i++)
+                {
+                    if (Character::OtherClass(party[i].Class) && Engine::IsAlive(party[i]))
+                    {
+                        Interface::PlayerTactics(graphics, battle, party, party[i].Class);
+                    }
+                }
             }
 
             // final checks on placement of all combatants
