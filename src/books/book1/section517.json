@@ -3,13 +3,20 @@
         "book": "BOOK1",
         "number": 517
     },
-    "text": "You place the SCARAB into the man's parchment-dry fingers. Suddenly it bursts into a greenish glow, then it fades. The SCARAB crumbles to dust, drained of its power by your attempt to restore the man to life. His hand jerks convulsively once and then goes limp. You realise now that you would have had to release him from the block of ice before you used the amultet if you wanted to restore him. He died nearly instantaneously from either the cold or suffocation.",
+    "text": "You place the SCARAB into the man's parchment-dry fingers. Suddenly it bursts into a greenish glow, then it fades. The SCARAB crumbles to dust, drained of its power by your attempt to restore the man to life. His hand jerks convulsively once and then goes limp. You realise now that you would have had to release him from the block of ice before you used the amulet if you wanted to restore him. He died nearly instantaneously from either the cold or suffocation.",
     "background": [
         {
             "type": "DISCARD ITEMS",
             "variables": [
                 "ALL",
                 "EMERALD SCARAB"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "IMRAGARN DEAD",
+                "TRUE"
             ]
         }
     ],

@@ -1,0 +1,48 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 124
+    },
+    "text": "The scarab burns with a bright green light. Suddenly the man groans and sits up. Having restored him to life, the scarab crumbles away to dust.\n\nThe man looks around, astonished. \"What happened?\" he says. \"The last thing I remember is my old chum Fashmar getting killed by that frost-wizard.\"\n\nYou quickly filled him in. It seems he's been frozen in ice for almost a decade, since he entered the Battlepits with several companions as the champion of Magus Laglor. His name is Imragarn, and he is naturally grateful that you have restore him to life. In fact, he swears allegiance to you.",
+    "background": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "ALL",
+                "EMERALD SCARAB"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "IMRAGARN RESURRECTED",
+                "TRUE"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Add Imragarn to the party",
+            "condition": {
+                "type": "ADD CHARACTER",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 369
+                },
+                "variables": [
+                    "IMRAGARN"
+                ]
+            }
+        },
+        {
+            "text": "Go on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 369
+                }
+            }
+        }
+    ]
+}

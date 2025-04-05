@@ -4,6 +4,38 @@
         "number": 334
     },
     "text": "You can just make out the figure of a warrior clad in leather armour frozen into the ice block. A gauntleted hand portrudes from the side of the block where it looks as if someone has chipped away the ice and stolen his sword.",
+    "background": [
+        {
+            "type": "IF TRUE RETURN",
+            "variables": [
+                "=",
+                "IMRAGARN RESURRECTED",
+                "TRUE",
+                "All that is left are the melted and broken fragments of the ice block.",
+                "INACTIVE"
+            ]
+        },
+        {
+            "type": "IF TRUE RETURN",
+            "variables": [
+                "=",
+                "IMRAGARN DEAD",
+                "TRUE",
+                "Only the dead body remains.",
+                "INACTIVE"
+            ]
+        },
+        {
+            "type": "IF TRUE RETURN",
+            "variables": [
+                "=",
+                "IMRAGARN OBLITERATED",
+                "TRUE",
+                "Nothing is left of the ice block. Everything has been obliterated.",
+                "INACTIVE"
+            ]
+        }
+    ],
     "choices": [
         {
             "text": "Try melting the ice",

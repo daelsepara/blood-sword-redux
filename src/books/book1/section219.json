@@ -12,6 +12,13 @@
                 "CHARGE",
                 "1"
             ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "IMRAGARN OBLITERATED",
+                "TRUE"
+            ]
         }
     ],
     "next": [
