@@ -720,6 +720,8 @@ namespace BloodSword::Party
         }
     };
 
+    Party::Base Characters = Party::Base();
+
     Party::Base Initialize(nlohmann::json &data)
     {
         auto party = Party::Base();
@@ -837,6 +839,11 @@ namespace BloodSword::Party
         }
 
         return party;
+    }
+
+    Party::Base Load(std::string filename, std::string name)
+    {
+        return Party::Load(filename.c_str(), name.c_str());
     }
 }
 

@@ -1,0 +1,81 @@
+{
+    "characters": {
+        "members": [
+            {
+                "asset": "WARRIOR",
+                "attributes": [
+                    {
+                        "maximum": 8,
+                        "modifier": 0,
+                        "type": "FIGHTING PROWESS",
+                        "value": 8
+                    },
+                    {
+                        "maximum": 6,
+                        "modifier": 0,
+                        "type": "PSYCHIC ABILITY",
+                        "value": 6
+                    },
+                    {
+                        "maximum": 12,
+                        "modifier": 0,
+                        "type": "ENDURANCE",
+                        "value": 12
+                    },
+                    {
+                        "maximum": 1,
+                        "modifier": 1,
+                        "type": "DAMAGE",
+                        "value": 1
+                    },
+                    {
+                        "maximum": 6,
+                        "modifier": 0,
+                        "type": "AWARENESS",
+                        "value": 6
+                    },
+                    {
+                        "maximum": 0,
+                        "modifier": 0,
+                        "type": "ARMOUR",
+                        "value": 0
+                    }
+                ],
+                "class": "OTHERS",
+                "control_type": "PLAYER",
+                "experience": 250,
+                "item_limit": 10,
+                "items": [
+                    {
+                        "attributes": {
+                            "ARMOUR": 1
+                        },
+                        "contains": "NONE",
+                        "name": "LEATHER ARMOUR",
+                        "properties": [
+                            "ARMOUR",
+                            "EQUIPPED"
+                        ],
+                        "quantity": 1,
+                        "type": "LEATHER ARMOUR"
+                    },
+                    {
+                        "contains": "GOLD",
+                        "name": "MONEY POUCH",
+                        "properties": [
+                            "CONTAINER",
+                            "CANNOT DROP",
+                            "CANNOT TRADE"
+                        ],
+                        "quantity": 0,
+                        "type": "POUCH"
+                    }
+                ],
+                "moves": 1000,
+                "name": "IMRAGARN",
+                "rank": 2,
+                "target": "WARRIOR"
+            }
+        ]
+    }
+}

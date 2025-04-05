@@ -36,6 +36,9 @@ namespace BloodSword
             // load item descriptions
             Items::LoadDescriptions(Interface::Settings["item_descriptions"]);
 
+            // load characters
+            Party::Characters = Party::Load(Interface::Settings["characters"], "characters");
+
             Input::Flush();
         }
 

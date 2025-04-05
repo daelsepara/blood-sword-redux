@@ -6,6 +6,7 @@
         "palette": 0,
         "items": "settings/items.json",
         "item_descriptions": "settings/item-descriptions.json",
-        "adventure": "books/book1.json"
+        "adventure": "books/book1.json",
+        "characters": "settings/characters.json"
     }
 }
