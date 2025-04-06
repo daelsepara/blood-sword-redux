@@ -1596,6 +1596,8 @@ namespace BloodSword::Interface
 
         auto screen = origin + Point(w - popup_w, h - popup_h) / 2;
 
+        auto buttons = party.Count();
+
         overlay.Add(Scene::Element(screen, popup_w, popup_h, background, border, border_size));
 
         for (auto i = 0; i < party.Count(); i++)
@@ -1639,6 +1641,25 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), screen.X + party.Count() * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
 
             overlay.Add(Controls::Base(button, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+            buttons++;
+        }
+
+        // center buttons
+        auto center = (popup_w - buttons * (BloodSword::TileSize + pad)) / 2;
+
+        // skip the popup window border
+        for (auto i = 0; i < overlay.Elements.size(); i++)
+        {
+            if (i > 0)
+            {
+                overlay.Elements[i].X += center;
+            }
+
+            if (i < overlay.Controls.size())
+            {
+                overlay.Controls[i].X += center;
+            }
         }
 
         return overlay;
@@ -3640,10 +3661,6 @@ namespace BloodSword::Interface
     {
         auto selection = std::vector<bool>(party.Count());
 
-        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
-
-        auto status = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
-
         auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
         auto captions = names ? Interface::GenerateNameCaptions(graphics, party) : Interface::GenerateCharacterClassCaptions(graphics, party);
@@ -3670,7 +3687,7 @@ namespace BloodSword::Interface
 
         auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
 
-        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+        auto popup_h = (BloodSword::TileSize + BloodSword::QuarterTile) * 2;
 
         auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
@@ -3678,14 +3695,7 @@ namespace BloodSword::Interface
         {
             auto overlay = Scene::Base();
 
-            if (popup_h > 0)
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
-            }
-            else
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
-            }
+            overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
 
             // title
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
@@ -3708,18 +3718,15 @@ namespace BloodSword::Interface
                 {
                     auto &control = overlay.Controls[input.Current];
 
-                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+                    // center caption
+                    auto center = (control.W - BloodSword::Width(captions[input.Current])) / 2;
 
-                    overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
-
-                    if (status[input.Current])
+                    if ((control.X + center < (popup.X + BloodSword::QuarterTile)) && input.Current == 0)
                     {
-                        auto status_x = popup.X + (popup_w + pad * 2);
-
-                        overlay.Add(Scene::Element(status_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
-
-                        overlay.VerifyAndAdd(Scene::Element(status[input.Current], status_x, popup.Y));
+                        center = 0;
                     }
+
+                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X + center, control.Y + control.H + pad));
                 }
             }
 
@@ -3765,10 +3772,6 @@ namespace BloodSword::Interface
         BloodSword::Free(captions);
 
         BloodSword::Free(&select);
-
-        BloodSword::Free(status);
-
-        BloodSword::Free(stats);
     }
 
     // select multiple characters then apply status
@@ -3777,10 +3780,6 @@ namespace BloodSword::Interface
         if (status_selected != Character::Status::NONE)
         {
             auto selection = std::vector<bool>(party.Count());
-
-            auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
-
-            auto status = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
 
             auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -3796,7 +3795,7 @@ namespace BloodSword::Interface
 
             auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
 
-            auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+            auto popup_h = (BloodSword::TileSize + BloodSword::QuarterTile) * 2;
 
             auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
@@ -3804,14 +3803,7 @@ namespace BloodSword::Interface
             {
                 auto overlay = Scene::Base();
 
-                if (popup_h > 0)
-                {
-                    overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
-                }
-                else
-                {
-                    overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
-                }
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
 
                 // title
                 overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
@@ -3834,18 +3826,15 @@ namespace BloodSword::Interface
                     {
                         auto &control = overlay.Controls[input.Current];
 
-                        overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+                        // center caption
+                        auto center = (control.W - BloodSword::Width(captions[input.Current])) / 2;
 
-                        overlay.VerifyAndAdd(Scene::Element(stats[input.Current], popup.X - (BloodSword::Width(stats[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
-
-                        if (status[input.Current])
+                        if ((control.X + center < (popup.X + BloodSword::QuarterTile)) && input.Current == 0)
                         {
-                            auto status_x = popup.X + (popup_w + pad * 2);
-
-                            overlay.Add(Scene::Element(status_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
-
-                            overlay.VerifyAndAdd(Scene::Element(status[input.Current], status_x, popup.Y));
+                            center = 0;
                         }
+
+                        overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X + center, control.Y + control.H + pad));
                     }
                 }
 
@@ -3881,10 +3870,6 @@ namespace BloodSword::Interface
             BloodSword::Free(captions);
 
             BloodSword::Free(&select);
-
-            BloodSword::Free(status);
-
-            BloodSword::Free(stats);
         }
     }
 

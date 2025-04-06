@@ -3541,11 +3541,14 @@ namespace BloodSword::Conditions
 
                 if (status != Character::Status::NONE && limit > 0 && rounds > 1 && !mission.empty())
                 {
+                    // remove status from entire party
+                    party.Remove(status);
+
                     if (Engine::Count(party) > 1 && (limit < Engine::Count(party) || (limit > 1 && (limit - 1) < Engine::Count(party))))
                     {
                         limit = std::min(limit, Engine::Count(party) - 1);
 
-                        Interface::SelectMultiple(graphics, background, party, mission.c_str(), status, limit, false);
+                        Interface::SelectMultiple(graphics, background, party, mission.c_str(), status, limit, true);
 
                         for (auto i = 0; i < party.Count(); i++)
                         {
