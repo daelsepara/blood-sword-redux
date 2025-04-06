@@ -1,0 +1,20 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 368
+    },
+    "text": "The gondolier rows you towards the rough stone jetty at the end of the lake. Paper lanterns have been set on it, and the reflection of their light in the water casts an ever-shifting pattern of light on the cavern ceiling. You step out of the gondola.",
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 152
+            },
+            "variables": [
+                "Looking back, you see that both gondola and its grim helmsman have vanished without a trace.",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

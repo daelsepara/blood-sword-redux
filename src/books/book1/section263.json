@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 263
+    },
+    "text": "(SAGE) Success! Now you can see the rhyme in its entirety:\n\n\"As you are now, so once was I;\nWhere I am now, so you must go.\nHaul me up from where I lie,\nAn join me in the deeps below.\"\n\nA rather morbid invitation.",
+    "choices": [
+        {
+            "text": "Pass by",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 247
+                }
+            }
+        },
+        {
+            "text": "Pull the iron chain up out of the water",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 502
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,55 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 419
+    },
+    "text": "You can just about make out three lines of a rhyme carved into the weathered wood of the buoy. They read:\n\n\"As you are now, so once was I;\nWhere I am now, so you must go.\nHaul me up from where I lie...\"\n\nThere is a heavy iron chain attached through a link to the side of the buoy. It trails down deep into the lake. The gondolier seems disinclined to tarry here. You see his lean fingers twitching as he grips the oar.",
+    "choices": [
+        {
+            "text": "Tell him to go on",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 247
+                }
+            }
+        },
+        {
+            "text": "Haul the chain up",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 502
+                }
+            }
+        },
+        {
+            "text": "(ENCHANTER) Try casting the PREDICTION spell",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 122
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "(SAGE) Use PARANORMAL SIGHT",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 108
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        }
+    ]
+}

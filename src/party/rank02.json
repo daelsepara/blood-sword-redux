@@ -92,16 +92,22 @@
                         ],
                         "quantity": 4,
                         "type": "STEEL SCEPTRE",
-                        "drops": true,
                         "damage_types": {
+                            "PLAYER": {
+                                "damage": 5,
+                                "modifier": 0
+                            },
                             "ENEMY": {
                                 "damage": 5,
                                 "modifier": 0
                             }
                         },
                         "target_effects": {
-                            "ENEMY": "DAMAGE TARGET"
-                        }
+                            "PLAYER": "DAMAGE TARGET",
+                            "ENEMY": "DAMAGE TARGET",
+                            "EIDOLON": "IMMUNE"
+                        },
+                        "drops": true
                     }
                 ],
                 "moves": 1000,

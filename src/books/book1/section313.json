@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 313
+    },
+    "text": "You try to desperately to concentrate your mind, but your attempt fails. However, you felt yourself on the very edge of glimpsing the end of the message just before the vison broke up into a thousand fragments and was lost... When you come out of your trance you find yourself staring at the black waters of the underground lake and the mysterious buoy.",
+    "choices": [
+        {
+            "text": "Heave the iron chain up out of the water",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 502
+                }
+            }
+        },
+        {
+            "text": "Signal for the gondolier to row on",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 247
+                }
+            }
+        }
+    ]
+}

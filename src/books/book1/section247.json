@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 247
+    },
+    "text": "The boat glides past a low side tunnel. Far ahead you can see the winking lantern-lights of a jetty. The gondolier sculls to a halt and waits for you to indicate which route you want to take.",
+    "choices": [
+        {
+            "text": "Tell him to go left, along the side tunnel",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 489
+                }
+            }
+        },
+        {
+            "text": "Tell him to go right, on towards the jetty",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 368
+                }
+            }
+        }
+    ]
+}

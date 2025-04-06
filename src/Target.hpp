@@ -28,7 +28,8 @@ namespace BloodSword::Target
         MAN_IN_BLUE,
         GIANT_SPIDER,
         GIANT,
-        NEBULARON
+        NEBULARON,
+        EIDOLON
     };
 
     typedef std::vector<Target::Type> List;
@@ -50,7 +51,8 @@ namespace BloodSword::Target
         {Target::Type::MAN_IN_BLUE, "MAN IN BLUE"},
         {Target::Type::GIANT_SPIDER, "GIANT SPIDER"},
         {Target::Type::GIANT, "GIANT"},
-        {Target::Type::NEBULARON, "NEBULARON"}};
+        {Target::Type::NEBULARON, "NEBULARON"},
+        {Target::Type::EIDOLON, "EIDOLON"}};
 
     Target::Type Map(const char *target)
     {

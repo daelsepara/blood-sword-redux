@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 108
+    },
+    "text": "(SAGE) You must attempt to awaken the latent powers of your \"inner eye.\" Calling on the teachings of your adept masters, you begin to clear your mind of all distractions, tring to see beyond the natural spectrum.",
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 263
+            },
+            "failure": {
+                "book": "BOOK1",
+                "number": 313
+            },
+            "variables": [
+                "SAGE",
+                "PSYCHIC ABILITY",
+                "YOUR INNER EYE FAILED TO AWAKEN!"
+            ]
+        }
+    ]
+}

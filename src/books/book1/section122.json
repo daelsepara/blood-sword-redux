@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 122
+    },
+    "text": "(ENCHANTER) You cast the spell. You seem to stare into a vast endless void. Does this mean you have no future? Certainly that is one possible future -- the dark oblivion of death. But there are other possibilities also.",
+    "choices": [
+        {
+            "text": "(SAGE) Try something",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 108
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Heave the iron chain out of the water",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 502
+                }
+            }
+        },
+        {
+            "text": "Tell the gondolier to carry on",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 247
+                }
+            }
+        }
+    ]
+}
