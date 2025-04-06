@@ -567,6 +567,10 @@
         {
             "id": "WOODEN PLANK",
             "path": "images/map/packed-planks.png"
+        },
+        {
+            "id": "WATER",
+            "path": "images/map/water.png"
         }
     ]
 }
