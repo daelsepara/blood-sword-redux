@@ -1,0 +1,38 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 4
+    },
+    "text": "You unleash the power of the sceptre at the wall. This sends chips of stone flying in all directions, but it is not enough to blast a passage through.",
+    "choices": [
+        {
+            "text": "Use another two charges to blast through the wall",
+            "condition": {
+                "type": "DISCHARGE",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 503
+                },
+                "variables": [
+                    "STEEL SCEPTRE",
+                    "CHARGE",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "Discard the JEWELLED SWORD",
+            "condition": {
+                "type": "DROP ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 503
+                },
+                "variables": [
+                    "ALL",
+                    "JEWELLED SWORD"
+                ]
+            }
+        }
+    ]
+}
