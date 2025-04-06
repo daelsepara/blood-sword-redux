@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 439
+    },
+    "text": "A desperate ploy occurs to you. Perhaps if you recover the creature's mortal remains you will be able to destroy it. This means hauling the iron cage containing its bones back out of the water.",
+    "battle_events": [
+        {
+            "type": "COMBAT MISSION",
+            "variables": [
+                "AWAY",
+                "2",
+                "4",
+                "WHO SHALL HEAVE THE IRON CAGE UP (MAX: 2)?"
+            ]
+        }
+    ],
+    "battle": "battles/book1/battle439.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 107
+            }
+        },
+        {
+            "type": "BATTLE FLEE",
+            "location": {
+                "book": "BOOK1",
+                "number": 324
+            }
+        }
+    ]
+}

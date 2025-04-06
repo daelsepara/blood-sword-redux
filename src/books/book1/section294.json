@@ -1,0 +1,15 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 294
+    },
+    "text": "The amulet restores you to life!\n\n[Your ENDURANCE score is now back to what it was at the start of the adventure. The amulet will not work for you ever again, so you must pass it to another or else discard it. If passed to another player, it will do the same for him if he is killed, but then they cannot use it again either, and must pass it to someone else.]",
+    "features": [
+        "ITEM EFFECT"
+    ],
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

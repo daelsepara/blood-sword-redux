@@ -4936,6 +4936,27 @@ namespace BloodSword::Interface
         BloodSword::Free(menu);
     }
 
+    // resurrect character
+    void Resurrect(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
+    {
+        if (Engine::IsAlive(character) && character.IsPlayer() && character.Has(Item::Property::RESURRECTION) && !party.Is("=", character.Name + " RESURRECTED", "TRUE"))
+        {
+            auto item = character.Find(Item::Property::RESURRECTION);
+
+            if (item != character.Items.end())
+            {
+                if (Book::IsDefined((*item).Effects))
+                {
+                    Interface::ShowBookDescription(graphics, background, (*item).Effects);
+                }
+
+                character.Value(Attribute::Type::ENDURANCE, character.Maximum(Attribute::Type::ENDURANCE));
+
+                party.Set(character.Name + " RESURRECTED", "TRUE");
+            }
+        }
+    }
+
     // deal random damage to character (display)
     int DamagePlayer(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int roll, int modifier, bool ignore_armour = false, bool in_battle = false, bool display = true)
     {
@@ -4999,6 +5020,8 @@ namespace BloodSword::Interface
             {
                 Interface::DamagePlayer(graphics, background, party[targets[0]], roll, modifier, ignore_armour, in_battle, display);
             }
+
+            Interface::Resurrect(graphics, background, party, party[targets[0]]);
 
             if (!Engine::IsAlive(party[targets[0]]))
             {
@@ -5075,6 +5098,8 @@ namespace BloodSword::Interface
                         Interface::TextBox(graphics, background, message, Color::Highlight, wrap, true);
 
                         Interface::DamagePlayer(graphics, background, party[character], gauntlet.Damage, gauntlet.DamageModifier, gauntlet.IgnoreArmour, false, true);
+
+                        Interface::Resurrect(graphics, background, party, party[character]);
                     }
                 }
             }

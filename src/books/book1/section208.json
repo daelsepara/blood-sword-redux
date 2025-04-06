@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 208
+    },
+    "text": "You have destroyed the eidolon. Its green limbs dissolve into a thick mist that hans for a moment on the surface of the lake before depositing a fine green sediment that sinks slowly through the blackness towards the bottom.",
+    "choices": [
+        {
+            "text": "Pull the iron cage containing its bones back up out of the lake",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 59
+                }
+            }
+        },
+        {
+            "text": "It is wiser to just hurry on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 247
+                }
+            }
+        }
+    ]
+}

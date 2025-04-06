@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 462
+    },
+    "text": "What will you do?",
+    "choices": [
+        {
+            "text": "(SAGE) Attempt to exorcise the creature",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 194
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Continue the battle",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 502
+                }
+            }
+        },
+        {
+            "text": "Try to think of another strategy",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 439
+                }
+            }
+        }
+    ]
+}

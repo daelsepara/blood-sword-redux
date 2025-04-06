@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 194
+    },
+    "text": "(SAGE) You focus your mind. Others think this kind of thing is beyond the understanding of mortals, but you know that ghosts, wraiths and other spectral creatures are just manifestations of pure energy. If you can blank out that energy, the creature will cease to exist.\n\nYou think you have the mind-set. The eidolon flickers for a moment, but then reconstitutes itself. It must be sustained by some magical power-source.",
+    "choices": [
+        {
+            "text": "Resume the fight",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 502
+                }
+            }
+        },
+        {
+            "text": "Try to think of some other way to beat it",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 439
+                }
+            }
+        }
+    ]
+}

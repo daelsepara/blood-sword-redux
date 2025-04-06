@@ -559,6 +559,14 @@
         {
             "id": "EIDOLON",
             "path": "images/enemies/spectre.png"
+        },
+        {
+            "id": "GONDOLIER",
+            "path": "images/enemies/haunting.png"
+        },
+        {
+            "id": "WOODEN PLANK",
+            "path": "images/map/packed-planks.png"
         }
     ]
 }

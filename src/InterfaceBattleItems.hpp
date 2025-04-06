@@ -90,6 +90,8 @@ namespace BloodSword::Interface
 
                         Interface::DamagePlayer(graphics, background, defender, rolls, modifier, ignore_armour, true, true);
 
+                        Interface::Resurrect(graphics, background, party, defender);
+
                         if (!Engine::IsAlive(defender))
                         {
                             battle.Map.Remove(defender.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, target_id);
@@ -135,6 +137,8 @@ namespace BloodSword::Interface
                         auto ignore_armour = item.DamageTypes[target_type].IgnoreArmour;
 
                         Interface::DamagePlayer(graphics, background, defender, rolls, modifier, ignore_armour, true, true);
+
+                        Interface::Resurrect(graphics, background, party, defender);
 
                         if (!Engine::IsAlive(defender))
                         {
@@ -196,6 +200,8 @@ namespace BloodSword::Interface
                     // damage self
                     Engine::GainEndurance(character, -1, true);
 
+                    Interface::Resurrect(graphics, background, party, character);
+
                     if (!Engine::IsAlive(character))
                     {
                         battle.Map.Remove(character.IsPlayer() ? Map::Object::PLAYER : Map::Object::ENEMY, my_id);
@@ -222,7 +228,7 @@ namespace BloodSword::Interface
             else if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::IMMUNE)
             {
                 Interface::MessageBox(graphics, background, defender.Name + " CANNOT BE HARMED BY THE " + item.Name, defender.IsPlayer() ? Color::Active : Color::Highlight);
-    
+
                 used = true;
             }
         }

@@ -240,7 +240,17 @@
                 "RESURRECTION"
             ],
             "quantity": 1,
-            "type": "EMERALD SCARAB"
+            "type": "EMERALD SCARAB",
+            "description": {
+                "book": "BOOK1",
+                "number": 352
+            },
+            "effects": {
+                "book": "BOOK1",
+                "number": 294
+            },
+            "revealed": false,
+            "drops": true
         },
         {
             "name": "JEWELLED SWORD",

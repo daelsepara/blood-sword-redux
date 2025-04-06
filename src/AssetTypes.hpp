@@ -158,7 +158,9 @@ namespace BloodSword::Asset
         WAVES,
         WAVE_CREST,
         GEAR,
-        DAGGER_OF_VISLET
+        DAGGER_OF_VISLET,
+        GONDOLIER,
+        WOODEN_PLANK
     };
 
     template <typename T>
@@ -315,7 +317,9 @@ namespace BloodSword::Asset
         {Asset::Type::WAVES, "WAVES"},
         {Asset::Type::WAVE_CREST, "WAVE CREST"},
         {Asset::Type::GEAR, "GEAR"},
-        {Asset::Type::DAGGER_OF_VISLET, "DAGGER OF VISLET"}};
+        {Asset::Type::DAGGER_OF_VISLET, "DAGGER OF VISLET"},
+        {Asset::Type::GONDOLIER, "GONDOLIER"},
+        {Asset::Type::WOODEN_PLANK, "WOODEN PLANK"}};
 
     Asset::Type Map(const char *asset)
     {

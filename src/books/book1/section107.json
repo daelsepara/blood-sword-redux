@@ -1,0 +1,45 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 107
+    },
+    "text": "At last you manage to pull the cage up again. As it breaks the surface, the eidolon gives a forlorn howl and begins to wring its hands. It seems to be imploring you to leave its skeleton untouched, but you know that a monstrous being such as this can be shown no mercy. You tear the SCARAB AMULET from the skeleton's necks. It gives a brief pulse of light. There is a scream from the eidolon, then it dissipates into empty air.",
+    "choices": [
+        {
+            "text": "(SAGE) Try to identify it",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 352
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Take a risk putting it on",
+            "condition": {
+                "type": "GET ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 187
+                },
+                "variables": [
+                    "EMERALD SCARAB"
+                ]
+            }
+        },
+        {
+            "text": "Leave the scarab and go on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 247
+                }
+            }
+        }
+    ]
+}

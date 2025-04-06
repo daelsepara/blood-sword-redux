@@ -535,7 +535,7 @@ namespace BloodSword::Map
 
             if (this->AwayPlayers.size() > 0)
             {
-                map["away_playes"] = this->Points(this->AwayPlayers);
+                map["away_players"] = this->Points(this->AwayPlayers);
             }
 
             if (this->AwayOpponents.size() > 0)
