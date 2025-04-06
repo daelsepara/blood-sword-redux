@@ -555,6 +555,10 @@
         {
             "id": "SMEABORG",
             "path": "images/enemies/diablo-skull.png"
+        },
+        {
+            "id": "EIDOLON",
+            "path": "images/enemies/spectre.png"
         }
     ]
 }
