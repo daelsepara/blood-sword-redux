@@ -119,7 +119,7 @@ namespace BloodSword::Engine
         {
             if (in_battle)
             {
-                if (character.IsPlayer() && !character.IsArmed())
+                if (character.IsPlayer() && !character.IsArmed() && character.Fight == Skills::Type::NONE)
                 {
                     modifier -= 2;
                 }

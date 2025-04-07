@@ -737,7 +737,10 @@ namespace BloodSword::Interface
             {
                 if (character.IsPlayer())
                 {
-                    modifier += !character.IsArmed() ? -2 : 0;
+                    if (character.Fight == Skills::Type::NONE)
+                    {
+                        modifier += !character.IsArmed() ? -2 : 0;
+                    }
 
                     modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
 
@@ -2041,15 +2044,9 @@ namespace BloodSword::Interface
 
         auto rolls = Engine::RollResult();
 
-        // Unarmed/Eye of the Tiger effects
+        // Eye of the Tiger effects
         if (attribute == Attribute::Type::FIGHTING_PROWESS)
         {
-            // handle cases where player fights with certain skills instead of being armed
-            if (in_battle && !attacker.IsArmed() && attacker.Fight == Skills::Type::NONE)
-            {
-                score -= 2;
-            }
-
             if (attacker.Has(Character::Status::FPR_PLUS2))
             {
                 score += 2;
@@ -2181,22 +2178,54 @@ namespace BloodSword::Interface
         // check if RUSTY weapon breaks
         if (weapon != Item::Property::NONE)
         {
+            auto check = false;
+
             auto current = attacker.EquippedWeapon(weapon);
 
-            if (current >= 0 && current < attacker.Items.size() && attacker.Items[current].Has(Item::Property::RUSTY))
+            if (weapon == Item::Property::PRIMARY && attacker.Fight == Skills::Type::RUSTY_WEAPON)
+            {
+                check = true;
+            }
+            else if (weapon == Item::Property::RANGED && attacker.Shoot == Skills::Type::RUSTY_WEAPON)
+            {
+                check = true;
+            }
+            else if (weapon != Item::Property::NONE)
+            {
+                check = (current >= 0 && current < attacker.Items.size() && attacker.Items[current].Has(Item::Property::RUSTY));
+            }
+
+            if (check)
             {
                 auto sum = 0;
 
                 for (auto i = 0; i < rolls.Rolls.size(); i++)
                 {
-                    sum += rolls.Rolls[i];
+                    sum += (rolls.Rolls[i] == 6 ? rolls.Rolls[i] : 0);
                 }
 
-                if (sum == (roll * Engine::Dice))
+                if (sum >= (Engine::Dice * roll))
                 {
-                    attacker.Items[current].Add(Item::Property::BROKEN);
+                    auto message = std::string();
 
-                    auto message = attacker.Items[current].Name + " BREAKS!";
+                    if (weapon == Item::Property::PRIMARY && attacker.Fight == Skills::Type::RUSTY_WEAPON)
+                    {
+                        attacker.Fight = Skills::Type::BROKEN_WEAPON;
+
+                        message = attacker.Name + ": WEAPON BREAKS!";
+                    }
+                    else if (weapon == Item::Property::RANGED && attacker.Shoot == Skills::Type::RUSTY_WEAPON)
+                    {
+                        attacker.Shoot = Skills::Type::BROKEN_WEAPON;
+
+                        message = attacker.Name + ": WEAPON BREAKS!";
+                    }
+                    else if (weapon != Item::Property::NONE)
+                    {
+                        attacker.Items[current].Add(Item::Property::BROKEN);
+
+                        message = attacker.Items[current].Name + " BREAKS!";
+                    }
 
                     auto color = attacker.IsPlayer() ? Color::Highlight : Color::Active;
 
