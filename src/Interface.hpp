@@ -1669,7 +1669,7 @@ namespace BloodSword::Interface
     {
         auto pad = BloodSword::QuarterTile;
 
-        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + pad * 2;
+        auto popup_w = (party.Count() + 1) * (BloodSword::TileSize + pad);
 
         auto popup_h = (BloodSword::TileSize + pad) * 2;
 
@@ -1691,7 +1691,9 @@ namespace BloodSword::Interface
     {
         auto pad = BloodSword::QuarterTile;
 
-        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + pad * 3;
+        auto num_buttons = party.Count() + (back ? 1 : 0);
+
+        auto popup_w = num_buttons * (BloodSword::TileSize + pad);
 
         auto popup_h = (BloodSword::TileSize + pad) * 2;
 
@@ -2474,7 +2476,7 @@ namespace BloodSword::Interface
 
         auto popup_pad = BloodSword::QuarterTile;
 
-        auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+        auto popup_w = std::max((party.Count() + 1) * (BloodSword::TileSize + popup_pad), BloodSword::Width(select) + popup_pad * 2);
 
         auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
 
@@ -2924,7 +2926,7 @@ namespace BloodSword::Interface
 
         auto popup_pad = BloodSword::QuarterTile;
 
-        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + popup_pad * 2;
+        auto popup_w = (party.Count() + 1) * (BloodSword::TileSize + popup_pad);
 
         auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
 
@@ -3685,7 +3687,7 @@ namespace BloodSword::Interface
 
         auto popup_pad = BloodSword::QuarterTile;
 
-        auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+        auto popup_w = std::max((party.Count() + 1) * (BloodSword::TileSize + popup_pad), BloodSword::Width(select) + popup_pad * 2);
 
         auto popup_h = (BloodSword::TileSize + BloodSword::QuarterTile) * 2;
 
@@ -3793,7 +3795,7 @@ namespace BloodSword::Interface
 
             auto popup_pad = BloodSword::QuarterTile;
 
-            auto popup_w = std::max((party.Count() + 1) * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(select) + popup_pad * 2);
+            auto popup_w = std::max((party.Count() + 1) * (BloodSword::TileSize + popup_pad), BloodSword::Width(select) + popup_pad * 2);
 
             auto popup_h = (BloodSword::TileSize + BloodSword::QuarterTile) * 2;
 
@@ -3961,7 +3963,7 @@ namespace BloodSword::Interface
 
         auto num_icons = int(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
 
-        auto popup_w = std::max(num_icons * BloodSword::TileSize + popup_pad * 2, BloodSword::Width(texture) + popup_pad * 2);
+        auto popup_w = std::max(num_icons * (BloodSword::TileSize + popup_pad), BloodSword::Width(texture) + popup_pad * 2);
 
         auto popup_h = (BloodSword::TileSize + popup_pad) * 2;
 
