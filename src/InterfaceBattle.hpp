@@ -197,31 +197,28 @@ namespace BloodSword::Interface
 
         auto window = origin + (Point(w, h) - Point(window_w, window_h)) / 2;
 
-        if (!attacker.Is(Character::Status::DEFENDING))
+        if (!attacker.Is(Character::Status::DEFENDING) && Engine::IsAlive(attacker))
         {
-            if (Engine::IsAlive(attacker))
+            auto roll = defender.Is(Character::Status::DEFENDING) ? 3 : 2;
+
+            roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
+
+            auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
+
+            if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::RANGED))
             {
-                auto roll = defender.Is(Character::Status::DEFENDING) ? 3 : 2;
+                auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
-                roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
+                alive &= Engine::GainEndurance(defender, -hit, true);
 
-                auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
-
-                if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::RANGED))
+                if (hit > 0 && shot == Skills::Type::POISONED_DAGGER)
                 {
-                    auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
+                    // instant death
+                    defender.Value(Attribute::Type::ENDURANCE, 0);
 
-                    alive &= Engine::GainEndurance(defender, -hit, true);
+                    alive = false;
 
-                    if (hit > 0 && shot == Skills::Type::POISONED_DAGGER)
-                    {
-                        // instant death
-                        defender.Value(Attribute::Type::ENDURANCE, 0);
-
-                        alive = false;
-
-                        alive = false;
-                    }
+                    alive = false;
                 }
             }
         }

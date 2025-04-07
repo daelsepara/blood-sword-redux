@@ -2491,7 +2491,21 @@ namespace BloodSword::Interface
 
         auto modifier = !shooting ? attacker.Modifier(Attribute::Type::DAMAGE) : 0;
 
-        modifier += (in_battle && attacker.IsPlayer() && !attacker.IsArmed()) ? -2 : 0;
+        if (attacker.IsPlayer() && !attacker.IsArmed())
+        {
+            modifier -= 2;
+        }
+        else if (attacker.IsEnemy())
+        {
+            if (!shooting && skill == Skills::Type::BROKEN_WEAPON)
+            {
+                modifier -= 2;
+            }
+            else if (shooting && skill == Skills::Type::BROKEN_WEAPON)
+            {
+                modifier -= 2;
+            }
+        }
 
         modifier -= (shooting && (skill == Skills::Type::SHURIKEN)) ? 1 : 0;
 
