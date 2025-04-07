@@ -61,57 +61,54 @@ namespace BloodSword::Interface
             asset = Asset::Type::FIGHT;
         }
 
-        if (!attacker.Is(Character::Status::DEFENDING))
+        if (!attacker.Is(Character::Status::DEFENDING) && Engine::IsAlive(attacker))
         {
-            if (Engine::IsAlive(attacker))
+            auto roll = 2;
+
+            roll += defender.Is(Character::Status::DEFENDING) ? 1 : 0;
+
+            roll += knockout ? 1 : 0;
+
+            roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
+
+            auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
+
+            if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::PRIMARY))
             {
-                auto roll = 2;
+                auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
-                roll += defender.Is(Character::Status::DEFENDING) ? 1 : 0;
-
-                roll += knockout ? 1 : 0;
-
-                roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
-
-                auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
-
-                if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::PRIMARY))
+                if (hit > 0)
                 {
-                    auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
+                    alive &= Engine::GainEndurance(defender, -hit, true);
 
-                    if (hit > 0)
+                    auto effect = BloodSword::Find(Interface::SkillEffects, skill);
+
+                    // do not stack up effects
+                    if (alive && effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
                     {
-                        alive &= Engine::GainEndurance(defender, -hit, true);
+                        auto resisted = false;
 
-                        auto effect = BloodSword::Find(Interface::SkillEffects, skill);
-
-                        // do not stack up effects
-                        if (alive && effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
+                        if (skill == Skills::Type::PARALYZING_TOUCH)
                         {
-                            auto resisted = false;
-
-                            if (skill == Skills::Type::PARALYZING_TOUCH)
+                            if (Interface::Test(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, defender, Attribute::Type::PSYCHIC_ABILITY, 2, 0, Attribute::Assets[Attribute::Type::PSYCHIC_ABILITY], true))
                             {
-                                if (Interface::Test(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, defender, Attribute::Type::PSYCHIC_ABILITY, 2, 0, Attribute::Assets[Attribute::Type::PSYCHIC_ABILITY], true))
-                                {
-                                    Interface::MessageBox(graphics, background, "PARALYZING TOUCH RESISTED!", defender.IsPlayer() ? Color::Active : Color::Highlight);
+                                Interface::MessageBox(graphics, background, "PARALYZING TOUCH RESISTED!", defender.IsPlayer() ? Color::Active : Color::Highlight);
 
-                                    resisted = true;
-                                }
+                                resisted = true;
                             }
-                            else if (skill == Skills::Type::POISONED_DAGGER)
-                            {
-                                defender.Value(Attribute::Type::ENDURANCE, 0);
+                        }
+                        else if (skill == Skills::Type::POISONED_DAGGER)
+                        {
+                            defender.Value(Attribute::Type::ENDURANCE, 0);
 
-                                alive = false;
-                            }
+                            alive = false;
+                        }
 
-                            if (!resisted)
-                            {
-                                defender.Add(effect);
+                        if (!resisted)
+                        {
+                            defender.Add(effect);
 
-                                Interface::MessageBox(graphics, background, Character::StatusMapping[effect], Color::Active);
-                            }
+                            Interface::MessageBox(graphics, background, Character::StatusMapping[effect], Color::Active);
                         }
                     }
                 }

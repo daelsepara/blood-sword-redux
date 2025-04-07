@@ -115,23 +115,35 @@ namespace BloodSword::Engine
 
             modifier = 0;
         }
-        else if (attribute != Attribute::Type::DAMAGE)
+        else if (attribute == Attribute::Type::FIGHTING_PROWESS)
         {
-            if (in_battle && character.IsPlayer() && !character.IsArmed() && attribute == Attribute::Type::FIGHTING_PROWESS)
+            if (in_battle)
             {
-                modifier -= 2;
+                if (character.IsPlayer() && !character.IsArmed())
+                {
+                    modifier -= 2;
+                }
+                else if (character.IsEnemy() && character.Fight == Skills::Type::BROKEN_WEAPON)
+                {
+                    modifier -= 2;
+                }
+
+                if (character.Has(Character::Status::BURNED))
+                {
+                    modifier -= 1;
+                }
             }
 
-            if (attribute == Attribute::Type::FIGHTING_PROWESS && character.Has(Character::Status::BURNED))
+            if (character.IsPlayer() && character.IsArmed() && weapon != Item::Property::NONE)
             {
-                modifier -= 1;
+                modifier += character.WeaponModifier(weapon, Attribute::Type::FIGHTING_PROWESS);
             }
         }
-        else if (attribute == Attribute::Type::DAMAGE && !character.IsArmed())
+        else if (attribute == Attribute::Type::DAMAGE && (!character.IsArmed() || character.Fight == Skills::Type::BROKEN_WEAPON))
         {
             modifier -= 2;
         }
-        else if (in_battle && character.IsArmed() && weapon != Item::Property::NONE)
+        else if (character.IsArmed() && weapon != Item::Property::NONE)
         {
             modifier += character.WeaponModifier(weapon, attribute);
         }

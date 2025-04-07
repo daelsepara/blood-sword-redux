@@ -703,13 +703,20 @@ namespace BloodSword::Interface
         }
         else if (attribute == Attribute::Type::DAMAGE)
         {
-            if (in_battle && character.IsPlayer())
+            if (in_battle)
             {
-                modifier += !character.IsArmed() ? -2 : 0;
+                if (character.IsPlayer())
+                {
+                    modifier += !character.IsArmed() ? -2 : 0;
 
-                modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
+                    modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
 
-                modifier += character.Has(Character::Status::FPR_PLUS1) ? 1 : 0;
+                    modifier += character.Has(Character::Status::FPR_PLUS1) ? 1 : 0;
+                }
+                else if (character.IsEnemy() && character.Fight == Skills::Type::BROKEN_WEAPON)
+                {
+                    modifier -= 2;
+                }
             }
 
             stats += std::to_string(value) + "D";
@@ -726,15 +733,22 @@ namespace BloodSword::Interface
         }
         else
         {
-            if (in_battle && character.IsPlayer() && attribute == Attribute::Type::FIGHTING_PROWESS)
+            if (attribute == Attribute::Type::FIGHTING_PROWESS && in_battle)
             {
-                modifier += !character.IsArmed() ? -2 : 0;
+                if (character.IsPlayer())
+                {
+                    modifier += !character.IsArmed() ? -2 : 0;
 
-                modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
+                    modifier += character.Has(Character::Status::FPR_PLUS2) ? 2 : 0;
 
-                modifier += character.Has(Character::Status::FPR_PLUS1) ? 1 : 0;
+                    modifier += character.Has(Character::Status::FPR_PLUS1) ? 1 : 0;
 
-                modifier -= character.Has(Character::Status::BURNED) ? 1 : 0;
+                    modifier -= character.Has(Character::Status::BURNED) ? 1 : 0;
+                }
+                else if (character.IsEnemy() && character.Fight == Skills::Type::BROKEN_WEAPON)
+                {
+                    modifier -= 2;
+                }
             }
 
             stats += std::to_string(value);
