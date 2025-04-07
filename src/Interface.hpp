@@ -3961,7 +3961,7 @@ namespace BloodSword::Interface
                     rt = i < assets.size() - 1 ? i + 1 : i;
                 }
 
-                auto icon_x = screen.X + i * texture_w + pad + offset;
+                auto icon_x = screen.X + i * (texture_w + pad) + offset;
 
                 overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, icon_x, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -3974,9 +3974,9 @@ namespace BloodSword::Interface
         {
             auto id = assets.size();
 
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), screen.X + assets.size() * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), screen.X + id * (BloodSword::TileSize + pad) + offset, screen.Y + pad + BloodSword::HalfTile));
 
-            overlay.Add(Controls::Base(button, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * BloodSword::TileSize + pad + offset, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+            overlay.Add(Controls::Base(button, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * (BloodSword::TileSize + pad) + offset, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
         }
 
         return overlay;
