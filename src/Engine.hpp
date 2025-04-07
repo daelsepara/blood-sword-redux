@@ -111,7 +111,7 @@ namespace BloodSword::Engine
 
         if (attribute == Attribute::Type::ARMOUR)
         {
-            score = modifier;
+            value = modifier;
 
             modifier = 0;
         }
