@@ -27,7 +27,9 @@ namespace BloodSword::Skills
         POISONED_DAGGER,
         ATTACKS_ENGAGED,
         MAGIC_IMMUNITY,
-        SLOW_MURDER
+        SLOW_MURDER,
+        RUSTY_WEAPON,
+        BROKEN_WEAPON
     };
 
     template <typename T>
@@ -52,7 +54,9 @@ namespace BloodSword::Skills
         {Skills::Type::POISONED_DAGGER, "POISONED DAGGER"},
         {Skills::Type::ATTACKS_ENGAGED, "ATTACKS ENGAGED"},
         {Skills::Type::MAGIC_IMMUNITY, "MAGIC IMMUNITY"},
-        {Skills::Type::SLOW_MURDER, "SLOW MURDER"}};
+        {Skills::Type::SLOW_MURDER, "SLOW MURDER"},
+        {Skills::Type::RUSTY_WEAPON, "RUSTY WEAPON"},
+        {Skills::Type::BROKEN_WEAPON, "BROKEN WEAPON"}};
 
     typedef std::vector<Skills::Type> List;
 
@@ -66,7 +70,9 @@ namespace BloodSword::Skills
         Skills::Type::PARALYZING_TOUCH,
         Skills::Type::POISONED_DAGGER,
         Skills::Type::MAGIC_IMMUNITY,
-        Skills::Type::SLOW_MURDER};
+        Skills::Type::SLOW_MURDER,
+        Skills::Type::RUSTY_WEAPON,
+        Skills::Type::BROKEN_WEAPON};
 
     Skills::List RangedAttack = {
         Skills::Type::ARCHERY,
@@ -97,7 +103,9 @@ namespace BloodSword::Skills
         {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR},
         {Skills::Type::PARALYZING_TOUCH, Asset::Type::GHASTLY_TOUCH},
         {Skills::Type::POISONED_DAGGER, Asset::Type::POISONED_DAGGER},
-        {Skills::Type::SLOW_MURDER, Asset::Type::MISTS_OF_DEATH}};
+        {Skills::Type::SLOW_MURDER, Asset::Type::MISTS_OF_DEATH},
+        {Skills::Type::RUSTY_WEAPON, Asset::Type::RUSTY_WEAPON},
+        {Skills::Type::BROKEN_WEAPON, Asset::Type::BROKEN_WEAPON}};
 
     Skills::Type Map(const char *skill)
     {

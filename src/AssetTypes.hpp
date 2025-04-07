@@ -161,7 +161,9 @@ namespace BloodSword::Asset
         DAGGER_OF_VISLET,
         GONDOLIER,
         WOODEN_PLANK,
-        WATER
+        WATER,
+        RUSTY_WEAPON,
+        BROKEN_WEAPON
     };
 
     template <typename T>
@@ -321,7 +323,9 @@ namespace BloodSword::Asset
         {Asset::Type::DAGGER_OF_VISLET, "DAGGER OF VISLET"},
         {Asset::Type::GONDOLIER, "GONDOLIER"},
         {Asset::Type::WOODEN_PLANK, "WOODEN PLANK"},
-        {Asset::Type::WATER, "WATER"}};
+        {Asset::Type::WATER, "WATER"},
+        {Asset::Type::RUSTY_WEAPON, "RUSTY WEAPON"},
+        {Asset::Type::BROKEN_WEAPON, "BROKEN WEAPON"}};
 
     Asset::Type Map(const char *asset)
     {

@@ -571,6 +571,14 @@
         {
             "id": "WATER",
             "path": "images/map/water.png"
+        },
+        {
+            "id": "RUSTY WEAPON",
+            "path": "images/skills/fragmented-sword.png"
+        },
+        {
+            "id": "BROKEN WEAPON",
+            "path": "images/skills/shattered-sword.png"
         }
     ]
 }
