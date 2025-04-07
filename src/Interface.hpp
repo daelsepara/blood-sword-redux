@@ -2186,10 +2186,6 @@ namespace BloodSword::Interface
             {
                 check = true;
             }
-            else if (weapon == Item::Property::RANGED && attacker.Shoot == Skills::Type::RUSTY_WEAPON)
-            {
-                check = true;
-            }
             else if (weapon != Item::Property::NONE)
             {
                 check = (current >= 0 && current < attacker.Items.size() && attacker.Items[current].Has(Item::Property::RUSTY));
@@ -2211,12 +2207,6 @@ namespace BloodSword::Interface
                     if (weapon == Item::Property::PRIMARY && attacker.Fight == Skills::Type::RUSTY_WEAPON)
                     {
                         attacker.Fight = Skills::Type::BROKEN_WEAPON;
-
-                        message = attacker.Name + ": WEAPON BREAKS!";
-                    }
-                    else if (weapon == Item::Property::RANGED && attacker.Shoot == Skills::Type::RUSTY_WEAPON)
-                    {
-                        attacker.Shoot = Skills::Type::BROKEN_WEAPON;
 
                         message = attacker.Name + ": WEAPON BREAKS!";
                     }
@@ -3930,7 +3920,7 @@ namespace BloodSword::Interface
     {
         auto overlay = Scene::Base();
 
-        auto pad = BloodSword::QuarterTile;
+        auto pad = BloodSword::Pad;
 
         auto screen = origin + Point(w - popup_w, h - popup_h) / 2;
 
@@ -4013,7 +4003,7 @@ namespace BloodSword::Interface
 
         auto num_icons = int(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
 
-        auto popup_w = std::max(num_icons * (BloodSword::TileSize + popup_pad), BloodSword::Width(texture) + popup_pad * 2);
+        auto popup_w = std::max(num_icons * (BloodSword::TileSize + BloodSword::Pad), BloodSword::Width(texture) + popup_pad * 2);
 
         auto popup_h = (BloodSword::TileSize + popup_pad) * 2;
 
@@ -4045,7 +4035,7 @@ namespace BloodSword::Interface
             auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, final_assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, last_control, last_asset);
 
             // title
-            overlay.VerifyAndAdd(Scene::Element(texture, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+            overlay.VerifyAndAdd(Scene::Element(texture, popup.X + BloodSword::HalfTile, popup.Y + BloodSword::Pad));
 
             for (auto i = 0; i < selection.size(); i++)
             {

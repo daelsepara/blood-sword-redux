@@ -53,6 +53,19 @@
                     "control_type": "NPC",
                     "experience": 0,
                     "fight": "RUSTY WEAPON",
+                    "items": [
+                        {
+                            "name": "RUSTY SWORD",
+                            "properties": [
+                                "WEAPON",
+                                "PRIMARY",
+                                "RUSTY"
+                            ],
+                            "quantity": 1,
+                            "type": "SWORD",
+                            "drops": true
+                        }
+                    ],
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "RANGER",
