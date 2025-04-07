@@ -419,7 +419,8 @@
                 "RUSTY"
             ],
             "quantity": 1,
-            "type": "SWORD"
+            "type": "SWORD",
+            "drops": true
         },
         {
             "name": "BRONZE KNIFE",
