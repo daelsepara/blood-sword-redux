@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 187
+    },
+    "text": "You put the SCARAB around your neck. It gives a momentary pulse of green light, but that is all.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 247
+            },
+            "variables": [
+                "With nothing else of interest here, you signal the gondolier to row on across the lake"
+            ]
+        }
+    ]
+}
