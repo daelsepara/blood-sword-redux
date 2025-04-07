@@ -4035,7 +4035,7 @@ namespace BloodSword::Interface
             auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, final_assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, last_control, last_asset);
 
             // title
-            overlay.VerifyAndAdd(Scene::Element(texture, popup.X + BloodSword::HalfTile, popup.Y + BloodSword::Pad));
+            overlay.VerifyAndAdd(Scene::Element(texture, popup.X + BloodSword::Pad, popup.Y + BloodSword::Pad));
 
             for (auto i = 0; i < selection.size(); i++)
             {
