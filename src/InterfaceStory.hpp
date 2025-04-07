@@ -1710,7 +1710,7 @@ namespace BloodSword::Interface
 
             if (result == 6)
             {
-                Interface::TextBox(graphics, background, "The Prince tires of his insidious sport at last and dparts from your mind forever.", Color::Active, BloodSword::TileSize * 6, true);
+                Interface::TextBox(graphics, background, "The Prince tires of his insidious sport at last and departs from your mind forever.", Color::Active, BloodSword::TileSize * 6, true);
 
                 party.Remove(Character::Status::DESOLATION);
             }

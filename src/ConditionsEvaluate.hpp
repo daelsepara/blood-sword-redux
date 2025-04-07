@@ -3644,7 +3644,7 @@ namespace BloodSword::Conditions
                                 {
                                     auto armour = party[character].Items[item].Attributes[Attribute::Type::ARMOUR] + gain;
 
-                                    armour = std::min(0, armour);
+                                    armour = std::max(0, armour);
 
                                     party[character].Items[item].Attributes[Attribute::Type::ARMOUR] = armour;
                                 }
