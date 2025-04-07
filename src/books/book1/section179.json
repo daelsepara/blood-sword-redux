@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 179
+    },
+    "text": "(TRICKSTER) You manage to get within a few paces of the ranger without his hearing you. His scabbarded sword hangs at his side. If you are dextrous, you might be able to unclip it from his belt, disarming him before he can react.",
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 303
+            },
+            "failure": {
+                "book": "BOOK1",
+                "number": 461
+            },
+            "variables": [
+                "TRICKSTER",
+                "AWARENESS",
+                "HE HAS BEEN ALERTED TO YOUR PRESENCE!"
+            ]
+        }
+    ]
+}

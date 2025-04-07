@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 501
+    },
+    "text": "(TRICKSTER) You smile to yourself as you remember a simple conjuror's trick taught to you by Stileppo the Weasel, a noted thief of Beylak Port. You unwind the silk scarf from around your neck and begin stroking it lengthways. Soon the latent static in the silk has made it stand out straight, and when you hold it up to the light of your torch it looks like the silver blade of a sword. You sneak closer to the ranger, but he still doesn't seem to have noticed you.",
+    "choices": [
+        {
+            "text": "Try and get even closer and take him by surprise",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 229
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Brandish your contrived sword and call out to him",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 528
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        }
+    ]
+}

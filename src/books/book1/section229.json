@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 229
+    },
+    "text": "(TRICKSTER) You are trying to creep up on the ranger and take him unawares.",
+    "next": [
+        {
+            "type": "TEST ATTRIBUTE",
+            "location": {
+                "book": "BOOK1",
+                "number": 179
+            },
+            "failure": {
+                "book": "BOOK1",
+                "number": 423
+            },
+            "variables": [
+                "TRICKSTER",
+                "AWARENESS",
+                "HE HAS BEEN ALERTED TO YOUR PRESENCE!"
+            ]
+        }
+    ]
+}

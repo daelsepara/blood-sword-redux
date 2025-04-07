@@ -1,0 +1,66 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 461
+    },
+    "text": "As you reach out towards his scabbard, he turns. His hand flies to his sword and he swipes at you in a reflex action, slicing you badly.",
+    "items": [
+        {
+            "name": "RUSTY SWORD",
+            "properties": [
+                "WEAPON",
+                "PRIMARY",
+                "RUSTY"
+            ],
+            "quantity": 1,
+            "type": "SWORD"
+        }
+    ],
+    "events": [
+        {
+            "type": "LOSE ENDURANCE",
+            "variables": [
+                "TRICKSTER",
+                "7",
+                "FALSE"
+            ]
+        },
+        {
+            "type": "IS ALIVE",
+            "variables": [
+                "TRICKSTER",
+                "You recover from the pain in time to see him running towards a door at the end of the passage and pull it open.",
+                "FALSE",
+                "INACTIVE"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "variables": [
+                "A RUSTY SWORD lies on the flagstones at your feet.\n\nThe tomb ranger has now disappeared inside the door, and a second later reappears carrying a steel sceptre in his hands: he is pointing the end of it towards you."
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Rush forward and attack him.",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 367
+                }
+            }
+        },
+        {
+            "text": "Flee to the ornamental door",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 246
+                }
+            }
+        }
+    ]
+}

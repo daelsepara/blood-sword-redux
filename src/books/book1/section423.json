@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 423
+    },
+    "text": "(TRICKSTER) He hears you and turns, drawing his sword at once. You press yourself into the concealing shadows, and he peers down the passage trying to see where the sound came from. He is alerted now.",
+    "choices": [
+        {
+            "text": "Rush him",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 192
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "Back off and go the other way",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 246
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        }
+    ]
+}

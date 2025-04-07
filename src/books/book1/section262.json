@@ -1,0 +1,35 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 262
+    },
+    "text": "(TRICKSTER) Essentially, there are two ways you could deal with this irksome guard. Little can go wrong with a straightforward attack, but then you risk injury if he is a practised fighter. Helloks like a very practised fighter. The alternative approach would be to try duping him in some way. That might be more difficult, but you might be able to avoid bloodshed. Your own, that is.",
+    "choices": [
+        {
+            "text": "Charge and attack him",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 192
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "You are unarmed and wish to use your natural guile",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 501
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        }
+    ]
+}
