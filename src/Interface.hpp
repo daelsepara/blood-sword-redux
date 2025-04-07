@@ -1691,7 +1691,7 @@ namespace BloodSword::Interface
     {
         auto pad = BloodSword::QuarterTile;
 
-        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + pad * 2;
+        auto popup_w = (party.Count() + 1) * BloodSword::TileSize + pad * 3;
 
         auto popup_h = (BloodSword::TileSize + pad) * 2;
 
