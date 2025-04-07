@@ -1,0 +1,143 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 251
+    },
+    "text": "You loot their bodies, finding twenty GOLD PIECES, four AXES, three DAGGERS, and four BREASTPLATES.\n\nDown the corridor is a junction: on the left is a corridor lined with black marble and on the right one of white marble.",
+    "items": [
+        {
+            "name": "GOLD PIECES",
+            "quantity": 20,
+            "type": "GOLD"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "BATTLE AXE",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BATTLE AXE"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "name": "DAGGER",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "DAGGER"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "BRONZE BREASTPLATE",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "BRONZE BREASTPLATE"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Go left",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 354
+                }
+            }
+        },
+        {
+            "text": "Go right",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 61
+                }
+            }
+        }
+    ]
+}
