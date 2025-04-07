@@ -2495,16 +2495,9 @@ namespace BloodSword::Interface
         {
             modifier -= 2;
         }
-        else if (attacker.IsEnemy())
+        else if (attacker.IsEnemy() && skill == Skills::Type::BROKEN_WEAPON)
         {
-            if (!shooting && skill == Skills::Type::BROKEN_WEAPON)
-            {
-                modifier -= 2;
-            }
-            else if (shooting && skill == Skills::Type::BROKEN_WEAPON)
-            {
-                modifier -= 2;
-            }
+            modifier -= 2;
         }
 
         modifier -= (shooting && (skill == Skills::Type::SHURIKEN)) ? 1 : 0;
