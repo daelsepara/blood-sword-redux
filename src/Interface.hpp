@@ -4981,8 +4981,8 @@ namespace BloodSword::Interface
         return damage;
     }
 
-    // deal damage to memberes of party (selected at random) for several rounds (display)
-    void DamageParty(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int rounds, int roll, int modifier, bool ignore_armour = false, bool in_battle = false, bool display = true)
+    // damage num_targets in party
+    void DamageParty(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int num_targets, int rounds, int roll, int modifier, bool ignore_armour = false, bool in_battle = false, bool display = true)
     {
         auto targets = std::vector<int>();
 
@@ -4999,23 +4999,44 @@ namespace BloodSword::Interface
             std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
         }
 
+        num_targets = std::min(num_targets, int(targets.size()));
+
         for (auto i = 0; i < rounds; i++)
         {
             if (targets.size() > 0)
             {
-                Interface::DamagePlayer(graphics, background, party[targets[0]], roll, modifier, ignore_armour, in_battle, display);
+                for (auto target = 0; target < num_targets; target++)
+                {
+                    Interface::DamagePlayer(graphics, background, party[targets[target]], roll, modifier, ignore_armour, in_battle, display);
+
+                    Interface::Resurrect(graphics, background, party, party[targets[target]]);
+                }
             }
 
-            Interface::Resurrect(graphics, background, party, party[targets[0]]);
-
-            if (!Engine::IsAlive(party[targets[0]]))
+            // remove from list of targets if incapacitated
+            for (auto target = targets.begin(); target != targets.end();)
             {
-                targets.erase(targets.begin());
+                if (!Engine::IsAlive(party[*target]))
+                {
+                    target = targets.erase(target);
+                }
+                else
+                {
+                    ++target;
+                }
             }
+
+            num_targets = std::min(num_targets, int(targets.size()));
 
             // shuffle
             std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
         }
+    }
+
+    // deal damage to members of party (selected at random) for several rounds (display)
+    void DamageParty(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int rounds, int roll, int modifier, bool ignore_armour = false, bool in_battle = false, bool display = true)
+    {
+        return Interface::DamageParty(graphics, background, party, rounds, 1, roll, modifier, ignore_armour, in_battle, display);
     }
 
     Engine::RollResult SelectDice(Graphics::Base &graphics, Scene::Base &background, std::string message, int number)

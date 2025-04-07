@@ -32,7 +32,8 @@ namespace BloodSword::Character
         AMBUSH_RANGED,
         SLOW_MURDER,
         SKIP_EVENTS,
-        BURNED
+        BURNED,
+        DESOLATION
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -60,7 +61,8 @@ namespace BloodSword::Character
         {Character::Status::AMBUSH_RANGED, "AMBUSH RANGED"},
         {Character::Status::SLOW_MURDER, "SLOW MURDER"},
         {Character::Status::SKIP_EVENTS, "SKIP EVENTS"},
-        {Character::Status::BURNED, "BURNED"}};
+        {Character::Status::BURNED, "BURNED"},
+        {Character::Status::DESOLATION, "DESOLATION"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -86,7 +88,8 @@ namespace BloodSword::Character
         {Character::Status::ALONE, -1},
         {Character::Status::SLOW_MURDER, -1},
         {Character::Status::SKIP_EVENTS, -1},
-        {Character::Status::BURNED, -1}};
+        {Character::Status::BURNED, -1},
+        {Character::Status::DESOLATION, -1}};
 
     Character::Status MapStatus(const char *status)
     {

@@ -2700,6 +2700,41 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::DAMAGE_PARTY)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - targets
+            // 1 - rounds
+            // 2 - roll
+            // 3 - modifier
+            // 4 - ignore armour
+            // 5 - display
+            if (Engine::IsAlive(party) && condition.Variables.size() > 5)
+            {
+                auto targets = party.Number(condition.Variables[0]);
+
+                auto rounds = party.Number(condition.Variables[1]);
+
+                auto roll = party.Number(condition.Variables[2]);
+
+                auto modifier = party.Number(condition.Variables[3]);
+
+                auto ignore_armour = Engine::ToUpper(condition.Variables[4]) == "TRUE";
+
+                auto display = Engine::ToUpper(condition.Variables[5]) == "TRUE";
+
+                if (targets > 0 && roll > 0)
+                {
+                    Interface::DamageParty(graphics, background, party, targets, rounds, roll, modifier, ignore_armour, false, display);
+
+                    result = true;
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::LOSE_ENDURANCE || condition.Type == Conditions::Type::GAIN_ENDURANCE)
         {
             internal_error = true;
@@ -3560,6 +3595,76 @@ namespace BloodSword::Conditions
                     }
 
                     result = true;
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::GAIN_ARMOUR)
+        {
+            internal_error = false;
+
+            // variables
+            // 0 - player
+            // 1 - gain
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto gain = party.Number(condition.Variables[1]);
+
+                if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))) && gain != 0)
+                {
+                    auto characters = std::vector<Character::Class>();
+
+                    if (is_party)
+                    {
+                        for (auto i = 0; i < party.Count(); i++)
+                        {
+                            if (Engine::IsAlive(party[i]))
+                            {
+                                characters.push_back(party[i].Class);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        characters.push_back(party[character].Class);
+                    }
+
+                    for (auto character : characters)
+                    {
+                        if (Engine::IsAlive(party[character]) && party[character].Items.size() > 0)
+                        {
+                            for (auto item = 0; item < party[character].Items.size(); item++)
+                            {
+                                if (party[character].Items[item].HasAll({Item::Property::ARMOUR, Item::Property::EQUIPPED}) && party[character].Items[item].Has(Attribute::Type::ARMOUR))
+                                {
+                                    auto armour = party[character].Items[item].Attributes[Attribute::Type::ARMOUR] + gain;
+
+                                    armour = std::min(0, armour);
+
+                                    party[character].Items[item].Attributes[Attribute::Type::ARMOUR] = armour;
+                                }
+                            }
+                        }
+                    }
+
+                    result = true;
+
+                    internal_error = false;
+                }
+                else if (character != Character::Class::NONE && !(party.Has(character)))
+                {
+                    text = Engine::NotInParty(character);
+
+                    internal_error = false;
+                }
+                else if (character != Character::Class::NONE && !Engine::IsAlive(party[character]))
+                {
+                    text = Engine::IsDead(party[character]);
 
                     internal_error = false;
                 }

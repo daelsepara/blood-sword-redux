@@ -1,0 +1,59 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 422
+    },
+    "text": "Each chess piece is sculpted with remarkable accuracy. The Levies are posturing dwarves with spears and over-large helmets. The Housecarls are depicted as stolid infantrymen with pikes. The Thegns are dashing figures in elegant armour -- an odd contrast to the sombre, sour-faced old Sacerdotes who stand beside them. The graven faces of the Lord and Lady almost shine with regal dignity.\n\nYou are not given much chance to admire the craftsmanship. A hail of arrows suddenly zings down all around you. Two find their target.",
+    "battle_events": [
+        {
+            "type": "DAMAGE PARTY",
+            "variables": [
+                "2",
+                "1",
+                "1",
+                "0",
+                "FALSE",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "TEXTBOX",
+            "variables": [
+                "You realise the snipers are on the balcony above. You must act quickly before they can reload.",
+                "ACTIVE"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Run for the double doors at the end of the room",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 126
+                }
+            }
+        },
+        {
+            "text": "Run up the steps to the balcony",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 82
+                }
+            }
+        },
+        {
+            "text": "Retreat out of the room the way you entered",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 48
+                }
+            }
+        }
+    ]
+}

@@ -1703,6 +1703,25 @@ namespace BloodSword::Interface
         // set party location (previous, current)
         party.Set(section.Location);
 
+        // desolation checks
+        if (party.Has(Character::Status::DESOLATION))
+        {
+            auto result = Interface::Roll(graphics, background, Asset::Type::NEBULARON, Asset::Type::MISTS_OF_DEATH, 1, 0);
+
+            if (result == 6)
+            {
+                Interface::TextBox(graphics, background, "The Prince tires of his insidious sport at last and dparts from your mind forever.", Color::Active, BloodSword::TileSize * 6, true);
+
+                party.Remove(Character::Status::DESOLATION);
+            }
+            else
+            {
+                Interface::TextBox(graphics, background, "The Prince of Desolation tears away at your soul a little more.", Color::Highlight, BloodSword::TileSize * 6, true);
+
+                Interface::PermanentAttributeGain(graphics, background, party, 1, -1);
+            }
+        }
+
         Book::Location next = Book::Undefined;
 
         // check if background events need to be skipped

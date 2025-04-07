@@ -1,0 +1,49 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 154
+    },
+    "text": "Arrows cut through the air as you race the length of the room. Three arrows strike home.",
+    "battle_events": [
+        {
+            "type": "DAMAGE PARTY",
+            "variables": [
+                "3",
+                "1",
+                "1",
+                "0",
+                "FALSE",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "TEXTBOX",
+            "variables": [
+                "The chessmen provide you with momentary cover from which to consider your plan.",
+                "ACTIVE"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Run up the steps to the balcony",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 82
+                }
+            }
+        },
+        {
+            "text": "Return the way you came in",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 48
+                }
+            }
+        }
+    ]
+}

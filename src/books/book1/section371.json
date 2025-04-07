@@ -1,0 +1,28 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 371
+    },
+    "text": "The Prince of Desolation cannot be harmed, as he exists within the subconscious mind of his victims. Your attack is futile. He laughs, and with each peal of laughter you see him fade away -- and at the same time his horrible presence infects your mind like an illness.",
+    "next": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "ALL",
+                "DESOLATION",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 154
+            },
+            "variables": [
+                "This is a dead end. You have no choice but to go back the way you came.",
+                "INACTIVE"
+            ]
+        }
+    ]
+}
