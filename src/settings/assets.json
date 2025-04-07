@@ -579,6 +579,10 @@
         {
             "id": "BROKEN WEAPON",
             "path": "images/skills/shattered-sword.png"
+        },
+        {
+            "id": "GOLDEN SNUFF-BOX",
+            "path": "images/items/chest.png"
         }
     ]
 }

@@ -2592,13 +2592,48 @@ namespace BloodSword::Interface
             Interface::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, party.Survivors.size());
         }
 
-        if ((result == Battle::Result::VICTORY || result == Battle::Result::ENTHRALLED) && battle.Loot.size() > 0)
+        if ((result == Battle::Result::VICTORY || result == Battle::Result::ENTHRALLED))
         {
             // regnerate final scene
             auto scene = BattleScene(battle, party);
 
-            // pick up any loot
-            Interface::ShowInventory(graphics, scene, party, battle.Loot);
+            if (battle.Loot.size() > 0)
+            {
+                // pick up any loot
+                Interface::ShowInventory(graphics, scene, party, battle.Loot);
+            }
+
+            if (party.Has(Item::Type::GOLDEN_SNUFF_BOX) && Interface::Confirm(graphics, scene, "OPEN THE GOLDEN SNUFF-BOX?", Color::Background, Color::Inactive, BloodSword::Border, Color::Active, true))
+            {
+                for (auto character = 0; character < party.Count(); character++)
+                {
+                    if (Engine::IsAlive(party[character]))
+                    {
+                        auto roll = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::GOLDEN_SNUFF_BOX, 1, 0);
+
+                        if (roll < 3)
+                        {
+                            auto damage = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::DAMAGE, 1, 0);
+
+                            Engine::GainEndurance(party[character], -damage, false);
+
+                            std::string message = party[character].Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
+
+                            Interface::MessageBox(graphics, scene, message, Color::Highlight);
+                        }
+                        else
+                        {
+                            auto heal = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::HEAL, 1, 0);
+
+                            Engine::GainEndurance(party[character], heal, false);
+
+                            std::string message = party[character].Name + " GAINS " + std::to_string(heal) + " ENDURANCE";
+
+                            Interface::MessageBox(graphics, scene, message, Color::Active);
+                        }
+                    }
+                }
+            }
         }
 
         // log battle results
