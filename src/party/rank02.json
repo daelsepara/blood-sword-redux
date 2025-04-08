@@ -82,6 +82,7 @@
                         "type": "POUCH"
                     },
                     {
+                        "asset": "STEEL SCEPTRE",
                         "contains": "CHARGE",
                         "limit": 4,
                         "name": "STEEL SCEPTRE",
@@ -219,6 +220,7 @@
                         "type": "POUCH"
                     },
                     {
+                        "asset": "DAGGER OF VISLET",
                         "name": "DAGGER OF VISLET",
                         "description": {
                             "book": "BOOK1",

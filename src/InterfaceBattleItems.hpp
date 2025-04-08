@@ -23,6 +23,10 @@ namespace BloodSword::Interface
         }
     }
 
+    void BattleItemEffects(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &character, Item::Type item)
+    {
+    }
+
     Target::Type GetTargetType(Item::Base &item, Target::Type target)
     {
         auto type = Target::Type::NONE;
@@ -307,7 +311,7 @@ namespace BloodSword::Interface
                     }
                     else if (!item.Has(Item::Property::REQUIRES_TARGET))
                     {
-                        Interface::ItemEffects(graphics, background, character, item.Type);
+                        Interface::BattleItemEffects(graphics, background, battle, character, item.Type);
                     }
                     else
                     {
@@ -329,9 +333,9 @@ namespace BloodSword::Interface
                             {
                                 auto asset = Asset::Type::SHOOT;
 
-                                if (item.Type == Item::Type::DAGGER_OF_VISLET)
+                                if (item.Asset != Asset::Type::NONE)
                                 {
-                                    asset = Asset::Type::DAGGER_OF_VISLET;
+                                    asset = item.Asset;
                                 }
 
                                 auto target = Point(-1, -1);
@@ -366,9 +370,9 @@ namespace BloodSword::Interface
                             {
                                 auto asset = Asset::Type::FIGHT;
 
-                                if (item.Type == Item::Type::STEEL_SCEPTRE)
+                                if (item.Asset != Asset::Type::NONE)
                                 {
-                                    asset = Asset::Type::STEEL_SCEPTRE;
+                                    asset = item.Asset;
                                 }
 
                                 auto target = Point(-1, -1);

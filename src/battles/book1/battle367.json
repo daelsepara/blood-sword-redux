@@ -54,6 +54,7 @@
                     "experience": 0,
                     "items": [
                         {
+                            "asset": "STEEL SCEPTRE",
                             "contains": "CHARGE",
                             "limit": 4,
                             "name": "STEEL SCEPTRE",

@@ -6,6 +6,7 @@
     "text": "The passage ends in a heavy door. Grasping the iron ring in the middle, you haul it open and step into a small room. There are no other exits. On a table of red granite you see a STEEL SCEPTRE that seems to glimmer with magical energy. Taking this, you see an indicator on the side that shows it has four charges.",
     "items": [
         {
+            "asset": "STEEL SCEPTRE",
             "contains": "CHARGE",
             "limit": 4,
             "name": "STEEL SCEPTRE",

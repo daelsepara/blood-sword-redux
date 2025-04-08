@@ -65,6 +65,9 @@ namespace BloodSword::Item
 
         int Limit = Item::Unlimited;
 
+        // item asset
+        Asset::Type Asset = Asset::Type::NONE;
+
         // item name
         std::string Name;
 
@@ -510,6 +513,8 @@ namespace BloodSword::Item
         item.Quantity = !data["quantity"].is_null() ? int(data["quantity"]) : 0;
 
         item.Limit = !data["limit"].is_null() ? int(data["limit"]) : Item::Unlimited;
+
+        item.Asset = !data["asset"].is_null() ? Asset::Map(data["asset"]) : Asset::Type::NONE;
 
         item.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
 
