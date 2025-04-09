@@ -132,6 +132,13 @@ namespace BloodSword::Engine
                 {
                     modifier -= 1;
                 }
+
+                if (character.Has(Character::Status::FIGHTING_BLIND))
+                {
+                    value = 1;
+
+                    modifier = 0;
+                }
             }
 
             if (character.IsPlayer() && character.IsArmed() && weapon != Item::Property::NONE)
@@ -1133,6 +1140,7 @@ namespace BloodSword::Engine
                       Character::Status::SLOW_MURDER,
                       Character::Status::BURNED,
                       Character::Status::INVISIBLE,
+                      Character::Status::FIGHTING_BLIND,
                       Character::Status::IN_COMBAT,
                       Character::Status::IN_BATTLE});
 

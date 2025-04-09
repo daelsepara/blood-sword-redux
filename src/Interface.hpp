@@ -752,6 +752,13 @@ namespace BloodSword::Interface
                 {
                     modifier -= 2;
                 }
+
+                if (character.Has(Character::Status::FIGHTING_BLIND))
+                {
+                    value = 1;
+
+                    modifier = 0;
+                }
             }
 
             stats += std::to_string(value);

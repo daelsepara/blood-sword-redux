@@ -34,7 +34,8 @@ namespace BloodSword::Character
         SKIP_EVENTS,
         BURNED,
         DESOLATION,
-        INVISIBLE
+        INVISIBLE,
+        FIGHTING_BLIND
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -64,7 +65,8 @@ namespace BloodSword::Character
         {Character::Status::SKIP_EVENTS, "SKIP EVENTS"},
         {Character::Status::BURNED, "BURNED"},
         {Character::Status::DESOLATION, "DESOLATION"},
-        {Character::Status::INVISIBLE, "INVISIBLE"}};
+        {Character::Status::INVISIBLE, "INVISIBLE"},
+        {Character::Status::FIGHTING_BLIND, "FIGHTING BLIND"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -92,7 +94,8 @@ namespace BloodSword::Character
         {Character::Status::SKIP_EVENTS, -1},
         {Character::Status::BURNED, -1},
         {Character::Status::DESOLATION, -1},
-        {Character::Status::INVISIBLE, 1}};
+        {Character::Status::INVISIBLE, 1},
+        {Character::Status::FIGHTING_BLIND, -1}};
 
     Character::Status MapStatus(const char *status)
     {
