@@ -5036,12 +5036,12 @@ namespace BloodSword::Interface
             }
         }
 
-        for (auto i = 0; i < targets.size(); i++)
+        num_targets = std::min(num_targets, int(targets.size()));
+
+        for (auto i = 0; i < (num_targets * num_targets) i++)
         {
             std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
         }
-
-        num_targets = std::min(num_targets, int(targets.size()));
 
         for (auto i = 0; i < rounds; i++)
         {
