@@ -162,6 +162,15 @@ namespace BloodSword::Controls
         {
             this->TextInput.clear();
         }
+
+        void Clear()
+        {
+            this->Type = Controls::Type::NONE;
+
+            this->Selected = false;
+
+            this->Current = -1;
+        }
     };
 
     typedef std::vector<Controls::Base> List;

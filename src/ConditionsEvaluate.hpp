@@ -2031,6 +2031,8 @@ namespace BloodSword::Conditions
                     Interface::TakeItems(graphics, background, party, item, asset, limit);
 
                     result = true;
+
+                    internal_error = false;
                 }
             }
         }

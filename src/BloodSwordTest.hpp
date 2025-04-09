@@ -1782,6 +1782,8 @@ namespace BloodSword::Test
                         // do nothing - menu test
                         break;
                     }
+
+                    input.Clear();
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
