@@ -661,9 +661,7 @@ namespace BloodSword::Test
 
                     Input::Flush();
 
-                    input.Current = -1;
-
-                    input.Selected = false;
+                    input.Clear();
 
                     scene = RegenerateScene(map);
                 }

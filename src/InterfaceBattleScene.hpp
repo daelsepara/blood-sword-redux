@@ -1140,7 +1140,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);
 
-            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
             {
                 if (Input::IsValid(map, input))
                 {

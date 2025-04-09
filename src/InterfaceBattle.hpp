@@ -2003,9 +2003,7 @@ namespace BloodSword::Interface
                                                 battle.ExitBattle = true;
                                             }
 
-                                            input.Selected = false;
-
-                                            input.Current = Controls::NotFound;
+                                            input.Clear();
                                         }
                                         else if ((actions && Input::IsValid(overlay, input)) || (!actions && !items && !spells && Input::IsValid(scene, input) && Controls::Find(battle_actions, input.Type) != Controls::NotFound))
                                         {
@@ -2399,10 +2397,6 @@ namespace BloodSword::Interface
 
                                 Input::Flush();
 
-                                input.Current = Controls::NotFound;
-
-                                input.Selected = false;
-
                                 performed_action = true;
                             }
                         }
@@ -2416,7 +2410,7 @@ namespace BloodSword::Interface
                         if (performed_action)
                         {
                             // clear input
-                            input.Selected = false;
+                            input.Clear();
 
                             // next character in battle order
                             battle.NextRound = Interface::NextCharacter(battle, scene, party, battle.Order, battle.Combatant, input, battle.EndTurn);
