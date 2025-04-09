@@ -587,6 +587,14 @@
         {
             "id": "DRAGONLORD GEM",
             "path": "images/items/emerald.png"
+        },
+        {
+            "id": "FANGS",
+            "path": "images/skills/fangs.png"
+        },
+        {
+            "id": "ECHIDNA",
+            "path": "images/enemies/medusa-head.png"
         }
     ]
 }

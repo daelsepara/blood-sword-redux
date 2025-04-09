@@ -83,9 +83,27 @@ namespace BloodSword::Interface
 
                     auto effect = BloodSword::Find(Interface::SkillEffects, skill);
 
-                    // do not stack up effects
-                    if (alive && effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
+                    // process attacks which do not apply an efect first
+                    if (skill == Skills::Type::POISONED_BITE)
                     {
+                        auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Type::FANGS, 1, 0);
+
+                        if (bite == 6)
+                        {
+                            Interface::MessageBox(graphics, background, "POISON FLOWS INTO THE WOUND!", defender.IsPlayer() ? Color::Highlight : Color::Active);
+
+                            auto venom = Interface::Roll(graphics, background, defender.Asset, Asset::Type::DAMAGE, 3, 0);
+
+                            alive &= Engine::GainEndurance(defender, -venom, true);
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, background, "POISON RESISTED!", defender.IsPlayer() ? Color::Active : Color::Highlight);
+                        }
+                    }
+                    else if (alive && effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
+                    {
+                        // do not stack up effects
                         auto resisted = false;
 
                         if (skill == Skills::Type::PARALYZING_TOUCH)
