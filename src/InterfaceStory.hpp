@@ -1292,7 +1292,11 @@ namespace BloodSword::Interface
         {
             image = Graphics::ScaledImage(graphics, section.ImageAsset, panel_w - BloodSword::Pad * 2, panel_h - BloodSword::Pad * 2);
 
+            image_location = origin;
+
             image_location.X += (panel_w - BloodSword::Width(image)) / 2;
+
+            image_location.Y += (panel_h - BloodSword::Height(image)) / 2;
         }
         else
         {
