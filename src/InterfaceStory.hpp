@@ -1451,9 +1451,7 @@ namespace BloodSword::Interface
                         Interface::ErrorMessage(graphics, overlay, Interface::MSG_OVER);
                     }
 
-                    input.Current = Controls::Find(overlay.Controls, input_type);
-
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, input_type);
                 }
                 else if (input.Type == Controls::Type::SPELLS)
                 {
@@ -1470,9 +1468,7 @@ namespace BloodSword::Interface
                         }
                     }
 
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SPELLS);
-
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::SPELLS);
                 }
                 else if (input.Type == Controls::Type::HEAL)
                 {
@@ -1481,9 +1477,7 @@ namespace BloodSword::Interface
                         Interface::Heal(graphics, overlay, party, party[Character::Class::SAGE], true);
                     }
 
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::HEAL);
-
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::HEAL);
                 }
                 else if (input.Type == Controls::Type::ITEMS)
                 {
@@ -1497,9 +1491,7 @@ namespace BloodSword::Interface
                         image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                     }
 
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::ITEMS);
-
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::ITEMS);
                 }
                 else if (input.Type == Controls::Type::INVENTORY)
                 {
@@ -1551,9 +1543,7 @@ namespace BloodSword::Interface
                         done = true;
                     }
 
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::INVENTORY);
-
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::INVENTORY);
                 }
                 else if (Interface::IsCharacter(input.Type))
                 {
@@ -1631,9 +1621,7 @@ namespace BloodSword::Interface
                         image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                     }
 
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::GAME);
-
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::GAME);
                 }
                 else if (input.Type == Controls::Type::EXIT)
                 {
@@ -1642,7 +1630,7 @@ namespace BloodSword::Interface
                         done = true;
                     }
 
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::EXIT);
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
@@ -1658,7 +1646,7 @@ namespace BloodSword::Interface
                         scroll_up = true;
                     }
 
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_UP);
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
@@ -1674,7 +1662,7 @@ namespace BloodSword::Interface
                         scroll_dn = true;
                     }
 
-                    input.Selected = false;
+                    Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_DOWN);
                 }
             }
         }

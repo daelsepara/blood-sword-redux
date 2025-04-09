@@ -209,6 +209,30 @@ namespace BloodSword::Controls
 
         return result;
     }
+
+    void Select(Controls::User &input, Controls::List &controls, Controls::Type control)
+    {
+        input.Current = Controls::Find(controls, control);
+
+        if (input.Current != -1)
+        {
+            input.Type = control;
+        }
+
+        input.Selected = false;
+    }
+
+    void Select(Controls::User &input, Controls::Collection &controls, Controls::Type control)
+    {
+        input.Current = Controls::Find(controls, control);
+
+        if (input.Current != -1)
+        {
+            input.Type = control;
+        }
+
+        input.Selected = false;
+    }
 }
 
 #endif

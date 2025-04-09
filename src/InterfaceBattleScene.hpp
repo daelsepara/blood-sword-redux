@@ -1213,8 +1213,6 @@ namespace BloodSword::Interface
                         {
                             battle.Map.Y++;
 
-                            input.Selected = false;
-
                             regenerate_scene = true;
                         }
                     }
@@ -1223,8 +1221,6 @@ namespace BloodSword::Interface
                         if (battle.Map.Y > 0)
                         {
                             battle.Map.Y--;
-
-                            input.Selected = false;
 
                             regenerate_scene = true;
                         }
@@ -1235,8 +1231,6 @@ namespace BloodSword::Interface
                         {
                             battle.Map.X--;
 
-                            input.Selected = false;
-
                             regenerate_scene = true;
                         }
                     }
@@ -1245,10 +1239,6 @@ namespace BloodSword::Interface
                         if (battle.Map.X < (battle.Map.Width - battle.Map.ViewX))
                         {
                             battle.Map.X++;
-
-                            input.Current = -1;
-
-                            input.Selected = false;
 
                             regenerate_scene = true;
                         }
@@ -1262,7 +1252,7 @@ namespace BloodSword::Interface
 
                 if (input.Type == Controls::Type::MAP_DOWN || input.Type == Controls::Type::MAP_UP || input.Type == Controls::Type::MAP_LEFT || input.Type == Controls::Type::MAP_RIGHT)
                 {
-                    input.Current = Controls::Find(map.Controls, input.Type);
+                    Controls::Select(input, map.Controls, input.Type);
                 }
             }
         }
@@ -1433,8 +1423,6 @@ namespace BloodSword::Interface
                         {
                             battle.Map.Y++;
 
-                            input.Selected = false;
-
                             regenerate_scene = true;
                         }
                     }
@@ -1444,8 +1432,6 @@ namespace BloodSword::Interface
                         {
                             battle.Map.Y--;
 
-                            input.Selected = false;
-
                             regenerate_scene = true;
                         }
                     }
@@ -1454,8 +1440,6 @@ namespace BloodSword::Interface
                         if (battle.Map.X > 0)
                         {
                             battle.Map.X--;
-
-                            input.Selected = false;
 
                             regenerate_scene = true;
                         }
@@ -1467,8 +1451,6 @@ namespace BloodSword::Interface
                             battle.Map.X++;
 
                             input.Current = -1;
-
-                            input.Selected = false;
 
                             regenerate_scene = true;
                         }
@@ -1482,7 +1464,7 @@ namespace BloodSword::Interface
 
                 if (input.Type == Controls::Type::MAP_DOWN || input.Type == Controls::Type::MAP_UP || input.Type == Controls::Type::MAP_LEFT || input.Type == Controls::Type::MAP_RIGHT)
                 {
-                    input.Current = Controls::Find(map.Controls, input.Type);
+                    Controls::Select(input, map.Controls, input.Type);
                 }
             }
         }
@@ -1622,7 +1604,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);
 
-            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
             {
                 if (Input::IsValid(map, input))
                 {
@@ -1648,8 +1630,6 @@ namespace BloodSword::Interface
                         {
                             battle.Map.Y++;
 
-                            input.Selected = false;
-
                             regenerate_scene = true;
                         }
                     }
@@ -1658,8 +1638,6 @@ namespace BloodSword::Interface
                         if (battle.Map.Y > 0)
                         {
                             battle.Map.Y--;
-
-                            input.Selected = false;
 
                             regenerate_scene = true;
                         }
@@ -1670,8 +1648,6 @@ namespace BloodSword::Interface
                         {
                             battle.Map.X--;
 
-                            input.Selected = false;
-
                             regenerate_scene = true;
                         }
                     }
@@ -1680,10 +1656,6 @@ namespace BloodSword::Interface
                         if (battle.Map.X < (battle.Map.Width - battle.Map.ViewX))
                         {
                             battle.Map.X++;
-
-                            input.Current = -1;
-
-                            input.Selected = false;
 
                             regenerate_scene = true;
                         }
