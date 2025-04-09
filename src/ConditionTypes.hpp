@@ -112,7 +112,8 @@ namespace BloodSword::Conditions
         COMBAT_MISSION,
         HAS_ALL_ITEMS,
         DAMAGE_PARTY,
-        GAIN_ARMOUR
+        GAIN_ARMOUR,
+        LOSE_ATTRIBUTE_OR_DROP_ITEM
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -221,7 +222,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::COMBAT_MISSION, "COMBAT MISSION"},
         {Conditions::Type::HAS_ALL_ITEMS, "HAS ALL ITEMS"},
         {Conditions::Type::DAMAGE_PARTY, "DAMAGE PARTY"},
-        {Conditions::Type::GAIN_ARMOUR, "GAIN ARMOUR"}};
+        {Conditions::Type::GAIN_ARMOUR, "GAIN ARMOUR"},
+        {Conditions::Type::LOSE_ATTRIBUTE_OR_DROP_ITEM, "LOSE ATTRIBUTE OR DROP ITEM"}};
 
     Conditions::Type Map(const char *Conditions)
     {
