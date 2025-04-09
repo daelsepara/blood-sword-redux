@@ -376,7 +376,7 @@ namespace BloodSword::Interface
                     controls.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
                 }
 
-                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id) && !ranged)
+                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && ((Engine::CanFlee(battle.Map, party, id) && !ranged) || character.Has(Character::Status::INVISIBLE)))
                 {
                     controls.push_back(Controls::Type::FLEE);
                 }
@@ -743,7 +743,7 @@ namespace BloodSword::Interface
                     controls_list.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
                 }
 
-                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && Engine::CanFlee(battle.Map, party, id) && !ranged)
+                if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && ((Engine::CanFlee(battle.Map, party, id) && !ranged) || character.Has(Character::Status::INVISIBLE)))
                 {
                     asset_list.push_back(Asset::Type::FLEE);
 

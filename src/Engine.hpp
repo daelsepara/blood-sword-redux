@@ -1132,6 +1132,7 @@ namespace BloodSword::Engine
                       Character::Status::PARALYZED,
                       Character::Status::SLOW_MURDER,
                       Character::Status::BURNED,
+                      Character::Status::INVISIBLE,
                       Character::Status::IN_COMBAT,
                       Character::Status::IN_BATTLE});
 

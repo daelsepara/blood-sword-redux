@@ -23,8 +23,39 @@ namespace BloodSword::Interface
         }
     }
 
-    void BattleItemEffects(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &character, Item::Type item)
+    void BattleItemEffects(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &character, int id)
     {
+        auto &item = character.Items[id];
+
+        if (item.Type == Item::Type::SCROLL_INVISIBILITY)
+        {
+            if (battle.Has(Controls::Type::FLEE))
+            {
+                Interface::ShowBookDescription(graphics, background, battle.ActionCancels[Controls::Type::FLEE]);
+            }
+            else
+            {
+                if (character.IsPlayer() && !battle.Map.Find(Map::Object::EXIT).IsNone() && !battle.Has(Battle::Condition::CANNOT_FLEE))
+                {
+                    character.Add(Character::Status::INVISIBLE);
+
+                    if (item.Drops)
+                    {
+                        battle.Loot.push_back(item);
+
+                        Interface::ConsumeItem(character, id);
+                    }
+                }
+                else
+                {
+                    Interface::MessageBox(graphics, background, "YOU CANNOT FLEE FROM THIS BATTLE!", Color::Highlight);
+                }
+            }
+        }
+        else
+        {
+            Interface::ItemEffects(graphics, background, character, item.Type);
+        }
     }
 
     Target::Type GetTargetType(Item::Base &item, Target::Type target)
@@ -311,7 +342,11 @@ namespace BloodSword::Interface
                     }
                     else if (!item.Has(Item::Property::REQUIRES_TARGET))
                     {
-                        Interface::BattleItemEffects(graphics, background, battle, character, item.Type);
+                        auto items = character.Items.size();
+
+                        Interface::BattleItemEffects(graphics, background, battle, character, id);
+
+                        update = character.Items.size() != items;
                     }
                     else
                     {
