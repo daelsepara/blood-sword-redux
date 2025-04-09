@@ -460,21 +460,20 @@ namespace BloodSword::Conditions
                 {
                     result = party.Has(character) && Engine::IsAlive(party[character]) && party.Has(item);
 
-                    if (result)
+                    if (!result)
                     {
-                        text = std::string(Character::ClassMapping[character]) + " HAS THE " + Item::TypeMapping[item];
-                    }
-                    else if (!(party.Has(character)))
-                    {
-                        text = Engine::NotInParty(character);
-                    }
-                    else if (!Engine::IsAlive(party[character]))
-                    {
-                        text = Engine::IsDead(party[character]);
-                    }
-                    else
-                    {
-                        text = Engine::NoItem(item);
+                        if (!(party.Has(character)))
+                        {
+                            text = Engine::NotInParty(character);
+                        }
+                        else if (!Engine::IsAlive(party[character]))
+                        {
+                            text = Engine::IsDead(party[character]);
+                        }
+                        else
+                        {
+                            text = Engine::NoItem(item);
+                        }
                     }
 
                     internal_error = false;
