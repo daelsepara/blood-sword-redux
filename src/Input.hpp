@@ -100,6 +100,8 @@ namespace BloodSword::Input
             {
                 break;
             }
+
+            SDL_FlushEvent(result.type);
         }
     }
 
@@ -206,6 +208,8 @@ namespace BloodSword::Input
                 }
             }
         }
+
+        SDL_FlushEvent(result.type);
 
         return input;
     }
@@ -478,6 +482,8 @@ namespace BloodSword::Input
         {
             input.Type = Controls::Type::NONE;
         }
+
+        SDL_FlushEvent(result.type);
 
         return input;
     }
