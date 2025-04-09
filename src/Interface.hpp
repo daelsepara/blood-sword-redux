@@ -5038,7 +5038,7 @@ namespace BloodSword::Interface
 
         num_targets = std::min(num_targets, int(targets.size()));
 
-        for (auto i = 0; i < (num_targets * num_targets) i++)
+        for (auto i = 0; i < (num_targets * num_targets); i++)
         {
             std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
         }
