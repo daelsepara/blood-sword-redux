@@ -1679,6 +1679,19 @@ namespace BloodSword::Conditions
 
                 if (!dst.empty() && !src.empty())
                 {
+                    if (Engine::ToUpper(src).substr(0, 7) == "CHOSEN ")
+                    {
+                        auto chosen = party.ChosenCharacter;
+
+                        if (chosen == Character::Class::NONE)
+                        {
+                            chosen = Engine::FirstClass(party);
+                        }
+
+                        // replace CHOSEN and then add the rest of the condition
+                        src = std::string(Character::ClassMapping[chosen]) + src.substr(6, src.length() - 6);
+                    }
+
                     if (party.IsPresent(src))
                     {
                         party.Set(dst, party.Get(src));
@@ -1876,6 +1889,19 @@ namespace BloodSword::Conditions
 
                 if (!ops.empty() && !first.empty() && !second.empty())
                 {
+                    if (Engine::ToUpper(first).substr(0, 7) == "CHOSEN ")
+                    {
+                        auto chosen = party.ChosenCharacter;
+
+                        if (chosen == Character::Class::NONE)
+                        {
+                            chosen = Engine::FirstClass(party);
+                        }
+
+                        // replace CHOSEN and then add the rest of the condition
+                        first = std::string(Character::ClassMapping[chosen]) + first.substr(6, first.length() - 6);
+                    }
+
                     auto check = party.If(ops, first, second);
 
                     if ((condition.Type == Conditions::Type::IF_TRUE_RETURN && check) || (condition.Type == Conditions::Type::IF_FALSE_RETURN && !check))

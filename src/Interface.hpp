@@ -4973,7 +4973,7 @@ namespace BloodSword::Interface
     // resurrect character
     void Resurrect(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
     {
-        if (Engine::IsAlive(character) && character.IsPlayer() && character.Has(Item::Property::RESURRECTION) && !party.Is("=", character.Name + " RESURRECTED", "TRUE"))
+        if (Engine::IsAlive(character) && character.IsPlayer() && character.Has(Item::Property::RESURRECTION) && !party.Is("=", std::string(Character::ClassMapping[character.Class]) + " RESURRECTED", "TRUE"))
         {
             auto item = character.Find(Item::Property::RESURRECTION);
 
