@@ -1566,6 +1566,55 @@ namespace BloodSword::Conditions
                 internal_error = false;
             }
         }
+        else if (condition.Type == Conditions::Type::PLAYER_PAYS || condition.Type == Conditions::Type::CHARACTER_PAYS)
+        {
+            internal_error = true;
+
+            // variables:
+            // 0 - message to display
+            // 1 - item
+            // 2 - quantity
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto chosen = Character::Class::NONE;
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                auto quantity = party.Number(condition.Variables[2]);
+
+                if (item != Item::Type::NONE && quantity > 0)
+                {
+                    if (Engine::Count(party) > 1)
+                    {
+                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : ("WHO SHALL PAY " + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "?");
+
+                        chosen = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+                    }
+                    else
+                    {
+                        chosen = Engine::FirstClass(party);
+                    }
+
+                    if (chosen != Character::Class::NONE)
+                    {
+                        result = party[chosen].Quantity(item) >= quantity;
+
+                        if (!result)
+                        {
+                            text = Engine::NotEnough(item);
+                        }
+                        else
+                        {
+                            party[chosen].Add(item, -quantity);
+
+                            party.ChosenCharacter = chosen;
+                        }
+
+                        internal_error = false;
+                    }
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::SET_CHOSEN)
         {
             internal_error = true;

@@ -1,0 +1,107 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 103
+    },
+    "text": "Which potion will you try?",
+    "choices": [
+        {
+            "text": "(SAGE) Examine the potions",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 9
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Try the bubbling green soup",
+            "condition": {
+                "type": "PLAYER PAYS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 62
+                },
+                "variables": [
+                    "WHO SHALL TRY THE GREEN SOUP?",
+                    "GOLD",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "Try a tarry black substance",
+            "condition": {
+                "type": "PLAYER PAYS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 299
+                },
+                "variables": [
+                    "WHO SHALL TRY THE BLACK SUBSTANCE?",
+                    "GOLD",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "Try the effervescent liquid",
+            "condition": {
+                "type": "PLAYER PAYS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 358
+                },
+                "variables": [
+                    "WHO SHALL TRY THE EFFERVESCENT LIQUID?",
+                    "GOLD",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "Try a slimy grey concoction",
+            "condition": {
+                "type": "PLAYER PAYS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 44
+                },
+                "variables": [
+                    "WHO SHALL TRY THE GREY CONCOCTION?",
+                    "GOLD",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "Try a colourless brew",
+            "condition": {
+                "type": "PLAYER PAYS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 409
+                },
+                "variables": [
+                    "WHO SHALL TRY THE COLOURLESS BREW?",
+                    "GOLD",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "You cannot pay or don't want to try any potions",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 481
+                }
+            }
+        }
+    ]
+}
