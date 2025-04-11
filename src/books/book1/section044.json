@@ -1,0 +1,37 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 44
+    },
+    "text": "You pour the liquid down your throat. It burns as it flows into your stomach, doubling doubling you up in agony. You writhe for a few seconds on the marble terrace, then die with the crazed laughter of the hags ringing in your ears.",
+    "events": [
+        {
+            "type": "KILL PLAYER",
+            "variables": [
+                "CHOSEN"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Sample another potion",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 103
+                }
+            }
+        },
+        {
+            "text": "Continue on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 481
+                }
+            }
+        }
+    ]
+}

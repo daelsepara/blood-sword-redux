@@ -1,0 +1,63 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 62
+    },
+    "text": "You feel a wave of energy coursing through your body.\n\nYou are about to take a second draught, but the hag squatting by the cauldron snatches the ladle from your hand. \"Only one draught per person,\" she cackles. \"Otherwise it's poisonous, you see.\"",
+    "background": [
+        {
+            "type": "IF TRUE RETURN",
+            "variables": [
+                "=",
+                "CHOSEN GREEN DRAUGHT",
+                "TRUE",
+                "\"Only one draught per person,\" she cackles. \"Otherwise it's poisonous, you see.\"",
+                "INACTIVE"
+            ]
+        },
+        {
+            "type": "MODIFY ATTRIBUTE",
+            "variables": [
+                "CHOSEN",
+                "ENDURANCE",
+                "1"
+            ]
+        },
+        {
+            "type": "MAXIMISE ATTRIBUTE",
+            "variables": [
+                "CHOSEN",
+                "ENDURANCE"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "CHOSEN GREEN DRAUGHT",
+                "TRUE"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Sample other potions",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 103
+                }
+            }
+        },
+        {
+            "text": "Don't try any more potions",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 481
+                }
+            }
+        }
+    ]
+}
