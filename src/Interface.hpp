@@ -4427,6 +4427,33 @@ namespace BloodSword::Interface
     }
 
     // permanetly gain or lose attribute points
+    bool PermanentAttributeGain(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Attribute::Type attribute, int gain)
+    {
+        auto done = false;
+
+        if (gain > 0 || (gain < 0 && character.Value(attribute) > (1 - gain) && character.Maximum(attribute) > (1 - gain)))
+        {
+            auto max_value = character.Maximum(attribute);
+
+            auto value = character.Value(attribute);
+
+            character.Maximum(attribute, max_value + gain);
+
+            character.Value(attribute, value + gain);
+
+            done = true;
+        }
+        else
+        {
+            std::string error = std::string("CANNOT ADJUST ") + Attribute::TypeMapping[attribute] + " CANNOT BE ADJUSTED FURTHER!";
+
+            Interface::MessageBox(graphics, background, error, Color::Highlight);
+        }
+
+        return done;
+    }
+
+    // permanetly gain or lose attribute points (PLAYER)
     void PermanentAttributeGain(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int attributes, int gain)
     {
         std::vector<Attribute::Type> attribute_list = {
@@ -4468,31 +4495,14 @@ namespace BloodSword::Interface
                     {
                         auto attribute = attribute_list[selection[0]];
 
-                        if (gain > 0 || (gain < 0 && character.Value(attribute) > 0 && character.Maximum(attribute) > 0))
-                        {
-                            auto max_value = character.Maximum(attribute);
-
-                            auto value = character.Value(attribute);
-
-                            character.Maximum(attribute, max_value + gain);
-
-                            character.Value(attribute, value + gain);
-
-                            done = true;
-                        }
-                        else
-                        {
-                            std::string error = std::string("CANNOT ADJUST ") + Attribute::TypeMapping[attribute] + " CANNOT BE ADJUSTED FURTHER!";
-
-                            Interface::MessageBox(graphics, background, error, Color::Highlight);
-                        }
+                        done = Interface::PermanentAttributeGain(graphics, background, character, attribute, gain);
                     }
                 }
             }
         }
     }
 
-    // permanetly gain or lose attribute points
+    // permanetly gain or lose attribute points (PARTY)
     void PermanentAttributeGain(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int attributes, int gain)
     {
         for (auto character = 0; character < party.Count(); character++)
