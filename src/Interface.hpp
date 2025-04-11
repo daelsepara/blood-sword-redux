@@ -4431,15 +4431,9 @@ namespace BloodSword::Interface
     {
         auto done = false;
 
-        if (gain > 0 || (gain < 0 && character.Value(attribute) > (1 - gain) && character.Maximum(attribute) > (1 - gain)))
+        if ((gain > 0 || (gain < 0 && character.Value(attribute) > (1 - gain) && character.Maximum(attribute) > (1 - gain))) && attribute != Attribute::Type::NONE)
         {
-            auto max_value = character.Maximum(attribute);
-
-            auto value = character.Value(attribute);
-
-            character.Maximum(attribute, max_value + gain);
-
-            character.Value(attribute, value + gain);
+            Engine::ModifyAttribute(character, attribute, gain);
 
             done = true;
         }

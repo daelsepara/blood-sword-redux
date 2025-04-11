@@ -917,11 +917,39 @@ namespace BloodSword::Engine
         }
     }
 
+    void ModifyAttribute(Character::Base &character, Attribute::Type attribute, int gain)
+    {
+        if ((gain > 0 || (gain < 0 && character.Value(attribute) > (1 - gain) && character.Maximum(attribute) > (1 - gain))) && attribute != Attribute::Type::NONE)
+        {
+            auto max_value = character.Maximum(attribute);
+
+            auto value = character.Value(attribute);
+
+            character.Maximum(attribute, max_value + gain);
+
+            character.Value(attribute, value + gain);
+        }
+    }
+
+    void ModifyAttribute(Party::Base &party, Attribute::Type attribute, int gain)
+    {
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            if (Engine::IsAlive(party[character]))
+            {
+                Engine::ModifyAttribute(party[character], attribute, gain);
+            }
+        }
+    }
+
     void MaximiseAttribute(Character::Base &character, Attribute::Type attribute)
     {
-        auto max_value = character.Maximum(attribute);
+        if (attribute != Attribute::Type::NONE)
+        {
+            auto max_value = character.Maximum(attribute);
 
-        character.Value(attribute, max_value);
+            character.Value(attribute, max_value);
+        }
     }
 
     void MaximizeAttribute(Character::Base &character, Attribute::Type attribute)

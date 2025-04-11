@@ -2635,7 +2635,7 @@ namespace BloodSword::Conditions
 
                             auto plural = (Engine::Count(party) > 1);
 
-                            text = (plural ? std::string("EVERYONE ") : "YOU ") + (gain < 0 ? "LOSE" : "GAIN") + (plural ? "S" : "") + " " + std::to_string(gain) + " " + Attribute::TypeMapping[attribute] + ".";
+                            text = std::string(plural ? "EVERYONE " : "YOU ") + (gain < 0 ? "LOSE" : "GAIN") + (plural ? "S" : "") + " " + std::to_string(std::abs(gain)) + " " + Attribute::TypeMapping[attribute] + ".";
                         }
                         else
                         {
@@ -2643,7 +2643,59 @@ namespace BloodSword::Conditions
 
                             party[character].Value(attribute, value);
 
-                            text = party[character].Name + " " + (gain < 0 ? "LOSE" : "GAIN") + " " + std::to_string(gain) + " " + Attribute::TypeMapping[attribute] + ".";
+                            text = party[character].Name + " " + (gain < 0 ? "LOSE" : "GAIN") + " " + std::to_string(std::abs(gain)) + " " + Attribute::TypeMapping[attribute] + ".";
+                        }
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::MODIFY_ATTRIBUTE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / ALL
+            // 1 - attribute
+            // 2 - points to gain/lose
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                auto gain = party.Number(condition.Variables[2]);
+
+                if (attribute != Attribute::Type::NONE)
+                {
+                    if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                    {
+                        if (is_party)
+                        {
+                            Engine::ModifyAttribute(party, attribute, gain);
+
+                            auto plural = (Engine::Count(party) > 1);
+
+                            text = std::string(plural ? "EVERYONE " : "YOU ") + "PERMANENTLY " + (gain < 0 ? "LOSE" : "GAIN") + (plural ? "S" : "") + " " + std::to_string(std::abs(gain)) + " " + Attribute::TypeMapping[attribute] + ".";
+                        }
+                        else
+                        {
+                            Engine::ModifyAttribute(party[character], attribute, gain);
+
+                            text = party[character].Name + " PERMANENTLY " + (gain < 0 ? "LOSE" : "GAIN") + " " + std::to_string(std::abs(gain)) + " " + Attribute::TypeMapping[attribute] + ".";
                         }
 
                         result = true;
@@ -2691,7 +2743,9 @@ namespace BloodSword::Conditions
                                 Engine::MaximizeAttribute(party, attribute);
                             }
 
-                            text = std::string("EVERYONE's ") + Attribute::TypeMapping[attribute] + " RESTORED TO MAXIMUM";
+                            auto plural = (Engine::Count(party) > 1);
+
+                            text = std::string(plural ? "EVERYONE's " : "YOUR ") + Attribute::TypeMapping[attribute] + " IS RESTORED TO MAXIMUM";
                         }
                         else
                         {
@@ -2704,7 +2758,7 @@ namespace BloodSword::Conditions
                                 Engine::MaximizeAttribute(party[character], attribute);
                             }
 
-                            text = party[character].Name + "'s " + Attribute::TypeMapping[attribute] + " RESTORED TO MAXIMUM";
+                            text = party[character].Name + "'s " + Attribute::TypeMapping[attribute] + " IS RESTORED TO MAXIMUM";
                         }
 
                         result = true;
