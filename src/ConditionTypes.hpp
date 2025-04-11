@@ -115,7 +115,9 @@ namespace BloodSword::Conditions
         GAIN_ARMOUR,
         LOSE_ATTRIBUTE_OR_DROP_ITEM,
         PLAYER_PAYS,
-        CHARACTER_PAYS
+        CHARACTER_PAYS,
+        MAXIMISE_ATTRIBUTE,
+        MAXIMIZE_ATTRIBUTE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -227,7 +229,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::GAIN_ARMOUR, "GAIN ARMOUR"},
         {Conditions::Type::LOSE_ATTRIBUTE_OR_DROP_ITEM, "LOSE ATTRIBUTE OR DROP ITEM"},
         {Conditions::Type::PLAYER_PAYS, "PLAYER PAYS"},
-        {Conditions::Type::CHARACTER_PAYS, "CHARACTER PAYS"}};
+        {Conditions::Type::CHARACTER_PAYS, "CHARACTER PAYS"},
+        {Conditions::Type::MAXIMISE_ATTRIBUTE, "MAXIMISE ATTRIBUTE"},
+        {Conditions::Type::MAXIMIZE_ATTRIBUTE, "MAXIMIZE ATTRIBUTE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

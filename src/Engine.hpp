@@ -917,6 +917,31 @@ namespace BloodSword::Engine
         }
     }
 
+    void MaximiseAttribute(Character::Base &character, Attribute::Type attribute)
+    {
+        auto max_value = character.Maximum(attribute);
+
+        character.Value(attribute, max_value);
+    }
+
+    void MaximizeAttribute(Character::Base &character, Attribute::Type attribute)
+    {
+        Engine::MaximiseAttribute(character, attribute);
+    }
+
+    void MaximiseAttribute(Party::Base &party, Attribute::Type attribute)
+    {
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            Engine::MaximiseAttribute(party[character], attribute);
+        }
+    }
+
+    void MaximizeAttribute(Party::Base &party, Attribute::Type attribute)
+    {
+        Engine::MaximiseAttribute(party, attribute);
+    }
+
     bool Transition(Character::Base &character, Character::Status from, Character::Status to)
     {
         auto update = false;

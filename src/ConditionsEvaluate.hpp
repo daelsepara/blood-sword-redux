@@ -2661,6 +2661,67 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::MAXIMISE_ATTRIBUTE || condition.Type == Conditions::Type::MAXIMIZE_ATTRIBUTE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / ALL
+            // 1 - attribute
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                if (attribute != Attribute::Type::NONE)
+                {
+                    if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                    {
+                        if (is_party)
+                        {
+                            if (condition.Type == Conditions::Type::MAXIMISE_ATTRIBUTE)
+                            {
+                                Engine::MaximiseAttribute(party, attribute);
+                            }
+                            else
+                            {
+                                Engine::MaximizeAttribute(party, attribute);
+                            }
+
+                            text = std::string("EVERYONE's ") + Attribute::TypeMapping[attribute] + " RESTORED TO MAXIMUM";
+                        }
+                        else
+                        {
+                            if (condition.Type == Conditions::Type::MAXIMISE_ATTRIBUTE)
+                            {
+                                Engine::MaximiseAttribute(party[character], attribute);
+                            }
+                            else
+                            {
+                                Engine::MaximizeAttribute(party[character], attribute);
+                            }
+
+                            text = party[character].Name + "'s " + Attribute::TypeMapping[attribute] + " RESTORED TO MAXIMUM";
+                        }
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::ITEM_EFFECT)
         {
             internal_error = true;
