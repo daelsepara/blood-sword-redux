@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 307
+    },
+    "text": "You step into the astral gateway. There is a moment of cold -- not just a lack of warmth, but the chilling emptiness of an occult void in which your nerves scream. Seconds later, mercifully, the unbearable sensation passes. You are reaching the other end of the gate.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 78
+            }
+        }
+    ]
+}

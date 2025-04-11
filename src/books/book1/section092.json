@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 92
+    },
+    "text": "You wend your way along a narrow ridge rising like a sharp backbone out of the cavern floor. A murky sea of mist sits in the hollows below, illuminated now and then by the red lightning gouts of fire. The path brings you to a high-walled crateer with a tall stone pylon built in the centre. The pylon has an entrance that is clearly visible, and there may be many treasure-laden chambers within. But you have to put aside such thoughts, because the pylon is entirely cut off by a moat of boiling lava. There is no way you could hope to reach it.\n\nThe path divides and snakes along the crater rim. You skirt the bubbling lava pit, slowly making your way towards an incline that leads off to the far end of the cavern.\n\nSuddenly two shabby adventurers appear from behind a boulder near the tip of the crater. They look eerie in the glowering light thrown up from the lava below, clutching their swords like fiends out of the Pit. One of them grins crookedly, displaying rotten teeth. \"Your money,\" he says, \"and your life.\"",
+    "image_asset": "images/books/book1/adventurers.png",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 385
+            }
+        }
+    ]
+}

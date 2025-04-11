@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 357
+    },
+    "text": "A narrow arête ridge leads to another pinnacle, where you can just make out the shape of a ruined shrine. Beyond, pits of lava sputter like the fires of hell.",
+    "choices": [
+        {
+            "text": "Walk along the arête to the shrine",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 479
+                }
+            }
+        },
+        {
+            "text": "Go around to the other side of the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 56
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 56
+    },
+    "text": "You look out from the side terrace of the temple. A flight of unsupported marble stairs descends from here to a low table of rock. You can just make out two shimmering ovals of energy that hang in the air there.",
+    "choices": [
+        {
+            "text": "Go down the stairway",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 427
+                }
+            }
+        },
+        {
+            "text": "Go around to the otherside of the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 357
+                }
+            }
+        }
+    ]
+}

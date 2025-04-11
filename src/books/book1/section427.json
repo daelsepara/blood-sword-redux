@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 427
+    },
+    "text": "You slowly make your way down the long flight of stiars. It is an eerie feeling to stand on steps of solid marble which are seemingly held up only by sorcery.\n\nAs you reach the midpoint, the stairs suddenly tilt to form a ramp. You tumble down uncontrollably towards the table of rock, ending your descent shaken but unhurt in front of the two shimmering ovals. Now that you can see them close up, you recognise them as astral gateways. If you step through them, you will be teleported somewhere, but there is now way of finding out where an astral gateway leads except by using it.\n\nYou glance back at the temple. There is no way back up the steep marble ramp that now sweeps down from the terrace. You must choose one of the astral gateways.",
+    "choices": [
+        {
+            "text": "Take the metallic blue gate",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 114
+                }
+            }
+        },
+        {
+            "text": "Take the pulsing green gate",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 307
+                }
+            }
+        }
+    ]
+}

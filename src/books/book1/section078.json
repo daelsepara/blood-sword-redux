@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 78
+    },
+    "text": "You materialise within the broken walls of an old shrine. You can see the temple where the hags live about two hundred metres away atop another pinnacle.\n\nExamining your surroundings, you notice a golden dish that glimmers in the sporadic light of the volcanic geysers outside. Grey stone gargoyles cling to the walls, the dancing shadows making them seem to grin. Beyond an exit at the rear of the shrine, a narrow path leads along the top of a knife-edge precipice.",
+    "choices": [
+        {
+            "text": "Leave the shrine",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 92
+                }
+            }
+        },
+        {
+            "text": "Examine the gold dish",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 507
+                }
+            }
+        }
+    ]
+}

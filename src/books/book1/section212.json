@@ -1,0 +1,62 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 212
+    },
+    "text": "\"Well now, weird sisters, what are you doing?\" you ask, almost retching at the sight of their snaggle-toothed gums when they grin up at you.\n\n\"Just our cooking,\" says one, clattering the stone lid of her pot aside. A bilious aroma wafts up, stinging your eyes. The hags all cackle madly at this.\n\nAnother of them scuttles over to accost you. \"Want a little taste?\" She proffers a ladle dripping with steaming gruel.\n\n\"Wait a minute, the flavour's not quite right,\" screeches another, dropping a decomposing hand into their bubbling cauldron.",
+    "choices": [
+        {
+            "text": "(ENCHANTER) Enthral one of them to find out about the dangers ahead",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 283
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "Agree to sample their potions",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 103
+                }
+            }
+        },
+        {
+            "text": "Enter the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 298
+                }
+            }
+        },
+        {
+            "text": "Walk around the temple to the left",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 357
+                }
+            }
+        },
+        {
+            "text": "Walk around the temple to the right",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 56
+                }
+            }
+        }
+    ]
+}
