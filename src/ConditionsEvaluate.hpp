@@ -1679,7 +1679,7 @@ namespace BloodSword::Conditions
 
                 if (!dst.empty() && !src.empty())
                 {
-                    if (Engine::ToUpper(src).substr(0, 7) == "CHOSEN ")
+                    if (Engine::ToUpper(dst).substr(0, 7) == "CHOSEN ")
                     {
                         auto chosen = party.ChosenCharacter;
 
@@ -1689,7 +1689,7 @@ namespace BloodSword::Conditions
                         }
 
                         // replace CHOSEN and then add the rest of the condition
-                        src = std::string(Character::ClassMapping[chosen]) + src.substr(6, src.length() - 6);
+                        dst = std::string(Character::ClassMapping[chosen]) + dst.substr(6, dst.length() - 6);
                     }
 
                     if (party.IsPresent(src))
