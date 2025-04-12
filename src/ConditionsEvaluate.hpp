@@ -1358,8 +1358,6 @@ namespace BloodSword::Conditions
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
-                character = (Engine::ToUpper(condition.Variables[0]) == "CHOSEN") ? party.ChosenCharacter : character;
-
                 auto is_character = (character != Character::Class::NONE);
 
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
