@@ -223,7 +223,11 @@ namespace BloodSword::Interface
     {
         if (((condition.Type == Conditions::Type::IF_TRUE_SET && result) || (condition.Type == Conditions::Type::IF_FALSE_SET && !result)) && condition.Variables.size() > 1)
         {
-            party.Set(condition.Variables[0], condition.Variables[1]);
+            auto dst = Engine::MapTokens(party, condition.Variables[0]);
+
+            auto src = Engine::MapTokens(party, condition.Variables[1]);
+
+            party.Set(dst, src);
         }
     }
 

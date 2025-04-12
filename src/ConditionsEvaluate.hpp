@@ -1673,25 +1673,12 @@ namespace BloodSword::Conditions
             // 1 - source variable / value
             if (Engine::IsAlive(party) && condition.Variables.size() > 1)
             {
-                auto dst = condition.Variables[0];
+                auto dst = Engine::MapTokens(party, condition.Variables[0]);
 
-                auto src = condition.Variables[1];
+                auto src = Engine::MapTokens(party, condition.Variables[1]);
 
                 if (!dst.empty() && !src.empty())
                 {
-                    if (Engine::ToUpper(dst).substr(0, 7) == "CHOSEN ")
-                    {
-                        auto chosen = party.ChosenCharacter;
-
-                        if (chosen == Character::Class::NONE)
-                        {
-                            chosen = Engine::FirstClass(party);
-                        }
-
-                        // replace CHOSEN and then add the rest of the condition
-                        dst = std::string(Character::ClassMapping[chosen]) + dst.substr(6, dst.length() - 6);
-                    }
-
                     if (party.IsPresent(src))
                     {
                         party.Set(dst, party.Get(src));
@@ -1719,9 +1706,9 @@ namespace BloodSword::Conditions
             {
                 auto ops = condition.Variables[0];
 
-                auto dst = condition.Variables[1];
+                auto dst = Engine::MapTokens(party, condition.Variables[1]);
 
-                auto src = condition.Variables[2];
+                auto src = Engine::MapTokens(party, condition.Variables[2]);
 
                 if (!ops.empty() && !dst.empty() && !src.empty())
                 {
@@ -1844,9 +1831,9 @@ namespace BloodSword::Conditions
             {
                 auto ops = condition.Variables[0];
 
-                auto first = condition.Variables[1];
+                auto first = Engine::MapTokens(party, condition.Variables[1]);
 
-                auto second = condition.Variables[2];
+                auto second = Engine::MapTokens(party, condition.Variables[2]);
 
                 if (!ops.empty() && !first.empty() && !second.empty())
                 {
@@ -1856,9 +1843,9 @@ namespace BloodSword::Conditions
                     {
                         auto ops = condition.Variables[3];
 
-                        auto first = condition.Variables[4];
+                        auto first = Engine::MapTokens(party, condition.Variables[4]);
 
-                        auto second = condition.Variables[5];
+                        auto second = Engine::MapTokens(party, condition.Variables[5]);
 
                         party.Math(ops, first, second);
                     }
@@ -1883,25 +1870,12 @@ namespace BloodSword::Conditions
 
                 auto ops = condition.Variables[0];
 
-                auto first = condition.Variables[1];
+                auto first = Engine::MapTokens(party, condition.Variables[1]);
 
-                auto second = condition.Variables[2];
+                auto second = Engine::MapTokens(party, condition.Variables[2]);
 
                 if (!ops.empty() && !first.empty() && !second.empty())
                 {
-                    if (Engine::ToUpper(first).substr(0, 7) == "CHOSEN ")
-                    {
-                        auto chosen = party.ChosenCharacter;
-
-                        if (chosen == Character::Class::NONE)
-                        {
-                            chosen = Engine::FirstClass(party);
-                        }
-
-                        // replace CHOSEN and then add the rest of the condition
-                        first = std::string(Character::ClassMapping[chosen]) + first.substr(6, first.length() - 6);
-                    }
-
                     auto check = party.If(ops, first, second);
 
                     if ((condition.Type == Conditions::Type::IF_TRUE_RETURN && check) || (condition.Type == Conditions::Type::IF_FALSE_RETURN && !check))
@@ -1946,9 +1920,21 @@ namespace BloodSword::Conditions
 
                 if (empty == 0)
                 {
-                    auto first = party.If(condition.Variables[0], condition.Variables[1], condition.Variables[2]);
+                    auto ops1 = condition.Variables[0];
 
-                    auto second = party.If(condition.Variables[3], condition.Variables[4], condition.Variables[5]);
+                    auto dst1 = Engine::MapTokens(party, condition.Variables[1]);
+
+                    auto src1 = Engine::MapTokens(party, condition.Variables[2]);
+
+                    auto first = party.If(ops1, dst1, src1);
+
+                    auto ops2 = condition.Variables[3];
+
+                    auto dst2 = Engine::MapTokens(party, condition.Variables[4]);
+
+                    auto src2 = Engine::MapTokens(party, condition.Variables[5]);
+
+                    auto second = party.If(ops2, dst2, src2);
 
                     if (condition.Type == Conditions::Type::AND)
                     {

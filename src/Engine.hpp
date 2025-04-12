@@ -1259,6 +1259,15 @@ namespace BloodSword::Engine
         return upper;
     }
 
+    std::string ToLower(std::string str)
+    {
+        auto lower = str;
+
+        std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
+
+        return lower;
+    }
+
     // parse color from string
     Uint32 Color(std::string color)
     {
@@ -1564,6 +1573,74 @@ namespace BloodSword::Engine
 
         // check only against live characters
         return (result >= Engine::Count(party));
+    }
+
+    // map a single token
+    std::string MapToken(std::string variable, std::vector<std::string> tokens, std::string replacement)
+    {
+        auto mapped = variable;
+
+        auto space = std::string(" ");
+
+        for (auto token : tokens)
+        {
+            auto front = token.substr(0, 1) == " ";
+
+            auto search = mapped.find(token);
+
+            if (search != std::string::npos)
+            {
+                if (front)
+                {
+                    mapped.replace(search, token.length(), space + replacement);
+                }
+                else
+                {
+                    mapped.replace(search, token.length(), replacement + space);
+                }
+            }
+        }
+
+        return mapped;
+    }
+
+    std::string MapToken(std::string variable, std::string token, std::string replacement)
+    {
+        std::vector<std::string> tokens = {};
+
+        auto space = std::string(" ");
+
+        tokens.push_back(space + Engine::ToLower(token));
+
+        tokens.push_back(space + Engine::ToUpper(token));
+
+        tokens.push_back(Engine::ToLower(token) + space);
+
+        tokens.push_back(Engine::ToUpper(token) + space);
+
+        auto mapped = Engine::MapToken(variable, tokens, replacement);
+
+        if (Engine::ToUpper(mapped) == Engine::ToUpper(token))
+        {
+            mapped = replacement;
+        }
+
+        return mapped;
+    }
+
+    // map all tokens
+    std::string MapTokens(Party::Base &party, std::string variable)
+    {
+        auto chosen = party.ChosenCharacter;
+
+        if (chosen == Character::Class::NONE)
+        {
+            chosen = Engine::FirstClass(party);
+        }
+
+        auto mapped = Engine::MapToken(variable, "CHOSEN", std::string(Character::ClassMapping[chosen]));
+
+        return mapped;
     }
 }
 
