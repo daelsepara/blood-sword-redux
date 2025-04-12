@@ -1618,14 +1618,7 @@ namespace BloodSword::Engine
 
         tokens.push_back(Engine::ToUpper(token) + space);
 
-        auto mapped = Engine::MapToken(variable, tokens, replacement);
-
-        if (Engine::ToUpper(mapped) == Engine::ToUpper(token))
-        {
-            mapped = replacement;
-        }
-
-        return mapped;
+        return Engine::MapToken(variable, tokens, replacement);
     }
 
     // map all tokens
