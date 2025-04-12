@@ -118,7 +118,8 @@ namespace BloodSword::Conditions
         CHARACTER_PAYS,
         MAXIMISE_ATTRIBUTE,
         MAXIMIZE_ATTRIBUTE,
-        MODIFY_ATTRIBUTE
+        MODIFY_ATTRIBUTE,
+        RANDOM_OUTCOME
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -233,7 +234,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::CHARACTER_PAYS, "CHARACTER PAYS"},
         {Conditions::Type::MAXIMISE_ATTRIBUTE, "MAXIMISE ATTRIBUTE"},
         {Conditions::Type::MAXIMIZE_ATTRIBUTE, "MAXIMIZE ATTRIBUTE"},
-        {Conditions::Type::MODIFY_ATTRIBUTE, "MODIFY ATTRIBUTE"}};
+        {Conditions::Type::MODIFY_ATTRIBUTE, "MODIFY ATTRIBUTE"},
+        {Conditions::Type::RANDOM_OUTCOME, "RANDOM OUTCOME"}};
 
     Conditions::Type Map(const char *Conditions)
     {
