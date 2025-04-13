@@ -1,0 +1,46 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 298
+    },
+    "text": "\"By the picking of my nose,\" says one of the hags in a stage-whisper as you walk past them, \"someone gallant that way goes.\" To your disgust, they all break into peals of high-pitched laughter.\n\nYou climb the soot-smeared steps and enter the temple colonnade. The geyser-light does not penetrate in here, and for a few moments you are in stygian darkness. You are startled by blundering into a marble altar and, sweeping your hands along it, you find first a sharp nife and then a large stone urn. There is something warm and sticky filling the urn almost to the brim. With a shock you recognise it as blood.\n\nAs your eyes adjust to the gloom, a pale luminescent face appears before you. It is the face of a woman -- not unhandsome, except for the greenish cast to her skin and the hissing serpents that are her hair. You need no Sage to tall you that this is Echidna, the Ophidian Lady, Mistress of Inescapable Coils, Lamia of the Venefical Kiss, Mother of Hyrae. She is without doubt one of the most deadly of all demonkind.",
+    "items": [
+        {
+            "name": "SHARP KNIFE",
+            "quantity": 1,
+            "type": "KNIFE"
+        }
+    ],
+    "choices": [
+        {
+            "text": "Speak to her",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 408
+                }
+            }
+        },
+        {
+            "text": "Attack without hesitation",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 129
+                }
+            }
+        },
+        {
+            "text": "Go around the temple to the right",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 56
+                }
+            }
+        }
+    ]
+}

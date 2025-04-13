@@ -119,7 +119,10 @@ namespace BloodSword::Conditions
         MAXIMISE_ATTRIBUTE,
         MAXIMIZE_ATTRIBUTE,
         MODIFY_ATTRIBUTE,
-        RANDOM_OUTCOME
+        RANDOM_OUTCOME,
+        KILL_ALL_WITH_STATUS,
+        ALL_WITH_STATUS_GAIN_ATTRIBUTE,
+        ALL_WITH_STATUS_LOSE_ATTRIBUTE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -235,7 +238,10 @@ namespace BloodSword::Conditions
         {Conditions::Type::MAXIMISE_ATTRIBUTE, "MAXIMISE ATTRIBUTE"},
         {Conditions::Type::MAXIMIZE_ATTRIBUTE, "MAXIMIZE ATTRIBUTE"},
         {Conditions::Type::MODIFY_ATTRIBUTE, "MODIFY ATTRIBUTE"},
-        {Conditions::Type::RANDOM_OUTCOME, "RANDOM OUTCOME"}};
+        {Conditions::Type::RANDOM_OUTCOME, "RANDOM OUTCOME"},
+        {Conditions::Type::KILL_ALL_WITH_STATUS, "KILL ALL WITH STATUS"},
+        {Conditions::Type::ALL_WITH_STATUS_GAIN_ATTRIBUTE, "ALL WITH STATUS GAIN ATTRIBUTE"},
+        {Conditions::Type::ALL_WITH_STATUS_LOSE_ATTRIBUTE, "ALL WITH STATUS LOSE ATTRIBUTE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

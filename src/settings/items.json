@@ -528,6 +528,11 @@
             "type": "DAGGER"
         },
         {
+            "name": "SHARP KNIFE",
+            "quantity": 1,
+            "type": "SHARP KNIFE"
+        },
+        {
             "contains": "CHARGE",
             "limit": 4,
             "name": "RING OF WARDING",

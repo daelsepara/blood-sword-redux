@@ -2499,6 +2499,35 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::KILL_ALL_WITH_STATUS)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - status
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto status = Character::MapStatus(condition.Variables[0]);
+
+                if (status != Character::Status::NONE)
+                {
+                    for (auto character = 0; character < party.Count(); character++)
+                    {
+                        if (Engine::IsAlive(party[character]) && party[character].Has(status))
+                        {
+                            // unalive player
+                            party[character].Value(Attribute::Type::ENDURANCE, 0);
+
+                            Interface::Resurrect(graphics, background, party, party[character]);
+                        }
+                    }
+
+                    internal_error = false;
+
+                    result = true;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::REMOVE_PLAYER)
         {
             internal_error = true;
@@ -3152,7 +3181,7 @@ namespace BloodSword::Conditions
                     {
                         result = is_party ? Engine::IsAlive(party) : Engine::IsAlive(party[character]);
 
-                        if (result && condition.Variables.size() > 1 && !condition.Variables[1].empty())
+                        if (result && condition.Variables.size() > 2 && !condition.Variables[1].empty())
                         {
                             if (display)
                             {
