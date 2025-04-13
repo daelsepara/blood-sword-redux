@@ -234,6 +234,11 @@ namespace BloodSword::Character
                 attribute->Value = value;
 
                 attribute->Value = std::min(attribute->Value, attribute->Maximum);
+
+                if (type != Attribute::Type::ENDURANCE)
+                {
+                    attribute->Value = std::max(1, attribute->Value);
+                }
             }
         }
 

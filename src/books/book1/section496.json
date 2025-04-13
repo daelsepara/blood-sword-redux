@@ -1,0 +1,48 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 496
+    },
+    "text": "You feel an irresistible urge to put the sacrificial knife to your own wrist. You tremble with the effort of trying to prevent yourself, but you have no choice. Her power is overwhelming. A few drops of your blood spill into the urn on the altar.",
+    "image_asset": "images/books/book1/echidna.png",
+    "background": [
+        {
+            "type": "ALL WITH STATUS GAIN ATTRIBUTE",
+            "variables": [
+                "MESMERISED",
+                "ENDURANCE",
+                "-1"
+            ]
+        },
+        {
+            "type": "LOSE STATUS",
+            "variables": [
+                "ALL",
+                "MESMERISED"
+            ]
+        }
+    ],
+    "events": [
+        {
+            "type": "IS ALIVE",
+            "variables": [
+                "ALL",
+                "You suddenly snap out of the mesmeric trance. Wisps of red vapour are snaking up around you. For a moment Echidna's face shines like a paper lantern through the haze. \"Nothing is entirely evil,\" she murmurs to you. \"Nor entirely good.\"\n\nThe image of the temple dissolves around you.",
+                "FALSE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 78
+            },
+            "variables": [
+                "You are being teleported -- to where?",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

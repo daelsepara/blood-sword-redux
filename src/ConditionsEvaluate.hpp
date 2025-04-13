@@ -2230,61 +2230,130 @@ namespace BloodSword::Conditions
 
                 auto ignore_armour = (Engine::ToUpper(condition.Variables[7]) == "TRUE");
 
-                if (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]) && spell != Spells::Type::NONE && target != Asset::Type::NONE && dmg_act != Asset::Type::NONE)
+                if (character != Character::Class::NONE && spell != Spells::Type::NONE && target != Asset::Type::NONE && dmg_act != Asset::Type::NONE && difficulty > 0 && dmg_rol > 0)
                 {
-                    party[character].CallToMind(spell);
-
-                    if (Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, party[character], spell, false))
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
                     {
-                        auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
+                        party[character].CallToMind(spell);
 
-                        if (rolls <= difficulty)
+                        if (Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, party[character], spell, false))
                         {
-                            result = true;
-                        }
-                    }
+                            auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
 
-                    if (!result)
-                    {
-                        // spellcasting unsuccessful!
-                        auto message = condition.Variables[8].empty() ? Interface::GetText(Interface::MSG_CAST) : condition.Variables[8];
-
-                        Interface::MessageBox(graphics, background, message, Color::Highlight);
-
-                        if (dmg_rol > 0)
-                        {
-                            auto damage = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod);
-
-                            damage -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
-
-                            if (damage > 0)
+                            if (rolls <= difficulty)
                             {
-                                Engine::GainEndurance(party[character], -damage);
-                            }
-
-                            if (!Engine::IsAlive(party[character]))
-                            {
-                                std::string message = party[character].Name + " KILLED!";
-
-                                Interface::MessageBox(graphics, background, message, Color::Highlight);
-
-                                Interface::Resurrect(graphics, background, party, party[character]);
+                                result = true;
                             }
                         }
 
-                        failed = true;
-                    }
-                }
-                else if (!party.Has(character))
-                {
-                    text = Engine::NotInParty(character);
-                }
-                else if (!Engine::IsAlive(party[character]))
-                {
-                    text = Engine::IsDead(party[character]);
-                }
+                        if (!result)
+                        {
+                            // spellcasting unsuccessful!
+                            auto message = condition.Variables[8].empty() ? Interface::GetText(Interface::MSG_CAST) : condition.Variables[8];
 
-                internal_error = false;
+                            Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+                            if (dmg_rol > 0)
+                            {
+                                auto damage = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod);
+
+                                damage -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
+
+                                if (damage > 0)
+                                {
+                                    Engine::GainEndurance(party[character], -damage);
+                                }
+
+                                if (!Engine::IsAlive(party[character]))
+                                {
+                                    std::string message = party[character].Name + " KILLED!";
+
+                                    Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+                                    Interface::Resurrect(graphics, background, party, party[character]);
+                                }
+                            }
+
+                            failed = true;
+                        }
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::PSYCHIC_SPELL_GAIN_ATTRIBUTE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            // 1 - spell
+            // 2 - target asset
+            // 3 - difficulty (when sucessfully cast)
+            // 4 - attribute
+            // 5 - gain/loss
+            // 6 - message (on failure)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 6)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto spell = Spells::Map(condition.Variables[1]);
+
+                auto target = Asset::Map(condition.Variables[2]);
+
+                auto difficulty = party.Number(condition.Variables[3]);
+
+                auto attribute = Attribute::Map(condition.Variables[4]);
+
+                auto gain = party.Number(condition.Variables[5]);
+
+                if (character != Character::Class::NONE && spell != Spells::Type::NONE && target != Asset::Type::NONE && attribute != Attribute::Type::NONE && difficulty > 0 && gain != 0)
+                {
+                    if (party.Has(character) && Engine::IsAlive(party[character]))
+                    {
+                        party[character].CallToMind(spell);
+
+                        if (Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, party[character], spell, false))
+                        {
+                            auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
+
+                            result = (rolls <= difficulty);
+                        }
+
+                        if (!result)
+                        {
+                            // spellcasting unsuccessful!
+                            auto message = condition.Variables[6].empty() ? Interface::GetText(Interface::MSG_CAST) : condition.Variables[6];
+
+                            Interface::MessageBox(graphics, background, message, Color::Highlight);
+
+                            auto value = party[character].Value(attribute) + gain;
+
+                            party[character].Value(attribute, value);
+
+                            failed = true;
+                        }
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
             }
         }
         else if (condition.Type == Conditions::Type::COLLECT)
@@ -2674,6 +2743,72 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::ALL_WITH_STATUS_GAIN_ATTRIBUTE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - status
+            // 1 - attribute
+            // 2 - points to gain/lose
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto status = Character::MapStatus(condition.Variables[0]);
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                auto gain = party.Number(condition.Variables[2]);
+
+                if (attribute != Attribute::Type::NONE && status != Character::Status::NONE && gain != 0)
+                {
+                    for (auto character = 0; character < party.Count(); character++)
+                    {
+                        if (Engine::IsAlive(party[character]) && party[character].Has(status))
+                        {
+                            auto value = party[character].Value(attribute) + gain;
+
+                            party[character].Value(attribute, value);
+                        }
+                    }
+
+                    result = true;
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::ALL_WITH_STATUS_MODIFY_ATTRIBUTE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - status
+            // 1 - attribute
+            // 2 - points to modify
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto status = Character::MapStatus(condition.Variables[0]);
+
+                auto attribute = Attribute::Map(condition.Variables[1]);
+
+                auto gain = party.Number(condition.Variables[2]);
+
+                if (attribute != Attribute::Type::NONE && status != Character::Status::NONE && gain != 0)
+                {
+                    for (auto character = 0; character < party.Count(); character++)
+                    {
+                        if (Engine::IsAlive(party[character]) && party[character].Has(status))
+                        {
+                            Engine::ModifyAttribute(party[character], attribute, gain);
+                        }
+                    }
+
+                    result = true;
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::MODIFY_ATTRIBUTE)
         {
             internal_error = true;
@@ -2681,7 +2816,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player / ALL
             // 1 - attribute
-            // 2 - points to gain/lose
+            // 2 - points to modify
             if (Engine::IsAlive(party) && condition.Variables.size() > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");

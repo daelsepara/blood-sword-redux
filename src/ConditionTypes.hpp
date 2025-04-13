@@ -75,6 +75,7 @@ namespace BloodSword::Conditions
         TEXTBOX,
         COUNT_ITEMS,
         PSYCHIC_SPELL,
+        PSYCHIC_SPELL_GAIN_ATTRIBUTE,
         IS_DEAD,
         COLLECT,
         PERMANENT_ATTRIBUTE_GAIN,
@@ -122,7 +123,7 @@ namespace BloodSword::Conditions
         RANDOM_OUTCOME,
         KILL_ALL_WITH_STATUS,
         ALL_WITH_STATUS_GAIN_ATTRIBUTE,
-        ALL_WITH_STATUS_LOSE_ATTRIBUTE
+        ALL_WITH_STATUS_MODIFY_ATTRIBUTE
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -193,6 +194,7 @@ namespace BloodSword::Conditions
         {Conditions::Type::TEXTBOX, "TEXTBOX"},
         {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"},
         {Conditions::Type::PSYCHIC_SPELL, "PSYCHIC SPELL"},
+        {Conditions::Type::PSYCHIC_SPELL_GAIN_ATTRIBUTE, "PSYCHIC SPELL GAIN ATTRIBUTE"},
         {Conditions::Type::IS_DEAD, "IS DEAD"},
         {Conditions::Type::COLLECT, "COLLECT"},
         {Conditions::Type::PERMANENT_ATTRIBUTE_GAIN, "PERMANENT ATTRIBUTE GAIN"},
@@ -241,7 +243,7 @@ namespace BloodSword::Conditions
         {Conditions::Type::RANDOM_OUTCOME, "RANDOM OUTCOME"},
         {Conditions::Type::KILL_ALL_WITH_STATUS, "KILL ALL WITH STATUS"},
         {Conditions::Type::ALL_WITH_STATUS_GAIN_ATTRIBUTE, "ALL WITH STATUS GAIN ATTRIBUTE"},
-        {Conditions::Type::ALL_WITH_STATUS_LOSE_ATTRIBUTE, "ALL WITH STATUS LOSE ATTRIBUTE"}};
+        {Conditions::Type::ALL_WITH_STATUS_MODIFY_ATTRIBUTE, "ALL WITH STATUS MODIFY ATTRIBUTE"}};
 
     Conditions::Type Map(const char *Conditions)
     {

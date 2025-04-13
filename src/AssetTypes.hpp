@@ -166,7 +166,8 @@ namespace BloodSword::Asset
         BROKEN_WEAPON,
         GOLDEN_SNUFF_BOX,
         DRAGONLORD_GEM,
-        FANGS
+        FANGS,
+        HAG
     };
 
     template <typename T>
@@ -331,7 +332,8 @@ namespace BloodSword::Asset
         {Asset::Type::BROKEN_WEAPON, "BROKEN WEAPON"},
         {Asset::Type::GOLDEN_SNUFF_BOX, "GOLDEN SNUFF-BOX"},
         {Asset::Type::DRAGONLORD_GEM, "DRAGONLORD GEM"},
-        {Asset::Type::FANGS, "FANGS"}};
+        {Asset::Type::FANGS, "FANGS"},
+        {Asset::Type::HAG, "HAG"}};
 
     Asset::Type Map(const char *asset)
     {

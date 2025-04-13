@@ -1,0 +1,49 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 67
+    },
+    "text": "What are you going to do?",
+    "choices": [
+        {
+            "text": "Investigate the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 298
+                }
+            }
+        },
+        {
+            "text": "Take the left-hand path around the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 357
+                }
+            }
+        },
+        {
+            "text": "Take the right-hand path around the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 56
+                }
+            }
+        },
+        {
+            "text": "Try a potion",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 103
+                }
+            }
+        }
+    ]
+}

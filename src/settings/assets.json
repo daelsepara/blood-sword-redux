@@ -595,6 +595,10 @@
         {
             "id": "ECHIDNA",
             "path": "images/enemies/medusa-head.png"
+        },
+        {
+            "id": "HAG",
+            "path": "images/enemies/witch-face.png"
         }
     ]
 }

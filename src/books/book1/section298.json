@@ -31,16 +31,6 @@
                     "number": 129
                 }
             }
-        },
-        {
-            "text": "Go around the temple to the right",
-            "condition": {
-                "type": "NORMAL",
-                "location": {
-                    "book": "BOOK1",
-                    "number": 56
-                }
-            }
         }
     ]
 }

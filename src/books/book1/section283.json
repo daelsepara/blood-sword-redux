@@ -1,0 +1,57 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 283
+    },
+    "text": "(ENCHANTER) You call the ENTHALMENT spell to mind. Several of the hags watch you suspiciously.",
+    "background": [
+        {
+            "type": "IS DEAD",
+            "location": {
+                "book": "BOOK1",
+                "number": 67
+            },
+            "variables": [
+                "ENCHANTER"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "(ENCHANTER) Cast SERVILE ENTHRALMENT",
+            "condition": {
+                "type": "PSYCHIC SPELL GAIN ATTRIBUTE",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 374
+                },
+                "failure": {
+                    "book": "BOOK1",
+                    "number": 283
+                },
+                "variables": [
+                    "ENCHANTER",
+                    "SERVILE ENTHRALMENT",
+                    "ECHIDNA",
+                    "7",
+                    "ENDURANCE",
+                    "-1",
+                    "The hag realises what you're up to and flings a pot of acid over you"
+                ]
+            }
+        },
+        {
+            "text": "(ENCHANTER) Give up trying to cast ENTRHALMENT",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 67
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        }
+    ]
+}
