@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 479
+    },
+    "text": "You have to move slowly along the knife-edge path, as steep rock slopes lead down into sulphurous mist to either side. Ahead, the ruined shrine looms in the darkness.\n\nA scrabbling noise causes your pulse to quicken. You fancy you saw the flutter of a white robe up ahead. Suddenly you see hunched shapes clambering on to the path behind and ahead of you. Your attackers are Death Fetishists, bodies daubed with grey corpse-paint and with horrific death-masks hiding their faces. They weild their bone-handled falchions with a skill and deadly speed born of fanaticism.",
+    "image_asset": "images/books/book1/fetishists.png",
+    "battle": "battles/book1/battle479.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 72
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 522
+            }
+        }
+    ]
+}

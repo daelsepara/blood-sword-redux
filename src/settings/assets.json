@@ -607,6 +607,10 @@
         {
             "id": "BROKEN PILLARS",
             "path": "images/map/ancient-columns.png"
+        },
+        {
+            "id": "DEATH FETISHIST",
+            "path": "images/enemies/totem-head.png"
         }
     ]
 }
