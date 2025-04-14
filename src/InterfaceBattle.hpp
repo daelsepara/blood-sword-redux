@@ -84,7 +84,7 @@ namespace BloodSword::Interface
                     auto effect = BloodSword::Find(Interface::SkillEffects, skill);
 
                     // process attacks which do not apply an efect first
-                    if (skill == Skills::Type::POISONED_BITE)
+                    if (alive && skill == Skills::Type::POISONED_BITE)
                     {
                         auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Type::FANGS, 1, 0);
 

@@ -599,6 +599,14 @@
         {
             "id": "HAG",
             "path": "images/enemies/witch-face.png"
+        },
+        {
+            "id": "PILLAR",
+            "path": "images/map/ionic-column.png"
+        },
+        {
+            "id": "BROKEN PILLARS",
+            "path": "images/map/ancient-columns.png"
         }
     ]
 }
