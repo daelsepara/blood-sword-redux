@@ -3,8 +3,8 @@
         "book": "BOOK1",
         "number": 197
     },
-    "text": "As you race around the narrow ledge above the lava pit, your feet dislodge a few stones which go rattling down the crater slope and fall with dull plops in the molten rock below. Great bubbles of volcanic gas rise and break on the surface. Then you see heads like burning Hallowe'en effigies rising from the pool of lava. They are skiapyrs, malevolent monsters of living flame whose claws melt through strel and rock as a knife passes through wax.",
-    "image_asset": "images/book/book1/skiapyrs.png",
+    "text": "As you race around the narrow ledge above the lava pit, your feet dislodge a few stones which go rattling down the crater slope and fall with dull plops in the molten rock below. Great bubbles of volcanic gas rise and break on the surface. Then you see heads like burning Hallowe'en effigies rising from the pool of lava. They are skiapyrs, malevolent monsters of living flame whose claws melt through steel and rock as a knife passes through wax.",
+    "image_asset": "images/books/book1/skiapyrs.png",
     "choices": [
         {
             "text": "Use a TALISMAN OF FLAME",

@@ -1,0 +1,927 @@
+{
+    "drawx": 96,
+    "drawy": 96,
+    "height": 15,
+    "origins": [
+        {
+            "x": 4,
+            "y": 6
+        },
+        {
+            "x": 5,
+            "y": 6
+        },
+        {
+            "x": 5,
+            "y": 7
+        },
+        {
+            "x": 5,
+            "y": 8
+        }
+    ],
+    "spawn": [
+        {
+            "x": 3,
+            "y": 3
+        },
+        {
+            "x": 4,
+            "y": 5
+        },
+        {
+            "x": 4,
+            "y": 7
+        },
+        {
+            "x": 4,
+            "y": 8
+        },
+        {
+            "x": 4,
+            "y": 9
+        },
+        {
+            "x": 5,
+            "y": 9
+        }
+    ],
+    "tiles": [
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "EMPTY SPACE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "EXIT"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ],
+        [
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "IMPASSABLE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "ENEMY PASSABLE"
+            },
+            {
+                "asset": "NONE",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "PASSABLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            },
+            {
+                "asset": "ROCK",
+                "id": -1,
+                "lifetime": -1,
+                "occupant": "NONE",
+                "temporary_asset": "NONE",
+                "type": "OBSTACLE"
+            }
+        ]
+    ],
+    "tilesize": 64,
+    "viewx": 7,
+    "viewy": 15,
+    "width": 7,
+    "x": 0,
+    "y": 0
+}
