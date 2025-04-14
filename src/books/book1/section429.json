@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 429
+    },
+    "text": "You have no choice but to fight the flickering skiapyrs. They are eager to boil your blood with their clutch of flame.",
+    "battle": "battles/book1/battle006.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 284
+            }
+        },
+        {
+            "type": "BATTLE FLEE",
+            "location": {
+                "book": "BOOK1",
+                "number": 223
+            }
+        }
+    ]
+}

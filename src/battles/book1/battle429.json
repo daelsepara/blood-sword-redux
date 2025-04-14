@@ -2,44 +2,44 @@
     "battle": {
         "location": {
             "book": "BOOK1",
-            "number": 507
+            "number": 429
         },
         "conditions": [
             "SKIP LOCATION"
         ],
-        "map": "maps/book1/map507.json",
+        "map": "maps/book1/map429.json",
         "opponents": {
             "members": [
                 {
-                    "asset": "GARGOYLE",
+                    "asset": "SKIAPYR",
                     "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
                         {
                             "maximum": 7,
                             "modifier": 0,
-                            "type": "ENDURANCE",
+                            "type": "FIGHTING PROWESS",
                             "value": 7
                         },
                         {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 12,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 12
+                        },
+                        {
                             "maximum": 0,
-                            "modifier": 2,
+                            "modifier": 0,
                             "type": "ARMOUR",
                             "value": 0
                         },
@@ -52,40 +52,43 @@
                     ],
                     "control_type": "NPC",
                     "item_limit": 10,
-                    "moves": 2,
-                    "name": "GARGOYLE",
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
                     "target": "ENEMY"
                 },
                 {
-                    "asset": "GARGOYLE",
+                    "asset": "SKIAPYR",
                     "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
                         {
                             "maximum": 7,
                             "modifier": 0,
-                            "type": "ENDURANCE",
+                            "type": "FIGHTING PROWESS",
                             "value": 7
                         },
                         {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 12,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 12
+                        },
+                        {
                             "maximum": 0,
-                            "modifier": 2,
+                            "modifier": 0,
                             "type": "ARMOUR",
                             "value": 0
                         },
@@ -98,40 +101,43 @@
                     ],
                     "control_type": "NPC",
                     "item_limit": 10,
-                    "moves": 2,
-                    "name": "GARGOYLE",
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
                     "target": "ENEMY"
                 },
                 {
-                    "asset": "GARGOYLE",
+                    "asset": "SKIAPYR",
                     "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
                         {
                             "maximum": 7,
                             "modifier": 0,
-                            "type": "ENDURANCE",
+                            "type": "FIGHTING PROWESS",
                             "value": 7
                         },
                         {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 12,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 12
+                        },
+                        {
                             "maximum": 0,
-                            "modifier": 2,
+                            "modifier": 0,
                             "type": "ARMOUR",
                             "value": 0
                         },
@@ -144,40 +150,43 @@
                     ],
                     "control_type": "NPC",
                     "item_limit": 10,
-                    "moves": 2,
-                    "name": "GARGOYLE",
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
                     "target": "ENEMY"
                 },
                 {
-                    "asset": "GARGOYLE",
+                    "asset": "SKIAPYR",
                     "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
                         {
                             "maximum": 7,
                             "modifier": 0,
-                            "type": "ENDURANCE",
+                            "type": "FIGHTING PROWESS",
                             "value": 7
                         },
                         {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 12,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 12
+                        },
+                        {
                             "maximum": 0,
-                            "modifier": 2,
+                            "modifier": 0,
                             "type": "ARMOUR",
                             "value": 0
                         },
@@ -190,40 +199,43 @@
                     ],
                     "control_type": "NPC",
                     "item_limit": 10,
-                    "moves": 2,
-                    "name": "GARGOYLE",
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
                     "target": "ENEMY"
                 },
                 {
-                    "asset": "GARGOYLE",
+                    "asset": "SKIAPYR",
                     "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
                         {
                             "maximum": 7,
                             "modifier": 0,
-                            "type": "ENDURANCE",
+                            "type": "FIGHTING PROWESS",
                             "value": 7
                         },
                         {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 12,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 12
+                        },
+                        {
                             "maximum": 0,
-                            "modifier": 2,
+                            "modifier": 0,
                             "type": "ARMOUR",
                             "value": 0
                         },
@@ -236,40 +248,43 @@
                     ],
                     "control_type": "NPC",
                     "item_limit": 10,
-                    "moves": 0,
-                    "name": "GARGOYLE",
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
                     "target": "ENEMY"
                 },
                 {
-                    "asset": "GARGOYLE",
+                    "asset": "SKIAPYR",
                     "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
                         {
                             "maximum": 7,
                             "modifier": 0,
-                            "type": "ENDURANCE",
+                            "type": "FIGHTING PROWESS",
                             "value": 7
                         },
                         {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 12,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 12
+                        },
+                        {
                             "maximum": 0,
-                            "modifier": 2,
+                            "modifier": 0,
                             "type": "ARMOUR",
                             "value": 0
                         },
@@ -282,100 +297,11 @@
                     ],
                     "control_type": "NPC",
                     "item_limit": 10,
-                    "moves": 2,
-                    "name": "GARGOYLE",
-                    "target": "ENEMY"
-                },
-                {
-                    "asset": "GARGOYLE",
-                    "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
-                        {
-                            "maximum": 7,
-                            "modifier": 0,
-                            "type": "ENDURANCE",
-                            "value": 7
-                        },
-                        {
-                            "maximum": 0,
-                            "modifier": 2,
-                            "type": "ARMOUR",
-                            "value": 0
-                        },
-                        {
-                            "maximum": 1,
-                            "modifier": 2,
-                            "type": "DAMAGE",
-                            "value": 1
-                        }
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
                     ],
-                    "control_type": "NPC",
-                    "item_limit": 10,
-                    "moves": 2,
-                    "name": "GARGOYLE",
-                    "target": "ENEMY"
-                },
-                {
-                    "asset": "GARGOYLE",
-                    "attributes": [
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "FIGHTING PROWESS",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 5,
-                            "modifier": 0,
-                            "type": "PSYCHIC ABILITY",
-                            "value": 5
-                        },
-                        {
-                            "maximum": 4,
-                            "modifier": 0,
-                            "type": "AWARENESS",
-                            "value": 4
-                        },
-                        {
-                            "maximum": 7,
-                            "modifier": 0,
-                            "type": "ENDURANCE",
-                            "value": 7
-                        },
-                        {
-                            "maximum": 0,
-                            "modifier": 2,
-                            "type": "ARMOUR",
-                            "value": 0
-                        },
-                        {
-                            "maximum": 1,
-                            "modifier": 2,
-                            "type": "DAMAGE",
-                            "value": 1
-                        }
-                    ],
-                    "control_type": "NPC",
-                    "item_limit": 10,
-                    "moves": 2,
-                    "name": "GARGOYLE",
                     "target": "ENEMY"
                 }
             ]

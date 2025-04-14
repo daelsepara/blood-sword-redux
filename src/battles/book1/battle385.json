@@ -4,7 +4,9 @@
             "book": "BOOK1",
             "number": 385
         },
-        "duration": -1,
+        "conditions": [
+            "SURVIVORS"
+        ],
         "map": "maps/book1/map385.json",
         "opponents": {
             "members": [
