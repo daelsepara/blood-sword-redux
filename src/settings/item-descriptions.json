@@ -27,6 +27,10 @@
         {
             "item": "RING OF WARDING",
             "description": "Each charge increases ARMOUR by 1 for the duration of one combat."
+        },
+        {
+            "item": "CASKET OF KALIUM",
+            "description": "A small casket containing a sliver of grey-white metal."
         }
     ]
 }

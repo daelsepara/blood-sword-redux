@@ -1,0 +1,23 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 521
+    },
+    "text": "The voice of your patron speaks from the medallion. He sounds faint, distant. \"Contact is difficult now you have reached the lower level,\" he says. \"You have found a sliver of kalium. If you take it, keep the casket tightly sealed. Kalium is a volatile metal that reacts explosively when moistened.\"",
+    "items": [
+        {
+            "name": "CASKET OF KALIUM",
+            "quantity": 1,
+            "type": "CASKET OF KALIUM"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 319
+            }
+        }
+    ]
+}

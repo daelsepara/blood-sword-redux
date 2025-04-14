@@ -1,0 +1,23 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 172
+    },
+    "text": "(SAGE) You recognise the strange metal.\n\n[It is a curious substance that alchemists call kalium. If touched by moisture, it may explode. You must keep the casket tightly sealed if you decide to take it.]",
+    "items": [
+        {
+            "name": "CASKET OF KALIUM",
+            "quantity": 1,
+            "type": "CASKET OF KALIUM"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 319
+            }
+        }
+    ]
+}

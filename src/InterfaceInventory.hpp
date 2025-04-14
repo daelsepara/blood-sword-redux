@@ -97,7 +97,7 @@ namespace BloodSword::Interface
             // item description / identify
             if (Book::IsDefined(items[id].Description) || Items::FoundDescription(items[id].Type))
             {
-                if (!items[id].Revealed)
+                if (!items[id].Revealed && Book::IsDefined(items[id].Description))
                 {
                     if (character.Class == Character::Class::SAGE)
                     {

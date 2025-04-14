@@ -542,6 +542,11 @@
             "quantity": 4,
             "type": "RING OF WARDING",
             "revealed": true
+        },
+        {
+            "name": "CASKET OF KALIUM",
+            "quantity": 1,
+            "type": "CASKET OF KALIUM"
         }
     ]
 }
