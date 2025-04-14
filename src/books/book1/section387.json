@@ -6,7 +6,7 @@
     "text": "(ENCHANTER) You cast your spell.\n\n[There is indeed a very powerful spell on the sword, and a residual enchantment flickers between the hilt and the corridor ahead of you.]",
     "choices": [
         {
-            "text": "Pick it up the sword",
+            "text": "Pick up the sword",
             "condition": {
                 "type": "GET ITEM",
                 "location": {
