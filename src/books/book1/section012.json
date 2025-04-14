@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 12
+    },
+    "text": "You hurl the ice jewel down into the bubbling pool of magma. The skiapyrs utter unhuman cries as they see it fall, glittering like frost with the magic it contains. As it strikes the magma, black slabs of cooled rock immediately form around it. The skiapyrs tremble, their flames visibly dimming. They are the elemental spirts of the crater, and by draining its furnace-heat you have sapped much of their vitality. Nonetheless, they are not going to retreat. With cries of vengeance, they bear down upon you.",
+    "background": [
+        {
+            "type": "DROP ITEM",
+            "variables": [
+                "CHOSEN",
+                "BLUE ICE JEWEL"
+            ]
+        }
+    ],
+    "battle": "battles/book1/battle012.json",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 223
+            }
+        }
+    ]
+}

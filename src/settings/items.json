@@ -471,6 +471,7 @@
         {
             "name": "SCROLL: HEALING",
             "properties": [
+                "COMBAT",
                 "READABLE"
             ],
             "quantity": 1,
@@ -552,6 +553,31 @@
             "name": "TALISMAN OF FLAME",
             "quantity": 1,
             "type": "TALISMAN OF FLAME"
+        },
+        {
+            "name": "POTION OF HEALING",
+            "properties": [
+                "COMBAT",
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "type": "POTION OF HEALING",
+            "revealed": true
+        },
+        {
+            "name": "GILDED BRIDLE",
+            "quantity": 1,
+            "type": "GILDED BRIDLE"
+        },
+        {
+            "name": "BLUE TOUCHSTONE",
+            "quantity": 1,
+            "type": "BLUE TOUCHSTONE"
+        },
+        {
+            "name": "LEAD RING",
+            "quantity": 1,
+            "type": "LEAD RING"
         }
     ]
 }

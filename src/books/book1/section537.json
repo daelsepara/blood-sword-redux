@@ -1,0 +1,48 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 537
+    },
+    "text": "You tread warily along the slender ridge that encircles the lava pool. In the crater, rock flows like mud from the intense heat of the volcanic fires below. You stop to watch as globules of volcanic gas sluggishly belch up out of the magma. A glimmer of blue flame catches your watchful eyes. The ethereal forms of fire-demons are rising up from the crater towards you. They are skiapyrs -- raging entities of fiery bloodlust whose talons melt steel and carve through flesh and sinew like butter.",
+    "image_asset": "images/books/book1/skiapyrs.png",
+    "choices": [
+        {
+            "text": "Use a TALISMAN OF FLAME",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 158
+                },
+                "variables": [
+                    "SELECT",
+                    "TALISMAN OF FLAME"
+                ]
+            }
+        },
+        {
+            "text": "Use an ICE JEWEL",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 12
+                },
+                "variables": [
+                    "SELECT",
+                    "BLUE ICE JEWEL"
+                ]
+            }
+        },
+        {
+            "text": "You do not have any of these or choose not to use them",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 376
+                }
+            }
+        }
+    ]
+}

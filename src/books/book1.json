@@ -12,6 +12,7 @@
         "books/book1/section008.json",
         "books/book1/section009.json",
         "books/book1/section010.json",
+        "books/book1/section012.json",
         "books/book1/section013.json",
         "books/book1/section014.json",
         "books/book1/section015.json",
@@ -114,6 +115,7 @@
         "books/book1/section128.json",
         "books/book1/section129.json",
         "books/book1/section130.json",
+        "books/book1/section131.json",
         "books/book1/section134.json",
         "books/book1/section135.json",
         "books/book1/section136.json",
@@ -136,6 +138,7 @@
         "books/book1/section155.json",
         "books/book1/section156.json",
         "books/book1/section157.json",
+        "books/book1/section158.json",
         "books/book1/section160.json",
         "books/book1/section161.json",
         "books/book1/section162.json",
@@ -266,6 +269,7 @@
         "books/book1/section305.json",
         "books/book1/section306.json",
         "books/book1/section307.json",
+        "books/book1/section308.json",
         "books/book1/section309.json",
         "books/book1/section310.json",
         "books/book1/section311.json",
@@ -326,6 +330,7 @@
         "books/book1/section373.json",
         "books/book1/section374.json",
         "books/book1/section375.json",
+        "books/book1/section376.json",
         "books/book1/section379.json",
         "books/book1/section380.json",
         "books/book1/section381.json",
@@ -460,6 +465,7 @@
         "books/book1/section533.json",
         "books/book1/section534.json",
         "books/book1/section535.json",
-        "books/book1/section536.json"
+        "books/book1/section536.json",
+        "books/book1/section537.json"
     ]
 }

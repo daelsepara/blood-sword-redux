@@ -2,12 +2,9 @@
     "battle": {
         "location": {
             "book": "BOOK1",
-            "number": 429
+            "number": 376
         },
-        "conditions": [
-            "SKIP LOCATION"
-        ],
-        "map": "maps/book1/map429.json",
+        "map": "maps/book1/map376.json",
         "opponents": {
             "members": [
                 {

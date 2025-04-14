@@ -1,0 +1,20 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 158
+    },
+    "text": "As they behold the talisman, its burnished surface glowing like the sun in the reflected light from the lava pit, the skiapyrs waver in awe. \"It is the sacred talisman,\" whispers one. \"Pass by in peace.\"",
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 223
+            },
+            "variables": [
+                "You hurry on before they can change their minds",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

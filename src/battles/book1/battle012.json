@@ -2,28 +2,25 @@
     "battle": {
         "location": {
             "book": "BOOK1",
-            "number": 429
+            "number": 12
         },
-        "conditions": [
-            "SKIP LOCATION"
-        ],
-        "map": "maps/book1/map429.json",
+        "map": "maps/book1/map012.json",
         "opponents": {
             "members": [
                 {
                     "asset": "SKIAPYR",
                     "attributes": [
                         {
-                            "maximum": 7,
+                            "maximum": 5,
                             "modifier": 0,
                             "type": "FIGHTING PROWESS",
-                            "value": 7
+                            "value": 5
                         },
                         {
-                            "maximum": 8,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 8
+                            "value": 7
                         },
                         {
                             "maximum": 8,
@@ -32,10 +29,10 @@
                             "value": 8
                         },
                         {
-                            "maximum": 12,
+                            "maximum": 10,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 12
+                            "value": 10
                         },
                         {
                             "maximum": 0,
@@ -44,10 +41,10 @@
                             "value": 0
                         },
                         {
-                            "maximum": 3,
-                            "modifier": 2,
+                            "maximum": 1,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 3
+                            "value": 1
                         }
                     ],
                     "control_type": "NPC",
@@ -63,16 +60,16 @@
                     "asset": "SKIAPYR",
                     "attributes": [
                         {
-                            "maximum": 7,
+                            "maximum": 5,
                             "modifier": 0,
                             "type": "FIGHTING PROWESS",
-                            "value": 7
+                            "value": 5
                         },
                         {
-                            "maximum": 8,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 8
+                            "value": 7
                         },
                         {
                             "maximum": 8,
@@ -81,10 +78,10 @@
                             "value": 8
                         },
                         {
-                            "maximum": 12,
+                            "maximum": 10,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 12
+                            "value": 10
                         },
                         {
                             "maximum": 0,
@@ -93,10 +90,10 @@
                             "value": 0
                         },
                         {
-                            "maximum": 3,
-                            "modifier": 2,
+                            "maximum": 1,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 3
+                            "value": 1
                         }
                     ],
                     "control_type": "NPC",
@@ -112,16 +109,16 @@
                     "asset": "SKIAPYR",
                     "attributes": [
                         {
-                            "maximum": 7,
+                            "maximum": 5,
                             "modifier": 0,
                             "type": "FIGHTING PROWESS",
-                            "value": 7
+                            "value": 5
                         },
                         {
-                            "maximum": 8,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 8
+                            "value": 7
                         },
                         {
                             "maximum": 8,
@@ -130,10 +127,10 @@
                             "value": 8
                         },
                         {
-                            "maximum": 12,
+                            "maximum": 10,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 12
+                            "value": 10
                         },
                         {
                             "maximum": 0,
@@ -142,10 +139,10 @@
                             "value": 0
                         },
                         {
-                            "maximum": 3,
-                            "modifier": 2,
+                            "maximum": 1,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 3
+                            "value": 1
                         }
                     ],
                     "control_type": "NPC",
@@ -161,16 +158,16 @@
                     "asset": "SKIAPYR",
                     "attributes": [
                         {
-                            "maximum": 7,
+                            "maximum": 5,
                             "modifier": 0,
                             "type": "FIGHTING PROWESS",
-                            "value": 7
+                            "value": 5
                         },
                         {
-                            "maximum": 8,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 8
+                            "value": 7
                         },
                         {
                             "maximum": 8,
@@ -179,10 +176,10 @@
                             "value": 8
                         },
                         {
-                            "maximum": 12,
+                            "maximum": 10,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 12
+                            "value": 10
                         },
                         {
                             "maximum": 0,
@@ -191,10 +188,10 @@
                             "value": 0
                         },
                         {
-                            "maximum": 3,
-                            "modifier": 2,
+                            "maximum": 1,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 3
+                            "value": 1
                         }
                     ],
                     "control_type": "NPC",
@@ -210,16 +207,16 @@
                     "asset": "SKIAPYR",
                     "attributes": [
                         {
-                            "maximum": 7,
+                            "maximum": 5,
                             "modifier": 0,
                             "type": "FIGHTING PROWESS",
-                            "value": 7
+                            "value": 5
                         },
                         {
-                            "maximum": 8,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 8
+                            "value": 7
                         },
                         {
                             "maximum": 8,
@@ -228,10 +225,10 @@
                             "value": 8
                         },
                         {
-                            "maximum": 12,
+                            "maximum": 10,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 12
+                            "value": 10
                         },
                         {
                             "maximum": 0,
@@ -240,10 +237,10 @@
                             "value": 0
                         },
                         {
-                            "maximum": 3,
-                            "modifier": 2,
+                            "maximum": 1,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 3
+                            "value": 1
                         }
                     ],
                     "control_type": "NPC",
@@ -259,16 +256,16 @@
                     "asset": "SKIAPYR",
                     "attributes": [
                         {
-                            "maximum": 7,
+                            "maximum": 5,
                             "modifier": 0,
                             "type": "FIGHTING PROWESS",
-                            "value": 7
+                            "value": 5
                         },
                         {
-                            "maximum": 8,
+                            "maximum": 7,
                             "modifier": 0,
                             "type": "PSYCHIC ABILITY",
-                            "value": 8
+                            "value": 7
                         },
                         {
                             "maximum": 8,
@@ -277,10 +274,10 @@
                             "value": 8
                         },
                         {
-                            "maximum": 12,
+                            "maximum": 10,
                             "modifier": 0,
                             "type": "ENDURANCE",
-                            "value": 12
+                            "value": 10
                         },
                         {
                             "maximum": 0,
@@ -289,10 +286,10 @@
                             "value": 0
                         },
                         {
-                            "maximum": 3,
-                            "modifier": 2,
+                            "maximum": 1,
+                            "modifier": 0,
                             "type": "DAMAGE",
-                            "value": 3
+                            "value": 1
                         }
                     ],
                     "control_type": "NPC",

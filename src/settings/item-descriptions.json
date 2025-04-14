@@ -31,6 +31,10 @@
         {
             "item": "CASKET OF KALIUM",
             "description": "A small casket containing a sliver of grey-white metal."
+        },
+        {
+            "item": "POTION OF HEALING",
+            "description": "Restores 2-12 Endurance points to the player who reads it, up to his or her initial ENDURANCE maximum"
         }
     ]
 }
