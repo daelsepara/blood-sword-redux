@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 507
+    },
+    "text": "Picking your way between the shattered and tilted flagstones, you reach into the dish and bring out a large gold talisman shaped like a sylised flame and with a large fire opal at its centre.\n\nPebbles fall down the slopes outside, sending a skittering echo through the hollow shell of the shrine. You look about, noticing that one of the gargoyles is no longer where it was. It now stands blocking the exit, and its rock talons flex like scythes. The other gargoyles are slowly coming to life and slipping down from the walls.",
+    "battle": "battles/book1/battle507.json",
+    "items": [
+        {
+            "name": "TALISMAN OF FLAME",
+            "quantity": 1,
+            "type": "TALISMAN OF FLAME"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 92
+            }
+        }
+    ]
+}

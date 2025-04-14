@@ -547,6 +547,11 @@
             "name": "CASKET OF KALIUM",
             "quantity": 1,
             "type": "CASKET OF KALIUM"
+        },
+        {
+            "name": "TALISMAN OF FLAME",
+            "quantity": 1,
+            "type": "TALISMAN OF FLAME"
         }
     ]
 }

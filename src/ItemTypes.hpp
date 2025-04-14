@@ -59,7 +59,8 @@ namespace BloodSword::Item
         RING_OF_WARDING,
         GREY_PEARL,
         SHARP_KNIFE,
-        CASKET_OF_KALIUM
+        CASKET_OF_KALIUM,
+        TALISMAN_OF_FLAME
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -114,7 +115,8 @@ namespace BloodSword::Item
         {Item::Type::RING_OF_WARDING, "RING OF WARDING"},
         {Item::Type::GREY_PEARL, "GREY PEARL"},
         {Item::Type::SHARP_KNIFE, "SHARP KNIFE"},
-        {Item::Type::CASKET_OF_KALIUM, "CASKET OF KALIUM"}};
+        {Item::Type::CASKET_OF_KALIUM, "CASKET OF KALIUM"},
+        {Item::Type::TALISMAN_OF_FLAME, "TALISMAN OF FLAME"}};
 
     Item::Type Map(const char *item)
     {
