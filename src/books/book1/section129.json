@@ -4,7 +4,7 @@
         "number": 129
     },
     "text": "Echidna slithers forwards across the marble floor to attack you.",
-    "battle": "battles/book1/battle399.json",
+    "battle": "battles/book1/battle129.json",
     "choices": [
         {
             "text": "Run to the left exit",

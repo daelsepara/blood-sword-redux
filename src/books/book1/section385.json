@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 385
+    },
+    "text": "Echidna slithers forwards across the marble floor to attack you.",
+    "battle": "battles/book1/battle385.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 308
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 197
+            }
+        }
+    ]
+}
