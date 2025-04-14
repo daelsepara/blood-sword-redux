@@ -1,0 +1,30 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 268
+    },
+    "text": "(ENCHANTER) \"The green brew prepared by Gronga is thought to be a restorative to human folk, though it is a poison to us hags. The black concoction you will find in Buldea's pot is an extremely virulent poison, Chemera's spittle, but it has a delayed effect and does not kill at once. Wynda's fizzing potion is an antidote to chimera spittle. Lift the lid of fat Jeela's cauldron and you will see the purulent grey slime that has spelled the death of many a poor dupe. My own clear but tasty tipple is called the elixir of chaos, for the simple reason that it has random effects on those who drink. Now, if you will excuse me, I think I feel your spell wearing off and I am now ready to mete out revenge.\n\nShe grabs a ladle protruding from a nearby pot and lobs an acid venom into your face.",
+    "events": [
+        {
+            "type": "LOSE ENDURANCE",
+            "variables": [
+                "ENCHANTER",
+                "1",
+                "TRUE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 67
+            },
+            "variables": [
+                "Seeing you ready to retaliate with magic, the hag scurries off behind the temple",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

@@ -43,6 +43,7 @@
         "books/book1/section046.json",
         "books/book1/section047.json",
         "books/book1/section048.json",
+        "books/book1/section049.json",
         "books/book1/section050.json",
         "books/book1/section052.json",
         "books/book1/section053.json",
@@ -230,6 +231,7 @@
         "books/book1/section265.json",
         "books/book1/section266.json",
         "books/book1/section267.json",
+        "books/book1/section268.json",
         "books/book1/section270.json",
         "books/book1/section273.json",
         "books/book1/section274.json",
@@ -272,6 +274,7 @@
         "books/book1/section316.json",
         "books/book1/section317.json",
         "books/book1/section318.json",
+        "books/book1/section319.json",
         "books/book1/section320.json",
         "books/book1/section323.json",
         "books/book1/section324.json",
@@ -305,6 +308,7 @@
         "books/book1/section355.json",
         "books/book1/section356.json",
         "books/book1/section357.json",
+        "books/book1/section358.json",
         "books/book1/section360.json",
         "books/book1/section362.json",
         "books/book1/section363.json",
@@ -318,6 +322,7 @@
         "books/book1/section371.json",
         "books/book1/section372.json",
         "books/book1/section373.json",
+        "books/book1/section374.json",
         "books/book1/section375.json",
         "books/book1/section379.json",
         "books/book1/section380.json",
@@ -391,6 +396,7 @@
         "books/book1/section463.json",
         "books/book1/section464.json",
         "books/book1/section465.json",
+        "books/book1/section466.json",
         "books/book1/section469.json",
         "books/book1/section470.json",
         "books/book1/section471.json",
@@ -447,6 +453,7 @@
         "books/book1/section531.json",
         "books/book1/section533.json",
         "books/book1/section534.json",
-        "books/book1/section535.json"
+        "books/book1/section535.json",
+        "books/book1/section536.json"
     ]
 }

@@ -2152,7 +2152,7 @@ namespace BloodSword::Conditions
                 internal_error = false;
             }
         }
-        else if (condition.Type == Conditions::Type::COUNT_ITEMS)
+        else if (condition.Type == Conditions::Type::HAS_QUANTITY_OF_ITEM)
         {
             internal_error = true;
 

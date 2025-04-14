@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 358
+    },
+    "text": "The potion fizzes as it passes over your tongue. You notice no effect other than a chalky aftertaste.\n\n\"Don't you worry,\" mutters the hag. \"That's what it's meant to taste like. I can't always get the bat's entrails, you know. If you want to buy a bottle to drink later, that'll be two gold cons.\" She cackles so hideously that you almost cover your ears.",
+    "choices": [
+        {
+            "text": "Try another potions",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 103
+                }
+            }
+        },
+        {
+            "text": "You don't want any more potions",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 481
+                }
+            }
+        }
+    ]
+}

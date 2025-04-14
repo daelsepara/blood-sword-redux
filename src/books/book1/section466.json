@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 466
+    },
+    "text": "(ENCHANTER) \"Unquestionably that would be the giant Skrymir, whom Magus Zyn will ask you to resurrect.\"\n\nShe seems to have nothing more to say on the subject. Sensing that your spell is about to wear off, you pull the hideous hag over to the edge of the terrace and shove her into the gorge. The Enthralment spell wears off in time for her to give vent to a terrified scream as she realises what has happened.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 67
+            }
+        }
+    ]
+}

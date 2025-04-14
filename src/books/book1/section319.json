@@ -1,0 +1,39 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 319
+    },
+    "text": "What will you do now?",
+    "choices": [
+        {
+            "text": "Investigate the inner sanctum of the temple",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 392
+                }
+            }
+        },
+        {
+            "text": "Leave via the exit to the left",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 357
+                }
+            }
+        },
+        {
+            "text": "Take the exit to the right",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 56
+                }
+            }
+        }
+    ]
+}

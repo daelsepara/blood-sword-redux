@@ -1,0 +1,49 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 374
+    },
+    "text": "(ENCHANTER) The hag is enslaved by your magic. \"Speak,\" she says. \"Demand. I'll answer.\"\n\nYou feel her natural stubbornness fighting your spell. You have time for only one question. What will you ask?",
+    "choices": [
+        {
+            "text": "\"What other adventurers passed this way?\"",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 49
+                }
+            }
+        },
+        {
+            "text": "\"What lies within the temple?\"",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 536
+                }
+            }
+        },
+        {
+            "text": "\"Which of these potions are beneficial?\"",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 268
+                }
+            }
+        },
+        {
+            "text": "\"What is the worst danger that awaits?\"",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 466
+                }
+            }
+        }
+    ]
+}
