@@ -389,7 +389,7 @@
                 "type": "PASSABLE"
             },
             {
-                "asset": "BROKEN PILLARS",
+                "asset": "WALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
@@ -397,7 +397,7 @@
                 "type": "OBSTACLE"
             },
             {
-                "asset": "BROKEN PILLARS",
+                "asset": "WALL",
                 "id": -1,
                 "lifetime": -1,
                 "occupant": "NONE",
