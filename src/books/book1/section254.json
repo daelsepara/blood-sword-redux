@@ -1,0 +1,32 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 254
+    },
+    "text": "(SAGE) It is written in the Dakkandi language, a debased offshoot of the Magi's tongue.\n\n[It consists of an elegiac lament to the giant Skrymir, ancient enemy of Krarth, who was slain and dismembered by the champions of the magi. According to the parchment, Magus Zyn was discovered to be Skrymir's accomplice and, in punishment, the other magi consigned him to eternal undeath in the fires of the Battlepits.]",
+    "items": [
+        {
+            "name": "YELLOW SCROLL",
+            "quantity": 1,
+            "type": "YELLOW SCROLL",
+            "description": {
+                "book": "BOOK1",
+                "number": 254
+            },
+            "revealed": true
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 339
+            },
+            "variables": [
+                "You put the parchment back in its case and then continue along the path leading to the shrine",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

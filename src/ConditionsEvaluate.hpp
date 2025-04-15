@@ -1570,21 +1570,21 @@ namespace BloodSword::Conditions
 
             // variables:
             // 0 - message to display
-            // 1 - item
-            // 2 - quantity
+            // 1 - currency (currency, e.g. GOLD)
+            // 2 - quantity (of the item above)
             if (Engine::IsAlive(party) && condition.Variables.size() > 2)
             {
                 auto chosen = Character::Class::NONE;
 
-                auto item = Item::Map(condition.Variables[1]);
+                auto currency = Item::Map(condition.Variables[1]);
 
                 auto quantity = party.Number(condition.Variables[2]);
 
-                if (item != Item::Type::NONE && quantity > 0)
+                if (currency != Item::Type::NONE && quantity > 0)
                 {
                     if (Engine::Count(party) > 1)
                     {
-                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : ("WHO SHALL PAY " + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "?");
+                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : ("WHO SHALL PAY " + std::to_string(quantity) + " " + std::string(Item::TypeMapping[currency]) + "?");
 
                         chosen = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                     }
@@ -1595,15 +1595,84 @@ namespace BloodSword::Conditions
 
                     if (chosen != Character::Class::NONE)
                     {
-                        result = party[chosen].Quantity(item) >= quantity;
+                        result = party[chosen].Quantity(currency) >= quantity;
 
                         if (!result)
                         {
-                            text = Engine::NotEnough(item);
+                            text = Engine::NotEnough(currency);
                         }
                         else
                         {
-                            party[chosen].Add(item, -quantity);
+                            party[chosen].Add(currency, -quantity);
+
+                            party.ChosenCharacter = chosen;
+                        }
+
+                        internal_error = false;
+                    }
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::PLAYER_BUYS_ITEM || condition.Type == Conditions::Type::CHARACTER_BUYS_ITEM)
+        {
+            internal_error = true;
+
+            // variables:
+            // 0 - message to display
+            // 1 - currency (currency, e.g. GOLD)
+            // 2 - quantity (of the item above)
+            // 3 - item to buy
+            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            {
+                auto chosen = Character::Class::NONE;
+
+                auto currency = Item::Map(condition.Variables[1]);
+
+                auto quantity = party.Number(condition.Variables[2]);
+
+                auto item = Item::Map(condition.Variables[3]);
+
+                if (currency != Item::Type::NONE && item != Item::Type::NONE && Items::Found(item) && quantity > 0)
+                {
+                    if (Engine::Count(party) > 1)
+                    {
+                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : (std::string("WHO BUYS THE ") + Item::TypeMapping[item] + " (" + std::to_string(quantity) + " " + Item::TypeMapping[currency] + ")?");
+
+                        chosen = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+                    }
+                    else
+                    {
+                        chosen = Engine::FirstClass(party);
+                    }
+
+                    if (chosen != Character::Class::NONE)
+                    {
+                        auto buy = party[chosen].Quantity(currency) >= quantity;
+
+                        auto get = Interface::CanReceive(party[chosen]);
+
+                        result = buy && get;
+
+                        if (!result)
+                        {
+                            if (!buy)
+                            {
+                                text = Engine::NotEnough(currency);
+                            }
+                            else if (!get)
+                            {
+                                text = party[chosen].Name + "'s inventory is full.";
+                            }
+                            else
+                            {
+                                text = "You cannot buy the " + std::string(Item::TypeMapping[item]) + ".";
+                            }
+                        }
+                        else
+                        {
+                            party[chosen].Add(Items::Defaults[item]);
+
+                            party[chosen].Add(currency, -quantity);
 
                             party.ChosenCharacter = chosen;
                         }

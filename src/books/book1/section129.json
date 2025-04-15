@@ -9,7 +9,7 @@
         {
             "text": "Run to the left exit",
             "condition": {
-                "type": "BATTLE FLEE",
+                "type": "NORMAL",
                 "location": {
                     "book": "BOOK1",
                     "number": 357

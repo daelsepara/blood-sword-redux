@@ -14,13 +14,14 @@
             }
         },
         {
-            "type": "NORMAL",
+            "type": "TEXTBOX",
             "location": {
                 "book": "BOOK1",
                 "number": 249
             },
             "variables": [
-                "You flee out of the room and along the black tunnel"
+                "You flee out of the room and along the black tunnel",
+                "INACTIVE"
             ]
         }
     ]

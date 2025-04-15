@@ -15,7 +15,7 @@
             }
         },
         {
-            "type": "BATTLE FLEE",
+            "type": "NORMAL",
             "location": {
                 "book": "BOOK1",
                 "number": 354

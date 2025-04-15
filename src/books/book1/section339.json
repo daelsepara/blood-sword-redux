@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 339
+    },
+    "text": "You stand within the ruined walls. Grey stone gargoyles hang off the sides of the shrine at various odd angles. Through an exit at the rear you can see another narrow path above a near-vertical precipice. In the centre of the broken floor, a golden dish gleams in the occasional spurts of volcano-fire from outside.",
+    "choices": [
+        {
+            "text": "Take a look in the dish",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 507
+                }
+            }
+        },
+        {
+            "text": "Leave",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 92
+                }
+            }
+        }
+    ]
+}

@@ -64,7 +64,8 @@ namespace BloodSword::Item
         GILDED_BRIDLE,
         POTION_OF_HEALING,
         BLUE_TOUCHSTONE,
-        LEAD_RING
+        LEAD_RING,
+        YELLOW_SCROLL
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -124,7 +125,8 @@ namespace BloodSword::Item
         {Item::Type::GILDED_BRIDLE, "GILDED BRIDLE"},
         {Item::Type::POTION_OF_HEALING, "POTION OF HEALING"},
         {Item::Type::BLUE_TOUCHSTONE, "BLUE TOUCHSTONE"},
-        {Item::Type::LEAD_RING, "LEAD RING"}};
+        {Item::Type::LEAD_RING, "LEAD RING"},
+        {Item::Type::YELLOW_SCROLL, "YELLOW SCROLL"}};
 
     Item::Type Map(const char *item)
     {

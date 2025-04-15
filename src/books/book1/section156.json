@@ -26,13 +26,14 @@
             }
         },
         {
-            "type": "NORMAL",
+            "type": "TEXTBOX",
             "location": {
                 "book": "BOOK1",
                 "number": 354
             },
             "variables": [
-                "You go back to take the other corridor"
+                "You go back to take the other corridor",
+                "INACTIVE"
             ]
         }
     ]

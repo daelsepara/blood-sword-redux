@@ -578,6 +578,16 @@
             "name": "LEAD RING",
             "quantity": 1,
             "type": "LEAD RING"
+        },
+        {
+            "name": "YELLOW SCROLL",
+            "quantity": 1,
+            "type": "YELLOW SCROLL",
+            "description": {
+                "book": "BOOK1",
+                "number": 254
+            },
+            "revealed": true
         }
     ]
 }

@@ -123,7 +123,9 @@ namespace BloodSword::Conditions
         RANDOM_OUTCOME,
         KILL_ALL_WITH_STATUS,
         ALL_WITH_STATUS_GAIN_ATTRIBUTE,
-        ALL_WITH_STATUS_MODIFY_ATTRIBUTE
+        ALL_WITH_STATUS_MODIFY_ATTRIBUTE,
+        PLAYER_BUYS_ITEM,
+        CHARACTER_BUYS_ITEM
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
