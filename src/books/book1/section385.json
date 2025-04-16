@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 385
     },
-    "text": "Echidna slithers forwards across the marble floor to attack you.",
+    "text": "Balanced on the narrow circular ledge overlooking the lava, you are about to fight a deadly battle with two desperate adventurers.",
     "battle": "battles/book1/battle385.json",
     "next": [
         {
