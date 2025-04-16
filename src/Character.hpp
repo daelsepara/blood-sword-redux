@@ -157,6 +157,28 @@ namespace BloodSword::Character
             return has_status && is_active && status != Character::Status::NONE;
         }
 
+        bool HasDelayedEffect(Character::Status status)
+        {
+            return BloodSword::Has(this->DelayedEffects, status);
+        }
+
+        Book::Location DelayedEffect(Character::Status status)
+        {
+            auto location = Book::Undefined;
+
+            if (this->HasDelayedEffect(status))
+            {
+                auto item_type = this->DelayedEffects[status];
+
+                if (item_type != Item::Type::NONE && Items::Found(item_type))
+                {
+                    location = Items::Defaults[item_type].DelayedEffect;
+                }
+            }
+
+            return location;
+        }
+
         bool Is(Character::Status status)
         {
             return this->Has(status);
