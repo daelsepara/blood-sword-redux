@@ -418,7 +418,7 @@ namespace BloodSword::Interface
                                 {
                                     update.Update = items[id].Has(Item::Property::EQUIPPED);
 
-                                    done = Interface::TransferItem(graphics, background, party[other_character], items, id);
+                                    done = Interface::TransferItem(graphics, background, party, party[other_character], items, id);
 
                                     if (done)
                                     {
@@ -449,7 +449,7 @@ namespace BloodSword::Interface
                         else
                         {
                             // handles effects such as potion of healing, etc.
-                            Interface::ItemEffects(graphics, background, character, items[id].Type);
+                            Interface::ItemEffects(graphics, background, party, character, items[id].Type);
                         }
 
                         update.Update = true;
@@ -469,7 +469,7 @@ namespace BloodSword::Interface
                         else
                         {
                             // handles effects such as potion of healing, etc.
-                            Interface::ItemEffects(graphics, background, character, items[id].Type);
+                            Interface::ItemEffects(graphics, background, party, character, items[id].Type);
                         }
 
                         update.Update = true;
@@ -489,7 +489,7 @@ namespace BloodSword::Interface
                         else
                         {
                             // handles effects such as potion of healing, etc.
-                            Interface::ItemEffects(graphics, background, character, items[id].Type);
+                            Interface::ItemEffects(graphics, background, party, character, items[id].Type);
                         }
 
                         update.Update = true;
@@ -566,7 +566,7 @@ namespace BloodSword::Interface
 
                     if (character != Character::Class::NONE)
                     {
-                        done = Interface::TransferItem(graphics, background, party[character], items, id);
+                        done = Interface::TransferItem(graphics, background, party, party[character], items, id);
 
                         update = true;
                     }

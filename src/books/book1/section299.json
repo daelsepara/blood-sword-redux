@@ -1,0 +1,58 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 299
+    },
+    "text": "You quaff the vile brew. There is no immediate effect.",
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "CHOSEN",
+                "DYING SLOWLY"
+            ]
+        }
+    ],
+    "events": [
+        {
+            "type": "NORMAL",
+            "variables": [
+                "\"You have to wait for the benefit of that one. Why not buy a bottle for later? Only three gold coins,\" says a hag."
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Buy ",
+            "condition": {
+                "type": "NORMAL",
+                "variables": [
+                    "WHO SHALL BUY ANOTHER BOTTLE OF THE TARRY BLACK SUBSTANCE?",
+                    "GOLD",
+                    "3",
+                    "TARRY BLACK SUBSTANCE"
+                ]
+            }
+        },
+        {
+            "text": "Try another potion",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 103
+                }
+            }
+        },
+        {
+            "text": "Be on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 481
+                }
+            }
+        }
+    ]
+}

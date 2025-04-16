@@ -3026,7 +3026,7 @@ namespace BloodSword::Conditions
 
                             if (chosen.Has(item))
                             {
-                                Interface::ItemEffects(graphics, background, chosen, item);
+                                Interface::ItemEffects(graphics, background, party, chosen, item);
 
                                 result = true;
                             }

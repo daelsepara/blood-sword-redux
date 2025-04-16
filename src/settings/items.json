@@ -588,6 +588,24 @@
                 "number": 254
             },
             "revealed": true
+        },
+        {
+            "contains": "NONE",
+            "name": "BOTTLE OF TARRY BLACK SUBSTANCE",
+            "description": {
+                "book": "BOOK1",
+                "number": 299
+            },
+            "delayed_effect": {
+                "book": "BOOK1",
+                "number": 144
+            },
+            "properties": [
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "revealed": false,
+            "type": "TARRY BLACK SUBSTANCE"
         }
     ]
 }

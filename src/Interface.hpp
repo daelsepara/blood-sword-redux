@@ -1078,18 +1078,22 @@ namespace BloodSword::Interface
         {
             if (status.second != 0)
             {
-                if ((in_battle && status.first != Character::Status::IN_BATTLE) || !in_battle)
+                auto current_status = status.first;
+
+                auto duration = status.second;
+
+                if (((in_battle && current_status != Character::Status::IN_BATTLE) || !in_battle) && !BloodSword::In(Character::GlobalStatus, current_status))
                 {
                     if (list.length() > 0)
                     {
                         list += '\n';
                     }
 
-                    list += Character::StatusMapping[status.first];
+                    list += Character::StatusMapping[current_status];
 
-                    if (status.second > 0)
+                    if (duration > 0)
                     {
-                        list += " (" + std::to_string(status.second) + ")";
+                        list += " (" + std::to_string(duration) + ")";
                     }
                 }
             }

@@ -12,7 +12,7 @@ namespace BloodSword::Interface
     }
 
     // individual item effects
-    void ProcessEffects(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, int item_id)
+    void ProcessEffects(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, int item_id)
     {
         auto &item = character.Items[item_id];
 
@@ -138,9 +138,25 @@ namespace BloodSword::Interface
                 Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
             }
         }
+        else if (item.Type == Item::Type::TARRY_BLACK_SUBSTANCE)
+        {
+            if (Engine::IsAlive(character))
+            {
+                if (!character.Has(Character::Status::DYING_SLOWLY))
+                {
+                    character.Add(Character::Status::DYING_SLOWLY);
+                }
+
+                Interface::ConsumeItem(character, item_id);
+            }
+            else
+            {
+                Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
+            }
+        }
     }
 
-    void ItemEffects(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Item::Type item)
+    void ItemEffects(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Item::Type item)
     {
         if (Engine::IsAlive(character))
         {
@@ -171,7 +187,7 @@ namespace BloodSword::Interface
                     }
 
                     // process effects
-                    Interface::ProcessEffects(graphics, background, character, item_id);
+                    Interface::ProcessEffects(graphics, background, party, character, item_id);
                 }
                 else
                 {

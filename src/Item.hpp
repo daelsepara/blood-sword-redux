@@ -77,6 +77,9 @@ namespace BloodSword::Item
         // item effects as sections
         Book::Location Effects = Book::Undefined;
 
+        // item delayed effects as sections
+        Book::Location DelayedEffect = Book::Undefined;
+
         // list of battlefield effects
         std::vector<Item::BattleDescription> BattleDescriptions = {};
 
@@ -528,6 +531,11 @@ namespace BloodSword::Item
             item.Effects = Book::Load(data["effects"]);
         }
 
+        if (!data["delayed_effect"].is_null() && data["delayed_effect"].is_object())
+        {
+            item.DelayedEffect = Book::Load(data["delayed_effect"]);
+        }
+
         if (!data["battle_descriptions"].is_null() && data["battle_descriptions"].is_array() && data["battle_descriptions"].size() > 0)
         {
             item.BattleDescriptions.clear();
@@ -695,6 +703,11 @@ namespace BloodSword::Items
             if (Book::IsDefined(item.Effects))
             {
                 data["effects"] = Book::Data(item.Effects);
+            }
+
+            if (Book::IsDefined(item.DelayedEffect))
+            {
+                data["delayed_effect"] = Book::Data(item.DelayedEffect);
             }
 
             if (item.BattleDescriptions.size() > 0)

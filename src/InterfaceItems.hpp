@@ -47,7 +47,7 @@ namespace BloodSword::Interface
     }
 
     // GIVE / TAKE
-    bool TransferItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &receiver, Items::Inventory &source, int id)
+    bool TransferItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &receiver, Items::Inventory &source, int id)
     {
         auto result = false;
 
@@ -101,7 +101,7 @@ namespace BloodSword::Interface
             {
                 if (receiver.Items[i].Has(Item::Property::CURSED))
                 {
-                    Interface::ItemEffects(graphics, background, receiver, receiver.Items[i].Type);
+                    Interface::ItemEffects(graphics, background, party, receiver, receiver.Items[i].Type);
                 }
             }
 

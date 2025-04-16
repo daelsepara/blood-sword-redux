@@ -1043,7 +1043,10 @@ namespace BloodSword::Engine
             // cooldown each status
             for (auto status : status_types)
             {
-                update |= Engine::CoolDown(character, status);
+                if (!BloodSword::In(Character::GlobalStatus, status))
+                {
+                    update |= Engine::CoolDown(character, status);
+                }
             }
 
             if (active != character.Status.size())

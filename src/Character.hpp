@@ -74,6 +74,8 @@ namespace BloodSword::Character
         // location (survivor tracking in a battle)
         Book::Location Location = Book::Undefined;
 
+        BloodSword::UnorderedMap<Character::Status, Item::Type> DelayedEffects = {};
+
         Base(const char *name,
              Character::Class character_class,
              Attributes::List attributes,
@@ -815,6 +817,25 @@ namespace BloodSword::Character
         return all_status;
     }
 
+    BloodSword::UnorderedMap<Character::Status, Item::Type> LoadDelayedEffects(nlohmann::json &data)
+    {
+        auto delayed_effects = BloodSword::UnorderedMap<Character::Status, Item::Type>();
+
+        for (auto &[key, value] : data.items())
+        {
+            auto status = Character::MapStatus(std::string(key));
+
+            auto item = Item::Map(std::string(value));
+
+            if (status != Character::Status::NONE)
+            {
+                delayed_effects[status] = item;
+            }
+        }
+
+        return delayed_effects;
+    }
+
     Character::Base Load(nlohmann::json &data)
     {
         auto character = Character::Base();
@@ -869,6 +890,11 @@ namespace BloodSword::Character
         if (!data["status"].is_null() && data["status"].is_object() && data["status"].size() > 0)
         {
             character.Status = Character::LoadStatus(data["status"]);
+        }
+
+        if (!data["delayed_effects"].is_null() && data["delayed_effects"].is_object() && data["delayed_effects"].size() > 0)
+        {
+            character.DelayedEffects = Character::LoadDelayedEffects(data["delayed_effects"]);
         }
 
         if (!data["spell_immunity"].is_null() && data["spell_immunity"].is_array() && data["spell_immunity"].size() > 0)
@@ -970,6 +996,22 @@ namespace BloodSword::Character
             }
 
             data["status"] = row;
+        }
+
+        if (character.DelayedEffects.size() > 0)
+        {
+            nlohmann::json row;
+
+            for (auto &effect : character.DelayedEffects)
+            {
+                auto status = std::string(Character::StatusMapping[effect.first]);
+
+                auto item = std::string(Item::TypeMapping[effect.second]);
+
+                row.emplace(status, item);
+            }
+
+            data["delayed_effects"] = row;
         }
 
         if (character.SpellImmunity.size() > 0)

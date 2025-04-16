@@ -60,6 +60,12 @@ namespace BloodSword
         return BloodSword::Find(vector, key) != vector.end();
     }
 
+    template <typename T>
+    bool In(std::vector<T> &vector, T &key)
+    {
+        return BloodSword::Find(vector, key) != vector.end();
+    }
+
     // search for a key in a vector (of type/objects) and use a custom compare function
     template <typename T, typename R = typename std::vector<T>::const_iterator>
     R Find(std::vector<T> &vector, T &key, bool F(T &, T &))

@@ -23,7 +23,7 @@ namespace BloodSword::Interface
         }
     }
 
-    void BattleItemEffects(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Character::Base &character, int id)
+    void BattleItemEffects(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id)
     {
         auto &item = character.Items[id];
 
@@ -54,7 +54,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            Interface::ItemEffects(graphics, background, character, item.Type);
+            Interface::ItemEffects(graphics, background, party, character, item.Type);
         }
     }
 
@@ -344,7 +344,7 @@ namespace BloodSword::Interface
                     {
                         auto items = character.Items.size();
 
-                        Interface::BattleItemEffects(graphics, background, battle, character, id);
+                        Interface::BattleItemEffects(graphics, background, battle, party, character, id);
 
                         update = character.Items.size() != items;
                     }

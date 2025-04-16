@@ -38,7 +38,9 @@ namespace BloodSword::Character
         FIGHTING_BLIND,
         STRONG,
         WEAKENED,
-        TEMPORARY_INVULNERABILITY
+        TEMPORARY_INVULNERABILITY,
+        DYING_SLOWLY,
+        IMMUNE_DYING_SLOWLY
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -72,7 +74,9 @@ namespace BloodSword::Character
         {Character::Status::FIGHTING_BLIND, "FIGHTING BLIND"},
         {Character::Status::STRONG, "STRONG"},
         {Character::Status::WEAKENED, "WEAKENED"},
-        {Character::Status::TEMPORARY_INVULNERABILITY, "TEMPORARY INVULNERABILITY"}};
+        {Character::Status::TEMPORARY_INVULNERABILITY, "TEMPORARY INVULNERABILITY"},
+        {Character::Status::DYING_SLOWLY, "DYING SLOWLY"},
+        {Character::Status::IMMUNE_DYING_SLOWLY, "IMMUNE: DYING SLOWLY"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -104,7 +108,13 @@ namespace BloodSword::Character
         {Character::Status::FIGHTING_BLIND, -1},
         {Character::Status::STRONG, -1},
         {Character::Status::WEAKENED, -1},
-        {Character::Status::TEMPORARY_INVULNERABILITY, -1}};
+        {Character::Status::TEMPORARY_INVULNERABILITY, -1},
+        {Character::Status::DYING_SLOWLY, 6},
+        {Character::Status::IMMUNE_DYING_SLOWLY, -1}};
+
+    std::vector<Character::Status> GlobalStatus = {
+        Character::Status::DYING_SLOWLY,
+        Character::Status::IMMUNE_DYING_SLOWLY};
 
     Character::Status MapStatus(const char *status)
     {
