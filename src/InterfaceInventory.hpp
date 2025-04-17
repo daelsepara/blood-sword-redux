@@ -468,6 +468,11 @@ namespace BloodSword::Interface
                         }
                         else
                         {
+                            if (Book::IsDefined(items[id].Description))
+                            {
+                                Interface::ShowBookDescription(graphics, background, items[id].Description);
+                            }
+                            
                             // handles effects such as potion of healing, etc.
                             Interface::ItemEffects(graphics, background, party, character, items[id].Type);
                         }
