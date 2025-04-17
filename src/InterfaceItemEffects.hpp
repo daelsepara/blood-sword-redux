@@ -162,6 +162,11 @@ namespace BloodSword::Interface
         }
         else if (item.Type == Item::Type::EFFERVESCENT_LIQUID)
         {
+            if (!character.Has(Character::Status::IMMUNE_DYING_SLOWLY))
+            {
+                character.Add(Character::Status::IMMUNE_DYING_SLOWLY);
+            }
+
             Interface::ConsumeItem(character, item_id);
         }
     }
