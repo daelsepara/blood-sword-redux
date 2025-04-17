@@ -3,8 +3,37 @@
         "book": "BOOK1",
         "number": 358
     },
-    "text": "The potion fizzes as it passes over your tongue. You notice no effect other than a chalky aftertaste.\n\n\"Don't you worry,\" mutters the hag. \"That's what it's meant to taste like. I can't always get the bat's entrails, you know. If you want to buy a bottle to drink later, that'll be two gold cons.\" She cackles so hideously that you almost cover your ears.",
+    "text": "The potion fizzes as it passes over your tongue. You notice no effect other than a chalky aftertaste.",
+    "background": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "CHOSEN",
+                "IMMUNE: DYING SLOWLY"
+            ]
+        }
+    ],
+    "events": [
+        {
+            "type": "NORMAL",
+            "variables": [
+                "\"Don't you worry,\" mutters the hag. \"That's what it's meant to taste like. I can't always get the bat's entrails, you know. If you want to buy a bottle to drink later, that'll be two gold cons.\" She cackles so hideously that you almost cover your ears."
+            ]
+        }
+    ],
     "choices": [
+        {
+            "text": "Buy a bottle of effervescent liquid (2 GOLD)",
+            "condition": {
+                "type": "PLAYER BUYS ITEM",
+                "variables": [
+                    "WHO SHALL BUY ANOTHER BOTTLE OF THE EFFERVESCENT LIQUID?",
+                    "GOLD",
+                    "2",
+                    "EFFERVESCENT LIQUID"
+                ]
+            }
+        },
         {
             "text": "Try another potions",
             "condition": {

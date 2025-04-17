@@ -109,12 +109,18 @@ namespace BloodSword::Character
         {Character::Status::STRONG, -1},
         {Character::Status::WEAKENED, -1},
         {Character::Status::TEMPORARY_INVULNERABILITY, -1},
-        {Character::Status::DYING_SLOWLY, 6},
+        {Character::Status::DYING_SLOWLY, 5},
         {Character::Status::IMMUNE_DYING_SLOWLY, -1}};
 
     std::vector<Character::Status> GlobalStatus = {
         Character::Status::DYING_SLOWLY,
         Character::Status::IMMUNE_DYING_SLOWLY};
+
+    std::vector<Character::Status> StatusCooldowns = {
+        Character::Status::DYING_SLOWLY};
+
+    BloodSword::UnorderedMap<Character::Status, Character::Status> CounterEffects = {
+        {Character::Status::DYING_SLOWLY, Character::Status::IMMUNE_DYING_SLOWLY}};
 
     Character::Status MapStatus(const char *status)
     {

@@ -245,7 +245,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::RANDOM_OUTCOME, "RANDOM OUTCOME"},
         {Conditions::Type::KILL_ALL_WITH_STATUS, "KILL ALL WITH STATUS"},
         {Conditions::Type::ALL_WITH_STATUS_GAIN_ATTRIBUTE, "ALL WITH STATUS GAIN ATTRIBUTE"},
-        {Conditions::Type::ALL_WITH_STATUS_MODIFY_ATTRIBUTE, "ALL WITH STATUS MODIFY ATTRIBUTE"}};
+        {Conditions::Type::ALL_WITH_STATUS_MODIFY_ATTRIBUTE, "ALL WITH STATUS MODIFY ATTRIBUTE"},
+        {Conditions::Type::PLAYER_BUYS_ITEM, "PLAYER BUYS ITEM"},
+        {Conditions::Type::CHARACTER_BUYS_ITEM, "CHARACTER BUYS ITEM"}};
 
     Conditions::Type Map(const char *Conditions)
     {

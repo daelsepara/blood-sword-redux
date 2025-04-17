@@ -23,9 +23,9 @@
     ],
     "choices": [
         {
-            "text": "Buy ",
+            "text": "Buy a bottle of the tarry black substance (3 GOLD)",
             "condition": {
-                "type": "NORMAL",
+                "type": "PLAYER BUYS ITEM",
                 "variables": [
                     "WHO SHALL BUY ANOTHER BOTTLE OF THE TARRY BLACK SUBSTANCE?",
                     "GOLD",

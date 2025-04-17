@@ -1716,8 +1716,33 @@ namespace BloodSword::Interface
 
         Book::Location next = Book::Undefined;
 
+        // check delayed effects and redirects
+        for (auto status : Character::StatusCooldowns)
+        {
+            if (party.Has(status))
+            {
+                for (auto character = 0; character < party.Count(); character++)
+                {
+                    if (Engine::IsAlive(party[character]) && party[character].Has(status))
+                    {
+                        // cooldown status effect
+                        Engine::CoolDown(party[character], status);
+
+                        // check delayed effect
+                        if (!party[character].Has(status) && BloodSword::Has(Character::CounterEffects, status) && !party[character].Has(Character::CounterEffects[status]) && party[character].HasDelayedEffect(status))
+                        {
+                            if (Book::IsUndefined(next))
+                            {
+                                next = party[character].DelayedEffect(status);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         // check if background events need to be skipped
-        if (!party.Has(Character::Status::SKIP_EVENTS))
+        if (Book::IsUndefined(next) && !party.Has(Character::Status::SKIP_EVENTS))
         {
             next = Interface::ProcessBackground(graphics, background, party);
         }

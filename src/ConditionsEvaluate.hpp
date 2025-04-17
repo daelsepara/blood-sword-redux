@@ -1675,6 +1675,8 @@ namespace BloodSword::Conditions
                             party[chosen].Add(currency, -quantity);
 
                             party.ChosenCharacter = chosen;
+
+                            text = party[chosen].Name + " buys the " + std::string(Item::TypeMapping[item]) + ".";
                         }
 
                         internal_error = false;

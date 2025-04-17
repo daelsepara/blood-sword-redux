@@ -14,6 +14,13 @@ namespace BloodSword::Interface
     // individual item effects
     void ProcessEffects(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, int item_id)
     {
+        if (!Engine::IsAlive(character))
+        {
+            Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
+
+            return;
+        }
+
         auto &item = character.Items[item_id];
 
         if (item.Has(Item::Property::CURSED))
@@ -125,34 +132,37 @@ namespace BloodSword::Interface
         }
         else if (item.Type == Item::Type::SCROLL_ADJUST)
         {
-            if (Engine::IsAlive(character))
-            {
-                Interface::PermanentAttributeGain(graphics, background, character, 1, -1);
+            Interface::PermanentAttributeGain(graphics, background, character, 1, -1);
 
-                Interface::PermanentAttributeGain(graphics, background, character, 1, 1);
+            Interface::PermanentAttributeGain(graphics, background, character, 1, 1);
 
-                Interface::ConsumeItem(character, item_id);
-            }
-            else
-            {
-                Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
-            }
+            Interface::ConsumeItem(character, item_id);
         }
         else if (item.Type == Item::Type::TARRY_BLACK_SUBSTANCE)
         {
-            if (Engine::IsAlive(character))
+            if (!character.Has(Character::Status::DYING_SLOWLY))
             {
-                if (!character.Has(Character::Status::DYING_SLOWLY))
-                {
-                    character.Add(Character::Status::DYING_SLOWLY);
-                }
+                character.Add(Character::Status::DYING_SLOWLY);
 
-                Interface::ConsumeItem(character, item_id);
+                character.DelayedEffects[Character::Status::DYING_SLOWLY] = character.Items[item_id].Type;
             }
-            else
+
+            Interface::ConsumeItem(character, item_id);
+        }
+        else if (item.Type == Item::Type::TARRY_BLACK_SUBSTANCE)
+        {
+            if (!character.Has(Character::Status::DYING_SLOWLY))
             {
-                Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
+                character.Add(Character::Status::DYING_SLOWLY);
+
+                character.DelayedEffects[Character::Status::DYING_SLOWLY] = character.Items[item_id].Type;
             }
+
+            Interface::ConsumeItem(character, item_id);
+        }
+        else if (item.Type == Item::Type::EFFERVESCENT_LIQUID)
+        {
+            Interface::ConsumeItem(character, item_id);
         }
     }
 

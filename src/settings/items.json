@@ -606,6 +606,20 @@
             "quantity": 1,
             "revealed": false,
             "type": "TARRY BLACK SUBSTANCE"
+        },
+        {
+            "contains": "NONE",
+            "name": "BOTTLE OF EFFERVESCENT LIQUID",
+            "description": {
+                "book": "BOOK1",
+                "number": 358
+            },
+            "properties": [
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "revealed": false,
+            "type": "EFFERVESCENT LIQUID"
         }
     ]
 }
