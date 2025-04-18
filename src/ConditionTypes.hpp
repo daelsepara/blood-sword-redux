@@ -125,7 +125,9 @@ namespace BloodSword::Conditions
         ALL_WITH_STATUS_GAIN_ATTRIBUTE,
         ALL_WITH_STATUS_MODIFY_ATTRIBUTE,
         PLAYER_BUYS_ITEM,
-        CHARACTER_BUYS_ITEM
+        CHARACTER_BUYS_ITEM,
+        CHAOS_EFFECT,
+        COUNT_ITEMS
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -247,7 +249,9 @@ namespace BloodSword::Conditions
         {Conditions::Type::ALL_WITH_STATUS_GAIN_ATTRIBUTE, "ALL WITH STATUS GAIN ATTRIBUTE"},
         {Conditions::Type::ALL_WITH_STATUS_MODIFY_ATTRIBUTE, "ALL WITH STATUS MODIFY ATTRIBUTE"},
         {Conditions::Type::PLAYER_BUYS_ITEM, "PLAYER BUYS ITEM"},
-        {Conditions::Type::CHARACTER_BUYS_ITEM, "CHARACTER BUYS ITEM"}};
+        {Conditions::Type::CHARACTER_BUYS_ITEM, "CHARACTER BUYS ITEM"},
+        {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"}
+        {Conditions::Type::CHAOS_EFFECT, "CHAOS EFFECT"}};
 
     Conditions::Type Map(const char *Conditions)
     {
