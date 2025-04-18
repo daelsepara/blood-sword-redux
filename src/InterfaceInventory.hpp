@@ -472,7 +472,7 @@ namespace BloodSword::Interface
                             {
                                 Interface::ShowBookDescription(graphics, background, items[id].Description);
                             }
-                            
+
                             // handles effects such as potion of healing, etc.
                             Interface::ItemEffects(graphics, background, party, character, items[id].Type);
                         }

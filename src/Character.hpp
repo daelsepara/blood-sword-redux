@@ -353,6 +353,21 @@ namespace BloodSword::Character
             return result;
         }
 
+        int Count(Item::Type type)
+        {
+            auto count = 0;
+
+            for (auto item = this->Items.begin(); item != this->Items.end(); item++)
+            {
+                if (item->Type == type)
+                {
+                    count++;
+                }
+            }
+
+            return count;
+        }
+
         bool Has(Item::Type item)
         {
             return this->Find(item) != this->Items.end();

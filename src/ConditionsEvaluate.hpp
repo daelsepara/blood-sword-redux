@@ -279,9 +279,9 @@ namespace BloodSword::Conditions
 
                 auto item = Item::Map(condition.Variables[1]);
 
-                if (item != Item::Type::NONE)
+                if (item != Item::Type::NONE && (is_party || character != Character::Class::NONE))
                 {
-                    if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
                         result = is_party ? party.Has(item) : party[character].Has(item);
 
@@ -301,11 +301,11 @@ namespace BloodSword::Conditions
                             }
                         }
                     }
-                    else if (item != Item::Type::NONE && character != Character::Class::NONE && !party.Has(character))
+                    else if (!party.Has(character))
                     {
                         text = Engine::NotInParty(character);
                     }
-                    else if (item != Item::Type::NONE && character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                    else if (!Engine::IsAlive(party[character]))
                     {
                         text = Engine::IsDead(party[character]);
                     }
@@ -329,9 +329,9 @@ namespace BloodSword::Conditions
 
                 auto item = Item::Map(condition.Variables[1]);
 
-                if (item != Item::Type::NONE)
+                if (item != Item::Type::NONE && (is_party || character != Character::Class::NONE))
                 {
-                    if (is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character])))
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
                         result = is_party ? party.Has(item) : party[character].Has(item);
 
@@ -340,11 +340,11 @@ namespace BloodSword::Conditions
                             text = Engine::NoItem(item);
                         }
                     }
-                    else if (item != Item::Type::NONE && character != Character::Class::NONE && !party.Has(character))
+                    else if (!party.Has(character))
                     {
                         text = Engine::NotInParty(character);
                     }
-                    else if (item != Item::Type::NONE && character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                    else if (party.Has(character) && !Engine::IsAlive(party[character]))
                     {
                         text = Engine::IsDead(party[character]);
                     }
@@ -378,24 +378,76 @@ namespace BloodSword::Conditions
                     }
                 }
 
-                if (items.size() > 0 && items.size() == (condition.Variables.size() - 1))
+                if ((items.size() > 0 && items.size() == (condition.Variables.size() - 1)) && (is_party || character != Character::Class::NONE))
                 {
-                    if (is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character])))
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
                         result = is_party ? party.HasAll(items) : party[character].HasAll(items);
 
                         if (!result)
                         {
-                            text = "YOU DO NOT HAVE EVERYTING";
+                            auto item_string = std::string();
+
+                            for (auto item : items)
+                            {
+                                if (!item_string.empty())
+                                {
+                                    item_string += ", ";
+                                }
+
+                                item_string += Item::TypeMapping[item];
+                            }
+
+                            text = "YOU DO NOT HAVE ALL OF THE " + item_string;
                         }
                     }
-                    else if (items.size() > 0 && items.size() == (condition.Variables.size() - 1) && character != Character::Class::NONE && !party.Has(character))
+                    else if (!party.Has(character))
                     {
                         text = Engine::NotInParty(character);
                     }
-                    else if (items.size() > 0 && items.size() == (condition.Variables.size() - 1) && character != Character::Class::NONE && party.Has(character) && !Engine::IsAlive(party[character]))
+                    else if (!Engine::IsAlive(party[character]))
                     {
                         text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::COUNT_ITEMS)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / ALL
+            // 1 - item
+            // 2 - number required
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto item = Item::Map(condition.Variables[1]);
+
+                auto required = party.Number(condition.Variables[2]);
+
+                if (item != Item::Type::NONE && (is_party || character != Character::Class::NONE) && required > 0)
+                {
+                    auto count = (is_party ? Engine::Count(party, item) : party[character].Count(item));
+
+                    result = count >= required;
+
+                    if (!result)
+                    {
+                        if (count == 0)
+                        {
+                            text = Engine::NoItem(item);
+                        }
+                        else
+                        {
+                            text = Engine::NotEnough(item);
+                        }
                     }
 
                     internal_error = false;
@@ -2241,26 +2293,24 @@ namespace BloodSword::Conditions
 
                 auto required = party.Number(condition.Variables[2]);
 
-                if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))) && item != Item::Type::NONE)
+                if (item != Item::Type::NONE && (is_party || character != Character::Class::NONE))
                 {
-                    auto quantity = is_party ? Engine::Quantity(party, item) : party[character].Quantity(item);
-
-                    result = (quantity >= required);
-
-                    if (!result)
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
-                        text = Engine::NotEnough(item);
-                    }
+                        auto quantity = is_party ? Engine::Quantity(party, item) : party[character].Quantity(item);
 
-                    internal_error = false;
-                }
-                else if (character != Character::Class::NONE && item != Item::Type::NONE)
-                {
-                    if (!party.Has(character))
+                        result = (quantity >= required);
+
+                        if (!result)
+                        {
+                            text = Engine::NotEnough(item);
+                        }
+                    }
+                    else if (!party.Has(character))
                     {
                         text = Engine::NotInParty(character);
                     }
-                    else
+                    else if (!Engine::IsAlive(party[character]))
                     {
                         text = Engine::IsDead(party[character]);
                     }
@@ -2479,9 +2529,9 @@ namespace BloodSword::Conditions
 
                 auto gain = party.Number(condition.Variables[2]);
 
-                if (attributes > 0 && gain != 0)
+                if (attributes > 0 && gain != 0 && (is_party || character != Character::Class::NONE))
                 {
-                    if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
                         if (is_party)
                         {
@@ -2770,9 +2820,9 @@ namespace BloodSword::Conditions
 
                 auto gain = party.Number(condition.Variables[2]);
 
-                if (attribute != Attribute::Type::NONE)
+                if (attribute != Attribute::Type::NONE && (is_party || character != Character::Class::NONE))
                 {
-                    if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
                         if (is_party)
                         {
@@ -2898,9 +2948,9 @@ namespace BloodSword::Conditions
 
                 auto gain = party.Number(condition.Variables[2]);
 
-                if (attribute != Attribute::Type::NONE)
+                if (attribute != Attribute::Type::NONE && (is_party || character != Character::Class::NONE))
                 {
-                    if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
                         if (is_party)
                         {
@@ -2947,9 +2997,9 @@ namespace BloodSword::Conditions
 
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
-                if (attribute != Attribute::Type::NONE)
+                if (attribute != Attribute::Type::NONE && (is_party || character != Character::Class::NONE))
                 {
-                    if ((is_party || (character != Character::Class::NONE && party.Has(character) && Engine::IsAlive(party[character]))))
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
                         if (is_party)
                         {

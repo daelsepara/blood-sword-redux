@@ -226,6 +226,19 @@ namespace BloodSword::Engine
         return count;
     }
 
+    // counts number of particular items among live members in the party
+    int Count(Party::Base &party, Item::Type item)
+    {
+        auto count = 0;
+
+        for (int character = 0; character < party.Count(); character++)
+        {
+            count += (Engine::IsAlive(party[character]) && party[character].Has(item)) ? party[character].Count(item) : 0;
+        }
+
+        return count;
+    }
+
     // counts live characters without skill
     int Without(Party::Base &party, Skills::Type skill)
     {
