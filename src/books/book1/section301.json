@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 301
+    },
+    "text": "You produce the bridle. By luck, a geyser shoots up a glorious flare of molten rock nearby, and the gold chasing of the bridle scintillates magnificently. The dirge-man gasps in admiration. \"An extraordinary treasure!\" he croaks, his avaricious nature swamping all reason. \"Give it to me and I shall convey you across the chasm at once.\"\n\n\"By all means.\" You toss it over his neck and secure the buckles. Swining onto his back, you pull tightly on the reins. The dirge-man gives a muffled cry, but soon stops resisting as the studs inside the bridle cut into his leathery skin. Reluctantly he stretches his great wings and clambers up into the steamy air with you clinging to his back.\n\nThe crossing is bumpy. You are continually buffeted by roaring gusts of wind from the volcanic vents far below. The dirge-man makes one half-hearted attempt to throw you, then whimpers as you pull harshly on the bridle. At last he swoops down to land on the far side. You leave him tethered by the reins to a boulder, ignoring his bleats of protest.",
+    "background": [
+        {
+            "type": "DROP ITEM",
+            "variables": [
+                "CHOSEN",
+                "GILDED BRIDLE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 359
+            }
+        }
+    ]
+}

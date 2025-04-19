@@ -1,0 +1,82 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 321
+    },
+    "text": "\"What about a drink of this excellent liquor?\" you suggest. \"It is a rare and pleasant beverage, and most conducive to drunken merriment.\"\n\nThe dirge-man tilts his head this way and that, favouring you with a sidelong glance. He seems rather dubious about tasting the liquid.",
+    "background": [
+        {
+            "type": "DROP ITEM",
+            "variables": [
+                "CHOSEN",
+                "CHIMERA-SPITTLE"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "You have the chimera spittle antidote",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 39
+                },
+                "variables": [
+                    "SELECT",
+                    "EFFERVESCENT LIQUID"
+                ]
+            }
+        },
+        {
+            "text": "Try using the GILDED BRIDLE",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 301
+                },
+                "variables": [
+                    "SELECT",
+                    "GILDED BRIDLE"
+                ]
+            }
+        },
+        {
+            "text": "(TRICKSTER) You do not have the antidote",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 224
+                },
+                "variables": [
+                    "TRICKSTER"
+                ]
+            }
+        },
+        {
+            "text": "(ENCHANTER) Cast a spell of SERVILE ENTHRALMENT",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 11
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "None of these options is open to you",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 22
+                }
+            }
+        }
+    ]
+}

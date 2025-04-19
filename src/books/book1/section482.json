@@ -1,0 +1,41 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 482
+    },
+    "text": "All along the gaping chasm you can see the huge winged dirges weeping to and fro on the air currents. One drifts close, but unlike the ones you encountered earlier it seems disinclined to attack. Also, it has an almost human face -- again, quite unlike the other dirges. Espying you, it claws the air and drops lower, calling out in a hollow croaking voice: \"Ho, this chasm is an impasse if one lacks wings, is it not?\"",
+    "choices": [
+        {
+            "text": "\"Take back your taunts and be off, you whey-faced loon\"",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 22
+                }
+            }
+        },
+        {
+            "text": "\"Perhaps you can help?\"",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 79
+                }
+            }
+        }
+    ],
+    "next": [
+        {
+            "type": "IN PARTY",
+            "location": {
+                "book": "BOOK1",
+                "number": 393
+            },
+            "variables": [
+                "SAGE"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 118
+    },
+    "text": "On the dirge-man's back, you are carried far out across the chasm. The roaring wind-currents seem to slam you to and fro at random, but the dirge-man is used to them an manoeuvres with a bizarre elegance. Halfway across, he brings up the matter of the chimera spittle: \"I think it is best to be quite candid. If you do not allow me to finish the liquor, I shall loop over and drop you into the chasm below.\"\n\n\"Do not be too hasty,\" you retort. \"The 'liquor' was in fact a deadly poison for which I had already taken the antidote. If you expect to receive the antidote yourself, you had better ensure a safe and comfortable landing.\"\n\nWhimpering in fear for his life, the dirge-man flutters in to a landing on the opposite rim of the chasm. You hand him the rest of the chimera spittle, swearing that, although it looks like the poison, it is in fact the antidote. The dirge-man drinks eagerly, and you leave before he discovers the truth.",
+    "background": [
+        {
+            "type": "DROP ITEM",
+            "variables": [
+                "CHOSEN",
+                "CHIMERA-SPITTLE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 359
+            }
+        }
+    ]
+}

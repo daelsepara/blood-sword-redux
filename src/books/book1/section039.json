@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 39
+    },
+    "text": "You take a sip from the bottle before handing it to him. \"What an excellent vintage!\" you say, making a great show of smacking your lips. Reassured, the dire-man takes a long drink himself. As he does, you surreptitiously drink a dose of the antidoe. Taking back the chimera spittle, you suggest that the dirge-man carries you across the chasm and in return you will give him the rest of this fine 'liquor'. Suspecting nothing, he agress and allows you to clamber up on to his broad leathery back before launching out into space.",
+    "next": [
+        {
+            "type": "GET ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 118
+            },
+            "variables": [
+                "CHIMERA-SPITTLE"
+            ]
+        }
+    ]
+}

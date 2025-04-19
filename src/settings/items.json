@@ -441,16 +441,6 @@
             ]
         },
         {
-            "contains": "NONE",
-            "name": "PHIAL OF CHIMERA-SPITTLE",
-            "properties": [
-                "LIQUID"
-            ],
-            "quantity": 1,
-            "revealed": false,
-            "type": "CHIMERA-SPITTLE"
-        },
-        {
             "name": "FIRE-BLACKENED SKULL",
             "properties": [
                 "CANNOT DROP",
@@ -591,7 +581,7 @@
         },
         {
             "contains": "NONE",
-            "name": "BOTTLE OF TARRY BLACK SUBSTANCE",
+            "name": "PHIAL OF CHIMERA-SPITTLE",
             "description": {
                 "book": "BOOK1",
                 "number": 299
@@ -605,7 +595,7 @@
             ],
             "quantity": 1,
             "revealed": false,
-            "type": "TARRY BLACK SUBSTANCE"
+            "type": "CHIMERA-SPITTLE"
         },
         {
             "contains": "NONE",

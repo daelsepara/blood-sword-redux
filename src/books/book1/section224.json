@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 224
+    },
+    "text": "(TRICKSTER) You hold up the bottle and make a great show of drinking deeply. At least, that is how it seems to the dirge-man. In fact you contrive to pour the poison into your hand and take great care to see that not a drop passes your lips.\n\nThis allays the dirge-man's suspicions, and he accepts a long draught of the chimera spittle himself. \"Mmm, not bad,\" he says, smacking his once-human lips. \"But perhaps another sip will enable me to appreciate the full flavour.\"\n\nYou draw back the bottle in mock outrage. \"What? You have consumed most of it already, and this is the last bottle from my cellars. Come now, let us cross the chasm and then you may finish off what is left.\"",
+    "next": [
+        {
+            "type": "GET ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 118
+            },
+            "variables": [
+                "CHIMERA-SPITTLE"
+            ]
+        }
+    ]
+}

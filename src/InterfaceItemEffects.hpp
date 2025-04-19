@@ -138,18 +138,7 @@ namespace BloodSword::Interface
 
             Interface::ConsumeItem(character, item_id);
         }
-        else if (item.Type == Item::Type::TARRY_BLACK_SUBSTANCE)
-        {
-            if (!character.Has(Character::Status::DYING_SLOWLY))
-            {
-                character.Add(Character::Status::DYING_SLOWLY);
-
-                character.DelayedEffects[Character::Status::DYING_SLOWLY] = character.Items[item_id].Type;
-            }
-
-            Interface::ConsumeItem(character, item_id);
-        }
-        else if (item.Type == Item::Type::TARRY_BLACK_SUBSTANCE)
+        else if (item.Type == Item::Type::CHIMERA_SPITTLE)
         {
             if (!character.Has(Character::Status::DYING_SLOWLY))
             {

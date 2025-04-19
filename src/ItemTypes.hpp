@@ -66,7 +66,6 @@ namespace BloodSword::Item
         BLUE_TOUCHSTONE,
         LEAD_RING,
         YELLOW_SCROLL,
-        TARRY_BLACK_SUBSTANCE,
         EFFERVESCENT_LIQUID
     };
 
@@ -129,7 +128,6 @@ namespace BloodSword::Item
         {Item::Type::BLUE_TOUCHSTONE, "BLUE TOUCHSTONE"},
         {Item::Type::LEAD_RING, "LEAD RING"},
         {Item::Type::YELLOW_SCROLL, "YELLOW SCROLL"},
-        {Item::Type::TARRY_BLACK_SUBSTANCE, "TARRY BLACK SUBSTANCE"},
         {Item::Type::EFFERVESCENT_LIQUID, "EFFERVESCENT LIQUID"}};
 
     Item::Type Map(const char *item)

@@ -1,0 +1,60 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 79
+    },
+    "text": "The dirge-man settles on the steps above you, flexing his enormous leathery wings as if glad of the rest. You notice that he does not have the spiked talons of a normal dirge-man, but human hands. \"I could fly you across,\" he declares in his cracked voice. \"But a question has arisen. Essentially, what's in it for me?\"",
+    "choices": [
+        {
+            "text": "Use an GILDED BRIDLE",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 301
+                },
+                "variables": [
+                    "SELECT",
+                    "GILDED BRIDLE"
+                ]
+            }
+        },
+        {
+            "text": "Use some CHIMERA-SPITTLE",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 321
+                },
+                "variables": [
+                    "SELECT",
+                    "CHIMERA-SPITTLE"
+                ]
+            }
+        },
+        {
+            "text": "(ENCHANTER) Try to Enhtral him",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 11
+                },
+                "variables": [
+                    "ENCHANTER"
+                ]
+            }
+        },
+        {
+            "text": "You cannot do any of these",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 22
+                }
+            }
+        }
+    ]
+}
