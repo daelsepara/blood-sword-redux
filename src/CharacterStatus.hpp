@@ -40,7 +40,8 @@ namespace BloodSword::Character
         WEAKENED,
         TEMPORARY_INVULNERABILITY,
         DYING_SLOWLY,
-        IMMUNE_DYING_SLOWLY
+        IMMUNE_DYING_SLOWLY,
+        OSTEAL_WEAKNESS
     };
 
     BloodSword::Mapping<Character::Status> StatusMapping = {
@@ -76,7 +77,8 @@ namespace BloodSword::Character
         {Character::Status::WEAKENED, "WEAKENED"},
         {Character::Status::TEMPORARY_INVULNERABILITY, "TEMPORARY INVULNERABILITY"},
         {Character::Status::DYING_SLOWLY, "DYING SLOWLY"},
-        {Character::Status::IMMUNE_DYING_SLOWLY, "IMMUNE: DYING SLOWLY"}};
+        {Character::Status::IMMUNE_DYING_SLOWLY, "IMMUNE: DYING SLOWLY"},
+        {Character::Status::OSTEAL_WEAKNESS, "OSTEAL WEAKNESS"}};
 
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
@@ -110,11 +112,13 @@ namespace BloodSword::Character
         {Character::Status::WEAKENED, -1},
         {Character::Status::TEMPORARY_INVULNERABILITY, -1},
         {Character::Status::DYING_SLOWLY, 5},
-        {Character::Status::IMMUNE_DYING_SLOWLY, -1}};
+        {Character::Status::IMMUNE_DYING_SLOWLY, -1},
+        {Character::Status::OSTEAL_WEAKNESS, -1}};
 
     std::vector<Character::Status> GlobalStatus = {
         Character::Status::DYING_SLOWLY,
-        Character::Status::IMMUNE_DYING_SLOWLY};
+        Character::Status::IMMUNE_DYING_SLOWLY,
+        Character::Status::OSTEAL_WEAKNESS};
 
     std::vector<Character::Status> StatusCooldowns = {
         Character::Status::DYING_SLOWLY};
