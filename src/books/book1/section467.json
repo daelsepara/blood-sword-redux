@@ -1,0 +1,54 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 467
+    },
+    "text": "One of the adventurers falls over into the crater before you can catch him. The other body slides a little way, but you manage to haul him back on to the ridge so that you can search his body. His sword clatters back and sinks into the molten pool below.",
+    "items": [
+        {
+            "name": "POTION OF HEALING",
+            "properties": [
+                "COMBAT",
+                "LIQUID"
+            ],
+            "quantity": 1,
+            "type": "POTION OF HEALING",
+            "revealed": true
+        },
+        {
+            "name": "GILDED BRIDLE",
+            "quantity": 1,
+            "type": "GILDED BRIDLE"
+        },
+        {
+            "name": "BLUE TOUCHSTONE",
+            "quantity": 1,
+            "type": "BLUE TOUCHSTONE"
+        },
+        {
+            "name": "LEAD RING",
+            "quantity": 1,
+            "type": "LEAD RING"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 2
+            },
+            "name": "LEATHER ARMOUR",
+            "properties": [
+                "ARMOUR"
+            ],
+            "quantity": 1,
+            "type": "LEATHER ARMOUR"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 223
+            }
+        }
+    ]
+}

@@ -761,6 +761,14 @@ namespace BloodSword::Interface
                 }
             }
 
+            if (attribute == Attribute::Type::FIGHTING_PROWESS || attribute == Attribute::Type::AWARENESS)
+            {
+                if (character.Has(Character::Status::OSTEAL_WEAKNESS))
+                {
+                    modifier -= 1;
+                }
+            }
+
             stats += std::to_string(value);
 
             if (modifier != 0)

@@ -141,16 +141,24 @@ namespace BloodSword::Engine
                 }
             }
 
-            if (character.IsPlayer() && character.IsArmed() && weapon != Item::Property::NONE)
+            if (character.Has(Character::Status::OSTEAL_WEAKNESS))
             {
-                modifier += character.WeaponModifier(weapon, Attribute::Type::FIGHTING_PROWESS);
+                modifier -= 1;
+            }
+        }
+        else if (attribute == Attribute::Type::AWARENESS)
+        {
+            if (character.Has(Character::Status::OSTEAL_WEAKNESS))
+            {
+                modifier -= 1;
             }
         }
         else if (attribute == Attribute::Type::DAMAGE && (!character.IsArmed() || character.Fight == Skills::Type::BROKEN_WEAPON))
         {
             modifier -= 2;
         }
-        else if (character.IsArmed() && weapon != Item::Property::NONE)
+
+        if (character.IsArmed() && weapon != Item::Property::NONE)
         {
             modifier += character.WeaponModifier(weapon, attribute);
         }

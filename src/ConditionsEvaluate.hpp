@@ -950,27 +950,27 @@ namespace BloodSword::Conditions
                 {
                     if (Engine::ToUpper(condition.Variables[0]) == "ALL")
                     {
-                        if (Engine::IsAlive(party))
-                        {
-                            result = true;
+                        result = true;
 
-                            for (auto character = 0; character < party.Count(); character++)
+                        for (auto character = 0; character < party.Count(); character++)
+                        {
+                            if (Engine::IsAlive(party[character]))
                             {
-                                if (Engine::IsAlive(party[character]))
+                                if (Interface::Test(graphics, background, party[character], attribute))
                                 {
-                                    if (Interface::Test(graphics, background, party[character], attribute))
+                                    if (status_success != Character::Status::NONE)
                                     {
                                         party[character].Add(status_success);
                                     }
-                                    else
-                                    {
-                                        party[character].Add(status_fail);
-                                    }
+                                }
+                                else
+                                {
+                                    party[character].Add(status_fail);
                                 }
                             }
-
-                            internal_error = false;
                         }
+
+                        internal_error = false;
                     }
                     else
                     {
@@ -978,29 +978,26 @@ namespace BloodSword::Conditions
 
                         if (character != Character::Class::NONE)
                         {
-                            if (party.Has(character))
+                            if (party.Has(character) && Engine::IsAlive(party[character]))
                             {
-                                if (Engine::IsAlive(party[character]))
-                                {
-                                    result = true;
+                                result = true;
 
-                                    if (Interface::Test(graphics, background, party[character], attribute))
-                                    {
-                                        party[character].Add(status_success);
-                                    }
-                                    else
-                                    {
-                                        party[character].Add(status_fail);
-                                    }
+                                if (Interface::Test(graphics, background, party[character], attribute))
+                                {
+                                    party[character].Add(status_success);
                                 }
                                 else
                                 {
-                                    text = Engine::IsDead(party[character]);
+                                    party[character].Add(status_fail);
                                 }
                             }
-                            else
+                            else if (!party.Has(character))
                             {
                                 text = Engine::NotInParty(character);
+                            }
+                            else if (!Engine::IsAlive(party[character]))
+                            {
+                                text = Engine::IsDead(party[character]);
                             }
 
                             internal_error = false;

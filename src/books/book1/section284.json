@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 284
+    },
+    "text": "\"Pretty good fighting,\" says a voice behind you as the last Skiapyr fades. \"I was wondering how we'd get past those fiery devils.\"\n\nIt is one of the adventurers you fled from before encountering the flame-demons. The delay gave them time to catch up with you. Now you must renew your battle.",
+    "battle": "battles/book1/battle284.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 467
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 223
+            }
+        }
+    ]
+}
