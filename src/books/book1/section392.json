@@ -1,0 +1,58 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 392
+    },
+    "text": "You enter the inner sanctum. Flickering candles cast a dancing, swaying light across the walls. Opposite the entrance, a large circular lens of black glass ha been set into the wall like a window. You peer through it, but see only a dark and twisted image of your own face.\n\nBeside the black lens there are two octagonal indentations in the wall.",
+    "choices": [
+        {
+            "text": "Use an OCTAGONAL GLASS PRISM",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 174
+                },
+                "variables": [
+                    "SELECT",
+                    "OCTAGONAL GLASS PRISM"
+                ]
+            }
+        },
+        {
+            "text": "Use two OCTAGONAL GLASS PRISMS",
+            "condition": {
+                "type": "COUNT ITEMS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 269
+                },
+                "variables": [
+                    "ALL",
+                    "OCTAGONAL GLASS PRISM",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "Take the exit to the left",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 357
+                }
+            }
+        },
+        {
+            "text": "Take the exit to the right",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 56
+                }
+            }
+        }
+    ]
+}
