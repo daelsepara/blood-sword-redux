@@ -22,13 +22,12 @@
         {
             "text": "Use two OCTAGONAL GLASS PRISMS",
             "condition": {
-                "type": "COUNT ITEMS",
+                "type": "USE ITEMS",
                 "location": {
                     "book": "BOOK1",
                     "number": 269
                 },
                 "variables": [
-                    "ALL",
                     "OCTAGONAL GLASS PRISM",
                     "2"
                 ]

@@ -215,7 +215,13 @@ namespace BloodSword::Engine
 
         for (auto character = 0; character < party.Count(); character++)
         {
-            count += (party[character].ControlType == control && party[character].Is(status) && !Character::OtherClass(party[character].Class)) ? 1 : 0;
+            auto status_count = party[character].ControlType == control && party[character].Is(status);
+
+            auto normal_count = party[character].ControlType == Character::ControlType::PLAYER && !Character::OtherClass(party[character].Class);
+
+            auto enemy_count = party[character].ControlType == Character::ControlType::NPC;
+
+            count += (status_count && (normal_count || enemy_count)) ? 1 : 0;
         }
 
         return count;
@@ -280,20 +286,11 @@ namespace BloodSword::Engine
     {
         auto live = Engine::Count(party);
 
-        auto enthralled = 0;
-
-        if (control_type == Character::ControlType::PLAYER)
-        {
-            enthralled = Engine::Count(party, Character::ControlType::NPC, Character::Status::ENTHRALLED);
-        }
-        else
-        {
-            enthralled = Engine::Count(party, Character::ControlType::PLAYER, Character::Status::ENTHRALLED);
-        }
+        auto enthralled = Engine::Count(party, control_type, Character::Status::ENTHRALLED);
 
         auto paralyzed = Engine::Count(party, control_type, Character::Status::PARALYZED);
 
-        return live > 0 && live > enthralled && (paralyzed < live);
+        return live > 0 && live > enthralled && (live > paralyzed);
     }
 
     // check if the entire party is fleeing

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 57
+    },
+    "text": "The dirge-man waits passively to be given his instructions. You climb up on to his wide leathery back and, clinging on for dear life, spur him into flight. He swoops out across the chasm, and you catch a dizzying glimpse of vertical precipices stretching right down into the bowels of the under-earth. Wind currents buffet you to and fro, but the dirge-man rides them expertly. In a few moments he sets you gently down on the far side. You hastily order him to fly off before the spell can fade.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 359
+            }
+        }
+    ]
+}

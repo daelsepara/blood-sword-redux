@@ -1557,6 +1557,30 @@ namespace BloodSword::Test
         Interface::TakeItems(graphics, background, party, Item::Type::FOOD, Asset::Type::FOOD, Items::Unlimited);
     }
 
+    void UseItems(Graphics::Base &graphics, Scene::Base &background)
+    {
+        // load party from file
+        auto party = Party::Load("party/rank08.json", "party");
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            party[character].Add(Items::Defaults[Item::Type::OCTAGONAL_GLASS_PRISM]);
+        }
+
+        party[Character::Class::TRICKSTER].Add(Items::Defaults[Item::Type::OCTAGONAL_GLASS_PRISM]);
+
+        auto used = Interface::UseItems(graphics, background, party, Item::Type::OCTAGONAL_GLASS_PRISM, 2);
+
+        if (used)
+        {
+            Interface::MessageBox(graphics, background, "UseItems: TRUE", Color::Active);
+        }
+        else
+        {
+            Interface::MessageBox(graphics, background, "UseItems: FALSE", Color::Active);
+        }
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1580,7 +1604,8 @@ namespace BloodSword::Test
              Graphics::RichText("16 VARIABLES\n\n\nRead/Write in-game variables", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("17 EAT FOOD\n\n\nEat Food", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("18 TAKE ITEMS\n\n\nTake Items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("19 BATTLE (PREFERRED TARGETS)\n\n\nEnemies can target one another", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("19 BATTLE (PREFERRED TARGETS)\n\n\nEnemies can target one another", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("20 USE ITEMS\n\n\nParty use several units of items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1774,6 +1799,11 @@ namespace BloodSword::Test
                     case 19:
                         // Battle Engine test (preferred targets)
                         Test::Battle(graphics, "battles/targets.json");
+
+                        break;
+                    case 20:
+                        // Use Items
+                        Test::UseItems(graphics, scene);
 
                         break;
                     default:

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 269
+    },
+    "text": "You insert the prisms into the indentations. As you expected, they fit snugly. As they click into place, a multi-coloured glow suffuses them. There is a soft whining noise throughout the room as the black lens, too, erupts into a reddish glow.\n\nYou feel a tingling across your skin. A moment of disorientation and weightlessness --\n\nThe scene changes. You are now standing on the edge of a desolate plain. Ancient stone henges rear up all across the plain like cracked teeth. On the far side of the plain, against the black wall of the cave, you see an atoll. At its peak is planted the Emblem of Victory for which you have battled your way through all the dangers of the last few hours. Now you can almost feel it in your grasp.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 359
+            }
+        }
+    ]
+}

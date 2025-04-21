@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 522
+    },
+    "text": "You run towards the ruined shrine, heedless of the precarious drop to either side. The yawning entrance to the shrine looked sinister a few moments ago, but now it offers a most welcome haven from the insane fetishists.\n\nThey obviously do not care to pursue you into the shrine, as you hear them moaning with superstitious dread as you reach it. Their shaman, however, is not finished with you yet.\n\nHe points his bone wand at you and incants a dreadful spell of Osteal Weakening.",
+    "next": [
+        {
+            "type": "TEST GAIN STATUS",
+            "variables": [
+                "LAST",
+                "PSYCHIC ABILITY",
+                "NONE",
+                "OSTEAL WEAKNESS"
+            ]
+        },
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 339
+            },
+            "variables": [
+                "Reaching the safety of the shrine, you turn to watch the fetishists scramble back down the slope and vanish into the enveloping mists.",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

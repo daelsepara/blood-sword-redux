@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 11
+    },
+    "text": "You call the spell to mind. As soon as he sees you starting to concentrate, the dirge-man gives a distorted frown of distrust. \"Oh now, what's this?\" With a mad croak, he launches to attack.",
+    "battle": "battles/book1/battle011.json",
+    "background": [
+        {
+            "type": "CALL TO MIND",
+            "variables": [
+                "ENCHANTER",
+                "SERVILE ENTHRALMENT"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "BATTLE ENTHRALMENT",
+            "location": {
+                "book": "BOOK1",
+                "number": 57
+            }
+        },
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 22
+            }
+        }
+    ]
+}

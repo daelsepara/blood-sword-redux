@@ -1,0 +1,63 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 11
+        },
+        "map": "maps/book1/map011.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "DIRGE",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 13,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 13
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 1
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 2
+                        }
+                    ],
+                    "class": "NONE",
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "NONE",
+                    "item_limit": 10,
+                    "moves": 1000,
+                    "name": "DIRGE",
+                    "rank": 0,
+                    "target": "ENEMY"
+                }
+            ]
+        }
+    }
+}
