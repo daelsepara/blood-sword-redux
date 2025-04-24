@@ -8,7 +8,8 @@
             "CANNOT FLEE",
             "TRICKSTER AWAY",
             "SAGE AWAY",
-            "ENCHANTER AWAY"
+            "ENCHANTER AWAY",
+            "EXCLUDE OTHERS"
         ],
         "duration": -1,
         "endurance": -1,

@@ -1048,7 +1048,7 @@ namespace BloodSword::Interface
             Interface::SetEnemyLocations(battle, party);
 
             // place other characters adjacent to other party members
-            if (party.HasOthers() && party.Count() > 1)
+            if (party.HasOthers() && party.Count() > 1 && !battle.Has(Battle::Condition::EXCLUDE_OTHERS))
             {
                 for (auto i = 0; i < party.Count(); i++)
                 {

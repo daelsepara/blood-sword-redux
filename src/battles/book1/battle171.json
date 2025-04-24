@@ -9,7 +9,8 @@
             "WARRIOR AWAY",
             "SAGE AWAY",
             "ENCHANTER AWAY",
-            "CLONE TRICKSTER"
+            "CLONE TRICKSTER",
+            "EXCLUDE OTHERS"
         ],
         "duration": -1,
         "endurance": -1,
