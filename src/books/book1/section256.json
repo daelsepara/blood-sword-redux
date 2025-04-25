@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 256
+    },
+    "text": "(SAGE) Your glance falls upon the collapsed doors, and a sudden thought spurs you to action. Scrambling over, you inspect them. As you thought, they are of strong Krarthian hardwood. This dark wood burns reluctantly, but is quite light and may thus float on the lava!",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 132
+            }
+        }
+    ]
+}

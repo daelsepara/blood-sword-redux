@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 523
+    },
+    "text": "The opal medallion crackles into life. \"This may be our last communication,\" says your patron's voice. \"You can use the doors behind you as a kind of raft to cross the moat. The Krarthian hardwood is resistant to heat and will float on molten stone, though not on water. Make haste, for even now Icon the Ungodly approaches the ...\"\n\nThe power of the medallion fades, leaving your patron's advice echoing in your mind.",
+    "background": [
+        {
+            "type": "DROP ITEM",
+            "variables": [
+                "CHOSEN",
+                "OPAL MEDALLION"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 132
+            }
+        }
+    ]
+}
