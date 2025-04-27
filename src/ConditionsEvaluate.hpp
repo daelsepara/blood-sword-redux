@@ -3763,6 +3763,72 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::LOSE_EVERYTHING_EXCEPT_WEAPONS)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / ALL
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (is_party || character != Character::Class::NONE)
+                {
+                    std::vector<Character::Class> characters = {};
+
+                    if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
+                    {
+                        if (is_party)
+                        {
+                            for (auto i = 0; i < party.Count(); i++)
+                            {
+                                if (Engine::IsAlive(party[i]))
+                                {
+                                    characters.push_back(party[i].Class);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            characters = {character};
+                        }
+
+                        for (auto character_class : characters)
+                        {
+                            auto items = Items::Inventory();
+
+                            auto &current = party[character_class];
+
+                            // drop all items except weapons
+                            for (auto i = 0; i < current.Items.size(); i++)
+                            {
+                                if (current.Items[i].HasAll({Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}))
+                                {
+                                    items.push_back(current.Items[i]);
+                                }
+                            }
+
+                            current.Items = items;
+                        }
+
+                        result = true;
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::TAKE_FROM_LIST)
         {
             internal_error = true;
