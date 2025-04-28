@@ -5294,12 +5294,12 @@ namespace BloodSword::Interface
 
             auto popup_h = (BloodSword::TileSize + BloodSword::QuarterTile) * 2;
 
-            auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
-
             for (auto i = 0; i < items.size(); i++)
             {
                 popup_h = std::max(popup_h, BloodSword::Height(items[i]));
             }
+
+            auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
             while (!done)
             {
@@ -5446,7 +5446,7 @@ namespace BloodSword::Interface
         {
             return;
         }
-        
+
         auto limit = std::min(4, int(character.Items.size()));
 
         auto start = 0;
