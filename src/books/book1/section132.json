@@ -1,0 +1,34 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 132
+    },
+    "text": "You set to work improvising a raft from the sections of wooden door. Another lump of wood -- apparently the bolt that once held the doors shut -- becomes your oar. When you are ready, you gently ease the raft out on to the moat. Globules of molten stone cling to the sides and hiss furiously, but the wood does not burn. Yet.\n\nYou have to row slowly across the magma, careful not to splash deadly streams of white-hot magma across your feet. So intent are you on this that you almost fail to notice a deadly battle that is being enacted on the ridge encircling the craters. Two unshaven adventurers have encountered a horde of skiapyrs -- malicious flame-demons that dwell in the magma. Balanced precariously on the ridge, the adventurers struggle desperately but without hope. One falls as a skiapyr's fiery claws rake his chest, plunging into the moat where the magma burns the flesh and bones away in seconds. The other, disarmed by a treacherous blow from behind, turns, clutching his wounded arm. Seeing you, he calls out a greeting and then jumps, preferring to take his own life rather than let the skiapyrs steal his vital energies for themselves.\n\nYour raft strikes the crater rim and you hastily scramble up towards the ridge. The skiapyrs see you and give out unearthly screams of delight as the scamper along the ridge towards you. Behind you, more skiapyrs are awakened by the cries of their fellows and now pursue you up the ridge.",
+    "image_asset": "images/books/book1/skiapyrs.png",
+    "choices": [
+        {
+            "text": "Use an ICE JEWEL",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 12
+                },
+                "variables": [
+                    "SELECT",
+                    "BLUE ICE JEWEL"
+                ]
+            }
+        },
+        {
+            "text": "You do not have any of these or choose not to use them",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 376
+                }
+            }
+        }
+    ]
+}
