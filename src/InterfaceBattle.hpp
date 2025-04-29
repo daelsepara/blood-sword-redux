@@ -77,8 +77,24 @@ namespace BloodSword::Interface
             {
                 auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
+                if (hit > 0 && defender.Has(Character::Status::TEMPORARY_INVULNERABILITY))
+                {
+                    Interface::MessageBox(graphics, background, "INVULNERABLE: NO DAMAGE INFLICTED!", defender.IsPlayer() ? Color::Active : Color::Highlight);
+
+                    defender.Remove(Character::Status::TEMPORARY_INVULNERABILITY);
+
+                    hit = 0;
+                }
+
                 if (hit > 0)
                 {
+                    if (defender.Has(Character::Status::WEAKENED))
+                    {
+                        Interface::MessageBox(graphics, background, "WEAKENED: +1 DAMAGE", defender.IsPlayer() ? Color::Highlight : Color::Active);
+
+                        hit++;
+                    }
+
                     alive &= Engine::GainEndurance(defender, -hit, true);
 
                     auto effect = BloodSword::Find(Interface::SkillEffects, skill);
@@ -145,10 +161,8 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        // initialize alive checks
-        auto alive = true;
-
-        alive &= Interface::ResolveFight(graphics, background, draw, map_w, map_h, attacker, defender, melee);
+        // resolve fight, check if defender dies
+        auto alive = Interface::ResolveFight(graphics, background, draw, map_w, map_h, attacker, defender, melee);
 
         if (!alive)
         {
@@ -171,19 +185,12 @@ namespace BloodSword::Interface
         else if (!defender.Is(Character::Status::KNOCKED_OUT) && !defender.Is(Character::Status::DEFENDING))
         {
             // retaliate only if not knocked out and not defending
-            if (defender.IsPlayer())
-            {
-                defender.Add(Character::Status::IN_COMBAT);
-            }
+            defender.Add(Character::Status::IN_COMBAT);
 
             // reset alive checks
-            alive = true;
+            Interface::ResolveFight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
 
-            alive &= Interface::ResolveFight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
-
-            alive = Engine::IsAlive(attacker);
-
-            if (!alive)
+            if (!Engine::IsAlive(attacker))
             {
                 Interface::MessageBox(graphics, background, attacker.Name + " KILLED!", attacker.IsPlayer() ? Color::Highlight : Color::Active);
 
@@ -227,16 +234,33 @@ namespace BloodSword::Interface
             {
                 auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
-                alive &= Engine::GainEndurance(defender, -hit, true);
-
-                if (hit > 0 && shot == Skills::Type::POISONED_DAGGER)
+                if (hit > 0 && defender.Has(Character::Status::TEMPORARY_INVULNERABILITY))
                 {
-                    // instant death
-                    defender.Value(Attribute::Type::ENDURANCE, 0);
+                    Interface::MessageBox(graphics, background, "INVULNERABLE: NO DAMAGE INFLICTED!", defender.IsPlayer() ? Color::Active : Color::Highlight);
 
-                    alive = false;
+                    defender.Remove(Character::Status::TEMPORARY_INVULNERABILITY);
 
-                    alive = false;
+                    hit = 0;
+                }
+
+                if (hit > 0)
+                {
+                    if (defender.Has(Character::Status::WEAKENED))
+                    {
+                        Interface::MessageBox(graphics, background, "WEAKENED: +1 DAMAGE", defender.IsPlayer() ? Color::Highlight : Color::Active);
+
+                        hit++;
+                    }
+
+                    alive &= Engine::GainEndurance(defender, -hit, true);
+
+                    if (shot == Skills::Type::POISONED_DAGGER)
+                    {
+                        // instant death
+                        defender.Value(Attribute::Type::ENDURANCE, 0);
+
+                        alive = false;
+                    }
                 }
             }
         }
@@ -263,8 +287,6 @@ namespace BloodSword::Interface
         }
 
         Interface::Resurrect(graphics, background, party, defender);
-
-        alive = Engine::IsAlive(defender);
 
         if (!alive)
         {
