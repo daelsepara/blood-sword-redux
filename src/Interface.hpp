@@ -5618,6 +5618,8 @@ namespace BloodSword::Interface
 
                     break;
                 case 2:
+                    Interface::MessageBox(graphics, background, "+1 FIGHTING PROWESS", Color::Active);
+
                     Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::FIGHTING_PROWESS, 1);
 
                     break;
@@ -5634,6 +5636,8 @@ namespace BloodSword::Interface
 
                     break;
                 case 5:
+                    Interface::MessageBox(graphics, background, "-1 AWARENESS", Color::Highlight);
+
                     Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::AWARENESS, -1);
 
                     break;
