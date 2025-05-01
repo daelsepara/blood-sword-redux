@@ -77,6 +77,17 @@ namespace BloodSword::Interface
             {
                 auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
 
+                if (attacker.Has(Character::Status::STRONG))
+                {
+                    auto rolls = Engine::Roll(1, 0);
+
+                    std::string strong_damage = std::string("STRONG: +") + std::to_string(rolls.Sum) + " DAMAGE";
+
+                    Interface::MessageBox(graphics, background, strong_damage, attacker.IsPlayer() ? Color::Active : Color::Highlight);
+
+                    hit += rolls.Sum;
+                }
+
                 if (hit > 0 && defender.Has(Character::Status::TEMPORARY_INVULNERABILITY))
                 {
                     Interface::MessageBox(graphics, background, "INVULNERABLE: NO DAMAGE INFLICTED!", defender.IsPlayer() ? Color::Active : Color::Highlight);

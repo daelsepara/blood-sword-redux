@@ -4204,6 +4204,37 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::CHAOS_EFFECT)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    result = party.Has(character) && Engine::IsAlive(party[character]);
+
+                    if (result)
+                    {
+                        Interface::ChaosEffect(graphics, background, party[character]);
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)

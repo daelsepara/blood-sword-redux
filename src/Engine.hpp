@@ -1215,6 +1215,7 @@ namespace BloodSword::Engine
                       Character::Status::BURNED,
                       Character::Status::INVISIBLE,
                       Character::Status::FIGHTING_BLIND,
+                      Character::Status::STRONG,
                       Character::Status::IN_COMBAT,
                       Character::Status::IN_BATTLE});
 

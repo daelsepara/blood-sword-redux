@@ -1,0 +1,52 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 409
+    },
+    "text": "\"The elixir of chaos is a potent little tipple, is it not, sisters?\" cries out one of the hags as you drink. Certainly it tastes quite pleasant -- remarkably so in view of the eyes floating in it. But its effects are unpredictable.",
+    "background": [
+        {
+            "type": "CHAOS EFFECT",
+            "variables": [
+                "CHOSEN"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Drink another elixir of chaos",
+            "condition": {
+                "type": "PLAYER PAYS",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 409
+                },
+                "variables": [
+                    "WHO SHALL DRINK AN ELIXIR OF CHAOS?",
+                    "GOLD",
+                    "2"
+                ]
+            }
+        },
+        {
+            "text": "Try another potion",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 103
+                }
+            }
+        },
+        {
+            "text": "Continue on your way",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 481
+                }
+            }
+        }
+    ]
+}

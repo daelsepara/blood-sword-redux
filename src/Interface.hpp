@@ -5604,6 +5604,50 @@ namespace BloodSword::Interface
 
         BloodSword::Free(menu);
     }
+
+    void ChaosEffect(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
+    {
+        if (Engine::IsAlive(character))
+        {
+            auto effect = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0);
+
+            switch(effect)
+            {
+                case 1:
+                    Interface::MessageBox(graphics, background, "NOTHING HAPPENS", Color::Inactive);
+
+                    break;
+                case 2:
+                    Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::FIGHTING_PROWESS, 1);
+
+                    break;
+                case 3:
+                    Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY INVULNERABILITY", Color::Active);
+
+                    character.Add(Character::Status::TEMPORARY_INVULNERABILITY);
+
+                    break;
+                case 4:
+                    Interface::MessageBox(graphics, background, "YOU ARE WEAKENED", Color::Highlight);
+
+                    character.Add(Character::Status::WEAKENED);
+
+                    break;
+                case 5:
+                    Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::AWARENESS, -1);
+
+                    break;
+                case 6:
+                    Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY STRENGTH", Color::Active);
+
+                    character.Add(Character::Status::STRONG);
+
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }
 
 #endif
