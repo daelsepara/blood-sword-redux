@@ -5786,15 +5786,24 @@ namespace BloodSword::Interface
                             Interface::MessageBox(graphics, background, character.Name + " LOSES 1 ENDURANCE", Color::Highlight);
 
                             Engine::GainEndurance(character, -1, false);
+
+                            done = true;
                         }
                         else if (choice == 1)
                         {
-                            Interface::MessageBox(graphics, background, character.Name + " NEEDS TO DROP 1 ITEM", Color::Highlight);
+                            if (Engine::CanDrop(character))
+                            {
+                                Interface::MessageBox(graphics, background, character.Name + " NEEDS TO DROP 1 ITEM", Color::Inactive);
 
-                            Interface::DropItem(graphics, background, character);
+                                Interface::DropItem(graphics, background, character);
+
+                                done = true;
+                            }
+                            else
+                            {
+                                Interface::MessageBox(graphics, background, character.Name + " DOES NOT HAVE ITEMS THAT CAN BE DROPPED", Color::Highlight);
+                            }
                         }
-
-                        done = true;
                     }
                 }
             }

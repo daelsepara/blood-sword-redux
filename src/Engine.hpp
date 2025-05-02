@@ -1657,6 +1657,26 @@ namespace BloodSword::Engine
 
         return mapped;
     }
+
+    bool CanDrop(Character::Base &character)
+    {
+        auto drop = false;
+
+        if (Engine::IsAlive(character))
+        {
+            for (auto &item : character.Items)
+            {
+                if (!item.Has(Item::Property::CANNOT_DROP))
+                {
+                    drop = true;
+
+                    break;
+                }
+            }
+        }
+
+        return drop;
+    }
 }
 
 #endif
