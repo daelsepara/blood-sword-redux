@@ -175,6 +175,14 @@ namespace BloodSword::Interface
         // resolve fight, check if defender dies
         auto alive = Interface::ResolveFight(graphics, background, draw, map_w, map_h, attacker, defender, melee);
 
+        // check if defender has retributive fire
+        if (defender.Has(Skills::Type::RETRIBUTIVE_FIRE) && attacker.IsArmed())
+        {
+            Interface::MessageBox(graphics, background, attacker.Name + ": -1 ENDURANCE (RETRIBUTIVE FIRE)", attacker.IsPlayer() ? Color::Highlight : Color::Active);
+
+            Engine::GainEndurance(attacker, -1, true);
+        }
+
         if (!alive)
         {
             Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
@@ -197,14 +205,6 @@ namespace BloodSword::Interface
         {
             // retaliate only if not knocked out and not defending
             defender.Add(Character::Status::IN_COMBAT);
-
-            // check if defender has retributive fire
-            if (defender.Has(Skills::Type::RETRIBUTIVE_FIRE) && attacker.EquippedWeapon(Item::Property::PRIMARY) != -1)
-            {
-                Interface::MessageBox(graphics, background, attacker.Name + ": -1 ENDURANCE (RETRIBUTIVE FIRE)", attacker.IsPlayer() ? Color::Highlight : Color::Active);
-
-                Engine::GainEndurance(attacker, -1, true);
-            }
 
             // reset alive checks
             Interface::ResolveFight(graphics, background, draw, map_w, map_h, defender, attacker, defender.Fight);
