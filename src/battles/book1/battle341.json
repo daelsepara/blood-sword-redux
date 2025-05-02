@@ -1,0 +1,65 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 341
+        },
+        "map": "maps/book1/map341.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "ICON THE UNGODLY",
+                    "attributes": [
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 28,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 28
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 2,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 2,
+                            "type": "DAMAGE",
+                            "value": 2
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "item_limit": 10,
+                    "moves": 1000,
+                    "name": "ICON THE UNGODLY",
+                    "skills": [
+                        "RETRIBUTIVE FIRE"
+                    ],
+                    "spell_immunity": [
+                        "SERVILE ENTHRALMENT"
+                    ],
+                    "target": "ENEMY"
+                }
+            ]
+        }
+    }
+}

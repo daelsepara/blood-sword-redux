@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 51
+    },
+    "text": "Icon steps forwards and shakes hands. \"First, let me attend to those wounds,\" he suggests. \"We shall need to be at full strength for the dangers we must yet face, and a small application of healing sorcery is what is needed here.\"\n\nHe raises his hands and begins to chant in Harada, the language of his native land of Yamato. Seconds later, he gives a grin of feral mirth as noxious vapours trail across the ground towards you. He has cast the Mists of Death.",
+    "next": [
+        {
+            "type": "DAMAGE PARTY ON FAIL",
+            "location": {
+                "book": "BOOK1",
+                "number": 27
+            },
+            "variables": [
+                "PSYCHIC ABILITY",
+                "2",
+                "0",
+                "TRUE",
+                "RESISTS MISTS OF DEATH",
+                "SUCCUMBS TO MISTS OF DEATH",
+                "TRUE"
+            ]
+        }
+    ]
+}

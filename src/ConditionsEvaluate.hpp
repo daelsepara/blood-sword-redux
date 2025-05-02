@@ -4090,6 +4090,79 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::DAMAGE_PARTY_ON_FAIL)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - attribute
+            // 1 - damage roll
+            // 2 - damage modifier
+            // 3 - ignore armour
+            // 4 - message on success
+            // 5 - message on fail
+            // 6 - display
+            if (Engine::IsAlive(party) && condition.Variables.size() > 6)
+            {
+                auto attribute = Attribute::Map(condition.Variables[0]);
+
+                auto damage = party.Number(condition.Variables[1]);
+
+                auto modifier = party.Number(condition.Variables[2]);
+
+                auto ignore_armour = (Engine::ToUpper(condition.Variables[3]) == "TRUE");
+
+                auto display = (Engine::ToUpper(condition.Variables[6]) == "TRUE");
+
+                if (attribute != Attribute::Type::NONE && damage > 0)
+                {
+                    for (auto character = 0; character < party.Count(); character++)
+                    {
+                        if (Engine::IsAlive(party[character]))
+                        {
+                            auto test = Interface::Test(graphics, background, party[character], attribute);
+
+                            if (!test)
+                            {
+                                if (!condition.Variables[5].empty())
+                                {
+                                    if (display)
+                                    {
+                                        Interface::MessageBox(graphics, background, party[character].Name + " " + condition.Variables[5], Color::Highlight);
+                                    }
+                                    else
+                                    {
+                                        text += (party[character].Name + " " + condition.Variables[5] + "\n");
+                                    }
+                                }
+
+                                Interface::DamagePlayer(graphics, background, party[character], damage, modifier, ignore_armour, false, display);
+
+                                if (!Engine::IsAlive(party[character]))
+                                {
+                                    Interface::Resurrect(graphics, background, party, party[character]);
+                                }
+                            }
+                            else if (!condition.Variables[4].empty())
+                            {
+                                if (display)
+                                {
+                                    Interface::MessageBox(graphics, background, party[character].Name + " " + condition.Variables[4], Color::Active);
+                                }
+                                else
+                                {
+                                    text += (party[character].Name + " " + condition.Variables[4] + "\n");
+                                }
+                            }
+                        }
+                    }
+
+                    result = Engine::IsAlive(party);
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::COMBAT_TASK || condition.Type == Conditions::Type::COMBAT_MISSION)
         {
             internal_error = true;

@@ -1,0 +1,38 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 27
+    },
+    "text": "Icon suddenly draws his sword and cuts powerfully -- a treacherous blow that inflicts a considerable amount of damage.",
+    "battle": "battles/book1/battle027.json",
+    "events": [
+        {
+            "type": "LOSE ENDURANCE",
+            "variables": [
+                "FIRST",
+                "8",
+                "FALSE"
+            ]
+        }
+    ],
+    "battle_events": [
+        {
+            "type": "IS ALIVE",
+            "variables": [
+                "ALL",
+                "Icon only laughs. \"Surely you did not expect me to show honour to scum such as you?\" He crouches ready to meet your attack, hastily casting a spell that covers his black armour in a tracery of red sparks.",
+                "TRUE",
+                "ACTIVE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 377
+            }
+        }
+    ]
+}
