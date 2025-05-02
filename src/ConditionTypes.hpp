@@ -129,7 +129,8 @@ namespace BloodSword::Conditions
         PLAYER_BUYS_ITEM,
         CHARACTER_BUYS_ITEM,
         CHAOS_EFFECT,
-        COUNT_ITEMS
+        COUNT_ITEMS,
+        IS_WOUNDED
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -255,7 +256,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::PLAYER_BUYS_ITEM, "PLAYER BUYS ITEM"},
         {Conditions::Type::CHARACTER_BUYS_ITEM, "CHARACTER BUYS ITEM"},
         {Conditions::Type::COUNT_ITEMS, "COUNT ITEMS"},
-        {Conditions::Type::CHAOS_EFFECT, "CHAOS EFFECT"}};
+        {Conditions::Type::CHAOS_EFFECT, "CHAOS EFFECT"},
+        {Conditions::Type::IS_WOUNDED, "IS WOUNDED"}};
 
     Conditions::Type Map(const char *Conditions)
     {

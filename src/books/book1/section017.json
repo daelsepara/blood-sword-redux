@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 17
+    },
+    "text": "\"A sensible decision,\" replies Icon. \"I see no reason to divide our forces when victory is so close at hand. Let our motto, then, be: Trust Shall Prevail!\"",
+    "next": [
+        {
+            "type": "IF WOUNDED",
+            "location": {
+                "book": "BOOK1",
+                "number": 51
+            },
+            "variables": [
+                "ALL"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 27
+            }
+        }
+    ]
+}

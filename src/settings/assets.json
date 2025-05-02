@@ -611,6 +611,10 @@
         {
             "id": "DEATH FETISHIST",
             "path": "images/enemies/totem-head.png"
+        },
+        {
+            "id": "FIRE SHIELD",
+            "path": "images/skills/fire-shield.png"
         }
     ]
 }

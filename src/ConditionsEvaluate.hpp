@@ -4274,6 +4274,51 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::IS_WOUNDED)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / all
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if ((is_party || character != Character::Class::NONE))
+                {
+                    if (is_party)
+                    {
+                        result = !Engine::Healed(party);
+
+                        if (!result)
+                        {
+                            text = "NO ONE IS WOUNDED";
+                        }
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                    else
+                    {
+                        result = !Engine::Healed(party[character]);
+
+                        if (!result)
+                        {
+                            text = party[character].Name + " IS NOT WOUNDED";
+                        }
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)

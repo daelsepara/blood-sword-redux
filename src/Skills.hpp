@@ -30,7 +30,8 @@ namespace BloodSword::Skills
         SLOW_MURDER,
         RUSTY_WEAPON,
         BROKEN_WEAPON,
-        POISONED_BITE
+        POISONED_BITE,
+        RETRIBUTIVE_FIRE
     };
 
     template <typename T>
@@ -58,7 +59,8 @@ namespace BloodSword::Skills
         {Skills::Type::SLOW_MURDER, "SLOW MURDER"},
         {Skills::Type::RUSTY_WEAPON, "RUSTY WEAPON"},
         {Skills::Type::BROKEN_WEAPON, "BROKEN WEAPON"},
-        {Skills::Type::POISONED_BITE, "POISONED BITE"}};
+        {Skills::Type::POISONED_BITE, "POISONED BITE"},
+        {Skills::Type::RETRIBUTIVE_FIRE, "RETRIBUTIVE FIRE"}};
 
     typedef std::vector<Skills::Type> List;
 
@@ -75,7 +77,8 @@ namespace BloodSword::Skills
         Skills::Type::SLOW_MURDER,
         Skills::Type::RUSTY_WEAPON,
         Skills::Type::BROKEN_WEAPON,
-        Skills::Type::POISONED_BITE};
+        Skills::Type::POISONED_BITE,
+        Skills::Type::RETRIBUTIVE_FIRE};
 
     Skills::List RangedAttack = {
         Skills::Type::ARCHERY,
@@ -109,7 +112,8 @@ namespace BloodSword::Skills
         {Skills::Type::SLOW_MURDER, Asset::Type::MISTS_OF_DEATH},
         {Skills::Type::RUSTY_WEAPON, Asset::Type::RUSTY_WEAPON},
         {Skills::Type::BROKEN_WEAPON, Asset::Type::BROKEN_WEAPON},
-        {Skills::Type::POISONED_BITE, Asset::Type::FANGS}};
+        {Skills::Type::POISONED_BITE, Asset::Type::FANGS},
+        {Skills::Type::RETRIBUTIVE_FIRE, Asset::Type::FIRE_SHIELD}};
 
     Skills::Type Map(const char *skill)
     {
