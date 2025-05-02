@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 223
     },
-    "text": "You reach an incline leading off from the rim of the crater. It descends gently at first, then becomes a roughly hewn rock stairway. Ahead you can see a desolate plain of mounds and standing stones -- and beyond that, a swart atoll that reaches nearly to the roof of the cavern. At the very top of the atoll, bathed in a stark grey-white light, the Emblem of Victory stands proudly. You have almost reached your goal.\n\nYour high spirits are dashed when, a moment later, you reach the end of the rock stairway. You had not seen it at first through the vapour filling the cavern floor, but there is a huge chasm stretching right across from one distant wall to the other. You must cross this gulf to reach the atoll where the EMBLEM awaits you -- but there is no bridge in sight this time.",
+    "text": "You reach an incline leading off from the rim of the crater. It descends gently at first, then becomes a roughly hewn rock stairway. Ahead you can see a desolate plain of mounds and standing stones -- and beyond that, a swart atoll that reaches nearly to the roof of the cavern. At the very top of the atoll, bathed in a stark grey-white light, the Emblem of Victory stands proudly. You have almost reached your goal.\n\nYour high spirits are dashed when, a moment later, you reach the end of the rock stairway. You had not seen it at first through the vapour filling the cavern floor, but there is a huge chasm stretching right across from one distant wall to the other. You must cross this gulf to reach the atoll where the Emblem awaits you -- but there is no bridge in sight this time.",
     "next": [
         {
             "type": "NORMAL",
