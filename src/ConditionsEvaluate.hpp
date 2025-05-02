@@ -4235,6 +4235,45 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::LOSE_ENDURANCE_OR_DROP_ITEM)
+        {
+            internal_error = true;
+
+            if (Engine::IsAlive(party))
+            {
+                auto characters = std::vector<Character::Class>();
+
+                for (auto character = 0; character < party.Count(); character++)
+                {
+                    if (Engine::IsAlive(party[character]))
+                    {
+                        characters.push_back(party[character].Class);
+                    }
+                }
+
+                if (characters.size() > 0)
+                {
+                    result = true;
+
+                    for (auto character : characters)
+                    {
+                        result &= Interface::Test(graphics, background, party[character], Attribute::Type::PSYCHIC_ABILITY);
+
+                        if (!result)
+                        {
+                            Interface::LoseEnduranceOrDropItem(graphics, background, party[character]);
+                        }
+                    }
+
+                    if (!result && Book::IsDefined(condition.Failure))
+                    {
+                        failed = true;
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)

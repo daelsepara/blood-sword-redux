@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 114
+    },
+    "text": "The moment you enter the gate, you are under assault by some unknown psychic force. You spin in the air as though in a glaring blue light. Ahead is an area of darkness - the destination of the gate. Behind, you can still see the distorted image of the area you have just come from: the table of rock, with the jangled edges of the stairway and temple beyond it.",
+    "choices": [
+        {
+            "text": "Try to reach the destination",
+            "condition": {
+                "type": "LOSE ENDURANCE OR DROP ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 396
+                },
+                "failure": {
+                    "book": "BOOK1",
+                    "number": 114
+                }
+            }
+        },
+        {
+            "text": "Turn back and take the other gate",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 307
+                }
+            }
+        }
+    ]
+}

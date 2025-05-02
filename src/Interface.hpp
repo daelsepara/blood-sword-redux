@@ -5440,7 +5440,7 @@ namespace BloodSword::Interface
     }
 
     // (character) show inventory while in story mode
-    void DropItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
+    void DropItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         if (character.Items.size() == 0)
         {
@@ -5611,46 +5611,196 @@ namespace BloodSword::Interface
         {
             auto effect = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0);
 
-            switch(effect)
+            switch (effect)
             {
-                case 1:
-                    Interface::MessageBox(graphics, background, "NOTHING HAPPENS", Color::Inactive);
+            case 1:
+                Interface::MessageBox(graphics, background, "NOTHING HAPPENS", Color::Inactive);
 
-                    break;
-                case 2:
-                    Interface::MessageBox(graphics, background, "+1 FIGHTING PROWESS", Color::Active);
+                break;
+            case 2:
+                Interface::MessageBox(graphics, background, "+1 FIGHTING PROWESS", Color::Active);
 
-                    Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::FIGHTING_PROWESS, 1);
+                Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::FIGHTING_PROWESS, 1);
 
-                    break;
-                case 3:
-                    Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY INVULNERABILITY", Color::Active);
+                break;
+            case 3:
+                Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY INVULNERABILITY", Color::Active);
 
-                    character.Add(Character::Status::TEMPORARY_INVULNERABILITY);
+                character.Add(Character::Status::TEMPORARY_INVULNERABILITY);
 
-                    break;
-                case 4:
-                    Interface::MessageBox(graphics, background, "YOU ARE WEAKENED", Color::Highlight);
+                break;
+            case 4:
+                Interface::MessageBox(graphics, background, "YOU ARE WEAKENED", Color::Highlight);
 
-                    character.Add(Character::Status::WEAKENED);
+                character.Add(Character::Status::WEAKENED);
 
-                    break;
-                case 5:
-                    Interface::MessageBox(graphics, background, "-1 AWARENESS", Color::Highlight);
+                break;
+            case 5:
+                Interface::MessageBox(graphics, background, "-1 AWARENESS", Color::Highlight);
 
-                    Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::AWARENESS, -1);
+                Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::AWARENESS, -1);
 
-                    break;
-                case 6:
-                    Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY STRENGTH", Color::Active);
+                break;
+            case 6:
+                Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY STRENGTH", Color::Active);
 
-                    character.Add(Character::Status::STRONG);
+                character.Add(Character::Status::STRONG);
 
-                    break;
-                default:
-                    break;
+                break;
+            default:
+                break;
             }
         }
+    }
+
+    void LoseEnduranceOrDropItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
+    {
+        auto limit = 2;
+
+        auto start = 0;
+
+        auto last = start + limit;
+
+        auto options = 2;
+
+        // wrap length
+        auto wrap = BloodSword::TileSize * 6;
+
+        Graphics::TextList text_list = {
+            Graphics::RichText("LOSE 1 ENDURANCE", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap),
+            Graphics::RichText("DROP 1 ITEM", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap)};
+
+        auto menu = Graphics::CreateText(graphics, text_list);
+
+        // default width
+        auto w = wrap;
+
+        // default height
+        auto h = BloodSword::TileSize;
+
+        // padding
+        auto pads = BloodSword::Pad * 2;
+
+        for (auto &item : menu)
+        {
+            w = std::max(BloodSword::Width(item) + pads, wrap);
+
+            h = std::max(BloodSword::Height(item) + pads, h);
+        }
+
+        auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+
+        auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto frame_x = x - BloodSword::HalfTile;
+
+        auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
+
+        auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+
+        auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+
+        while (!done)
+        {
+            auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
+
+            // add frame at the back
+            overlay.Elements.insert(overlay.Elements.begin(), Scene::Element(frame_x, frame_y, frame_w, frame_h, Color::Background, Color::Active, BloodSword::Border));
+
+            if (input.Up)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
+
+                input.Up = false;
+            }
+            else if (input.Down)
+            {
+                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
+
+                input.Down = false;
+            }
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                {
+                    if (start > 0)
+                    {
+                        start -= 1;
+
+                        if (start < 0)
+                        {
+                            start = 0;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Up = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                {
+                    if (options - last > 0)
+                    {
+                        if (start < options - limit)
+                        {
+                            start += 1;
+                        }
+
+                        if (start > options - limit)
+                        {
+                            start = options - limit;
+                        }
+
+                        last = start + limit;
+
+                        if (last > options)
+                        {
+                            last = options;
+                        }
+
+                        input.Down = true;
+                    }
+                }
+                else if (input.Type == Controls::Type::CHOICE)
+                {
+                    auto list = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                    auto choice = start + (input.Current - list);
+
+                    if (choice >= 0 && choice < text_list.size())
+                    {
+                        if (choice == 0)
+                        {
+                            Interface::MessageBox(graphics, background, character.Name + " LOSES 1 ENDURANCE", Color::Highlight);
+
+                            Engine::GainEndurance(character, -1, false);
+                        }
+                        else if (choice == 1)
+                        {
+                            Interface::MessageBox(graphics, background, character.Name + " NEEDS TO DROP 1 ITEM", Color::Highlight);
+
+                            Interface::DropItem(graphics, background, character);
+                        }
+
+                        done = true;
+                    }
+                }
+            }
+        }
+
+        BloodSword::Free(menu);
     }
 }
 
