@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 378
+    },
+    "text": "\"Then you shall remain here forever!\" shriekes the ghost.",
+    "choices": [
+        {
+            "text": "(SAGE) Try to exorcise it",
+            "condition": {
+                "type": "IN PARTY",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 182
+                },
+                "variables": [
+                    "SAGE"
+                ]
+            }
+        },
+        {
+            "text": "Agree to help the ghost",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 116
+                }
+            }
+        },
+        {
+            "text": "Reaffirm that you will not aid it under any circumstances",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 451
+                }
+            }
+        }
+    ]
+}

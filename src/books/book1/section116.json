@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 116
+    },
+    "text": "\"Ah, it is well,\" says the ghost with a misty, emotionless mile. \"The loyal servants of Zyn shall share in his glory, and I shall reward you above all others.\" It passes its hands over the sarcophagus lid, which slowly rises into the air. You look upon a mouldered skeleton that clutches a lump of granite in its broken fingers.\n\n\"My mortal form,\" says the ghost wistfully. \"So long since I could taste the musky wines of Asmuly or feel a scented breeze from off the meadows... Take the stone! Take it quickly! I wish to wallow no longer in the memory of the things lost to me.\"\n\nYou have no choice but to comply. Your agreement to aid the ghost has bereft you of any power to oppose him. You take the lump of granite from the skeleton's hands, and the sarcophagus slowly closes again.\n\nYou see that you hold a fossilised heart. \"It is the heart of the giant Skrymir,\" explains the ghost. \"He was destroyed by the True Magi, but he shall be my instrument of vengeance against their heirs, these mewling modern magi who have usurped the ancient grandeur.\" He flickers and seems to grow larger and more tenebrous for a moment, then settles down into a cold hard radiance. \"Go towards the atoll. I have no interest in this petty contest; it is of no concern to me whether you take the Emblem of Victory or not. Do so if you wish. However, on your way to the Emblem at the summit, you will pass through chambers where the sundered fragments of Skrymir's body lie -- his massive legs, his rib-cage, his arms and flessless skull. Take them with you. At the summit, assemble them and place the fossilised heart in his dusty chest. Then stand you back, for the magic of Zyn shall roar forth from the cosmic interstices once again, as it did in times of old. Flesh shall clothe his yellowed bones; his heart shall beat and warm blood shall course through his veins; his eyes shall open and behold this travesty of ancient Krarth, and to the upstart magi he shall mete out a most fitting fate. Now, make ready to return below.\"\n\nHe lifts diaphanous hands. A stream of grey-blue lights surrounds you. The scene shifts, and once more you find yourself on the plain below the floating platform.",
+    "next": [
+        {
+            "type": "GET ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 238
+            },
+            "variables": [
+                "FOSSILISED HEART"
+            ]
+        }
+    ]
+}

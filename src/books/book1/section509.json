@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 509
+    },
+    "text": "The ghost speaks to you with a voice reaching across a thousand years of history. \"In life I was Magus Zyn,\" it says. \"I was mightiest of the True Magi, and would have ruled over all, but petty jealousies among my peers brought about my downfall. The fools slew my servant, the giant Skrymir, and though they had not the power to destroy me utterly they yet imprisoned me here. And here I have lain for ten centuries. Ten centuries! They have passed like the slow tread of Leviathan, like the measured rumble of the gods as they snore beneath Spyte. Ten centuries to plot and scheme. Now my plans for vengeance come to fruition -- but I need your help to execute my plan. What say you?\"",
+    "choices": [
+        {
+            "text": "Agree to help Zyn's ghost",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 116
+                }
+            }
+        },
+        {
+            "text": "Refuse to help Zyn's ghost",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 378
+                }
+            }
+        }
+    ]
+}
