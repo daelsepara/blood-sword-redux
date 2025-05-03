@@ -131,6 +131,9 @@
         },
         {
             "name": "BLUTGETRANKER",
+            "attributes": {
+                "FIGHTING PROWESS": 1
+            },
             "properties": [
                 "WEAPON",
                 "PRIMARY"
