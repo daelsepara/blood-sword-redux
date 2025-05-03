@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 68
+    },
+    "text": "You approach a remarkable sight. A large basalt platform hangs suspended in the air, apparently unsupported, fifty metres above the cavern floor. On the ground directly underneath it stands a bronze gong.",
+    "choices": [
+        {
+            "text": "Use the BRONZE MALLET",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 525
+                },
+                "variables": [
+                    "SELECT",
+                    "BRONZE MALLET"
+                ]
+            }
+        },
+        {
+            "text": "Head straight for the Emblem of Victory",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 238
+                }
+            }
+        }
+    ]
+}

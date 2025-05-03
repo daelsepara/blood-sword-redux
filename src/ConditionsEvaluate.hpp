@@ -4392,6 +4392,92 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::MUST_TAKE_ITEM || condition.Type == Conditions::Type::MUST_GET_ITEM)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - item to take
+            // 1 - item (if present, then must take item in #0)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            {
+                auto item = Item::Map(condition.Variables[0]);
+
+                auto required = Item::Map(condition.Variables[1]);
+
+                if (item != Item::Type::NONE)
+                {
+                    auto take = false;
+
+                    if (required != Item::Type::NONE)
+                    {
+                        if (party.Has(required))
+                        {
+                            take = true;
+                        }
+                        else
+                        {
+                            std::string message = "TAKE " + Items::Defaults[item].Name + "?";
+
+                            if (Interface::Confirm(graphics, background, message, Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                            {
+                                take = true;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        std::string message = "TAKE " + Items::Defaults[item].Name + "?";
+
+                        if (Interface::Confirm(graphics, background, message, Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                        {
+                            take = true;
+                        }
+                    }
+
+                    if (take)
+                    {
+                        if (Interface::CanReceive(party))
+                        {
+                            auto character = Engine::FirstClass(party);
+
+                            if (Engine::Count(party) > 1)
+                            {
+                                std::string message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
+
+                                character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+                            }
+
+                            if (Interface::CanReceive(party[character]))
+                            {
+                                // preserve choice
+                                party.ChosenCharacter = character;
+
+                                party[character].Add(Items::Defaults[item]);
+
+                                text = party[character].Name + " TAKES THE " + Item::TypeMapping[item] + ".";
+
+                                result = true;
+                            }
+                            else
+                            {
+                                text = Interface::Text[Interface::MSG_FULL].Text;
+                            }
+                        }
+                        else
+                        {
+                            text = Interface::Text[Interface::MSG_FULL].Text;
+                        }
+                    }
+                    else
+                    {
+                        result = true;
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)

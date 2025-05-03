@@ -1,0 +1,27 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 377
+    },
+    "text": "You deal the death-stroke, but amazingly Icon does not fall. He reaches down, ashen face contorted in pain, and pulls the weapon out of the wound. \"My magic shall sustain me until I have time to heal,\" he groans, forcing each word through a snarl of pain. \"But I must retreat to lick my wounds, and so you have prevented me from reaching the Emblem of Victory. Be warned that Icon remembers his foes.\"\n\nGlaring coldly at you as blood trickles from his mouth, he spits the words of power of a spell and transforms himself into a red mist, quickly seeping away across the cave floor. No doubt you will be meeting him again.\n\nOne item he was carrying was not transformed by the Vaporisation spell: a BRONZE MALLET. Glancing towards the atoll, you see no sign of any other parties. Nothing can now stop you winning the contest!",
+    "items": [
+        {
+            "name": "BRONZE MALLET",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BRONZE MALLET"
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 68
+            }
+        }
+    ]
+}

@@ -66,7 +66,8 @@ namespace BloodSword::Item
         BLUE_TOUCHSTONE,
         LEAD_RING,
         YELLOW_SCROLL,
-        EFFERVESCENT_LIQUID
+        EFFERVESCENT_LIQUID,
+        BRONZE_MALLET
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -128,7 +129,8 @@ namespace BloodSword::Item
         {Item::Type::BLUE_TOUCHSTONE, "BLUE TOUCHSTONE"},
         {Item::Type::LEAD_RING, "LEAD RING"},
         {Item::Type::YELLOW_SCROLL, "YELLOW SCROLL"},
-        {Item::Type::EFFERVESCENT_LIQUID, "EFFERVESCENT LIQUID"}};
+        {Item::Type::EFFERVESCENT_LIQUID, "EFFERVESCENT LIQUID"},
+        {Item::Type::BRONZE_MALLET, "BRONZE MALLET"}};
 
     Item::Type Map(const char *item)
     {

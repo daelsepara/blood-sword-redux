@@ -610,6 +610,15 @@
             "quantity": 1,
             "revealed": false,
             "type": "EFFERVESCENT LIQUID"
+        },
+        {
+            "name": "BRONZE MALLET",
+            "properties": [
+                "WEAPON",
+                "PRIMARY"
+            ],
+            "quantity": 1,
+            "type": "BRONZE MALLET"
         }
     ]
 }
