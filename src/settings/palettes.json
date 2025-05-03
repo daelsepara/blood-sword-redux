@@ -10,6 +10,15 @@
             ]
         },
         {
+            "name": "MONOCHROME",
+            "colors": [
+                "FFFFFFFF",
+                "FF606060",
+                "FFA0A0A0",
+                "FF000000"
+            ]
+        },
+        {
             "name": "CGA (WHITE/MAGENTA/CYAN)",
             "colors": [
                 "FF56FFFF",
