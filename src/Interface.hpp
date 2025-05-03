@@ -4615,15 +4615,31 @@ namespace BloodSword::Interface
                 }
                 else if (input == Controls::Type::BATTLE_ORDER)
                 {
-                    if (party.Count() > 1)
-                    {
-                        update = Interface::BattleOrder(graphics, background, party);
+                    auto current = Story::CurrentBook.Find(party.Location);
 
-                        done = true;
+                    if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                    {
+                        if (!Story::CurrentBook.Sections[current].Battle.IsDefined())
+                        {
+                            if (party.Count() > 1)
+                            {
+                                update = Interface::BattleOrder(graphics, background, party);
+
+                                done = true;
+                            }
+                            else
+                            {
+                                Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+                            }
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, background, "CANNOT CHANGE BATTLE ORDER AT THIS TIME", Color::Highlight);
+                        }
                     }
                     else
                     {
-                        Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+                        Interface::MessageBox(graphics, background, "CANNOT CHANGE BATTLE ORDER AT THIS TIME", Color::Highlight);
                     }
                 }
                 else
