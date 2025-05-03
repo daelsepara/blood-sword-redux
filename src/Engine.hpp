@@ -669,6 +669,7 @@ namespace BloodSword::Engine
                     if (map[src].IsEnemy())
                     {
                         auto action = std::string();
+
                         if (spell)
                         {
                             action = "SPELL";
@@ -727,6 +728,28 @@ namespace BloodSword::Engine
     Engine::Queue SpellTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
         return Engine::Build(map, party, src, in_battle, false, false, false, true, descending);
+    }
+
+    // build targets sort by distance
+    Engine::Queue AllTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
+    {
+        Engine::Queue queue = {};
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            if (Engine::CanTarget(party[i], in_battle))
+            {
+                auto location = Engine::Location(map, party[i], i);
+
+                auto distance = map.Distance(src, location);
+
+                queue.push_back(Engine::ScoreElement(party[i].ControlType, i, distance));
+            }
+        }
+
+        Engine::Sort(queue, descending);
+
+        return queue;
     }
 
     // build queue of preferred targets

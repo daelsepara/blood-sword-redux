@@ -356,22 +356,19 @@ namespace BloodSword::Interface
 
                         auto ranged = item.Has(Item::Property::RANGED);
 
+                        auto all_ranges = item.Has(Item::Property::ALL_RANGES);
+
                         if (ranged)
                         {
-                            auto targets = Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
+                            auto targets = all_ranges ? Engine::AllTargets(battle.Map, battle.Opponents, src, true, false) : Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
 
-                            if (opponents.size() > 0)
+                            if (opponents.size() > 0 && !all_ranges)
                             {
                                 Interface::MessageBox(graphics, background, Interface::GetText(Interface::MSG_NEARBY), Color::Highlight);
                             }
                             else if (targets.size() > 0)
                             {
-                                auto asset = Asset::Type::SHOOT;
-
-                                if (item.Asset != Asset::Type::NONE)
-                                {
-                                    asset = item.Asset;
-                                }
+                                auto asset = item.Asset != Asset::Type::NONE ? item.Asset : Asset::Type::SHOOT;
 
                                 auto target = Point(-1, -1);
 
@@ -385,7 +382,7 @@ namespace BloodSword::Interface
                                     target = battle.Map.Find(targets[0].Type == Character::ControlType::PLAYER ? Map::Object::PLAYER : Map::Object::ENEMY, targets[0].Id);
                                 }
 
-                                if (target.IsNone() || battle.Map.Distance(src, target) < 2)
+                                if (target.IsNone() || (!all_ranges && battle.Map.Distance(src, target) < 2))
                                 {
                                     Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
                                 }

@@ -29,7 +29,8 @@ namespace BloodSword::Item
         BROKEN,
         CURSED,
         REQUIRES_TARGET,
-        RESURRECTION
+        RESURRECTION,
+        ALL_RANGES
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -56,7 +57,8 @@ namespace BloodSword::Item
         {Item::Property::BROKEN, "BROKEN"},
         {Item::Property::CURSED, "CURSED"},
         {Item::Property::REQUIRES_TARGET, "REQUIRES TARGET"},
-        {Item::Property::RESURRECTION, "RESURRECTION"}};
+        {Item::Property::RESURRECTION, "RESURRECTION"},
+        {Item::Property::ALL_RANGES, "ALL RANGES"}};
 
     Item::Properties Invisible = {
         Item::Property::NONE,
@@ -66,7 +68,8 @@ namespace BloodSword::Item
         Item::Property::CANNOT_DROP,
         Item::Property::CANNOT_TRADE,
         Item::Property::COMBAT,
-        Item::Property::REQUIRES_TARGET};
+        Item::Property::REQUIRES_TARGET,
+        Item::Property::ALL_RANGES};
 
     Item::Property MapProperty(const char *property)
     {

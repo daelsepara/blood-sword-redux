@@ -351,7 +351,8 @@
             "properties": [
                 "COMBAT",
                 "REQUIRES TARGET",
-                "RANGED"
+                "RANGED",
+                "ALL RANGES"
             ],
             "quantity": 1,
             "type": "DRAGONLORD GEM",
