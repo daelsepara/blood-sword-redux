@@ -44,16 +44,6 @@
                     "number": 331
                 }
             }
-        },
-        {
-            "text": "... or the man in the domino cape",
-            "condition": {
-                "type": "NORMAL",
-                "location": {
-                    "book": "BOOK1",
-                    "number": 487
-                }
-            }
         }
     ]
 }
