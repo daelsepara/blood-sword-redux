@@ -619,6 +619,22 @@
             ],
             "quantity": 1,
             "type": "BRONZE MALLET"
+        },
+        {
+            "name": "SKULL",
+            "properties": [
+                "CANNOT DROP"
+            ],
+            "quantity": 1,
+            "type": "SKULL"
+        },
+        {
+            "name": "FOSSILISED HEART",
+            "properties": [
+                "CANNOT DROP"
+            ],
+            "quantity": 1,
+            "type": "FOSSILISED HEART"
         }
     ]
 }

@@ -2686,6 +2686,44 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::KILL_OTHERS)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player (not killed)
+            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            {
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                if (character != Character::Class::NONE)
+                {
+                    result = party.Has(character) && Engine::IsAlive(party[character]);
+
+                    if (result)
+                    {
+                        for (auto others = 0; others < party.Count(); others++)
+                        {
+                            if (Engine::IsAlive(party[others]) && party[others].Class != character)
+                            {
+                                // unalive player
+                                party[others].Value(Attribute::Type::ENDURANCE, 0);
+                            }
+                        }
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::KILL_ALL_WITH_STATUS)
         {
             internal_error = true;
@@ -3197,6 +3235,41 @@ namespace BloodSword::Conditions
                 if (targets > 0 && roll > 0)
                 {
                     Interface::DamageParty(graphics, background, party, targets, rounds, roll, modifier, ignore_armour, false, display);
+
+                    result = true;
+
+                    internal_error = false;
+                }
+            }
+        }
+        else if (condition.Type == Conditions::Type::DAMAGE_EVERYONE)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - roll
+            // 1 - modifier
+            // 2 - ignore armour
+            // 3 - display
+            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            {
+                auto roll = party.Number(condition.Variables[0]);
+
+                auto modifier = party.Number(condition.Variables[1]);
+
+                auto ignore_armour = Engine::ToUpper(condition.Variables[2]) == "TRUE";
+
+                auto display = Engine::ToUpper(condition.Variables[3]) == "TRUE";
+
+                if (roll > 0)
+                {
+                    for (auto character = 0; character < party.Count(); character++)
+                    {
+                        if (Engine::IsAlive(party[character]))
+                        {
+                            Interface::DamagePlayer(graphics, background, party[character], roll, modifier, ignore_armour, false, display);
+                        }
+                    }
 
                     result = true;
 

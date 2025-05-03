@@ -116,6 +116,7 @@ namespace BloodSword::Conditions
         COMBAT_MISSION,
         HAS_ALL_ITEMS,
         DAMAGE_PARTY,
+        DAMAGE_EVERYONE,
         GAIN_ARMOUR,
         LOSE_ENDURANCE_OR_DROP_ITEM,
         PLAYER_PAYS,
@@ -133,7 +134,8 @@ namespace BloodSword::Conditions
         COUNT_ITEMS,
         IS_WOUNDED,
         MUST_GET_ITEM,
-        MUST_TAKE_ITEM
+        MUST_TAKE_ITEM,
+        KILL_OTHERS
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -246,6 +248,7 @@ namespace BloodSword::Conditions
         {Conditions::Type::COMBAT_MISSION, "COMBAT MISSION"},
         {Conditions::Type::HAS_ALL_ITEMS, "HAS ALL ITEMS"},
         {Conditions::Type::DAMAGE_PARTY, "DAMAGE PARTY"},
+        {Conditions::Type::DAMAGE_EVERYONE, "DAMAGE EVERYONE"},
         {Conditions::Type::GAIN_ARMOUR, "GAIN ARMOUR"},
         {Conditions::Type::LOSE_ENDURANCE_OR_DROP_ITEM, "LOSE ENDURANCE OR DROP ITEM"},
         {Conditions::Type::PLAYER_PAYS, "PLAYER PAYS"},
@@ -263,7 +266,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::CHAOS_EFFECT, "CHAOS EFFECT"},
         {Conditions::Type::IS_WOUNDED, "IS WOUNDED"},
         {Conditions::Type::MUST_GET_ITEM, "MUST GET ITEM"},
-        {Conditions::Type::MUST_TAKE_ITEM, "MUST TAKE ITEM"}};
+        {Conditions::Type::MUST_TAKE_ITEM, "MUST TAKE ITEM"},
+        {Conditions::Type::KILL_OTHERS, "KILL OTHERS"}};
 
     Conditions::Type Map(const char *Conditions)
     {

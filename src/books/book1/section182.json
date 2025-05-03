@@ -1,0 +1,38 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 182
+    },
+    "text": "(SAGE) You concentrate your mind on stifling the cosmic energies that surround and sustain this immaterial spirit. Its translucent image begins to dim, but then it senses what you are trying to do and starts to fight back.",
+    "next": [
+        {
+            "type": "ROLL",
+            "variables": [
+                "2",
+                "0",
+                "EXORCISM-182",
+                "SAGE",
+                "EXORCISM"
+            ]
+        },
+        {
+            "type": "IF",
+            "location": {
+                "book": "BOOK1",
+                "number": 239
+            },
+            "variables": [
+                ">",
+                "EXORCISM-182",
+                "10"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 497
+            }
+        }
+    ]
+}

@@ -1,0 +1,33 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 239
+    },
+    "text": "(SAGE) Amazingling, you have disbanded the spirt of Magus Zyn, a treacherous wizard of ages past who was confined here in the nether reaches of the Battlepits when his fellow magi found they could not destroy him. You have succeeded where they failed, and as his ghost fades with a shriek of damnation you may be justified in feeling a certain pride at your victory.",
+    "events": [
+        {
+            "type": "HAVE COLLEAGUES",
+            "variables": [
+                "It is a Pyrric victory. Your companions have no way to get off the hovering platform. They look down upon the seething volcanic mists and gushing geyser-fires of the cavern. It is like a scene out of hell, and it is the hell in which they shall languish forever."
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "KILL OTHERS",
+            "variables": [
+                "SAGE"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 238
+            },
+            "variables": [
+                "You levitate down and go on."
+            ]
+        }
+    ]
+}

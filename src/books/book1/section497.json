@@ -1,0 +1,31 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 497
+    },
+    "text": "The ghost seems slow to react at first, as though it has difficulty adjusting from the reference-frame of eternity to one where rapid action is required. Its long-dead features acquire a look of astonishment, then black rage. It easily resists the power of the Exorcism, drawing energy from the cosmic flux into itself until it blazes like a human torch.\n\n\"You dare to assail the spirit of Zyn?\" it hisses. \"Begone!\" It gestures, and a crackling web of mystical lightning envelops you. You stream at an instant of blinding agony.",
+    "battle_events": [
+        {
+            "type": "DAMAGE EVERYONE",
+            "variables": [
+                "1",
+                "1",
+                "FALSE",
+                "TRUE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 238
+            },
+            "variables": [
+                "You dematerialise and reappear on the cave floor underneath the floating platform. Glancing up, you see no sign of Zyn's ghost. An unpleasant and pointless encounter. You turn towards the atoll where the Emblem awaits.",
+                "INACTIVE"
+            ]
+        }
+    ]
+}
