@@ -2556,6 +2556,21 @@ namespace BloodSword::Interface
             modifier -= 2;
         }
 
+        // check for bonus damage to specific target types
+        if (attacker.IsPlayer() && attacker.IsArmed() && !shooting && !knockout)
+        {
+            auto weapon = attacker.EquippedWeapon(Item::Property::PRIMARY);
+
+            if (weapon >= 0 && weapon < attacker.Items.size() && attacker.Items[weapon].HasDamageType(defender.Target))
+            {
+                roll += attacker.Items[weapon].DamageTypes[defender.Target].Value;
+
+                modifier += attacker.Items[weapon].DamageTypes[defender.Target].Modifier;
+
+                ignore_armour |= attacker.Items[weapon].DamageTypes[defender.Target].IgnoreArmour;
+            }
+        }
+
         modifier -= (shooting && (skill == Skills::Type::SHURIKEN)) ? 1 : 0;
 
         return Interface::CombatDamage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle, ignore_armour);

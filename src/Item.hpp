@@ -189,6 +189,11 @@ namespace BloodSword::Item
             return BloodSword::Has(this->TargetEffects, target);
         }
 
+        bool HasDamageType(Target::Type target)
+        {
+            return BloodSword::Has(this->DamageTypes, target);
+        }
+
         bool HasAll(Item::Properties properties)
         {
             auto has = true;
