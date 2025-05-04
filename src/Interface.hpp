@@ -2306,6 +2306,11 @@ namespace BloodSword::Interface
     // attribute difficulty check (no targets / self-targetting)
     bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle)
     {
+        if (character.Has(Character::Status::SERENITY) && attribute == Attribute::Type::PSYCHIC_ABILITY)
+        {
+            modifier -= 2;
+        }
+
         return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, asset, in_battle);
     }
 
