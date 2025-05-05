@@ -1,0 +1,30 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 271
+    },
+    "text": "You follow the path up inside the atoll until you reach another chamber. Here, a rib-cage of colossal proportions hangs from a petrified tree. A large padlock attaches it to one of the stone branches. From the other branches, grinning severed heads dangle by their matted scalps. A crack in the outer wall affords you a view across the Battlepits -- of the floating basalt platform above the plain of standing stones, of the chasm where the dirge-men fly, of the pylon in the middle of bubbling lava pits and of the shrine and temple beyond it. You have come so far, but now you feel a terrible depression of the spirit. Your quest begins to seem almost pointless. How much better to slump here, to rest devoid of cares. To submit to defeat...\n\nA whistling wind blows from the tree. A thousand grinning mouths appear across its stony bark, screaming and calling for you. A thousand fire-blackend fingers stretch out from the gulf beyond your imagination, beckoning for your company. You feel the lure of insanity.",
+    "next": [
+        {
+            "type": "PARTY HAS ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 176
+            },
+            "variables": [
+                "FOSSILISED HEART"
+            ]
+        },
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 468
+            },
+            "variables": [
+                "You must rely on your own force of will to see you through this ordeal",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

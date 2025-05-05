@@ -69,7 +69,8 @@ namespace BloodSword::Item
         EFFERVESCENT_LIQUID,
         BRONZE_MALLET,
         SKULL,
-        FOSSILISED_HEART
+        FOSSILISED_HEART,
+        SKRYMIRS_RIBCAGE
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -134,7 +135,8 @@ namespace BloodSword::Item
         {Item::Type::EFFERVESCENT_LIQUID, "EFFERVESCENT LIQUID"},
         {Item::Type::BRONZE_MALLET, "BRONZE MALLET"},
         {Item::Type::SKULL, "SKULL"},
-        {Item::Type::FOSSILISED_HEART, "FOSSILISED HEART"}};
+        {Item::Type::FOSSILISED_HEART, "FOSSILISED HEART"},
+        {Item::Type::SKRYMIRS_RIBCAGE, "SKRYMIR'S RIB-CAGE"}};
 
     Item::Type Map(const char *item)
     {

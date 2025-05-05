@@ -1,0 +1,44 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 468
+    },
+    "text": "The maddening shrieks of the phantasms present you with a mighty psychic challenge.",
+    "next": [
+        {
+            "type": "GAIN STATUS",
+            "variables": [
+                "SAGE",
+                "SERENITY",
+                "FALSE"
+            ]
+        },
+        {
+            "type": "FAIL THEN DIE",
+            "variables": [
+                "ALL",
+                "PSYCHIC ABILITY",
+                "IS DRIVEN INTO PERMANENT MADNESS AND SIMPLY SQUATS ON THE FLOOR GIBBERING"
+            ]
+        },
+        {
+            "type": "LOSE STATUS",
+            "variables": [
+                "SAGE",
+                "SERENITY",
+                "FALSE"
+            ]
+        },
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 272
+            },
+            "variables": [
+                "You survive the mental assault with your sanity intact",
+                "ACTIVE"
+            ]
+        }
+    ]
+}
