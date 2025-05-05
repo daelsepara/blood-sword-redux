@@ -3397,9 +3397,9 @@ namespace BloodSword::Conditions
                                 // unalive player
                                 party[characters[i]].Value(Attribute::Type::ENDURANCE, 0);
 
-                                if (!Engine::IsAlive(party[character]))
+                                if (!Engine::IsAlive(party[characters[i]]))
                                 {
-                                    Interface::Resurrect(graphics, background, party, party[character]);
+                                    Interface::Resurrect(graphics, background, party, party[characters[i]]);
                                 }
                             }
                         }
