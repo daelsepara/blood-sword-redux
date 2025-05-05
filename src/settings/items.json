@@ -639,6 +639,14 @@
             ],
             "quantity": 1,
             "type": "FOSSILISED HEART"
+        },
+        {
+            "name": "SKRYMIR'S RIB-CAGE",
+            "properties": [
+                "CANNOT DROP"
+            ],
+            "quantity": 1,
+            "type": "SKRYMIR'S RIB-CAGE"
         }
     ]
 }
