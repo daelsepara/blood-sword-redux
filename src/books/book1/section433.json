@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 433
+    },
+    "text": "The skull speaks again, and the shackles open and slither away, rustling their rusted links on the stone floor as they retreat into the shadows.",
+    "next": [
+        {
+            "type": "GET ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 538
+            },
+            "variables": [
+                "SKRYMIR'S LEGS"
+            ]
+        }
+    ]
+}

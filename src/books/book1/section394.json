@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 394
+    },
+    "text": "The salt-encrusted sad faces of the dead worshippers make you uneasy. You hurry up the steps that lead from this chamber to the summit.",
+    "items": [
+        {
+            "name": "IRON GAUNTLETS",
+            "quantity": 1,
+            "type": "IRON GAUNTLETS"
+        }
+    ],
+    "next": [
+        {
+            "type": "GET ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 322
+            },
+            "variables": [
+                "SKRYMIR'S ARMS"
+            ]
+        }
+    ]
+}
