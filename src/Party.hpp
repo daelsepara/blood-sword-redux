@@ -323,11 +323,13 @@ namespace BloodSword::Party
             }
         }
 
+        // clear party of all members
         void Clear()
         {
             this->Members.clear();
         }
 
+        // set (book) location of party, set previous location
         void Set(Book::Location location)
         {
             this->PreviousLocation = this->Location;
@@ -388,6 +390,7 @@ namespace BloodSword::Party
             }
         }
 
+        // remove list of status from party
         void Remove(std::vector<Character::Status> statuses)
         {
             for (auto i = 0; i < this->Count(); i++)
@@ -399,6 +402,7 @@ namespace BloodSword::Party
             }
         }
 
+        // reset spell complexities
         void ResetSpells()
         {
             for (auto i = 0; i < this->Count(); i++)
@@ -553,6 +557,7 @@ namespace BloodSword::Party
             return value;
         }
 
+        // set variable
         void Set(std::string variable, std::string value)
         {
             if (!variable.empty())
@@ -588,6 +593,7 @@ namespace BloodSword::Party
             }
         }
 
+        // set numerical value of a variable
         void Set(std::string variable, int value)
         {
             if (!variable.empty())
@@ -607,6 +613,7 @@ namespace BloodSword::Party
             }
         }
 
+        // get numeric value of a variable
         int Number(std::string variable)
         {
             auto value = 0;
@@ -641,6 +648,7 @@ namespace BloodSword::Party
             return value;
         }
 
+        // check if item is in the list
         bool IsValid(std::vector<std::string> list, std::string item)
         {
             auto result = BloodSword::Has(list, item);
@@ -650,6 +658,7 @@ namespace BloodSword::Party
             return result;
         }
 
+        // math operations
         void Math(std::string operation, std::string first, std::string second, bool clamp = true)
         {
             // first = (first) (operation) (second)
@@ -776,6 +785,20 @@ namespace BloodSword::Party
             }
 
             return result;
+        }
+
+        // erase variable
+        void Remove(std::string variable)
+        {
+            if (this->IsPresent(variable))
+            {
+                this->Variables.erase(variable);
+
+                if (!this->IsPresent(variable))
+                {
+                    std::cerr << "[" << variable << "] REMOVED" << std::endl;
+                }
+            }
         }
     };
 
