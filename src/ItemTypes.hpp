@@ -68,7 +68,7 @@ namespace BloodSword::Item
         YELLOW_SCROLL,
         EFFERVESCENT_LIQUID,
         BRONZE_MALLET,
-        SKULL,
+        SKRYMIRS_SKULL,
         FOSSILISED_HEART,
         SKRYMIRS_RIBCAGE
     };
@@ -134,7 +134,7 @@ namespace BloodSword::Item
         {Item::Type::YELLOW_SCROLL, "YELLOW SCROLL"},
         {Item::Type::EFFERVESCENT_LIQUID, "EFFERVESCENT LIQUID"},
         {Item::Type::BRONZE_MALLET, "BRONZE MALLET"},
-        {Item::Type::SKULL, "SKULL"},
+        {Item::Type::SKRYMIRS_SKULL, "SKRYMIR'S SKULL"},
         {Item::Type::FOSSILISED_HEART, "FOSSILISED HEART"},
         {Item::Type::SKRYMIRS_RIBCAGE, "SKRYMIR'S RIB-CAGE"}};
 

@@ -6,14 +6,11 @@
     "text": "The voice of Magus Zyn speaks inside your head: \"The guardians of the magi seek to stop you with their magic. But the servants of Zyn may always look to their master for aid. Pay heed to the music of old Krarth.\"\n\nYou hear music in your mind -- the atonal chanting of Cabbandari symphony. It is not to your tastes, but it certainly has the effect of driving away the phantasms that threaten your sanity. \"Now collect Skrymyr's rib-cage,\" says Zyn.",
     "next": [
         {
-            "type": "GET ITEM",
+            "type": "NORMAL",
             "location": {
                 "book": "BOOK1",
                 "number": 272
-            },
-            "variables": [
-                "SKRYMIR'S RIB-CAGE"
-            ]
+            }
         }
     ]
 }

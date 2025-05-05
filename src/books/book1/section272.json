@@ -1,0 +1,25 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 272
+    },
+    "background": [
+        {
+            "type": "PARTY HAS ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 198
+            },
+            "variables": [
+                "SKRYMIR'S SKULL"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 159
+            }
+        }
+    ]
+}

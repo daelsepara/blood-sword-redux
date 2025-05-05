@@ -625,12 +625,12 @@
             "type": "BRONZE MALLET"
         },
         {
-            "name": "SKULL",
+            "name": "SKRYMIR'S SKULL",
             "properties": [
                 "CANNOT DROP"
             ],
             "quantity": 1,
-            "type": "SKULL"
+            "type": "SKRYMIR'S SKULL"
         },
         {
             "name": "FOSSILISED HEART",

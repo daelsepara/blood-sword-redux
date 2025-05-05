@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 428
+    },
+    "text": "Voices are whispering to you from a great distance. \"Leave this place,\" they are saying. \"Would you suffer the same fate as we? Begone. Hurry.\"\n\nYou need no urging. Their words of warning echo around an empty chamber as you rapidly climb the steps to the summit.",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 322
+            }
+        }
+    ]
+}

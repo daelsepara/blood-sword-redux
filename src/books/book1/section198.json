@@ -1,0 +1,19 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 198
+    },
+    "text": "A harsh command issues from the skull, sounding like the tolling of a death-knell. The padlock opens and the rib-cage falls at the base of the petrified tree.",
+    "next": [
+        {
+            "type": "GET ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 159
+            },
+            "variables": [
+                "SKRYMIR'S RIB-CAGE"
+            ]
+        }
+    ]
+}

@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 159
+    },
+    "text": "You pass on up the tunnil until you reach another chamber. Yu must be half way to the summit by now. Another tunnelleads up from the far side of the room, but to reach it you must pass a roughly carved throne of rock to which a giant skeletal pelvis and legs are shackled.",
+    "next": [
+        {
+            "type": "PARTY HAS ITEM",
+            "location": {
+                "book": "BOOK1",
+                "number": 433
+            },
+            "variables": [
+                "SKRYMIR'S SKULL"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 538
+            }
+        }
+    ]
+}
