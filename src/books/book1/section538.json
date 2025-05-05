@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 538
     },
-    "text": "You know hat to expect before you reach the next chamber. It is malformed and fused, like an ancient fane blasted by tremendous heat. Worshippers stand frozen into pillars of salt, locked forever in the stances of dismay and panic they adopted at the moment of disaster. Beyond them are the items you knew you would find: two massive skeletal arms affixed to shoulder-blades like plates of armour. One flashless hand still wears a spiked gauntlet of iron.",
+    "text": "You know what to expect before you reach the next chamber. It is malformed and fused, like an ancient fane blasted by tremendous heat. Worshippers stand frozen into pillars of salt, locked forever in the stances of dismay and panic they adopted at the moment of disaster. Beyond them are the items you knew you would find: two massive skeletal arms affixed to shoulder-blades like plates of armour. One flashless hand still wears a spiked gauntlet of iron.",
     "next": [
         {
             "type": "PARTY HAS ITEM",
