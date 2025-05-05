@@ -1629,7 +1629,7 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::EXIT)
                 {
-                    if (Interface::Confirm(graphics, overlay, "ARE YOU SURE?", Color::Background, Color::Active, BloodSword::Border, Color::Active, false))
+                    if (Interface::Confirm(graphics, overlay, "ARE YOU SURE?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
                     {
                         done = true;
                     }
