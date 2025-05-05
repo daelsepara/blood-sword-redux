@@ -13,13 +13,14 @@
     ],
     "next": [
         {
-            "type": "GET ITEM",
+            "type": "MUST TAKE ITEM",
             "location": {
                 "book": "BOOK1",
                 "number": 322
             },
             "variables": [
-                "SKRYMIR'S ARMS"
+                "SKRYMIR'S ARMS",
+                "FOSSILISED HEART"
             ]
         }
     ]
