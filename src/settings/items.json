@@ -668,6 +668,14 @@
             "name": "IRON GAUNTLETS",
             "quantity": 1,
             "type": "IRON GAUNTLETS"
+        },
+        {
+            "name": "EMBLEM OF VICTORY",
+            "properties": [
+                "CANNOT DROP"
+            ],
+            "quantity": 1,
+            "type": "EMBLEM OF VICTORY"
         }
     ]
 }

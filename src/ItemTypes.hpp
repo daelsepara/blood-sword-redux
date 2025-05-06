@@ -74,7 +74,8 @@ namespace BloodSword::Item
         SKRYMIRS_RIBCAGE,
         IRON_GAUNTLETS,
         SKRYMIRS_ARMS,
-        SKRYMIRS_LEGS
+        SKRYMIRS_LEGS,
+        EMBLEM_OF_VICTORY
     };
 
     BloodSword::Mapping<Item::Type> TypeMapping = {
@@ -144,7 +145,8 @@ namespace BloodSword::Item
         {Item::Type::SKRYMIRS_RIBCAGE, "SKRYMIR'S RIB-CAGE"},
         {Item::Type::SKRYMIRS_ARMS, "SKRYMIR'S ARMS"},
         {Item::Type::SKRYMIRS_LEGS, "SKRYMIR'S LEGS"},
-        {Item::Type::IRON_GAUNTLETS, "IRON GAUNTLETS"}};
+        {Item::Type::IRON_GAUNTLETS, "IRON GAUNTLETS"},
+        {Item::Type::EMBLEM_OF_VICTORY, "EMBLEM OF VICTORY"}};
 
     Item::Type Map(const char *item)
     {

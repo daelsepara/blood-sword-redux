@@ -1,0 +1,45 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 322
+    },
+    "text": "You emerge from the tunnel. Standing at the very summit of the atoll now, you are barely a dozen paces from the Emblem of Victory. You are high up, away from the glimmering fires and phosphor streams, but the Emblem is bathed in bright light, a grey-white illumination spell cast by the magi. Perhaps its purpose, in fact, is more than just illumination -- you see a pillar of light stretching up towards the ceiling of the cave and realise that is the teleportation spell that will convey you to the surface. You have only to step up and take hold of the Emblem.\n\nPropped against the rock on which the Emblem stands is an iron rame. You hadn't noticed it at first, as it lies half in the shadows. Going over for a closer look, you see that it is a framework in which you could place the giant's bones if you have them.",
+    "next": [
+        {
+            "type": "HAS ALL ITEMS",
+            "location": {
+                "book": "BOOK1",
+                "number": 412
+            },
+            "variables": [
+                "ALL",
+                "SKRYMIR'S LEGS",
+                "SKRYMIR'S ARMS",
+                "SKRYMIR'S RIB-CAGE",
+                "SKRYMIR'S SKULL",
+                "FOSSILISED HEART"
+            ]
+        },
+        {
+            "type": "HAS ALL ITEMS",
+            "location": {
+                "book": "BOOK1",
+                "number": 213
+            },
+            "variables": [
+                "ALL",
+                "SKRYMIR'S LEGS",
+                "SKRYMIR'S ARMS",
+                "SKRYMIR'S RIB-CAGE",
+                "SKRYMIR'S SKULL"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 361
+            }
+        }
+    ]
+}

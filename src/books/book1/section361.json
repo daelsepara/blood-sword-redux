@@ -1,0 +1,26 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 361
+    },
+    "text": "You step up to where the Emblem stands. Lifting it above you in triumpth, you allow the teleportation beam to bathe you in its grey-white glare. You are dazzled, and when your eyes clear you stand in the Great Hall of the city, where the magi have gathered to award the victor.\n\nApplause rings in your ears. You approach the dais where Magus Tor, presiding over the contest this year, stands ready to greet you. Your patron hurries down from the tiers of seats. A few of the assembled magi congratulate him, but you notice scowls on the faces of most. For every winner there are always a dozen losers.",
+    "background": [
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "FIRST",
+                "NONE",
+                "EMBLEM OF VICTORY"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 540
+            }
+        }
+    ]
+}
