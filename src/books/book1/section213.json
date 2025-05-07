@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 213
+    },
+    "text": "An insubstantial figure appears. Not even a ghost, but the spell-projected image of a ghost -- Magus Zyn, undying and eternal enemy of the magi. The last of the True Magi. \"You have the means to resurrect Skrymir,\" it says. You start to reply before realising that it cannot hear you. It is just like a recorded message, a spell cast here to instruct any who should arrive with all the fragments of Skrymir's skeleton.",
+    "choices": [
+        {
+            "text": "Assemble Skrymir's bones together",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 33
+                }
+            }
+        },
+        {
+            "text": "Decide against doing it",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 361
+                }
+            }
+        }
+    ]
+}

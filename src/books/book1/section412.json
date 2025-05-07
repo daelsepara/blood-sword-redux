@@ -1,0 +1,42 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 412
+    },
+    "text": "You have no choice. Almost without volition, you stoop and begin to place the huge bones into the iron frame. Your thoughts are still your own, but Zyn's magic has implanted a subconscious command that you are powerless to resist. You watch as your hands reconstruct the long-dead giant. When all the sections of the skeleton are in place, you fetch the stone heart and lower it into the massive rib-cage. A cold dry wind whips up around the atoll, keening hungrily. Skrymir's soul is returning from the dead.\n\nAlready you can see small patches of skin appearing like fungus on the sere bones. A spark of life-light gleams inside the sockets of the skull.",
+    "background": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "ALL",
+                "SKRYMIR'S LEGS",
+                "SKRYMIR'S ARMS",
+                "SKRYMIR'S RIB-CAGE",
+                "SKRYMIR'S SKULL",
+                "FOSSILISED HEART"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Is there anything else you want to add to the frame now?",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 302
+                }
+            }
+        },
+        {
+            "text": "Stand back and watch Skrymir return to life",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 117
+                }
+            }
+        }
+    ]
+}
