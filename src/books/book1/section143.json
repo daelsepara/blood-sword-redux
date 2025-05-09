@@ -13,7 +13,7 @@
             "type": "RECEIVE ITEM",
             "variables": [
                 "TRICKSTER",
-                "FIRST",
+                "NONE",
                 "CHIMERA-SPITTLE"
             ]
         }
