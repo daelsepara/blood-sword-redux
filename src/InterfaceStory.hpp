@@ -1239,7 +1239,7 @@ namespace BloodSword::Interface
         }
     }
 
-        void MapTokensInText(BloodSword::Party::Base &party, std::__1::string &text)
+    void MapTokensInText(BloodSword::Party::Base &party, std::string &text)
     {
         // replace in text
         if (party.ChosenCharacter != Character::Class::NONE)
@@ -1248,7 +1248,7 @@ namespace BloodSword::Interface
 
             auto chosen = std::string("[CHOSEN]");
 
-            size_t pos = text.find(chosen);
+            auto pos = text.find(chosen);
 
             while (pos != std::string::npos)
             {
