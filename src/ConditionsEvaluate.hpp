@@ -4551,8 +4551,69 @@ namespace BloodSword::Conditions
                 }
             }
         }
+        else if (condition.Type == Conditions::Type::GAIN_DELAYED_EFFECT)
+        {
+            internal_error = true;
+
+            // variables
+            // 0 - player / all
+            // 1 - status
+            // 2 - item type
+            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            {
+                auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
+
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+
+                auto status = Character::MapStatus(condition.Variables[1]);
+
+                auto item = Item::Map(condition.Variables[2]);
+
+                if ((is_party || character != Character::Class::NONE) && status != Character::Status::NONE && item != Item::Type::NONE)
+                {
+                    auto characters = std::vector<Character::Class>();
+
+                    if (is_party)
+                    {
+                        for (auto i = 0; i < party.Count(); i++)
+                        {
+                            if (Engine::IsAlive(party[i]))
+                            {
+                                characters.push_back(party[i].Class);
+                            }
+                        }
+                    }
+                    else if (!party.Has(character))
+                    {
+                        text = Engine::NotInParty(character);
+                    }
+                    else if (!Engine::IsAlive(party[character]))
+                    {
+                        text = Engine::IsDead(party[character]);
+                    }
+                    else
+                    {
+                        characters = {character};
+                    }
+
+                    if (characters.size() > 0)
+                    {
+                        for (auto character : characters)
+                        {
+                            party[character].DelayedEffects[status] = item;
+                        }
+
+                        result = true;
+                    }
+
+                    internal_error = false;
+                }
+            }
+        }
         else if (condition.Type == Conditions::Type::CONFIRM)
         {
+            // variables
+            // 0 - message to display
             if (Engine::IsAlive(party) && condition.Variables.size() > 0)
             {
                 result = Interface::Confirm(graphics, background, condition.Variables[0], Color::Background, Color::Active, BloodSword::Border, Color::Active, true);

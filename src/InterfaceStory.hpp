@@ -1239,6 +1239,28 @@ namespace BloodSword::Interface
         }
     }
 
+        void MapTokensInText(BloodSword::Party::Base &party, std::__1::string &text)
+    {
+        // replace in text
+        if (party.ChosenCharacter != Character::Class::NONE)
+        {
+            auto replacement = party[party.ChosenCharacter].Name;
+
+            auto chosen = std::string("[CHOSEN]");
+
+            size_t pos = text.find(chosen);
+
+            while (pos != std::string::npos)
+            {
+                // replace the substring with the specified string
+                text.replace(pos, chosen.size(), Character::ClassMapping[party.ChosenCharacter]);
+
+                // find the next occurrence of the substring
+                pos = text.find(chosen, pos + replacement.size());
+            }
+        }
+    }
+
     // render story section
     Book::Location RenderSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, std::string &text)
     {
@@ -1272,6 +1294,8 @@ namespace BloodSword::Interface
         auto origin = Point((graphics.Width - (panel_w * 2 + BloodSword::TileSize + BloodSword::LargePad)) / 2, BloodSword::TileSize + BloodSword::LargePad);
 
         auto origin_text = origin + Point(panel_w + BloodSword::TileSize + BloodSword::Pad * 3, BloodSword::Pad);
+
+        Interface::MapTokensInText(party, text);
 
         if (text.length() > 0)
         {
@@ -1734,6 +1758,8 @@ namespace BloodSword::Interface
                             if (Book::IsUndefined(next))
                             {
                                 next = party[character].DelayedEffect(status);
+
+                                party.ChosenCharacter = party[character].Class;
                             }
                         }
                     }

@@ -1,0 +1,20 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 144
+    },
+    "text": "[CHOSEN] dies in terrible agony.",
+    "background": [
+        {
+            "type": "KILL PLAYER",
+            "variables": [
+                "CHOSEN"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

@@ -135,7 +135,8 @@ namespace BloodSword::Conditions
         IS_WOUNDED,
         MUST_GET_ITEM,
         MUST_TAKE_ITEM,
-        KILL_OTHERS
+        KILL_OTHERS,
+        GAIN_DELAYED_EFFECT
     };
 
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
@@ -267,7 +268,8 @@ namespace BloodSword::Conditions
         {Conditions::Type::IS_WOUNDED, "IS WOUNDED"},
         {Conditions::Type::MUST_GET_ITEM, "MUST GET ITEM"},
         {Conditions::Type::MUST_TAKE_ITEM, "MUST TAKE ITEM"},
-        {Conditions::Type::KILL_OTHERS, "KILL OTHERS"}};
+        {Conditions::Type::KILL_OTHERS, "KILL OTHERS"},
+        {Conditions::Type::GAIN_DELAYED_EFFECT, "GAIN DELAYED EFFECT"}};
 
     Conditions::Type Map(const char *Conditions)
     {
