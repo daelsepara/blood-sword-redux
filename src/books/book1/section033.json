@@ -1,0 +1,28 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 33
+    },
+    "text": "You strain to manoeuvre the huge bones into place within the frame. Gradually the body of the long-dead giant is reconstructed. When all the sections of the skeleton are in place, a cold dry wind whips up around the atoll, keening hungrily. Skrymir's soul is returning from the dead.\n\nPatches of flesh-mould appear on the sere bones. A spark of life-light gleams inside the sockets of the skull. Veins and sinews spread, glistening tendrils, as the body re-forms from dust.\n\nSkrymir rises to stand before you, the iron frame now forming a suit of armour around his powerfully muscled body. He looks upon you as a man watches a fly. \"I have no heart!\" he bellows. \"You have neglected the heart of Skrymir! I must take yours instead!\"",
+    "background": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "ALL",
+                "SKRYMIR'S LEGS",
+                "SKRYMIR'S ARMS",
+                "SKRYMIR'S RIB-CAGE",
+                "SKRYMIR'S SKULL"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 342
+            }
+        }
+    ]
+}

@@ -1,0 +1,16 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 84
+    },
+    "text": "\"So you did.\" He grins, but does not seem grateful. \"Death would doubtless appreciate a sacrifice in return for the loss of my great soul, so prepare to die in my place. This is the gratitude of Skrymir!\"",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 342
+            }
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 117
+    },
+    "text": "Skrymir rises from the ground, seeming to tower up and up. His bear flows like rivulets from a glacier; his eyes burn like frost. He raises his arms towards the cavern roof and gives a great wordless bellow of exultation. The walls seem to shake. If the magi in the city above hear it, they must be trembling now.\n\n\"Life!\" he thunders. \"To live again! To turn about the yoke of death and place it about the magi's necks! This is what I have dreamed of in my centuried sleep. And now, quake, you magi. Bolt the gates of your citadels. Marshal your armies and your puny magics. Skrymir strides the earth once more, and this time his iron-shot feet shall tread your mortal bodies into the mire!\"\n\nSkrymir is obviously getting ready to return to the surface to put some of his plans for vengeance into the immediate effect.",
+    "choices": [
+        {
+            "text": "Point out that you have just restored him to life",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 84
+                }
+            }
+        },
+        {
+            "text": "Say nothing",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 257
+                }
+            }
+        }
+    ]
+}

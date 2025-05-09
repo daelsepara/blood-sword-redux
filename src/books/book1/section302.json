@@ -1,0 +1,61 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 302
+    },
+    "text": "What will you add before the giant's flesh and sinew reknits on his ancient bones?",
+    "choices": [
+        {
+            "text": "Add a sliver of kalum",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 441
+                },
+                "variables": [
+                    "SELECT",
+                    "CASKET OF KALIUM"
+                ]
+            }
+        },
+        {
+            "text": "Use a spiked gauntlet",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 146
+                },
+                "variables": [
+                    "SELECT",
+                    "IRON GAUNTLETS"
+                ]
+            }
+        },
+        {
+            "text": "Use an ice jewel",
+            "condition": {
+                "type": "HAS ITEM",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 483
+                },
+                "variables": [
+                    "SELECT",
+                    "BLUE ICE JEWEL"
+                ]
+            }
+        },
+        {
+            "text": "You do not have or do not wish to use any of these items",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 117
+                }
+            }
+        }
+    ]
+}

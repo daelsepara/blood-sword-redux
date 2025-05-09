@@ -1,0 +1,38 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 146
+    },
+    "text": "You slip the great gauntlet on to the skeleton's right hand as the skin starts to draw across it. Moments later, the body begins to throb with life and the pink bloom of blood washes through its veins as the stone heart reverts to flesh. Slabs of muscle swell across the bones, sewn with gristle and skin. Skrymir rises from the dead. He stands before you, towering towards the cave roof like the shadow of a great glacier. His beard sparkles with icicles; his eyes blaze with cold fury.\n\n\"Skrymir stands upon the middle world once more!\" he cries, shaking the rock walls with his voice of thunder. \"Legend reverberates to his battle-roar. Let the magi who crouch upon the old thrones of Krarth beware -- they shall not see another dawn, for the sky then shall be washed with their blood!\"\n\nHe turns and glares at the flickering beam of the teleportation spell. He obviously intends to return to the surface, to the Great Hall where the magi are waiting for a champion to emerge.",
+    "background": [
+        {
+            "type": "DISCARD ITEMS",
+            "variables": [
+                "CHOSEN",
+                "IRON GAUNTLETS"
+            ]
+        }
+    ],
+    "choices": [
+        {
+            "text": "Point out that you have just resurrected him",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 539
+                }
+            }
+        },
+        {
+            "text": "Keep quiet and let him depart",
+            "condition": {
+                "type": "NORMAL",
+                "location": {
+                    "book": "BOOK1",
+                    "number": 257
+                }
+            }
+        }
+    ]
+}
