@@ -49,7 +49,6 @@
                             "value": 3
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "fight": "RUSTY WEAPON",
@@ -70,7 +69,6 @@
                     "moves": 1000,
                     "name": "RANGER",
                     "rank": 0,
-                    "shoot": "NONE",
                     "target": "ENEMY"
                 }
             ]

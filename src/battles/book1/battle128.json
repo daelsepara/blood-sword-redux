@@ -57,14 +57,12 @@
                             "value": 0
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "GUILLARME",
                     "rank": 0,
-                    "shoot": "NONE",
                     "target": "ENEMY"
                 }
             ]

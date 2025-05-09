@@ -52,14 +52,12 @@
                     "called_to_mind": [
                         "MISTS OF DEATH"
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "QUEL",
                     "rank": 0,
-                    "shoot": "NONE",
                     "skills": [
                         "SPELLS"
                     ],
@@ -69,7 +67,6 @@
                             "uses": 2,
                             "min": 3,
                             "max": 4,
-                            "already_cast": "NONE",
                             "count": 1
                         },
                         {
@@ -77,7 +74,6 @@
                             "uses": 1,
                             "min": 1,
                             "max": 2,
-                            "already_cast": "NONE",
                             "count": 1
                         }
                     ],

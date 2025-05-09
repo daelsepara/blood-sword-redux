@@ -52,10 +52,8 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "fight": "NONE",
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "DIRGE",
@@ -102,10 +100,8 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "fight": "NONE",
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "DIRGE",
@@ -152,10 +148,8 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "fight": "NONE",
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "DIRGE",
@@ -202,10 +196,8 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "fight": "NONE",
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "DIRGE",
@@ -252,10 +244,8 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "fight": "NONE",
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "DIRGE",
@@ -302,10 +292,8 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "fight": "NONE",
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "DIRGE",
@@ -352,10 +340,8 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
-                    "fight": "NONE",
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "DIRGE",

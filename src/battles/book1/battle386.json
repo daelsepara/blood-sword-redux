@@ -53,14 +53,12 @@
                     "called_to_mind": [
                         "NIGHTHOWL"
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "NIGHT ELF",
                     "rank": 0,
-                    "shoot": "NONE",
                     "skills": [
                         "SPELLS"
                     ],
@@ -129,14 +127,12 @@
                     "called_to_mind": [
                         "NIGHTHOWL"
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "NIGHT ELF",
                     "rank": 0,
-                    "shoot": "NONE",
                     "skills": [
                         "SPELLS"
                     ],
@@ -205,14 +201,12 @@
                     "called_to_mind": [
                         "NIGHTHOWL"
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "NIGHT ELF",
                     "rank": 0,
-                    "shoot": "NONE",
                     "skills": [
                         "SPELLS"
                     ],
@@ -281,14 +275,12 @@
                     "called_to_mind": [
                         "NIGHTHOWL"
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
                     "moves": 1000,
                     "name": "NIGHT ELF",
                     "rank": 0,
-                    "shoot": "NONE",
                     "skills": [
                         "SPELLS"
                     ],

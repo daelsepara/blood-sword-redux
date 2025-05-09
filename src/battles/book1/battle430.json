@@ -55,7 +55,6 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
@@ -108,7 +107,6 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
@@ -161,7 +159,6 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
@@ -214,7 +211,6 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
@@ -267,7 +263,6 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
@@ -320,7 +315,6 @@
                             "value": 1
                         }
                     ],
-                    "class": "NONE",
                     "control_type": "NPC",
                     "experience": 0,
                     "item_limit": 10,
