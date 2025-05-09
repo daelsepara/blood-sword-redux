@@ -6,7 +6,6 @@
     "text": "Grandmaster Klef watches you with an inscrutable smile. \"Well done,\" he says at last. \"You are an implacable opponent. I concede a draw, and this is not something I do lightly. A reward for your valiant efforts, then.\"\n\nHe takes out a glittering blue gem and hands it to you. \"An ICE JEWEL. I hope it will be of some use to you in the struggles that await you in the lower level.\"",
     "items": [
         {
-            "contains": "NONE",
             "name": "BLUE ICE JEWEL",
             "quantity": 1,
             "type": "BLUE ICE JEWEL"

@@ -6,7 +6,6 @@
     "text": "Klef looks at you with a wry smile. \"Very few people have ever beaten me at the game,\" he says. \"No reward I can offer truly expresses my admiration. Nonetheless, I have a couple of items that might interest you.\"\n\nHe places two objects on the table. One is an OCTAGONAL PRISM of coloured glass. The other is a sparkling BLUE ICE JEWEL. \"Take both,\" says Klef. \"I feel magnanimous. And now, prepare to enter the nether caverns.",
     "items": [
         {
-            "contains": "NONE",
             "name": "BLUE ICE JEWEL",
             "quantity": 1,
             "type": "BLUE ICE JEWEL"

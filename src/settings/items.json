@@ -15,7 +15,6 @@
             "type": "CRESCENTIUM STEEL SWORD"
         },
         {
-            "contains": "NONE",
             "effects": {
                 "book": "BOOK1",
                 "number": 24
@@ -46,7 +45,6 @@
             "attributes": {
                 "ARMOUR": 3
             },
-            "contains": "NONE",
             "name": "CHAINMAIL",
             "properties": [
                 "ARMOUR",
@@ -171,7 +169,6 @@
             "type": "LOGE SKYRUNNER"
         },
         {
-            "contains": "NONE",
             "effects": {
                 "book": "BOOK1",
                 "number": 312
@@ -184,7 +181,6 @@
             "type": "VELLUM SCROLL"
         },
         {
-            "contains": "NONE",
             "name": "FOOD PORTION",
             "properties": [
                 "EDIBLE"
@@ -233,7 +229,6 @@
             "type": "GREY PEARL"
         },
         {
-            "contains": "NONE",
             "name": "LARGE STAMPED GOLD COIN",
             "quantity": 1,
             "type": "LARGE STAMPED GOLD COIN"
@@ -396,8 +391,14 @@
             }
         },
         {
-            "contains": "NONE",
             "name": "BIRCH-BARK SCROLL",
+            "effects": {
+                "book": "BOOK1",
+                "number": 532
+            },
+            "properties": [
+                "COMBAT"
+            ],
             "quantity": 1,
             "type": "BIRCH-BARK SCROLL"
         },
@@ -413,7 +414,6 @@
             "type": "LEATHER JERKIN"
         },
         {
-            "contains": "NONE",
             "name": "BLUE ICE JEWEL",
             "quantity": 1,
             "type": "BLUE ICE JEWEL"
@@ -500,7 +500,6 @@
             "revealed": true
         },
         {
-            "contains": "NONE",
             "effects": {
                 "book": "BOOK1",
                 "number": 317
@@ -584,7 +583,6 @@
             "revealed": true
         },
         {
-            "contains": "NONE",
             "name": "PHIAL OF CHIMERA-SPITTLE",
             "description": {
                 "book": "BOOK1",
@@ -602,7 +600,6 @@
             "type": "CHIMERA-SPITTLE"
         },
         {
-            "contains": "NONE",
             "name": "BOTTLE OF EFFERVESCENT LIQUID",
             "description": {
                 "book": "BOOK1",

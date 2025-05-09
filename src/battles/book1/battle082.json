@@ -61,7 +61,6 @@
                     "item_limit": 10,
                     "items": [
                         {
-                            "contains": "NONE",
                             "name": "BOW",
                             "properties": [
                                 "WEAPON",
@@ -139,7 +138,6 @@
                     "item_limit": 10,
                     "items": [
                         {
-                            "contains": "NONE",
                             "name": "BOW",
                             "properties": [
                                 "WEAPON",
@@ -217,7 +215,6 @@
                     "item_limit": 10,
                     "items": [
                         {
-                            "contains": "NONE",
                             "name": "BOW",
                             "properties": [
                                 "WEAPON",
@@ -296,7 +293,6 @@
                     "item_limit": 10,
                     "items": [
                         {
-                            "contains": "NONE",
                             "name": "BOW",
                             "properties": [
                                 "WEAPON",

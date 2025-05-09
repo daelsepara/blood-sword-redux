@@ -118,13 +118,11 @@
             "type": "DAGGER"
         },
         {
-            "contains": "NONE",
             "name": "SHURIKEN",
             "quantity": 13,
             "type": "SHURIKEN"
         },
         {
-            "contains": "NONE",
             "effects": {
                 "book": "BOOK1",
                 "number": 317

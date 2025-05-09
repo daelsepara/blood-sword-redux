@@ -6,7 +6,6 @@
     "text": "You slay the assassins. They have three daggers. Their SHURIKEN throwing-spikes are useless to you as you are not trained to use them.\n\nYou also find a vial of BLACK LIQUID.",
     "items": [
         {
-            "contains": "NONE",
             "name": "SHURIKEN",
             "quantity": 7,
             "type": "SHURIKEN"
@@ -39,7 +38,6 @@
             "type": "DAGGER"
         },
         {
-            "contains": "NONE",
             "effects": {
                 "book": "BOOK1",
                 "number": 317

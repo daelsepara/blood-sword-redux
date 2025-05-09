@@ -34,7 +34,6 @@
     ],
     "items": [
         {
-            "contains": "NONE",
             "effects": {
                 "book": "BOOK1",
                 "number": 312

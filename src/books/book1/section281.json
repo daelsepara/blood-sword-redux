@@ -6,8 +6,14 @@
     "text": "The spoils of the battle are as follows:\n\nFour SWORDS\n\nFour BOWS\n\nThirteen ARROWS\n\nTwelve GOLD pieces\n\nA BIRCH-BARK SCROLL.",
     "items": [
         {
-            "contains": "NONE",
             "name": "BIRCH-BARK SCROLL",
+            "effects": {
+                "book": "BOOK1",
+                "number": 532
+            },
+            "properties": [
+                "COMBAT"
+            ],
             "quantity": 1,
             "type": "BIRCH-BARK SCROLL"
         },

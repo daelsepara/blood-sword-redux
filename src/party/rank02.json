@@ -47,7 +47,6 @@
                 "item_limit": 10,
                 "items": [
                     {
-                        "contains": "NONE",
                         "name": "SWORD",
                         "properties": [
                             "WEAPON",
@@ -61,7 +60,6 @@
                         "attributes": {
                             "ARMOUR": 3
                         },
-                        "contains": "NONE",
                         "name": "CHAINMAIL",
                         "properties": [
                             "ARMOUR",
@@ -162,7 +160,6 @@
                 "item_limit": 10,
                 "items": [
                     {
-                        "contains": "NONE",
                         "name": "SWORD",
                         "properties": [
                             "WEAPON",
@@ -173,7 +170,6 @@
                         "type": "SWORD"
                     },
                     {
-                        "contains": "NONE",
                         "name": "BOW",
                         "properties": [
                             "WEAPON",
@@ -199,7 +195,6 @@
                         "attributes": {
                             "ARMOUR": 2
                         },
-                        "contains": "NONE",
                         "name": "LEATHER ARMOUR",
                         "properties": [
                             "ARMOUR",
@@ -306,7 +301,6 @@
                 "item_limit": 10,
                 "items": [
                     {
-                        "contains": "NONE",
                         "name": "QUARTERSTAFF",
                         "properties": [
                             "WEAPON",
@@ -317,7 +311,6 @@
                         "type": "QUARTERSTAFF"
                     },
                     {
-                        "contains": "NONE",
                         "name": "BOW",
                         "properties": [
                             "WEAPON",
@@ -343,7 +336,6 @@
                         "attributes": {
                             "ARMOUR": 2
                         },
-                        "contains": "NONE",
                         "name": "RINGMAIL",
                         "properties": [
                             "ARMOUR",
@@ -425,7 +417,6 @@
                 "item_limit": 10,
                 "items": [
                     {
-                        "contains": "NONE",
                         "name": "SWORD",
                         "properties": [
                             "WEAPON",
@@ -439,7 +430,6 @@
                         "attributes": {
                             "ARMOUR": 2
                         },
-                        "contains": "NONE",
                         "name": "SILVER ARMOUR",
                         "properties": [
                             "ARMOUR",

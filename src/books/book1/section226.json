@@ -6,13 +6,11 @@
     "text": "You quickly search the bodies. You find several SHURIKEN. You do not have the expertise to use them properly, but you can take them anyway.\n\nA more interesting item is a long thin sword of CRESCENTIUM STEEL SWORD. This is so flexible that it can be worn wrapped around the waist under a belt which is presumably why the dead assassin thought it was useful.\n\nYou also find a SMALL BOTTLE OF MAUVE LIQUID.",
     "items": [
         {
-            "contains": "NONE",
             "name": "SHURIKEN",
             "quantity": 7,
             "type": "SHURIKEN"
         },
         {
-            "contains": "NONE",
             "name": "CRESCENTIUM STEEL SWORD",
             "properties": [
                 "WEAPON",
@@ -22,7 +20,6 @@
             "type": "CRESCENTIUM STEEL SWORD"
         },
         {
-            "contains": "NONE",
             "effects": {
                 "book": "BOOK1",
                 "number": 24
