@@ -2566,13 +2566,13 @@ namespace BloodSword::Interface
         {
             auto weapon = attacker.EquippedWeapon(Item::Property::PRIMARY);
 
-            if (weapon >= 0 && weapon < attacker.Items.size() && attacker.Items[weapon].HasDamageType(defender.Target))
+            if (weapon >= 0 && weapon < attacker.Items.size() && attacker.Items[weapon].HasDamageModifier(defender.Target))
             {
-                roll += attacker.Items[weapon].DamageTypes[defender.Target].Value;
+                roll += attacker.Items[weapon].DamageModifiers[defender.Target].Value;
 
-                modifier += attacker.Items[weapon].DamageTypes[defender.Target].Modifier;
+                modifier += attacker.Items[weapon].DamageModifiers[defender.Target].Modifier;
 
-                ignore_armour |= attacker.Items[weapon].DamageTypes[defender.Target].IgnoreArmour;
+                ignore_armour |= attacker.Items[weapon].DamageModifiers[defender.Target].IgnoreArmour;
             }
         }
 

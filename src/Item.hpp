@@ -92,6 +92,9 @@ namespace BloodSword::Item
         // for specific targetting (damage rolls/modifiers)
         BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageTypes = {};
 
+        // modifiers (+/- damage rolls/modifiers)
+        BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageModifiers = {};
+
         // for specific targetting effects
         BloodSword::UnorderedMap<Target::Type, Item::TargetEffect> TargetEffects = {};
 
@@ -192,6 +195,11 @@ namespace BloodSword::Item
         bool HasDamageType(Target::Type target)
         {
             return BloodSword::Has(this->DamageTypes, target);
+        }
+
+        bool HasDamageModifier(Target::Type target)
+        {
+            return BloodSword::Has(this->DamageModifiers, target);
         }
 
         bool HasAll(Item::Properties properties)
@@ -577,6 +585,30 @@ namespace BloodSword::Item
                     if (target != Target::Type::NONE)
                     {
                         item.DamageTypes[target] = Item::Damage(damage, modifier, ignore_armour);
+                    }
+                }
+            }
+        }
+
+        if (!data["damage_modifiers"].is_null() && data["damage_modifiers"].is_object())
+        {
+            item.DamageModifiers.clear();
+
+            for (auto &[key, val] : data["damage_modifiers"].items())
+            {
+                if (val.is_object())
+                {
+                    auto target = Target::Map(std::string(key));
+
+                    auto damage = !val["damage"].is_null() ? int(val["damage"]) : 0;
+
+                    auto modifier = !val["modifier"].is_null() ? int(val["modifier"]) : 0;
+
+                    auto ignore_armour = (!val["ignore_armour"].is_null() && val["ignore_armour"].is_boolean()) ? val["ignore_armour"].get<bool>() : false;
+
+                    if (target != Target::Type::NONE)
+                    {
+                        item.DamageModifiers[target] = Item::Damage(damage, modifier, ignore_armour);
                     }
                 }
             }

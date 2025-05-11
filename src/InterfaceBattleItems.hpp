@@ -105,7 +105,7 @@ namespace BloodSword::Interface
             }
 
             // check if it is a blasting / weapon
-            if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::DAMAGE_TARGET)
+            if (target_type != Target::Type::NONE && item.HasEffect(target_type) && item.TargetEffects[target_type] == Item::TargetEffect::DAMAGE_TARGET && item.HasDamageType(target_type))
             {
                 if ((character.IsPlayer() && target_enemy) || (character.IsEnemy() && target_player))
                 {
@@ -157,7 +157,7 @@ namespace BloodSword::Interface
                     Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
                 }
             }
-            else if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::THROW)
+            else if (target_type != Target::Type::NONE && item.HasEffect(target_type) && item.TargetEffects[target_type] == Item::TargetEffect::THROW)
             {
                 if ((character.IsPlayer() && target_enemy) || (character.IsEnemy() && target_player))
                 {
@@ -260,7 +260,7 @@ namespace BloodSword::Interface
                     Interface::MessageBox(graphics, background, "INVALID TARGET", Color::Highlight);
                 }
             }
-            else if (target_type != Target::Type::NONE && item.TargetEffects[target_type] == Item::TargetEffect::IMMUNE)
+            else if (target_type != Target::Type::NONE && item.HasEffect(target_type) && item.TargetEffects[target_type] == Item::TargetEffect::IMMUNE)
             {
                 Interface::MessageBox(graphics, background, defender.Name + " CANNOT BE HARMED BY THE " + item.Name, defender.IsPlayer() ? Color::Active : Color::Highlight);
 

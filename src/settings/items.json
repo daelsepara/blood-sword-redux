@@ -138,7 +138,7 @@
             ],
             "quantity": 1,
             "type": "BLUTGETRANKER",
-            "damage_types": {
+            "damage_modifiers": {
                 "GIANT": {
                     "damage": 1,
                     "modifier": 0
