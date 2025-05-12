@@ -615,6 +615,10 @@
         {
             "id": "FIRE SHIELD",
             "path": "images/skills/fire-shield.png"
+        },
+        {
+            "id": "TROPHY",
+            "path": "images/system/trophy.png"
         }
     ]
 }

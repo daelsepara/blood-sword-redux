@@ -170,7 +170,8 @@ namespace BloodSword::Asset
         HAG,
         PILLAR,
         BROKEN_PILLARS,
-        FIRE_SHIELD
+        FIRE_SHIELD,
+        TROPHY
     };
 
     template <typename T>
@@ -339,7 +340,8 @@ namespace BloodSword::Asset
         {Asset::Type::HAG, "HAG"},
         {Asset::Type::PILLAR, "PILLAR"},
         {Asset::Type::BROKEN_PILLARS, "BROKEN PILLARS"},
-        {Asset::Type::FIRE_SHIELD, "FIRE SHIELD"}};
+        {Asset::Type::FIRE_SHIELD, "FIRE SHIELD"},
+        {Asset::Type::TROPHY, "TROPHY"}};
 
     Asset::Type Map(const char *asset)
     {

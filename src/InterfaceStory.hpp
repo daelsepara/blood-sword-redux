@@ -988,6 +988,15 @@ namespace BloodSword::Interface
 
         auto id = 0;
 
+        // ending (trophy)
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), buttons.X, buttons.Y));
+
+        overlay.Add(Controls::Base(Controls::Type::TROPHY, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        num_buttons++;
+
+        id++;
+
         // game functions
         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::GAME), buttons.X, buttons.Y));
 

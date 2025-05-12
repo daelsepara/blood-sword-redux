@@ -100,7 +100,8 @@ namespace BloodSword::Controls
         EAT,
         BATTLE_ORDER,
         QUIVER,
-        STEEL_SCEPTRE
+        STEEL_SCEPTRE,
+        TROPHY
     };
 
     typedef std::vector<Controls::Type> Collection;
