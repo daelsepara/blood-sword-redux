@@ -9,7 +9,7 @@
             "type": "DAMAGE EVERYONE",
             "variables": [
                 "1",
-                "1",
+                "0",
                 "FALSE",
                 "TRUE"
             ]
