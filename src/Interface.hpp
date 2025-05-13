@@ -4635,31 +4635,42 @@ namespace BloodSword::Interface
                 }
                 else if (input == Controls::Type::BATTLE_ORDER)
                 {
-                    auto current = Story::CurrentBook.Find(party.Location);
-
-                    if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                    if (Engine::IsAlive(party))
                     {
-                        if (!Story::CurrentBook.Sections[current].Battle.IsDefined())
-                        {
-                            if (party.Count() > 1)
-                            {
-                                update = Interface::BattleOrder(graphics, background, party);
+                        auto current = Story::CurrentBook.Find(party.Location);
 
-                                done = true;
+                        if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                        {
+                            if (Story::CurrentBook.Sections[current].Has(Feature::Type::BAD_ENDING))
+                            {
+                                Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
+                            }
+                            else if (!Story::CurrentBook.Sections[current].Battle.IsDefined())
+                            {
+                                if (party.Count() > 1)
+                                {
+                                    update = Interface::BattleOrder(graphics, background, party);
+
+                                    done = true;
+                                }
+                                else
+                                {
+                                    Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+                                }
                             }
                             else
                             {
-                                Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+                                Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
                             }
                         }
                         else
                         {
-                            Interface::MessageBox(graphics, background, "CANNOT CHANGE BATTLE ORDER AT THIS TIME", Color::Highlight);
+                            Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
                         }
                     }
                     else
                     {
-                        Interface::MessageBox(graphics, background, "CANNOT CHANGE BATTLE ORDER AT THIS TIME", Color::Highlight);
+                        Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
                     }
                 }
                 else

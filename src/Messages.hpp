@@ -26,7 +26,7 @@ namespace BloodSword::Interface
         Graphics::RichText("HEALING ATTEMPT FAILED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("EVERYONE IS AT MAXIMUM ENDURANCE!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("THAT PLAYER IS NOT WOUNDED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("GAME OVER!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("THIS ADVENTURE IS OVER!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("NOT IMPLEMENTED YET", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("THANKS FOR PLAYING!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("EVERYONE IS INCAPACITATED", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
@@ -36,7 +36,8 @@ namespace BloodSword::Interface
         Graphics::RichText("YOU ARE CARRYING TOO MANY ITEMS!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("YOU ARE NOT ABLE TO IDENTIFY THIS!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("INVENTORY FULL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("YOU MUST BE ADJACENT TO AN ENEMY!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+        Graphics::RichText("YOU MUST BE ADJACENT TO AN ENEMY!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("CANNOT CHANGE BATTLE ORDER AT THIS TIME", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     BloodSword::Textures Message = {};
 
@@ -101,6 +102,8 @@ namespace BloodSword::Interface
     const int MSG_FULL = 29;
 
     const int MSG_ENEMIES = 30;
+
+    const int MSG_ORDER = 31;
 
     void FreeMessages()
     {

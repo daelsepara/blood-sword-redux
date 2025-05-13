@@ -997,15 +997,6 @@ namespace BloodSword::Interface
 
         id++;
 
-        // game functions
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::GAME), buttons.X, buttons.Y));
-
-        overlay.Add(Controls::Base(Controls::Type::GAME, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
-
-        num_buttons++;
-
-        id++;
-
         // exit button icon
         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), buttons.X + button_spacing, buttons.Y));
 
@@ -1767,6 +1758,12 @@ namespace BloodSword::Interface
 
                     Controls::Select(input, overlay.Controls, Controls::Type::EXIT);
                 }
+                else if (input.Type == Controls::Type::TROPHY)
+                {
+                    Interface::NotImplemented(graphics, overlay);
+
+                    Controls::Select(input, overlay.Controls, Controls::Type::TROPHY);
+                }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
                     if (text_h < texture_h)
@@ -1941,7 +1938,7 @@ namespace BloodSword::Interface
 
                 if (!(current != -1 && Book::IsDefined(story.Sections[current].Location)))
                 {
-                    Interface::Notify(graphics, background, Interface::MSG_IMPLEMENT);
+                    Interface::NotImplemented(graphics, background);
 
                     break;
                 }
