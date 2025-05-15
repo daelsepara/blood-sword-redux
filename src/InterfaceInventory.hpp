@@ -30,7 +30,7 @@ namespace BloodSword::Interface
 
             auto captions = std::vector<std::string>();
 
-            auto is_equipment = (items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR));
+            auto is_equipment = (items[id].Has(Item::Property::WEAPON) || items[id].Has(Item::Property::ARMOUR) || items[id].Has(Item::Property::ACCESSORY));
 
             if (is_equipment)
             {
@@ -202,6 +202,8 @@ namespace BloodSword::Interface
 
                         auto is_armour = items[id].Is(Item::Property::ARMOUR);
 
+                        auto is_accessory = items[id].Is(Item::Property::ACCESSORY);
+
                         auto is_melee = is_weapon && items[id].Is(Item::Property::PRIMARY);
 
                         auto is_secondary = is_weapon && items[id].Is(Item::Property::SECONDARY);
@@ -210,7 +212,7 @@ namespace BloodSword::Interface
 
                         auto equipped = is_weapon ? character.EquippedWeapon(weapon_type) : (is_armour ? character.EquippedArmour() : -1);
 
-                        if (equipped != 1 && equipped >= 0 && equipped < items.size())
+                        if ((equipped != 1 && equipped >= 0 && equipped < items.size()) && (is_weapon || is_armour) && !is_accessory)
                         {
                             // un-equip
                             items[equipped].Remove(Item::Property::EQUIPPED);

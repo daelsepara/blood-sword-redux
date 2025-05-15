@@ -30,7 +30,8 @@ namespace BloodSword::Item
         CURSED,
         REQUIRES_TARGET,
         RESURRECTION,
-        ALL_RANGES
+        ALL_RANGES,
+        ACCESSORY
     };
 
     typedef std::vector<Item::Property> Properties;
@@ -40,6 +41,7 @@ namespace BloodSword::Item
         {Item::Property::NORMAL, "NORMAL"},
         {Item::Property::WEAPON, "WEAPON"},
         {Item::Property::ARMOUR, "ARMOUR"},
+        {Item::Property::ACCESSORY, "ACCESSORY"},
         {Item::Property::CONTAINER, "CONTAINER"},
         {Item::Property::EQUIPPED, "EQUIPPED"},
         {Item::Property::POISONED, "POISONED"},
