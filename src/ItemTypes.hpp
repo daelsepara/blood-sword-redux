@@ -170,10 +170,12 @@ namespace BloodSword::Item
         {Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE}};
 
     BloodSword::UnorderedMap<Item::Type, Item::Type> RangedRequirements = {
-        {Item::Type::BOW, Item::Type::ARROW}};
+        {Item::Type::BOW, Item::Type::ARROW},
+        {Item::Type::MAGIC_BOW, Item::Type::ARROW}};
 
     BloodSword::UnorderedMap<Item::Type, Item::Type> StorageRequirements = {
         {Item::Type::BOW, Item::Type::QUIVER},
+        {Item::Type::MAGIC_BOW, Item::Type::QUIVER},
         {Item::Type::GOLD, Item::Type::POUCH}};
 
     // for the magus kalugen's card game in battlepits

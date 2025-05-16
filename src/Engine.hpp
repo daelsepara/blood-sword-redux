@@ -1146,7 +1146,7 @@ namespace BloodSword::Engine
 
         if (shot == Skills::Type::ARCHERY)
         {
-            can_shoot &= character.IsArmed(Item::Type::BOW, Item::Requirements(Item::Type::BOW, true));
+            can_shoot &= (character.IsArmed(Item::Type::BOW, Item::Requirements(Item::Type::BOW, true)) || character.IsArmed(Item::Type::MAGIC_BOW, Item::Requirements(Item::Type::MAGIC_BOW, true)));
         }
 
         return can_shoot;

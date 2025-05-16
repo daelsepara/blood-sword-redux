@@ -301,7 +301,14 @@ namespace BloodSword::Interface
 
         if (Engine::CanShoot(attacker) && attacker.Shoot == Skills::Type::ARCHERY)
         {
-            attacker.Remove(Item::Requirements(Item::Type::BOW, true), 1);
+            if (attacker.IsArmed(Item::Type::BOW, Item::Requirements(Item::Type::BOW, true)))
+            {
+                attacker.Remove(Item::Requirements(Item::Type::BOW, true), 1);
+            }
+            else if (attacker.IsArmed(Item::Type::MAGIC_BOW, Item::Requirements(Item::Type::MAGIC_BOW, true)))
+            {
+                attacker.Remove(Item::Requirements(Item::Type::MAGIC_BOW, true), 1);
+            }
         }
 
         Interface::Resurrect(graphics, background, party, defender);

@@ -1079,16 +1079,27 @@ namespace BloodSword::Test
 
             if (Engine::Score(player, Attribute::Type::AWARENESS, true) >= Engine::Score(enemy, Attribute::Type::AWARENESS, true))
             {
-                auto requirement = Item::Requirements(Item::Type::BOW, true);
+                auto requirement_bow = Item::Requirements(Item::Type::BOW, true);
 
-                if (player.IsArmed(Item::Type::BOW, requirement))
+                auto requirement_magic_bow = Item::Requirements(Item::Type::MAGIC_BOW, true);
+
+                if (player.IsArmed(Item::Type::BOW, requirement_bow))
                 {
                     // player turn
                     scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
                     alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
 
-                    player.Remove(requirement, 1);
+                    player.Remove(requirement_bow, 1);
+                }
+                else if (player.IsArmed(Item::Type::MAGIC_BOW, requirement_magic_bow))
+                {
+                    // player turn
+                    scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
+
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
+
+                    player.Remove(requirement_magic_bow, 1);
                 }
                 else
                 {
@@ -1116,15 +1127,25 @@ namespace BloodSword::Test
                 // player turn
                 if (alive)
                 {
-                    auto requirement = Item::Requirements(Item::Type::BOW, true);
+                    auto requirement_bow = Item::Requirements(Item::Type::BOW, true);
 
-                    if (player.IsArmed(Item::Type::BOW, requirement))
+                    auto requirement_magic_bow = Item::Requirements(Item::Type::MAGIC_BOW, true);
+
+                    if (player.IsArmed(Item::Type::BOW, requirement_bow))
                     {
                         scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
                         alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
 
-                        player.Remove(requirement, 1);
+                        player.Remove(requirement_bow, 1);
+                    }
+                    else if (player.IsArmed(Item::Type::MAGIC_BOW, requirement_magic_bow))
+                    {
+                        scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
+
+                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
+
+                        player.Remove(requirement_magic_bow, 1);
                     }
                     else
                     {
