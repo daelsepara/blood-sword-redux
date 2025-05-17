@@ -9,11 +9,10 @@ namespace BloodSword
 
         game.Initialize();
 
-        //try
+        try
         {
             Test::Menu(game.graphics);
         }
-        /*
         catch (std::exception &e)
         {
             std::cerr << std::endl
@@ -24,7 +23,6 @@ namespace BloodSword
                       << std::endl
                       << std::endl;
         }
-        */
 
         game.Shutdown();
 

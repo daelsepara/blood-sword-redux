@@ -4741,7 +4741,7 @@ namespace BloodSword::Interface
             }
         }
 
-        if (character != Character::Class::NONE)
+        if (character != Character::Class::NONE && party.Has(character))
         {
             party.ChosenCharacter = character;
         }

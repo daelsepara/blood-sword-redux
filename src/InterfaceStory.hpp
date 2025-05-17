@@ -1340,22 +1340,21 @@ namespace BloodSword::Interface
     void MapTokensInText(BloodSword::Party::Base &party, std::string &text)
     {
         // replace in text
-        if (party.ChosenCharacter != Character::Class::NONE)
+        auto character = party.Has(party.ChosenCharacter) ? party.ChosenCharacter : Engine::FirstClass(party);
+
+        auto replacement = party[character].Name;
+
+        auto chosen = std::string("[CHOSEN]");
+
+        auto pos = text.find(chosen);
+
+        while (pos != std::string::npos)
         {
-            auto replacement = party[party.ChosenCharacter].Name;
+            // replace the substring with the specified string
+            text.replace(pos, chosen.size(), Character::ClassMapping[party.ChosenCharacter]);
 
-            auto chosen = std::string("[CHOSEN]");
-
-            auto pos = text.find(chosen);
-
-            while (pos != std::string::npos)
-            {
-                // replace the substring with the specified string
-                text.replace(pos, chosen.size(), Character::ClassMapping[party.ChosenCharacter]);
-
-                // find the next occurrence of the substring
-                pos = text.find(chosen, pos + replacement.size());
-            }
+            // find the next occurrence of the substring
+            pos = text.find(chosen, pos + replacement.size());
         }
     }
 
