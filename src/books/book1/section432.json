@@ -1,0 +1,66 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 432
+    },
+    "text": "You have slain Skrymir the forst giant, a mighty enemy who vexed even the True Magi of Krarth.\n\nClimbing to the top of the atoll, you take hold of the Emblem of Victory. The column of light streams around you, and you feel the Teleportation spell taking effect. You are conveyed to the Great Hall where the magi have assembled to applaud your victory.\n\nYou are approached first by Magus Tor. \"I speak on behalf of all the magi\", he declares. \"You have achieved far more than the winning of the annual contest. You have overcome our ancestral foe, dread Skrymir. For this you shall be rewarded most lavishly.\"",
+    "background": [
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "FIRST",
+                "NONE",
+                "EMBLEM OF VICTORY"
+            ]
+        }
+    ],
+    "events": [
+        {
+            "type": "GAIN EXPERIENCE",
+            "variables": [
+                "250"
+            ]
+        },
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "WARRIOR",
+                "NONE",
+                "ENCHANTED BELT OF STRENGTH"
+            ]
+        },
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "SAGE",
+                "NONE",
+                "SHIELDING CHARM"
+            ]
+        },
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "TRICKSTER",
+                "NONE",
+                "MAGIC BOW"
+            ]
+        },
+        {
+            "type": "RECEIVE ITEM",
+            "variables": [
+                "ENCHANTER",
+                "NONE",
+                "RING OF SORCERY"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 540
+            }
+        }
+    ]
+}

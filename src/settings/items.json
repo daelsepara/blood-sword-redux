@@ -673,6 +673,54 @@
             ],
             "quantity": 1,
             "type": "EMBLEM OF VICTORY"
+        },
+        {
+            "attributes": {
+                "FIGHTING PROWESS": 1
+            },
+            "name": "BELT OF STRENGTH",
+            "properties": [
+                "ACCESSORY"
+            ],
+            "quantity": 1,
+            "type": "ENCHANTED BELT OF STRENGTH"
+        },
+        {
+            "attributes": {
+                "ARMOUR": 1
+            },
+            "name": "SHIELDING CHARM",
+            "properties": [
+                "ACCESSORY"
+            ],
+            "quantity": 1,
+            "type": "SHIELDING CHARM"
+        },
+        {
+            "name": "MAGIC BOW",
+            "properties": [
+                "WEAPON",
+                "RANGED"
+            ],
+            "quantity": 1,
+            "type": "MAGIC BOW",
+            "damage_modifiers": {
+                "ENEMY": {
+                    "damage": 0,
+                    "modifier": 1
+                }
+            }
+        },
+        {
+            "attributes": {
+                "PSYCHIC ABILITY": 1
+            },
+            "name": "RING OF SORCERY",
+            "properties": [
+                "ACCESSORY"
+            ],
+            "quantity": 1,
+            "type": "RING OF SORCERY"
         }
     ]
 }

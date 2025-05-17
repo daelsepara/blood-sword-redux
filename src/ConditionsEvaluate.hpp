@@ -1443,7 +1443,7 @@ namespace BloodSword::Conditions
                             }
                         }
                     }
-                    else if (first_or_last || (is_character && (!party.Has(character) || !Engine::IsAlive(party[character])) && next))
+                    else if (first_or_last || (is_character && (!party.Has(character) || (party.Has(character) && !Engine::IsAlive(party[character]))) && next))
                     {
                         if (!next)
                         {
@@ -1468,7 +1468,7 @@ namespace BloodSword::Conditions
                             }
                         }
                     }
-                    else if (selected || (is_character && (!party.Has(character) || !Engine::IsAlive(party[character])) && select_next))
+                    else if (selected || (is_character && (!party.Has(character) || (party.Has(character) && !Engine::IsAlive(party[character]))) && select_next))
                     {
                         std::string message = "WHO RECEIVES THE " + Items::Defaults[item].Name + "?";
 
@@ -1485,15 +1485,25 @@ namespace BloodSword::Conditions
                     {
                         for (auto i = 0; i < characters.size(); i++)
                         {
-                            party[characters[i]].Add(Items::Defaults[item]);
+                            if (party.Has(characters[i]) && Engine::IsAlive(party[characters[i]]))
+                            {
+                                party[characters[i]].Add(Items::Defaults[item]);
+                            }
                         }
 
-                        text = (is_party ? "You" : party[characters[0]].Name) + " receive" + (is_party ? "" : "s") + " the " + Items::Defaults[item].Name + ".";
+                        if (is_party)
+                        {
+                            text = "You receive the " + Items::Defaults[item].Name + ".";
+                        }
+                        else if (party.Has(characters[0]) && Engine::IsAlive(party[characters[0]]))
+                        {
+                            text = party[characters[0]].Name + " receives the " + Items::Defaults[item].Name + ".";
+                        }
 
                         result = true;
-
-                        internal_error = false;
                     }
+
+                    internal_error = false;
                 }
             }
         }
