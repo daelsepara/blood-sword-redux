@@ -52,6 +52,10 @@ namespace BloodSword::Interface
                 }
             }
         }
+        else if (item.Type == Item::Type::BIRCH_BARK_SCROLL)
+        {
+            Interface::NotImplemented(graphics, background);
+        }
         else
         {
             Interface::ItemEffects(graphics, background, party, character, item.Type);
