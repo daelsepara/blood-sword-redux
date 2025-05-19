@@ -1,0 +1,21 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 532
+    },
+    "features": [
+        "ITEM EFFECT"
+    ],
+    "text": "You open the scroll. It contains a spell of Dreadful Punition, an arcane enchantment that is much too powerful for you to control. Everyone in the vicinity, friend or foe, is affected by the spell, and this includes you.",
+    "next": [
+        {
+            "type": "ITEM EFFECT",
+            "variables": [
+                "BIRCH-BARK SCROLL"
+            ]
+        },
+        {
+            "type": "PREVIOUS LOCATION"
+        }
+    ]
+}

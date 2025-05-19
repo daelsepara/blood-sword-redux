@@ -54,7 +54,41 @@ namespace BloodSword::Interface
         }
         else if (item.Type == Item::Type::BIRCH_BARK_SCROLL)
         {
-            Interface::NotImplemented(graphics, background);
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                if (Engine::IsAlive(party[character]))
+                {
+                    if (!Interface::Test(graphics, background, party[character], Attribute::Type::PSYCHIC_ABILITY))
+                    {
+                        Interface::MessageBox(graphics, background, party[character].Name + " SUCCUMBS TO DREADFUL PUNITION", Color::Highlight);
+
+                        Engine::GainEndurance(party[character], -8, true);
+                    }
+                    else
+                    {
+                        Interface::MessageBox(graphics, background, party[character].Name + " RESISTS DREADFUL PUNITION", Color::Active);
+                    }
+                }
+            }
+
+            for (auto character = 0; character < battle.Opponents.Count(); character++)
+            {
+                if (Engine::IsAlive(battle.Opponents[character]))
+                {
+                    if (!Interface::Test(graphics, background, battle.Opponents[character], Attribute::Type::PSYCHIC_ABILITY))
+                    {
+                        Interface::MessageBox(graphics, background, battle.Opponents[character].Name + " SUCCUMBS TO DREADFUL PUNITION", Color::Active);
+
+                        Engine::GainEndurance(battle.Opponents[character], -8, true);
+                    }
+                    else
+                    {
+                        Interface::MessageBox(graphics, background, battle.Opponents[character].Name + " RESISTS DREADFUL PUNITION", Color::Highlight);
+                    }
+                }
+            }
+
+            Interface::ConsumeItem(character, id);
         }
         else
         {

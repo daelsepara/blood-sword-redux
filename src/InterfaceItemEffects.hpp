@@ -158,6 +158,27 @@ namespace BloodSword::Interface
 
             Interface::ConsumeItem(character, item_id);
         }
+        else if (item.Type == Item::Type::BIRCH_BARK_SCROLL)
+        {
+            for (auto character = 0; character < party.Count(); character++)
+            {
+                if (Engine::IsAlive(party[character]))
+                {
+                    if (!Interface::Test(graphics, background, party[character], Attribute::Type::PSYCHIC_ABILITY))
+                    {
+                        Interface::MessageBox(graphics, background, party[character].Name + " SUCCUMBS TO DREADFUL PUNITION", Color::Highlight);
+
+                        Engine::GainEndurance(party[character], -8, true);
+                    }
+                    else
+                    {
+                        Interface::MessageBox(graphics, background, party[character].Name + " RESISTS DREADFUL PUNITION", Color::Active);
+                    }
+                }
+            }
+
+            Interface::ConsumeItem(character, item_id);
+        }
     }
 
     void ItemEffects(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Item::Type item)
