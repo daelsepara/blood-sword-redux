@@ -2,7 +2,6 @@
 #define __GRAPHICS_HPP__
 
 #include <iostream>
-#include <SDL_mixer.h>
 
 #include "Animation.hpp"
 #include "Controls.hpp"
@@ -77,17 +76,6 @@ namespace BloodSword::Graphics
             else if (graphics.Window)
             {
                 SDL_SetWindowTitle(graphics.Window, title);
-            }
-
-            // Initialize SDL_mixer
-            if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-            {
-                std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
-            }
-
-            if (Mix_AllocateChannels(4) < 0)
-            {
-                std::cerr << "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: " << Mix_GetError() << std::endl;
             }
         }
     }

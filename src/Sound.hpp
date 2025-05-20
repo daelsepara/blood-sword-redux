@@ -36,9 +36,20 @@ namespace BloodSword::Sound
         return Sound::Map(sound.c_str());
     }
 
-    // load all sound assets
+    // initialize mixer and load all sound assets
     void Load(std::string assets)
     {
+        // Initialize SDL_mixer
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        {
+            std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        }
+
+        if (Mix_AllocateChannels(4) < 0)
+        {
+            std::cerr << "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: " << Mix_GetError() << std::endl;
+        }
+
         std::ifstream ifs(assets.c_str());
 
         if (ifs.good())
@@ -79,11 +90,13 @@ namespace BloodSword::Sound
     // free all sound assets
     void Free()
     {
-        for (auto asset : Sound::Assets)
+        for (auto &asset : Sound::Assets)
         {
             if (asset.second)
             {
                 Mix_FreeChunk(asset.second);
+
+                asset.second = nullptr;
             }
         }
 
