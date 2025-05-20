@@ -2028,6 +2028,8 @@ namespace BloodSword::Interface
                         // roll dice
                         if (!rolled)
                         {
+                            Sound::Play(Sound::Type::DICE_ROLL);
+
                             rolls = Engine::Roll(roll, modifier);
 
                             rolled = true;
@@ -2223,6 +2225,8 @@ namespace BloodSword::Interface
                         // roll dice
                         if (!rolled)
                         {
+                            Sound::Play(Sound::Type::DICE_ROLL);
+
                             rolls = Engine::Roll(roll, modifier);
 
                             rolled = true;
@@ -2492,6 +2496,8 @@ namespace BloodSword::Interface
                         // roll dice
                         if (!rolled)
                         {
+                            Sound::Play(Sound::Type::DICE_ROLL);
+
                             rolls = Engine::Roll(roll, modifier);
 
                             rolled = true;

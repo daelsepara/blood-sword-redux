@@ -375,8 +375,6 @@ namespace BloodSword::Input
 
             if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
-                Sound::Play(Sound::Type::BUTTON_CLICK);
-
                 input.Selected = true;
             }
         }
@@ -415,6 +413,10 @@ namespace BloodSword::Input
                     input.Selected = true;
                 }
             }
+            else
+            {
+                Sound::Play(Sound::Type::ERROR);
+            }
         }
         else if (result.type == SDL_MOUSEMOTION)
         {
@@ -436,8 +438,6 @@ namespace BloodSword::Input
 
             if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
-                Sound::Play(Sound::Type::BUTTON_CLICK);
-
                 input.Selected = true;
             }
         }
@@ -452,6 +452,10 @@ namespace BloodSword::Input
                     Sound::Play(Sound::Type::BUTTON_CLICK);
 
                     input.Selected = true;
+                }
+                else
+                {
+                    Sound::Play(Sound::Type::ERROR);
                 }
             }
         }
