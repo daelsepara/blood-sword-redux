@@ -1,0 +1,16 @@
+{
+    "sounds": [
+        {
+            "id": "BUTTON CLICK",
+            "path": "sounds/button_click.wav"
+        },
+        {
+            "id": "DICE ROLL",
+            "path": "sounds/dice_roll.wav"
+        },
+        {
+            "id": "ERROR",
+            "path": "sounds/error.wav"
+        }
+    ]
+}

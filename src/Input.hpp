@@ -5,6 +5,7 @@
 
 #include "Controls.hpp"
 #include "Graphics.hpp"
+#include "Sound.hpp"
 
 #if __APPLE__
 #define CMD_BUTTON KMOD_GUI
@@ -167,6 +168,8 @@ namespace BloodSword::Input
             }
             else if (result.key.keysym.sym == SDLK_KP_ENTER || result.key.keysym.sym == SDLK_RETURN || result.key.keysym.sym == SDLK_RETURN2)
             {
+                Sound::Play(Sound::Type::BUTTON_CLICK);
+
                 input.Selected = true;
             }
             else if (result.key.keysym.sym == SDLK_c && SDL_GetModState() & CMD_BUTTON)
@@ -315,6 +318,8 @@ namespace BloodSword::Input
                 }
                 else if (result.key.keysym.sym == SDLK_KP_ENTER || result.key.keysym.sym == SDLK_RETURN || result.key.keysym.sym == SDLK_RETURN2)
                 {
+                    Sound::Play(Sound::Type::BUTTON_CLICK);
+
                     input.Selected = true;
                 }
             }
@@ -370,6 +375,8 @@ namespace BloodSword::Input
 
             if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
+                Sound::Play(Sound::Type::BUTTON_CLICK);
+
                 input.Selected = true;
             }
         }
@@ -403,6 +410,8 @@ namespace BloodSword::Input
                 }
                 else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
                 {
+                    Sound::Play(Sound::Type::BUTTON_CLICK);
+
                     input.Selected = true;
                 }
             }
@@ -427,6 +436,8 @@ namespace BloodSword::Input
 
             if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
+                Sound::Play(Sound::Type::BUTTON_CLICK);
+
                 input.Selected = true;
             }
         }
@@ -438,6 +449,8 @@ namespace BloodSword::Input
 
                 if (input.Current >= 0 && input.Current < controls.size())
                 {
+                    Sound::Play(Sound::Type::BUTTON_CLICK);
+
                     input.Selected = true;
                 }
             }

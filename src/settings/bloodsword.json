@@ -2,6 +2,7 @@
     "settings": {
         "assets": "settings/assets.json",
         "fonts": "settings/font-settings.json",
+        "sounds": "settings/sounds.json",
         "palettes": "settings/palettes.json",
         "palette": 0,
         "items": "settings/items.json",

@@ -15,6 +15,7 @@
 #include "Messages.hpp"
 #include "Palette.hpp"
 #include "Section.hpp"
+#include "Sound.hpp"
 
 namespace BloodSword::Interface
 {
