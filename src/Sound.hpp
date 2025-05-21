@@ -15,14 +15,24 @@ namespace BloodSword::Sound
         NONE = 0,
         BUTTON_CLICK,
         DICE_ROLL,
-        ERROR
+        ERROR,
+        SWORD_HIT,
+        STAFF_HIT,
+        COMBAT_DAMAGE,
+        BOW_RELEASE,
+        WEAPON_THROW
     };
 
     BloodSword::Mapping<Sound::Type> Mapping = {
         {Sound::Type::NONE, "NONE"},
         {Sound::Type::BUTTON_CLICK, "BUTTON CLICK"},
         {Sound::Type::DICE_ROLL, "DICE ROLL"},
-        {Sound::Type::ERROR, "ERROR"}};
+        {Sound::Type::ERROR, "ERROR"},
+        {Sound::Type::SWORD_HIT, "SWORD HIT"},
+        {Sound::Type::STAFF_HIT, "STAFF HIT"},
+        {Sound::Type::COMBAT_DAMAGE, "COMBAT DAMAGE"},
+        {Sound::Type::BOW_RELEASE, "BOW RELEASE"},
+        {Sound::Type::WEAPON_THROW, "WEAPON THROW"}};
 
     BloodSword::UnorderedMap<Sound::Type, Mix_Chunk *> Assets = {};
 
@@ -83,7 +93,8 @@ namespace BloodSword::Sound
     {
         if (BloodSword::Has(Sound::Assets, sound))
         {
-            Mix_PlayChannel(-1, Sound::Assets[sound], 0);
+            // play sound in channel so it cancels sound
+            Mix_PlayChannel(0, Sound::Assets[sound], 0);
         }
     }
 

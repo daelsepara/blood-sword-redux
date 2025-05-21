@@ -2225,14 +2225,74 @@ namespace BloodSword::Interface
                         // roll dice
                         if (!rolled)
                         {
-                            Sound::Play(Sound::Type::DICE_ROLL);
-
                             rolls = Engine::Roll(roll, modifier);
 
                             rolled = true;
 
                             // check result
                             result = rolls.Sum <= score;
+
+                            // play the appropriate sound effect
+                            if (result && in_battle && attribute == Attribute::Type::FIGHTING_PROWESS && weapon != Item::Property::NONE)
+                            {
+                                if (attacker.IsPlayer())
+                                {
+                                    auto weapon_type = attacker.EquippedWeapon(weapon);
+
+                                    if (weapon_type != Item::NotFound && !attacker.Items[weapon_type].Has(Item::Property::BROKEN))
+                                    {
+                                        if (weapon == Item::Property::PRIMARY)
+                                        {
+                                            if (attacker.Items[weapon_type].Type == Item::Type::QUARTERSTAFF)
+                                            {
+                                                Sound::Play(Sound::Type::STAFF_HIT);
+                                            }
+                                            else
+                                            {
+                                                Sound::Play(Sound::Type::SWORD_HIT);
+                                            }
+                                        }
+                                        else if (weapon == Item::Property::RANGED)
+                                        {
+                                            Sound::Play(Sound::Type::BOW_RELEASE);
+                                        }
+                                        else
+                                        {
+                                            Sound::Play(Sound::Type::DICE_ROLL);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Sound::Play(Sound::Type::DICE_ROLL);
+                                    }
+                                }
+                                else
+                                {
+                                    if (weapon == Item::Property::PRIMARY && attacker.Fight != Skills::Type::BROKEN_WEAPON)
+                                    {
+                                        Sound::Play(Sound::Type::SWORD_HIT);
+                                    }
+                                    else if (weapon == Item::Property::RANGED)
+                                    {
+                                        if (attacker.Shoot == Skills::Type::SHURIKEN)
+                                        {
+                                            Sound::Play(Sound::Type::WEAPON_THROW);
+                                        }
+                                        else
+                                        {
+                                            Sound::Play(Sound::Type::BOW_RELEASE);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Sound::Play(Sound::Type::DICE_ROLL);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                Sound::Play(Sound::Type::DICE_ROLL);
+                            }
                         }
                     }
                 }
@@ -2496,8 +2556,6 @@ namespace BloodSword::Interface
                         // roll dice
                         if (!rolled)
                         {
-                            Sound::Play(Sound::Type::DICE_ROLL);
-
                             rolls = Engine::Roll(roll, modifier);
 
                             rolled = true;
@@ -2515,6 +2573,12 @@ namespace BloodSword::Interface
                                 damage_value = Graphics::CreateText(graphics, ("-" + std::to_string(damage) + " END").c_str(), Fonts::Normal, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
                                 value_w = BloodSword::Width(damage_value);
+
+                                Sound::Play(Sound::Type::COMBAT_DAMAGE);
+                            }
+                            else
+                            {
+                                Sound::Play(Sound::Type::DICE_ROLL);
                             }
                         }
                     }

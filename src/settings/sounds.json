@@ -11,6 +11,26 @@
         {
             "id": "ERROR",
             "path": "sounds/error.wav"
+        },
+        {
+            "id": "SWORD HIT",
+            "path": "sounds/sword-hit-7160.wav"
+        },
+        {
+            "id": "STAFF HIT",
+            "path": "sounds/whack02-87839.wav"
+        },
+        {
+            "id": "COMBAT DAMAGE",
+            "path": "sounds/hurt_c_08-102842.wav"
+        },
+        {
+            "id": "BOW RELEASE",
+            "path": "sounds/bow_release-85040.wav"
+        },
+        {
+            "id": "WEAPON THROW",
+            "path": "sounds/knife-throw-2-88028.wav"
         }
     ]
 }
