@@ -2070,7 +2070,72 @@ namespace BloodSword::Interface
         return Interface::Roll(graphics, background, origin, window_w, window_h, Color::Active, BloodSword::Border, actor, action, roll, modifier);
     }
 
-    // attribute difficulty check (with target)
+    // play sound effect (attribute check)
+    void PlayAttributeCheckSound(BloodSword::Character::Base &attacker, BloodSword::Attribute::Type attribute, BloodSword::Item::Property weapon, bool result, bool in_battle)
+    {
+        if (result && in_battle && attribute == Attribute::Type::FIGHTING_PROWESS && weapon != Item::Property::NONE)
+        {
+            if (attacker.IsPlayer())
+            {
+                auto weapon_type = attacker.EquippedWeapon(weapon);
+
+                if (weapon_type != Item::NotFound && !attacker.Items[weapon_type].Has(Item::Property::BROKEN))
+                {
+                    if (weapon == Item::Property::PRIMARY)
+                    {
+                        if (attacker.Items[weapon_type].Type == Item::Type::QUARTERSTAFF)
+                        {
+                            Sound::Play(Sound::Type::STAFF_HIT);
+                        }
+                        else
+                        {
+                            Sound::Play(Sound::Type::SWORD_HIT);
+                        }
+                    }
+                    else if (weapon == Item::Property::RANGED)
+                    {
+                        Sound::Play(Sound::Type::BOW_RELEASE);
+                    }
+                    else
+                    {
+                        Sound::Play(Sound::Type::DICE_ROLL);
+                    }
+                }
+                else
+                {
+                    Sound::Play(Sound::Type::DICE_ROLL);
+                }
+            }
+            else
+            {
+                if (weapon == Item::Property::PRIMARY && attacker.Fight != Skills::Type::BROKEN_WEAPON)
+                {
+                    Sound::Play(Sound::Type::SWORD_HIT);
+                }
+                else if (weapon == Item::Property::RANGED)
+                {
+                    if (attacker.Shoot == Skills::Type::SHURIKEN)
+                    {
+                        Sound::Play(Sound::Type::WEAPON_THROW);
+                    }
+                    else
+                    {
+                        Sound::Play(Sound::Type::BOW_RELEASE);
+                    }
+                }
+                else
+                {
+                    Sound::Play(Sound::Type::DICE_ROLL);
+                }
+            }
+        }
+        else
+        {
+            Sound::Play(Sound::Type::DICE_ROLL);
+        }
+    }
+
+    // attribute level check (with target)
     bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, Item::Property weapon = Item::Property::NONE)
     {
         auto result = false;
@@ -2232,67 +2297,7 @@ namespace BloodSword::Interface
                             // check result
                             result = rolls.Sum <= score;
 
-                            // play the appropriate sound effect
-                            if (result && in_battle && attribute == Attribute::Type::FIGHTING_PROWESS && weapon != Item::Property::NONE)
-                            {
-                                if (attacker.IsPlayer())
-                                {
-                                    auto weapon_type = attacker.EquippedWeapon(weapon);
-
-                                    if (weapon_type != Item::NotFound && !attacker.Items[weapon_type].Has(Item::Property::BROKEN))
-                                    {
-                                        if (weapon == Item::Property::PRIMARY)
-                                        {
-                                            if (attacker.Items[weapon_type].Type == Item::Type::QUARTERSTAFF)
-                                            {
-                                                Sound::Play(Sound::Type::STAFF_HIT);
-                                            }
-                                            else
-                                            {
-                                                Sound::Play(Sound::Type::SWORD_HIT);
-                                            }
-                                        }
-                                        else if (weapon == Item::Property::RANGED)
-                                        {
-                                            Sound::Play(Sound::Type::BOW_RELEASE);
-                                        }
-                                        else
-                                        {
-                                            Sound::Play(Sound::Type::DICE_ROLL);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Sound::Play(Sound::Type::DICE_ROLL);
-                                    }
-                                }
-                                else
-                                {
-                                    if (weapon == Item::Property::PRIMARY && attacker.Fight != Skills::Type::BROKEN_WEAPON)
-                                    {
-                                        Sound::Play(Sound::Type::SWORD_HIT);
-                                    }
-                                    else if (weapon == Item::Property::RANGED)
-                                    {
-                                        if (attacker.Shoot == Skills::Type::SHURIKEN)
-                                        {
-                                            Sound::Play(Sound::Type::WEAPON_THROW);
-                                        }
-                                        else
-                                        {
-                                            Sound::Play(Sound::Type::BOW_RELEASE);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        Sound::Play(Sound::Type::DICE_ROLL);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                Sound::Play(Sound::Type::DICE_ROLL);
-                            }
+                            Interface::PlayAttributeCheckSound(attacker, attribute, weapon, result, in_battle);
                         }
                     }
                 }
