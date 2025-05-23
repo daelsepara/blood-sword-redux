@@ -2978,6 +2978,8 @@ namespace BloodSword::Interface
                     }
                     else
                     {
+                        Sound::Play(Sound::Type::CAST_SPELL);
+
                         casting->CurrentComplexity = casting->Complexity;
 
                         caster.Forget(spell);

@@ -20,7 +20,8 @@ namespace BloodSword::Sound
         STAFF_HIT,
         COMBAT_DAMAGE,
         BOW_RELEASE,
-        WEAPON_THROW
+        WEAPON_THROW,
+        CAST_SPELL
     };
 
     BloodSword::Mapping<Sound::Type> Mapping = {
@@ -32,7 +33,8 @@ namespace BloodSword::Sound
         {Sound::Type::STAFF_HIT, "STAFF HIT"},
         {Sound::Type::COMBAT_DAMAGE, "COMBAT DAMAGE"},
         {Sound::Type::BOW_RELEASE, "BOW RELEASE"},
-        {Sound::Type::WEAPON_THROW, "WEAPON THROW"}};
+        {Sound::Type::WEAPON_THROW, "WEAPON THROW"},
+        {Sound::Type::CAST_SPELL, "CAST SPELL"}};
 
     BloodSword::UnorderedMap<Sound::Type, Mix_Chunk *> Assets = {};
 

@@ -31,6 +31,10 @@
         {
             "id": "WEAPON THROW",
             "path": "sounds/knife-throw-2-88028.wav"
+        },
+        {
+            "id": "CAST SPELL",
+            "path": "sounds/080245_sfx-magic-84935.wav"
         }
     ]
 }
