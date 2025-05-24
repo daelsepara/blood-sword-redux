@@ -2764,6 +2764,47 @@ namespace BloodSword::Interface
         return character_class;
     }
 
+    enum class Mode
+    {
+        NONE = -1,
+        ATTRIBUTES,
+        STATUS,
+        SKILLS,
+        ITEMS
+    };
+
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Interface::Mode mode, bool blur = true)
+    {
+        auto character = Character::Class::NONE;
+
+        auto infow = BloodSword::TileSize * 5;
+
+        BloodSword::Textures textures = {};
+
+        switch(mode)
+        {
+            case Mode::ATTRIBUTES:
+                textures = Interface::GenerateStats(graphics, party, infow, true, false);
+                break;
+            case Mode::STATUS:
+                textures = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, false);
+                break;
+            case Mode::SKILLS:
+                textures = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
+                break;
+            case Mode::ITEMS:
+                textures = Interface::Items(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
+                break;
+            default:
+                textures = Interface::GenerateStats(graphics, party, infow, true, false);
+                break;
+        }
+
+        BloodSword::Free(textures);
+
+        return character;
+    }
+
     // displays text from a section of the current book
     void ShowBookDescription(Graphics::Base &graphics, Scene::Base &background, Book::Location location)
     {
