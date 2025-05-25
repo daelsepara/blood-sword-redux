@@ -2781,24 +2781,42 @@ namespace BloodSword::Interface
 
         BloodSword::Textures textures = {};
 
-        switch(mode)
+        switch (mode)
         {
-            case Mode::ATTRIBUTES:
-                textures = Interface::GenerateStats(graphics, party, infow, true, false);
-                break;
-            case Mode::STATUS:
-                textures = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, false);
-                break;
-            case Mode::SKILLS:
-                textures = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
-                break;
-            case Mode::ITEMS:
-                textures = Interface::Items(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
-                break;
-            default:
-                textures = Interface::GenerateStats(graphics, party, infow, true, false);
-                break;
+        case Mode::ATTRIBUTES:
+            textures = Interface::GenerateStats(graphics, party, infow, true, false);
+            break;
+        case Mode::STATUS:
+            textures = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, false);
+            break;
+        case Mode::SKILLS:
+            textures = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
+            break;
+        case Mode::ITEMS:
+            textures = Interface::Items(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
+            break;
+        default:
+            textures = Interface::GenerateStats(graphics, party, infow, true, false);
+            break;
         }
+
+        auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto pad = BloodSword::OddPad;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto popup_pad = BloodSword::QuarterTile;
+
+        auto popup_w = std::max((party.Count() + 1) * (BloodSword::TileSize + popup_pad), BloodSword::Width(select) + popup_pad * 2);
+
+        auto popup_h = textures.size() > 0 ? BloodSword::Height(textures[0]) : 0;
+
+        auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
+
+        BloodSword::Free(&select);
 
         BloodSword::Free(textures);
 
