@@ -2814,6 +2814,14 @@ namespace BloodSword::Interface
 
         auto popup_h = textures.size() > 0 ? BloodSword::Height(textures[0]) : 0;
 
+        for (auto i = 0; i < textures.size(); i++)
+        {
+            if (BloodSword::Height(textures[i]) > popup_h)
+            {
+                popup_h = BloodSword::Height(textures[i]);
+            }
+        }
+
         auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
         while (!done)
