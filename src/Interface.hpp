@@ -2816,6 +2816,56 @@ namespace BloodSword::Interface
 
         auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            if (popup_h > 0)
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, back);
+            }
+            else
+            {
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, back);
+            }
+
+            overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+
+            if (Input::IsValid(overlay, input))
+            {
+                // party popup captions
+                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                {
+                    overlay.VerifyAndAdd(Scene::Element(textures[input.Current], popup.X - (BloodSword::Width(textures[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
+                }
+            }
+
+            input = Input::WaitForInput(graphics, background, overlay, input, true, blur);
+
+            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    character_class = Character::Class::NONE;
+
+                    done = true;
+                }
+                else if (Input::IsPlayer(input) && input.Current >= 0 && input.Current < party.Count())
+                {
+                    if (Engine::IsAlive(party[input.Current]))
+                    {
+                        character_class = party[input.Current].Class;
+
+                        done = true;
+                    }
+                    else
+                    {
+                        Interface::MessageBox(graphics, background, Engine::IsDead(party[input.Current]), Color::Highlight);
+                    }
+                }
+            }
+        }
+
         BloodSword::Free(&select);
 
         BloodSword::Free(textures);
