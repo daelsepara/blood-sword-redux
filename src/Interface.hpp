@@ -2773,7 +2773,7 @@ namespace BloodSword::Interface
         ITEMS
     };
 
-    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Interface::Mode mode, bool blur = true)
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Interface::Mode mode, bool back = true, bool blur = true)
     {
         auto character = Character::Class::NONE;
 
@@ -2846,7 +2846,7 @@ namespace BloodSword::Interface
             {
                 if (input.Type == Controls::Type::BACK)
                 {
-                    character_class = Character::Class::NONE;
+                    character = Character::Class::NONE;
 
                     done = true;
                 }
@@ -2854,7 +2854,7 @@ namespace BloodSword::Interface
                 {
                     if (Engine::IsAlive(party[input.Current]))
                     {
-                        character_class = party[input.Current].Class;
+                        character = party[input.Current].Class;
 
                         done = true;
                     }
