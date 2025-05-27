@@ -325,7 +325,7 @@ namespace BloodSword::Conditions
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
-                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
+                auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0], Interface::Mode::ITEMS);
 
                 auto item = Item::Map(condition.Variables[1]);
 

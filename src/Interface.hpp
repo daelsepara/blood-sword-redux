@@ -2828,7 +2828,7 @@ namespace BloodSword::Interface
 
         auto popup_w = std::max((party.Count() + 1) * (BloodSword::TileSize + popup_pad), BloodSword::Width(select) + popup_pad * 2);
 
-        auto popup_h = textures.size() > 0 ? BloodSword::Height(textures[0]) : 0;
+        auto popup_h = BloodSword::TileSize * 2 + BloodSword::HalfTile;
 
         for (auto i = 0; i < textures.size(); i++)
         {
@@ -2855,9 +2855,14 @@ namespace BloodSword::Interface
                 {
                     auto &control = overlay.Controls[input.Current];
 
+                    // box background
+                    overlay.Add(Scene::Element(popup.X - (infow + pad * 2), popup.Y, infow, popup_h, Color::Background, Color::Active, BloodSword::Border));
+
+                    // name captions
                     overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
 
-                    overlay.VerifyAndAdd(Scene::Element(textures[input.Current], popup.X - (BloodSword::Width(textures[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
+                    // info box
+                    overlay.VerifyAndAdd(Scene::Element(textures[input.Current], popup.X - (BloodSword::Width(textures[input.Current]) + pad * 2), popup.Y));
                 }
             }
 
@@ -4963,9 +4968,9 @@ namespace BloodSword::Interface
         return character;
     }
 
-    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable)
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable, Interface::Mode mode = Interface::Mode::NONE)
     {
-        return Interface::SelectCharacter(graphics, background, party, variable, "SELECT PLAYER");
+        return Interface::SelectCharacter(graphics, background, party, variable, "SELECT PLAYER", mode);
     }
 
     Character::Class GetCharacter(Controls::Type control)
