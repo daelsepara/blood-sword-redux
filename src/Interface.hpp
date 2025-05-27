@@ -2784,23 +2784,39 @@ namespace BloodSword::Interface
         switch (mode)
         {
         case Mode::ATTRIBUTES:
+
             textures = Interface::GenerateStats(graphics, party, infow, true, false);
+
             break;
+
         case Mode::STATUS:
+
             textures = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, false);
+
             break;
+
         case Mode::SKILLS:
+
             textures = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
+
             break;
+
         case Mode::ITEMS:
+
             textures = Interface::Items(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, infow);
+
             break;
+
         default:
+
             textures = Interface::GenerateStats(graphics, party, infow, true, false);
+
             break;
         }
 
         auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+
+        auto captions = Interface::GenerateNameCaptions(graphics, party);
 
         auto pad = BloodSword::OddPad;
 
@@ -2828,14 +2844,7 @@ namespace BloodSword::Interface
         {
             auto overlay = Scene::Base();
 
-            if (popup_h > 0)
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, back);
-            }
-            else
-            {
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, Color::Background, Color::Active, BloodSword::Border, back);
-            }
+            overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, back);
 
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
 
@@ -2844,6 +2853,10 @@ namespace BloodSword::Interface
                 // party popup captions
                 if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
                 {
+                    auto &control = overlay.Controls[input.Current];
+
+                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+
                     overlay.VerifyAndAdd(Scene::Element(textures[input.Current], popup.X - (BloodSword::Width(textures[input.Current]) + pad * 2), popup.Y, Color::Background, Color::Active, 4));
                 }
             }
@@ -2873,6 +2886,8 @@ namespace BloodSword::Interface
                 }
             }
         }
+
+        BloodSword::Free(captions);
 
         BloodSword::Free(&select);
 
@@ -4878,7 +4893,7 @@ namespace BloodSword::Interface
         return update;
     }
 
-    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable, std::string message)
+    Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable, std::string message, Interface::Mode mode = Interface::Mode::NONE)
     {
         auto character_string = Engine::ToUpper(variable);
 
@@ -4909,9 +4924,13 @@ namespace BloodSword::Interface
                 {
                     character = Engine::FirstClass(party);
                 }
-                else
+                else if (mode == Mode::NONE)
                 {
                     character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
+                }
+                else
+                {
+                    character = Interface::SelectCharacter(graphics, background, party, message.c_str(), mode, false, true);
                 }
             }
             else if (party.IsPresent(character_string))
