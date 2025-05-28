@@ -6077,6 +6077,14 @@ namespace BloodSword::Interface
 
         BloodSword::Free(menu);
     }
+
+    void SaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+    }
+
+    void LoadGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+    }
 }
 
 #endif
