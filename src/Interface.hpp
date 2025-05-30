@@ -6080,10 +6080,12 @@ namespace BloodSword::Interface
 
     void SaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
+        auto infow = BloodSword::TileSize * 5;
     }
 
     void LoadGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
+        auto infow = BloodSword::TileSize * 5;
     }
 }
 
