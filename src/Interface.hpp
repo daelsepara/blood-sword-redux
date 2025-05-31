@@ -1387,6 +1387,36 @@ namespace BloodSword::Interface
         return texture;
     }
 
+    SDL_Texture *CharacterStats(Graphics::Base &graphics, Character::Base &character, int w)
+    {
+        SDL_Texture *texture = nullptr;
+
+        auto surface = Interface::GenerateCharacterStats(graphics, character, w);
+
+        if (surface)
+        {
+            texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
+
+            BloodSword::Free(&surface);
+        }
+
+        return texture;
+    }
+
+    BloodSword::Textures PartyStats(Graphics::Base &graphics, Party::Base &party, int w)
+    {
+        auto textures = std::vector<SDL_Texture *>();
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            auto texture = Interface::CharacterStats(graphics, party[character], w);
+
+            textures.push_back(texture);
+        }
+
+        return textures;
+    }
+
     // generate character items list
     SDL_Texture *Items(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 items_color, int style, int wrap)
     {
