@@ -90,14 +90,20 @@ namespace BloodSword::Sound
         }
     }
 
-    // play sound asset
-    void Play(Sound::Type sound)
+    // play sound asset in specific channel (use -1 for first available)
+    void Play(Sound::Type sound, int channel)
     {
         if (BloodSword::Has(Sound::Assets, sound))
         {
             // play sound in channel so it cancels sound
-            Mix_PlayChannel(0, Sound::Assets[sound], 0);
+            Mix_PlayChannel(channel, Sound::Assets[sound], 0);
         }
+    }
+
+    // play sound asset
+    void Play(Sound::Type sound)
+    {
+        Sound::Play(sound, 0);
     }
 
     // free all sound assets

@@ -1348,12 +1348,20 @@ namespace BloodSword::Interface
                     {
                         character--;
                     }
+                    else
+                    {
+                        Sound::Play(Sound::Type::ERROR);
+                    }
                 }
                 else if (input.Type == Controls::Type::RIGHT)
                 {
                     if (character < party.Count() - 1)
                     {
                         character++;
+                    }
+                    else
+                    {
+                        Sound::Play(Sound::Type::ERROR);
                     }
                 }
                 else if (input.Type == Controls::Type::SKILLS)
