@@ -1180,7 +1180,8 @@ namespace BloodSword::Interface
         return textures;
     }
 
-    SDL_Texture *GeneratePartyStats(Graphics::Base &graphics, Party::Base &party, int w, int h)
+    // attribute labels
+    std::string StatsLabels()
     {
         // attribute labels
         auto label_1 = std::string("RNK    FPR        END            ");
@@ -1191,10 +1192,12 @@ namespace BloodSword::Interface
 
         auto labels = label_1 + '\n' + label_2 + '\n' + label_3;
 
-        auto surface_labels = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, labels.c_str(), Color::S(Color::Active), 0);
+        return labels;
+    }
 
-        // final texture
-        SDL_Texture *texture = nullptr;
+    SDL_Surface *GenerateCharacterStats(Graphics::Base &graphics, Character::Base &character, int w)
+    {
+        auto surface_labels = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, StatsLabels().c_str(), Color::S(Color::Active), 0);
 
         // surface
         SDL_Surface *surface = nullptr;
@@ -1203,39 +1206,39 @@ namespace BloodSword::Interface
         {
             auto labels_h = std::max(BloodSword::TileSize, surface_labels->h + BloodSword::Pad);
 
-            surface = Graphics::CreateSurface(w, labels_h * party.Count());
+            surface = Graphics::CreateSurface(w, labels_h);
 
             if (surface)
             {
-                SDL_Rect stats_rect;
-
-                stats_rect.w = surface->w;
-
-                stats_rect.h = surface->h;
-
                 SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
 
                 // create and convert SDL surface to appropriate format
                 auto converted_labels = SDL_ConvertSurface(surface_labels, surface->format, 0);
 
-                for (auto i = 0; i < party.Count(); i++)
+                if (converted_labels)
                 {
+                    SDL_Rect stats_rect;
+
+                    stats_rect.w = surface->w;
+
+                    stats_rect.h = surface->h;
+
                     // retrieve attribute values
-                    auto rnk = std::to_string(party[i].Rank);
+                    auto rnk = std::to_string(character.Rank);
 
-                    auto fpr = Interface::ScoreString(party[i], Attribute::Type::FIGHTING_PROWESS);
+                    auto fpr = Interface::ScoreString(character, Attribute::Type::FIGHTING_PROWESS);
 
-                    auto awr = Interface::ScoreString(party[i], Attribute::Type::AWARENESS);
+                    auto awr = Interface::ScoreString(character, Attribute::Type::AWARENESS);
 
-                    auto psy = Interface::ScoreString(party[i], Attribute::Type::PSYCHIC_ABILITY);
+                    auto psy = Interface::ScoreString(character, Attribute::Type::PSYCHIC_ABILITY);
 
-                    auto end = Interface::ScoreString(party[i], Attribute::Type::ENDURANCE);
+                    auto end = Interface::ScoreString(character, Attribute::Type::ENDURANCE);
 
-                    auto dmg = Interface::ScoreString(party[i], Attribute::Type::DAMAGE);
+                    auto dmg = Interface::ScoreString(character, Attribute::Type::DAMAGE);
 
-                    auto arm = Interface::ScoreString(party[i], Attribute::Type::ARMOUR);
+                    auto arm = Interface::ScoreString(character, Attribute::Type::ARMOUR);
 
-                    auto gold = std::to_string(party[i].Quantity(Item::Type::GOLD));
+                    auto gold = std::to_string(character.Quantity(Item::Type::GOLD));
 
                     auto four = std::string(4, ' ');
 
@@ -1251,30 +1254,39 @@ namespace BloodSword::Interface
                     // create and convert SDL surface to appropriate format
                     auto surface_stats = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, stats.c_str(), Color::S(Color::Highlight), 0);
 
-                    auto converted_stats = SDL_ConvertSurface(surface_stats, surface->format, 0);
-
-                    if (converted_stats)
+                    if (surface_stats)
                     {
-                        stats_rect.w = surface->w;
+                        auto converted_stats = SDL_ConvertSurface(surface_stats, surface->format, 0);
 
-                        stats_rect.h = surface->h;
+                        if (converted_stats)
+                        {
+                            stats_rect.w = surface->w;
 
-                        stats_rect.x = BloodSword::TileSize + BloodSword::Pad;
+                            stats_rect.h = surface->h;
 
-                        stats_rect.y = labels_h * i;
+                            stats_rect.x = BloodSword::TileSize + BloodSword::Pad;
 
-                        // combine surfaces (label + values)
-                        SDL_SetSurfaceAlphaMod(converted_labels, SDL_ALPHA_OPAQUE);
+                            stats_rect.y = 0;
 
-                        SDL_BlitSurface(converted_labels, nullptr, surface, &stats_rect);
+                            // combine surfaces (label + values)
+                            SDL_SetSurfaceAlphaMod(converted_labels, SDL_ALPHA_OPAQUE);
 
-                        SDL_SetSurfaceAlphaMod(converted_stats, SDL_ALPHA_OPAQUE);
+                            SDL_BlitSurface(converted_labels, nullptr, surface, &stats_rect);
 
-                        SDL_BlitSurface(converted_stats, nullptr, surface, &stats_rect);
+                            SDL_SetSurfaceAlphaMod(converted_stats, SDL_ALPHA_OPAQUE);
+
+                            SDL_BlitSurface(converted_stats, nullptr, surface, &stats_rect);
+
+                            // cleanup
+                            BloodSword::Free(&converted_stats);
+                        }
+
+                        // cleanup
+                        BloodSword::Free(&surface_stats);
                     }
 
                     // add icon (blur if dead)
-                    auto surface_asset = Engine::Score(party[i], Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(party[i].Asset) : BloodSword::Asset::Surface(party[i].Asset, Color::Inactive);
+                    auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(character.Asset) : BloodSword::Asset::Surface(character.Asset, Color::Inactive);
 
                     if (surface_asset)
                     {
@@ -1288,32 +1300,89 @@ namespace BloodSword::Interface
                             SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
 
                             SDL_BlitSurface(converted_asset, nullptr, surface, &stats_rect);
+
+                            // cleanup
+                            BloodSword::Free(&converted_asset);
                         }
 
-                        BloodSword::Free(&converted_asset);
+                        // cleanup
+                        BloodSword::Free(&surface_asset);
                     }
 
                     // cleanup
-                    BloodSword::Free(&surface_asset);
-
-                    BloodSword::Free(&converted_stats);
-
-                    BloodSword::Free(&surface_stats);
-
-                    // create final texture
-                    texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
+                    BloodSword::Free(&converted_labels);
                 }
-
-                // cleanup
-                BloodSword::Free(&converted_labels);
             }
 
             // cleanup
-            BloodSword::Free(&surface);
+            BloodSword::Free(&surface_labels);
         }
 
-        // cleanup
-        BloodSword::Free(&surface_labels);
+        return surface;
+    }
+
+    SDL_Texture *GeneratePartyStats(Graphics::Base &graphics, Party::Base &party, int w, int h)
+    {
+        // final texture
+        SDL_Texture *texture = nullptr;
+
+        auto surface_labels = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, StatsLabels().c_str(), Color::S(Color::Active), 0);
+
+        if (surface_labels)
+        {
+            auto labels_h = std::max(BloodSword::TileSize, surface_labels->h + BloodSword::Pad);
+
+            // final surface
+            auto surface = Graphics::CreateSurface(w, labels_h * party.Count());
+
+            if (surface)
+            {
+                SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
+
+                SDL_Rect stats_rect;
+
+                stats_rect.w = surface->w;
+
+                stats_rect.h = surface->h;
+
+                for (auto i = 0; i < party.Count(); i++)
+                {
+                    auto character_surface = Interface::GenerateCharacterStats(graphics, party[i], w);
+
+                    if (character_surface)
+                    {
+                        auto converted_character = SDL_ConvertSurface(character_surface, surface->format, 0);
+
+                        if (converted_character)
+                        {
+                            stats_rect.x = 0;
+
+                            stats_rect.y = i * labels_h;
+
+                            // blit character surface into final surface
+                            SDL_SetSurfaceAlphaMod(converted_character, SDL_ALPHA_OPAQUE);
+
+                            SDL_BlitSurface(converted_character, nullptr, surface, &stats_rect);
+
+                            // cleanup
+                            BloodSword::Free(&converted_character);
+                        }
+
+                        // cleanup
+                        BloodSword::Free(&character_surface);
+                    }
+                }
+
+                // create final texture
+                texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
+
+                // cleanup
+                BloodSword::Free(&surface);
+            }
+
+            // cleanup
+            BloodSword::Free(&surface_labels);
+        }
 
         return texture;
     }
@@ -6078,14 +6147,25 @@ namespace BloodSword::Interface
         BloodSword::Free(menu);
     }
 
-    void SaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    bool SaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
-        auto infow = BloodSword::TileSize * 5;
+        auto update = false;
+
+        return update;
     }
 
-    void LoadGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    bool LoadGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
-        auto infow = BloodSword::TileSize * 5;
+        auto update = false;
+
+        return update;
+    }
+
+    bool CharacterMenu(Graphics::Base &graphics)
+    {
+        auto update = false;
+
+        return update;
     }
 }
 
