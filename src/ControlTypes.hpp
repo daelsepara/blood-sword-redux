@@ -63,7 +63,7 @@ namespace BloodSword::Controls
         EXIT,
         GAME,
         PARTY,
-        INFO,
+        ABOUT,
         USE,
         DROP,
         TRADE,
@@ -101,7 +101,12 @@ namespace BloodSword::Controls
         BATTLE_ORDER,
         QUIVER,
         STEEL_SCEPTRE,
-        TROPHY
+        TROPHY,
+        LEFT,
+        RIGHT,
+        SKILLS,
+        STATUS,
+        INFO
     };
 
     typedef std::vector<Controls::Type> Collection;

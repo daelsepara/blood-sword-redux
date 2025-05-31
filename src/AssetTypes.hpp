@@ -134,7 +134,7 @@ namespace BloodSword::Asset
         MONEY,
         DROP,
         INVENTORY,
-        INFO,
+        ABOUT,
         IDENTIFY,
         DRINK,
         READ,
@@ -171,7 +171,11 @@ namespace BloodSword::Asset
         PILLAR,
         BROKEN_PILLARS,
         FIRE_SHIELD,
-        TROPHY
+        TROPHY,
+        SKILLS,
+        STATUS,
+        INFO,
+        CHARACTER
     };
 
     template <typename T>
@@ -303,7 +307,7 @@ namespace BloodSword::Asset
         {Asset::Type::MONEY, "MONEY"},
         {Asset::Type::DROP, "DROP"},
         {Asset::Type::INVENTORY, "INVENTORY"},
-        {Asset::Type::INFO, "INFO"},
+        {Asset::Type::ABOUT, "ABOUT"},
         {Asset::Type::IDENTIFY, "IDENTIFY"},
         {Asset::Type::DRINK, "DRINK"},
         {Asset::Type::READ, "READ"},
@@ -341,7 +345,11 @@ namespace BloodSword::Asset
         {Asset::Type::PILLAR, "PILLAR"},
         {Asset::Type::BROKEN_PILLARS, "BROKEN PILLARS"},
         {Asset::Type::FIRE_SHIELD, "FIRE SHIELD"},
-        {Asset::Type::TROPHY, "TROPHY"}};
+        {Asset::Type::TROPHY, "TROPHY"},
+        {Asset::Type::SKILLS, "SKILLS"},
+        {Asset::Type::STATUS, "STATUS"},
+        {Asset::Type::INFO, "INFO"},
+        {Asset::Type::CHARACTER, "CHARACTER"}};
 
     Asset::Type Map(const char *asset)
     {

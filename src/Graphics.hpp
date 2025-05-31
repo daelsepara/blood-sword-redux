@@ -760,6 +760,13 @@ namespace BloodSword::Graphics
         return Graphics::CreateText(graphics, text, font, text_color, style, 0);
     }
 
+    SDL_Texture *CreateText(Graphics::Base &graphics, Graphics::RichText &text)
+    {
+        auto texture = Graphics::CreateText(graphics, text.Text.c_str(), text.Font, text.Color, text.Style, text.Wrap);
+
+        return texture;
+    }
+
     // create a list of texture representation of a collection of strings
     BloodSword::Textures CreateText(Graphics::Base &graphics, Graphics::TextList collection)
     {
@@ -767,13 +774,13 @@ namespace BloodSword::Graphics
 
         for (auto &text : collection)
         {
-            auto texture = Graphics::CreateText(graphics, text.Text.c_str(), text.Font, text.Color, text.Style, text.Wrap);
+            auto texture = Graphics::CreateText(graphics, text);
 
             if (texture)
             {
                 textures.push_back(texture);
             }
-        };
+        }
 
         return textures;
     }

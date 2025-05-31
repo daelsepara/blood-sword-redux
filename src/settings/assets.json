@@ -18,7 +18,7 @@
         },
         {
             "id": "ENEMY",
-            "path": "images/enemies/character.png"
+            "path": "images/system/character.png"
         },
         {
             "id": "UP",
@@ -449,7 +449,7 @@
             "path": "images/system/locked-chest.png"
         },
         {
-            "id": "INFO",
+            "id": "ABOUT",
             "path": "images/system/scroll-unfurled.png"
         },
         {
@@ -619,6 +619,22 @@
         {
             "id": "TROPHY",
             "path": "images/system/trophy.png"
+        },
+        {
+            "id": "SKILLS",
+            "path": "images/system/skills.png"
+        },
+        {
+            "id": "STATUS",
+            "path": "images/system/aura.png"
+        },
+        {
+            "id": "INFO",
+            "path": "images/system/info.png"
+        },
+        {
+            "id": "CHARACTER",
+            "path": "images/system/character.png"
         }
     ]
 }

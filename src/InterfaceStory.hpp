@@ -570,10 +570,10 @@ namespace BloodSword::Interface
             id++;
         }
 
-        // inventory management and hotpost
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::INVENTORY), buttons.X + num_buttons * button_spacing, buttons.Y));
+        // party information
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::INFO), buttons.X + num_buttons * button_spacing, buttons.Y));
 
-        overlay.Add(Controls::Base(Controls::Type::INVENTORY, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        overlay.Add(Controls::Base(Controls::Type::INFO, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
         num_buttons++;
 
@@ -738,10 +738,10 @@ namespace BloodSword::Interface
             id++;
         }
 
-        // inventory management and hotpost
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::INVENTORY), buttons.X + num_buttons * button_spacing, buttons.Y));
+        // party information
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::INFO), buttons.X + num_buttons * button_spacing, buttons.Y));
 
-        overlay.Add(Controls::Base(Controls::Type::INVENTORY, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+        overlay.Add(Controls::Base(Controls::Type::INFO, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
         num_buttons++;
 
@@ -1161,103 +1161,6 @@ namespace BloodSword::Interface
         }
     }
 
-    // show spellbook popup
-    bool RenderGrimoire(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
-    {
-        auto update = false;
-
-        auto done = false;
-
-        auto input = Controls::User();
-
-        auto pad = BloodSword::OddPad;
-
-        auto text = Graphics::CreateText(graphics, "UNCALL FROM MIND", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-
-        auto psy = Engine::Score(character, Attribute::Type::PSYCHIC_ABILITY);
-
-        while (!done)
-        {
-            auto overlay = Interface::Spells(Point(0, 0), graphics.Width, graphics.Height, character, Color::Background, Color::Active, BloodSword::Border);
-
-            auto &popup = overlay.Elements[0];
-
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
-
-            if (Input::IsValid(overlay, input) && Engine::IsSpell(input.Type))
-            {
-                // add spell captions
-                auto &control = overlay.Controls[input.Current];
-
-                // assumes that spell controls are listed first in the pop-up window
-                auto spell_id = control.Id;
-
-                if (spell_id >= 0 && spell_id < character.Spells.size())
-                {
-                    auto &spell = character.Spells[spell_id];
-
-                    if (character.HasCalledToMind(spell.Type) || Spells::In(Spells::Basic, spell.Type))
-                    {
-                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
-
-                        if (!Spells::In(Spells::Basic, spell.Type))
-                        {
-                            overlay.VerifyAndAdd(Scene::Element(text, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
-                        }
-                    }
-                    else
-                    {
-                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
-
-                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
-                    }
-                }
-            }
-
-            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
-
-            if (Input::IsValid(overlay, input) && input.Selected)
-            {
-                if (input.Type != Controls::Type::BACK)
-                {
-                    // call/uncall to/from mind
-                    if (Engine::IsSpell(input.Type) && BloodSword::Has(Interface::ControlSpellMapping, input.Type))
-                    {
-                        auto &type = Interface::ControlSpellMapping[input.Type];
-
-                        auto search = character.Find(type);
-
-                        if (search != character.Spells.end())
-                        {
-                            auto &spellbook = *search;
-
-                            if (character.HasCalledToMind(spellbook.Type))
-                            {
-                                // uncall from mind
-                                character.Forget(spellbook.Type);
-                            }
-                            else if (!spellbook.IsBasic())
-                            {
-                                // call to mind
-                                character.CallToMind(spellbook.Type);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    update = (psy != Engine::Score(character, Attribute::Type::PSYCHIC_ABILITY));
-
-                    done = true;
-                }
-            }
-        }
-
-        BloodSword::Free(&text);
-
-        return update;
-    }
-
     // global effects based on section FEATURES
     void ApplyGlobalEffects(Section::Base &section, Party::Base &party)
     {
@@ -1451,7 +1354,7 @@ namespace BloodSword::Interface
             "ITEMS",
             "HEAL",
             "SPELLS",
-            "INVENTORY",
+            "PARTY",
             "GAME",
             "EXIT"};
 
@@ -1461,7 +1364,7 @@ namespace BloodSword::Interface
             Controls::Type::ITEMS,
             Controls::Type::HEAL,
             Controls::Type::SPELLS,
-            Controls::Type::INVENTORY,
+            Controls::Type::INFO,
             Controls::Type::GAME,
             Controls::Type::EXIT};
 
@@ -1600,6 +1503,14 @@ namespace BloodSword::Interface
                     if (party.Has(Character::Class::SAGE))
                     {
                         Interface::Heal(graphics, overlay, party, party[Character::Class::SAGE], true);
+
+                        if (section.ImageAsset.empty())
+                        {
+                            BloodSword::Free(&image);
+
+                            // regenerate party stats
+                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                        }
                     }
 
                     Controls::Select(input, overlay.Controls, Controls::Type::HEAL);
@@ -1618,7 +1529,7 @@ namespace BloodSword::Interface
 
                     Controls::Select(input, overlay.Controls, Controls::Type::ITEMS);
                 }
-                else if (input.Type == Controls::Type::INVENTORY)
+                else if (input.Type == Controls::Type::INFO)
                 {
                     Interface::ItemResult update;
 
@@ -1645,12 +1556,14 @@ namespace BloodSword::Interface
 
                         if (character != Character::Class::NONE)
                         {
-                            update = Interface::ManageInventory(graphics, overlay, party, character, true);
+                            auto index = party.Index(character);
+
+                            update = Interface::PartyInformation(graphics, overlay, party, index);
                         }
                     }
                     else
                     {
-                        update = Interface::ManageInventory(graphics, overlay, party, true);
+                        update = Interface::PartyInformation(graphics, overlay, party, 0);
                     }
 
                     if (update.Update && section.ImageAsset.empty())
@@ -1668,7 +1581,7 @@ namespace BloodSword::Interface
                         done = true;
                     }
 
-                    Controls::Select(input, overlay.Controls, Controls::Type::INVENTORY);
+                    Controls::Select(input, overlay.Controls, Controls::Type::INFO);
                 }
                 else if (Interface::IsCharacter(input.Type))
                 {
@@ -1702,7 +1615,9 @@ namespace BloodSword::Interface
                         {
                             if (Engine::IsAlive(party[character]))
                             {
-                                auto update = Interface::ManageInventory(graphics, overlay, party, party[character], true);
+                                auto index = party.Index(character);
+
+                                auto update = Interface::PartyInformation(graphics, overlay, party, index);
 
                                 if (update.Update && section.ImageAsset.empty())
                                 {

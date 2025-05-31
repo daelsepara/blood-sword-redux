@@ -1180,6 +1180,79 @@ namespace BloodSword::Interface
         return textures;
     }
 
+    // generate texture of character status (basic)
+    SDL_Texture *BasicStatus(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 color, int style)
+    {
+        SDL_Texture *texture = nullptr;
+
+        std::string list;
+
+        auto labels_w = 0;
+
+        auto stats_w = 0;
+
+        // estimate maximum line width
+        Graphics::Estimate(font, "DMGG ", &labels_w, nullptr);
+
+        Graphics::Estimate(font, "9999D+D9999", &stats_w, nullptr);
+
+        for (auto &status : character.Status)
+        {
+            if (status.second != 0)
+            {
+                auto current_status = status.first;
+
+                auto duration = status.second;
+
+                if (!BloodSword::In(Character::GlobalStatus, current_status))
+                {
+                    if (list.length() > 0)
+                    {
+                        list += '\n';
+                    }
+
+                    list += Character::StatusMapping[current_status];
+
+                    if (duration > 0)
+                    {
+                        list += " (" + std::to_string(duration) + ")";
+                    }
+                }
+            }
+        }
+
+        if (list.length() == 0)
+        {
+            list = "NORMAL";
+        }
+
+        list += "\n\n";
+
+        texture = Graphics::CreateText(graphics, list.c_str(), font, Color::S(color), style, labels_w + stats_w);
+
+        return texture;
+    }
+
+    // create party status text box collection
+    BloodSword::Textures BasicStatus(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style)
+    {
+        BloodSword::Textures textures = {};
+
+        for (auto i = 0; i < party.Count(); i++)
+        {
+            auto &character = party[i];
+
+            auto texture = Interface::BasicStatus(graphics, character, font, label_color, style);
+
+            if (texture)
+            {
+                textures.push_back(texture);
+            }
+        }
+
+        return textures;
+    }
+
     // attribute labels
     std::string StatsLabels()
     {
@@ -1410,6 +1483,49 @@ namespace BloodSword::Interface
         for (auto character = 0; character < party.Count(); character++)
         {
             auto texture = Interface::CharacterStats(graphics, party[character], w);
+
+            textures.push_back(texture);
+        }
+
+        return textures;
+    }
+
+    SDL_Texture *CharacterBackgrounds(Graphics::Base &graphics, Character::Base &character, int w)
+    {
+        Graphics::RichText text;
+
+        switch (character.Class)
+        {
+        case Character::Class::WARRIOR:
+            text = Graphics::RichText("You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage.\n\nThese advantages give you a real edge in any fight but you have none of the others' special skills. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+            break;
+        case Character::Class::TRICKSTER:
+            text = Graphics::RichText("Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+            break;
+        case Character::Class::SAGE:
+            text = Graphics::RichText("Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+            break;
+        case Character::Class::ENCHANTER:
+            text = Graphics::RichText("Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+            break;
+        case Character::Class::IMRAGARN:
+            text = Graphics::RichText("You have been frozen in ice for almost a decade, since you entered the Battlepits with several companions as the champion of Magus Laglor.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+            break;
+        default:
+            text = Graphics::RichText("You have only one goal going into the Battlepits: emerge with the Emblem of Victory or die trying ...", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+            break;
+        }
+
+        return Graphics::CreateText(graphics, text);
+    }
+
+    BloodSword::Textures PartyBackgrounds(Graphics::Base &graphics, Party::Base &party, int w)
+    {
+        auto textures = std::vector<SDL_Texture *>();
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            auto texture = Interface::CharacterBackgrounds(graphics, party[character], w);
 
             textures.push_back(texture);
         }
@@ -2890,7 +3006,7 @@ namespace BloodSword::Interface
 
         case Mode::STATUS:
 
-            textures = Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, false);
+            textures = Interface::BasicStatus(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL);
 
             break;
 
@@ -2957,8 +3073,16 @@ namespace BloodSword::Interface
                     // box background
                     overlay.Add(Scene::Element(popup.X - (infow + pad * 2), popup.Y, infow, popup_h, Color::Background, Color::Active, BloodSword::Border));
 
+                    // center caption
+                    auto center = (control.W - BloodSword::Width(captions[input.Current])) / 2;
+
+                    if ((control.X + center < (popup.X + BloodSword::QuarterTile)) && input.Current == 0)
+                    {
+                        center = 0;
+                    }
+
                     // name captions
-                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X, control.Y + control.H + pad));
+                    overlay.VerifyAndAdd(Scene::Element(captions[input.Current], control.X + center, control.Y + control.H + pad));
 
                     // info box
                     overlay.VerifyAndAdd(Scene::Element(textures[input.Current], popup.X - (BloodSword::Width(textures[input.Current]) + pad * 2), popup.Y));
@@ -6185,13 +6309,6 @@ namespace BloodSword::Interface
     }
 
     bool LoadGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
-    {
-        auto update = false;
-
-        return update;
-    }
-
-    bool CharacterMenu(Graphics::Base &graphics)
     {
         auto update = false;
 
