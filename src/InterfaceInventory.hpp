@@ -1154,7 +1154,7 @@ namespace BloodSword::Interface
 
         auto infow = BloodSword::TileSize * 8;
 
-        auto panelw = BloodSword::TileSize * 9;
+        auto panelw = BloodSword::TileSize * 8;
 
         auto panelh = BloodSword::TileSize * 9;
 
