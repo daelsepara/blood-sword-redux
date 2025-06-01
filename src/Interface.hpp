@@ -6311,12 +6311,12 @@ namespace BloodSword::Interface
 
                     saveGame.Location = party.SaveLocation;
 
+                    auto file_time = fs::last_write_time(SaveFile.c_str());
+
+                    saveGame.TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
+
                     ifs.close();
                 }
-
-                auto file_time = fs::last_write_time(SaveFile.c_str());
-
-                saveGame.TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
 
                 Interface::SavedGames.push_back(saveGame);
             }
