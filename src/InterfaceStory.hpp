@@ -1651,7 +1651,7 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::GAME)
                 {
-                    auto update = Interface::GameMenu(graphics, overlay, party);
+                    auto update = Interface::GameMenu(graphics, overlay, party, saved_party);
 
                     if (update && section.ImageAsset.empty())
                     {

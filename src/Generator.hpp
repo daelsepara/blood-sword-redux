@@ -628,6 +628,7 @@ namespace BloodSword::Generate
             character.Asset = Asset::Type::ENCHANTER;
             break;
         default:
+            character.Asset = Asset::Type::PERSON;
             break;
         }
     }

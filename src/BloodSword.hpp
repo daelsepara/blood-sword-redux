@@ -48,6 +48,9 @@ namespace BloodSword
             // load characters
             Party::Characters = Party::Load(Interface::Settings["characters"], "characters");
 
+            // initialize save games list
+            Interface::InitializeSaveGamesList();
+
             // flush inputs
             Input::Flush();
         }

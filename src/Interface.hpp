@@ -2,6 +2,7 @@
 #define __INTERFACE_HPP__
 
 #include <algorithm>
+#include <ctime>
 #include <fstream>
 #include <string>
 #include <utility>
@@ -11,11 +12,14 @@
 #include "Asset.hpp"
 #include "Engine.hpp"
 #include "Input.hpp"
+#include "InterfaceFiles.hpp"
 #include "Maze.hpp"
 #include "Messages.hpp"
 #include "Palette.hpp"
 #include "Section.hpp"
 #include "Sound.hpp"
+
+namespace fs = std::filesystem;
 
 namespace BloodSword::Interface
 {
@@ -111,6 +115,14 @@ namespace BloodSword::Interface
         {Controls::Type::SHURIKEN, "SHOOT SHURIKEN"},
         {Controls::Type::BACK, "BACK"}};
 
+    BloodSword::UnorderedMap<Character::Class, Asset::Type> ClassAssets = {
+        {Character::Class::NONE, Asset::Type::NONE},
+        {Character::Class::WARRIOR, Asset::Type::WARRIOR},
+        {Character::Class::TRICKSTER, Asset::Type::TRICKSTER},
+        {Character::Class::SAGE, Asset::Type::SAGE},
+        {Character::Class::ENCHANTER, Asset::Type::ENCHANTER},
+        {Character::Class::IMRAGARN, Asset::Type::PERSON}};
+
     Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
 
     SDL_Texture *NoSkills = nullptr;
@@ -152,6 +164,28 @@ namespace BloodSword::Interface
 
         int IgnoreArmour = false;
     };
+
+    // class to represent saved game on save game menu
+    class SavedGame
+    {
+    public:
+        int Number = 0;
+
+        std::string Filename;
+
+        std::string TimeStamp = std::string();
+
+        std::vector<Character::Class> Players = {};
+
+        Book::Location Location = Book::Undefined;
+
+        SavedGame() {};
+    };
+
+    // save game slots
+    const int MaxSaveGames = 4;
+
+    std::vector<Interface::SavedGame> SavedGames = {};
 
     void LogSpellFailure(Character::Base &caster, Spells::Type spell)
     {
@@ -5025,102 +5059,6 @@ namespace BloodSword::Interface
         }
     }
 
-    bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
-    {
-        auto update = false;
-
-        Asset::List assets = {
-            Asset::Type::BATTLE_ORDER,
-            Asset::Type::LOAD,
-            Asset::Type::SAVE,
-            Asset::Type::BACK};
-
-        Controls::Collection controls = {
-            Controls::Type::BATTLE_ORDER,
-            Controls::Type::LOAD,
-            Controls::Type::SAVE,
-            Controls::Type::BACK,
-        };
-
-        std::vector<std::string> captions = {
-            "BATTLE ORDER",
-            "LOAD GAME",
-            "SAVE GAME",
-            "BACK"};
-
-        auto values = std::vector<int>();
-
-        for (auto i = 0; i < controls.size(); i++)
-        {
-            values.push_back(i);
-        }
-
-        auto message = Book::IsDefined(party.Location) ? std::string(Book::Title[party.Location.first]) : std::string("BLOODSWORD ") + BloodSword::Version();
-
-        auto done = false;
-
-        while (!done)
-        {
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
-
-            if (selection.size() == 1)
-            {
-                auto input = controls[selection[0]];
-
-                if (input == Controls::Type::BACK)
-                {
-                    done = true;
-                }
-                else if (input == Controls::Type::BATTLE_ORDER)
-                {
-                    if (Engine::IsAlive(party))
-                    {
-                        auto current = Story::CurrentBook.Find(party.Location);
-
-                        if (current >= 0 && current < Story::CurrentBook.Sections.size())
-                        {
-                            if (Story::CurrentBook.Sections[current].Has(Feature::Type::BAD_ENDING))
-                            {
-                                Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
-                            }
-                            else if (!Story::CurrentBook.Sections[current].Battle.IsDefined())
-                            {
-                                if (party.Count() > 1)
-                                {
-                                    update = Interface::BattleOrder(graphics, background, party);
-
-                                    done = true;
-                                }
-                                else
-                                {
-                                    Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
-                                }
-                            }
-                            else
-                            {
-                                Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
-                            }
-                        }
-                        else
-                        {
-                            Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
-                        }
-                    }
-                    else
-                    {
-                        Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
-                    }
-                }
-                else
-                {
-                    Interface::NotImplemented(graphics, background);
-                }
-            }
-        }
-
-        return update;
-    }
-
     Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable, std::string message, Interface::Mode mode = Interface::Mode::NONE)
     {
         auto character_string = Engine::ToUpper(variable);
@@ -6301,9 +6239,279 @@ namespace BloodSword::Interface
         BloodSword::Free(menu);
     }
 
+    std::string GameFile(int game)
+    {
+        std::string game_file = "game" + std::to_string(game) + ".json";
+
+        return game_file;
+    }
+
+
+    std::string UtcTime(std::time_t time)
+    {
+        char time_string[std::size("yyyy-mm-dd HH:mm:ss")];
+
+        std::strftime(std::data(time_string), std::size(time_string), "%F %T", std::gmtime(&time));
+
+        return std::string(time_string);
+    }
+
+    std::string UtcTimeNow()
+    {
+        std::time_t time = std::time({});
+
+        return Interface::UtcTime(time);
+    }
+
+    template <typename T>
+    std::time_t ConvertTime(T timepoint)
+    {
+        using namespace std::chrono;
+
+        auto system_clock_timepoint = time_point_cast<system_clock::duration>(timepoint - T::clock::now() + system_clock::now());
+
+        return system_clock::to_time_t(system_clock_timepoint);
+    }
+
+    // initialize save games list
+    void InitializeSaveGamesList()
+    {
+        Interface::CreateDirectories();
+
+        auto SaveGamePath = Interface::GetSavePath();
+
+        if (Interface::SavedGames.size() != Interface::MaxSaveGames)
+        {
+            Interface::SavedGames.clear();
+
+            for (auto game = 0; game < Interface::MaxSaveGames; game++)
+            {
+                std::string GameFile = Interface::GameFile(game);
+
+                std::string SaveFile = SaveGamePath + "/" + GameFile;
+
+                std::ifstream ifs(SaveFile, std::ios::in);
+
+                auto saveGame = Interface::SavedGame();
+
+                saveGame.Number = game;
+
+                saveGame.Filename = GameFile;
+
+                if (ifs.good())
+                {
+                    auto data = nlohmann::json::parse(ifs);
+
+                    auto party = Party::Initialize(data["party"]);
+
+                    for (auto character = 0; character < party.Count(); character++)
+                    {
+                        saveGame.Players.push_back(party[character].Class);
+                    }
+
+                    saveGame.Location = party.SaveLocation;
+
+                    ifs.close();
+                }
+
+                auto file_time = fs::last_write_time(SaveFile.c_str());
+
+                saveGame.TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
+
+                Interface::SavedGames.push_back(saveGame);
+            }
+        }
+
+        std::cerr << "[ INIT ] " << Interface::SavedGames.size() << " save games" << std::endl;
+    }
+
+    BloodSword::Textures SaveLocations(Graphics::Base &graphics, std::vector<Book::Location> &locations, std::string undefined)
+    {
+        BloodSword::Textures textures = {};
+
+        for (auto &location : locations)
+        {
+            SDL_Texture *texture = nullptr;
+
+            if (Book::IsUndefined(location))
+            {
+                texture = Graphics::CreateText(graphics, undefined.c_str(), Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            }
+            else
+            {
+                texture = Graphics::CreateText(graphics, Book::String(location).c_str(), Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            }
+
+            textures.push_back(texture);
+        }
+
+        return textures;
+    }
+
+    std::vector<Book::Location> GetSaveLocations()
+    {
+        auto locations = std::vector<Book::Location>();
+
+        Interface::InitializeSaveGamesList();
+
+        for (auto game = 0; game < Interface::SavedGames.size(); game++)
+        {
+            locations.push_back(Interface::SavedGames[game].Location);
+        }
+
+        return locations;
+    }
+
     bool SaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto update = false;
+
+        Interface::InitializeSaveGamesList();
+
+        auto SaveGamePath = Interface::GetSavePath();
+
+        auto boxw = BloodSword::TileSize * 8;
+
+        auto boxh = BloodSword::TileSize * 2;
+
+        auto boxx = (graphics.Width - boxw) / 2;
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        auto panelh = boxh * (Interface::MaxSaveGames + 1) + BloodSword::Pad * Interface::MaxSaveGames;
+
+        auto panelw = boxw + BloodSword::TileSize;
+
+        auto panelx = (graphics.Width - panelw) / 2;
+
+        auto panely = (graphics.Height - panelh) / 2;
+
+        auto space = BloodSword::TileSize + BloodSword::Pad;
+
+        auto save_locations = Interface::GetSaveLocations();
+
+        auto locations = Interface::SaveLocations(graphics, save_locations, "NO GAME FOUND");
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            // render panel
+            overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Border));
+
+            auto id = 0;
+
+            for (auto game = 0; game < Interface::SavedGames.size(); game++)
+            {
+                auto currenty = panely + game * (boxh + BloodSword::Pad * 2) + BloodSword::Pad * 2;
+
+                // render subpanel
+                overlay.Add(Scene::Element(boxx, currenty, boxw, boxh, Color::Background, Color::Active, BloodSword::Border));
+
+                // render location
+                overlay.VerifyAndAdd(Scene::Element(locations[game], Point(boxx + BloodSword::Pad, currenty + BloodSword::Pad)));
+
+                auto charactery = currenty + BloodSword::Pad * 5;
+
+                if (Book::IsDefined(Interface::SavedGames[game].Location) && Interface::SavedGames[game].Players.size() > 0)
+                {
+                    for (auto character = 0; character < Interface::SavedGames[game].Players.size(); character++)
+                    {
+                        if (character < 4)
+                        {
+                            auto characterx = boxx + BloodSword::Pad + character * space;
+
+                            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::ClassAssets[Interface::SavedGames[game].Players[character]]), Point(characterx, charactery)));
+                        }
+                    }
+
+                    if (Interface::SavedGames[game].Players.size() > 4)
+                    {
+                        auto characterx = boxx + BloodSword::Pad + 4 * space;
+
+                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), Point(characterx, charactery)));
+                    }
+                }
+                else
+                {
+                    // add dummy icon
+                    auto characterx = boxx + BloodSword::Pad;
+
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CHARACTER), Point(characterx, charactery)));
+                }
+
+                auto up = id > 0 ? id - 1 : id;
+
+                auto dn = id + 1;
+
+                // save button
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::SAVE), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
+
+                overlay.Add(Controls::Base(Controls::Type::CHOICE, id, id, id, up, dn, boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
+
+                id++;
+            }
+
+            // add back button
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), Point(boxx - BloodSword::Pad, panely + panelh - space - BloodSword::SmallPad)));
+
+            overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, id - 1, id, boxx - BloodSword::Pad, panely + panelh - space - BloodSword::SmallPad, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input.Type == Controls::Type::CHOICE)
+                {
+                    if (input.Current >= 0 && input.Current < Interface::SavedGames.size() && input.Current < Interface::MaxSaveGames)
+                    {
+                        auto game = input.Current;
+
+                        auto save = Book::IsUndefined(Interface::SavedGames[game].Location) || Interface::Confirm(graphics, background, "OVERWRITE THIS GAME?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+
+                        if (save)
+                        {
+                            auto GameFile = Interface::GameFile(game);
+
+                            auto SaveFile = SaveGamePath + "/" + GameFile;
+
+                            // save game (party)
+                            Party::Save(party, SaveFile.c_str(), "party");
+
+                            // update details in the saved games list
+                            Interface::SavedGames[game].Location = party.SaveLocation;
+
+                            Interface::SavedGames[game].Filename = GameFile;
+
+                            Interface::SavedGames[game].Players.clear();
+
+                            for (auto character = 0; character < party.Count(); character++)
+                            {
+                                Interface::SavedGames[game].Players.push_back(party[character].Class);
+                            }
+
+                            auto file_time = fs::last_write_time(SaveFile.c_str());
+
+                            Interface::SavedGames[game].TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
+
+                            update = true;
+
+                            done = true;
+                        }
+                    }
+                }
+
+                input.Selected = false;
+            }
+        }
+
+        BloodSword::Free(locations);
 
         return update;
     }
@@ -6311,6 +6519,108 @@ namespace BloodSword::Interface
     bool LoadGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto update = false;
+
+        Interface::InitializeSaveGamesList();
+
+        return update;
+    }
+
+    bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party)
+    {
+        auto update = false;
+
+        Asset::List assets = {
+            Asset::Type::BATTLE_ORDER,
+            Asset::Type::LOAD,
+            Asset::Type::SAVE,
+            Asset::Type::BACK};
+
+        Controls::Collection controls = {
+            Controls::Type::BATTLE_ORDER,
+            Controls::Type::LOAD,
+            Controls::Type::SAVE,
+            Controls::Type::BACK,
+        };
+
+        std::vector<std::string> captions = {
+            "BATTLE ORDER",
+            "LOAD GAME",
+            "SAVE GAME",
+            "BACK"};
+
+        auto values = std::vector<int>();
+
+        for (auto i = 0; i < controls.size(); i++)
+        {
+            values.push_back(i);
+        }
+
+        auto message = Book::IsDefined(party.Location) ? std::string(Book::Title[party.Location.first]) : std::string("BLOODSWORD ") + BloodSword::Version();
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+
+            if (selection.size() == 1)
+            {
+                auto input = controls[selection[0]];
+
+                if (input == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input == Controls::Type::BATTLE_ORDER)
+                {
+                    if (Engine::IsAlive(party))
+                    {
+                        auto current = Story::CurrentBook.Find(party.Location);
+
+                        if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                        {
+                            if (Story::CurrentBook.Sections[current].Has(Feature::Type::BAD_ENDING))
+                            {
+                                Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
+                            }
+                            else if (!Story::CurrentBook.Sections[current].Battle.IsDefined())
+                            {
+                                if (party.Count() > 1)
+                                {
+                                    update = Interface::BattleOrder(graphics, background, party);
+
+                                    done = true;
+                                }
+                                else
+                                {
+                                    Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+                                }
+                            }
+                            else
+                            {
+                                Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
+                            }
+                        }
+                        else
+                        {
+                            Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
+                        }
+                    }
+                    else
+                    {
+                        Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
+                    }
+                }
+                else if (input == Controls::Type::SAVE)
+                {
+                    done = Interface::SaveGame(graphics, background, saved_party);
+                }
+                else
+                {
+                    Interface::NotImplemented(graphics, background);
+                }
+            }
+        }
 
         return update;
     }

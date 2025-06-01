@@ -1239,10 +1239,10 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(panelx, display_y - BloodSword::Pad, panelw, boxh, Color::Background, Color::Active, BloodSword::Border));
 
             // render names
-            overlay.Add(Scene::Element(names[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad)));
+            overlay.VerifyAndAdd(Scene::Element(names[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad)));
 
             // render stats
-            overlay.Add(Scene::Element(stats[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad * 5)));
+            overlay.VerifyAndAdd(Scene::Element(stats[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad * 5)));
 
             // render information
             if (character >= 0 && character < party.Count())
@@ -1253,7 +1253,7 @@ namespace BloodSword::Interface
 
                     if (backgrounds[character])
                     {
-                        overlay.Add(Scene::Element(backgrounds[character], Point(panelx + BloodSword::Pad, display_y)));
+                        overlay.VerifyAndAdd(Scene::Element(backgrounds[character], Point(panelx + BloodSword::Pad, display_y)));
                     }
 
                     break;
@@ -1262,7 +1262,7 @@ namespace BloodSword::Interface
 
                     if (items[character])
                     {
-                        overlay.Add(Scene::Element(items[character], Point(panelx + BloodSword::Pad, display_y)));
+                        overlay.VerifyAndAdd(Scene::Element(items[character], Point(panelx + BloodSword::Pad, display_y)));
                     }
 
                     break;
@@ -1271,7 +1271,7 @@ namespace BloodSword::Interface
 
                     if (skills[character])
                     {
-                        overlay.Add(Scene::Element(skills[character], Point(panelx + BloodSword::Pad, display_y)));
+                        overlay.VerifyAndAdd(Scene::Element(skills[character], Point(panelx + BloodSword::Pad, display_y)));
                     }
 
                     break;
@@ -1280,7 +1280,7 @@ namespace BloodSword::Interface
 
                     if (status[character])
                     {
-                        overlay.Add(Scene::Element(status[character], Point(panelx + BloodSword::Pad, display_y)));
+                        overlay.VerifyAndAdd(Scene::Element(status[character], Point(panelx + BloodSword::Pad, display_y)));
                     }
 
                     break;
@@ -1289,7 +1289,7 @@ namespace BloodSword::Interface
 
                     if (items[character])
                     {
-                        overlay.Add(Scene::Element(items[character], Point(panelx + BloodSword::Pad, display_y)));
+                        overlay.VerifyAndAdd(Scene::Element(items[character], Point(panelx + BloodSword::Pad, display_y)));
                     }
 
                     break;
