@@ -6433,7 +6433,7 @@ namespace BloodSword::Interface
             auto overlay = Scene::Base();
 
             // render panel
-            overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Border));
+            overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
 
             auto id = 0;
 
@@ -6442,7 +6442,7 @@ namespace BloodSword::Interface
                 auto currenty = panely + game * (boxh + BloodSword::Pad * 2) + BloodSword::Pad * 3;
 
                 // render subpanel
-                overlay.Add(Scene::Element(boxx, currenty, boxw, boxh, Color::Background, Color::Active, BloodSword::Border));
+                overlay.Add(Scene::Element(boxx, currenty, boxw, boxh, Color::Background, Color::Active, BloodSword::Pixel));
 
                 // render location
                 overlay.VerifyAndAdd(Scene::Element(locations[game], Point(boxx + BloodSword::Pad, currenty + BloodSword::Pad)));
@@ -6493,9 +6493,9 @@ namespace BloodSword::Interface
             }
 
             // add back button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), Point(boxx - BloodSword::Pad + 1, panely + panelh - space - BloodSword::SmallPad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), Point(boxx - BloodSword::MidPad + 1, panely + panelh - space - BloodSword::SmallPad)));
 
-            overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, id - 1, id, boxx - BloodSword::Pad + 1, panely + panelh - space - BloodSword::SmallPad, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, id - 1, id, boxx - BloodSword::MidPad + 1, panely + panelh - space - BloodSword::SmallPad, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
