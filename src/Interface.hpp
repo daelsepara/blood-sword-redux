@@ -6080,6 +6080,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // Lose endurance or drop item
     void LoseEnduranceOrDropItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         auto limit = 2;
@@ -6239,6 +6240,7 @@ namespace BloodSword::Interface
         BloodSword::Free(menu);
     }
 
+    // generate base game filename
     std::string GameFile(int game)
     {
         std::string game_file = "game" + std::to_string(game) + ".json";
@@ -6246,16 +6248,17 @@ namespace BloodSword::Interface
         return game_file;
     }
 
-
+    // generate timestamp string
     std::string UtcTime(std::time_t time)
     {
         char time_string[std::size("yyyy-mm-dd HH:mm:ss")];
 
-        std::strftime(std::data(time_string), std::size(time_string), "%F %T", std::gmtime(&time));
+        std::strftime(std::data(time_string), std::size(time_string), "%F %T", std::localtime(&time));
 
         return std::string(time_string);
     }
 
+    // get current time (string)
     std::string UtcTimeNow()
     {
         std::time_t time = std::time({});
@@ -6263,6 +6266,7 @@ namespace BloodSword::Interface
         return Interface::UtcTime(time);
     }
 
+    // convert a timepoint to time_t using system clock
     template <typename T>
     std::time_t ConvertTime(T timepoint)
     {
@@ -6325,6 +6329,7 @@ namespace BloodSword::Interface
         std::cerr << "[ INIT ] " << Interface::SavedGames.size() << " save games" << std::endl;
     }
 
+    // generate textures of book locations
     BloodSword::Textures SaveLocations(Graphics::Base &graphics, std::vector<Book::Location> &locations, std::string undefined)
     {
         BloodSword::Textures textures = {};
@@ -6348,6 +6353,7 @@ namespace BloodSword::Interface
         return textures;
     }
 
+    // get book locations from saved games list
     std::vector<Book::Location> GetSaveLocations()
     {
         auto locations = std::vector<Book::Location>();
@@ -6362,11 +6368,37 @@ namespace BloodSword::Interface
         return locations;
     }
 
+    // timestamp textures
+    BloodSword::Textures TimeStamps(Graphics::Base &graphics)
+    {
+        BloodSword::Textures timestamps = {};
+
+        for (auto time = 0; time < Interface::SavedGames.size(); time++)
+        {
+            SDL_Texture *texture = nullptr;
+
+            if (!Interface::SavedGames[time].TimeStamp.empty())
+            {
+                texture = Graphics::CreateText(graphics, Interface::SavedGames[time].TimeStamp.c_str(), Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            }
+            else
+            {
+                texture = Graphics::CreateText(graphics, "UNDEFINED", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            }
+
+            timestamps.push_back(texture);
+        }
+
+        return timestamps;
+    }
+
     bool SaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto update = false;
 
         Interface::InitializeSaveGamesList();
+
+        auto saved_games = Interface::SavedGames.size();
 
         auto SaveGamePath = Interface::GetSavePath();
 
@@ -6394,6 +6426,8 @@ namespace BloodSword::Interface
 
         auto locations = Interface::SaveLocations(graphics, save_locations, "NO GAME FOUND");
 
+        auto timestamps = Interface::TimeStamps(graphics);
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -6403,9 +6437,9 @@ namespace BloodSword::Interface
 
             auto id = 0;
 
-            for (auto game = 0; game < Interface::SavedGames.size(); game++)
+            for (auto game = 0; game < saved_games; game++)
             {
-                auto currenty = panely + game * (boxh + BloodSword::Pad * 2) + BloodSword::Pad * 2;
+                auto currenty = panely + game * (boxh + BloodSword::Pad * 2) + BloodSword::Pad * 3;
 
                 // render subpanel
                 overlay.Add(Scene::Element(boxx, currenty, boxw, boxh, Color::Background, Color::Active, BloodSword::Border));
@@ -6417,9 +6451,13 @@ namespace BloodSword::Interface
 
                 if (Book::IsDefined(Interface::SavedGames[game].Location) && Interface::SavedGames[game].Players.size() > 0)
                 {
+                    // timestamp
+                    overlay.VerifyAndAdd(Scene::Element(timestamps[game], Point(boxx + boxw - (BloodSword::Width(timestamps[game]) + BloodSword::Pad), currenty + BloodSword::Pad)));
+
+                    // character icons
                     for (auto character = 0; character < Interface::SavedGames[game].Players.size(); character++)
                     {
-                        if (character < 4)
+                        if (character < 5)
                         {
                             auto characterx = boxx + BloodSword::Pad + character * space;
 
@@ -6427,9 +6465,9 @@ namespace BloodSword::Interface
                         }
                     }
 
-                    if (Interface::SavedGames[game].Players.size() > 4)
+                    if (Interface::SavedGames[game].Players.size() > 5)
                     {
-                        auto characterx = boxx + BloodSword::Pad + 4 * space;
+                        auto characterx = boxx + BloodSword::Pad + 5 * space;
 
                         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), Point(characterx, charactery)));
                     }
@@ -6442,11 +6480,11 @@ namespace BloodSword::Interface
                     overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CHARACTER), Point(characterx, charactery)));
                 }
 
+                // save button
                 auto up = id > 0 ? id - 1 : id;
 
                 auto dn = id + 1;
 
-                // save button
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::SAVE), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
 
                 overlay.Add(Controls::Base(Controls::Type::CHOICE, id, id, id, up, dn, boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
@@ -6455,9 +6493,9 @@ namespace BloodSword::Interface
             }
 
             // add back button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), Point(boxx - BloodSword::Pad, panely + panelh - space - BloodSword::SmallPad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), Point(boxx - BloodSword::Pad + 1, panely + panelh - space - BloodSword::SmallPad)));
 
-            overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, id - 1, id, boxx - BloodSword::Pad, panely + panelh - space - BloodSword::SmallPad, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+            overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, id - 1, id, boxx - BloodSword::Pad + 1, panely + panelh - space - BloodSword::SmallPad, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
@@ -6469,7 +6507,7 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::CHOICE)
                 {
-                    if (input.Current >= 0 && input.Current < Interface::SavedGames.size() && input.Current < Interface::MaxSaveGames)
+                    if (input.Current >= 0 && input.Current < saved_games && input.Current < Interface::MaxSaveGames)
                     {
                         auto game = input.Current;
 
@@ -6510,6 +6548,8 @@ namespace BloodSword::Interface
                 input.Selected = false;
             }
         }
+
+        BloodSword::Free(timestamps);
 
         BloodSword::Free(locations);
 
@@ -6614,6 +6654,11 @@ namespace BloodSword::Interface
                 else if (input == Controls::Type::SAVE)
                 {
                     done = Interface::SaveGame(graphics, background, saved_party);
+
+                    if (done)
+                    {
+                        Interface::Notify(graphics, background, Interface::MSG_SAVED);
+                    }
                 }
                 else
                 {
