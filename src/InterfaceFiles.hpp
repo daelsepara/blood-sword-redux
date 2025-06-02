@@ -19,7 +19,7 @@ namespace fs = std::filesystem;
 namespace BloodSword::Interface
 {
     // patform-dependent function for returning user document directory and save location
-    std::string GetSavePath()
+    std::string GetGamesPath()
     {
         std::string GamesPath = "/Saved Games/Blood Sword";
 
@@ -32,11 +32,11 @@ namespace BloodSword::Interface
 
         CoTaskMemFree(PathString);
 
-        std::string SavePath(WindowsPath.length(), ' ');
+        std::string UserGamesPath(WindowsPath.length(), ' ');
 
-        std::copy(WindowsPath.begin(), WindowsPath.end(), SavePath.begin());
+        std::copy(WindowsPath.begin(), WindowsPath.end(), UserGamesPath.begin());
 
-        SavePath += GamesPath;
+        UserGamesPath += GamesPath;
 #else
         const char *HomeDirectory = nullptr;
 
@@ -45,16 +45,16 @@ namespace BloodSword::Interface
             HomeDirectory = getpwuid(getuid())->pw_dir;
         }
 
-        std::string SavePath = std::string(HomeDirectory) + "/Documents" + GamesPath;
+        std::string UserGamesPath = std::string(HomeDirectory) + "/Documents" + GamesPath;
 #endif
 
-        return SavePath;
+        return UserGamesPath;
     }
 
     // create directories
     void CreateDirectories()
     {
-        auto path = Interface::GetSavePath();
+        auto path = Interface::GetGamesPath();
 
         fs::create_directories(path);
     }

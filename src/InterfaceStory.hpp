@@ -1651,9 +1651,17 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::GAME)
                 {
-                    auto update = Interface::GameMenu(graphics, overlay, party, saved_party);
+                    auto reload = false;
 
-                    if (update && section.ImageAsset.empty())
+                    auto update = Interface::GameMenu(graphics, overlay, party, saved_party, reload);
+
+                    if (reload)
+                    {
+                        next = party.SaveLocation;
+
+                        done = true;
+                    }
+                    else if (update && section.ImageAsset.empty())
                     {
                         BloodSword::Free(&image);
 

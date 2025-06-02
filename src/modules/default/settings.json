@@ -1,0 +1,13 @@
+{
+    "settings": {
+        "assets": "modules/default/assets.json",
+        "fonts": "modules/default/font-settings.json",
+        "sounds": "modules/default/sounds.json",
+        "palettes": "modules/default/palettes.json",
+        "palette": 0,
+        "items": "modules/default/items.json",
+        "item_descriptions": "modules/default/item-descriptions.json",
+        "adventure": "books/book1.json",
+        "characters": "modules/default/characters.json"
+    }
+}

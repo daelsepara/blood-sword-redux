@@ -20,6 +20,9 @@ namespace BloodSword::Party
         Party::List Members = {};
 
     public:
+        // Module loaded
+        std::string Module = "DEFAULT";
+
         // current book and section number
         Book::Location Location = Book::Undefined;
 
@@ -417,6 +420,9 @@ namespace BloodSword::Party
         // Load party from json data
         void Load(nlohmann::json &data)
         {
+            // set module
+            this->Module = !data["module"].is_null() ? std::string(data["module"]) : "DEFAULT";
+
             // set party location
             if (!data["location"].is_null())
             {
@@ -819,6 +825,8 @@ namespace BloodSword::Party
     nlohmann::json Data(Party::Base &party)
     {
         nlohmann::json data;
+
+        data["module"] = !party.Module.empty() ? party.Module : "DEFAULT";
 
         if (Book::IsDefined(party.Location))
         {

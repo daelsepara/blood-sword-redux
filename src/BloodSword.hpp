@@ -16,40 +16,17 @@ namespace BloodSword
         {
             this->graphics = Graphics::Initialize(session_name);
 
+            // Initialize random number generator
             Engine::InitializeRNG();
 
-            // game settings
-            Interface::Initialize("settings/bloodsword.json");
+            // Load default module
+            Interface::LoadModules();
 
-            // load sound assets
-            Sound::Load(Interface::Settings["sounds"]);
-
-            // load fonts
-            Fonts::Load(Interface::Settings["fonts"]);
-
-            // palette definitions
-            Palette::Load(Interface::Settings["palettes"]);
-
-            // set default palette
-            Palette::Switch(int(Interface::Settings["palette"]));
-
-            // load textures
-            Interface::LoadTextures(this->graphics);
-
-            // initialize gamepads
-            Input::InitializeGamePads();
-
-            // load item defaults
-            Items::LoadDefaults(Interface::Settings["items"]);
-
-            // load item descriptions
-            Items::LoadDescriptions(Interface::Settings["item_descriptions"]);
-
-            // load characters
-            Party::Characters = Party::Load(Interface::Settings["characters"], "characters");
+            // Load settings of current module
+            Interface::LoadSettings(this->graphics, Interface::SettingsFile);
 
             // initialize save games list
-            Interface::InitializeSaveGamesList();
+            Interface::InitializeGamesList();
 
             // flush inputs
             Input::Flush();
@@ -63,11 +40,7 @@ namespace BloodSword
         // shutdown all subsystems
         void Shutdown()
         {
-            Sound::Free();
-
-            Fonts::Free();
-
-            Interface::UnloadTextures();
+            Interface::UnloadAssets();
 
             Graphics::Quit(this->graphics);
         }

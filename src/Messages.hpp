@@ -38,7 +38,8 @@ namespace BloodSword::Interface
         Graphics::RichText("INVENTORY FULL!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("YOU MUST BE ADJACENT TO AN ENEMY!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("CANNOT CHANGE BATTLE ORDER AT THIS TIME", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
-        Graphics::RichText("GAME SAVED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
+        Graphics::RichText("GAME SAVED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
+        Graphics::RichText("GAME LOADED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     BloodSword::Textures Message = {};
 
@@ -107,6 +108,8 @@ namespace BloodSword::Interface
     const int MSG_ORDER = 31;
 
     const int MSG_SAVED = 32;
+
+    const int MSG_LOADED = 33;
 
     void FreeMessages()
     {

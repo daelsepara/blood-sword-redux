@@ -1245,6 +1245,11 @@ namespace BloodSword::Test
 
         auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
 
+        if (party.Count() == 0)
+        {
+            return;
+        }
+
         auto save_party = party;
 
         Story::Load(Interface::Settings["adventure"]);
@@ -1610,6 +1615,33 @@ namespace BloodSword::Test
         Interface::PartyInformation(graphics, background, party);
     }
 
+    void LoadGame(Graphics::Base &graphics, Scene::Base &background)
+    {
+        // load default story
+        Story::Load(Interface::Settings["adventure"]);
+
+        auto party = Party::Load("party/rank02.json", "party");
+
+        auto load = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Type::LOAD);
+
+        if (load && Book::IsDefined(party.SaveLocation))
+        {
+            auto current = Story::CurrentBook.Find(party.SaveLocation);
+
+            // log missing items
+            Interface::LogSearch(party.SaveLocation, current);
+
+            if (current >= 0 && current < Story::CurrentBook.Sections.size())
+            {
+                background = Scene::Base();
+
+                Interface::Notify(graphics, background, Interface::MSG_LOADED);
+
+                Interface::ProcessStory(graphics, background, party, current);
+            }
+        }
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1635,7 +1667,8 @@ namespace BloodSword::Test
              Graphics::RichText("18 TAKE ITEMS\n\n\nTake Items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("19 BATTLE (PREFERRED TARGETS)\n\n\nEnemies can target one another", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("20 USE ITEMS\n\n\nParty use several units of items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("21 CHARACTER MENU\n\n\nComplete party information", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("21 CHARACTER MENU\n\n\nComplete party information", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("22 LOAD GAME\n\n\nLoad previously saved game", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1837,8 +1870,13 @@ namespace BloodSword::Test
 
                         break;
                     case 21:
-                        // Use Items
+                        // Party Information
                         Test::PartyInformation(graphics, scene);
+
+                        break;
+                    case 22:
+                        // Load Game
+                        Test::LoadGame(graphics, scene);
 
                         break;
                     default:

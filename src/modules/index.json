@@ -1,0 +1,10 @@
+{
+    "default": "DEFAULT",
+    "modules": [
+        {
+            "id": "DEFAULT",
+            "title": "THE BATTLEPITS OF KRARTH",
+            "settings": "modules/default/settings.json"
+        }
+    ]
+}

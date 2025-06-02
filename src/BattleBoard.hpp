@@ -11,6 +11,11 @@ namespace BloodSword::BattleBoard
     {
         auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
 
+        if (party.Count() == 0)
+        {
+            return;
+        }
+
         // load specific battle
         auto battle = Battle::Load(battle_file);
 
