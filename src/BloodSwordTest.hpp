@@ -1635,6 +1635,8 @@ namespace BloodSword::Test
             {
                 Interface::Notify(graphics, background, Interface::MSG_LOADED);
 
+                background = Scene::Base();
+
                 Interface::ProcessStory(graphics, background, party, current);
             }
         }
