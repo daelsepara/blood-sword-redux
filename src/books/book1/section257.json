@@ -20,6 +20,20 @@
             "variables": [
                 "800"
             ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "COMPLETED",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "COMPLETION MESSAGE",
+                "You still hold the Emblem of Victory which you may be able to sell for a few bags of gold. You are still alive, too. Not a triumphant victory, but a better fate than you might have suffered in the infernal Battlepits of Krarth."
+            ]
         }
     ],
     "features": [

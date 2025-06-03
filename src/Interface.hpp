@@ -181,6 +181,8 @@ namespace BloodSword::Interface
 
         Book::Location Location = Book::Undefined;
 
+        bool Completed = false;
+
         SavedGame() {};
     };
 
@@ -6745,7 +6747,14 @@ namespace BloodSword::Interface
 
                         auto file_time = fs::last_write_time(Filename.c_str());
 
+                        // get last modified time
                         saveGame.TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
+
+                        // check if adventure has been completed
+                        if (party.Is("=", "COMPLETED", "TRUE"))
+                        {
+                            saveGame.Completed = true;
+                        }
                     }
 
                     ifs.close();
@@ -6945,7 +6954,8 @@ namespace BloodSword::Interface
 
                 auto dn = id + 1;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
+                // check if game has been completed
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::GamesList[game].Completed ? Asset::Type::TROPHY : asset), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
 
                 overlay.Add(Controls::Base(Controls::Type::CHOICE, id, id, id, up, dn, boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -7006,6 +7016,11 @@ namespace BloodSword::Interface
 
                                 Interface::GamesList[game].TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
 
+                                if (party.Is("=", "COMPLETED", "TRUE"))
+                                {
+                                    Interface::GamesList[game].Completed = true;
+                                }
+
                                 update = true;
 
                                 done = true;
@@ -7023,11 +7038,22 @@ namespace BloodSword::Interface
 
                                 if (Book::IsDefined(temp_party.SaveLocation) && Book::Equal(temp_party.SaveLocation, Interface::GamesList[game].Location))
                                 {
-                                    party = temp_party;
+                                    if (temp_party.Is("=", "COMPLETED", "TRUE"))
+                                    {
+                                        // show completion message of completed game
+                                        auto completion = temp_party.Get("COMPLETION MESSAGE");
 
-                                    update = true;
+                                        Interface::TextBox(graphics, background, completion, BloodSword::TileSize * 10, true);
+                                    }
+                                    else
+                                    {
+                                        // load game
+                                        party = temp_party;
 
-                                    done = true;
+                                        update = true;
+
+                                        done = true;
+                                    }
                                 }
                             }
                             else

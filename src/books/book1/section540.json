@@ -3,12 +3,26 @@
         "book": "BOOK1",
         "number": 540
     },
-    "text": "Victory is yours. You are among the few to have emerged from the Battlepits, for the magi's contest is a deadly one and often there are no survivors.\n\nThe quiet condescending applause of the magi is one thing but the rapturous cheers of the crowds outside the Hall is quite another. You stand proudly as they shower garlands upon you -- the one day of the year when they can show admiration for someone other than their despot rulers.\n\nYour patron is flushed with success. Your victory means many concessions of land from his peers. He finds a few moments amid the tumult of congratulation to come over and speak to you. \"It is time for you to leave Krarth now,\" he says. \"Having once entered the Battlepits, you are ineligible for the contest in future years. Doubltless this will not bother you, for you have fought your way to resounding triumph. But there is one who is left with bitter hatred for you in his heart. I need not peer into my scrying-sphere to tell you that you will meet him again. Be on your guard.\"\n\nFor a moment, when you turn to look out at the cheering crowds, you seem to catch a glimpse of a black-cloaked figure watching you with an expression of cold fury. But when you look again, he is gone.",
+    "text": "Victory is yours. You are among the few to have emerged from the Battlepits, for the magi's contest is a deadly one and often there are no survivors.\n\nThe quiet condescending applause of the magi is one thing but the rapturous cheers of the crowds outside the Hall is quite another. You stand proudly as they shower garlands upon you -- the one day of the year when they can show admiration for someone other than their despot rulers.\n\nYour patron is flushed with success. Your victory means many concessions of land from his peers. He finds a few moments amid the tumult of congratulation to come over and speak to you. \"It is time for you to leave Krarth now,\" he says. \"Having once entered the Battlepits, you are ineligible for the contest in future years. Doubtless this will not bother you, for you have fought your way to resounding triumph. But there is one who is left with bitter hatred for you in his heart. I need not peer into my scrying-sphere to tell you that you will meet him again. Be on your guard.\"\n\nFor a moment, when you turn to look out at the cheering crowds, you seem to catch a glimpse of a black-cloaked figure watching you with an expression of cold fury. But when you look again, he is gone.",
     "events": [
         {
             "type": "GAIN EXPERIENCE",
             "variables": [
                 "1000"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "COMPLETED",
+                "TRUE"
+            ]
+        },
+        {
+            "type": "SET",
+            "variables": [
+                "COMPLETION MESSAGE",
+                "Victory is yours. You are among the few to have emerged from the Battlepits, for the magi's contest is a deadly one and often there are no survivors.\n\nYou stand proudly as they shower garlands upon you -- the one day of the year when they can show admiration for someone other than their despot rulers.\n\nHaving once entered the Battlepits, you are ineligible for the contest in future years. Doubtless this will not bother you, for you have fought your way to resounding triumph."
             ]
         }
     ],
