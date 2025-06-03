@@ -1633,8 +1633,6 @@ namespace BloodSword::Test
 
             if (current >= 0 && current < Story::CurrentBook.Sections.size())
             {
-                background = Scene::Base();
-
                 Interface::Notify(graphics, background, Interface::MSG_LOADED);
 
                 Interface::ProcessStory(graphics, background, party, current);
