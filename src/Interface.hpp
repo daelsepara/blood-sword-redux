@@ -3289,7 +3289,7 @@ namespace BloodSword::Interface
 
             while (true)
             {
-                input = Input::WaitForInput(graphics, scene, box, input, true, blur);
+                input = Input::WaitForInput(graphics, {scene, box}, box.Controls, input, blur);
 
                 if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
                 {
@@ -4976,7 +4976,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true);
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
             if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
@@ -7023,10 +7023,6 @@ namespace BloodSword::Interface
 
                                 if (Book::IsDefined(temp_party.SaveLocation) && Book::Equal(temp_party.SaveLocation, Interface::GamesList[game].Location))
                                 {
-                                    Interface::LoadModule(temp_party.Module);
-
-                                    Interface::ReloadSettings(graphics, Interface::SettingsFile);
-
                                     party = temp_party;
 
                                     update = true;
@@ -7149,9 +7145,7 @@ namespace BloodSword::Interface
 
                     if (done)
                     {
-                        auto blank = Scene::Base();
-
-                        Interface::Notify(graphics, blank, Interface::MSG_SAVED);
+                        Interface::Notify(graphics, background, Interface::MSG_SAVED);
                     }
                 }
                 else if (input == Controls::Type::LOAD)
@@ -7160,9 +7154,11 @@ namespace BloodSword::Interface
 
                     if (done)
                     {
-                        auto blank = Scene::Base();
+                        Interface::Notify(graphics, background, Interface::MSG_LOADED);
 
-                        Interface::Notify(graphics, blank, Interface::MSG_LOADED);
+                        Interface::LoadModule(party.Module);
+
+                        Interface::ReloadSettings(graphics, Interface::SettingsFile);
 
                         reload = true;
                     }
