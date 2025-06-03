@@ -6830,6 +6830,64 @@ namespace BloodSword::Interface
         return timestamps;
     }
 
+    void LoadCompletedGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+        auto completion = party.Get("COMPLETION MESSAGE");
+
+        auto texture = Graphics::CreateText(graphics, completion.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, BloodSword::TileSize * 10);
+
+        auto texturex = (graphics.Width - BloodSword::Width(texture)) / 2 + BloodSword::Pad;
+
+        auto panelh = BloodSword::TileSize * 8 + BloodSword::Pad * 2;
+
+        auto panelw = BloodSword::TileSize * 10 + BloodSword::Pad * 2;
+
+        auto panelx = (graphics.Width - panelw) / 2;
+
+        auto panely = (graphics.Height - panelh) / 2;
+
+        auto iconx = (graphics.Width - BloodSword::TileSize) / 2;
+
+        auto confirmy = panely + panelh - (BloodSword::TileSize + BloodSword::Pad);
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            // render panel
+            overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
+
+            // render trophy icon
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::Pad)));
+
+            // render completion text
+            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::Pad * 2)));
+
+            // render confirmation button
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(iconx, confirmy)));
+
+            overlay.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, iconx, confirmy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::CONFIRM)
+                {
+                    done = true;
+                }
+
+                input.Selected = false;
+            }
+        }
+
+        BloodSword::Free(&texture);
+    }
+
     bool LoadSaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Controls::Type mode, Asset::Type asset)
     {
         auto update = false;
@@ -7040,10 +7098,8 @@ namespace BloodSword::Interface
                                 {
                                     if (temp_party.Is("=", "COMPLETED", "TRUE"))
                                     {
-                                        // show completion message of completed game
-                                        auto completion = temp_party.Get("COMPLETION MESSAGE");
-
-                                        Interface::TextBox(graphics, background, completion, BloodSword::TileSize * 10, true);
+                                        // show completion message
+                                        Interface::LoadCompletedGame(graphics, background, temp_party);
                                     }
                                     else
                                     {
