@@ -1290,7 +1290,7 @@ namespace BloodSword::Test
             auto h = BloodSword::QuarterTile;
 
             // padding
-            auto pads = BloodSword::Pad * 2;
+            auto pads = BloodSword::LargePad;
 
             // adjust size
             for (auto &item : story_menu)

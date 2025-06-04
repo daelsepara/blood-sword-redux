@@ -504,26 +504,40 @@ namespace BloodSword::Generate
         character.Attributes.push_back(Attribute::Base(Attribute::Type::ARMOUR, 0, 0));
     }
 
+    // calculate rank from experience
+    int CalculateRankFromExperience(int experience)
+    {
+        auto rank = (experience / 250) + 1;
+
+        rank = std::min(20, rank);
+
+        rank = std::max(1, rank);
+
+        return rank;
+    }
+
     // set character rank based on experience points
     void Rank(Character::Base &character)
     {
         // set rank based on experience points and enforce bounds
-        character.Rank = (character.Experience / 250) + 1;
+        character.Rank = Generate::CalculateRankFromExperience(character.Experience);
+    }
 
-        character.Rank = std::min(20, character.Rank);
+    // calculate base experience from rank
+    int CalculateExperienceFromRank(int rank)
+    {
+        auto filtered_rank = std::min(20, rank);
 
-        character.Rank = std::max(1, character.Rank);
+        filtered_rank = std::max(1, filtered_rank);
+
+        return (filtered_rank - 1) * 250;
     }
 
     // set character experience points based on rank
     void Experience(Character::Base &character)
     {
         // enforce rank bounds and set starting experience points
-        character.Rank = std::min(20, character.Rank);
-
-        character.Rank = std::max(1, character.Rank);
-
-        character.Experience = (character.Rank - 1) * 250;
+        character.Experience = Generate::CalculateExperienceFromRank(character.Rank);
     }
 
     // warrior's starting items

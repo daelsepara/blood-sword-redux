@@ -515,7 +515,7 @@ namespace BloodSword::Interface
             auto h = BloodSword::TileSize;
 
             // padding
-            auto pads = BloodSword::Pad * 2;
+            auto pads = BloodSword::LargePad;
 
             for (auto &item : menu)
             {

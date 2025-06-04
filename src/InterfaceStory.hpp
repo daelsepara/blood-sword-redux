@@ -60,7 +60,7 @@ namespace BloodSword::Interface
         auto h = BloodSword::TileSize;
 
         // padding
-        auto pads = BloodSword::Pad * 2;
+        auto pads = BloodSword::LargePad;
 
         for (auto &item : menu)
         {
@@ -1318,13 +1318,13 @@ namespace BloodSword::Interface
 
         if (!section.ImageAsset.empty())
         {
-            image = Graphics::ScaledImage(graphics, section.ImageAsset, panel_w - BloodSword::Pad * 2, panel_h - BloodSword::Pad * 2);
+            image = Graphics::ScaledImage(graphics, section.ImageAsset, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
 
             image_location = origin + Point(panel_w - BloodSword::Width(image), panel_h - BloodSword::Height(image)) / 2;
         }
         else
         {
-            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
         }
 
         // location of scroll arrows
@@ -1456,7 +1456,7 @@ namespace BloodSword::Interface
                                 BloodSword::Free(&image);
 
                                 // regenerate party stats
-                                image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                                image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                             }
                         }
 
@@ -1471,7 +1471,7 @@ namespace BloodSword::Interface
                             BloodSword::Free(&image);
 
                             // regenerate party stats
-                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                         }
                     }
                     else
@@ -1492,7 +1492,7 @@ namespace BloodSword::Interface
                             BloodSword::Free(&image);
 
                             // regenerate party stats
-                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                         }
                     }
 
@@ -1509,7 +1509,7 @@ namespace BloodSword::Interface
                             BloodSword::Free(&image);
 
                             // regenerate party stats
-                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                            image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                         }
                     }
 
@@ -1524,7 +1524,7 @@ namespace BloodSword::Interface
                         BloodSword::Free(&image);
 
                         // regenerate party stats
-                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                     }
 
                     Controls::Select(input, overlay.Controls, Controls::Type::ITEMS);
@@ -1571,7 +1571,7 @@ namespace BloodSword::Interface
                         BloodSword::Free(&image);
 
                         // regenerate party stats
-                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                     }
 
                     if (Book::IsDefined(update.Next))
@@ -1624,7 +1624,7 @@ namespace BloodSword::Interface
                                     BloodSword::Free(&image);
 
                                     // regenerate party stats
-                                    image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                                    image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                                 }
 
                                 if (Book::IsDefined(update.Next))
@@ -1666,7 +1666,7 @@ namespace BloodSword::Interface
                         BloodSword::Free(&image);
 
                         // regenerate party stats
-                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                        image = Interface::GeneratePartyStats(graphics, party, panel_w - BloodSword::LargePad);
                     }
 
                     Controls::Select(input, overlay.Controls, Controls::Type::GAME);
@@ -1682,7 +1682,7 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::TROPHY)
                 {
-                    Interface::NotImplemented(graphics, overlay);
+                    done = Interface::AdjustRanks(graphics, overlay, party);
 
                     Controls::Select(input, overlay.Controls, Controls::Type::TROPHY);
                 }

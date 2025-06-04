@@ -624,7 +624,7 @@ namespace BloodSword::Interface
             auto h = BloodSword::TileSize;
 
             // padding
-            auto pads = BloodSword::Pad * 2;
+            auto pads = BloodSword::LargePad;
 
             for (auto &item : menu)
             {
@@ -810,7 +810,7 @@ namespace BloodSword::Interface
             auto h = BloodSword::TileSize;
 
             // padding
-            auto pads = BloodSword::Pad * 2;
+            auto pads = BloodSword::LargePad;
 
             for (auto &item : menu)
             {
@@ -1222,7 +1222,7 @@ namespace BloodSword::Interface
 
         auto display_y = panely + BloodSword::TileSize + BloodSword::HalfTile + BloodSword::OddPad * 4;
 
-        auto boxh = controlsy - display_y - BloodSword::Pad * 2;
+        auto boxh = controlsy - display_y - BloodSword::LargePad;
 
         auto input = Controls::User();
 

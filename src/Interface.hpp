@@ -578,7 +578,7 @@ namespace BloodSword::Interface
 
             BloodSword::Size(texture, &text_w, &text_h);
 
-            text_w += BloodSword::Pad * 2;
+            text_w += BloodSword::LargePad;
 
             text_h += BloodSword::Pad * 3 + BloodSword::TileSize;
 
@@ -1493,7 +1493,7 @@ namespace BloodSword::Interface
         return surface;
     }
 
-    SDL_Texture *GeneratePartyStats(Graphics::Base &graphics, Party::Base &party, int w, int h)
+    SDL_Texture *GeneratePartyStats(Graphics::Base &graphics, Party::Base &party, int w)
     {
         // final texture
         SDL_Texture *texture = nullptr;
@@ -3357,7 +3357,7 @@ namespace BloodSword::Interface
 
             BloodSword::Size(texture, &text_w, &text_h);
 
-            text_w += BloodSword::Pad * 2;
+            text_w += BloodSword::LargePad;
 
             text_h += BloodSword::Pad * 3 + BloodSword::TileSize;
 
@@ -3768,7 +3768,7 @@ namespace BloodSword::Interface
 
         auto display_y = panely + BloodSword::TileSize + BloodSword::HalfTile + BloodSword::OddPad * 4;
 
-        auto boxh = controlsy - display_y - BloodSword::Pad * 2;
+        auto boxh = controlsy - display_y - BloodSword::LargePad;
 
         auto input = Controls::User();
 
@@ -5629,7 +5629,7 @@ namespace BloodSword::Interface
         auto h = BloodSword::TileSize;
 
         // padding
-        auto pads = BloodSword::Pad * 2;
+        auto pads = BloodSword::LargePad;
 
         for (auto &item : menu)
         {
@@ -6221,7 +6221,7 @@ namespace BloodSword::Interface
         auto h = BloodSword::TileSize;
 
         // padding
-        auto pads = BloodSword::Pad * 2;
+        auto pads = BloodSword::LargePad;
 
         for (auto &item : menu)
         {
@@ -6427,7 +6427,7 @@ namespace BloodSword::Interface
         auto h = BloodSword::TileSize;
 
         // padding
-        auto pads = BloodSword::Pad * 2;
+        auto pads = BloodSword::LargePad;
 
         for (auto &item : menu)
         {
@@ -6838,9 +6838,9 @@ namespace BloodSword::Interface
 
         auto texturex = (graphics.Width - BloodSword::Width(texture)) / 2 + BloodSword::Pad;
 
-        auto panelh = BloodSword::TileSize * 8 + BloodSword::Pad * 2;
+        auto panelh = BloodSword::TileSize * 8 + BloodSword::LargePad;
 
-        auto panelw = BloodSword::TileSize * 10 + BloodSword::Pad * 2;
+        auto panelw = BloodSword::TileSize * 10 + BloodSword::LargePad;
 
         auto panelx = (graphics.Width - panelw) / 2;
 
@@ -6865,7 +6865,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::Pad)));
 
             // render completion text
-            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::Pad * 2)));
+            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::LargePad)));
 
             // render confirmation button
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(iconx, confirmy)));
@@ -6962,7 +6962,7 @@ namespace BloodSword::Interface
 
             for (auto game = 0; game < max_games; game++)
             {
-                auto currenty = panely + game * (boxh + BloodSword::Pad * 2) + BloodSword::Pad * 3;
+                auto currenty = panely + game * (boxh + BloodSword::LargePad) + BloodSword::Pad * 3;
 
                 // render subpanel
                 auto has_game = (Book::IsDefined(Interface::GamesList[game].Location) && Interface::GamesList[game].Players.size() > 0);
@@ -7074,10 +7074,8 @@ namespace BloodSword::Interface
 
                                 Interface::GamesList[game].TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
 
-                                if (party.Is("=", "COMPLETED", "TRUE"))
-                                {
-                                    Interface::GamesList[game].Completed = true;
-                                }
+                                // mark if game is completed
+                                Interface::GamesList[game].Completed = party.Is("=", "COMPLETED", "TRUE");
 
                                 update = true;
 
@@ -7131,6 +7129,147 @@ namespace BloodSword::Interface
         BloodSword::Free(locations);
 
         return update;
+    }
+
+    bool AdjustRanks(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+        auto saved = false;
+
+        auto base_experience = 0;
+
+        auto total_experience = 0;
+
+        // copy party
+        auto new_party = party;
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            if (Engine::IsAlive(party[character]) && !Character::OtherClass(party[character].Class))
+            {
+                base_experience += Generate::CalculateExperienceFromRank(party[character].Rank);
+
+                total_experience += party[character].Experience;
+            }
+            else if (!Engine::IsAlive(party[character]) || Character::OtherClass(party[character].Class))
+            {
+                // remove incapacitated characters from the party
+                new_party.Remove(party[character].Class);
+            }
+        }
+
+        auto increased_rank = 0;
+
+        for (auto character = 0; character < new_party.Count(); character++)
+        {
+            new_party[character].Rank = Generate::CalculateRankFromExperience(new_party[character].Experience);
+
+            if (new_party[character].Rank > party[new_party[character].Class].Rank)
+            {
+                increased_rank++;
+            }
+
+            // reset attributes
+            new_party[character].Attributes.clear();
+
+            Generate::Attributes(new_party[character]);
+        }
+
+        auto earned_experience = total_experience - base_experience;
+
+        std::string text = Engine::Count(new_party) > 1 ? "Surviving members of the party" : "You";
+
+        text += " have earned " + std::to_string(earned_experience) + " points in this adventure. ";
+
+        if (increased_rank == new_party.Count() && new_party.Count() > 1)
+        {
+            text += "All";
+        }
+        else if (increased_rank > 1)
+        {
+            text += std::to_string(increased_rank);
+        }
+        else if (increased_rank == 1)
+        {
+            text += "You";
+        }
+        else
+        {
+            text += "None";
+        }
+
+        text += " have increased in rank.";
+
+        auto base_width = BloodSword::TileSize * 12;
+
+        auto stats = Interface::GeneratePartyStats(graphics, new_party, BloodSword::TileSize * 6);
+
+        auto statsx = (graphics.Width - BloodSword::Width(stats)) / 2 + BloodSword::Pad;
+
+        auto texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, base_width);
+
+        auto texturex = (graphics.Width - BloodSword::Width(texture)) / 2 + BloodSword::Pad;
+
+        auto panelh = BloodSword::TileSize * 9 + BloodSword::LargePad;
+
+        auto panelw = base_width + BloodSword::LargePad;
+
+        auto panelx = (graphics.Width - panelw) / 2;
+
+        auto panely = (graphics.Height - panelh) / 2;
+
+        auto iconx = (graphics.Width - BloodSword::TileSize) / 2;
+
+        auto confirmy = panely + panelh - (BloodSword::TileSize + BloodSword::Pad);
+
+        auto input = Controls::User();
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto overlay = Scene::Base();
+
+            // render panel
+            overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
+
+            // render trophy icon
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::Pad)));
+
+            // render rankings text
+            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::LargePad)));
+
+            // render stats
+            overlay.VerifyAndAdd(Scene::Element(stats, Point(statsx, panely + BloodSword::TileSize + BloodSword::HugePad + BloodSword::Height(texture))));
+
+            // render confirmation button
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(iconx, confirmy)));
+
+            overlay.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, iconx, confirmy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            {
+                if (input.Type == Controls::Type::CONFIRM)
+                {
+                    // confirm completed
+                    if (Interface::Confirm(graphics, background, "SAVE THIS PARTY TO COMPLETE THE GAME?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true))
+                    {
+                        saved = Interface::LoadSaveGame(graphics, background, new_party, Controls::Type::SAVE, Asset::Type::SAVE);
+                    }
+
+                    done = true;
+                }
+
+                input.Selected = false;
+            }
+        }
+
+        BloodSword::Free(&texture);
+
+        BloodSword::Free(&stats);
+
+        return saved;
     }
 
     bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, bool &reload)
