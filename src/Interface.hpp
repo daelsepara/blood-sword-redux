@@ -6848,7 +6848,7 @@ namespace BloodSword::Interface
 
         auto iconx = (graphics.Width - BloodSword::TileSize) / 2;
 
-        auto confirmy = panely + panelh - (BloodSword::TileSize + BloodSword::Pad);
+        auto confirmy = panely + panelh - (BloodSword::TileSize + BloodSword::LargePad);
 
         auto input = Controls::User();
 
@@ -7219,7 +7219,7 @@ namespace BloodSword::Interface
 
         auto iconx = (graphics.Width - BloodSword::TileSize) / 2;
 
-        auto confirmy = panely + panelh - (BloodSword::TileSize + BloodSword::Pad);
+        auto confirmy = panely + panelh - (BloodSword::TileSize + BloodSword::LargePad);
 
         auto input = Controls::User();
 
