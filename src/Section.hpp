@@ -257,25 +257,22 @@ namespace BloodSword::Story
                 {
                     auto sections = Story::Sections();
 
-                    if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
+                    for (auto i = 0; i < data["sections"].size(); i++)
                     {
-                        for (auto i = 0; i < data["sections"].size(); i++)
+                        auto section = Section::Base();
+
+                        if (!data["sections"][i].is_null() && data["sections"][i].is_object())
                         {
-                            auto section = Section::Base();
+                            section = Section::Load(data["sections"][i]);
+                        }
+                        else if (!data["sections"][i].is_null() && data["sections"][i].is_string())
+                        {
+                            section = Section::Load(std::string(data["sections"][i]).c_str());
+                        }
 
-                            if (!data["sections"][i].is_null() && data["sections"][i].is_object())
-                            {
-                                section = Section::Load(data["sections"][i]);
-                            }
-                            else if (!data["sections"][i].is_null() && data["sections"][i].is_string())
-                            {
-                                section = Section::Load(std::string(data["sections"][i]).c_str());
-                            }
-
-                            if (Book::IsDefined(section.Location))
-                            {
-                                sections.push_back(section);
-                            }
+                        if (Book::IsDefined(section.Location))
+                        {
+                            sections.push_back(section);
                         }
                     }
 
@@ -295,6 +292,34 @@ namespace BloodSword::Story
     void Load(std::string story)
     {
         Story::Load(story.c_str());
+    }
+
+    std::vector<int> LoadRanks(const char *ranks)
+    {
+        auto result = std::vector<int>();
+
+        std::ifstream ifs(ranks);
+        {
+            auto data = nlohmann::json::parse(ifs);
+
+            if (!data.is_null() && data.is_object())
+            {
+                if (!data["ranks"].is_null() && data["ranks"].is_array() && data["ranks"].size() > 0)
+                {
+                    for (auto rank = 0; rank < data["ranks"].size(); rank++)
+                    {
+                        result.push_back(int(data["ranks"][rank]));
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+
+    std::vector<int> LoadRanks(std::string ranks)
+    {
+        return Story::LoadRanks(ranks.c_str());
     }
 }
 #endif

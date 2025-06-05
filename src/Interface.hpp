@@ -3982,9 +3982,14 @@ namespace BloodSword::Interface
         return current_party;
     }
 
-    // create a party
-    Party::Base CreateParty(Graphics::Base &graphics, Book::Number book, bool blur = true)
+    // create party with custom starting ranks depending on size of party
+    Party::Base CreateParty(Graphics::Base &graphics, std::vector<int> ranks, bool blur = true)
     {
+        if (ranks.size() != 4)
+        {
+            throw std::invalid_argument("Invalid starting ranks definition");
+        }
+
         auto menu = Scene::Base();
 
         auto overlay = Scene::Base();
@@ -4002,8 +4007,6 @@ namespace BloodSword::Interface
         auto menu_title = Graphics::CreateText(graphics, "CHOOSE NUMBER OF PARTY MEMBERS", Fonts::Caption, Color::S(Color::Highlight), TTF_STYLE_NORMAL);
 
         auto party = Party::Base();
-
-        auto ranks = Book::Ranks[book];
 
         auto starting_ranks = std::string(" Starting ranks(s): ");
 
@@ -4083,6 +4086,12 @@ namespace BloodSword::Interface
         BloodSword::Free(&menu_title);
 
         return party;
+    }
+
+    // create a party (using ranks from a book)
+    Party::Base CreateParty(Graphics::Base &graphics, Book::Number book, bool blur = true)
+    {
+        return Interface::CreateParty(graphics, Book::Ranks[book], blur);
     }
 
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, Point location, std::string question, std::string start_text, Uint32 question_color, Uint32 input_color, int input_limit, int box_w, int box_h, Uint32 border = Color::Active, Uint32 box_bg = Color::Background, int border_size = BloodSword::Border, bool blur = true)

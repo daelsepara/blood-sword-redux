@@ -108,13 +108,13 @@ namespace BloodSword::Asset
         {
             auto data = nlohmann::json::parse(ifs);
 
-            if (!data["asset"].is_null() && data["asset"].is_array() && data["asset"].size() > 0)
+            if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
             {
-                for (auto i = 0; i < data["asset"].size(); i++)
+                for (auto i = 0; i < data["assets"].size(); i++)
                 {
-                    auto object = !data["asset"][i]["id"].is_null() ? Asset::Map(std::string(data["asset"][i]["id"])) : Asset::Type::NONE;
+                    auto object = !data["assets"][i]["id"].is_null() ? Asset::Map(std::string(data["assets"][i]["id"])) : Asset::Type::NONE;
 
-                    auto path = !data["asset"][i]["path"].is_null() ? std::string(data["asset"][i]["path"]) : "";
+                    auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : "";
 
                     if (!path.empty() && object != Asset::Type::NONE)
                     {

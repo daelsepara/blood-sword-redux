@@ -1873,6 +1873,41 @@ namespace BloodSword::Interface
             }
         }
     }
+
+    // start new game with pre-defined party
+    void NewGame(Graphics::Base &graphics, Party::Base &party)
+    {
+        // reset internal variables
+        party.Variables.clear();
+
+        // load story
+        Story::Load(Interface::Settings["adventure"]);
+
+        // ... clear background
+        auto background = Scene::Base();
+
+        // start at first section
+        Interface::ProcessStory(graphics, background, party, 0);
+    }
+
+    // start new game with custom player ranks
+    void NewGame(Graphics::Base &graphics, std::vector<int> ranks, bool blur = true)
+    {
+        auto party = Interface::CreateParty(graphics, ranks, blur);
+
+        if (party.Count() > 0)
+        {
+            Interface::NewGame(graphics, party);
+        }
+    }
+
+    // start new game using ranks defined in module
+    void NewGame(Graphics::Base &graphics, bool blur = true)
+    {
+        auto ranks = Story::LoadRanks(Interface::Settings["ranks"]);
+
+        Interface::NewGame(graphics, ranks, blur);
+    }
 }
 
 #endif
