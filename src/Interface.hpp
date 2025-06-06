@@ -7287,7 +7287,7 @@ namespace BloodSword::Interface
         Interface::LoadModule(party.Module);
 
         Interface::ReloadSettings(graphics, Interface::SettingsFile);
-            
+
         Story::Load(Interface::Settings["adventure"]);
     }
 

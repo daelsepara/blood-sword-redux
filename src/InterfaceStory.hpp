@@ -1881,7 +1881,7 @@ namespace BloodSword::Interface
         party.Variables.clear();
 
         // load story
-        Story::Load(Interface::Settings["adventure"]);
+        Interface::ReloadStory(graphics, party);
 
         // ... clear background
         auto background = Scene::Base();
