@@ -4039,7 +4039,7 @@ namespace BloodSword::Interface
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto party_size = Interface::Choice(graphics, menu, party_sizes, origin, width, base_height, int(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, blur) + 1;
+        auto party_size = Interface::Choice(graphics, menu, party_sizes, origin, width, base_height, int(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, false) + 1;
 
         if (party_size > 0 && party_size <= 4)
         {
@@ -7281,6 +7281,16 @@ namespace BloodSword::Interface
         return saved;
     }
 
+    // reloads the story from current module
+    void ReloadStory(Graphics::Base &graphics, Party::Base &party)
+    {
+        Interface::LoadModule(party.Module);
+
+        Interface::ReloadSettings(graphics, Interface::SettingsFile);
+            
+        Story::Load(Interface::Settings["adventure"]);
+    }
+
     bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, bool &reload)
     {
         auto update = false;
@@ -7386,9 +7396,7 @@ namespace BloodSword::Interface
                     {
                         Interface::Notify(graphics, background, Interface::MSG_LOADED);
 
-                        Interface::LoadModule(party.Module);
-
-                        Interface::ReloadSettings(graphics, Interface::SettingsFile);
+                        Interface::ReloadStory(graphics, party);
 
                         reload = true;
                     }

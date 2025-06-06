@@ -1617,15 +1617,14 @@ namespace BloodSword::Test
 
     void LoadGame(Graphics::Base &graphics, Scene::Base &background)
     {
-        // load default story
-        Story::Load(Interface::Settings["adventure"]);
-
         auto party = Party::Load("party/rank02.json", "party");
 
         auto load = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Type::LOAD);
 
         if (load && Book::IsDefined(party.SaveLocation))
         {
+            Interface::ReloadStory(graphics, party);
+
             auto current = Story::CurrentBook.Find(party.SaveLocation);
 
             // log missing items
