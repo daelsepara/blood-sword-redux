@@ -1642,6 +1642,11 @@ namespace BloodSword::Test
         }
     }
 
+    void NewGame(Graphics::Base &graphics)
+    {
+        Interface::NewGame(graphics, true);
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1668,7 +1673,8 @@ namespace BloodSword::Test
              Graphics::RichText("19 BATTLE (PREFERRED TARGETS)\n\n\nEnemies can target one another", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("20 USE ITEMS\n\n\nParty use several units of items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("21 CHARACTER MENU\n\n\nComplete party information", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("22 LOAD GAME\n\n\nLoad previously saved game", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("22 LOAD GAME\n\n\nLoad previously saved game", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("23 NEW GAME\n\n\nStart a new game with the current module", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1877,6 +1883,11 @@ namespace BloodSword::Test
                     case 22:
                         // Load Game
                         Test::LoadGame(graphics, scene);
+
+                        break;
+                    case 23:
+                        // New Game
+                        Test::NewGame(graphics);
 
                         break;
                     default:

@@ -6847,7 +6847,7 @@ namespace BloodSword::Interface
 
         auto texturex = (graphics.Width - BloodSword::Width(texture)) / 2 + BloodSword::Pad;
 
-        auto panelh = BloodSword::TileSize * 8 + BloodSword::LargePad;
+        auto panelh = BloodSword::TileSize * 2 + BloodSword::LargePad * 5 + BloodSword::Height(texture);
 
         auto panelw = BloodSword::TileSize * 10 + BloodSword::LargePad;
 
@@ -6871,10 +6871,10 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
 
             // render trophy icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::Pad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::LargePad)));
 
             // render completion text
-            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::LargePad)));
+            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::Pad * 3)));
 
             // render confirmation button
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(iconx, confirmy)));
@@ -7218,7 +7218,7 @@ namespace BloodSword::Interface
 
         auto texturex = (graphics.Width - BloodSword::Width(texture)) / 2 + BloodSword::Pad;
 
-        auto panelh = BloodSword::TileSize * 9 + BloodSword::LargePad;
+        auto panelh = (BloodSword::TileSize + BloodSword::Pad) * (new_party.Count() + 2) + BloodSword::Height(texture) + BloodSword::LargePad * 6;
 
         auto panelw = base_width + BloodSword::LargePad;
 
@@ -7242,10 +7242,10 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
 
             // render trophy icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::Pad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::LargePad)));
 
             // render rankings text
-            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::LargePad)));
+            overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::Pad * 3)));
 
             // render stats
             overlay.VerifyAndAdd(Scene::Element(stats, Point(statsx, panely + BloodSword::TileSize + BloodSword::HugePad + BloodSword::Height(texture))));

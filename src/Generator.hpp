@@ -16,11 +16,11 @@ namespace BloodSword::Generate
 
         if (warrior.Rank <= 2)
         {
+            warrior.Rank = 2;
+
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
-
-            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 12, 0));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 1));
 
@@ -32,8 +32,6 @@ namespace BloodSword::Generate
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
 
-            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 18, 0));
-
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 2));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 6, 0));
@@ -43,8 +41,6 @@ namespace BloodSword::Generate
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
-
-            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 24, 0));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 0));
 
@@ -56,8 +52,6 @@ namespace BloodSword::Generate
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
 
-            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 30, 0));
-
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 1));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
@@ -67,8 +61,6 @@ namespace BloodSword::Generate
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
-
-            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 36, 0));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 2));
 
@@ -80,8 +72,6 @@ namespace BloodSword::Generate
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
 
-            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 42, 0));
-
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
@@ -92,12 +82,134 @@ namespace BloodSword::Generate
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
 
-            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 48, 0));
-
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 1));
 
             warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
+        else if (warrior.Rank == 9)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 2));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (warrior.Rank == 10)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (warrior.Rank == 11)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 1));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (warrior.Rank == 12)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 2));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (warrior.Rank == 13)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (warrior.Rank == 14)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 1));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (warrior.Rank == 15)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 2));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (warrior.Rank == 16)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (warrior.Rank == 17)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 1));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (warrior.Rank == 18)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 2));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (warrior.Rank == 19)
+        {
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 7, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else
+        {
+            warrior.Rank = 20;
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 11, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 7, 1));
+
+            warrior.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+
+        warrior.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, warrior.Rank * 6, 0));
     }
 
     // trickster's attributes based on rank
@@ -110,11 +222,11 @@ namespace BloodSword::Generate
 
         if (trickster.Rank <= 2)
         {
+            trickster.Rank = 2;
+
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
-
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 12, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 0));
 
@@ -126,8 +238,6 @@ namespace BloodSword::Generate
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 6, 0));
 
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 18, 0));
-
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 1));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
@@ -137,8 +247,6 @@ namespace BloodSword::Generate
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
-
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 24, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 2));
 
@@ -150,8 +258,6 @@ namespace BloodSword::Generate
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
 
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 30, 0));
-
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
@@ -161,8 +267,6 @@ namespace BloodSword::Generate
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
-
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 36, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 1));
 
@@ -174,8 +278,6 @@ namespace BloodSword::Generate
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
 
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 42, 0));
-
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 2));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
@@ -186,12 +288,134 @@ namespace BloodSword::Generate
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
 
-            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 48, 0));
-
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
 
             trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
         }
+        else if (trickster.Rank == 9)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 1));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (trickster.Rank == 10)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 2));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (trickster.Rank == 11)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (trickster.Rank == 12)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 1));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (trickster.Rank == 13)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 2));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (trickster.Rank == 14)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 10, 0));
+        }
+        else if (trickster.Rank == 15)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 1));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 10, 0));
+        }
+        else if (trickster.Rank == 16)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 2));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 10, 0));
+        }
+        else if (trickster.Rank == 17)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 10, 0));
+        }
+        else if (trickster.Rank == 18)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 1));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 10, 0));
+        }
+        else if (trickster.Rank == 18)
+        {
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 2));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 10, 0));
+        }
+        else
+        {
+            trickster.Rank = 20;
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 7, 0));
+
+            trickster.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 11, 0));
+        }
+
+        trickster.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, trickster.Rank * 6, 0));
     }
 
     // sage's attributes based on rank
@@ -204,11 +428,11 @@ namespace BloodSword::Generate
 
         if (sage.Rank <= 2)
         {
+            sage.Rank = 2;
+
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
-
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 10, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 0));
 
@@ -220,8 +444,6 @@ namespace BloodSword::Generate
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 7, 0));
 
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 15, 0));
-
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 1));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 6, 0));
@@ -231,8 +453,6 @@ namespace BloodSword::Generate
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
-
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 20, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 2));
 
@@ -244,8 +464,6 @@ namespace BloodSword::Generate
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
 
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 25, 0));
-
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
@@ -255,8 +473,6 @@ namespace BloodSword::Generate
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
-
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 30, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 1));
 
@@ -268,8 +484,6 @@ namespace BloodSword::Generate
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
 
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 35, 0));
-
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 2));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
@@ -280,12 +494,134 @@ namespace BloodSword::Generate
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
 
-            sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 40, 0));
-
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
 
             sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
+        else if (sage.Rank == 9)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 1));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (sage.Rank == 10)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 2));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (sage.Rank == 11)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (sage.Rank == 12)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 1));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (sage.Rank == 13)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 2));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (sage.Rank == 14)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (sage.Rank == 15)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 1));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (sage.Rank == 16)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 2));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (sage.Rank == 17)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (sage.Rank == 18)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 1));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (sage.Rank == 19)
+        {
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 6, 2));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else
+        {
+            sage.Rank = 20;
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 10, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 7, 0));
+
+            sage.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 10, 0));
+        }
+
+        sage.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, sage.Rank * 5, 0));
     }
 
     // enchanter's attributes based on rank
@@ -298,11 +634,11 @@ namespace BloodSword::Generate
 
         if (enchanter.Rank <= 2)
         {
+            enchanter.Rank = 2;
+
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 6, 0));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
-
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 10, 0));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, -1));
 
@@ -314,8 +650,6 @@ namespace BloodSword::Generate
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
 
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 15, 0));
-
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 0));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 6, 0));
@@ -325,8 +659,6 @@ namespace BloodSword::Generate
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
-
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 20, 0));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 1));
 
@@ -338,8 +670,6 @@ namespace BloodSword::Generate
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
 
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 25, 0));
-
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 2));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
@@ -349,8 +679,6 @@ namespace BloodSword::Generate
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 7, 0));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
-
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 30, 0));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 1, 3));
 
@@ -362,8 +690,6 @@ namespace BloodSword::Generate
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 8, 0));
 
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 35, 0));
-
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 1));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
@@ -374,12 +700,134 @@ namespace BloodSword::Generate
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
 
-            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, 40, 0));
-
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 2));
 
             enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
         }
+        else if (enchanter.Rank == 9)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 2, 3));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (enchanter.Rank == 10)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (enchanter.Rank == 11)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 1));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 7, 0));
+        }
+        else if (enchanter.Rank == 12)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 2));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (enchanter.Rank == 13)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 3, 3));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (enchanter.Rank == 14)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 8, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (enchanter.Rank == 15)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 1));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (enchanter.Rank == 16)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 2));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (enchanter.Rank == 17)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 4, 3));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 8, 0));
+        }
+        else if (enchanter.Rank == 18)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else if (enchanter.Rank == 19)
+        {
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 10, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 1));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+        else
+        {
+            enchanter.Rank = 20;
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::FIGHTING_PROWESS, 9, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::PSYCHIC_ABILITY, 11, 0));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::DAMAGE, 5, 2));
+
+            enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::AWARENESS, 9, 0));
+        }
+
+        enchanter.Attributes.push_back(Attribute::Base(Attribute::Type::ENDURANCE, enchanter.Rank * 5, 0));
     }
 
     // set character-specific skills
