@@ -205,6 +205,7 @@ namespace BloodSword::Interface
 
     void LogSpellFailure(Character::Base &caster, Spells::Type spell)
     {
+#if defined(DEBUG)
         if (!caster.HasCalledToMind(spell))
         {
             std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT CALLED TO MIND" << std::endl;
@@ -213,10 +214,12 @@ namespace BloodSword::Interface
         {
             std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE" << std::endl;
         }
+#endif
     }
 
     void LogOptions(Asset::List &assets, std::vector<int> &selection, std::string selected)
     {
+#if defined(DEBUG)
         if (selection.size() > 0)
         {
             selected += " (";
@@ -235,10 +238,12 @@ namespace BloodSword::Interface
 
             std::cerr << selected << std::endl;
         }
+#endif
     }
 
     void LogChoice(const char *message, Asset::Type asset, int selected, int size)
     {
+#if defined(DEBUG)
         std::cerr << "["
                   << message
                   << " "
@@ -248,10 +253,12 @@ namespace BloodSword::Interface
                   << "] [SIZE] "
                   << size
                   << std::endl;
+#endif
     }
 
     void LogPathToTarget(Point target, int path, int distance)
     {
+#if defined(DEBUG)
         std::cerr << "[TARGET ("
                   << target.X
                   << ", "
@@ -261,10 +268,12 @@ namespace BloodSword::Interface
                   << " [DIST] "
                   << distance
                   << std::endl;
+#endif
     }
 
     void LogMoveTargets(const char *type, Target::Type character, int src_id, int dst_id, int path, int valid, int avail)
     {
+#if defined(DEBUG)
         std::cerr << "["
                   << Target::Mapping[character]
                   << " "
@@ -281,6 +290,7 @@ namespace BloodSword::Interface
                   << " [VULN] "
                   << avail
                   << std::endl;
+#endif
     }
 
     void Initialize(const char *settings)
@@ -6634,10 +6644,12 @@ namespace BloodSword::Interface
 
             throw std::invalid_argument(error_message.c_str());
         }
+#if defined(DEBUG)
         else
         {
             std::cerr << "[LOADED] [MODULE: " << load << "]" << std::endl;
         }
+#endif
     }
 
     void LoadModules()
@@ -6772,8 +6784,9 @@ namespace BloodSword::Interface
                 Interface::GamesList.push_back(saveGame);
             }
         }
-
+#if defined(DEBUG)
         std::cerr << "[ INIT ] [MAX " << Interface::GamesList.size() << " GAMES]" << std::endl;
+#endif
     }
 
     // generate textures of book locations

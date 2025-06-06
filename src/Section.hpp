@@ -285,8 +285,9 @@ namespace BloodSword::Story
 
             ifs.close();
         }
-
+#if defined(DEBUG)
         std::cerr << "[LOADED] " << book.Sections.size() << " SECTIONS" << std::endl;
+#endif
     }
 
     void Load(std::string story)

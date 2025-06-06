@@ -574,6 +574,7 @@ namespace BloodSword::Engine
     // BloodSword Engine "Simple Intelligence Logger"
     void Log(const char *action, const char *attacker, const char *target, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
     {
+#if defined(DEBUG)
         std::cerr << "[" << attacker << "]"
                   << " [" << action << "]"
                   << " [" << target << "]";
@@ -601,6 +602,7 @@ namespace BloodSword::Engine
         }
 
         std::cerr << std::endl;
+#endif
     }
 
     // log enemy action and target
@@ -1251,8 +1253,9 @@ namespace BloodSword::Engine
         {
             if (Engine::IsAlive(party[i]) && party[i].Is(Character::Status::PARALYZED))
             {
+#if defined(DEBUG)
                 std::cerr << "[KILLED/PARALYZED " << Character::ClassMapping[party[i].Class] << "]" << std::endl;
-
+#endif
                 party[i].Value(Attribute::Type::ENDURANCE, 0);
             }
         }

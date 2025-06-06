@@ -48,7 +48,7 @@ namespace BloodSword::Input
                 // Open the controller and add it to our list
                 auto pad = SDL_GameControllerOpen(i);
 
-                if (SDL_GameControllerGetAttached(pad) != 1)
+                if (SDL_GameControllerGetAttached(pad) != SDL_TRUE)
                 {
                     std::cerr << "Game pad not attached! SDL_Error: " << SDL_GetError() << std::endl;
                 }

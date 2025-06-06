@@ -510,9 +510,9 @@ namespace BloodSword::Party
             // SEE: https://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
             auto result = !variable.empty() && std::find_if(variable.begin() + offset, variable.end(), [](unsigned char c)
                                                             { return !std::isdigit(c); }) == variable.end();
-
+#if defined(DEBUG)
             std::cerr << "[VARIABLE " << variable << "] IS " << (!result ? "NOT" : "") << " A NUMBER" << std::endl;
-
+#endif
             return result;
         }
 
@@ -520,9 +520,9 @@ namespace BloodSword::Party
         bool IsPresent(std::string variable)
         {
             auto result = !variable.empty() && BloodSword::Has(this->Variables, variable);
-
+#if defined(DEBUG)
             std::cerr << "[VARIABLE " << variable << "] IS " << (result ? "PRE" : "AB") << "SENT" << std::endl;
-
+#endif
             return result;
         }
 
@@ -536,26 +536,30 @@ namespace BloodSword::Party
                 if (variable == "PARTY")
                 {
                     value = std::to_string(this->Count());
-
+#if defined(DEBUG)
                     std::cerr << "[PARTY] ---> " << value << std::endl;
+#endif
                 }
                 else if (variable == "CHOSEN")
                 {
                     value = std::to_string(this->ChosenNumber);
-
+#if defined(DEBUG)
                     std::cerr << "[CHOSEN NUMBER] ---> " << value << std::endl;
+#endif
                 }
                 else if (this->IsPresent(variable))
                 {
                     value = this->Variables[variable];
-
+#if defined(DEBUG)
                     std::cerr << "[VARIABLE " << variable << "] ---> " << value << std::endl;
+#endif
                 }
                 else
                 {
-                    // may be a number of a string literal
+#if defined(DEBUG)
                     std::cerr << "[LITERAL] " << variable << std::endl;
-
+#endif
+                    // may be a number of a string literal
                     value = variable;
                 }
             }
@@ -573,8 +577,9 @@ namespace BloodSword::Party
                     if (this->IsANumber(value))
                     {
                         this->ChosenNumber = std::stoi(value, nullptr, 10);
-
+#if defined(DEBUG)
                         std::cerr << "[CHOSEN NUMBER] <--- " << value << std::endl;
+#endif
                     }
                 }
                 else if (variable == "PLAYER")
@@ -586,15 +591,17 @@ namespace BloodSword::Party
                         value = this->Members[index].Name;
 
                         this->Variables[variable] = value;
-
+#if defined(DEBUG)
                         std::cerr << "[VARIABLE PLAYER] <--- " << value << std::endl;
+#endif
                     }
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = value;
-
+#if defined(DEBUG)
                     std::cerr << "[VARIABLE " << variable << "] <--- " << value << std::endl;
+#endif
                 }
             }
         }
@@ -607,14 +614,16 @@ namespace BloodSword::Party
                 if (variable == "CHOSEN")
                 {
                     this->ChosenNumber = value;
-
+#if defined(DEBUG)
                     std::cerr << "[CHOSEN NUMBER] <--- " << value << std::endl;
+#endif
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = std::to_string(value);
-
+#if defined(DEBUG)
                     std::cerr << "[VARIABLE " << variable << "] <--- " << value << std::endl;
+#endif
                 }
             }
         }
@@ -648,9 +657,9 @@ namespace BloodSword::Party
                     value = this->ChosenNumber;
                 }
             }
-
+#if defined(DEBUG)
             std::cerr << "[NUMBER " << variable << "] ---> " << value << std::endl;
-
+#endif
             return value;
         }
 
@@ -658,9 +667,9 @@ namespace BloodSword::Party
         bool IsValid(std::vector<std::string> list, std::string item)
         {
             auto result = BloodSword::Has(list, item);
-
+#if defined(DEBUG)
             std::cerr << "[CHECK " << item << "] IS " << (result ? "VALID" : "INVALID") << std::endl;
-
+#endif
             return result;
         }
 
@@ -699,9 +708,9 @@ namespace BloodSword::Party
                         }
 
                         value_first = clamp ? std::max(0, value_first) : value_first;
-
+#if defined(DEBUG)
                         std::cerr << "[MATH] " << first << " " << operation << " " << second << " = " << value_first << std::endl;
-
+#endif
                         // set variable
                         this->Set(first, value_first);
                     }
@@ -732,8 +741,9 @@ namespace BloodSword::Party
                     {
                         result = (value_first != value_second);
                     }
-
+#if defined(DEBUG)
                     std::cerr << "[IF] " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
+#endif
                 }
             }
 
@@ -785,8 +795,9 @@ namespace BloodSword::Party
                     {
                         result = (value_first > value_second);
                     }
-
+#if defined(DEBUG)
                     std::cerr << "[IF] " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
+#endif
                 }
             }
 
@@ -799,11 +810,12 @@ namespace BloodSword::Party
             if (this->IsPresent(variable))
             {
                 this->Variables.erase(variable);
-
+#if defined(DEBUG)
                 if (!this->IsPresent(variable))
                 {
                     std::cerr << "[" << variable << "] REMOVED" << std::endl;
                 }
+#endif
             }
         }
     };
@@ -926,8 +938,9 @@ namespace BloodSword::Party
             party = Party::Initialize(data[std::string(name)]);
 
             ifs.close();
-
+#if defined(DEBUG)
             std::cerr << "[LOADED] " << std::to_string(party.Count()) << " characters" << std::endl;
+#endif
         }
 
         return party;

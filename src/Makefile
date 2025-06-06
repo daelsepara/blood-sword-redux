@@ -19,18 +19,18 @@ else
 	LINKER_FLAGS += -lstdc++fs
 endif
 
-all: clean blood-sword battle-board map
+all: clean blood-sword-test battle-board map
 
 map:
-	$(CC) -Wall $(BSWORD_MAP) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
+	$(CC) -Wall $(BSWORD_MAP) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT) -DDEBUG
 
-blood-sword:
-	$(CC) -Wall $(BSWORD_TEST) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT)
+blood-sword-test:
+	$(CC) -Wall $(BSWORD_TEST) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT) -DDEBUG
 
 battle-board:
-	$(CC) -Wall $(BSWORD_BATTLES) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_BATTLES_OUTPUT)
+	$(CC) -Wall $(BSWORD_BATTLES) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_BATTLES_OUTPUT) -DDEBUG
 
-clean-blood-sword:
+clean-blood-sword-test:
 	rm -f $(BSWORD_TEST_OUTPUT) *.o
 
 clean-battle-board:
@@ -39,4 +39,4 @@ clean-battle-board:
 clean-map:
 	rm -f $(BSWORD_MAP_OUTPUT) *.o
 
-clean: clean-blood-sword clean-battle-board clean-map
+clean: clean-blood-sword-test clean-battle-board clean-map

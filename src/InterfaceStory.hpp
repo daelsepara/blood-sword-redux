@@ -9,6 +9,7 @@ namespace BloodSword::Interface
     // log major story events
     void LogSectionHeader(const char *header, Book::Location location, bool newline = true)
     {
+#if defined(DEBUG)
         std::cerr << "["
                   << header
                   << "] "
@@ -18,14 +19,17 @@ namespace BloodSword::Interface
         {
             std::cerr << std::endl;
         }
+#endif
     }
 
     // log story search results
     void LogSearch(Book::Location location, int current)
     {
+#if defined(DEBUG)
         Interface::LogSectionHeader("FIND", location, false);
 
         std::cerr << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
+#endif
     }
 
     // render story section choices (if present)

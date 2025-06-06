@@ -877,8 +877,9 @@ namespace BloodSword::Items
                         Items::Defaults[item.Type] = item;
                     }
                 }
-
+#if defined(DEBUG)
                 std::cerr << "[LOADED] " << Items::Defaults.size() << " items" << std::endl;
+#endif
             }
 
             ifs.close();
@@ -914,8 +915,9 @@ namespace BloodSword::Items
                         Items::Descriptions[item] = description;
                     }
                 }
-
+#if defined(DEBUG)
                 std::cerr << "[LOADED] " << Items::Descriptions.size() << " descriptions" << std::endl;
+#endif
             }
 
             ifs.close();
