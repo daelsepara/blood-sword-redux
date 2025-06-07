@@ -4,6 +4,7 @@
         "number": 452
     },
     "text": "You saunter up to the booth. The three pennants flutter forlornly in the evening breeze. You return the cold stares of the magi's stewards with a scowl.",
+    "image_asset": "modules/default/images/sceptre.png",
     "choices": [
         {
             "text": "Take the olive-green pennant",

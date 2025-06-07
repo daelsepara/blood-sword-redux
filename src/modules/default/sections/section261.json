@@ -5,6 +5,7 @@
     },
     "text": "Magus Vyl prepares to attack. The gate slams shut as soon as Vyl moves forwards.",
     "battle": "modules/default/battles/battle261.json",
+    "image_asset": "modules/default/images/battles/battle261.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

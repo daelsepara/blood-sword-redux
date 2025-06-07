@@ -4,6 +4,7 @@
         "number": 390
     },
     "text": "He put a two this time.",
+    "image_asset": "modules/default/images/skulls.png",
     "events": [
         {
             "type": "SET",

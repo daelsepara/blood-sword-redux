@@ -5,6 +5,7 @@
     },
     "text": "Skrymir reaches towards you. You realise that he very probably the most awesome opponent you have ever faced. This is no longer just a contest, a game played for mere riches. You are fighting to stay alive.",
     "battle": "modules/default/battles/battle342.json",
+    "image_asset": "modules/default/images/battles/battle342.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

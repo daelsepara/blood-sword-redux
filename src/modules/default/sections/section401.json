@@ -4,6 +4,7 @@
         "number": 401
     },
     "text": "A man standing on the patio is wearing a bright green wig. Just passing him as you look is a burly bare-chested fellow dressed in bright scarlet pantaloons. A gaunt man disguised by violet face-paint sweeps his purple robe past you as he walks to the window. Hearing a bray of laughter, you turn to see a fat man in brown fustian telling jokes to several young women.\n\nWhom will you approach?",
+    "image_asset": "modules/default/images/dirge.png",
     "choices": [
         {
             "text": "... the man in the green wig",

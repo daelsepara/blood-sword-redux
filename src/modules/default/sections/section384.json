@@ -27,6 +27,7 @@
             ]
         }
     ],
+    "image_asset": "modules/default/images/sceptre.png",
     "next": [
         {
             "type": "NORMAL",

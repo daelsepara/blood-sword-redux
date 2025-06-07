@@ -5,6 +5,7 @@
     },
     "text": "You saunter over while the man is selecting a pastry from a tray. He was not expecting your attack. For some reason, no one else at the party comes to your aid.",
     "battle": "modules/default/battles/battle029.json",
+    "image_asset": "modules/default/images/battles/battle029.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

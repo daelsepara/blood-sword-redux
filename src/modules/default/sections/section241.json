@@ -5,6 +5,7 @@
     },
     "text": "(TRICKSTER) The guard is upon you as you draw your sword. \"Pah, so you fancy yourself in a fight, do you?\" he says, sneering. The crowds gather round as the combat begins, eager to see blood spilt.",
     "battle": "modules/default/battles/battle241.json",
+    "image_asset": "modules/default/images/battles/battle241.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

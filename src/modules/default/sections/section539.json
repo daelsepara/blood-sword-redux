@@ -5,6 +5,7 @@
     },
     "text": "He turns to regard you. Momentarily he seems utterly baffled. As he comes to his senses, a wave of black rage twists his mouth into a scowl. \"You dare interrupt Skrymir's millennial plans with your petty mortal concerns? I, who am Jarl of the Frost Giants, Brother to Glaciers, who have swept whole armies aside with my savage might? Truly, the folly of mortals is beyond belief!\"\n\nHe raises his right hand and makes a fist. You've seen smaller smaller battering-rams than that spiked fist. \"Very well, then,\" he says with a nasty smile. \"As you have restored Skrymir to life, and returned his gauntlet Doomgrip, he shall return the favour by granting you a swift death!\"\n\nYou cannot flee from Skrymir's wrath.",
     "battle": "modules/default/battles/battle539.json",
+    "image_asset": "modules/default/images/battles/battle539.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

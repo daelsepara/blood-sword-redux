@@ -4,6 +4,7 @@
         "number": 421
     },
     "text": "Using the fiercely burning braziers from either side of the shrine, it does not take you long to melt away the ice encasing the body. The body is perfectly preserved; the warrior looks as though he may have been sleeping all the time he has been encased in the ice.\n\nHe has a LEATHER ARMOUR but no weapon.",
+    "image_asset": "modules/default/images/sceptre.png",
     "items": [
         {
             "attributes": {

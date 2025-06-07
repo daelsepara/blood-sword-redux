@@ -4,6 +4,7 @@
         "number": 352
     },
     "text": "(SAGE) You recognise a small glyph etched into the back.\n\n[It is the symbol of Osiris, the Kaikuhuran god who returned from the dead. This amulet will restore the player who wears it to life the moment they are killed. Their ENDURANCE will be restored to its normal maximum score the instant it is reduced to zero. The scarab works only once for any given person, so when a player is restored to life in this way he must pass the item to someone else or discard it. If the scarab is put on to an already dead body it will restore that person to life but in this case it loses all its power permanently. Also, you must not put it on a decayed corpse or it will simply bring the deceased back as an undead wraith.]",
+    "image_asset": "modules/default/images/skulls.png",
     "items": [
         {
             "name": "EMERALD SCARAB",

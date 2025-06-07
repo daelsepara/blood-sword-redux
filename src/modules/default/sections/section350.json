@@ -4,6 +4,7 @@
         "number": 350
     },
     "text": "He shakes his head. You glance at the coins. After recovering for the next Spiral, you have three heads. Klef has two heads and three tails.",
+    "image_asset": "modules/default/images/dirge.png",
     "events": [
         {
             "type": "SET",

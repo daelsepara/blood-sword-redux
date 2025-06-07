@@ -4,6 +4,7 @@
         "number": 419
     },
     "text": "You can just about make out three lines of a rhyme carved into the weathered wood of the buoy. They read:\n\n\"As you are now, so once was I;\nWhere I am now, so you must go.\nHaul me up from where I lie...\"\n\nThere is a heavy iron chain attached through a link to the side of the buoy. It trails down deep into the lake. The gondolier seems disinclined to tarry here. You see his lean fingers twitching as he grips the oar.",
+    "image_asset": "modules/default/images/skulls.png",
     "choices": [
         {
             "text": "Tell him to go on",

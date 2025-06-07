@@ -4,6 +4,7 @@
         "number": 324
     },
     "text": "A dip in the black lake is not an inviting prospect, but you have no choice. You shrug off all your armour and discard it before wading out.\n\nThe water is biting cold. You also get a taste of it as you swim across, and it is unpleasantly brackish. Ignoring one dank, eerie, side tunnel that looks a particularly dangerous route, you eventually reach the far side of the lake and scramble up on to a rough stone jetty. Immersion in the lake exposed you to its baneful properties.",
+    "image_asset": "modules/default/images/skulls.png",
     "events": [
         {
             "type": "LOSE ARMOUR",

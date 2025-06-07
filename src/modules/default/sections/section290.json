@@ -4,6 +4,7 @@
         "number": 290
     },
     "text": "Recovery for the next Spiral leaves Klef with five heads and one tail. You are not far behind with five heads.",
+    "image_asset": "modules/default/images/dirge.png",
     "events": [
         {
             "type": "SET",

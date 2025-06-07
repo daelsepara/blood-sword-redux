@@ -5,6 +5,7 @@
     },
     "text": "The assassin hisses a curse. He cannot hurl his poisoned knife now that you are attacking him.",
     "battle": "modules/default/battles/battle366.json",
+    "image_asset": "modules/default/images/battles/battle366.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

@@ -4,6 +4,7 @@
         "number": 318
     },
     "text": "The dirges are screeching hungrily as they soar in to attack you. These dingy creatures fly on the up-draughts of hot foetid air rising from the geyser pools far below. You spare a glance of hatred for the hags who have gathered to watch your desperate battle. You see them cackling, but you cannot hear them over the noise of the river flooding down the gorge.",
+    "image_asset": "modules/default/images/sceptre.png",
     "choices": [
         {
             "text": "Use an item before the dirges close to attack",

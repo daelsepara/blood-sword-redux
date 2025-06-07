@@ -5,6 +5,7 @@
     },
     "text": "\"Reward?\" He turns an icy stare upon you. \"Yes, you shall have your reward. You shall have the honour of being swatted by Skrymir's hand, you mortal vermin!\"\n\nYou face a truly awesome opponent this time.",
     "battle": "modules/default/battles/battle133.json",
+    "image_asset": "modules/default/images/battles/battle133.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

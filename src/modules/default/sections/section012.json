@@ -14,6 +14,7 @@
         }
     ],
     "battle": "modules/default/battles/battle012.json",
+    "image_asset": "modules/default/images/battles/battle012.png",
     "next": [
         {
             "type": "NORMAL",

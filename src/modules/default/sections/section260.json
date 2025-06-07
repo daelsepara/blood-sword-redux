@@ -4,6 +4,7 @@
         "number": 260
     },
     "text": "After recovering for the next Spiral, he has two heads and four tails. You have three coins left, all showing heads. You know he now has to put down a one. He does it openly having no other alternative.",
+    "image_asset": "modules/default/images/dirge.png",
     "events": [
         {
             "type": "SET",

@@ -4,6 +4,7 @@
         "number": 372
     },
     "text": "The moment you enter into the alcove, you turn into stone.",
+    "image_asset": "modules/default/images/sceptre.png",
     "background": [
         {
             "type": "KILL PLAYER",

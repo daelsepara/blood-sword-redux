@@ -5,6 +5,7 @@
     },
     "text": "You rush down the narrow path that leads to the platform. The DIRGES caw angrily and veer to inctercept you. You just reach the ledge as they close to attack.",
     "battle": "modules/default/battles/battle407.json",
+    "image_asset": "modules/default/images/battles/battle407.png",
     "next": [
         {
             "type": "TEXTBOX",

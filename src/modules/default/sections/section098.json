@@ -4,6 +4,7 @@
         "number": 98
     },
     "text": "Now that the show is over, the disgusting hags lope back to their cauldrons. You move across the terrace, feeling their rheumy eyes on you. Their repulsive familiars rush about under your feet -- rotting crows with eyes dangling from sockets, yellow-fanged rats, warty malformed toads with human faces, scuttling objects that suggest entrails on legs. They clutch at your heels as you walk past, and you feel you would prefer to be back on the bridge fighting than endure this horror. The hags themselves crouch on the temple steps, gabbling to one another and shrieking with insane laughter.",
+    "image_asset": "modules/default/images/dirge.png",
     "background": [
         {
             "type": "LOSE STATUS",

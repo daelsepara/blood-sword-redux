@@ -5,6 +5,7 @@
     },
     "text": "His face contorts in rage. \"So be it, then!\" he snarls. \"Your stubborn stupidity will cost you dearly.\" He speaks a word of power, surrounding his body with crackling energy, then races forwards to attack.",
     "battle": "modules/default/battles/battle341.json",
+    "image_asset": "modules/default/images/battles/battle341.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

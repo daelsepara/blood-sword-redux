@@ -4,6 +4,7 @@
         "number": 87
     },
     "text": "The last of them falls to the floor. As he dies, he reaches out towards the FIRE-BURNT SKULL. His fingers twitch in front of the sightless ockets and he grunts something in the guttural Mercanian tongue. Then he dies. Examining their bodies, you find four BATTLE AXES, four BREASTPLATES, and twenty GOLD PIECES.",
+    "image_asset": "modules/default/images/skulls.png",
     "items": [
         {
             "name": "BATTLE AXE",

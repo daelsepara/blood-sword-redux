@@ -4,6 +4,7 @@
         "number": 485
     },
     "text": "The situation after recovering is that he has five heads and one tail. You have only four coins, all showing heads. Obviously he is in a better position than you -- and further recovery stands to make him stronger.",
+    "image_asset": "modules/default/images/sceptre.png",
     "events": [
         {
             "type": "SET",

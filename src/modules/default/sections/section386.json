@@ -5,6 +5,7 @@
     },
     "text": "You mount the dais. A sensation of dizziness overwhelms you. The cavern spins away into the darkness, and for a moment you are hurtling -- or drifting -- through a place of unreal colours and unheard-of melodies.\n\nYou are relieved a moment later to find your feet on solid ground again. The swirling lights fade away, revealing that you have been teleported to one end of a very long corridor.\n\nYou have no idea where in the Battlepits you now stand, but that is the least of your worries. You are surrounded by four NIGHT ELVES -- tall, slim beings with eerie sorcery at their fingertips. They are ready to fight you.",
     "battle": "modules/default/battles/battle386.json",
+    "image_asset": "modules/default/images/battles/battle386.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

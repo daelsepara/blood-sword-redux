@@ -4,6 +4,7 @@
         "number": 422
     },
     "text": "Each chess piece is sculpted with remarkable accuracy. The Levies are posturing dwarves with spears and over-large helmets. The Housecarls are depicted as stolid infantrymen with pikes. The Thegns are dashing figures in elegant armour -- an odd contrast to the sombre, sour-faced old Sacerdotes who stand beside them. The graven faces of the Lord and Lady almost shine with regal dignity.\n\nYou are not given much chance to admire the craftsmanship. A hail of arrows suddenly zings down all around you. Two find their target.",
+    "image_asset": "modules/default/images/skulls.png",
     "battle_events": [
         {
             "type": "DAMAGE PARTY",

@@ -5,6 +5,7 @@
     },
     "text": "They rush in towards you. There are four of them.",
     "battle": "modules/default/battles/battle491.json",
+    "image_asset": "modules/default/images/battles/battle491.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

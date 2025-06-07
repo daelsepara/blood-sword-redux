@@ -4,6 +4,7 @@
         "number": 131
     },
     "text": "You brandish the talisman. The baleful lava-light causes it to sparkle like the heart of a flame. The skiapyrs stop, wavering like guttering candles. \"The talisman,\" says one, its voice a suft susurration of air. \"We await your wishes.\"\n\n\"Slay the brigands that pursue us,\" you command. Instantly the skiapyrs turn upon the adventurers you fought a few moments ago. As they do, their fiery faces change from expressions of serene obedience to masks of hate. \"Slay the interlopers!\" they shriek, reaching out with white-hot claws. In moments, only charred bones and the stench of roasted flesh remain to show that the adventurers ever existed.\n\nNo, not only that. A second glance tells you that the adventurers dropped something -- an object that gleams like burnished gold in the light of the clustering skiapyrs. When you go to investigate you find a GILDED BRIDLE.",
+    "image_asset": "modules/default/images/sceptre.png",
     "items": [
         {
             "name": "GILDED BRIDLE",

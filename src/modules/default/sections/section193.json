@@ -4,6 +4,7 @@
         "number": 193
     },
     "text": "The silent ferryman conveys you across the water in his boat. Above, the roof of the cavern sweeps up to vast heights, where stalactites hang like the chandeliers in a great cathedral. You still cannot make out the limits of the lake, though you pear ahead into the gloom. The boat passes close to a buoy that bobs up and down, its wood chewed away by countless tides, and its iron fretwork deeply rusted.",
+    "image_asset": "modules/default/images/dirge.png",
     "choices": [
         {
             "text": "Ask the ferryman to stop beside the buoy",

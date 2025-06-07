@@ -5,6 +5,7 @@
     },
     "text": "\"Pretty good fighting,\" says a voice behind you as the last Skiapyr fades. \"I was wondering how we'd get past those fiery devils.\"\n\nIt is one of the adventurers you fled from before encountering the flame-demons. The delay gave them time to catch up with you. Now you must renew your battle.",
     "battle": "modules/default/battles/battle284.json",
+    "image_asset": "modules/default/images/battles/battle284.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

@@ -5,6 +5,7 @@
     },
     "text": "You reach the door and fling it open, only to find that you are now standing right in front of three wiry assassins dressed in jet-black tunics and face maks. They are standing over the blood-drenched body of a warrior that it would appear they have just slain.",
     "battle": "modules/default/battles/battle424.json",
+    "image_asset": "modules/default/images/battles/battle424.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

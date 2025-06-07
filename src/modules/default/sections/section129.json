@@ -5,6 +5,7 @@
     },
     "text": "Echidna slithers forwards across the marble floor to attack you.",
     "battle": "modules/default/battles/battle129.json",
+    "image_asset": "modules/default/images/battles/battle129.png",
     "choices": [
         {
             "text": "Run to the left exit",

@@ -5,6 +5,7 @@
     },
     "text": "The grizzled Tomb Ranger stands in front of you wielding the steel sceptre, which is now beginning to glow at the tip.",
     "battle": "modules/default/battles/battle367.json",
+    "image_asset": "modules/default/images/battles/battle367.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

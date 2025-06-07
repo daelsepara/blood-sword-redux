@@ -17,6 +17,7 @@
         }
     ],
     "battle": "modules/default/battles/battle502.json",
+    "image_asset": "modules/default/images/battles/battle502.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

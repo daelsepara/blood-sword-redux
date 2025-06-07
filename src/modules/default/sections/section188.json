@@ -4,6 +4,7 @@
         "number": 188
     },
     "text": "You emerge from the hall into a marble corridor. Directly ahead you see a bronze-bound door, but you soon discover that this is securely locked.",
+    "image_asset": "modules/default/images/dirge.png",
     "choices": [
         {
             "text": "Go left",
