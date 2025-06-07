@@ -1,0 +1,15 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 284
+        },
+        "conditions": [
+            "LAST BATTLE"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "modules/default/maps/map284.json",
+        "survivor_limit": 2
+    }
+}

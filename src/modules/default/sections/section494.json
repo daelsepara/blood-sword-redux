@@ -1,0 +1,58 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 494
+    },
+    "text": "(ENCHANTER) As you step through the waterfall, you feel a strange tingling. Emerging on the other side, you find that all your equipment has gone. Not a good start, you think, stepping out on to the bridge.\n\nA young woman moves forwards to the far end of the bridge, haughtily ignoring the hags, who play with her long tresses and chortle over her fine robes. \"I must slay you to prove the strength of my magic,\" she declares as she strides forwards.\n\n\"Do not be foolish, girl,\" you say as you advance to face her. \"I am no mumbling hedge-wizard, but one of the greatest sorcerers of Legend. Now, stand back and let me pass.\"\n\n\"No.\" She grits her teeth and swings her staff forwards.\n\nYou really have no choice but to fight her. No one else can do anything.",
+    "features": [
+        "TASK",
+        "TASK ENCHANTER"
+    ],
+    "battle": "modules/default/battles/battle494.json",
+    "events": [
+        {
+            "type": "TASK",
+            "variables": [
+                "ENCHANTER",
+                "CROSSED BRIDGE",
+                "SET",
+                "PROGRESS",
+                ""
+            ]
+        },
+        {
+            "type": "LOSE EVERYTHING",
+            "variables": [
+                "ENCHANTER"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TASK",
+            "variables": [
+                "ENCHANTER",
+                "CROSSED BRIDGE",
+                "SET",
+                "COMPLETE",
+                ""
+            ]
+        },
+        {
+            "type": "IS ALIVE",
+            "variables": [
+                "ENCHANTER",
+                "You reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
+                "TRUE",
+                "ACTIVE"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 88
+            }
+        }
+    ]
+}

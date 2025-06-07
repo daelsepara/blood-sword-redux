@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 73
+    },
+    "text": "After some time they come back. They are slightly wounded but seem to be in good spirits. \"That's better,\" says the red-bearded one. \"Now I've worked up a sweat.\"\n\n\"A sweat?\" guffaws one. \"Why, Torsvald, you must be getting old, by golly, if fighting little assassins gets you winded!\"\n\n\"Ho,\" laughs Torsvald, \"maybe I am, but maybe it's not sweat at all but the grease off those slippery little runts, eh?\"\n\nThis looks like a good moment to ambush them. You dislodge the grille and it falls on Torsvald's head. Too bad it didn't hit a vital spot. You drop in their midst. You are able to strike before they can collect their wits to fight.",
+    "battle": "modules/default/battles/battle073.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 251
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 506
+            }
+        }
+    ]
+}

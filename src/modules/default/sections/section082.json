@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 82
+    },
+    "text": "You ascend the steps to the balcony and runs straight into four bowmen crouching there in ambush. They wear red livery -- the champions of Magus Horg, you think. The two nearest jump up with swords in their hands, while the other two notch arrows on to their bowstrings.",
+    "battle": "modules/default/battles/battle082.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 281
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 48
+            }
+        }
+    ]
+}

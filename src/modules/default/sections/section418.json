@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 418
+    },
+    "text": "(WARRIOR) You are about to clash with a veteran tomb ranger of the dreaded Battalion of Torments in a ritual death-duel.",
+    "battle": "modules/default/battles/battle418.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 488
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 384
+            }
+        }
+    ]
+}

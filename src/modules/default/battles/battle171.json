@@ -1,0 +1,96 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 171
+        },
+        "conditions": [
+            "CANNOT FLEE",
+            "WARRIOR AWAY",
+            "SAGE AWAY",
+            "ENCHANTER AWAY",
+            "CLONE TRICKSTER",
+            "EXCLUDE OTHERS"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "modules/default/maps/map171.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "KALUGEN",
+                    "attributes": [
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 1
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": -1
+                        },
+                        {
+                            "maximum": 48,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 3,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 0
+                        }
+                    ],
+                    "called_to_mind": [
+                        "SWORDTHRUST"
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "HURONDUS",
+                    "rank": 0,
+                    "skills": [
+                        "SPELLS"
+                    ],
+                    "spell_strategy": [
+                        {
+                            "spell": "SWORDTHRUST",
+                            "uses": 1,
+                            "min": 1,
+                            "max": 4,
+                            "count": 1
+                        }
+                    ],
+                    "spells": [
+                        {
+                            "battle": true,
+                            "class": "BLASTING",
+                            "complexity": 2,
+                            "duration": -1,
+                            "ranged": true,
+                            "type": "SWORDTHRUST"
+                        }
+                    ],
+                    "target": "ENEMY"
+                }
+            ]
+        }
+    }
+}

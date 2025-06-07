@@ -1,0 +1,67 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 29
+        },
+        "ambush_rounds": 1,
+        "conditions": [
+            "AMBUSH PLAYER"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "modules/default/maps/map029.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "MAN IN BLUE",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 15,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 15
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "MAN IN BLUE",
+                    "rank": 0,
+                    "target": "MAN IN BLUE"
+                }
+            ]
+        }
+    }
+}

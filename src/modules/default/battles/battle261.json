@@ -1,0 +1,70 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 261
+        },
+        "conditions": [
+            "SKIP LOCATION"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "modules/default/maps/map261.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "MAGUS VYL",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 9,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 9
+                        },
+                        {
+                            "maximum": 9,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 9
+                        },
+                        {
+                            "maximum": 35,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 35
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 2,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 3,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 3
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "fight": "PARALYZING TOUCH",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "MAGUS VYL",
+                    "rank": 0,
+                    "skills": [
+                        "PARALYZING TOUCH"
+                    ],
+                    "target": "MAGUS VYL"
+                }
+            ]
+        }
+    }
+}

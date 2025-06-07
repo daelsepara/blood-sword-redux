@@ -1,0 +1,58 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 336
+    },
+    "text": "(WARRIOR) You step through the waterfall. As you do, an eerie magic takes effect. You look down to see that you have been stripped of all your equipment. Cursing, you step out on to the slender bridge.\n\nA figure pushes past the excited hags and advances on to the bridge at the far end. It is a slim youth carrying a broadsword. He walks quickly towards you, and when he draws close he says, \"If I defat you, I shall become a warrior to be respected and feared. Have at thee!\" Wit that, he lunges forward in a spirited but clumsy attack.",
+    "features": [
+        "TASK",
+        "TASK WARRIOR"
+    ],
+    "battle": "modules/default/battles/battle336.json",
+    "events": [
+        {
+            "type": "TASK",
+            "variables": [
+                "WARRIOR",
+                "CROSSED BRIDGE",
+                "SET",
+                "PROGRESS",
+                ""
+            ]
+        },
+        {
+            "type": "LOSE UNEQUIPPED",
+            "variables": [
+                "WARRIOR"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "TASK",
+            "variables": [
+                "WARRIOR",
+                "CROSSED BRIDGE",
+                "SET",
+                "COMPLETE",
+                ""
+            ]
+        },
+        {
+            "type": "IS ALIVE",
+            "variables": [
+                "WARRIOR",
+                "You reach the other side of the bridge and step on to the terrace. The hags glare at you but keep their distance.",
+                "TRUE",
+                "ACTIVE"
+            ]
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 88
+            }
+        }
+    ]
+}

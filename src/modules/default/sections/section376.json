@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 376
+    },
+    "text": "Issuing shrieks of unholy delight, they flit up the sheer walls of the crater towards you. For a moment you are almost petrified in terror, knowing the ghastly destructive power of these supernatural beings. But then your battle training reasserts itself, and you fall back into a combat stance. If the skiapyrs are indeed destined to slay you, at least they will not find you an easy prey.",
+    "battle": "modules/default/battles/battle376.json",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 223
+            }
+        }
+    ]
+}

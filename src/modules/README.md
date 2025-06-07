@@ -40,7 +40,7 @@
         "palette": 0,
         "items": "modules/default/items.json",
         "item_descriptions": "modules/default/item-descriptions.json",
-        "adventure": "books/book1.json",
+        "adventure": "modules/default/book.json",
         "characters": "modules/default/characters.json"
     }
 }
@@ -57,8 +57,11 @@
 
 Because it is the default module, all PNG images, WAV sound files, and Content are in these directories under root (src/):
 
-- **Battle definitions** battles/*
-- **Section texts**  books/book1/*
+- **Battle definitions** modules/default/battles/*
+- **Battle maps** modules/default/maps/*
+- **Adventure specific assets** modules/default/images/*
+- **Section texts**  modules/default/sections/*
 - **TTF font files** fonts/*
 - **PNG images (64 x 64)** images/*
-- **Battle maps** maps/*
+
+

@@ -1,0 +1,332 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 399
+        },
+        "ambush_rounds": 1,
+        "conditions": [
+            "AMBUSH NPC RANGED",
+            "SURVIVORS"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "modules/default/maps/map399.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "ASSASSIN",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 0,
+                    "name": "ASSASSIN",
+                    "rank": 0,
+                    "shoot": "SHURIKEN",
+                    "skills": [
+                        "SHURIKEN"
+                    ],
+                    "type": "ASSASSIN"
+                },
+                {
+                    "asset": "ASSASSIN",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 0,
+                    "name": "ASSASSIN",
+                    "rank": 0,
+                    "shoot": "SHURIKEN",
+                    "skills": [
+                        "SHURIKEN"
+                    ],
+                    "type": "ASSASSIN"
+                },
+                {
+                    "asset": "ASSASSIN",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 0,
+                    "name": "ASSASSIN",
+                    "rank": 0,
+                    "shoot": "SHURIKEN",
+                    "skills": [
+                        "SHURIKEN"
+                    ],
+                    "type": "ASSASSIN"
+                },
+                {
+                    "asset": "ASSASSIN",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 0,
+                    "name": "ASSASSIN",
+                    "rank": 0,
+                    "shoot": "SHURIKEN",
+                    "skills": [
+                        "SHURIKEN"
+                    ],
+                    "type": "ASSASSIN"
+                },
+                {
+                    "asset": "ASSASSIN",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 0,
+                    "name": "ASSASSIN",
+                    "rank": 0,
+                    "shoot": "SHURIKEN",
+                    "skills": [
+                        "SHURIKEN"
+                    ],
+                    "type": "ASSASSIN"
+                },
+                {
+                    "asset": "ASSASSIN",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 6,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 6
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 0,
+                    "name": "ASSASSIN",
+                    "rank": 0,
+                    "shoot": "SHURIKEN",
+                    "skills": [
+                        "SHURIKEN"
+                    ],
+                    "type": "ASSASSIN"
+                }
+            ]
+        }
+    }
+}

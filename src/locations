@@ -1,3 +1,3 @@
 #!/bin/bash
-grep -h "number\":" books/book1/section*.json | cut -d":" -f2 | sed "s/ *//" | sort -u
+grep -h "number\":" modules/default/sections/section*.json | cut -d":" -f2 | sed "s/ *//" | sort -u
 

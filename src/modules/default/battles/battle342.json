@@ -1,0 +1,62 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 342
+        },
+        "conditions": [
+            "CANNOT FLEE"
+        ],
+        "map": "modules/default/maps/map342.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "SKRYMIR THE GIANT",
+                    "attributes": [
+                        {
+                            "maximum": 9,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 9
+                        },
+                        {
+                            "maximum": 9,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 9
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 55,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 55
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 3,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 4,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 4
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "SKRYMIR THE GIANT",
+                    "target": "GIANT"
+                }
+            ]
+        }
+    }
+}

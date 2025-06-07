@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 314
+    },
+    "text": "In seconds they have caught up with you and you are fighting for survival among their swinging axe blades.\n\nWith the wall blocking your escape route, you cannot flee. This is a fight to the death.",
+    "battle": "modules/default/battles/battle314.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 234
+            }
+        }
+    ]
+}

@@ -1,0 +1,310 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 411
+        },
+        "conditions": [
+            "SKIP LOCATION"
+        ],
+        "map": "modules/default/maps/map411.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "SKIAPYR",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 10,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 10
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
+                    "target": "ENEMY"
+                },
+                {
+                    "asset": "SKIAPYR",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 10,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 10
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
+                    "target": "ENEMY"
+                },
+                {
+                    "asset": "SKIAPYR",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 10,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 10
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
+                    "target": "ENEMY"
+                },
+                {
+                    "asset": "SKIAPYR",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 10,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 10
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
+                    "target": "ENEMY"
+                },
+                {
+                    "asset": "SKIAPYR",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 10,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 10
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
+                    "target": "ENEMY"
+                },
+                {
+                    "asset": "SKIAPYR",
+                    "attributes": [
+                        {
+                            "maximum": 5,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 5
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": 7
+                        },
+                        {
+                            "maximum": 8,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 8
+                        },
+                        {
+                            "maximum": 10,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 10
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 0,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 1,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 1
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "SKIAPYR",
+                    "skills": [
+                        "IGNORE ARMOUR"
+                    ],
+                    "target": "ENEMY"
+                }
+            ]
+        }
+    }
+}

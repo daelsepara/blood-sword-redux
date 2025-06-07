@@ -1,0 +1,40 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 156
+    },
+    "text": "You come to a door and open it on to a scene of carnage. Two barbarians are just putting an end to a blood-splattered, black-robed assassin. Two other block-robed figures lie dead on the floor. The assassins presumably served another magus, but they don't seem to have been a match for the barbarians.\n\nJust as you burst into the room, the last of them, reacting instinctively, throws a shuriken at you. Even as he does so, a bone-shattering axe-blow levels him to the ground and the barbarians turn around to deal with you. You see the berserk fanaticism in their eyes and know that their two comrades will probably be racing down the corridor behind you even at this moment.",
+    "battle": "modules/default/battles/battle156.json",
+    "battle_events": [
+        {
+            "type": "DAMAGE PLAYER",
+            "variables": [
+                "FIRST",
+                "1",
+                "-1",
+                "FALSE",
+                "TRUE"
+            ]
+        }
+    ],
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 32
+            }
+        },
+        {
+            "type": "TEXTBOX",
+            "location": {
+                "book": "BOOK1",
+                "number": 354
+            },
+            "variables": [
+                "You go back to take the other corridor",
+                "INACTIVE"
+            ]
+        }
+    ]
+}

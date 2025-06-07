@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 473
+    },
+    "text": "As you square off for battle, the steward dives into the booth for safety.",
+    "battle": "modules/default/battles/battle473.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 52
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 164
+            }
+        }
+    ]
+}

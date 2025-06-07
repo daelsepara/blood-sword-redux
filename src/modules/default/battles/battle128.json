@@ -1,0 +1,71 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 128
+        },
+        "conditions": [
+            "CANNOT FLEE",
+            "WARRIOR AWAY",
+            "TRICKSTER AWAY",
+            "SAGE AWAY",
+            "CLONE ENCHANTER",
+            "EXCLUDE OTHERS"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "modules/default/maps/map128.json",
+        "opponents": {
+            "members": [
+                {
+                    "asset": "KNIGHT",
+                    "attributes": [
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "FIGHTING PROWESS",
+                            "value": 1
+                        },
+                        {
+                            "maximum": 9,
+                            "modifier": 0,
+                            "type": "PSYCHIC ABILITY",
+                            "value": -2
+                        },
+                        {
+                            "maximum": 7,
+                            "modifier": 0,
+                            "type": "AWARENESS",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 40,
+                            "modifier": 0,
+                            "type": "ENDURANCE",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 0,
+                            "modifier": 3,
+                            "type": "ARMOUR",
+                            "value": 0
+                        },
+                        {
+                            "maximum": 2,
+                            "modifier": 0,
+                            "type": "DAMAGE",
+                            "value": 0
+                        }
+                    ],
+                    "control_type": "NPC",
+                    "experience": 0,
+                    "encumbrance_limit": 10,
+                    "moves": 1000,
+                    "name": "GUILLARME",
+                    "rank": 0,
+                    "target": "ENEMY"
+                }
+            ]
+        }
+    }
+}

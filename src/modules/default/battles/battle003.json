@@ -1,0 +1,16 @@
+{
+    "battle": {
+        "location": {
+            "book": "BOOK1",
+            "number": 3
+        },
+        "conditions": [
+            "HEAL SURVIVORS",
+            "LAST BATTLE"
+        ],
+        "duration": -1,
+        "endurance": -1,
+        "map": "modules/default/maps/map003.json",
+        "survivor_limit": 4
+    }
+}

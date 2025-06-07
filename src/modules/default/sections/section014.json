@@ -1,0 +1,24 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 14
+    },
+    "text": "You are nearing the top of the steps leading up the inside of the Blue Tower. A guttural cry like the stalking growl of a great cat breaks through the sombre silence. A black-clad assassin creeps down the stairs towards you. He must have scaled the outside of the tower when you barred the outside.\n\nThe assassins have restored themselves by the use of herbal potions. Even worse, you hear a movement and see that Magus Vyl has risen from the dead once more and is right b ehind you! The situation looks bad.",
+    "battle": "modules/default/battles/battle014.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 226
+            }
+        },
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 513
+            }
+        }
+    ]
+}

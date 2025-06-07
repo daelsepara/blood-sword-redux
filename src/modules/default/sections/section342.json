@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 342
+    },
+    "text": "Skrymir reaches towards you. You realise that he very probably the most awesome opponent you have ever faced. This is no longer just a contest, a game played for mere riches. You are fighting to stay alive.",
+    "battle": "modules/default/battles/battle342.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 432
+            }
+        }
+    ]
+}

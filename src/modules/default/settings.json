@@ -7,7 +7,7 @@
         "palette": 0,
         "items": "modules/default/items.json",
         "item_descriptions": "modules/default/item-descriptions.json",
-        "adventure": "books/book1.json",
+        "adventure": "modules/default/book.json",
         "characters": "modules/default/characters.json",
         "ranks": "modules/default/ranks.json"
     }

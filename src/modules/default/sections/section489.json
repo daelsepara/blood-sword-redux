@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 489
+    },
+    "text": "The tunnel rises and the water quickly becomes too shallow for the gondola. You can now see the shingle of the lake bed. The gondolier lays down his oar and with an imperious gesture flings his cloak around his shoulders. As he does so both he and the boat vanish and you find yourself standing waist deep in the cold water. You now have no option but to wade up to the tunnel. Soon you see it opening out into a cavern and you begin to wade faster as you glimpse dry land inside it. Just as you reach the shore, though, you sense movement above you.\n\nGiant spiders are dropping out of their webs by the cavern entrance on top of you.",
+    "battle": "modules/default/battles/battle489.json",
+    "next": [
+        {
+            "type": "BATTLE VICTORY",
+            "location": {
+                "book": "BOOK1",
+                "number": 8
+            }
+        }
+    ]
+}

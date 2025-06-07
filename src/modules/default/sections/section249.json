@@ -1,0 +1,17 @@
+{
+    "location": {
+        "book": "BOOK1",
+        "number": 249
+    },
+    "text": "The walls of the passage bear a decorative frieze showing gladiators locked in bloody battle. At the end you find a set of steps leading down into a monumental subterranean amphiteatre. Tiers of seats sweep up on all sides. A shaft in the ceiling admits a wan flicker of bleak grey daylight.\n\nOn a low dais, a thin figure sits hunched over an onyx table. His robes seem like a pool of molten gold, and his skin is a rich ebony black. He looks up as you enter and pauses for a moment like the one who has just awakened from a very long sleep. Then he speaks: \"You have done well to come so far, though you are not the first. Now you must face a great challenge. Not a test of wits or wisdom, nor of swords or spells. You must beat me at a game.\"",
+    "image_asset": "modules/default/images/klef.png",
+    "next": [
+        {
+            "type": "NORMAL",
+            "location": {
+                "book": "BOOK1",
+                "number": 26
+            }
+        }
+    ]
+}
