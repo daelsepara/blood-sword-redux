@@ -13,6 +13,7 @@
                 "RUSTY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "RUSTY SWORD",
             "drops": true
         }

@@ -90,7 +90,7 @@ namespace BloodSword::Interface
                 Interface::MessageBox(graphics, background, quiver, Color::Highlight);
             }
         }
-        else if (Interface::CheckItemLimit(receiver) && (receiver.Items.size() < receiver.ItemLimit || receiver.ItemLimit == Items::Unlimited))
+        else if (Interface::CanReceive(receiver))
         {
             std::string message = receiver.Name + " TAKES THE " + source[id].Name;
 

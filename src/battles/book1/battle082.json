@@ -57,7 +57,7 @@
                     ],
                     "control_type": "NPC",
                     "experience": 0,
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "items": [
                         {
                             "name": "BOW",
@@ -67,6 +67,7 @@
                                 "EQUIPPED"
                             ],
                             "quantity": 1,
+                            "encumbrance": 1,
                             "type": "BOW"
                         },
                         {
@@ -79,6 +80,7 @@
                                 "CANNOT TRADE"
                             ],
                             "quantity": 40,
+                            "encumbrance": 1,
                             "type": "QUIVER"
                         }
                     ],
@@ -133,7 +135,7 @@
                     ],
                     "control_type": "NPC",
                     "experience": 0,
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "items": [
                         {
                             "name": "BOW",
@@ -143,6 +145,7 @@
                                 "EQUIPPED"
                             ],
                             "quantity": 1,
+                            "encumbrance": 1,
                             "type": "BOW"
                         },
                         {
@@ -155,6 +158,7 @@
                                 "CANNOT TRADE"
                             ],
                             "quantity": 40,
+                            "encumbrance": 1,
                             "type": "QUIVER"
                         }
                     ],
@@ -209,7 +213,7 @@
                     ],
                     "control_type": "NPC",
                     "experience": 0,
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "items": [
                         {
                             "name": "BOW",
@@ -219,6 +223,7 @@
                                 "EQUIPPED"
                             ],
                             "quantity": 1,
+                            "encumbrance": 1,
                             "type": "BOW"
                         },
                         {
@@ -231,6 +236,7 @@
                                 "CANNOT TRADE"
                             ],
                             "quantity": 40,
+                            "encumbrance": 1,
                             "type": "QUIVER"
                         }
                     ],
@@ -286,7 +292,7 @@
                     ],
                     "control_type": "NPC",
                     "experience": 0,
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "items": [
                         {
                             "name": "BOW",
@@ -296,6 +302,7 @@
                                 "EQUIPPED"
                             ],
                             "quantity": 1,
+                            "encumbrance": 1,
                             "type": "BOW"
                         },
                         {
@@ -308,6 +315,7 @@
                                 "CANNOT TRADE"
                             ],
                             "quantity": 40,
+                            "encumbrance": 1,
                             "type": "QUIVER"
                         }
                     ],

@@ -89,6 +89,9 @@ namespace BloodSword::Item
         // flag to see if it drops when used (e.g. thrown)
         bool Drops = false;
 
+        // For encumbrance checks
+        int Encumbrance = 1;
+
         // for specific targetting (damage rolls/modifiers)
         BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageTypes = {};
 
@@ -382,7 +385,7 @@ namespace BloodSword::Item
                     visible += !Item::IsInvisible(property) ? 1 : 0;
                 }
 
-                if (this->Attributes.size() > 0 || (this->Properties.size() > 0 && visible > 0) || this->Quantity > 1)
+                if (this->Attributes.size() > 0 || (this->Properties.size() > 0 && visible > 0) || this->Quantity > 1 || this->Encumbrance > 1)
                 {
                     auto stats = 0;
 
@@ -441,6 +444,16 @@ namespace BloodSword::Item
                         }
 
                         item_string += "QUANTITY: " + std::to_string(this->Quantity);
+                    }
+
+                    if (this->Encumbrance > 1)
+                    {
+                        if (stats > 0)
+                        {
+                            item_string += ", ";
+                        }
+
+                        item_string += "ENCUMBRANCE: " + std::to_string(this->Encumbrance);
                     }
 
                     item_string += ")";
@@ -527,6 +540,8 @@ namespace BloodSword::Item
         item.Contains = !data["contains"].is_null() ? Item::Map(std::string(data["contains"])) : Item::Type::NONE;
 
         item.Quantity = !data["quantity"].is_null() ? int(data["quantity"]) : 0;
+
+        item.Encumbrance = !data["encumbrance"].is_null() ? int(data["encumbrance"]) : 1;
 
         item.Limit = !data["limit"].is_null() ? int(data["limit"]) : Item::Unlimited;
 

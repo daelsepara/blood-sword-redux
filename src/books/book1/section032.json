@@ -12,6 +12,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
@@ -21,6 +22,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
@@ -30,6 +32,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
@@ -39,11 +42,13 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
             "name": "GOLD PIECES",
             "quantity": 20,
+            "encumbrance": 0,
             "type": "GOLD"
         },
         {
@@ -55,6 +60,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE BREASTPLATE"
         },
         {
@@ -66,6 +72,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE BREASTPLATE"
         },
         {
@@ -77,6 +84,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE BREASTPLATE"
         },
         {
@@ -88,6 +96,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE BREASTPLATE"
         },
         {
@@ -97,6 +106,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER"
         },
         {
@@ -106,6 +116,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER"
         },
         {
@@ -115,11 +126,13 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER"
         },
         {
             "name": "SHURIKEN",
             "quantity": 13,
+            "encumbrance": 1,
             "type": "SHURIKEN"
         },
         {
@@ -132,6 +145,7 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "revealed": false,
             "type": "BLACK LIQUID"
         }

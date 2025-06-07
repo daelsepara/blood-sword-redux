@@ -8,6 +8,7 @@
         {
             "name": "BLUE ICE JEWEL",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BLUE ICE JEWEL"
         }
     ],

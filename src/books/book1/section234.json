@@ -14,6 +14,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE ARMOUR"
         },
         {
@@ -25,6 +26,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE ARMOUR"
         },
         {
@@ -36,6 +38,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE ARMOUR"
         },
         {
@@ -47,6 +50,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE ARMOUR"
         },
         {
@@ -56,6 +60,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
@@ -65,6 +70,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
@@ -74,6 +80,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
@@ -83,11 +90,13 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
             "name": "GOLD PIECES",
             "quantity": 20,
+            "encumbrance": 0,
             "type": "GOLD"
         }
     ],

@@ -8,6 +8,7 @@
         {
             "name": "YELLOW SCROLL",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "YELLOW SCROLL",
             "description": {
                 "book": "BOOK1",

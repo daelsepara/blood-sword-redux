@@ -44,7 +44,7 @@
                 "class": "WARRIOR",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 10,
+                "encumbrance_limit": 10,
                 "items": [
                     {
                         "name": "SWORD",
@@ -54,6 +54,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "SWORD"
                     },
                     {
@@ -66,6 +67,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "CHAINMAIL"
                     },
                     {
@@ -77,6 +79,7 @@
                             "CANNOT TRADE"
                         ],
                         "quantity": 10,
+                        "encumbrance": 1,
                         "type": "POUCH"
                     },
                     {
@@ -90,6 +93,7 @@
                             "REQUIRES TARGET"
                         ],
                         "quantity": 4,
+                        "encumbrance": 1,
                         "type": "STEEL SCEPTRE",
                         "damage_types": {
                             "PLAYER": {
@@ -157,7 +161,7 @@
                 "class": "TRICKSTER",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 10,
+                "encumbrance_limit": 10,
                 "items": [
                     {
                         "name": "SWORD",
@@ -167,6 +171,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "SWORD"
                     },
                     {
@@ -177,6 +182,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "BOW"
                     },
                     {
@@ -189,6 +195,7 @@
                             "CANNOT TRADE"
                         ],
                         "quantity": 6,
+                        "encumbrance": 1,
                         "type": "QUIVER"
                     },
                     {
@@ -201,6 +208,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "LEATHER ARMOUR"
                     },
                     {
@@ -212,6 +220,7 @@
                             "CANNOT TRADE"
                         ],
                         "quantity": 10,
+                        "encumbrance": 1,
                         "type": "POUCH"
                     },
                     {
@@ -227,6 +236,7 @@
                             "RANGED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "DAGGER OF VISLET",
                         "damage_types": {
                             "NEBULARON": {
@@ -298,7 +308,7 @@
                 "class": "SAGE",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 10,
+                "encumbrance_limit": 10,
                 "items": [
                     {
                         "name": "QUARTERSTAFF",
@@ -308,6 +318,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "QUARTERSTAFF"
                     },
                     {
@@ -318,6 +329,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "BOW"
                     },
                     {
@@ -330,6 +342,7 @@
                             "CANNOT TRADE"
                         ],
                         "quantity": 6,
+                        "encumbrance": 1,
                         "type": "QUIVER"
                     },
                     {
@@ -342,6 +355,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "RINGMAIL"
                     },
                     {
@@ -353,6 +367,7 @@
                             "CANNOT TRADE"
                         ],
                         "quantity": 10,
+                        "encumbrance": 1,
                         "type": "POUCH"
                     }
                 ],
@@ -414,7 +429,7 @@
                 "class": "ENCHANTER",
                 "control_type": "PLAYER",
                 "experience": 250,
-                "item_limit": 10,
+                "encumbrance_limit": 10,
                 "items": [
                     {
                         "name": "SWORD",
@@ -424,6 +439,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "SWORD"
                     },
                     {
@@ -436,6 +452,7 @@
                             "EQUIPPED"
                         ],
                         "quantity": 1,
+                        "encumbrance": 1,
                         "type": "SILVER ARMOUR"
                     },
                     {
@@ -447,6 +464,7 @@
                             "CANNOT TRADE"
                         ],
                         "quantity": 10,
+                        "encumbrance": 1,
                         "type": "POUCH"
                     }
                 ],

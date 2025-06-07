@@ -8,11 +8,13 @@
         {
             "name": "BLUE ICE JEWEL",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BLUE ICE JEWEL"
         },
         {
             "name": "OCTAGONAL GLASS PRISM",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "OCTAGONAL GLASS PRISM"
         }
     ],

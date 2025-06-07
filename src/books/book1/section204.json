@@ -3,6 +3,7 @@
         {
             "name": "SILVER RING",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SILVER RING"
         }
     ],

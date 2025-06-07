@@ -11,6 +11,7 @@
                 "RESURRECTION"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "EMERALD SCARAB",
             "description": {
                 "book": "BOOK1",

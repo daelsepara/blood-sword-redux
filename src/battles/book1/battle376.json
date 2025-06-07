@@ -48,7 +48,7 @@
                         }
                     ],
                     "control_type": "NPC",
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "moves": 1000,
                     "name": "SKIAPYR",
                     "skills": [
@@ -97,7 +97,7 @@
                         }
                     ],
                     "control_type": "NPC",
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "moves": 1000,
                     "name": "SKIAPYR",
                     "skills": [
@@ -146,7 +146,7 @@
                         }
                     ],
                     "control_type": "NPC",
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "moves": 1000,
                     "name": "SKIAPYR",
                     "skills": [
@@ -195,7 +195,7 @@
                         }
                     ],
                     "control_type": "NPC",
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "moves": 1000,
                     "name": "SKIAPYR",
                     "skills": [
@@ -244,7 +244,7 @@
                         }
                     ],
                     "control_type": "NPC",
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "moves": 1000,
                     "name": "SKIAPYR",
                     "skills": [
@@ -293,7 +293,7 @@
                         }
                     ],
                     "control_type": "NPC",
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "moves": 1000,
                     "name": "SKIAPYR",
                     "skills": [

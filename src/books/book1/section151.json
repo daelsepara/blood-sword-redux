@@ -16,6 +16,7 @@
                 "REQUIRES TARGET"
             ],
             "quantity": 4,
+            "encumbrance": 1,
             "type": "STEEL SCEPTRE",
             "damage_types": {
                 "PLAYER": {

@@ -9,6 +9,7 @@
         {
             "name": "TALISMAN OF FLAME",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "TALISMAN OF FLAME"
         }
     ],

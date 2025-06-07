@@ -8,6 +8,7 @@
         {
             "name": "CASKET OF KALIUM",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "CASKET OF KALIUM"
         }
     ],

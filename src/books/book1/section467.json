@@ -12,22 +12,26 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "POTION OF HEALING",
             "revealed": true
         },
         {
             "name": "GILDED BRIDLE",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "GILDED BRIDLE"
         },
         {
             "name": "BLUE TOUCHSTONE",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BLUE TOUCHSTONE"
         },
         {
             "name": "LEAD RING",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "LEAD RING"
         },
         {
@@ -39,6 +43,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "LEATHER ARMOUR"
         }
     ],

@@ -8,6 +8,7 @@
         {
             "name": "SHURIKEN",
             "quantity": 7,
+            "encumbrance": 1,
             "type": "SHURIKEN"
         },
         {
@@ -17,6 +18,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER"
         },
         {
@@ -26,6 +28,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER"
         },
         {
@@ -35,6 +38,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER"
         },
         {
@@ -47,6 +51,7 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "revealed": false,
             "type": "BLACK LIQUID"
         }

@@ -8,6 +8,7 @@
         {
             "name": "IRON GAUNTLETS",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "IRON GAUNTLETS"
         }
     ],

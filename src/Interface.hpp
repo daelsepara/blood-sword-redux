@@ -5495,24 +5495,24 @@ namespace BloodSword::Interface
         return Interface::GetCharacter(control) != Character::Class::NONE;
     }
 
-    bool CheckItemLimit(Character::Base &character)
+    bool CheckEncumbranceLimit(Character::Base &character)
     {
-        return !Engine::IsAlive(character) || (character.ItemLimit == Items::Unlimited) || (character.Items.size() <= character.ItemLimit);
+        return !Engine::IsAlive(character) || (character.EncumbranceLimit == Items::Unlimited) || (character.TotalEncumbrance() <= character.EncumbranceLimit);
     }
 
     bool CanReceive(Character::Base &character)
     {
-        return !Engine::IsAlive(character) || (character.ItemLimit == Items::Unlimited) || (character.Items.size() < character.ItemLimit);
+        return Engine::IsAlive(character) && ((character.EncumbranceLimit == Items::Unlimited) || (character.TotalEncumbrance() < character.EncumbranceLimit));
     }
 
     // check party item limit
-    bool CheckItemLimit(Party::Base &party)
+    bool CheckEncumbranceLimit(Party::Base &party)
     {
         auto ok = true;
 
         for (auto i = 0; i < party.Count(); i++)
         {
-            ok &= Interface::CheckItemLimit(party[i]);
+            ok &= Interface::CheckEncumbranceLimit(party[i]);
         }
 
         return ok;

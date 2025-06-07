@@ -8,6 +8,7 @@
         {
             "name": "BRONZE KEY",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE KEY"
         }
     ],

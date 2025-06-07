@@ -8,6 +8,7 @@
         {
             "name": "GILDED BRIDLE",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "GILDED BRIDLE"
         }
     ],

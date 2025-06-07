@@ -15,6 +15,7 @@
                 "COMBAT"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BIRCH-BARK SCROLL"
         },
         {
@@ -24,6 +25,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SWORD"
         },
         {
@@ -33,6 +35,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SWORD"
         },
         {
@@ -42,6 +45,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SWORD"
         },
         {
@@ -51,6 +55,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SWORD"
         },
         {
@@ -60,6 +65,7 @@
                 "RANGED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BOW"
         },
         {
@@ -69,6 +75,7 @@
                 "RANGED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BOW"
         },
         {
@@ -78,6 +85,7 @@
                 "RANGED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BOW"
         },
         {
@@ -87,16 +95,19 @@
                 "RANGED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BOW"
         },
         {
             "name": "GOLD PIECES",
             "quantity": 12,
+            "encumbrance": 0,
             "type": "GOLD"
         },
         {
             "name": "ARROW",
             "quantity": 13,
+            "encumbrance": 0,
             "type": "ARROW"
         }
     ],

@@ -56,7 +56,7 @@ namespace BloodSword::Character
 
         int Rank = 0;
 
-        int ItemLimit = 10;
+        int EncumbranceLimit = 10;
 
         Spells::List SpellImmunity = {};
 
@@ -658,9 +658,21 @@ namespace BloodSword::Character
             return equipped;
         }
 
+        int TotalEncumbrance()
+        {
+            auto total = 0;
+
+            for (auto &item : this->Items)
+            {
+                total += item.Encumbrance;
+            }
+
+            return total;
+        }
+
         int SpaceLeft()
         {
-            return (this->ItemLimit - this->Items.size());
+            return (this->EncumbranceLimit - this->TotalEncumbrance());
         }
 
         int EquippedArmour()
@@ -883,7 +895,7 @@ namespace BloodSword::Character
 
         character.Moves = !data["moves"].is_null() ? int(data["moves"]) : BloodSword::MaximumMoves;
 
-        character.ItemLimit = !data["item_limit"].is_null() ? int(data["item_limit"]) : 10;
+        character.EncumbranceLimit = !data["encumbrance_limit"].is_null() ? int(data["encumbrance_limit"]) : 10;
 
         character.Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
 
@@ -978,7 +990,7 @@ namespace BloodSword::Character
 
         data["rank"] = character.Rank;
 
-        data["item_limit"] = character.ItemLimit;
+        data["encumbrance_limit"] = character.EncumbranceLimit;
 
         data["control_type"] = Character::ControlTypeMapping[character.ControlType];
 

@@ -1449,7 +1449,7 @@ namespace BloodSword::Interface
 
                     if (Engine::IsAlive(party))
                     {
-                        while (!Interface::CheckItemLimit(party))
+                        while (!Interface::CheckEncumbranceLimit(party))
                         {
                             Interface::ErrorMessage(graphics, overlay, Interface::MSG_ITEMS);
 

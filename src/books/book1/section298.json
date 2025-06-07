@@ -8,6 +8,7 @@
         {
             "name": "SHARP KNIFE",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "KNIFE"
         }
     ],

@@ -8,6 +8,7 @@
         {
             "name": "OCTAGONAL GLASS PRISM",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "OCTAGONAL GLASS PRISM"
         }
     ],

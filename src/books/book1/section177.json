@@ -43,6 +43,7 @@
                 "READABLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "VELLUM SCROLL"
         }
     ],

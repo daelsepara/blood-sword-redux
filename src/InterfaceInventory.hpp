@@ -185,7 +185,7 @@ namespace BloodSword::Interface
 
                     if (input == Controls::Type::BACK)
                     {
-                        if (Interface::CheckItemLimit(character))
+                        if (Interface::CheckEncumbranceLimit(character))
                         {
                             done = true;
 

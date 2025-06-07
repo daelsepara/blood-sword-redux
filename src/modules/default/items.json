@@ -3,6 +3,7 @@
         {
             "name": "SHURIKEN",
             "quantity": 7,
+            "encumbrance": 1,
             "type": "SHURIKEN"
         },
         {
@@ -12,6 +13,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "CRESCENTIUM STEEL SWORD"
         },
         {
@@ -24,12 +26,14 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "revealed": false,
             "type": "MAUVE LIQUID"
         },
         {
             "name": "SILVER RING",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SILVER RING"
         },
         {
@@ -39,6 +43,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SWORD"
         },
         {
@@ -51,6 +56,7 @@
                 "EQUIPPED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "CHAINMAIL"
         },
         {
@@ -62,6 +68,7 @@
                 "CANNOT TRADE"
             ],
             "quantity": 0,
+            "encumbrance": 1,
             "type": "POUCH"
         },
         {
@@ -71,6 +78,7 @@
                 "RANGED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BOW"
         },
         {
@@ -83,6 +91,7 @@
                 "CANNOT TRADE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "QUIVER"
         },
         {
@@ -94,6 +103,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "LEATHER ARMOUR"
         },
         {
@@ -103,6 +113,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "QUARTERSTAFF"
         },
         {
@@ -114,6 +125,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "RINGMAIL"
         },
         {
@@ -125,6 +137,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SILVER ARMOUR"
         },
         {
@@ -137,6 +150,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BLUTGETRANKER",
             "damage_modifiers": {
                 "GIANT": {
@@ -148,11 +162,13 @@
         {
             "name": "OPAL MEDALLION",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "OPAL MEDALLION"
         },
         {
             "name": "OCTAGONAL GLASS PRISM",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "OCTAGONAL GLASS PRISM"
         },
         {
@@ -166,6 +182,7 @@
                 "INVISIBLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "LOGE SKYRUNNER"
         },
         {
@@ -178,6 +195,7 @@
                 "READABLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "VELLUM SCROLL"
         },
         {
@@ -186,6 +204,7 @@
                 "EDIBLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "FOOD",
             "revealed": true
         },
@@ -200,6 +219,7 @@
                 "REQUIRES TARGET"
             ],
             "quantity": 4,
+            "encumbrance": 1,
             "type": "STEEL SCEPTRE",
             "damage_types": {
                 "PLAYER": {
@@ -221,16 +241,19 @@
         {
             "name": "BRONZE KEY",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE KEY"
         },
         {
             "name": "GREY PEARL",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "GREY PEARL"
         },
         {
             "name": "LARGE STAMPED GOLD COIN",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "LARGE STAMPED GOLD COIN"
         },
         {
@@ -239,6 +262,7 @@
                 "RESURRECTION"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "EMERALD SCARAB",
             "description": {
                 "book": "BOOK1",
@@ -259,6 +283,7 @@
                 "CANNOT DROP"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "JEWELLED SWORD"
         },
         {
@@ -268,6 +293,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BATTLE AXE"
         },
         {
@@ -279,6 +305,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE ARMOUR"
         },
         {
@@ -290,6 +317,7 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE BREASTPLATE"
         },
         {
@@ -305,6 +333,7 @@
                 "RANGED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER OF VISLET",
             "battle_descriptions": [
                 {
@@ -341,6 +370,7 @@
                 "number": 323
             },
             "quantity": 1,
+            "encumbrance": 1,
             "type": "GOLDEN SNUFF-BOX"
         },
         {
@@ -353,6 +383,7 @@
                 "ALL RANGES"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DRAGONLORD GEM",
             "battle_descriptions": [
                 {
@@ -373,6 +404,7 @@
         {
             "name": "RUBY RING",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "RUBY RING",
             "battle_descriptions": [
                 {
@@ -400,6 +432,7 @@
                 "COMBAT"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BIRCH-BARK SCROLL"
         },
         {
@@ -411,11 +444,13 @@
                 "ARMOUR"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "LEATHER JERKIN"
         },
         {
             "name": "BLUE ICE JEWEL",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BLUE ICE JEWEL"
         },
         {
@@ -426,6 +461,7 @@
                 "RUSTY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "RUSTY SWORD",
             "drops": true
         },
@@ -436,6 +472,7 @@
                 "DAMAGE": 1
             },
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE KNIFE",
             "properties": [
                 "WEAPON",
@@ -451,6 +488,7 @@
                 "CANNOT TRADE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "FIRE-BLACKENED SKULL"
         },
         {
@@ -459,6 +497,7 @@
                 "READABLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SCROLL: INVISIBILITY",
             "revealed": true
         },
@@ -469,6 +508,7 @@
                 "READABLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SCROLL: HEALING",
             "revealed": true
         },
@@ -478,6 +518,7 @@
                 "READABLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SCROLL: ADJUST",
             "revealed": true
         },
@@ -487,6 +528,7 @@
                 "READABLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SCROLL: TIME BLINK",
             "revealed": true
         },
@@ -496,6 +538,7 @@
                 "READABLE"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SCROLL: PRECOGNITION",
             "revealed": true
         },
@@ -509,6 +552,7 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "revealed": false,
             "type": "BLACK LIQUID"
         },
@@ -519,11 +563,13 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "DAGGER"
         },
         {
             "name": "SHARP KNIFE",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SHARP KNIFE"
         },
         {
@@ -534,17 +580,20 @@
                 "CONTAINER"
             ],
             "quantity": 4,
+            "encumbrance": 1,
             "type": "RING OF WARDING",
             "revealed": true
         },
         {
             "name": "CASKET OF KALIUM",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "CASKET OF KALIUM"
         },
         {
             "name": "TALISMAN OF FLAME",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "TALISMAN OF FLAME"
         },
         {
@@ -554,27 +603,32 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "POTION OF HEALING",
             "revealed": true
         },
         {
             "name": "GILDED BRIDLE",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "GILDED BRIDLE"
         },
         {
             "name": "BLUE TOUCHSTONE",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BLUE TOUCHSTONE"
         },
         {
             "name": "LEAD RING",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "LEAD RING"
         },
         {
             "name": "YELLOW SCROLL",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "YELLOW SCROLL",
             "description": {
                 "book": "BOOK1",
@@ -596,6 +650,7 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "revealed": false,
             "type": "CHIMERA-SPITTLE"
         },
@@ -609,6 +664,7 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "revealed": false,
             "type": "EFFERVESCENT LIQUID"
         },
@@ -619,6 +675,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "BRONZE MALLET"
         },
         {
@@ -627,6 +684,7 @@
                 "CANNOT DROP"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SKRYMIR'S SKULL"
         },
         {
@@ -635,6 +693,7 @@
                 "CANNOT DROP"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "FOSSILISED HEART"
         },
         {
@@ -643,6 +702,7 @@
                 "CANNOT DROP"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SKRYMIR'S RIB-CAGE"
         },
         {
@@ -651,6 +711,7 @@
                 "CANNOT DROP"
             ],
             "quantity": 1,
+            "encumbrance": 2,
             "type": "SKRYMIR'S ARMS"
         },
         {
@@ -659,11 +720,13 @@
                 "CANNOT DROP"
             ],
             "quantity": 1,
+            "encumbrance": 2,
             "type": "SKRYMIR'S LEGS"
         },
         {
             "name": "IRON GAUNTLETS",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "IRON GAUNTLETS"
         },
         {
@@ -672,6 +735,7 @@
                 "CANNOT DROP"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "EMBLEM OF VICTORY"
         },
         {
@@ -683,6 +747,7 @@
                 "ACCESSORY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "ENCHANTED BELT OF STRENGTH"
         },
         {
@@ -694,6 +759,7 @@
                 "ACCESSORY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SHIELDING CHARM"
         },
         {
@@ -703,6 +769,7 @@
                 "RANGED"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "MAGIC BOW",
             "damage_modifiers": {
                 "ENEMY": {
@@ -720,6 +787,7 @@
                 "ACCESSORY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "RING OF SORCERY"
         }
     ]

@@ -8,6 +8,7 @@
         {
             "name": "SHURIKEN",
             "quantity": 7,
+            "encumbrance": 1,
             "type": "SHURIKEN"
         },
         {
@@ -17,6 +18,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "CRESCENTIUM STEEL SWORD"
         },
         {
@@ -29,6 +31,7 @@
                 "LIQUID"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "revealed": false,
             "type": "MAUVE LIQUID"
         }

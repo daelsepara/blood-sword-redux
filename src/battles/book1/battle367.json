@@ -63,6 +63,7 @@
                                 "REQUIRES TARGET"
                             ],
                             "quantity": 4,
+                            "encumbrance": 1,
                             "type": "STEEL SCEPTRE",
                             "damage_types": {
                                 "PLAYER": {
@@ -82,7 +83,7 @@
                             "drops": true
                         }
                     ],
-                    "item_limit": 10,
+                    "encumbrance_limit": 10,
                     "moves": 1000,
                     "name": "RANGER",
                     "rank": 0,

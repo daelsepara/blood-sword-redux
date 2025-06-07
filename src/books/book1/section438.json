@@ -12,6 +12,7 @@
                 "PRIMARY"
             ],
             "quantity": 1,
+            "encumbrance": 1,
             "type": "SWORD"
         }
     ],

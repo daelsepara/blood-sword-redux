@@ -8,6 +8,7 @@
         {
             "name": "GREY PEARL",
             "quantity": 1,
+            "encumbrance": 1,
             "type": "GREY PEARL"
         }
     ],
