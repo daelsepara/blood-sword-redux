@@ -745,6 +745,8 @@ namespace BloodSword::Items
 
             row["quantity"] = item.Quantity;
 
+            row["encumbrance"] = item.Encumbrance;
+
             row["revealed"] = item.Revealed;
 
             if (Book::IsDefined(item.Description))
