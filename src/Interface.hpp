@@ -7336,7 +7336,7 @@ namespace BloodSword::Interface
             values.push_back(i);
         }
 
-        auto message = Book::IsDefined(party.Location) ? std::string(Book::Title[party.Location.first]) : std::string("BLOODSWORD ") + BloodSword::Version();
+        auto message = Story::CurrentBook.Title;
 
         auto done = false;
 
