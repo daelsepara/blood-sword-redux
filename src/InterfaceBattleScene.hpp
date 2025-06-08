@@ -237,6 +237,7 @@ namespace BloodSword::Interface
         return result;
     }
 
+    // center map on character (map object type, id)
     void Center(Battle::Base &battle, Map::Object character, int id)
     {
         auto src = battle.Map.Find(character, id);
@@ -248,6 +249,7 @@ namespace BloodSword::Interface
         battle.Map.CheckBounds();
     }
 
+    // highlight control (bottom)
     void HighlightControl(Scene::Base &scene, SDL_Texture *texture, Controls::Type control)
     {
         auto index = Controls::Find(scene.Controls, control);
@@ -291,13 +293,13 @@ namespace BloodSword::Interface
 #endif
     }
 
-    // generate status
+    // generate textures of party status
     BloodSword::Textures GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
     {
         return Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, in_battle);
     }
 
-    // generate stats
+    // regenerate textures stats
     void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, BloodSword::Textures &party_stats, BloodSword::Textures &party_status, BloodSword::Textures &enemy_stats, BloodSword::Textures &enemy_status)
     {
         BloodSword::Free(enemy_stats);
@@ -319,6 +321,7 @@ namespace BloodSword::Interface
         party_status = Interface::GenerateStatus(graphics, party);
     }
 
+    // setup overlay of battle actions
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size, bool ranged = false)
     {
         Controls::Collection controls = {};
@@ -615,6 +618,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // setup battle scene
     Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Scene::Elements &assets, Controls::List &controls, Point location)
     {
         auto num = int(assets.size() == controls.size() ? controls.size() : 0);
@@ -815,11 +819,13 @@ namespace BloodSword::Interface
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
 
+    // setup battle scene
     Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Character::Base &character, int id, Point origin, bool ranged = false)
     {
         return Interface::BattleScene(battle, party, Point(battle.Map.DrawX, battle.Map.DrawY + BloodSword::TileSize + BloodSword::Pad), character, id, origin, ranged);
     }
 
+    // drop any droppable items upon character's death
     void DropItemsOnDeath(Battle::Base &battle, Character::Base &character)
     {
         if (!Engine::IsAlive(character))
@@ -891,6 +897,7 @@ namespace BloodSword::Interface
         Interface::LogCombatants(party, "PLAYERS");
     }
 
+    // set enemy starting locations
     void SetEnemyLocations(Battle::Base &battle, Party::Base &party)
     {
         auto spawn = 0;
@@ -1509,6 +1516,7 @@ namespace BloodSword::Interface
         BloodSword::Free(&tactics);
     }
 
+    // select target (when using an item)
     Point SelectTarget(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, std::string action, Asset::Type asset, Controls::Type target_type)
     {
         // save a copy of the map

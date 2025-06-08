@@ -235,7 +235,7 @@ namespace BloodSword::Graphics
         }
     }
 
-    // draw a rectangle with thich borders on screen
+    // draw a rectangle with thick borders on screen
     void ThickRect(Graphics::Base &graphics, int w, int h, int x, int y, int color, int pts)
     {
         for (auto size = 0; size < pts; size++)

@@ -131,6 +131,7 @@ namespace BloodSword::Interface
 
     SDL_Texture *NoSpells = nullptr;
 
+    // dice assets
     Asset::List DICE = {
         Asset::Type::DICE1,
         Asset::Type::DICE2,
@@ -143,6 +144,7 @@ namespace BloodSword::Interface
 
     const int MaxBoxRow = 16;
 
+    // struct to hold results of using/consuming an item
     struct ItemResult
     {
         bool Update = false;
@@ -150,6 +152,7 @@ namespace BloodSword::Interface
         Book::Location Next = Book::Undefined;
     };
 
+    // struct to specify one damage gauntlet round
     struct Gauntlet
     {
         int Rounds = 1;
@@ -293,6 +296,7 @@ namespace BloodSword::Interface
 #endif
     }
 
+    // initialize settings from file
     void Initialize(const char *settings)
     {
         std::ifstream ifs(settings);
@@ -412,6 +416,7 @@ namespace BloodSword::Interface
         InitializeMessages(graphics);
     }
 
+    // load settings from file
     void LoadSettings(Graphics::Base &graphics, std::string settings_file)
     {
         // game settings
@@ -445,6 +450,7 @@ namespace BloodSword::Interface
         Party::Characters = Party::Load(Interface::Settings["characters"], "characters");
     }
 
+    // unload texture assets
     void UnloadAssets()
     {
         Sound::Free();
@@ -454,6 +460,7 @@ namespace BloodSword::Interface
         Interface::UnloadTextures();
     }
 
+    // reload settings
     void ReloadSettings(Graphics::Base &graphics, std::string settings_file)
     {
         Interface::UnloadAssets();
@@ -600,21 +607,25 @@ namespace BloodSword::Interface
         }
     }
 
+    // generate message textbox
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap, bool blur = true)
     {
         Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, blur);
     }
 
+    // generate message textbox
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap, bool blur = true)
     {
         Interface::TextBox(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, blur);
     }
 
+    // generate message textbox
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap, bool blur = true)
     {
         Interface::TextBox(graphics, scene, message.c_str(), border, wrap, blur);
     }
 
+    // generate message textbox
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap, bool blur = true)
     {
         Interface::TextBox(graphics, scene, message, Color::Active, wrap, blur);
@@ -784,6 +795,7 @@ namespace BloodSword::Interface
         return Interface::Map(map, party, enemies, num_bottom_buttons);
     }
 
+    // generate map overlay and reserve a number of buttons at the bottom
     Scene::Base Map(Map::Base &map, int num_bottom_buttons)
     {
         auto party = Party::Base();
@@ -1089,6 +1101,7 @@ namespace BloodSword::Interface
         return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, in_battle);
     }
 
+    // generate textures of character's class'
     BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
     {
         Graphics::TextList characters = {};
@@ -1103,6 +1116,7 @@ namespace BloodSword::Interface
         return Graphics::CreateText(graphics, characters);
     }
 
+    // generate textures of character's names
     BloodSword::Textures GenerateNameCaptions(Graphics::Base &graphics, Party::Base &party)
     {
         Graphics::TextList characters = {};
@@ -1115,18 +1129,6 @@ namespace BloodSword::Interface
         }
 
         return Graphics::CreateText(graphics, characters);
-    }
-
-    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, int captionw)
-    {
-        auto characters = Graphics::CreateText(
-            graphics,
-            {Graphics::RichText("WARRIOR", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("TRICKSTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("SAGE", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw),
-             Graphics::RichText("ENCHANTER", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, captionw)});
-
-        return characters;
     }
 
     // generate character skills
@@ -1377,6 +1379,7 @@ namespace BloodSword::Interface
         return labels;
     }
 
+    // generate texture of the character's stats
     SDL_Surface *GenerateCharacterStats(Graphics::Base &graphics, Character::Base &character, int w)
     {
         auto surface_labels = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, StatsLabels().c_str(), Color::S(Color::Active), 0);
@@ -1503,6 +1506,7 @@ namespace BloodSword::Interface
         return surface;
     }
 
+    // generate texture of the entire party's stats
     SDL_Texture *GeneratePartyStats(Graphics::Base &graphics, Party::Base &party, int w)
     {
         // final texture
@@ -1569,6 +1573,7 @@ namespace BloodSword::Interface
         return texture;
     }
 
+    // generate texture of character stats
     SDL_Texture *CharacterStats(Graphics::Base &graphics, Character::Base &character, int w)
     {
         SDL_Texture *texture = nullptr;
@@ -1585,6 +1590,7 @@ namespace BloodSword::Interface
         return texture;
     }
 
+    // generate textures of party stats
     BloodSword::Textures PartyStats(Graphics::Base &graphics, Party::Base &party, int w)
     {
         auto textures = std::vector<SDL_Texture *>();
@@ -1599,6 +1605,7 @@ namespace BloodSword::Interface
         return textures;
     }
 
+    // generate texture of character
     SDL_Texture *CharacterBackgrounds(Graphics::Base &graphics, Character::Base &character, int w)
     {
         Graphics::RichText text;
@@ -1628,6 +1635,7 @@ namespace BloodSword::Interface
         return Graphics::CreateText(graphics, text);
     }
 
+    // generate textures of character backgrounds
     BloodSword::Textures PartyBackgrounds(Graphics::Base &graphics, Party::Base &party, int w)
     {
         auto textures = std::vector<SDL_Texture *>();
@@ -2073,6 +2081,7 @@ namespace BloodSword::Interface
         return overlay;
     }
 
+    // generate list of characters
     Scene::Base CharacterList(Point origin, int w, int h, Party::Base &party, Uint32 background, Uint32 border, int border_size, Controls::Type button, Asset::Type asset)
     {
         auto pad = BloodSword::QuarterTile;
@@ -2708,6 +2717,7 @@ namespace BloodSword::Interface
         return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, asset, in_battle);
     }
 
+    // test character [ATTRIBUTE]
     bool Test(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Attribute::Type attribute)
     {
         auto w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
@@ -3088,6 +3098,7 @@ namespace BloodSword::Interface
         return character_class;
     }
 
+    // enums for character selection mode
     enum class Mode
     {
         NONE = -1,
@@ -3097,6 +3108,7 @@ namespace BloodSword::Interface
         ITEMS
     };
 
+    // select charcter (modal)
     Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, const char *message, Interface::Mode mode, bool back = true, bool blur = true)
     {
         auto character = Character::Class::NONE;
@@ -3248,6 +3260,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // show [ITEM]'s book description
     void ShowBookDescription(Graphics::Base &graphics, Scene::Base &background, Item::Type item)
     {
         if (item != Item::Type::NONE && Items::FoundDescription(item))
@@ -3347,6 +3360,7 @@ namespace BloodSword::Interface
         return result;
     }
 
+    // show confirm dialog window
     bool Confirm(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
         return Interface::Confirm(graphics, scene, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), background, border, border_size, highlight, blur);
@@ -3381,21 +3395,25 @@ namespace BloodSword::Interface
         return result;
     }
 
+    // show confirm textbox dialog window
     bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, const char *message, int wrap)
     {
         return Interface::TextBoxConfirm(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
     }
 
+    // show confirm textbox dialog window
     bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, std::string message, int wrap)
     {
         return Interface::TextBoxConfirm(graphics, scene, message.c_str(), wrap);
     }
 
+    // show confirm textbox dialog window
     bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, const char *message, Uint32 border, int wrap)
     {
         return Interface::TextBoxConfirm(graphics, scene, Fonts::Normal, message, wrap, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, border, BloodSword::Border, Color::Active, true);
     }
 
+    // show confirm textbox dialog window
     bool TextBoxConfirm(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border, int wrap)
     {
         return Interface::TextBoxConfirm(graphics, scene, message.c_str(), border, wrap);
@@ -3570,7 +3588,7 @@ namespace BloodSword::Interface
         return choice;
     }
 
-    // choose a character
+    // choose a character (with set rank)
     Character::Class SelectRankedCharacter(Graphics::Base &graphics, int rank, Party::Base &current_party)
     {
         auto character_class = Character::Class::NONE;
@@ -4104,6 +4122,7 @@ namespace BloodSword::Interface
         return Interface::CreateParty(graphics, Book::Ranks[book], blur);
     }
 
+    // get text from user input (popup interface)
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, Point location, std::string question, std::string start_text, Uint32 question_color, Uint32 input_color, int input_limit, int box_w, int box_h, Uint32 border = Color::Active, Uint32 box_bg = Color::Background, int border_size = BloodSword::Border, bool blur = true)
     {
         auto message = Graphics::CreateText(graphics, question.c_str(), Fonts::Normal, Color::S(question_color), TTF_STYLE_NORMAL, 0);
@@ -4195,6 +4214,7 @@ namespace BloodSword::Interface
         return input_text;
     }
 
+    // get text from user input (popup interface)
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, int input_limit, int box_w, int box_h, bool blur = true)
     {
         auto location = (Point(graphics.Width, graphics.Height) - Point(box_w, box_h)) / 2;
@@ -4202,11 +4222,13 @@ namespace BloodSword::Interface
         return Interface::TextInput(graphics, background, location, question, "", Color::Inactive, Color::Active, input_limit, box_w, box_h, Color::Active, Color::Background, BloodSword::Border, blur);
     }
 
+    // get text from user input (popup interface)
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, int box_w, int box_h, bool blur = true)
     {
         return Interface::TextInput(graphics, background, question, (BloodSword::QuarterTile + BloodSword::SmallPad), box_w, box_h, blur);
     }
 
+    // get text from user input (popup interface)
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, bool blur = true)
     {
         auto box_w = (int(question.size()) > BloodSword::QuarterTile) ? (int(question.size()) * BloodSword::QuarterTile) : (BloodSword::TileSize * 5);
@@ -4214,6 +4236,7 @@ namespace BloodSword::Interface
         return Interface::TextInput(graphics, background, question, box_w, (BloodSword::TileSize * 2 - BloodSword::Pad), blur);
     }
 
+    // get text from user input (popup interface)
     std::string TextInput(Graphics::Base &graphics, std::string question, bool blur = true)
     {
         auto background = Scene::Base();
@@ -4221,6 +4244,7 @@ namespace BloodSword::Interface
         return Interface::TextInput(graphics, background, question, blur);
     }
 
+    // get text from list of internal string messages
     std::string GetText(const int message)
     {
         auto text = std::string();
@@ -4252,6 +4276,7 @@ namespace BloodSword::Interface
         Interface::MessageBox(graphics, background, Graphics::RichText(message.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, 4, Color::Highlight, false);
     }
 
+    // not implemented yet error message
     void NotImplemented(Graphics::Base &graphics, Scene::Base &overlay)
     {
         Interface::Notify(graphics, overlay, Interface::MSG_IMPLEMENT);
@@ -4464,6 +4489,7 @@ namespace BloodSword::Interface
         return Interface::GetNumber(graphics, background, message, origin, popup_w, popup_h, minimum, maximum, target, increase, decrease, cancel);
     }
 
+    // heal party interface
     void Heal(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, bool blur = true)
     {
         if (character.Has(Skills::Type::HEALING))
@@ -4869,6 +4895,7 @@ namespace BloodSword::Interface
         return overlay;
     }
 
+    // icons select popup interface
     std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, Asset::List assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true)
     {
         auto selected_symbols = std::vector<int>();
@@ -5052,6 +5079,7 @@ namespace BloodSword::Interface
         return selected_symbols;
     }
 
+    // helper string function (party/character is dead)
     std::string DeathMessage(Party::Base &party)
     {
         auto death = std::string();
@@ -5068,6 +5096,7 @@ namespace BloodSword::Interface
         return death;
     }
 
+    // stake a [QUANTITY] of an [ITEM]
     bool StakeQuantity(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type to_stake, Asset::Type stake_asset)
     {
         auto proceed = false;
@@ -5150,6 +5179,7 @@ namespace BloodSword::Interface
         return proceed;
     }
 
+    // collect money into a pool
     bool Collect(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Item::Type to_collect, Asset::Type collect_asset, int min_collect, int max_collect)
     {
         auto proceed = false;
@@ -5398,6 +5428,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // select character interface (with specific mode)
     Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable, std::string message, Interface::Mode mode = Interface::Mode::NONE)
     {
         auto character_string = Engine::ToUpper(variable);
@@ -5468,11 +5499,13 @@ namespace BloodSword::Interface
         return character;
     }
 
+    // select character interface
     Character::Class SelectCharacter(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, std::string variable, Interface::Mode mode = Interface::Mode::NONE)
     {
         return Interface::SelectCharacter(graphics, background, party, variable, "SELECT PLAYER", mode);
     }
 
+    // get character class mapped to control type
     Character::Class GetCharacter(Controls::Type control)
     {
         auto character = Character::Class::NONE;
@@ -5490,16 +5523,19 @@ namespace BloodSword::Interface
         return character;
     }
 
+    // check if control type is a character control
     bool IsCharacter(Controls::Type control)
     {
         return Interface::GetCharacter(control) != Character::Class::NONE;
     }
 
+    // check character's encumbrance limit
     bool CheckEncumbranceLimit(Character::Base &character)
     {
         return !Engine::IsAlive(character) || (character.EncumbranceLimit == Items::Unlimited) || (character.TotalEncumbrance() <= character.EncumbranceLimit);
     }
 
+    // check if character can receive
     bool CanReceive(Character::Base &character)
     {
         return Engine::IsAlive(character) && ((character.EncumbranceLimit == Items::Unlimited) || (character.TotalEncumbrance() < character.EncumbranceLimit));
@@ -5518,6 +5554,7 @@ namespace BloodSword::Interface
         return ok;
     }
 
+    // check if anyone in the party can receive an item
     bool CanReceive(Party::Base &party)
     {
         auto ok = false;
@@ -5917,6 +5954,7 @@ namespace BloodSword::Interface
         return Interface::DamageParty(graphics, background, party, rounds, 1, roll, modifier, ignore_armour, in_battle, display);
     }
 
+    // select dice/die interface
     Engine::RollResult SelectDice(Graphics::Base &graphics, Scene::Base &background, std::string message, int number)
     {
         auto result = Engine::RollResult();
@@ -5956,6 +5994,7 @@ namespace BloodSword::Interface
         return result;
     }
 
+    // select dice interface
     int SelectDice(Graphics::Base &graphics, Scene::Base &background, std::string message)
     {
         auto result = Interface::SelectDice(graphics, background, message, 1);
@@ -5963,6 +6002,7 @@ namespace BloodSword::Interface
         return result.Sum;
     }
 
+    // run one round of damage gauntlet
     void GauntletRound(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Gauntlet gauntlet, Asset::Type asset, std::string prefix)
     {
         auto wrap = BloodSword::TileSize * 6;
@@ -5990,6 +6030,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // run through a gauntlet of damage
     bool RunGauntlet(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Gauntlet gauntlet, Asset::Type asset, std::string prefix)
     {
         auto result = false;
@@ -6371,6 +6412,7 @@ namespace BloodSword::Interface
         BloodSword::Free(menu);
     }
 
+    // implement chaos (random) potion effect
     void ChaosEffect(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         if (Engine::IsAlive(character))
@@ -6616,6 +6658,7 @@ namespace BloodSword::Interface
         return system_clock::to_time_t(system_clock_timepoint);
     }
 
+    // load module settings
     void LoadModule(std::string load)
     {
         Interface::SettingsFile = std::string();
@@ -6652,6 +6695,7 @@ namespace BloodSword::Interface
 #endif
     }
 
+    // load modules list and select default
     void LoadModules()
     {
         Interface::Modules.clear();
@@ -6691,14 +6735,19 @@ namespace BloodSword::Interface
             ifs.close();
         }
 
-        if (Interface::Modules.size() == 0 || DefaultModule.empty())
+        if (Interface::Modules.size() == 0)
         {
             throw std::invalid_argument("No modules loaded!");
+        }
+        else if (DefaultModule.empty())
+        {
+            DefaultModule = Interface::Modules[0].Id;
         }
 
         Interface::LoadModule(DefaultModule);
     }
 
+    // return current module
     std::string CurrentModule()
     {
         auto current = std::string();
@@ -6726,7 +6775,7 @@ namespace BloodSword::Interface
         return current;
     }
 
-    // initialize save games list
+    // initialize games list
     void InitializeGamesList()
     {
         Interface::CreateDirectories();
@@ -6789,7 +6838,7 @@ namespace BloodSword::Interface
 #endif
     }
 
-    // generate textures of book locations
+    // generate textures of book locations from games list
     BloodSword::Textures GameLocations(Graphics::Base &graphics, std::vector<Book::Location> &locations, std::string undefined)
     {
         BloodSword::Textures textures = {};
@@ -6813,7 +6862,7 @@ namespace BloodSword::Interface
         return textures;
     }
 
-    // get book locations from saved games list
+    // get book locations from games list
     std::vector<Book::Location> GetGameLocations()
     {
         auto locations = std::vector<Book::Location>();
@@ -6828,7 +6877,7 @@ namespace BloodSword::Interface
         return locations;
     }
 
-    // timestamp textures
+    // generate game (file) timestamp textures from list of games
     BloodSword::Textures TimeStamps(Graphics::Base &graphics)
     {
         BloodSword::Textures timestamps = {};
@@ -6852,6 +6901,7 @@ namespace BloodSword::Interface
         return timestamps;
     }
 
+    // show completion message in a completed game
     void LoadCompletedGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto completion = party.Get("COMPLETION MESSAGE");
@@ -6910,6 +6960,7 @@ namespace BloodSword::Interface
         BloodSword::Free(&texture);
     }
 
+    // load or save a game (party information)
     bool LoadSaveGame(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Controls::Type mode, Asset::Type asset)
     {
         auto update = false;
@@ -7153,6 +7204,7 @@ namespace BloodSword::Interface
         return update;
     }
 
+    // adjust ranks based on experience points (should only be called on "good" endings)
     bool AdjustRanks(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto saved = false;
@@ -7304,6 +7356,7 @@ namespace BloodSword::Interface
         Story::Load(Interface::Settings["adventure"]);
     }
 
+    // show game menu (change battle order, load/save game)
     bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, bool &reload)
     {
         auto update = false;

@@ -483,7 +483,7 @@ namespace BloodSword::Party
 
             if (!data["cards"].is_null() && data["cards"].is_array() && data["cards"].size() > 0)
             {
-                this->Cards = Items::LoadDeck(data["cards"]);
+                this->Cards = Items::LoadHand(data["cards"]);
             }
 
             this->Variables.clear();
@@ -891,7 +891,7 @@ namespace BloodSword::Party
 
         if (party.Cards.size() > 0)
         {
-            data["cards"] = Items::DeckData(party.Cards);
+            data["cards"] = Items::HandData(party.Cards);
         }
 
         if (party.Variables.size() > 0)

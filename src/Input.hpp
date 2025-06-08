@@ -106,6 +106,7 @@ namespace BloodSword::Input
         }
     }
 
+    // render all scenes while waiting for input
     void RenderWhileWaiting(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true)
     {
         Graphics::Dialog(graphics, scenes, blur);
@@ -115,6 +116,7 @@ namespace BloodSword::Input
         Graphics::RenderNow(graphics);
     }
 
+    // render background and overlay while waiting for input
     void RenderWhileWaiting(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = true)
     {
         if (!is_dialog)
@@ -225,6 +227,7 @@ namespace BloodSword::Input
         return Input::WaitForText(graphics, {background, scene}, controls, input, blur, delay);
     }
 
+    // render all scenes and wait for input from specified controls set
     Controls::User WaitForInput(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         if (input.Text)
@@ -505,7 +508,7 @@ namespace BloodSword::Input
         return input;
     }
 
-    // render scene and overlays then wait for user input
+    // render scene and overlay then wait for user input
     Controls::User WaitForInput(Graphics::Base &graphics, Scene::Base &background, Scene::Base &scene, Controls::User input, bool is_dialog = false, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         auto &controls = is_dialog ? scene.Controls : background.Controls;
@@ -533,11 +536,13 @@ namespace BloodSword::Input
         return Input::IsValid(scene.Controls, input);
     }
 
+    // control type is player type
     bool IsPlayer(Controls::User &input)
     {
         return BloodSword::Has(Controls::Players, input.Type);
     }
 
+    // control type is enemy type
     bool IsEnemy(Controls::User &input)
     {
         return input.Type == Controls::Type::ENEMY;

@@ -3,8 +3,10 @@
 
 #include "InterfaceBattleScene.hpp"
 
+// in battle use of item
 namespace BloodSword::Interface
 {
+    // show item book description
     void ShowBattleDescription(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, int id)
     {
         auto &item = character.Items[id];
@@ -23,6 +25,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // process item effects in battle mode
     void BattleItemEffects(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id)
     {
         auto &item = character.Items[id];
@@ -96,6 +99,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // get item's target type and default to fallbacks
     Target::Type GetTargetType(Item::Base &item, Target::Type target)
     {
         auto type = Target::Type::NONE;
@@ -116,6 +120,7 @@ namespace BloodSword::Interface
         return type;
     }
 
+    // process targetted action
     bool TargetAction(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &character, int id, Point target)
     {
         auto used = false;

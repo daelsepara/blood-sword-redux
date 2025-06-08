@@ -170,7 +170,7 @@ namespace BloodSword::Interface
         return alive;
     }
 
-    // Fight helper function
+    // fight helper function
     void Fight(Graphics::Base &graphics, Scene::Base &background, Battle::Base &battle, Party::Base &party, Character::Base &attacker, int attacker_id, Character::Base &defender, int defender_id, Skills::Type melee)
     {
         auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
@@ -487,7 +487,7 @@ namespace BloodSword::Interface
         }
     }
 
-    // multiple targets
+    // resolve spell with multiple targets
     void ResolveSpell(Graphics::Base &graphics, Battle::Base &battle, Scene::Base &background, Character::Base &caster, Party::Base &targets, Spells::Type spell)
     {
         auto spellbook = caster.Find(spell);
@@ -552,6 +552,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // resolve ambush (round 0) attacks
     void RenderAmbushRangedAttack(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party)
     {
         // initialize random number generator
@@ -619,6 +620,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // select spell targets
     int SelectSpellTargets(Battle::Base &battle, Party::Base &party, Engine::Queue &spell_targets, Spells::Type spell)
     {
         auto target = Target::NotFound;
@@ -645,6 +647,7 @@ namespace BloodSword::Interface
         return target;
     }
 
+    // check if enemy character can cast spells
     bool CanCastSpells(Battle::Base &battle, Party::Base &party, Character::Base &caster, int caster_id)
     {
         auto cast = false;
@@ -921,6 +924,7 @@ namespace BloodSword::Interface
         return valid_target;
     }
 
+    // resolve enemy fights
     Engine::Queue EnemyFights(Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
     {
         // check if enemy can move towards the player-controlled characters

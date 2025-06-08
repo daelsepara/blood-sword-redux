@@ -32,6 +32,7 @@ namespace BloodSword::Item
         Damage(int value, int modifier, bool ignore_armour) : Value(value), Modifier(modifier), IgnoreArmour(ignore_armour) {}
     };
 
+    // item battle-specific book description
     class BattleDescription
     {
     public:
@@ -80,7 +81,7 @@ namespace BloodSword::Item
         // item delayed effects as sections
         Book::Location DelayedEffect = Book::Undefined;
 
-        // list of battlefield effects
+        // list of battlefield effects (descriptions)
         std::vector<Item::BattleDescription> BattleDescriptions = {};
 
         // flag to check if it's revealed (i.e. with the SAGE)
@@ -173,6 +174,7 @@ namespace BloodSword::Item
             return (this->Is(Property::CONTAINER) && (this->Contains == type) && (this->Quantity >= quantity) && ((this->Limit != Item::Unlimited && quantity >= 1) || this->Limit == Item::Unlimited));
         }
 
+        // [ITEM] is of [TYPE]
         bool Is(Item::Type item)
         {
             return (this->Type == item);
@@ -190,21 +192,25 @@ namespace BloodSword::Item
             return BloodSword::Has(this->Attributes, attribute);
         }
 
+        // [ITEM] has an effect
         bool HasEffect(Target::Type target)
         {
             return BloodSword::Has(this->TargetEffects, target);
         }
 
+        // [ITEM] has target-specific damage type
         bool HasDamageType(Target::Type target)
         {
             return BloodSword::Has(this->DamageTypes, target);
         }
 
+        // [ITEM] has target-specific damage modifiers
         bool HasDamageModifier(Target::Type target)
         {
             return BloodSword::Has(this->DamageModifiers, target);
         }
 
+        // [ITEM] has all of the [PROPERTIES]
         bool HasAll(Item::Properties properties)
         {
             auto has = true;
@@ -217,6 +223,7 @@ namespace BloodSword::Item
             return has;
         }
 
+        // [ITEM] has any of the [PROPERTIES]
         bool HasAny(Item::Properties properties)
         {
             auto has = false;
@@ -259,6 +266,7 @@ namespace BloodSword::Item
             return result;
         }
 
+        // is the [ITEM] charged? or does it have sufficient charge?
         bool IsCharged(Item::Type charge, int quantity)
         {
             return (this->Contains == charge && this->Quantity >= quantity);
@@ -327,6 +335,7 @@ namespace BloodSword::Item
             return !this->Has(property);
         }
 
+        // [PROPERTY] to [ITEM]
         bool Add(Item::Property property)
         {
             auto result = !this->Has(property);
@@ -353,16 +362,19 @@ namespace BloodSword::Item
             return result;
         }
 
+        // reveal item description
         void Reveal()
         {
             this->Revealed = true;
         }
 
+        // hide item description
         void Hide()
         {
             this->Revealed = false;
         }
 
+        // generrate string description with stats
         std::string String(bool newline = false)
         {
             auto item_string = this->Name;
@@ -469,6 +481,7 @@ namespace BloodSword::Item
         }
     };
 
+    // return requires (e.g. ammo/charge) for this [ITEM]
     Item::Type Requirements(Item::Type item, bool ranged = false)
     {
         auto requirement = Item::Type::NONE;
@@ -485,6 +498,7 @@ namespace BloodSword::Item
         return requirement;
     }
 
+    // get container for [ITEM]
     Item::Type Container(Item::Type item)
     {
         auto container = BloodSword::Find(Item::StorageRequirements, item);
@@ -492,6 +506,7 @@ namespace BloodSword::Item
         return container != Item::Type::NONE ? container : item;
     }
 
+    // load item attributes from json data
     BloodSword::IntMapping<Attribute::Type> LoadAttributes(nlohmann::json &data)
     {
         BloodSword::IntMapping<Attribute::Type> attributes = {};
@@ -509,6 +524,7 @@ namespace BloodSword::Item
         return attributes;
     }
 
+    // load item properties from json data
     Item::Properties LoadProperties(nlohmann::json &data)
     {
         auto properties = Item::Properties();
@@ -521,6 +537,7 @@ namespace BloodSword::Item
         return properties;
     }
 
+    // load item from json data
     Item::Base Load(nlohmann::json &data)
     {
         auto item = Item::Base();
@@ -655,6 +672,7 @@ namespace BloodSword::Item
     }
 }
 
+// functions and classes for handling items or group/list  of items
 namespace BloodSword::Items
 {
     // default stats/properties for in-game items
@@ -686,6 +704,7 @@ namespace BloodSword::Items
 
     std::vector<int> KalugenValues = {0, 1, 2, 3, 4};
 
+    // load [INVENTORY] from json data
     Items::Inventory Load(nlohmann::json &data)
     {
         auto items = Items::Inventory();
@@ -703,6 +722,7 @@ namespace BloodSword::Items
         return items;
     }
 
+    // generate [INVENTORY] json data
     nlohmann::json Data(Items::Inventory &items)
     {
         nlohmann::json data;
@@ -839,7 +859,8 @@ namespace BloodSword::Items
         return data;
     }
 
-    Items::Deck LoadDeck(nlohmann::json data)
+    // load player hand
+    Items::Deck LoadHand(nlohmann::json data)
     {
         auto deck = Items::Deck();
 
@@ -856,7 +877,8 @@ namespace BloodSword::Items
         return deck;
     }
 
-    nlohmann::json DeckData(Items::Deck &deck)
+    // generate json data for party hand of cards
+    nlohmann::json HandData(Items::Deck &deck)
     {
         nlohmann::json deck_list;
 
@@ -903,11 +925,13 @@ namespace BloodSword::Items
         }
     }
 
+    // load [ITEMS] defaults
     void LoadDefaults(std::string filename)
     {
         Items::LoadDefaults(filename.c_str());
     }
 
+    // load item descriptions from file
     void LoadDescriptions(const char *items)
     {
         // clear global map
@@ -941,21 +965,25 @@ namespace BloodSword::Items
         }
     }
 
+    // load item descriptions from file
     void LoadDescriptions(std::string items)
     {
         Items::LoadDescriptions(items.c_str());
     }
 
+    // this item has a default settings
     bool Found(Item::Type item)
     {
         return BloodSword::Has(Items::Defaults, item);
     }
 
+    // a description for this item is found
     bool FoundDescription(Item::Type item)
     {
         return BloodSword::Has(Items::Descriptions, item);
     }
 
+    // find [ITEM] which contains [TYPE]
     Items::Inventory::iterator Find(Items::Inventory &items, Item::Type container, Item::Type type)
     {
         auto result = items.end();
@@ -1013,6 +1041,7 @@ namespace BloodSword::Items
         return result;
     }
 
+    // add [ITEM] to inventory
     void Add(Items::Inventory &items, Item::Base item)
     {
         if (item.Type != Item::Type::NONE && item.Name.size() > 0)
@@ -1057,6 +1086,7 @@ namespace BloodSword::Items
         }
     }
 
+    // check if [ITEM] is in the [LIST]
     bool Included(Items::List list, Item::Type item)
     {
         auto included = false;

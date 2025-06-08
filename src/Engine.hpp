@@ -32,9 +32,10 @@ namespace BloodSword::Engine
         ScoreElement(Character::ControlType type, int id, int score) : Type(type), Id(id), Score(score) {}
     };
 
-    // Queue type
+    // queue data type
     typedef std::vector<Engine::ScoreElement> Queue;
 
+    // roll stages
     enum class RollStage
     {
         START,
@@ -68,6 +69,7 @@ namespace BloodSword::Engine
         Percentile.UniformDistribution(0, 1.0);
     }
 
+    // stores individual roll results and sum
     class RollResult
     {
     public:
@@ -190,6 +192,7 @@ namespace BloodSword::Engine
         return live;
     }
 
+    // count number of characters with IN BATTLE status in the party
     int InBattle(Party::Base &party)
     {
         auto in_battle = 0;
@@ -209,6 +212,7 @@ namespace BloodSword::Engine
         return in_battle;
     }
 
+    // count characters (control type) with specific [STATUS] in the party
     int Count(Party::Base &party, Character::ControlType control, Character::Status status)
     {
         auto count = 0;
@@ -266,6 +270,7 @@ namespace BloodSword::Engine
         return count;
     }
 
+    // count quantities of an item within the party
     int Quantity(Party::Base &party, Item::Type item)
     {
         auto quantity = 0;
@@ -330,6 +335,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // check if character can be a target
     bool CanTarget(Character::Base &character, bool in_battle)
     {
         auto is_away = character.Is(Character::Status::AWAY);
@@ -343,6 +349,7 @@ namespace BloodSword::Engine
         return (is_alive && !is_away && !is_paralyzed && battle);
     }
 
+    // count number of active combatants in the party
     int Combatants(Party::Base &party, bool in_battle = false)
     {
         auto live = 0;
@@ -355,6 +362,7 @@ namespace BloodSword::Engine
         return live;
     }
 
+    // return minimum value of an [ATTRIBUTE] in party
     int Min(Party::Base &party, Attribute::Type attribute, bool in_battle = false)
     {
         auto min_value = 255;
@@ -377,6 +385,7 @@ namespace BloodSword::Engine
         return min_value;
     }
 
+    // return maximum value of an [ATTRIBUTE] in party
     int Max(Party::Base &party, Attribute::Type attribute, bool in_battle = false)
     {
         auto max_value = 0;
@@ -395,6 +404,7 @@ namespace BloodSword::Engine
         return max_value;
     }
 
+    // build targetting queue
     void Build(Engine::Queue &queue, Party::Base &party, Attribute::Type attribute, bool in_battle = false)
     {
         // add characters in party to queue
@@ -550,6 +560,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // find character (control type, id) in map
     Point Location(Map::Base &map, Character::Base &character, int id)
     {
         Point location;
@@ -566,6 +577,7 @@ namespace BloodSword::Engine
         return location;
     }
 
+    // find character in party, return index
     int Find(Party::Base &party, Character::Base &character)
     {
         return party.Index(character.Class);
@@ -944,6 +956,7 @@ namespace BloodSword::Engine
         return Engine::IsAlive(character);
     }
 
+    // character gains experience
     void GainExperience(Character::Base &character, int gain)
     {
         if (Engine::IsAlive(character))
@@ -952,6 +965,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // party gains experience
     void GainExperience(Party::Base &party, int gain)
     {
         for (auto character = 0; character < party.Count(); character++)
@@ -960,6 +974,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // modify character's [ATTRIBUTE] by adding gain (+/-)
     void ModifyAttribute(Character::Base &character, Attribute::Type attribute, int gain)
     {
         if ((gain > 0 || (gain < 0 && character.Value(attribute) > (1 - gain) && character.Maximum(attribute) > (1 - gain))) && attribute != Attribute::Type::NONE)
@@ -974,6 +989,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // modify party's [ATTRIBUTE] by adding gain (+/-)
     void ModifyAttribute(Party::Base &party, Attribute::Type attribute, int gain)
     {
         for (auto character = 0; character < party.Count(); character++)
@@ -985,6 +1001,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // set character ATTRIBUTE to maximum
     void MaximiseAttribute(Character::Base &character, Attribute::Type attribute)
     {
         if (attribute != Attribute::Type::NONE)
@@ -995,11 +1012,13 @@ namespace BloodSword::Engine
         }
     }
 
+    // set character ATTRIBUTE to maximum
     void MaximizeAttribute(Character::Base &character, Attribute::Type attribute)
     {
         Engine::MaximiseAttribute(character, attribute);
     }
 
+    // set party's ATTRIBUTE to maximum
     void MaximiseAttribute(Party::Base &party, Attribute::Type attribute)
     {
         for (auto character = 0; character < party.Count(); character++)
@@ -1008,11 +1027,13 @@ namespace BloodSword::Engine
         }
     }
 
+    // set party's ATTRIBUTE to maximum
     void MaximizeAttribute(Party::Base &party, Attribute::Type attribute)
     {
         Engine::MaximiseAttribute(party, attribute);
     }
 
+    // change [FROM STATUS] to [TO STATUS]
     bool Transition(Character::Base &character, Character::Status from, Character::Status to)
     {
         auto update = false;
@@ -1142,6 +1163,7 @@ namespace BloodSword::Engine
         return flee;
     }
 
+    // check if character can shoot
     bool CanShoot(Character::Base &character, Skills::Type shot)
     {
         auto can_shoot = shot != Skills::Type::NONE && character.Has(shot) && Skills::IsRangedAttack(shot);
@@ -1190,6 +1212,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // remove select statuses from character
     void Cancel(Character::Base &character, std::vector<Character::Status> statuses)
     {
         for (auto status : statuses)
@@ -1198,12 +1221,13 @@ namespace BloodSword::Engine
         }
     }
 
-    // reset all battle status
+    // remove character's FLEEING and DEFENDED status
     void ResetStatus(Character::Base &character)
     {
         Engine::Cancel(character, {Character::Status::FLEEING, Character::Status::DEFENDED});
     }
 
+    // reset spells (complexity)
     void ResetSpells(Character::Base &character)
     {
         if (character.Has(Skills::Type::SPELLS))
@@ -1212,6 +1236,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // reset all status and spells (complexity)
     void ResetStatusAndSpells(Character::Base &character)
     {
         Engine::ResetStatus(character);
@@ -1219,6 +1244,7 @@ namespace BloodSword::Engine
         Engine::ResetSpells(character);
     }
 
+    // reset combat status, remove IN COMBAT status
     void ResetCombatStatus(Party::Base &party)
     {
         for (auto i = 0; i < party.Count(); i++)
@@ -1247,6 +1273,7 @@ namespace BloodSword::Engine
         party.ResetSpells();
     }
 
+    // kill all paralyzed characters (e.g. fleeing the battle, abandoning other character)
     void KillAllParalyzed(Party::Base &party)
     {
         for (auto i = 0; i < party.Count(); i++)
@@ -1278,42 +1305,52 @@ namespace BloodSword::Engine
         return score;
     }
 
+    // helper string function (character is not in party)
     std::string NotInParty(Character::Class &character)
     {
         return (std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!");
     }
 
+    // helper string function (character is dead)
     std::string IsDead(Character::Base &character)
     {
         return character.Name + " IS DEAD!";
     }
 
+    // helper string function (not carrying the item)
     std::string NoItem(Item::Type &item)
     {
         return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
     }
 
+    // helper string function (not enough quantities of the item)
     std::string NotEnough(Item::Type &item)
     {
         return (std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!");
     }
 
-    std::string ToUpper(std::string str)
+    // change string case using input transform function (functptr)
+    // see: https://www.geeksforgeeks.org/function-pointer-in-cpp/
+    std::string ChangeCase(std::string str, int (*funcptr)(int))
     {
-        auto upper = str;
+        auto transformed = str;
 
-        std::transform(upper.begin(), upper.end(), upper.begin(), ::toupper);
+        std::transform(transformed.begin(), transformed.end(), transformed.begin(), funcptr);
 
-        return upper;
+        return transformed;
     }
 
+    // changes all of the characters in the string to upper case
+    std::string ToUpper(std::string str)
+    {
+        return Engine::ChangeCase(str, ::toupper);
+    }
+
+    // changes all of the characters in the string to lower case
     std::string ToLower(std::string str)
     {
-        auto lower = str;
-
-        std::transform(lower.begin(), lower.end(), lower.begin(), ::tolower);
-
-        return lower;
+        return Engine::ChangeCase(str, ::tolower);
+        ;
     }
 
     // parse color from string
@@ -1457,12 +1494,14 @@ namespace BloodSword::Engine
         return character != -1 ? party[character].Class : Character::Class::NONE;
     }
 
+    // check if the character is not injured
     bool Healed(Character::Base &character)
     {
         // check if dead (counts as healed) or healed
         return !Engine::IsAlive(character) || (Engine::Score(character, Attribute::Type::ENDURANCE) >= character.Maximum(Attribute::Type::ENDURANCE));
     }
 
+    // check if no one in the party is injured
     bool Healed(Party::Base &party)
     {
         auto healed = true;
@@ -1479,6 +1518,7 @@ namespace BloodSword::Engine
         return healed;
     }
 
+    // get status of individual task
     Task::Status TaskStatus(Party::Base &party, Character::Class character, std::string task)
     {
         auto status = Task::Status::NONE;
@@ -1536,6 +1576,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // check status of individual task
     void TaskStatus(Party::Base &party, Character::Class character, std::string task, Task::Status status)
     {
         if (status == Task::Status::START)
@@ -1565,6 +1606,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // check status of task, otherwise start task
     void TaskStatus(Party::Base &party, std::string task, Task::Status status)
     {
         if (status == Task::Status::START)
@@ -1583,6 +1625,7 @@ namespace BloodSword::Engine
         }
     }
 
+    // check if character completed individual task
     bool CheckTask(Party::Base &party, Character::Class character, std::string task, Task::Status status)
     {
         auto result = false;
@@ -1605,6 +1648,7 @@ namespace BloodSword::Engine
         return result;
     }
 
+    // check if the entire party has completed individual tasks
     bool CheckTask(Party::Base &party, std::string task, Task::Status status)
     {
         auto result = 0;
@@ -1652,12 +1696,14 @@ namespace BloodSword::Engine
         return mapped;
     }
 
+    // replace instances of the [TOKEN] in [VARIABLE] with [REPLACEMENT]
     std::string MapToken(std::string variable, std::string token, std::string replacement)
     {
         std::vector<std::string> tokens = {};
 
         auto space = std::string(" ");
 
+        // generate instances of the token (upper case, lower case)
         tokens.push_back(space + Engine::ToLower(token));
 
         tokens.push_back(space + Engine::ToUpper(token));
@@ -1669,7 +1715,7 @@ namespace BloodSword::Engine
         return Engine::MapToken(variable, tokens, replacement);
     }
 
-    // map all tokens
+    // replace instances of tokens in [VARIABLE]
     std::string MapTokens(Party::Base &party, std::string variable)
     {
         auto chosen = party.ChosenCharacter;
@@ -1679,11 +1725,13 @@ namespace BloodSword::Engine
             chosen = Engine::FirstClass(party);
         }
 
+        // TODO: Add other tokens that can be replaced
         auto mapped = Engine::MapToken(variable, "CHOSEN", std::string(Character::ClassMapping[chosen]));
 
         return mapped;
     }
 
+    // checks if a character can drop any item from their inventory
     bool CanDrop(Character::Base &character)
     {
         auto drop = false;
