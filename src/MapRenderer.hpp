@@ -102,13 +102,17 @@ namespace BloodSword::MapRenderer
 
                         if (!tile.IsOccupied())
                         {
-                            if (tile.Type == Map::Object::EXIT || tile.Asset == Asset::Type::EMPTY_SPACE)
+                            if (tile.Asset == Asset::Type::EMPTY_SPACE)
                             {
                                 surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
                             }
                             else if (tile.Asset != Asset::Type::NONE)
                             {
                                 surface_asset = BloodSword::Asset::Surface(tile.Asset);
+                            }
+                            else if (tile.Type == Map::Object::EXIT)
+                            {
+                                surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
                             }
                         }
                         else
@@ -161,6 +165,15 @@ namespace BloodSword::MapRenderer
                     }
                 }
 
+                // away players
+                MapRenderer::RenderPoints(surface, battle.Map.AwayPlayers, rect, offset, Asset::Type::CIRCLE, true);
+
+                // survivors
+                MapRenderer::RenderPoints(surface, battle.Map.Survivors, rect, offset, Asset::Type::SELECT, true);
+
+                // away opponents
+                MapRenderer::RenderPoints(surface, battle.Map.AwayOpponents, rect, offset, Asset::Type::SELECT, true);
+
                 // player locations
                 auto number = 1;
 
@@ -176,15 +189,6 @@ namespace BloodSword::MapRenderer
 
                     number++;
                 }
-
-                // away players
-                MapRenderer::RenderPoints(surface, battle.Map.AwayPlayers, rect, offset, Asset::Type::CIRCLE, true);
-
-                // survivors
-                MapRenderer::RenderPoints(surface, battle.Map.Survivors, rect, offset, Asset::Type::SELECT, true);
-
-                // away opponents
-                MapRenderer::RenderPoints(surface, battle.Map.AwayOpponents, rect, offset, Asset::Type::SELECT, true);
 
                 IMG_SavePNG(surface, image_file);
 
