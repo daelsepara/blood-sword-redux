@@ -1,13 +1,13 @@
-#include "MapRenderer.hpp"
+#include "SpriteSheet.hpp"
 
 namespace BloodSword
 {
     // main loop
-    int Main(const char *battle_file, const char *image_file)
+    int Main(const char *image_file, int width)
     {
         try
         {
-            MapRenderer::Main(battle_file, image_file);
+            SpriteSheet::Main(image_file, width);
         }
         catch (std::exception &e)
         {
@@ -30,11 +30,13 @@ int main(int argc, char **argv)
     {
         std::cerr << "To run:" << std::endl
                   << std::endl
-                  << argv[0] << " [battle.json] [image.png]"
+                  << argv[0] << " [sprite sheet] [width]"
                   << std::endl;
 
         return 1;
     }
 
-    return BloodSword::Main(argv[1], argv[2]);
+    auto width = std::stoi(argv[2], nullptr, 10);
+
+    return BloodSword::Main(argv[1], width);
 }

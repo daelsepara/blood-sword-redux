@@ -1,10 +1,9 @@
 #ifndef __MAP_RENDERER_HPP__
 #define __MAP_RENDERER_HPP__
 
-#include "BloodSword.hpp"
 #include "InterfaceBattle.hpp"
 
-// framework for Battle Board
+// render map to a png file
 namespace BloodSword::MapRenderer
 {
     void RenderAsset(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
@@ -43,8 +42,17 @@ namespace BloodSword::MapRenderer
         }
     }
 
-    void Main(Graphics::Base &graphics, const char *battle_file, const char *image_file)
+    void Main(const char *battle_file, const char *image_file)
     {
+        // load default module
+        Interface::LoadModules();
+
+        // load settings
+        Interface::Initialize(Interface::SettingsFile.c_str());
+
+        // load asset location mappings
+        Asset::Load(std::string(Interface::Settings["assets"]).c_str());
+
         // load specific battle
         auto battle = Battle::Load(battle_file);
 

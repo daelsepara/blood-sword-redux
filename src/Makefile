@@ -6,6 +6,9 @@ BSWORD_MAP=MapTemplate.cpp
 BSWORD_MAP_OUTPUT=MapTemplate.exe
 BSWORD_MAP_RENDERER=MapRenderer.cpp
 BSWORD_MAP_RENDERER_OUTPUT=MapRenderer.exe
+BSWORD_SPRITE_SHEET=SpriteSheet.cpp
+BSWORD_SPRITE_SHEET_OUTPUT=SpriteSheet.exe
+
 DEBUG=-g -O0
 LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
 INCLUDES=-I/usr/include/SDL2
@@ -21,13 +24,16 @@ else
 	LINKER_FLAGS += -lstdc++fs
 endif
 
-all: clean blood-sword-test battle-board map map-renderer
+all: clean blood-sword-test battle-board map map-renderer sprite-sheet
 
 map:
 	$(CC) -Wall $(BSWORD_MAP) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
 
 map-renderer:
 	$(CC) -Wall $(BSWORD_MAP_RENDERER) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_RENDERER_OUTPUT)
+
+sprite-sheet:
+	$(CC) -Wall $(BSWORD_SPRITE_SHEET) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_SPRITE_SHEET_OUTPUT)
 
 blood-sword-test:
 	$(CC) -Wall $(BSWORD_TEST) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT) -DDEBUG
@@ -47,4 +53,7 @@ clean-map:
 clean-map-renderer:
 	rm -f $(BSWORD_MAP_RENDERER_OUTPUT) *.o
 
-clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer
+clean-sprite-sheet:
+	rm -f $(BSWORD_SPRITE_SHEET_OUTPUT) *.o
+
+clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer clean-sprite-sheet

@@ -91,7 +91,7 @@ namespace BloodSword::Asset
         }
     }
 
-    // load all assets
+    // load all assets and create textures
     bool Load(SDL_Renderer *renderer, const char *assets)
     {
         auto result = false;
@@ -133,6 +133,39 @@ namespace BloodSword::Asset
             ifs.close();
 
             result = (!Locations.empty() && !Textures.empty() && (Textures.size() == Locations.size()));
+        }
+
+        return result;
+    }
+
+    // load asset locations
+    bool Load(const char *assets)
+    {
+        auto result = false;
+
+        Asset::Locations.clear();
+
+        std::ifstream ifs(assets);
+
+        if (ifs.good())
+        {
+            auto data = nlohmann::json::parse(ifs);
+
+            if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
+            {
+                for (auto i = 0; i < data["assets"].size(); i++)
+                {
+                    auto object = !data["assets"][i]["id"].is_null() ? Asset::Map(std::string(data["assets"][i]["id"])) : Asset::Type::NONE;
+
+                    auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : "";
+
+                    Asset::Locations[object] = path;
+                }
+            }
+
+            ifs.close();
+
+            result = !Locations.empty();
         }
 
         return result;

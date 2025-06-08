@@ -13,7 +13,6 @@ namespace BloodSword::Asset
         TRICKSTER,
         SAGE,
         ENCHANTER,
-        GENERIC,
         PERSON,
         ASSASSIN,
         BARBARIAN,
@@ -32,12 +31,10 @@ namespace BloodSword::Asset
         RANGER,
         SMEABORG,
         GIANT_SPIDER,
-        ICON_THE_WARLOCK,
         NIGHT_ELF,
         QUEL,
         DEATH_FETISHIST,
         NEBULARON,
-        YOUNG_SORCERESS,
         EIDOLON,
         GARGOYLE,
         UP,
@@ -48,15 +45,10 @@ namespace BloodSword::Asset
         IMPASSABLE,
         EMPTY_SPACE,
         WHITE_SPACE,
-        VERTICAL_SURFACE,
         WINDOW,
         DOOR,
         DOORWAY,
-        LEDGE,
-        ROCKS,
-        CHASM,
         BRIDGE,
-        TOWER,
         MOVE,
         FIGHT,
         SHOOT,
@@ -96,7 +88,6 @@ namespace BloodSword::Asset
         PREDICTION,
         DETECT_ENCHANTMENT,
         IGNORE_ARMOUR,
-        ENTHRALMENT_IMMUNITY,
         DICE1,
         DICE2,
         DICE3,
@@ -186,7 +177,8 @@ namespace BloodSword::Asset
         SIX,
         SEVEN,
         EIGHT,
-        NINE
+        NINE,
+        ENEMY
     };
 
     template <typename T>
@@ -200,7 +192,6 @@ namespace BloodSword::Asset
         {Asset::Type::TRICKSTER, "TRICKSTER"},
         {Asset::Type::SAGE, "SAGE"},
         {Asset::Type::ENCHANTER, "ENCHANTER"},
-        {Asset::Type::GENERIC, "GENERIC"},
         {Asset::Type::ASSASSIN, "ASSASSIN"},
         {Asset::Type::BARBARIAN, "BARBARIAN"},
         {Asset::Type::DIRGE_MAN, "DIRGE MAN"},
@@ -218,7 +209,6 @@ namespace BloodSword::Asset
         {Asset::Type::RANGER, "RANGER"},
         {Asset::Type::SMEABORG, "SMEABORG"},
         {Asset::Type::GIANT_SPIDER, "GIANT SPIDER"},
-        {Asset::Type::ICON_THE_WARLOCK, "ICON THE WARLOCK"},
         {Asset::Type::NIGHT_ELF, "NIGHT ELF"},
         {Asset::Type::QUEL, "QUEL"},
         {Asset::Type::DEATH_FETISHIST, "DEATH FETISHIST"},
@@ -233,15 +223,10 @@ namespace BloodSword::Asset
         {Asset::Type::IMPASSABLE, "IMPASSABLE"},
         {Asset::Type::EMPTY_SPACE, "EMPTY SPACE"},
         {Asset::Type::WHITE_SPACE, "WHITE SPACE"},
-        {Asset::Type::VERTICAL_SURFACE, "VERTICAL SURFACE"},
         {Asset::Type::WINDOW, "WINDOW"},
         {Asset::Type::DOOR, "DOOR"},
         {Asset::Type::DOORWAY, "DOORWAY"},
-        {Asset::Type::LEDGE, "LEDGE"},
-        {Asset::Type::ROCKS, "ROCKS"},
-        {Asset::Type::CHASM, "CHASM"},
         {Asset::Type::BRIDGE, "BRIDGE"},
-        {Asset::Type::TOWER, "TOWER"},
         {Asset::Type::MOVE, "MOVE"},
         {Asset::Type::FIGHT, "FIGHT"},
         {Asset::Type::SHOOT, "SHOOT"},
@@ -371,7 +356,8 @@ namespace BloodSword::Asset
         {Asset::Type::SIX, "SIX"},
         {Asset::Type::SEVEN, "SEVEN"},
         {Asset::Type::EIGHT, "EIGHT"},
-        {Asset::Type::NINE, "NINE"}};
+        {Asset::Type::NINE, "NINE"},
+        {Asset::Type::ENEMY, "ENEMY"}};
 
     Asset::Type Map(const char *asset)
     {
