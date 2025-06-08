@@ -132,13 +132,25 @@ namespace BloodSword::Interface
     SDL_Texture *NoSpells = nullptr;
 
     // dice assets
-    Asset::List DICE = {
+    Asset::List Dice = {
         Asset::Type::DICE1,
         Asset::Type::DICE2,
         Asset::Type::DICE3,
         Asset::Type::DICE4,
         Asset::Type::DICE5,
         Asset::Type::DICE6};
+
+    Asset::List Numbers = {
+        Asset::Type::ZERO,
+        Asset::Type::ONE,
+        Asset::Type::TWO,
+        Asset::Type::THREE,
+        Asset::Type::FOUR,
+        Asset::Type::FIVE,
+        Asset::Type::SIX,
+        Asset::Type::SEVEN,
+        Asset::Type::EIGHT,
+        Asset::Type::NINE};
 
     const int BoxSize = 16;
 
@@ -2336,7 +2348,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
                 }
             }
             else
@@ -2344,7 +2356,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
                 }
             }
 
@@ -2587,7 +2599,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[rolls.Rolls[dice] - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
                 }
 
                 if (result)
@@ -2606,7 +2618,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
                 }
             }
 
@@ -2855,7 +2867,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
                 }
 
                 if (damage > 0)
@@ -2878,7 +2890,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::DICE[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
                 }
             }
 

@@ -5,7 +5,7 @@
     },
     "text": "You unfurl the scroll. It is covered with glittering scratch-like runes that seem to scuttle to and fro across the page. Wisps of green-black vapour curl out like tentacles to enfold you, cutting off your view of your surroundings. You seem to stand in an endless sea of fog. Then a strong breeze whips up around you. Strangely it blows your hair and you can feel its chill on your skin, but your clothes do not billow up at all. The fog disperses, leaving you with a grim vista. You are on a plain of sticky olive-brown mire, broken at intervals by bones and skulls that protrue from the mud.\n\nA being clad in azure armour stands four metres tall, manlike in form except for his head, which is the huge horned skull of a stag. Green eyes roll in the hollow sockets. He opens his flessless mouth, sending a wave of foetid air rolling towards you. \"Welcome to the realm of Smeaborg the Fleshless,\" he says. \"Our relationship will be a brief and bloody one.\" He hefts his giant halberd and stalks to the attack.\n\nYou cannot flee.",
     "battle": "modules/default/battles/battle312.json",
-    "image_asset": "modules/default/images/battles/battle312.png",
+    "image_asset": "modules/default/images/battles/alternative/battle312.png",
     "features": [
         "ITEM EFFECT"
     ],

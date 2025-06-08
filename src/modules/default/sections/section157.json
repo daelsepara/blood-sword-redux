@@ -47,6 +47,7 @@
         }
     ],
     "battle": "modules/default/battles/battle157.json",
+    "image_asset": "modules/default/images/battles/alternative/battle157.png",
     "next": [
         {
             "type": "TASK",

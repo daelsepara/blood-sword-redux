@@ -5,7 +5,7 @@
     },
     "text": "You call the spell to mind. As soon as he sees you starting to concentrate, the dirge-man gives a distorted frown of distrust. \"Oh now, what's this?\" With a mad croak, he launches to attack.",
     "battle": "modules/default/battles/battle011.json",
-    "image_asset": "modules/default/images/battles/battle011.png",
+    "image_asset": "modules/default/images/battles/alternative/battle011.png",
     "background": [
         {
             "type": "CALL TO MIND",

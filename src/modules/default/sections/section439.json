@@ -16,7 +16,7 @@
         }
     ],
     "battle": "modules/default/battles/battle439.json",
-    "image_asset": "modules/default/images/battles/battle439.png",
+    "image_asset": "modules/default/images/battles/alternative/battle439.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

@@ -5,7 +5,7 @@
     },
     "text": "Suddenly the bushes nearby rustle. Before you have a chance to react, six black-clad assasin somersault through the air. You are surrounded. Each raises his hand and hurls a razor-edged shuriken.",
     "battle": "modules/default/battles/battle399.json",
-    "image_asset": "modules/default/images/battles/battle399.png",
+    "image_asset": "modules/default/images/battles/alternative/battle399.png",
     "choices": [
         {
             "text": "Flee across the bridge",

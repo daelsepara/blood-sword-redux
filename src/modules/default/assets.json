@@ -635,6 +635,50 @@
         {
             "id": "CHARACTER",
             "path": "images/system/character.png"
+        },
+        {
+            "id": "CIRCLE",
+            "path": "images/system/circle.png"
+        },
+        {
+            "id": "ZERO",
+            "path": "images/numbers/0.png"
+        },
+        {
+            "id": "ONE",
+            "path": "images/numbers/1.png"
+        },
+        {
+            "id": "TWO",
+            "path": "images/numbers/2.png"
+        },
+        {
+            "id": "THREE",
+            "path": "images/numbers/3.png"
+        },
+        {
+            "id": "FOUR",
+            "path": "images/numbers/4.png"
+        },
+        {
+            "id": "FIVE",
+            "path": "images/numbers/5.png"
+        },
+        {
+            "id": "SIX",
+            "path": "images/numbers/6.png"
+        },
+        {
+            "id": "SEVEN",
+            "path": "images/numbers/7.png"
+        },
+        {
+            "id": "EIGHT",
+            "path": "images/numbers/8.png"
+        },
+        {
+            "id": "NINE",
+            "path": "images/numbers/9.png"
         }
     ]
 }

@@ -175,7 +175,18 @@ namespace BloodSword::Asset
         SKILLS,
         STATUS,
         INFO,
-        CHARACTER
+        CHARACTER,
+        CIRCLE,
+        ZERO,
+        ONE,
+        TWO,
+        THREE,
+        FOUR,
+        FIVE,
+        SIX,
+        SEVEN,
+        EIGHT,
+        NINE
     };
 
     template <typename T>
@@ -349,7 +360,18 @@ namespace BloodSword::Asset
         {Asset::Type::SKILLS, "SKILLS"},
         {Asset::Type::STATUS, "STATUS"},
         {Asset::Type::INFO, "INFO"},
-        {Asset::Type::CHARACTER, "CHARACTER"}};
+        {Asset::Type::CHARACTER, "CHARACTER"},
+        {Asset::Type::CIRCLE, "CIRCLE"},
+        {Asset::Type::ZERO, "ZERO"},
+        {Asset::Type::ONE, "ONE"},
+        {Asset::Type::TWO, "TWO"},
+        {Asset::Type::THREE, "THREE"},
+        {Asset::Type::FOUR, "FOUR"},
+        {Asset::Type::FIVE, "FIVE"},
+        {Asset::Type::SIX, "SIX"},
+        {Asset::Type::SEVEN, "SEVEN"},
+        {Asset::Type::EIGHT, "EIGHT"},
+        {Asset::Type::NINE, "NINE"}};
 
     Asset::Type Map(const char *asset)
     {

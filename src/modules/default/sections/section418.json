@@ -5,7 +5,7 @@
     },
     "text": "(WARRIOR) You are about to clash with a veteran tomb ranger of the dreaded Battalion of Torments in a ritual death-duel.",
     "battle": "modules/default/battles/battle418.json",
-    "image_asset": "modules/default/images/battles/battle418.png",
+    "image_asset": "modules/default/images/battles/alternative/battle418.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

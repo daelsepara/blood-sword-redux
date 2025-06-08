@@ -5,7 +5,7 @@
     },
     "text": "You are standing in the shrine room of the Blue Tower. Suddenly you hear a ghastly voice ring out: \"Ah, my would be champion in the contest!\" You whirl around to see the tall figure of Magus Vyl, clad in purple and black robes over tarnished silver chainmail. He extends pallid, long-taloned fingers towards you. His mouth curls up in a cuel sneer, displaying sharp fangs. Then he lunges for you.",
     "battle": "modules/default/battles/battle444.json",
-    "image_asset": "modules/default/images/battles/battle444.png",
+    "image_asset": "modules/default/images/battles/alternative/battle444.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

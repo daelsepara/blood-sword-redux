@@ -9,6 +9,7 @@
         "TASK WARRIOR"
     ],
     "battle": "modules/default/battles/battle336.json",
+    "image_asset": "modules/default/images/battles/alternative/battle336.png",
     "events": [
         {
             "type": "TASK",

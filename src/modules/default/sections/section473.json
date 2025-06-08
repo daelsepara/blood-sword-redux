@@ -5,7 +5,7 @@
     },
     "text": "As you square off for battle, the steward dives into the booth for safety.",
     "battle": "modules/default/battles/battle473.json",
-    "image_asset": "modules/default/images/battles/battle473.png",
+    "image_asset": "modules/default/images/battles/alternative/battle473.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

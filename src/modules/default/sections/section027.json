@@ -5,7 +5,7 @@
     },
     "text": "Icon suddenly draws his sword and cuts powerfully -- a treacherous blow that inflicts a considerable amount of damage.",
     "battle": "modules/default/battles/battle027.json",
-    "image_asset": "modules/default/images/battles/battle027.png",
+    "image_asset": "modules/default/images/battles/alternative/battle027.png",
     "events": [
         {
             "type": "LOSE ENDURANCE",

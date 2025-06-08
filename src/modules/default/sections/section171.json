@@ -9,6 +9,7 @@
         "TASK TRICKSTER"
     ],
     "battle": "modules/default/battles/battle171.json",
+    "image_asset": "modules/default/images/battles/alternative/battle171.png",
     "events": [
         {
             "type": "TASK",

@@ -5,7 +5,7 @@
     },
     "text": "Balanced on the narrow circular ledge overlooking the lava, you are about to fight a deadly battle with two desperate adventurers.",
     "battle": "modules/default/battles/battle385.json",
-    "image_asset": "modules/default/images/battles/battle385.png",
+    "image_asset": "modules/default/images/battles/alternative/battle385.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

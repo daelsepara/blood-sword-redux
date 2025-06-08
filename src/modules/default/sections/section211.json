@@ -5,7 +5,7 @@
     },
     "text": "The door swings open. You come face to face with two of the barbarians. One of hem is about to lift a FIRE-BLACKENED SKULL as you enter. They whirl, hefting their axes for battle.\n\nThe other two barbarians soon hear the noise of combat and come to aid their comrades.",
     "battle": "modules/default/battles/battle211.json",
-    "image_asset": "modules/default/images/battles/battle211.png",
+    "image_asset": "modules/default/images/battles/alternative/battle211.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

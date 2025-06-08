@@ -39,6 +39,7 @@
         }
     ],
     "battle": "modules/default/battles/battle373.json",
+    "image_asset": "modules/default/images/battles/alternative/battle373.png",
     "next": [
         {
             "type": "TASK",

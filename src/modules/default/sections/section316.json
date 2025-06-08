@@ -5,7 +5,7 @@
     },
     "text": "A horrible wailing and mewling comes from the torchlit corridor. A host of grey beings shambles out of the alcoves and, seeing you, the creatures start falling over one another in their eagerness to get at you. Their deep-set, hollow eye-sockets and the red slits of their mouths suggest to you that you do not want to get too intimate with them and besides, there are just too many of them to fight. You have no option but to run back to the jetty.\n\nYou stare across the black water. There is no sign of the ferryman, and you leap into the water. You swim desperately towards the low tunnel that you saw leading off the cavern. The grey beings behind you reach the edge of the jetty and form a wall of wailing, shrieking matter through which no one could hope to pass.\n\nYou reach the mouth of the tunnel, and as you swim into it you realise that you can touch the bottom. Soon you are wading along it, but the freezing waters of the lake have taken their toll on you.\n\nExhausted by your ordeal, you reach the entrance to a rock-cut cave at the end of the tunnel. As you reach dry land, though, you see a flickering presence above you. Looking up, you see a number of giant spiders bobbing down towards you on their swiftly unravelling webs.",
     "battle": "modules/default/battles/battle316.json",
-    "image_asset": "modules/default/images/battles/battle316.png",
+    "image_asset": "modules/default/images/battles/alternative/battle316.png",
     "battle_events": [
         {
             "type": "LOSE ARMOUR",

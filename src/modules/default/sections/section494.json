@@ -9,6 +9,7 @@
         "TASK ENCHANTER"
     ],
     "battle": "modules/default/battles/battle494.json",
+    "image_asset": "modules/default/images/battles/alternative/battle494.png",
     "events": [
         {
             "type": "TASK",

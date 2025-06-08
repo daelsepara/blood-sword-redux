@@ -5,7 +5,7 @@
     },
     "text": "You wrench up the grating and drop lithely to the floor in the midst of the astonished barbarians. They reach for their axes, but they are taken by surprise.",
     "battle": "modules/default/battles/battle006.json",
-    "image_asset": "modules/default/images/battles/battle006.png",
+    "image_asset": "modules/default/images/battles/alternative/battle006.png",
     "next": [
         {
             "type": "BATTLE VICTORY",

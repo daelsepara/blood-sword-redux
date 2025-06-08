@@ -9,6 +9,7 @@
         "TASK WARRIOR"
     ],
     "battle": "modules/default/battles/battle169.json",
+    "image_asset": "modules/default/images/battles/alternative/battle169.png",
     "events": [
         {
             "type": "TASK",

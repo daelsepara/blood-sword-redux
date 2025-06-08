@@ -1340,6 +1340,16 @@ namespace BloodSword::Engine
         return transformed;
     }
 
+    // compares two strings
+    bool Compare(std::string s1, std::string s2, int (*funcptr)(int))
+    {
+        Engine::ChangeCase(s1, funcptr);
+
+        Engine::ChangeCase(s2, funcptr);
+
+        return (s1.compare(s2) == 0);
+    }
+
     // changes all of the characters in the string to upper case
     std::string ToUpper(std::string str)
     {
