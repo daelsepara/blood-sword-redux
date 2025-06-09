@@ -17,7 +17,7 @@ UNAME_S=$(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	CC=clang++
-	LINKER_FLAGS += -stdlib=libc++ -Wl,-dead_strip
+	LINKER_FLAGS += -stdlib=libc++ -Wl,-dead_strip -L/usr/local/lib
 	INCLUDES += -I/usr/local/include/SDL2
 else
 	CC=clang++
