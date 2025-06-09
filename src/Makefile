@@ -8,38 +8,46 @@ BSWORD_MAP_RENDERER=MapRenderer.cpp
 BSWORD_MAP_RENDERER_OUTPUT=MapRenderer.exe
 BSWORD_SPRITE_SHEET=SpriteSheet.cpp
 BSWORD_SPRITE_SHEET_OUTPUT=SpriteSheet.exe
-
 DEBUG=-g -O0
-LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -fdata-sections -ffunction-sections
+LIBS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -fdata-sections -ffunction-sections
 INCLUDES=-I/usr/include/SDL2
-
 UNAME_S=$(shell uname -s)
+UNAME_M=$(shell uname -m)
 
 ifeq ($(UNAME_S),Darwin)
-	CC=clang++
-	LINKER_FLAGS += -stdlib=libc++ -Wl,-dead_strip -L/usr/local/lib
+	LLVM=$(shell brew --prefix llvm)
+	CC=$(LLVM)/bin/clang++
+	LIBS += -stdlib=libc++ -Wl,-dead_strip -L$(LLVM)/lib/c++ -L/usr/local/lib
 	INCLUDES += -I/usr/local/include/SDL2
+else ifeq ($(UNAME_M),aarch64)
+	CC=g++
+	LIBS += -lstdc++fs -Wl,--gc-sections
+else ifeq ($(UNAME_M),aarch32)
+	LIBS += -lstdc++fs -Wl,--gc-sections
+	CC=g++
 else
 	CC=clang++
-	LINKER_FLAGS += -lstdc++fs -Wl,--gc-sections
+	LIBS += -lstdc++fs -Wl,--gc-sections
 endif
 
-all: clean blood-sword-test battle-board map map-renderer sprite-sheet
+.PHONY: all clean
 
-map:
-	$(CC) -Wall $(BSWORD_MAP) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
+all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet
+
+map-template:
+	$(CC) -Wall $(BSWORD_MAP) $(LIBS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
 
 map-renderer:
-	$(CC) -Wall $(BSWORD_MAP_RENDERER) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_MAP_RENDERER_OUTPUT)
+	$(CC) -Wall $(BSWORD_MAP_RENDERER) $(LIBS) $(INCLUDES) -o $(BSWORD_MAP_RENDERER_OUTPUT)
 
 sprite-sheet:
-	$(CC) -Wall $(BSWORD_SPRITE_SHEET) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_SPRITE_SHEET_OUTPUT)
+	$(CC) -Wall $(BSWORD_SPRITE_SHEET) $(LIBS) $(INCLUDES) -o $(BSWORD_SPRITE_SHEET_OUTPUT)
 
 blood-sword-test:
-	$(CC) -Wall $(BSWORD_TEST) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT) -DDEBUG
+	$(CC) -Wall $(BSWORD_TEST) $(LIBS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT) -DDEBUG
 
 battle-board:
-	$(CC) -Wall $(BSWORD_BATTLES) $(LINKER_FLAGS) $(INCLUDES) -o $(BSWORD_BATTLES_OUTPUT) -DDEBUG
+	$(CC) -Wall $(BSWORD_BATTLES) $(LIBS) $(INCLUDES) -o $(BSWORD_BATTLES_OUTPUT) -DDEBUG
 
 clean-blood-sword-test:
 	rm -f $(BSWORD_TEST_OUTPUT) *.o

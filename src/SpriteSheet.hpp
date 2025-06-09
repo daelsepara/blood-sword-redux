@@ -28,10 +28,13 @@ namespace BloodSword::SpriteSheet
         }
     }
 
-    void Main(const char *image_file, int width)
+    void Main(const char *module, const char *image_file, int width, bool reverse)
     {
-        // load default module
+        // get all available modules
         Interface::LoadModules();
+
+        // load selected module
+        Interface::LoadModule(module);
 
         // load settings
         Interface::Initialize(Interface::SettingsFile.c_str());
@@ -43,7 +46,7 @@ namespace BloodSword::SpriteSheet
         {
             SDL_Rect rect;
 
-            auto height = int(std::ceil(Asset::Locations.size() / width));
+            auto height = int(std::nearbyint(Asset::Locations.size() / width + 0.5));
 
             rect.w = width * BloodSword::TileSize;
 
@@ -71,9 +74,9 @@ namespace BloodSword::SpriteSheet
                             std::cerr << "Asset: [" << name << "] not found!" << std::endl;
                         }
 
-                        rect.x = (width - x - 1) * BloodSword::TileSize;
+                        rect.x = (reverse ? width - x - 1 : x) * BloodSword::TileSize;
 
-                        rect.y = (height - y - 1) * BloodSword::TileSize;
+                        rect.y = (reverse ? height - y - 1 : y) * BloodSword::TileSize;
 
                         SpriteSheet::RenderAsset(surface, surface_asset, rect);
 

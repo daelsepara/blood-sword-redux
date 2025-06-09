@@ -58,6 +58,7 @@ namespace BloodSword::Asset
         return surface;
     }
 
+    // re-create surface from asset and color adjust
     SDL_Surface *Surface(Asset::Type asset, Uint32 blur)
     {
         SDL_Surface *surface = nullptr;
@@ -143,7 +144,11 @@ namespace BloodSword::Asset
     {
         auto result = false;
 
+        Asset::Unload();
+
         Asset::Locations.clear();
+
+        Asset::Textures.clear();
 
         std::ifstream ifs(assets);
 
@@ -171,6 +176,7 @@ namespace BloodSword::Asset
         return result;
     }
 
+    // load assets and create textures
     bool Load(SDL_Renderer *renderer, std::string assets)
     {
         return Asset::Load(renderer, assets.c_str());
