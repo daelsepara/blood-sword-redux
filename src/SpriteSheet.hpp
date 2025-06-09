@@ -1,7 +1,7 @@
 #ifndef __SPRITE_SHEET_HPP__
 #define __SPRITE_SHEET_HPP__
 
-#include "InterfaceBattle.hpp"
+#include "Interface.hpp"
 
 // generate sprite sheet
 namespace BloodSword::SpriteSheet

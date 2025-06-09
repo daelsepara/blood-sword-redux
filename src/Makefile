@@ -10,18 +10,18 @@ BSWORD_SPRITE_SHEET=SpriteSheet.cpp
 BSWORD_SPRITE_SHEET_OUTPUT=SpriteSheet.exe
 
 DEBUG=-g -O0
-LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+LINKER_FLAGS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -fdata-sections -ffunction-sections
 INCLUDES=-I/usr/include/SDL2
 
 UNAME_S=$(shell uname -s)
 
 ifeq ($(UNAME_S),Darwin)
 	CC=clang++
-	LINKER_FLAGS += -stdlib=libc++
+	LINKER_FLAGS += -stdlib=libc++ -Wl,-dead_strip
 	INCLUDES += -I/usr/local/include/SDL2
 else
 	CC=clang++
-	LINKER_FLAGS += -lstdc++fs
+	LINKER_FLAGS += -lstdc++fs -Wl,--gc-sections,--print-gc-sections
 endif
 
 all: clean blood-sword-test battle-board map map-renderer sprite-sheet
