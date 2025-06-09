@@ -21,7 +21,7 @@ ifeq ($(UNAME_S),Darwin)
 	INCLUDES += -I/usr/local/include/SDL2
 else
 	CC=clang++
-	LINKER_FLAGS += -lstdc++fs -Wl,--gc-sections,--print-gc-sections
+	LINKER_FLAGS += -lstdc++fs -Wl,--gc-sections
 endif
 
 all: clean blood-sword-test battle-board map map-renderer sprite-sheet
