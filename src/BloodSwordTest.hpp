@@ -1,7 +1,7 @@
 #ifndef __TEST_HPP__
 #define __TEST_HPP__
 
-#include "BloodSword.hpp"
+#include "System.hpp"
 #include "InterfaceStory.hpp"
 
 // framework for testing game subsystems

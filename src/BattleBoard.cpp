@@ -5,13 +5,13 @@ namespace BloodSword
     // main loop
     int Main(const char *battle_file)
     {
-        auto game = BloodSword::Game();
+        auto system = BloodSword::System();
 
         try
         {
-            game.Initialize();
+            system.Initialize();
 
-            BattleBoard::Menu(game.graphics, battle_file);
+            BattleBoard::Menu(system.graphics, battle_file);
         }
         catch (std::exception &e)
         {
@@ -24,7 +24,7 @@ namespace BloodSword
                       << std::endl;
         }
 
-        game.Shutdown();
+        system.Shutdown();
 
         return 0;
     }

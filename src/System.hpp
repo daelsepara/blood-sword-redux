@@ -6,7 +6,7 @@
 
 namespace BloodSword
 {
-    class Game
+    class System
     {
     public:
         Graphics::Base graphics;
@@ -45,9 +45,9 @@ namespace BloodSword
             Graphics::Quit(this->graphics);
         }
 
-        Game() {}
+        System() {}
 
-        Game(const char *session_name)
+        System(const char *session_name)
         {
             this->Initialize(session_name);
         }
