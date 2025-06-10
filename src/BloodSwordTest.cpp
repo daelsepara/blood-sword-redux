@@ -7,7 +7,7 @@ namespace BloodSword
     {
         auto system = BloodSword::System();
 
-        system.Initialize();
+        system.Initialize("BloodSword: Test Suite");
 
         try
         {

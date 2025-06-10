@@ -9,7 +9,7 @@ namespace BloodSword
 
         try
         {
-            system.Initialize();
+            system.Initialize("BloodSword: Battle Board");
 
             BattleBoard::Menu(system.graphics, battle_file);
         }
