@@ -1,29 +1,5 @@
 #include "MapRenderer.hpp"
 
-namespace BloodSword
-{
-    // main loop
-    int Main(const char *battle_file, const char *image_file)
-    {
-        try
-        {
-            MapRenderer::Main(battle_file, image_file);
-        }
-        catch (std::exception &e)
-        {
-            std::cerr << std::endl
-                      << "BLOODSWORD ("
-                      << Version()
-                      << ") EXCEPTION: "
-                      << e.what()
-                      << std::endl
-                      << std::endl;
-        }
-
-        return 0;
-    }
-}
-
 int main(int argc, char **argv)
 {
     if (argc < 3)
@@ -36,5 +12,5 @@ int main(int argc, char **argv)
         return 1;
     }
 
-    return BloodSword::Main(argv[1], argv[2]);
+    return BloodSword::MapRenderer::Main(argv[1], argv[2]);
 }

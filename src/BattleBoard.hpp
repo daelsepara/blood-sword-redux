@@ -89,6 +89,37 @@ namespace BloodSword::BattleBoard
             Interface::MessageBox(graphics, scene, Graphics::RichText("BATTLE NOT LOADED!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Transparent, Color::Highlight, 4, Color::Highlight, true);
         }
     }
+
+    // main loop
+    int Main(const char *battle_file)
+    {
+        auto return_code = 0;
+
+        auto system = BloodSword::System();
+
+        try
+        {
+            system.Initialize("BloodSword: Battle Board");
+
+            BattleBoard::Menu(system.graphics, battle_file);
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << std::endl
+                      << "BLOODSWORD ("
+                      << Version()
+                      << ") EXCEPTION: "
+                      << e.what()
+                      << std::endl
+                      << std::endl;
+
+            return_code = 1;
+        }
+
+        system.Shutdown();
+
+        return return_code;
+    }
 }
 
 #endif

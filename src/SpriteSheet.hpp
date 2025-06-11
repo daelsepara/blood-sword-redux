@@ -28,7 +28,7 @@ namespace BloodSword::SpriteSheet
         }
     }
 
-    void Main(const char *module, const char *image_file, int width, bool reverse)
+    void Generate(const char *module, const char *image_file, int width, bool reverse)
     {
         // get all available modules
         Interface::LoadModules();
@@ -96,6 +96,33 @@ namespace BloodSword::SpriteSheet
                 SDL_FreeSurface(surface);
             }
         }
+    }
+
+    // main loop
+    int Main(const char *module, const char *image_file, int width, bool reverse)
+    {
+        auto return_code = 0;
+
+        try
+        {
+            auto converted_module = Engine::ToUpper(std::string(module));
+
+            SpriteSheet::Generate(converted_module.c_str(), image_file, width, reverse);
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << std::endl
+                      << "BLOODSWORD ("
+                      << Version()
+                      << ") EXCEPTION: "
+                      << e.what()
+                      << std::endl
+                      << std::endl;
+
+            return_code = 1;
+        }
+
+        return return_code;
     }
 }
 

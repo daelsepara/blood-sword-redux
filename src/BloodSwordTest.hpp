@@ -1948,6 +1948,37 @@ namespace BloodSword::Test
 
         BloodSword::Free(menu);
     }
+
+    // main loop
+    int Main(int argc, char **argv)
+    {
+        auto return_code = 0;
+
+        auto system = BloodSword::System();
+
+        system.Initialize("BloodSword: Test Suite");
+
+        try
+        {
+            Test::Menu(system.graphics);
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << std::endl
+                      << "BLOODSWORD ("
+                      << Version()
+                      << ") EXCEPTION: "
+                      << e.what()
+                      << std::endl
+                      << std::endl;
+
+            return_code = 1;
+        }
+
+        system.Shutdown();
+
+        return return_code;
+    }
 }
 
 #endif

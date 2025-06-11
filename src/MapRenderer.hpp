@@ -42,7 +42,7 @@ namespace BloodSword::MapRenderer
         }
     }
 
-    void Main(const char *battle_file, const char *image_file)
+    void Render(const char *battle_file, const char *image_file)
     {
         // load default module
         Interface::LoadModules();
@@ -203,6 +203,31 @@ namespace BloodSword::MapRenderer
                 SDL_FreeSurface(surface);
             }
         }
+    }
+
+    // main loop
+    int Main(const char *battle_file, const char *image_file)
+    {
+        auto return_code = 0;
+
+        try
+        {
+            MapRenderer::Render(battle_file, image_file);
+        }
+        catch (std::exception &e)
+        {
+            std::cerr << std::endl
+                      << "BLOODSWORD ("
+                      << Version()
+                      << ") EXCEPTION: "
+                      << e.what()
+                      << std::endl
+                      << std::endl;
+
+            return_code = 1;
+        }
+
+        return return_code;
     }
 }
 
