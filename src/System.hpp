@@ -1,5 +1,5 @@
-#ifndef __BLOODSWORD_HPP__
-#define __BLOODSWORD_HPP__
+#ifndef __SYSTEM_HPP__
+#define __SYSTEM_HPP__
 
 #include "nlohmann/json.hpp"
 #include "Interface.hpp"
