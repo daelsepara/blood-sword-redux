@@ -496,19 +496,21 @@ namespace BloodSword::Interface
 
             BloodSword::Size(message, &texture_w, &texture_h);
 
-            auto box_w = texture_w + pad * 2;
+            auto box_w = std::max(BloodSword::TileSize * 5, texture_w) + pad * 2;
 
             auto box_h = texture_h + pad * 3 + BloodSword::TileSize;
 
-            auto location = offset + (Point(width, height) - Point(box_w, box_h)) / 2;
+            auto box = offset + (Point(width, height) - Point(box_w, box_h)) / 2;
 
-            auto confirm = location + Point(pad + texture_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
+            auto text = offset + (Point(width, height) - Point(texture_w, box_h)) / 2;
+
+            auto confirm = box + Point(pad + texture_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
 
             auto input = Controls::User();
 
-            box.Add(Scene::Element(location, box_w, box_h, background, border, border_size));
+            box.Add(Scene::Element(box, box_w, box_h, background, border, border_size));
 
-            box.VerifyAndAdd(Scene::Element(message, location + Point(pad, pad)));
+            box.VerifyAndAdd(Scene::Element(message, text + Point(pad, pad)));
 
             box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
 
@@ -3267,7 +3269,7 @@ namespace BloodSword::Interface
         {
             auto text_description = Story::CurrentBook.Sections[description].Text;
 
-            auto wrap = graphics.Width - BloodSword::TileSize * 6;
+            auto wrap = BloodSword::TileSize * 15;
 
             Interface::TextBox(graphics, background, text_description, Color::Active, wrap);
         }
@@ -3278,7 +3280,7 @@ namespace BloodSword::Interface
     {
         if (item != Item::Type::NONE && Items::FoundDescription(item))
         {
-            auto wrap = graphics.Width - BloodSword::TileSize * 6;
+            auto wrap = BloodSword::TileSize * 15;
 
             Interface::TextBox(graphics, background, Items::Descriptions[item], Color::Active, wrap);
         }

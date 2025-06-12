@@ -1846,7 +1846,7 @@ namespace BloodSword::Interface
         {
             auto message = story.Title + "\n\n" + story.Description;
 
-            auto wrap = graphics.Width - BloodSword::TileSize * 6;
+            auto wrap = BloodSword::TileSize * 15;
 
             Interface::TextBox(graphics, background, message, wrap);
         }
