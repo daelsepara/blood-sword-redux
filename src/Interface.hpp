@@ -504,7 +504,7 @@ namespace BloodSword::Interface
 
             auto location_txt = offset + (Point(width, height) - Point(texture_w, box_h)) / 2;
 
-            auto confirm = location_box + Point(pad + texture_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
+            auto confirm = location_box + Point(pad + box_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
 
             auto input = Controls::User();
 
