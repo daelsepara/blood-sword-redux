@@ -926,6 +926,39 @@ namespace BloodSword::Interface
         return stats;
     }
 
+    // renders asset (surface) to a target surface at specified position (rect)
+    void RenderAsset(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
+    {
+        if (surface_asset)
+        {
+            // convert surface_asset into target surface's format
+            auto converted_asset = SDL_ConvertSurface(surface_asset, surface->format, 0);
+
+            if (converted_asset)
+            {
+                // place surface in the correct position
+                SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
+
+                SDL_BlitSurface(converted_asset, nullptr, surface, &rect);
+
+                // cleanup
+                BloodSword::Free(&converted_asset);
+            }
+        }
+    }
+
+    // renders asset (surface) to a target surface at specified position (rect) then free it
+    void RenderAssetThenFree(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
+    {
+        if (surface_asset)
+        {
+            Interface::RenderAsset(surface, surface_asset, rect);
+
+            // cleanup
+            BloodSword::Free(&surface_asset);
+        }
+    }
+
     // create character attributes text box
     SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelcolor, Uint32 stats_color, int style, int wrap, bool add_name = false, bool in_battle = false)
     {
@@ -1017,17 +1050,6 @@ namespace BloodSword::Interface
 
                 labels_rect.y = 0;
 
-                auto converted_labels = SDL_ConvertSurface(surface_labels, surface->format, 0);
-
-                if (converted_labels)
-                {
-                    SDL_SetSurfaceAlphaMod(converted_labels, SDL_ALPHA_OPAQUE);
-
-                    SDL_BlitSurface(converted_labels, nullptr, surface, &labels_rect);
-
-                    BloodSword::Free(&converted_labels);
-                }
-
                 stats_rect.w = surface->w;
 
                 stats_rect.h = surface->h;
@@ -1036,16 +1058,9 @@ namespace BloodSword::Interface
 
                 stats_rect.y = 0;
 
-                auto converted_stats = SDL_ConvertSurface(surface_stats, surface->format, 0);
+                Interface::RenderAsset(surface, surface_labels, labels_rect);
 
-                if (converted_stats)
-                {
-                    SDL_SetSurfaceAlphaMod(converted_stats, SDL_ALPHA_OPAQUE);
-
-                    SDL_BlitSurface(converted_stats, nullptr, surface, &stats_rect);
-
-                    BloodSword::Free(&converted_stats);
-                }
+                Interface::RenderAsset(surface, surface_stats, stats_rect);
 
                 // add character class if player character
                 if (add_name)
@@ -1054,24 +1069,7 @@ namespace BloodSword::Interface
 
                     if (surface_name)
                     {
-                        labels_rect.w = surface->w;
-
-                        labels_rect.h = surface->h;
-
-                        labels_rect.x = 0;
-
-                        labels_rect.y = 0;
-
-                        auto converted_name = SDL_ConvertSurface(surface_name, surface->format, 0);
-
-                        if (converted_name)
-                        {
-                            SDL_SetSurfaceAlphaMod(converted_name, SDL_ALPHA_OPAQUE);
-
-                            SDL_BlitSurface(converted_name, nullptr, surface, &labels_rect);
-
-                            BloodSword::Free(&converted_name);
-                        }
+                        Interface::RenderAsset(surface, surface_name, labels_rect);
 
                         BloodSword::Free(&surface_name);
                     }
@@ -1412,106 +1410,64 @@ namespace BloodSword::Interface
             {
                 SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
 
+                // retrieve attribute values
+                auto rnk = std::to_string(character.Rank);
+
+                auto fpr = Interface::ScoreString(character, Attribute::Type::FIGHTING_PROWESS);
+
+                auto awr = Interface::ScoreString(character, Attribute::Type::AWARENESS);
+
+                auto psy = Interface::ScoreString(character, Attribute::Type::PSYCHIC_ABILITY);
+
+                auto end = Interface::ScoreString(character, Attribute::Type::ENDURANCE);
+
+                auto dmg = Interface::ScoreString(character, Attribute::Type::DAMAGE);
+
+                auto arm = Interface::ScoreString(character, Attribute::Type::ARMOUR);
+
+                auto gold = std::to_string(character.Quantity(Item::Type::GOLD));
+
+                auto four = std::string(4, ' ');
+
+                // format attribute values
+                auto stats_1 = four + rnk + std::string(3 - rnk.size(), ' ') + four + fpr + std::string(7 - fpr.size(), ' ') + four + end + '\n';
+
+                auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + '\n';
+
+                auto stats_3 = gold + std::string(11 - gold.size(), ' ') + psy + std::string(7 - psy.size(), ' ') + four + arm;
+
+                auto stats = stats_1 + stats_2 + stats_3;
+
                 // create and convert SDL surface to appropriate format
-                auto converted_labels = SDL_ConvertSurface(surface_labels, surface->format, 0);
+                auto surface_stats = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, stats.c_str(), Color::S(Color::Highlight), 0);
 
-                if (converted_labels)
-                {
-                    SDL_Rect stats_rect;
+                SDL_Rect stats_rect;
 
-                    stats_rect.w = surface->w;
+                stats_rect.w = surface->w;
 
-                    stats_rect.h = surface->h;
+                stats_rect.h = surface->h;
 
-                    // retrieve attribute values
-                    auto rnk = std::to_string(character.Rank);
+                stats_rect.x = BloodSword::TileSize + BloodSword::Pad;
 
-                    auto fpr = Interface::ScoreString(character, Attribute::Type::FIGHTING_PROWESS);
+                stats_rect.y = 0;
 
-                    auto awr = Interface::ScoreString(character, Attribute::Type::AWARENESS);
+                Interface::RenderAsset(surface, surface_labels, stats_rect);
 
-                    auto psy = Interface::ScoreString(character, Attribute::Type::PSYCHIC_ABILITY);
+                Interface::RenderAsset(surface, surface_stats, stats_rect);
 
-                    auto end = Interface::ScoreString(character, Attribute::Type::ENDURANCE);
+                // add icon (blur if dead)
+                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(character.Asset) : BloodSword::Asset::Surface(character.Asset, Color::Inactive);
 
-                    auto dmg = Interface::ScoreString(character, Attribute::Type::DAMAGE);
+                stats_rect.x = 0;
 
-                    auto arm = Interface::ScoreString(character, Attribute::Type::ARMOUR);
+                Interface::RenderAsset(surface, surface_asset, stats_rect);
 
-                    auto gold = std::to_string(character.Quantity(Item::Type::GOLD));
+                // cleanup
+                BloodSword::Free(&surface_labels);
 
-                    auto four = std::string(4, ' ');
+                BloodSword::Free(&surface_stats);
 
-                    // format attribute values
-                    auto stats_1 = four + rnk + std::string(3 - rnk.size(), ' ') + four + fpr + std::string(7 - fpr.size(), ' ') + four + end + '\n';
-
-                    auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + '\n';
-
-                    auto stats_3 = gold + std::string(11 - gold.size(), ' ') + psy + std::string(7 - psy.size(), ' ') + four + arm;
-
-                    auto stats = stats_1 + stats_2 + stats_3;
-
-                    // create and convert SDL surface to appropriate format
-                    auto surface_stats = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, stats.c_str(), Color::S(Color::Highlight), 0);
-
-                    if (surface_stats)
-                    {
-                        auto converted_stats = SDL_ConvertSurface(surface_stats, surface->format, 0);
-
-                        if (converted_stats)
-                        {
-                            stats_rect.w = surface->w;
-
-                            stats_rect.h = surface->h;
-
-                            stats_rect.x = BloodSword::TileSize + BloodSword::Pad;
-
-                            stats_rect.y = 0;
-
-                            // combine surfaces (label + values)
-                            SDL_SetSurfaceAlphaMod(converted_labels, SDL_ALPHA_OPAQUE);
-
-                            SDL_BlitSurface(converted_labels, nullptr, surface, &stats_rect);
-
-                            SDL_SetSurfaceAlphaMod(converted_stats, SDL_ALPHA_OPAQUE);
-
-                            SDL_BlitSurface(converted_stats, nullptr, surface, &stats_rect);
-
-                            // cleanup
-                            BloodSword::Free(&converted_stats);
-                        }
-
-                        // cleanup
-                        BloodSword::Free(&surface_stats);
-                    }
-
-                    // add icon (blur if dead)
-                    auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(character.Asset) : BloodSword::Asset::Surface(character.Asset, Color::Inactive);
-
-                    if (surface_asset)
-                    {
-                        auto converted_asset = SDL_ConvertSurface(surface_asset, surface->format, 0);
-
-                        if (converted_asset)
-                        {
-                            stats_rect.x = 0;
-
-                            // place icon in the correct position
-                            SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
-
-                            SDL_BlitSurface(converted_asset, nullptr, surface, &stats_rect);
-
-                            // cleanup
-                            BloodSword::Free(&converted_asset);
-                        }
-
-                        // cleanup
-                        BloodSword::Free(&surface_asset);
-                    }
-
-                    // cleanup
-                    BloodSword::Free(&converted_labels);
-                }
+                BloodSword::Free(&surface_asset);
             }
 
             // cleanup
@@ -1552,22 +1508,11 @@ namespace BloodSword::Interface
 
                     if (character_surface)
                     {
-                        auto converted_character = SDL_ConvertSurface(character_surface, surface->format, 0);
+                        stats_rect.x = 0;
 
-                        if (converted_character)
-                        {
-                            stats_rect.x = 0;
+                        stats_rect.y = i * labels_h;
 
-                            stats_rect.y = i * labels_h;
-
-                            // blit character surface into final surface
-                            SDL_SetSurfaceAlphaMod(converted_character, SDL_ALPHA_OPAQUE);
-
-                            SDL_BlitSurface(converted_character, nullptr, surface, &stats_rect);
-
-                            // cleanup
-                            BloodSword::Free(&converted_character);
-                        }
+                        Interface::RenderAsset(surface, character_surface, stats_rect);
 
                         // cleanup
                         BloodSword::Free(&character_surface);

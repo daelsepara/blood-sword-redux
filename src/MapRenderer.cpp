@@ -3,28 +3,6 @@
 // render map to a png file
 namespace BloodSword::MapRenderer
 {
-    void RenderAsset(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
-    {
-        if (surface_asset)
-        {
-            auto converted_asset = SDL_ConvertSurface(surface_asset, surface->format, 0);
-
-            if (converted_asset)
-            {
-                // place icon in the correct position
-                SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
-
-                SDL_BlitSurface(converted_asset, nullptr, surface, &rect);
-
-                // cleanup
-                BloodSword::Free(&converted_asset);
-            }
-
-            // cleanup
-            BloodSword::Free(&surface_asset);
-        }
-    }
-
     void RenderPoints(SDL_Surface *surface, Points &points, SDL_Rect &rect, int offset, Asset::Type asset, bool blur = false)
     {
         for (auto point : points)
@@ -35,7 +13,7 @@ namespace BloodSword::MapRenderer
 
             auto surface_sset = blur ? BloodSword::Asset::Surface(asset, 0x7F7F7F7F) : BloodSword::Asset::Surface(asset);
 
-            MapRenderer::RenderAsset(surface, surface_sset, rect);
+            Interface::RenderAssetThenFree(surface, surface_sset, rect);
         }
     }
 
@@ -166,7 +144,7 @@ namespace BloodSword::MapRenderer
 
                         rect.y = y * BloodSword::TileSize + offset;
 
-                        MapRenderer::RenderAsset(surface, surface_asset, rect);
+                        Interface::RenderAssetThenFree(surface, surface_asset, rect);
                     }
                 }
 
@@ -190,7 +168,7 @@ namespace BloodSword::MapRenderer
 
                     auto character_asset = BloodSword::Asset::Surface(Interface::Numbers[number]);
 
-                    MapRenderer::RenderAsset(surface, character_asset, rect);
+                    Interface::RenderAssetThenFree(surface, character_asset, rect);
 
                     number++;
                 }

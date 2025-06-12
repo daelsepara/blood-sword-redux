@@ -3,28 +3,6 @@
 // generate sprite sheet
 namespace BloodSword::SpriteSheet
 {
-    void RenderAsset(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
-    {
-        if (surface_asset)
-        {
-            auto converted_asset = SDL_ConvertSurface(surface_asset, surface->format, 0);
-
-            if (converted_asset)
-            {
-                // place icon in the correct position
-                SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
-
-                SDL_BlitSurface(converted_asset, nullptr, surface, &rect);
-
-                // cleanup
-                BloodSword::Free(&converted_asset);
-            }
-
-            // cleanup
-            BloodSword::Free(&surface_asset);
-        }
-    }
-
     void Generate(const char *module, const char *image_file, int width, bool reverse)
     {
         // get all available modules
@@ -75,7 +53,7 @@ namespace BloodSword::SpriteSheet
 
                         rect.y = (reverse ? height - y - 1 : y) * BloodSword::TileSize;
 
-                        SpriteSheet::RenderAsset(surface, surface_asset, rect);
+                        Interface::RenderAssetThenFree(surface, surface_asset, rect);
 
                         x++;
 
