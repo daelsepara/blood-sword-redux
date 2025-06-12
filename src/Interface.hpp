@@ -496,7 +496,7 @@ namespace BloodSword::Interface
 
             BloodSword::Size(message, &texture_w, &texture_h);
 
-            auto box_w = std::max(BloodSword::TileSize * 5, texture_w) + pad * 2;
+            auto box_w = std::max(BloodSword::TileSize * 4, texture_w) + pad * 2;
 
             auto box_h = texture_h + pad * 3 + BloodSword::TileSize;
 
@@ -504,13 +504,13 @@ namespace BloodSword::Interface
 
             auto location_txt = offset + (Point(width, height) - Point(texture_w, box_h)) / 2;
 
-            auto confirm = location_box + Point(pad + box_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
+            auto confirm = location_box + Point(box_w / 2 - BloodSword::HalfTile, texture_h + pad * 2);
 
             auto input = Controls::User();
 
             box.Add(Scene::Element(location_box, box_w, box_h, background, border, border_size));
 
-            box.VerifyAndAdd(Scene::Element(message, location_txt + Point(pad, pad)));
+            box.VerifyAndAdd(Scene::Element(message, location_txt + Point(0, pad)));
 
             box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
 
