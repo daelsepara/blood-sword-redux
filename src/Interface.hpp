@@ -510,7 +510,7 @@ namespace BloodSword::Interface
 
             box.Add(Scene::Element(location_box, box_w, box_h, background, border, border_size));
 
-            box.VerifyAndAdd(Scene::Element(message, location_text + Point(pad, pad)));
+            box.VerifyAndAdd(Scene::Element(message, location_txt + Point(pad, pad)));
 
             box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
 
