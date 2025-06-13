@@ -124,4 +124,5 @@ namespace BloodSword::Palette
         }
     }
 }
+
 #endif

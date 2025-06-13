@@ -496,7 +496,7 @@ namespace BloodSword::Interface
 
             BloodSword::Size(message, &texture_w, &texture_h);
 
-            auto box_w = std::max(BloodSword::TileSize * 4, texture_w) + pad * 2;
+            auto box_w = std::max(BloodSword::QuadTile, texture_w) + pad * 2;
 
             auto box_h = texture_h + pad * 3 + BloodSword::TileSize;
 
@@ -2260,7 +2260,7 @@ namespace BloodSword::Interface
 
         auto origin_y = origin.Y + h - pad * 3;
 
-        auto dice_y = BloodSword::TileSize * 2 + pad;
+        auto dice_y = BloodSword::DoubleTile + pad;
 
         auto origin_pad = origin + pad;
 
@@ -2354,7 +2354,7 @@ namespace BloodSword::Interface
     // default roller
     int Roll(Graphics::Base &graphics, Scene::Base &background, Asset::Type actor, Asset::Type action, int roll, int modifier)
     {
-        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
@@ -2680,7 +2680,7 @@ namespace BloodSword::Interface
     // test character [ATTRIBUTE]
     bool Test(Graphics::Base &graphics, Scene::Base &background, Character::Base &character, Attribute::Type attribute)
     {
-        auto w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
@@ -2759,7 +2759,7 @@ namespace BloodSword::Interface
 
         auto edge_x = w - BloodSword::Width(unharmed) - pad;
 
-        auto dice_y = BloodSword::TileSize * 2 + pad;
+        auto dice_y = BloodSword::DoubleTile + pad;
 
         auto origin_unharmed = origin + Point(edge_x, text_h * 2 + tile_pad);
 
@@ -2956,9 +2956,9 @@ namespace BloodSword::Interface
     {
         auto character_class = Character::Class::NONE;
 
-        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
+        auto stats = Interface::GenerateStats(graphics, party, BloodSword::PentaTile, false, true);
 
-        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
+        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::PentaTile);
 
         auto select = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -3013,7 +3013,7 @@ namespace BloodSword::Interface
                         {
                             auto skills_x = popup.X + (popup_w + pad * 2);
 
-                            overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+                            overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::PentaTile, popup_h, Color::Background, Color::Active, BloodSword::Border));
 
                             overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
                         }
@@ -3073,7 +3073,7 @@ namespace BloodSword::Interface
     {
         auto character = Character::Class::NONE;
 
-        auto infow = BloodSword::TileSize * 5;
+        auto infow = BloodSword::PentaTile;
 
         BloodSword::Textures textures = {};
 
@@ -3124,7 +3124,7 @@ namespace BloodSword::Interface
 
         auto popup_w = std::max((party.Count() + 1) * (BloodSword::TileSize + popup_pad), BloodSword::Width(select) + popup_pad * 2);
 
-        auto popup_h = BloodSword::TileSize * 2 + BloodSword::HalfTile;
+        auto popup_h = BloodSword::DoubleTile + BloodSword::HalfTile;
 
         for (auto i = 0; i < textures.size(); i++)
         {
@@ -3214,9 +3214,7 @@ namespace BloodSword::Interface
         {
             auto text_description = Story::CurrentBook.Sections[description].Text;
 
-            auto wrap = BloodSword::TileSize * 15;
-
-            Interface::TextBox(graphics, background, text_description, Color::Active, wrap);
+            Interface::TextBox(graphics, background, text_description, Color::Active, BloodSword::DescriptionSize);
         }
     }
 
@@ -3225,9 +3223,7 @@ namespace BloodSword::Interface
     {
         if (item != Item::Type::NONE && Items::FoundDescription(item))
         {
-            auto wrap = BloodSword::TileSize * 15;
-
-            Interface::TextBox(graphics, background, Items::Descriptions[item], Color::Active, wrap);
+            Interface::TextBox(graphics, background, Items::Descriptions[item], Color::Active, BloodSword::DescriptionSize);
         }
     }
 
@@ -3399,7 +3395,7 @@ namespace BloodSword::Interface
     {
         auto result = false;
 
-        auto cast_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto cast_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto cast_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
@@ -3559,9 +3555,9 @@ namespace BloodSword::Interface
                                   Generate::Character(Character::Class::SAGE, rank),
                                   Generate::Character(Character::Class::ENCHANTER, rank)});
 
-        auto stats = Interface::GenerateStats(graphics, party, BloodSword::TileSize * 5, false, true);
+        auto stats = Interface::GenerateStats(graphics, party, BloodSword::PentaTile, false, true);
 
-        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
+        auto skills = Interface::Skills(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::PentaTile);
 
         auto select = Graphics::CreateText(graphics, "CHOOSE A PLAYER TO ADD", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -3618,7 +3614,7 @@ namespace BloodSword::Interface
                     {
                         auto skills_x = popup.X + (popup_w + pad * 2);
 
-                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+                        overlay.Add(Scene::Element(skills_x, popup.Y, BloodSword::PentaTile, popup_h, Color::Background, Color::Active, BloodSword::Border));
 
                         overlay.VerifyAndAdd(Scene::Element(skills[input.Current], skills_x, popup.Y));
                     }
@@ -3629,7 +3625,7 @@ namespace BloodSword::Interface
             {
                 auto screen = Point(popup.X, popup.Y - BloodSword::HalfTile * 5);
 
-                overlay.Add(Scene::Element(screen, popup_w, BloodSword::TileSize * 2, Color::Transparent, Color::Active, BloodSword::Border));
+                overlay.Add(Scene::Element(screen, popup_w, BloodSword::DoubleTile, Color::Transparent, Color::Active, BloodSword::Border));
 
                 for (auto i = 0; i < current_party.Count(); i++)
                 {
@@ -3687,11 +3683,11 @@ namespace BloodSword::Interface
 
         auto character = 0;
 
-        auto infow = BloodSword::TileSize * 8;
+        auto infow = BloodSword::OctaTile;
 
-        auto panelw = BloodSword::TileSize * 8;
+        auto panelw = BloodSword::OctaTile;
 
-        auto panelh = BloodSword::TileSize * 9;
+        auto panelh = BloodSword::PanelSize;
 
         auto names = Interface::GenerateNameCaptions(graphics, party);
 
@@ -3766,7 +3762,7 @@ namespace BloodSword::Interface
         {
             auto overlay = Scene::Base();
 
-            overlay.Add(Scene::Element(panelx, partyy, panelw, BloodSword::TileSize * 2, Color::Background, Color::Active, BloodSword::Border));
+            overlay.Add(Scene::Element(panelx, partyy, panelw, BloodSword::DoubleTile, Color::Background, Color::Active, BloodSword::Border));
 
             overlay.VerifyAndAdd(Scene::Element(current, currentx, partyy + BloodSword::SmallPad));
 
@@ -3982,7 +3978,7 @@ namespace BloodSword::Interface
 
         auto overlay = Scene::Base();
 
-        auto width = BloodSword::TileSize * 4;
+        auto width = BloodSword::QuadTile;
 
         auto base_height = BloodSword::HalfTile;
 
@@ -4191,9 +4187,9 @@ namespace BloodSword::Interface
     // get text from user input (popup interface)
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, bool blur = true)
     {
-        auto box_w = (int(question.size()) > BloodSword::QuarterTile) ? (int(question.size()) * BloodSword::QuarterTile) : (BloodSword::TileSize * 5);
+        auto box_w = (int(question.size()) > BloodSword::QuarterTile) ? (int(question.size()) * BloodSword::QuarterTile) : (BloodSword::PentaTile);
 
-        return Interface::TextInput(graphics, background, question, box_w, (BloodSword::TileSize * 2 - BloodSword::Pad), blur);
+        return Interface::TextInput(graphics, background, question, box_w, (BloodSword::DoubleTile - BloodSword::Pad), blur);
     }
 
     // get text from user input (popup interface)
@@ -4440,7 +4436,7 @@ namespace BloodSword::Interface
     // generic get number popup (centered)
     int GetNumber(Graphics::Base &graphics, Scene::Base &background, const char *message, int minimum, int maximum, Asset::Type target, Asset::Type increase, Asset::Type decrease, bool cancel = true)
     {
-        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto popup_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto popup_h = ((maximum / Interface::MaxBoxRow) + 2) * BloodSword::HalfTile + BloodSword::TileSize + BloodSword::HugePad;
 
@@ -5624,22 +5620,19 @@ namespace BloodSword::Interface
 
         auto options = int(items.size());
 
-        // wrap length
-        auto wrap = BloodSword::TileSize * 6;
-
         auto text_list = Graphics::TextList();
 
         for (auto &item : items)
         {
             std::string item_string = Item::TypeMapping[item];
 
-            text_list.push_back(Graphics::RichText(item_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
+            text_list.push_back(Graphics::RichText(item_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::Wrap));
         }
 
         auto menu = Graphics::CreateText(graphics, text_list);
 
         // default width
-        auto w = wrap;
+        auto w = BloodSword::Wrap;
 
         // default height
         auto h = BloodSword::TileSize;
@@ -5649,7 +5642,7 @@ namespace BloodSword::Interface
 
         for (auto &item : menu)
         {
-            w = std::max(BloodSword::Width(item) + pads, wrap);
+            w = std::max(BloodSword::Width(item) + pads, BloodSword::Wrap);
 
             h = std::max(BloodSword::Height(item) + pads, h);
         }
@@ -5768,7 +5761,7 @@ namespace BloodSword::Interface
                         {
                             auto text = Items::Defaults[items[choice]].Name + "\n\n" + Items::Descriptions[items[choice]];
 
-                            if (Interface::TextBoxConfirm(graphics, background, text, Color::Active, BloodSword::TileSize * 8))
+                            if (Interface::TextBoxConfirm(graphics, background, text, Color::Active, BloodSword::OctaTile))
                             {
                                 if (Interface::CanReceive(party[character]))
                                 {
@@ -5965,8 +5958,6 @@ namespace BloodSword::Interface
     // run one round of damage gauntlet
     void GauntletRound(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Gauntlet gauntlet, Asset::Type asset, std::string prefix)
     {
-        auto wrap = BloodSword::TileSize * 6;
-
         if (Engine::IsAlive(party))
         {
             for (auto character = 0; character < party.Count(); character++)
@@ -5979,7 +5970,7 @@ namespace BloodSword::Interface
                     {
                         std::string message = prefix + " " + party[character].Name + "!";
 
-                        Interface::TextBox(graphics, background, message, Color::Highlight, wrap, true);
+                        Interface::TextBox(graphics, background, message, Color::Highlight, BloodSword::Wrap, true);
 
                         Interface::DamagePlayer(graphics, background, party[character], gauntlet.Damage, gauntlet.DamageModifier, gauntlet.IgnoreArmour, false, true);
 
@@ -6045,7 +6036,7 @@ namespace BloodSword::Interface
             // count of items used by a player
             auto counts = std::vector<int>(party.Count());
 
-            auto items = Interface::Items(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::TileSize * 5);
+            auto items = Interface::Items(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::PentaTile);
 
             auto captions = Interface::GenerateNameCaptions(graphics, party);
 
@@ -6107,7 +6098,7 @@ namespace BloodSword::Interface
 
                         auto items_x = popup.X + (popup_w + pad * 2);
 
-                        overlay.Add(Scene::Element(items_x, popup.Y, BloodSword::TileSize * 5, popup_h, Color::Background, Color::Active, BloodSword::Border));
+                        overlay.Add(Scene::Element(items_x, popup.Y, BloodSword::PentaTile, popup_h, Color::Background, Color::Active, BloodSword::Border));
 
                         overlay.VerifyAndAdd(Scene::Element(items[input.Current], items_x, popup.Y));
                     }
@@ -6222,20 +6213,17 @@ namespace BloodSword::Interface
 
         auto options = int(character.Items.size());
 
-        // wrap length
-        auto wrap = BloodSword::TileSize * 6;
-
         auto text_list = Graphics::TextList();
 
         for (auto &item : character.Items)
         {
-            text_list.push_back(Graphics::RichText(item.String(true), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
+            text_list.push_back(Graphics::RichText(item.String(true), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::Wrap));
         }
 
         auto menu = Graphics::CreateText(graphics, text_list);
 
         // default width
-        auto w = wrap;
+        auto w = BloodSword::Wrap;
 
         // default height
         auto h = BloodSword::TileSize;
@@ -6245,7 +6233,7 @@ namespace BloodSword::Interface
 
         for (auto &item : menu)
         {
-            w = std::max(BloodSword::Width(item) + pads, wrap);
+            w = std::max(BloodSword::Width(item) + pads, BloodSword::Wrap);
 
             h = std::max(BloodSword::Height(item) + pads, h);
         }
@@ -6432,17 +6420,14 @@ namespace BloodSword::Interface
 
         auto options = 2;
 
-        // wrap length
-        auto wrap = BloodSword::TileSize * 6;
-
         Graphics::TextList text_list = {
-            Graphics::RichText("LOSE 1 ENDURANCE", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap),
-            Graphics::RichText("DROP 1 ITEM", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap)};
+            Graphics::RichText("LOSE 1 ENDURANCE", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::Wrap),
+            Graphics::RichText("DROP 1 ITEM", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::Wrap)};
 
         auto menu = Graphics::CreateText(graphics, text_list);
 
         // default width
-        auto w = wrap;
+        auto w = BloodSword::Wrap;
 
         // default height
         auto h = BloodSword::TileSize;
@@ -6452,7 +6437,7 @@ namespace BloodSword::Interface
 
         for (auto &item : menu)
         {
-            w = std::max(BloodSword::Width(item) + pads, wrap);
+            w = std::max(BloodSword::Width(item) + pads, BloodSword::Wrap);
 
             h = std::max(BloodSword::Height(item) + pads, h);
         }
@@ -6866,13 +6851,13 @@ namespace BloodSword::Interface
     {
         auto completion = party.Get("COMPLETION MESSAGE");
 
-        auto texture = Graphics::CreateText(graphics, completion.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, BloodSword::TileSize * 10);
+        auto texture = Graphics::CreateText(graphics, completion.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, BloodSword::DecaTile);
 
         auto texturex = (graphics.Width - BloodSword::Width(texture)) / 2 + BloodSword::Pad;
 
-        auto panelh = BloodSword::TileSize * 2 + BloodSword::LargePad * 5 + BloodSword::Height(texture);
+        auto panelh = BloodSword::DoubleTile + BloodSword::LargePad * 5 + BloodSword::Height(texture);
 
-        auto panelw = BloodSword::TileSize * 10 + BloodSword::LargePad;
+        auto panelw = BloodSword::DecaTile + BloodSword::LargePad;
 
         auto panelx = (graphics.Width - panelw) / 2;
 
@@ -6931,9 +6916,9 @@ namespace BloodSword::Interface
 
         auto GamesPath = Interface::GetGamesPath();
 
-        auto boxw = BloodSword::TileSize * 8;
+        auto boxw = BloodSword::OctaTile;
 
-        auto boxh = BloodSword::TileSize * 2;
+        auto boxh = BloodSword::DoubleTile;
 
         auto boxx = (graphics.Width - boxw) / 2;
 
@@ -7235,7 +7220,7 @@ namespace BloodSword::Interface
 
         auto base_width = BloodSword::TileSize * 12;
 
-        auto stats = Interface::GeneratePartyStats(graphics, new_party, BloodSword::TileSize * 6);
+        auto stats = Interface::GeneratePartyStats(graphics, new_party, BloodSword::Wrap);
 
         auto statsx = (graphics.Width - BloodSword::Width(stats)) / 2 + BloodSword::Pad;
 

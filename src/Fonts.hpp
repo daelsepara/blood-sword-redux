@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -125,4 +126,5 @@ namespace BloodSword::Fonts
         return font;
     }
 }
+
 #endif

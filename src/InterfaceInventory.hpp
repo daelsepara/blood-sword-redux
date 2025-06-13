@@ -606,7 +606,7 @@ namespace BloodSword::Interface
             auto options = int(character.Items.size());
 
             // wrap length
-            auto wrap = BloodSword::TileSize * 6;
+            auto wrap = BloodSword::Wrap;
 
             auto text_list = Graphics::TextList();
 
@@ -792,7 +792,7 @@ namespace BloodSword::Interface
             auto options = int(items.size());
 
             // wrap length
-            auto wrap = BloodSword::TileSize * 6;
+            auto wrap = BloodSword::Wrap;
 
             auto text_list = Graphics::TextList();
 
@@ -1152,11 +1152,11 @@ namespace BloodSword::Interface
     {
         Interface::ItemResult result;
 
-        auto infow = BloodSword::TileSize * 8;
+        auto infow = BloodSword::OctaTile;
 
-        auto panelw = BloodSword::TileSize * 8;
+        auto panelw = BloodSword::OctaTile;
 
-        auto panelh = BloodSword::TileSize * 9;
+        auto panelh = BloodSword::PanelSize;
 
         auto names = Interface::GenerateNameCaptions(graphics, party);
 

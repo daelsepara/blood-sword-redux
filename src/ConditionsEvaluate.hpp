@@ -1996,8 +1996,6 @@ namespace BloodSword::Conditions
             // 4 - border
             if (Engine::IsAlive(party) && condition.Variables.size() > 4)
             {
-                auto wrap = BloodSword::TileSize * 6;
-
                 auto ops = condition.Variables[0];
 
                 auto first = Engine::MapTokens(party, condition.Variables[1]);
@@ -2019,7 +2017,7 @@ namespace BloodSword::Conditions
                         auto border = Engine::Color(condition.Variables[4]);
 
                         // show message
-                        Interface::TextBox(graphics, background, condition.Variables[3], border, wrap, true);
+                        Interface::TextBox(graphics, background, condition.Variables[3], border, BloodSword::Wrap, true);
 
                         result = true;
                     }
@@ -2144,8 +2142,6 @@ namespace BloodSword::Conditions
             // 1 - N variables to show
             if (Engine::IsAlive(party) && condition.Variables.size() > 1)
             {
-                auto wrap = BloodSword::TileSize * 6;
-
                 auto border = Engine::Color(condition.Variables[0]);
 
                 auto message = std::string();
@@ -2199,7 +2195,7 @@ namespace BloodSword::Conditions
 
                 if (message.size() > 0)
                 {
-                    Interface::TextBox(graphics, background, message, border, wrap);
+                    Interface::TextBox(graphics, background, message, border, BloodSword::Wrap);
                 }
 
                 result = true;
@@ -2276,7 +2272,7 @@ namespace BloodSword::Conditions
                 }
                 else if (condition.Type == Conditions::Type::TEXTBOX)
                 {
-                    Interface::TextBox(graphics, background, condition.Variables[0], border, BloodSword::TileSize * 8);
+                    Interface::TextBox(graphics, background, condition.Variables[0], border, BloodSword::OctaTile);
                 }
 
                 result = true;
@@ -3505,8 +3501,6 @@ namespace BloodSword::Conditions
             // 3 - border color on display
             if (condition.Variables.size() > 2)
             {
-                auto wrap = BloodSword::TileSize * 6;
-
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
@@ -3525,7 +3519,7 @@ namespace BloodSword::Conditions
                             {
                                 auto border = Engine::Color(condition.Variables[3]);
 
-                                Interface::TextBox(graphics, background, condition.Variables[1], border, wrap);
+                                Interface::TextBox(graphics, background, condition.Variables[1], border, BloodSword::Wrap);
                             }
                             else
                             {
@@ -4004,7 +3998,7 @@ namespace BloodSword::Conditions
                     {
                         if (!condition.Variables[8].empty())
                         {
-                            Interface::TextBox(graphics, background, condition.Variables[8], Color::Active, BloodSword::TileSize * 6, true);
+                            Interface::TextBox(graphics, background, condition.Variables[8], Color::Active, BloodSword::Wrap, true);
                         }
                     }
                     else
@@ -4015,7 +4009,7 @@ namespace BloodSword::Conditions
 
                             if (!condition.Variables[9].empty())
                             {
-                                Interface::TextBox(graphics, background, condition.Variables[9], Color::Inactive, BloodSword::TileSize * 6, true);
+                                Interface::TextBox(graphics, background, condition.Variables[9], Color::Inactive, BloodSword::Wrap, true);
                             }
                         }
                     }

@@ -7,7 +7,7 @@ namespace BloodSword::Test
     // user input test
     void Controls(Graphics::Base &graphics)
     {
-        auto x = BloodSword::TileSize * 2;
+        auto x = BloodSword::DoubleTile;
 
         auto y = BloodSword::TileSize;
 
@@ -678,9 +678,9 @@ namespace BloodSword::Test
 
         Uint32 highlight = Color::Highlight;
 
-        auto width = BloodSword::TileSize * 10;
+        auto width = BloodSword::DecaTile;
 
-        auto height = BloodSword::TileSize * 2;
+        auto height = BloodSword::DoubleTile;
 
         for (auto name : Palette::Names)
         {
@@ -756,9 +756,9 @@ namespace BloodSword::Test
             }
 
             // add color boxes
-            auto palette_w = BloodSword::TileSize * 3;
+            auto palette_w = BloodSword::TripleTile;
 
-            auto palette_h = BloodSword::TileSize * 2;
+            auto palette_h = BloodSword::DoubleTile;
 
             auto palette_x1 = palette_offset_x + pad;
 
@@ -768,7 +768,7 @@ namespace BloodSword::Test
 
             auto palette_y1 = origin_x + palette_h + BloodSword::Pad;
 
-            auto palette_y2 = origin_y1 + BloodSword::TileSize * 5 + BloodSword::Pad;
+            auto palette_y2 = origin_y1 + BloodSword::PentaTile + BloodSword::Pad;
 
             scene.Add(Scene::Element(palette_x1, origin_x, palette_w, palette_h, Palette::List[palette][0], Palette::List[palette][0], BloodSword::Pixel));
 
@@ -898,7 +898,7 @@ namespace BloodSword::Test
             Attribute::Type::AWARENESS,
             Attribute::Type::PSYCHIC_ABILITY};
 
-        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto popup_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
@@ -1266,7 +1266,7 @@ namespace BloodSword::Test
             auto options = int(story.Sections.size());
 
             // wrap length
-            auto wrap = BloodSword::TileSize * 3;
+            auto wrap = BloodSword::TripleTile;
 
             for (auto i = 0; i < story.Sections.size(); i++)
             {
@@ -1682,9 +1682,9 @@ namespace BloodSword::Test
 
     void Menu(Graphics::Base &graphics)
     {
-        auto width = BloodSword::TileSize * 10;
+        auto width = BloodSword::DecaTile;
 
-        auto height = BloodSword::TileSize * 2;
+        auto height = BloodSword::DoubleTile;
 
         auto menu = RegenerateMenu(graphics, width);
 

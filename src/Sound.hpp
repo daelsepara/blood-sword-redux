@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <string>
+
 #include <SDL_mixer.h>
 
 #include "nlohmann/json.hpp"

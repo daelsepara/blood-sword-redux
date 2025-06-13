@@ -48,7 +48,7 @@ namespace BloodSword::Interface
 
                 std::string message = "FIGHTING PROWESS: +1\nAWARENESS: +1\nPSYCHIC ABILITY: -1\nENDURANCE: -1";
 
-                Interface::TextBox(graphics, background, message.c_str(), (BloodSword::TileSize * 5));
+                Interface::TextBox(graphics, background, message.c_str(), (BloodSword::PentaTile));
             }
             else
             {

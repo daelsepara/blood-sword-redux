@@ -46,7 +46,7 @@ namespace BloodSword::Interface
         auto options = int(choices.size());
 
         // wrap length
-        auto wrap = BloodSword::TileSize * 6;
+        auto wrap = BloodSword::Wrap;
 
         auto text_list = Graphics::TextList();
 
@@ -1281,10 +1281,10 @@ namespace BloodSword::Interface
         SDL_Texture *image = nullptr;
 
         // total size of all dividers
-        auto space = BloodSword::TileSize * 3 + BloodSword::HugePad;
+        auto space = BloodSword::TripleTile + BloodSword::HugePad;
 
         // includes tile-sized borders on left, right, and middle (divider)
-        auto panel_w = (graphics.Width - BloodSword::TileSize * 2 - space) / 2;
+        auto panel_w = (graphics.Width - BloodSword::DoubleTile - space) / 2;
 
         // includes tile-sized top, bottom borders and one row of buttons
         auto panel_h = (graphics.Height - space);
@@ -1756,13 +1756,13 @@ namespace BloodSword::Interface
 
             if (result == 6)
             {
-                Interface::TextBox(graphics, background, "The Prince tires of his insidious sport at last and departs from your mind forever.", Color::Active, BloodSword::TileSize * 6, true);
+                Interface::TextBox(graphics, background, "The Prince tires of his insidious sport at last and departs from your mind forever.", Color::Active, BloodSword::Wrap, true);
 
                 party.Remove(Character::Status::DESOLATION);
             }
             else
             {
-                Interface::TextBox(graphics, background, "The Prince of Desolation tears away at your soul a little more.", Color::Highlight, BloodSword::TileSize * 6, true);
+                Interface::TextBox(graphics, background, "The Prince of Desolation tears away at your soul a little more.", Color::Highlight, BloodSword::Wrap, true);
 
                 Interface::PermanentAttributeGain(graphics, background, party, 1, -1);
             }
@@ -1846,9 +1846,7 @@ namespace BloodSword::Interface
         {
             auto message = story.Title + "\n\n" + story.Description;
 
-            auto wrap = BloodSword::TileSize * 15;
-
-            Interface::TextBox(graphics, background, message, wrap);
+            Interface::TextBox(graphics, background, message, BloodSword::DescriptionSize);
         }
 
         while (true)

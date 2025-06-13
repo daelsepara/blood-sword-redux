@@ -78,4 +78,5 @@ namespace BloodSword::Features
         return data;
     }
 }
+
 #endif

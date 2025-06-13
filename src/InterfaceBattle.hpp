@@ -32,7 +32,7 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
@@ -234,7 +234,7 @@ namespace BloodSword::Interface
     {
         auto alive = true;
 
-        auto window_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
@@ -358,7 +358,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        auto popup_w = BloodSword::TileSize * 8 + BloodSword::HalfTile;
+        auto popup_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
         auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
 
@@ -514,9 +514,9 @@ namespace BloodSword::Interface
                 {Graphics::RichText("PLAYER FPR/DMG ROLLS +2", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
                  Graphics::RichText(" PARTY FPR/DMG ROLLS +1", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
-            auto popup = draw + (Point(map_w, map_h) - Point(BloodSword::TileSize * 8, (BloodSword::TileSize * 2 + BloodSword::QuarterTile - BloodSword::SmallPad))) / 2;
+            auto popup = draw + (Point(map_w, map_h) - Point(BloodSword::OctaTile, (BloodSword::DoubleTile + BloodSword::QuarterTile - BloodSword::SmallPad))) / 2;
 
-            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, BloodSword::TileSize * 8, BloodSword::TileSize, 2, Color::Background, Color::Inactive, Color::Active, true);
+            auto tiger = Interface::Choice(graphics, background, tiger_eye, popup, BloodSword::OctaTile, BloodSword::TileSize, 2, Color::Background, Color::Inactive, Color::Active, true);
 
             if (tiger == 0)
             {

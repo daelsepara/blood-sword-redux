@@ -534,4 +534,5 @@ namespace BloodSword::Animations
         return done;
     }
 }
+
 #endif

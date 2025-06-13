@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <iostream>
 #include <vector>
+
 #include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
@@ -21,6 +22,24 @@ namespace BloodSword
     const int HalfTile = 32;
 
     const int QuarterTile = 16;
+
+    const int DoubleTile = TileSize * 2;
+
+    const int TripleTile = TileSize * 3;
+
+    const int QuadTile = TileSize * 4;
+
+    const int PentaTile = TileSize * 5;
+
+    const int OctaTile = TileSize * 8;
+
+    const int DecaTile = TileSize * 10;
+
+    const int Wrap = TileSize * 6;
+
+    const int PanelSize = TileSize * 9;
+
+    const int DescriptionSize = TileSize * 15;
 
     // max moves
     const int MaximumMoves = 1000;
@@ -267,4 +286,5 @@ namespace BloodSword
         return height;
     }
 }
+
 #endif

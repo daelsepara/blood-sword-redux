@@ -159,4 +159,5 @@ namespace BloodSword::Controls
         return Controls::MapType(control.c_str());
     }
 }
+
 #endif

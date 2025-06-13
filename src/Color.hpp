@@ -2,6 +2,7 @@
 #define __COLOR_HPP__
 
 #include <fstream>
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 
@@ -55,4 +56,5 @@ namespace BloodSword::Color
         return Color::U(color.r, color.g, color.b, color.a);
     }
 }
+
 #endif

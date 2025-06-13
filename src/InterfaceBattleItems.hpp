@@ -502,7 +502,7 @@ namespace BloodSword::Interface
             auto options = int(character.Items.size());
 
             // wrap length
-            auto wrap = BloodSword::TileSize * 6;
+            auto wrap = BloodSword::Wrap;
 
             auto text_list = Graphics::TextList();
 

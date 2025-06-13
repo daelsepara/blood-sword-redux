@@ -323,4 +323,5 @@ namespace BloodSword::Story
         return Story::LoadRanks(ranks.c_str());
     }
 }
+
 #endif
