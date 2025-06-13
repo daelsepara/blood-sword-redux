@@ -17,10 +17,13 @@ namespace BloodSword::MapRenderer
         }
     }
 
-    void Render(const char *battle_file, const char *image_file)
+    void Render(const char *module, const char *battle_file, const char *image_file)
     {
-        // load default module
+        // get all available modules
         Interface::LoadModules();
+
+        // load selected module
+        Interface::LoadModule(module);
 
         // load settings
         Interface::Initialize(Interface::SettingsFile.c_str());
@@ -181,13 +184,13 @@ namespace BloodSword::MapRenderer
     }
 
     // main loop
-    int Main(const char *battle_file, const char *image_file)
+    int Main(const char *module, const char *battle_file, const char *image_file)
     {
         auto return_code = 0;
 
         try
         {
-            MapRenderer::Render(battle_file, image_file);
+            MapRenderer::Render(module, battle_file, image_file);
         }
         catch (std::exception &e)
         {
@@ -208,15 +211,15 @@ namespace BloodSword::MapRenderer
 
 int main(int argc, char **argv)
 {
-    if (argc < 3)
+    if (argc < 4)
     {
         std::cerr << "To run:" << std::endl
                   << std::endl
-                  << argv[0] << " [battle.json] [image.png]"
+                  << argv[0] << "[module] [battle.json] [image.png]"
                   << std::endl;
 
         return 1;
     }
 
-    return BloodSword::MapRenderer::Main(argv[1], argv[2]);
+    return BloodSword::MapRenderer::Main(argv[1], argv[2], argv[3]);
 }
