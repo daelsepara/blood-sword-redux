@@ -34,7 +34,7 @@ namespace BloodSword::Interface
         {
             auto result = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0);
 
-            if (result > 2)
+            if (result.Sum > 2)
             {
                 // increase stats
                 character.Modifier(Attribute::Type::FIGHTING_PROWESS, character.Modifier(Attribute::Type::FIGHTING_PROWESS) + 1);
@@ -92,7 +92,7 @@ namespace BloodSword::Interface
         {
             if (!Engine::Healed(character))
             {
-                auto rolls = Engine::Roll(2, 0);
+                auto rolls = Engine::Roll(2);
 
                 std::string message = "HEALED " + std::to_string(rolls.Sum) + " ENDURANCE";
 
@@ -113,7 +113,7 @@ namespace BloodSword::Interface
         {
             if (!Engine::Healed(character))
             {
-                auto rolls = Engine::Roll(2, 0);
+                auto rolls = Engine::Roll(2);
 
                 std::string message = "HEALED " + std::to_string(rolls.Sum) + " ENDURANCE";
 
@@ -175,6 +175,34 @@ namespace BloodSword::Interface
                         Interface::MessageBox(graphics, background, party[character].Name + " RESISTS DREADFUL PUNITION", Color::Active);
                     }
                 }
+            }
+
+            Interface::ConsumeItem(character, item_id);
+        }
+        else if (item.Type == Item::Type::SCROLL_PRECOGNITION)
+        {
+            auto rolls = Interface::Roll(graphics, background, character.Asset, Asset::Type::ESP, 3, 0);
+
+            auto number = rolls.Rolls[0] * 100 + rolls.Rolls[1] * 10 + rolls.Rolls[2];
+
+            auto book = party.Location.first;
+
+            Book::Location location = {book, number};
+
+            auto random = Story::CurrentBook.Find(location);
+
+            if (random >= 0 && random < Story::CurrentBook.Sections.size())
+            {
+                auto &section = Story::CurrentBook.Sections[random];
+
+                auto text = Engine::MapTokens(party, section.Text);
+
+                if (text.empty())
+                {
+                    text = "You see nothing of the past nor the future.";
+                }
+
+                Interface::TextBox(graphics, background, text, Color::Active, BloodSword::DescriptionSize);
             }
 
             Interface::ConsumeItem(character, item_id);

@@ -1754,7 +1754,7 @@ namespace BloodSword::Interface
         {
             auto result = Interface::Roll(graphics, background, Asset::Type::NEBULARON, Asset::Type::MISTS_OF_DEATH, 1, 0);
 
-            if (result == 6)
+            if (result.Sum == 6)
             {
                 Interface::TextBox(graphics, background, "The Prince tires of his insidious sport at last and departs from your mind forever.", Color::Active, BloodSword::Wrap, true);
 

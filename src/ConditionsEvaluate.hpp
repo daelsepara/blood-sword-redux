@@ -1913,7 +1913,7 @@ namespace BloodSword::Conditions
                     {
                         auto rolls = Interface::Roll(graphics, background, asset, action, roll, mods);
 
-                        party.Set(variable, rolls);
+                        party.Set(variable, rolls.Sum);
 
                         result = true;
 
@@ -2366,7 +2366,7 @@ namespace BloodSword::Conditions
                         {
                             auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
 
-                            if (rolls <= difficulty)
+                            if (rolls.Sum <= difficulty)
                             {
                                 result = true;
                             }
@@ -2383,11 +2383,11 @@ namespace BloodSword::Conditions
                             {
                                 auto damage = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod);
 
-                                damage -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
+                                damage.Sum -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
 
-                                if (damage > 0)
+                                if (damage.Sum > 0)
                                 {
-                                    Engine::GainEndurance(party[character], -damage);
+                                    Engine::GainEndurance(party[character], -damage.Sum);
                                 }
 
                                 if (!Engine::IsAlive(party[character]))
@@ -2452,7 +2452,7 @@ namespace BloodSword::Conditions
                         {
                             auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
 
-                            result = (rolls <= difficulty);
+                            result = (rolls.Sum <= difficulty);
                         }
 
                         if (!result)

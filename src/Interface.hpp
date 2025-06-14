@@ -2215,9 +2215,9 @@ namespace BloodSword::Interface
     }
 
     // generic dice roller
-    int Roll(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Asset::Type actor, Asset::Type action, int roll, int modifier)
+    Engine::RollResult Roll(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Asset::Type actor, Asset::Type action, int roll, int modifier)
     {
-        int result = 0;
+        Engine::RollResult result;
 
         std::string roll_string = "ROLL: " + std::to_string(roll) + 'D';
 
@@ -2327,8 +2327,10 @@ namespace BloodSword::Interface
 
                             rolled = true;
 
+                            result = rolls;
+
                             // check roll
-                            result = std::max(0, rolls.Sum);
+                            result.Sum = std::max(0, rolls.Sum);
                         }
                     }
                 }
@@ -2352,7 +2354,7 @@ namespace BloodSword::Interface
     }
 
     // default roller
-    int Roll(Graphics::Base &graphics, Scene::Base &background, Asset::Type actor, Asset::Type action, int roll, int modifier)
+    Engine::RollResult Roll(Graphics::Base &graphics, Scene::Base &background, Asset::Type actor, Asset::Type action, int roll, int modifier)
     {
         auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
@@ -4472,7 +4474,9 @@ namespace BloodSword::Interface
                                     {
                                         Engine::GainEndurance(character, -cost, false);
 
-                                        auto score = cost * Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2);
+                                        auto rolls = Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2);
+
+                                        auto score = cost * rolls.Sum;
 
                                         done = !(score > 0);
 
@@ -5817,7 +5821,9 @@ namespace BloodSword::Interface
 
         if (display)
         {
-            damage = Interface::Roll(graphics, background, character.Asset, Asset::Type::DAMAGE, roll, modifier);
+            auto rolls = Interface::Roll(graphics, background, character.Asset, Asset::Type::DAMAGE, roll, modifier);
+
+            damage = rolls.Sum;
         }
         else
         {
@@ -5966,7 +5972,7 @@ namespace BloodSword::Interface
                 {
                     auto roll_result = Interface::Roll(graphics, background, party[character].Asset, asset, gauntlet.Rolls, gauntlet.RollModifier);
 
-                    if (roll_result < gauntlet.Difficulty)
+                    if (roll_result.Sum < gauntlet.Difficulty)
                     {
                         std::string message = prefix + " " + party[character].Name + "!";
 
@@ -6367,7 +6373,7 @@ namespace BloodSword::Interface
         {
             auto effect = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0);
 
-            switch (effect)
+            switch (effect.Sum)
             {
             case 1:
                 Interface::MessageBox(graphics, background, "NOTHING HAPPENS", Color::Inactive);

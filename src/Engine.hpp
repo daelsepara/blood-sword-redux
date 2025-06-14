@@ -102,6 +102,12 @@ namespace BloodSword::Engine
         return Engine::RollResult(rolls, std::max(0, sum));
     }
 
+    // roll number of dice
+    Engine::RollResult Roll(int count)
+    {
+        return Engine::Roll(count, 0);
+    }
+
     // total character score
     int Score(Character::Base &character, Attribute::Type attribute, bool in_battle = false, Item::Property weapon = Item::Property::NONE)
     {
