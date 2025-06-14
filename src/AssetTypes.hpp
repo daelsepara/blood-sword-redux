@@ -178,7 +178,8 @@ namespace BloodSword::Asset
         SEVEN,
         EIGHT,
         NINE,
-        ENEMY
+        ENEMY,
+        PRECOGNITION
     };
 
     template <typename T>
@@ -357,7 +358,8 @@ namespace BloodSword::Asset
         {Asset::Type::SEVEN, "SEVEN"},
         {Asset::Type::EIGHT, "EIGHT"},
         {Asset::Type::NINE, "NINE"},
-        {Asset::Type::ENEMY, "ENEMY"}};
+        {Asset::Type::ENEMY, "ENEMY"},
+        {Asset::Type::PRECOGNITION, "PRECOGNITION"}};
 
     Asset::Type Map(const char *asset)
     {

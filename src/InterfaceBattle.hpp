@@ -113,15 +113,15 @@ namespace BloodSword::Interface
                     // process attacks which do not apply an efect first
                     if (alive && skill == Skills::Type::POISONED_BITE)
                     {
-                        auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Type::FANGS, 1, 0);
+                        auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Type::FANGS, 1, 0).Sum;
 
-                        if (bite.Sum == 6)
+                        if (bite == 6)
                         {
                             Interface::MessageBox(graphics, background, "POISON FLOWS INTO THE WOUND!", defender.IsPlayer() ? Color::Highlight : Color::Active);
 
-                            auto venom = Interface::Roll(graphics, background, defender.Asset, Asset::Type::DAMAGE, 3, 0);
+                            auto venom = Interface::Roll(graphics, background, defender.Asset, Asset::Type::DAMAGE, 3, 0).Sum;
 
-                            alive &= Engine::GainEndurance(defender, -venom.Sum, true);
+                            alive &= Engine::GainEndurance(defender, -venom, true);
                         }
                         else
                         {
@@ -1436,7 +1436,7 @@ namespace BloodSword::Interface
                                         // check if there are adjacent player combatants
                                         auto opponents = Interface::EnemyFights(battle, party, character, src);
 
-                                        if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && (Interface::Roll(graphics, scene, character.Asset, Asset::Type::MISTS_OF_DEATH, 1, 0)).Sum == 1)
+                                        if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Type::MISTS_OF_DEATH, 1, 0).Sum == 1)
                                         {
                                             std::string slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
 
@@ -2672,25 +2672,25 @@ namespace BloodSword::Interface
                 {
                     if (Engine::IsAlive(party[character]))
                     {
-                        auto roll = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::GOLDEN_SNUFF_BOX, 1, 0);
+                        auto roll = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::GOLDEN_SNUFF_BOX, 1, 0).Sum;
 
-                        if (roll.Sum < 3)
+                        if (roll)
                         {
-                            auto damage = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::DAMAGE, 1, 0);
+                            auto damage = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::DAMAGE, 1, 0).Sum;
 
-                            Engine::GainEndurance(party[character], -damage.Sum, false);
+                            Engine::GainEndurance(party[character], -damage, false);
 
-                            std::string message = party[character].Name + " LOSES " + std::to_string(damage.Sum) + " ENDURANCE";
+                            std::string message = party[character].Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
 
                             Interface::MessageBox(graphics, scene, message, Color::Highlight);
                         }
                         else
                         {
-                            auto heal = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::HEAL, 1, 0);
+                            auto heal = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::HEAL, 1, 0).Sum;
 
-                            Engine::GainEndurance(party[character], heal.Sum, false);
+                            Engine::GainEndurance(party[character], heal, false);
 
-                            std::string message = party[character].Name + " GAINS " + std::to_string(heal.Sum) + " ENDURANCE";
+                            std::string message = party[character].Name + " GAINS " + std::to_string(heal) + " ENDURANCE";
 
                             Interface::MessageBox(graphics, scene, message, Color::Active);
                         }

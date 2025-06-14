@@ -1752,9 +1752,9 @@ namespace BloodSword::Interface
         // desolation checks
         if (party.Has(Character::Status::DESOLATION))
         {
-            auto result = Interface::Roll(graphics, background, Asset::Type::NEBULARON, Asset::Type::MISTS_OF_DEATH, 1, 0);
+            auto result = Interface::Roll(graphics, background, Asset::Type::NEBULARON, Asset::Type::MISTS_OF_DEATH, 1, 0).Sum;
 
-            if (result.Sum == 6)
+            if (result)
             {
                 Interface::TextBox(graphics, background, "The Prince tires of his insidious sport at last and departs from your mind forever.", Color::Active, BloodSword::Wrap, true);
 

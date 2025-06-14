@@ -1911,9 +1911,7 @@ namespace BloodSword::Conditions
 
                     if (asset != Asset::Type::NONE && action != Asset::Type::NONE && !variable.empty())
                     {
-                        auto rolls = Interface::Roll(graphics, background, asset, action, roll, mods);
-
-                        party.Set(variable, rolls.Sum);
+                        party.Set(variable, Interface::Roll(graphics, background, asset, action, roll, mods).Sum);
 
                         result = true;
 
@@ -2364,9 +2362,7 @@ namespace BloodSword::Conditions
 
                         if (Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, party[character], spell, false))
                         {
-                            auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
-
-                            if (rolls.Sum <= difficulty)
+                            if (Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0).Sum <= difficulty)
                             {
                                 result = true;
                             }
@@ -2381,13 +2377,13 @@ namespace BloodSword::Conditions
 
                             if (dmg_rol > 0)
                             {
-                                auto damage = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod);
+                                auto damage = Interface::Roll(graphics, background, party[character].Asset, dmg_act, dmg_rol, dmg_mod).Sum;
 
-                                damage.Sum -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
+                                damage -= ignore_armour ? 0 : Engine::Score(party[character], Attribute::Type::ARMOUR);
 
-                                if (damage.Sum > 0)
+                                if (damage > 0)
                                 {
-                                    Engine::GainEndurance(party[character], -damage.Sum);
+                                    Engine::GainEndurance(party[character], -damage);
                                 }
 
                                 if (!Engine::IsAlive(party[character]))
@@ -2450,9 +2446,7 @@ namespace BloodSword::Conditions
 
                         if (Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, party[character], spell, false))
                         {
-                            auto rolls = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0);
-
-                            result = (rolls.Sum <= difficulty);
+                            result = Interface::Roll(graphics, background, target, Spells::Assets[spell], 2, 0).Sum <= difficulty;
                         }
 
                         if (!result)

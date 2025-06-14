@@ -4474,9 +4474,7 @@ namespace BloodSword::Interface
                                     {
                                         Engine::GainEndurance(character, -cost, false);
 
-                                        auto rolls = Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2);
-
-                                        auto score = cost * rolls.Sum;
+                                        auto score = cost * Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2).Sum;
 
                                         done = !(score > 0);
 
@@ -5821,9 +5819,7 @@ namespace BloodSword::Interface
 
         if (display)
         {
-            auto rolls = Interface::Roll(graphics, background, character.Asset, Asset::Type::DAMAGE, roll, modifier);
-
-            damage = rolls.Sum;
+            damage = Interface::Roll(graphics, background, character.Asset, Asset::Type::DAMAGE, roll, modifier).Sum;
         }
         else
         {
@@ -5970,9 +5966,7 @@ namespace BloodSword::Interface
             {
                 if (Engine::IsAlive(party[character]))
                 {
-                    auto roll_result = Interface::Roll(graphics, background, party[character].Asset, asset, gauntlet.Rolls, gauntlet.RollModifier);
-
-                    if (roll_result.Sum < gauntlet.Difficulty)
+                    if (Interface::Roll(graphics, background, party[character].Asset, asset, gauntlet.Rolls, gauntlet.RollModifier).Sum < gauntlet.Difficulty)
                     {
                         std::string message = prefix + " " + party[character].Name + "!";
 
@@ -6371,9 +6365,9 @@ namespace BloodSword::Interface
     {
         if (Engine::IsAlive(character))
         {
-            auto effect = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0);
+            auto effect = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0).Sum;
 
-            switch (effect.Sum)
+            switch (effect)
             {
             case 1:
                 Interface::MessageBox(graphics, background, "NOTHING HAPPENS", Color::Inactive);

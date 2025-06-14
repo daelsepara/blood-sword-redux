@@ -679,6 +679,10 @@
         {
             "id": "NINE",
             "path": "images/numbers/9.png"
+        },
+        {
+            "id": "PRECOGNITION",
+            "path": "images/items/crystal-ball.png"
         }
     ]
 }
