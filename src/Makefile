@@ -1,3 +1,5 @@
+BSWORD=BloodSword.cpp
+BSWORD_OUTPUT=BloodSword.exe
 BSWORD_TEST=BloodSwordTest.cpp
 BSWORD_TEST_OUTPUT=BloodSwordTest.exe
 BSWORD_BATTLES=BattleBoard.cpp
@@ -32,7 +34,7 @@ endif
 
 .PHONY: all clean
 
-all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet
+all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet blood-sword
 
 map-template:
 	$(CC) -Wall $(BSWORD_MAP) $(LIBS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
@@ -49,11 +51,17 @@ blood-sword-test:
 battle-board:
 	$(CC) -Wall $(BSWORD_BATTLES) $(LIBS) $(INCLUDES) -o $(BSWORD_BATTLES_OUTPUT) -DDEBUG
 
+blood-sword:
+	$(CC) -Wall $(BSWORD) $(LIBS) $(INCLUDES) -o $(BSWORD_OUTPUT)
+
 clean-blood-sword-test:
 	rm -f $(BSWORD_TEST_OUTPUT) *.o
 
 clean-battle-board:
 	rm -f $(BSWORD_BATTLES_OUTPUT) *.o
+
+clean-blood-sword:
+	rm -f $(BSWORD_OUTPUT) *.o
 
 clean-map:
 	rm -f $(BSWORD_MAP_OUTPUT) *.o
