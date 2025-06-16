@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 303
     },
-    "text": "He feels a slight tug and turns, reaching for his sword. You laugh at the look of mingled horror and astonishment as he sees that you now have it. Looking around frantically, he seizes a RUSTY SWORD that was lying on the floor beside him.",
+    "text": "He feels a slight tug and turns, reaching for his sword. You laugh at the look of mingled horror and astonishment as he sees that you now have it. Looking around frantically, he seizes a rusty sword that was lying on the floor beside him.",
     "battle": "modules/default/battles/battle303.json",
     "image_asset": "modules/default/images/battles/alternative/battle303.png",
     "next": [

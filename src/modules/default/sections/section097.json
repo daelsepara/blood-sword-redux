@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 97
     },
-    "text": "You reappear in the first room. You no longer have the SKULL, so you cannot make a second visit to the scriptorium. You step out of the room and continue along the tunnel.",
+    "text": "You reappear in the first room. You no longer have the skull, so you cannot make a second visit to the scriptorium. You step out of the room and continue along the tunnel.",
     "next": [
         {
             "type": "NORMAL",
