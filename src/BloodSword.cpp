@@ -3,6 +3,12 @@
 
 namespace BloodSword::Game
 {
+    // new game
+    void NewGame(Graphics::Base &graphics)
+    {
+        Interface::NewGame(graphics, true);
+    }
+
     // load game
     void LoadGame(Graphics::Base &graphics, Scene::Base &background)
     {
@@ -37,10 +43,16 @@ namespace BloodSword::Game
         }
     }
 
-    // new game
-    void NewGame(Graphics::Base &graphics)
+    // about module
+    void AboutModule(Graphics::Base &graphics, Scene::Base &background)
     {
-        Interface::NewGame(graphics, true);
+        auto about = Interface::Settings["about"];
+
+        auto width = BloodSword::TileSize * 10;
+
+        auto height = BloodSword::TileSize * 6;
+
+        Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
     }
 
     // menu text (textures)
@@ -139,6 +151,7 @@ namespace BloodSword::Game
                     case 2:
                         break;
                     case 3:
+                        Game::AboutModule(graphics, scene);
                         break;
                     case 4:
                         break;

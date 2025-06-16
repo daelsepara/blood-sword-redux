@@ -597,6 +597,125 @@ namespace BloodSword::Interface
         Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
     }
 
+    // draws a scrollable text box (multi-line)
+    void ScrollableTextBox(Graphics::Base &graphics, Scene::Base &background, TTF_Font *font, std::string text, int width, int height, int x, int y, SDL_Color color, int style, Uint32 bg_color, Uint32 border, int border_size, Uint32 highlight, Asset::Type asset, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, text.c_str(), font, color, style, width - BloodSword::Pad * 2);
+
+        if (texture)
+        {
+            auto offset = 0;
+
+            auto text_h = height - (BloodSword::TileSize + BloodSword::Pad * 3);
+
+            auto texture_h = BloodSword::Height(texture);
+
+            auto text_x = x + BloodSword::Pad;
+
+            auto text_y = y + BloodSword::Pad;
+
+            auto input = Controls::User();
+
+            auto controls_x = x + (width - (BloodSword::TileSize * 3 + BloodSword::Pad * 2)) / 2;
+
+            auto controls_y = y + text_h + BloodSword::Pad * 2;
+
+            auto scroll_speed = BloodSword::ScrollSpeed;
+
+            auto done = false;
+
+            while (!done)
+            {
+                auto scene = Scene::Base();
+
+                // text box panel
+                scene.Add(Scene::Element(Point(x, y), width, height, bg_color, border, border_size));
+
+                // text
+                scene.VerifyAndAdd(Scene::Element(texture, text_x, text_y, text_h, offset));
+
+                // scroll up (left)
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::LEFT), controls_x, controls_y));
+
+                scene.Add(Controls::Base(Controls::Type::LEFT, 0, 0, 1, 0, 0, controls_x, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                if (offset <= 0)
+                {
+                    // blur button
+                    scene.Add(Scene::Element(controls_x, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
+                }
+
+                // close textbox
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(asset), controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y));
+
+                scene.Add(Controls::Base(Controls::Type::CONFIRM, 1, 0, 2, 0, 0, controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                // scroll down (right)
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y));
+
+                if (text_h >= texture_h || (offset + scroll_speed) > (texture_h - text_h))
+                {
+                    // blur button
+                    scene.Add(Scene::Element(controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
+                }
+
+                scene.Add(Controls::Base(Controls::Type::RIGHT, 2, 1, 2, 0, 0, controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                input = Input::WaitForInput(graphics, {background, scene}, scene.Controls, input, blur);
+
+                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                {
+                    if (input.Type == Controls::Type::LEFT || input.Up)
+                    {
+                        if (text_h < texture_h)
+                        {
+                            offset -= scroll_speed;
+
+                            if (offset < 0)
+                            {
+                                offset = 0;
+                            }
+                        }
+
+                        Controls::Select(input, scene.Controls, Controls::Type::LEFT);
+                    }
+                    else if (input.Type == Controls::Type::RIGHT || input.Down)
+                    {
+                        if (text_h < texture_h)
+                        {
+                            offset += scroll_speed;
+
+                            if (offset > (texture_h - text_h))
+                            {
+                                offset = texture_h - text_h;
+                            }
+                        }
+
+                        Controls::Select(input, scene.Controls, Controls::Type::RIGHT);
+                    }
+                    else if (input.Type == Controls::Type::CONFIRM)
+                    {
+                        done = true;
+                    }
+
+                    input.Selected = false;
+                }
+            }
+
+            BloodSword::Free(&texture);
+        }
+    }
+
+    // draws a scrollable text box (multi-line)
+    void ScrollableTextBox(Graphics::Base &graphics, Scene::Base &background, TTF_Font *font, std::string text, int width, int height, SDL_Color color, int style, Uint32 bg_color, Uint32 border, int border_size, Uint32 highlight, Asset::Type asset, bool blur = true)
+    {
+        auto x = (graphics.Width - width) / 2;
+
+        auto y = (graphics.Height - height) / 2;
+
+        Interface::ScrollableTextBox(graphics, background, font, text, width, height, x, y, color, style, bg_color, border, border_size, highlight, asset, blur);
+    }
+
     // draws a text box (multi-line)
     void TextBox(Graphics::Base &graphics, Scene::Base &scene, TTF_Font *font, const char *message, int wrap, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
@@ -1215,7 +1334,7 @@ namespace BloodSword::Interface
 
                 auto duration = status.second;
 
-                if (((in_battle && current_status != Character::Status::IN_BATTLE) || !in_battle) && !BloodSword::In(Character::GlobalStatus, current_status))
+                if (((in_battle && current_status != Character::Status::IN_BATTLE) || !in_battle) && !BloodSword::In(Character::GlobalStatus, current_status) && !BloodSword::In(Character::InvisibleStatus, current_status))
                 {
                     if (list.length() > 0)
                     {
@@ -1328,7 +1447,7 @@ namespace BloodSword::Interface
 
                 auto duration = status.second;
 
-                if (!BloodSword::In(Character::GlobalStatus, current_status))
+                if (!BloodSword::In(Character::GlobalStatus, current_status) && !BloodSword::In(Character::InvisibleStatus, current_status))
                 {
                     if (list.length() > 0)
                     {

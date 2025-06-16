@@ -332,6 +332,15 @@ namespace BloodSword::Party
             this->Members.clear();
         }
 
+        // clear party of all status
+        void ClearStatus()
+        {
+            for (auto i = 0; i < this->Members.size(); i++)
+            {
+                this->Members[i].Status.clear();
+            }
+        }
+
         // set (book) location of party, set previous location
         void Set(Book::Location location)
         {

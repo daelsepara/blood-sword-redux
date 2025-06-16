@@ -3,6 +3,8 @@
 
 An SDL implementation of the revised Blood Sword gamebook (2014)
 
+![Main Screen](/screenshots/main-screen.png)
+
 # Planned Features
 
 - Moddable/Configurable (**PARTIAL**)

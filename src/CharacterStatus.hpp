@@ -123,6 +123,11 @@ namespace BloodSword::Character
         Character::Status::IMMUNE_DYING_SLOWLY,
         Character::Status::OSTEAL_WEAKNESS};
 
+    std::vector<Character::Status> InvisibleStatus = {
+        Character::Status::TASK,
+        Character::Status::ALONE,
+        Character::Status::SKIP_EVENTS};
+
     std::vector<Character::Status> StatusCooldowns = {
         Character::Status::DYING_SLOWLY};
 

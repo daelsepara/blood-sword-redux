@@ -1882,6 +1882,9 @@ namespace BloodSword::Interface
         // reset internal variables
         party.Variables.clear();
 
+        // reset all status
+        party.ClearStatus();
+
         // load story
         Interface::ReloadStory(graphics, party);
 
