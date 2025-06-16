@@ -1643,6 +1643,17 @@ namespace BloodSword::Test
         Interface::NewGame(graphics, true);
     }
 
+    void AboutModule(Graphics::Base &graphics, Scene::Base &background)
+    {
+        auto about = Interface::Settings["about"];
+
+        auto width = BloodSword::TileSize * 10;
+
+        auto height = BloodSword::TileSize * 6;
+
+        Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
+    }
+
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1670,7 +1681,8 @@ namespace BloodSword::Test
              Graphics::RichText("20 USE ITEMS\n\n\nParty use several units of items", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("21 CHARACTER MENU\n\n\nComplete party information", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
              Graphics::RichText("22 LOAD GAME\n\n\nLoad previously saved game", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
-             Graphics::RichText("23 NEW GAME\n\n\nStart a new game with the current module", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
+             Graphics::RichText("23 NEW GAME\n\n\nStart a new game with the current module", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width),
+             Graphics::RichText("24 ABOUT MODULE\n\n\nShow module credits / additional information", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, width)});
 
         return menu;
     }
@@ -1884,6 +1896,11 @@ namespace BloodSword::Test
                     case 23:
                         // New Game
                         Test::NewGame(graphics);
+
+                        break;
+                    case 24:
+                        // About Module
+                        Test::AboutModule(graphics, scene);
 
                         break;
                     default:

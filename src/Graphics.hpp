@@ -785,6 +785,39 @@ namespace BloodSword::Graphics
         return textures;
     }
 
+        // renders asset (surface) to a target surface at specified position (rect)
+    void RenderAsset(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
+    {
+        if (surface_asset)
+        {
+            // convert surface_asset into target surface's format
+            auto converted_asset = SDL_ConvertSurface(surface_asset, surface->format, 0);
+
+            if (converted_asset)
+            {
+                // place surface in the correct position
+                SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
+
+                SDL_BlitSurface(converted_asset, nullptr, surface, &rect);
+
+                // cleanup
+                BloodSword::Free(&converted_asset);
+            }
+        }
+    }
+
+    // renders asset (surface) to a target surface at specified position (rect) then free it
+    void RenderAssetThenFree(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
+    {
+        if (surface_asset)
+        {
+            Graphics::RenderAsset(surface, surface_asset, rect);
+
+            // cleanup
+            BloodSword::Free(&surface_asset);
+        }
+    }
+
     // create version string overlay texture
     void InitializeTextures(Graphics::Base &graphics)
     {

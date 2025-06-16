@@ -19,6 +19,7 @@
 #include "Palette.hpp"
 #include "Section.hpp"
 #include "Sound.hpp"
+#include "Help.hpp"
 
 namespace fs = std::filesystem;
 
@@ -648,7 +649,7 @@ namespace BloodSword::Interface
                 // close textbox
                 scene.VerifyAndAdd(Scene::Element(Asset::Get(asset), controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y));
 
-                scene.Add(Controls::Base(Controls::Type::CONFIRM, 1, 0, 2, 0, 0, controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+                scene.Add(Controls::Base(Controls::Type::CONFIRM, 1, 0, 2, 1, 1, controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
                 // scroll down (right)
                 scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y));
@@ -659,7 +660,7 @@ namespace BloodSword::Interface
                     scene.Add(Scene::Element(controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
                 }
 
-                scene.Add(Controls::Base(Controls::Type::RIGHT, 2, 1, 2, 0, 0, controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+                scene.Add(Controls::Base(Controls::Type::RIGHT, 2, 1, 2, 2, 2, controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
                 input = Input::WaitForInput(graphics, {background, scene}, scene.Controls, input, blur);
 
@@ -1045,39 +1046,6 @@ namespace BloodSword::Interface
         return stats;
     }
 
-    // renders asset (surface) to a target surface at specified position (rect)
-    void RenderAsset(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
-    {
-        if (surface_asset)
-        {
-            // convert surface_asset into target surface's format
-            auto converted_asset = SDL_ConvertSurface(surface_asset, surface->format, 0);
-
-            if (converted_asset)
-            {
-                // place surface in the correct position
-                SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
-
-                SDL_BlitSurface(converted_asset, nullptr, surface, &rect);
-
-                // cleanup
-                BloodSword::Free(&converted_asset);
-            }
-        }
-    }
-
-    // renders asset (surface) to a target surface at specified position (rect) then free it
-    void RenderAssetThenFree(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
-    {
-        if (surface_asset)
-        {
-            Interface::RenderAsset(surface, surface_asset, rect);
-
-            // cleanup
-            BloodSword::Free(&surface_asset);
-        }
-    }
-
     // create character attributes text box
     SDL_Texture *Attributes(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 labelcolor, Uint32 stats_color, int style, int wrap, bool add_name = false, bool in_battle = false)
     {
@@ -1177,9 +1145,9 @@ namespace BloodSword::Interface
 
                 stats_rect.y = 0;
 
-                Interface::RenderAsset(surface, surface_labels, labels_rect);
+                Graphics::RenderAsset(surface, surface_labels, labels_rect);
 
-                Interface::RenderAsset(surface, surface_stats, stats_rect);
+                Graphics::RenderAsset(surface, surface_stats, stats_rect);
 
                 // add character class if player character
                 if (add_name)
@@ -1188,7 +1156,7 @@ namespace BloodSword::Interface
 
                     if (surface_name)
                     {
-                        Interface::RenderAsset(surface, surface_name, labels_rect);
+                        Graphics::RenderAsset(surface, surface_name, labels_rect);
 
                         BloodSword::Free(&surface_name);
                     }
@@ -1570,16 +1538,16 @@ namespace BloodSword::Interface
 
                 stats_rect.y = 0;
 
-                Interface::RenderAsset(surface, surface_labels, stats_rect);
+                Graphics::RenderAsset(surface, surface_labels, stats_rect);
 
-                Interface::RenderAsset(surface, surface_stats, stats_rect);
+                Graphics::RenderAsset(surface, surface_stats, stats_rect);
 
                 // add icon (blur if dead)
                 auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(character.Asset) : BloodSword::Asset::Surface(character.Asset, Color::Inactive);
 
                 stats_rect.x = 0;
 
-                Interface::RenderAsset(surface, surface_asset, stats_rect);
+                Graphics::RenderAsset(surface, surface_asset, stats_rect);
 
                 // cleanup
                 BloodSword::Free(&surface_labels);
@@ -1631,7 +1599,7 @@ namespace BloodSword::Interface
 
                         stats_rect.y = i * labels_h;
 
-                        Interface::RenderAsset(surface, character_surface, stats_rect);
+                        Graphics::RenderAsset(surface, character_surface, stats_rect);
 
                         // cleanup
                         BloodSword::Free(&character_surface);

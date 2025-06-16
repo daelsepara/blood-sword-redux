@@ -1,0 +1,69 @@
+{
+    "sections": [
+        {
+            "header": "BLOOD SWORD",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "BLOOD SWORD"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYour world is the magical land of Legend. In Legend there are many kinds of adventurer, each with unique skills and techniques for dealing with creatures of the supernatural. Those who rely on a good sword and the strength of their right arm are called Warriors. The practitioners of the magical arts are called Enchanters, with many deadly spells always ready at their fingertips. Sages are a class of ascetic monks, wise in ancient lore but also skillful in the use of quarterstaff, bow and the unarmed martial arts. Lastly there are the Tricksters; they are swift and dextrous swordsmen, but their true forte is the use of stealth, guile and cunning."
+                }
+            ]
+        },
+        {
+            "header": "RULES OF THE GAME",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "THE RULES OF THE GAME"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nBlood Sword can be played solo or in a party of up to four characters. Each character is an alter ego in the fantasy world of Legend. Characters have a rank that indicates how experienced and powerful they are. The fewer the number of characters in the party, the higher their starting rank:\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "number of characters    composition of party"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "one                     a single 8th rank character\ntwo                     two characters of 4th rank\nthree                   three characters of 3rd rank\nfour                    four characters of 2nd rank\n\nEach character belongs to one of the four character types:\n\nThe Warrior believes that strength, courage and nobility of purpose are sufficient to achieve any goal.\n\nThe Enchanter is able to alter reality by casting magic spells.\n\nThe Sage, a learned ascetic, constantly seeks to hone the powers of the human mind.\n\nThe Trickster is a clever and dashing figure with an eye for the main chance.\n\nIf there is more than one character in the party, they must be of different character types."
+                }
+            ]
+        },
+        {
+            "header": "TERMINOLOGY",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "TERMINOLOGY"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nDice rolls used in the game are expressed in this format:\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "NORMAL",
+                    "text": "xd6+y"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nmeaning that x dice are rolled and y is added to the total.\n\nFor example, 3d6+1 means rolling three dice and adding 1 to the total, giving a number from 4 to 19. Another example: 1d6-2 means rolling one die and subtracting two. Negative numbers count as zero unless otherwise stated, so this would give a score from 0 to 4."
+                }
+            ]
+        }
+    ]
+}

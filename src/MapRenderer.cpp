@@ -13,7 +13,7 @@ namespace BloodSword::MapRenderer
 
             auto surface_sset = blur ? BloodSword::Asset::Surface(asset, 0x7F7F7F7F) : BloodSword::Asset::Surface(asset);
 
-            Interface::RenderAssetThenFree(surface, surface_sset, rect);
+            Graphics::RenderAssetThenFree(surface, surface_sset, rect);
         }
     }
 
@@ -147,7 +147,7 @@ namespace BloodSword::MapRenderer
 
                         rect.y = y * BloodSword::TileSize + offset;
 
-                        Interface::RenderAssetThenFree(surface, surface_asset, rect);
+                        Graphics::RenderAssetThenFree(surface, surface_asset, rect);
                     }
                 }
 
@@ -171,7 +171,7 @@ namespace BloodSword::MapRenderer
 
                     auto character_asset = BloodSword::Asset::Surface(Interface::Numbers[number]);
 
-                    Interface::RenderAssetThenFree(surface, character_asset, rect);
+                    Graphics::RenderAssetThenFree(surface, character_asset, rect);
 
                     number++;
                 }

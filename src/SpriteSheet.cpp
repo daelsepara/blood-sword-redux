@@ -53,7 +53,7 @@ namespace BloodSword::SpriteSheet
 
                         rect.y = (reverse ? height - y - 1 : y) * BloodSword::TileSize;
 
-                        Interface::RenderAssetThenFree(surface, surface_asset, rect);
+                        Graphics::RenderAssetThenFree(surface, surface_asset, rect);
 
                         x++;
 
