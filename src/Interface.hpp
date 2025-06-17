@@ -1745,7 +1745,7 @@ namespace BloodSword::Interface
     }
 
     // add vertical text menu to the scene
-    Scene::Base Menu(BloodSword::Textures &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false)
+    Scene::Base Menu(BloodSword::Textures &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false, bool center = false)
     {
         auto scene = Scene::Base();
 
@@ -1801,9 +1801,14 @@ namespace BloodSword::Interface
 
                 auto item_y = y + item * (h + pad);
 
+                // background
                 scene.Add(Scene::Element(x, item_y, w, h, background, border, pixels));
 
-                scene.VerifyAndAdd(Scene::Element(choices[start + item], x, item_y));
+                auto center_x = center ? (w - BloodSword::Width(choices[start + item])) / 2 : 0;
+
+                auto center_y = center ? (h - BloodSword::Height(choices[start + item])) / 2 : 0;
+
+                scene.VerifyAndAdd(Scene::Element(choices[start + item], x + center_x, item_y + center_y));
 
                 scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, item_y - offset, w_adjust, h + adjust, highlight));
             }
@@ -7507,6 +7512,174 @@ namespace BloodSword::Interface
         }
 
         return update;
+    }
+
+    void Topics(Graphics::Base &graphics, Help::Sections &topics, Asset::Type button, bool blur = true)
+    {
+        auto background = Scene::Base();
+
+        if (topics.size() > 0)
+        {
+            auto max_limit = 6;
+
+            auto start = 0;
+
+            auto limit = std::min(max_limit, int(topics.size()));
+
+            auto last = start + limit;
+
+            auto options = int(topics.size());
+
+            auto wrap = BloodSword::Wrap;
+
+            auto text_list = Graphics::TextList();
+
+            for (auto &topic : topics)
+            {
+                text_list.push_back(Graphics::RichText(topic.Header, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0));
+            }
+
+            auto menu = Graphics::CreateText(graphics, text_list);
+
+            // default width
+            auto w = wrap;
+
+            // default height
+            auto h = BloodSword::HalfTile;
+
+            // padding
+            auto pad = BloodSword::Pad;
+
+            auto pads = BloodSword::LargePad;
+
+            for (auto &item : menu)
+            {
+                w = std::max(BloodSword::Width(item) + pads, wrap);
+
+                h = std::max(BloodSword::Height(item) + pad, h);
+            }
+
+            auto box_w = w + pads;
+
+            auto box_h = ((h + pad) * max_limit + BloodSword::TileSize + BloodSword::HalfTile + pad * 3);
+
+            if (options > limit)
+            {
+                box_w += BloodSword::TileSize + pad;
+            }
+
+            auto x = (graphics.Width - box_w) / 2;
+
+            auto y = (graphics.Height - box_h) / 2;
+
+            auto button_x = (graphics.Width - BloodSword::TileSize) / 2;
+
+            auto button_y = (y + box_h - BloodSword::TileSize - pad);
+
+            auto input = Controls::User();
+
+            auto done = false;
+
+            while (!done)
+            {
+                // add menu
+                auto overlay = Interface::Menu(menu, x + pad, y + pad, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true, true);
+
+                // add frame at the back
+                overlay.Elements.insert(overlay.Elements.begin(), Scene::Element(x, y, box_w, box_h, Color::Background, Color::Active, BloodSword::Border));
+
+                auto first = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                auto &lastControl = overlay.Controls.back();
+
+                auto id = lastControl.Id + 1;
+
+                // add close button
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(button), button_x, button_y));
+
+                overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, button_x, button_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                // focus on scroll button
+                if (input.Up)
+                {
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
+
+                    input.Up = false;
+                }
+                else if (input.Down)
+                {
+                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
+
+                    input.Down = false;
+                }
+
+                input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                {
+                    if (input.Type == Controls::Type::BACK)
+                    {
+                        done = true;
+                    }
+                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                    {
+                        if (start > 0)
+                        {
+                            start -= 1;
+
+                            if (start < 0)
+                            {
+                                start = 0;
+                            }
+
+                            last = start + limit;
+
+                            if (last > options)
+                            {
+                                last = options;
+                            }
+
+                            input.Up = true;
+
+                            Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_UP);
+                        }
+                    }
+                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                    {
+                        if (options - last > 0)
+                        {
+                            if (start < options - limit)
+                            {
+                                start += 1;
+                            }
+
+                            if (start > options - limit)
+                            {
+                                start = options - limit;
+                            }
+
+                            last = start + limit;
+
+                            if (last > options)
+                            {
+                                last = options;
+                            }
+
+                            input.Down = true;
+
+                            Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_DOWN);
+                        }
+                    }
+                    else if (input.Type == Controls::Type::CHOICE)
+                    {
+                    }
+
+                    input.Selected = false;
+                }
+            }
+
+            BloodSword::Free(menu);
+        }
     }
 }
 

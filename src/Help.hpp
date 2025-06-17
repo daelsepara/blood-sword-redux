@@ -1,12 +1,16 @@
 #ifndef __HELP_HPP__
 #define __HELP_HPP__
 
+#include <fstream>
+
+#include "nlohmann/json.hpp"
 #include "Graphics.hpp"
 
 namespace BloodSword::Help
 {
     enum class Face
     {
+        NONE = -1,
         NORMAL = 0,
         BOLD,
         ITALIC
@@ -14,20 +18,43 @@ namespace BloodSword::Help
 
     enum class Align
     {
+        NONE = -1,
         LEFT = 0,
         CENTER,
         RIGHT
     };
 
     BloodSword::Mapping<Help::Face> FaceMapping = {
+        {Help::Face::NONE, "NONE"},
         {Help::Face::NORMAL, "NORMAL"},
         {Help::Face::BOLD, "BOLD"},
         {Help::Face::ITALIC, "ITALIC"}};
 
     BloodSword::Mapping<Help::Align> AlignMapping = {
+        {Help::Align::NONE, "NONE"},
         {Help::Align::LEFT, "LEFT"},
         {Help::Align::CENTER, "CENTER"},
         {Help::Align::RIGHT, "RIGHT"}};
+
+    Help::Face MapFace(const char *face)
+    {
+        return BloodSword::Find(Help::FaceMapping, face);
+    }
+
+    Help::Face MapFace(std::string face)
+    {
+        return Help::MapFace(face.c_str());
+    }
+
+    Help::Align MapAlign(const char *alignment)
+    {
+        return BloodSword::Find(Help::AlignMapping, alignment);
+    }
+
+    Help::Align MapAlign(std::string alignment)
+    {
+        return Help::MapAlign(alignment.c_str());
+    }
 
     class Item
     {
@@ -145,6 +172,70 @@ namespace BloodSword::Help
         }
 
         return texture;
+    }
+
+    Help::Item LoadItem(nlohmann::json &data)
+    {
+        auto item = Help::Item();
+
+        item.Face = !data["face"].is_null() ? Help::MapFace(data["face"]) : Help::Face::NONE;
+
+        item.Align = !data["align"].is_null() ? Help::MapAlign(data["align"]) : Help::Align::NONE;
+
+        item.Text = !data["text"].is_null() ? std::string(data["text"]) : std::string();
+
+        return item;
+    }
+
+    Help::Sections Load(const char *help)
+    {
+        auto sections = Help::Sections();
+
+        std::ifstream ifs(help);
+
+        if (ifs.good())
+        {
+            auto data = nlohmann::json::parse(ifs);
+
+            if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
+            {
+                for (auto i = 0; i < data["sections"].size(); i++)
+                {
+                    auto section = Help::Section();
+
+                    section.Header = !data["sections"][i]["header"].is_null() ? std::string(data["sections"][i]["header"]) : std::string();
+
+                    section.Image = !data["sections"][i]["image"].is_null() ? std::string(data["sections"][i]["image"]) : std::string();
+
+                    if (!data["sections"][i]["items"].is_null() && data["sections"][i]["items"].is_array() && data["sections"][i]["items"].size() > 0)
+                    {
+                        for (auto j = 0; j < data["sections"][i]["items"].size(); j++)
+                        {
+                            auto item = Help::LoadItem(data["sections"][i]["items"][j]);
+
+                            if (item.Text.size() > 0 && item.Align != Help::Align::NONE && item.Face != Help::Face::NONE)
+                            {
+                                section.Items.push_back(item);
+                            }
+                        }
+                    }
+
+                    if (section.Items.size() > 0)
+                    {
+                        sections.push_back(section);
+                    }
+                }
+            }
+
+            ifs.close();
+        }
+
+        return sections;
+    }
+
+    Help::Sections Load(std::string help)
+    {
+        return Help::Load(help.c_str());
     }
 }
 

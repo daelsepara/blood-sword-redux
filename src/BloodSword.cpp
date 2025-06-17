@@ -55,6 +55,14 @@ namespace BloodSword::Game
         Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
     }
 
+    // show rules of the game
+    void Help(Graphics::Base &graphics)
+    {
+        auto help = Help::Load(Interface::Settings["help"]);
+
+        Interface::Topics(graphics, help, Asset::Type::SWORDTHRUST, true);
+    }
+
     // menu text (textures)
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, std::string module, int width)
     {
@@ -144,16 +152,22 @@ namespace BloodSword::Game
                     {
                     case 0:
                         Game::NewGame(graphics);
+
                         break;
                     case 1:
                         Game::LoadGame(graphics, scene);
+
                         break;
                     case 2:
+
                         break;
                     case 3:
                         Game::AboutModule(graphics, scene);
+
                         break;
                     case 4:
+                        Game::Help(graphics);
+
                         break;
                     default:
                         done = true;
