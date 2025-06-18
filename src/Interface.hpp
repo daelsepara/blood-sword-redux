@@ -7514,6 +7514,13 @@ namespace BloodSword::Interface
         return update;
     }
 
+    void Topic(Graphics::Base &graphics, Scene::Base &background, Help::Section &section, Asset::Type button, bool blur = true)
+    {
+        if (section.Items.size() > 0)
+        {
+        }
+    }
+
     void Topics(Graphics::Base &graphics, Help::Sections &topics, Asset::Type button, bool blur = true)
     {
         auto background = Scene::Base();
