@@ -598,6 +598,48 @@ namespace BloodSword::Interface
         Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
     }
 
+    void AddScrollableTextBox(BloodSword::Scene::Base &scene, int x, int y, int width, int height, Uint32 bg_color, Uint32 border, int border_size, SDL_Texture *texture, int texture_h, int text_x, int text_y, int text_h, int offset, int controls_x, int controls_y, BloodSword::Asset::Type asset, int scroll_speed)
+    {
+        auto id = int(scene.Controls.size());
+
+        // text box panel
+        scene.Add(Scene::Element(Point(x, y), width, height, bg_color, border, border_size));
+
+        // text
+        scene.VerifyAndAdd(Scene::Element(texture, text_x, text_y, text_h, offset));
+
+        // scroll up (left)
+        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::LEFT), controls_x, controls_y));
+
+        scene.Add(Controls::Base(Controls::Type::LEFT, id, id, id + 1, id, id, controls_x, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        if (offset <= 0)
+        {
+            // blur button
+            scene.Add(Scene::Element(controls_x, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
+        }
+
+        id++;
+
+        // close textbox
+        scene.VerifyAndAdd(Scene::Element(Asset::Get(asset), controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y));
+
+        scene.Add(Controls::Base(Controls::Type::CONFIRM, id, id - 1, id + 1, id, id, controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        id++;
+
+        // scroll down (right)
+        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y));
+
+        scene.Add(Controls::Base(Controls::Type::RIGHT, id, id - 1, id, id, id, controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+        if (text_h >= texture_h || (offset + scroll_speed) > (texture_h - text_h))
+        {
+            // blur button
+            scene.Add(Scene::Element(controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
+        }
+    }
+
     // draws a scrollable text box (multi-line)
     void ScrollableTextBox(Graphics::Base &graphics, Scene::Base &background, TTF_Font *font, std::string text, int width, int height, int x, int y, SDL_Color color, int style, Uint32 bg_color, Uint32 border, int border_size, Uint32 highlight, Asset::Type asset, bool blur = true)
     {
@@ -629,38 +671,7 @@ namespace BloodSword::Interface
             {
                 auto scene = Scene::Base();
 
-                // text box panel
-                scene.Add(Scene::Element(Point(x, y), width, height, bg_color, border, border_size));
-
-                // text
-                scene.VerifyAndAdd(Scene::Element(texture, text_x, text_y, text_h, offset));
-
-                // scroll up (left)
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::LEFT), controls_x, controls_y));
-
-                scene.Add(Controls::Base(Controls::Type::LEFT, 0, 0, 1, 0, 0, controls_x, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
-
-                if (offset <= 0)
-                {
-                    // blur button
-                    scene.Add(Scene::Element(controls_x, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
-                }
-
-                // close textbox
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(asset), controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y));
-
-                scene.Add(Controls::Base(Controls::Type::CONFIRM, 1, 0, 2, 1, 1, controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
-
-                // scroll down (right)
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y));
-
-                if (text_h >= texture_h || (offset + scroll_speed) > (texture_h - text_h))
-                {
-                    // blur button
-                    scene.Add(Scene::Element(controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
-                }
-
-                scene.Add(Controls::Base(Controls::Type::RIGHT, 2, 1, 2, 2, 2, controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+                Interface::AddScrollableTextBox(scene, x, y, width, height, bg_color, border, border_size, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, asset, scroll_speed);
 
                 input = Input::WaitForInput(graphics, {background, scene}, scene.Controls, input, blur);
 
@@ -7518,6 +7529,13 @@ namespace BloodSword::Interface
     {
         if (section.Items.size() > 0)
         {
+            auto has_image = !section.Image.empty();
+
+            auto panel_image_w = BloodSword::TileSize * 5;
+
+            auto panel_text_w = has_image ? BloodSword::TileSize * 5 : BloodSword::TileSize * 7;
+
+            auto panel_h = BloodSword::TileSize * 6;
         }
     }
 
@@ -7627,6 +7645,17 @@ namespace BloodSword::Interface
                     if (input.Type == Controls::Type::BACK)
                     {
                         done = true;
+                    }
+                    else if (input.Type == Controls::Type::CHOICE)
+                    {
+                        auto list = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                        auto choice = start + (input.Current - list);
+
+                        if (choice >= 0 && choice < options)
+                        {
+                            Interface::Topic(graphics, overlay, topics[choice], Asset::Type::SWORDTHRUST, true);
+                        }
                     }
                     else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                     {
