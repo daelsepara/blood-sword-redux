@@ -668,18 +668,7 @@ namespace BloodSword::Interface
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-                if (input.Up)
-                {
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
-
-                    input.Up = false;
-                }
-                else if (input.Down)
-                {
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
-
-                    input.Down = false;
-                }
+                Interface::ClearScrolling(overlay, input, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
@@ -693,48 +682,11 @@ namespace BloodSword::Interface
                     }
                     else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                     {
-                        if (start > 0)
-                        {
-                            start -= 1;
-
-                            if (start < 0)
-                            {
-                                start = 0;
-                            }
-
-                            last = start + limit;
-
-                            if (last > options)
-                            {
-                                last = options;
-                            }
-
-                            input.Up = true;
-                        }
+                        Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                     }
                     else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                     {
-                        if (options - last > 0)
-                        {
-                            if (start < options - limit)
-                            {
-                                start += 1;
-                            }
-
-                            if (start > options - limit)
-                            {
-                                start = options - limit;
-                            }
-
-                            last = start + limit;
-
-                            if (last > options)
-                            {
-                                last = options;
-                            }
-
-                            input.Down = true;
-                        }
+                        Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                     }
                     else if (input.Type == Controls::Type::CHOICE)
                     {
@@ -854,18 +806,7 @@ namespace BloodSword::Interface
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-                if (input.Up)
-                {
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
-
-                    input.Up = false;
-                }
-                else if (input.Down)
-                {
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
-
-                    input.Down = false;
-                }
+                Interface::ClearScrolling(overlay, input, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
@@ -879,48 +820,11 @@ namespace BloodSword::Interface
                     }
                     else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                     {
-                        if (start > 0)
-                        {
-                            start -= 1;
-
-                            if (start < 0)
-                            {
-                                start = 0;
-                            }
-
-                            last = start + limit;
-
-                            if (last > options)
-                            {
-                                last = options;
-                            }
-
-                            input.Up = true;
-                        }
+                        Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                     }
                     else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                     {
-                        if (options - last > 0)
-                        {
-                            if (start < options - limit)
-                            {
-                                start += 1;
-                            }
-
-                            if (start > options - limit)
-                            {
-                                start = options - limit;
-                            }
-
-                            last = start + limit;
-
-                            if (last > options)
-                            {
-                                last = options;
-                            }
-
-                            input.Down = true;
-                        }
+                        Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                     }
                     else if (input.Type == Controls::Type::CHOICE)
                     {

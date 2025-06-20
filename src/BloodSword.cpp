@@ -81,7 +81,7 @@ namespace BloodSword::Game
     // main menu
     void Menu(Graphics::Base &graphics)
     {
-        auto logo = Asset::Create(graphics.Renderer, "images/logo/bloodsword.png");
+        auto logo = Asset::Create(graphics.Renderer, std::string(Interface::Settings["logo"]).c_str());
 
         auto width = BloodSword::PentaTile;
 

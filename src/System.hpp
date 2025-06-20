@@ -14,15 +14,16 @@ namespace BloodSword
         // initialize all subsytems
         void Initialize(const char *session_name)
         {
-            this->graphics = Graphics::Initialize(session_name);
-
-            // Initialize random number generator
+            // initialize random number generator
             Engine::InitializeRNG();
 
-            // Load default module
+            // load default module
             Interface::LoadModules();
 
-            // Load settings of current module
+            // initialize graphics system
+            this->graphics = Graphics::Initialize(session_name);
+
+            // load settings of current module
             Interface::LoadSettings(this->graphics, Interface::SettingsFile);
 
             // initialize save games list

@@ -111,18 +111,7 @@ namespace BloodSword::Interface
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
 
-            if (input.Up)
-            {
-                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
-
-                input.Up = false;
-            }
-            else if (input.Down)
-            {
-                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
-
-                input.Down = false;
-            }
+            Interface::ClearScrolling(overlay, input, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
@@ -134,48 +123,11 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
-                    if (start > 0)
-                    {
-                        start -= 1;
-
-                        if (start < 0)
-                        {
-                            start = 0;
-                        }
-
-                        last = start + limit;
-
-                        if (last > options)
-                        {
-                            last = options;
-                        }
-
-                        input.Up = true;
-                    }
+                    Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
-                    if (options - last > 0)
-                    {
-                        if (start < options - limit)
-                        {
-                            start += 1;
-                        }
-
-                        if (start > options - limit)
-                        {
-                            start = options - limit;
-                        }
-
-                        last = start + limit;
-
-                        if (last > options)
-                        {
-                            last = options;
-                        }
-
-                        input.Down = true;
-                    }
+                    Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                 }
                 else if (input.Type == Controls::Type::CHOICE)
                 {
@@ -1408,18 +1360,7 @@ namespace BloodSword::Interface
             // add story controls
             Interface::SetupControls(overlay, section, party, image, origin, buttons, scroll_top, scroll_bot, arrow_up, arrow_dn);
 
-            if (scroll_up)
-            {
-                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
-
-                scroll_up = false;
-            }
-            else if (scroll_dn)
-            {
-                input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
-
-                scroll_dn = false;
-            }
+            Interface::ClearScrolling(overlay, input, scroll_up, scroll_dn, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
             auto caption_id = Controls::Find(caption_controls, input.Type);
 
@@ -1692,35 +1633,11 @@ namespace BloodSword::Interface
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
-                    if (text_h < texture_h)
-                    {
-                        offset -= scroll_speed;
-
-                        if (offset < 0)
-                        {
-                            offset = 0;
-                        }
-
-                        scroll_up = true;
-                    }
-
-                    Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_UP);
+                    Interface::TextUp(overlay, input, Controls::Type::SCROLL_UP, scroll_up, offset, texture_h, text_h, scroll_speed);
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
-                    if (text_h < texture_h)
-                    {
-                        offset += scroll_speed;
-
-                        if (offset > (texture_h - text_h))
-                        {
-                            offset = texture_h - text_h;
-                        }
-
-                        scroll_dn = true;
-                    }
-
-                    Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_DOWN);
+                    Interface::TextDown(overlay, input, Controls::Type::SCROLL_DOWN, scroll_dn, offset, texture_h, text_h, scroll_speed);
                 }
             }
         }

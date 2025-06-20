@@ -338,18 +338,7 @@ namespace BloodSword::Test
                 scene.VerifyAndAdd(Scene::Element(backgrounds[background], background_x, background_y, background_h, offset));
             }
 
-            if (scroll_up)
-            {
-                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
-
-                scroll_up = false;
-            }
-            else if (scroll_down)
-            {
-                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
-
-                scroll_down = false;
-            }
+            Interface::ClearScrolling(scene, input, scroll_up, scroll_down, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
             input = Input::WaitForInput(graphics, scene, input);
 
@@ -393,31 +382,11 @@ namespace BloodSword::Test
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
-                    if (background_h < texture_h)
-                    {
-                        offset -= scroll_speed;
-
-                        if (offset < 0)
-                        {
-                            offset = 0;
-                        }
-
-                        scroll_up = true;
-                    }
+                    Interface::TextUp(scene, input, Controls::Type::SCROLL_UP, scroll_up, offset, texture_h, background_h, scroll_speed);
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
-                    if (background_h < texture_h)
-                    {
-                        offset += scroll_speed;
-
-                        if (offset > (texture_h - background_h))
-                        {
-                            offset = texture_h - background_h;
-                        }
-
-                        scroll_down = true;
-                    }
+                    Interface::TextDown(scene, input, Controls::Type::SCROLL_DOWN, scroll_down, offset, texture_h, background_h, scroll_speed);
                 }
                 else
                 {
@@ -788,18 +757,7 @@ namespace BloodSword::Test
 
             scene.VerifyAndAdd(Scene::Element(menu[palette], palette_x1, origin_y1 + palette_h * 3 + BloodSword::Pad));
 
-            if (input.Up)
-            {
-                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
-
-                input.Up = false;
-            }
-            else if (input.Down)
-            {
-                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
-
-                input.Down = false;
-            }
+            Interface::ClearScrolling(scene, input, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
             input = Input::WaitForInput(graphics, scene, input);
 
@@ -823,48 +781,11 @@ namespace BloodSword::Test
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
-                    if (start > 0)
-                    {
-                        start -= 1;
-
-                        if (start < 0)
-                        {
-                            start = 0;
-                        }
-
-                        last = start + limit;
-
-                        if (last > options)
-                        {
-                            last = options;
-                        }
-
-                        input.Up = true;
-                    }
+                    Interface::ScrollUp(scene, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
-                    if (options - last > 0)
-                    {
-                        if (start < options - limit)
-                        {
-                            start += 1;
-                        }
-
-                        if (start > options - limit)
-                        {
-                            start = options - limit;
-                        }
-
-                        last = start + limit;
-
-                        if (last > options)
-                        {
-                            last = options;
-                        }
-
-                        input.Down = true;
-                    }
+                    Interface::ScrollDown(scene, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                 }
             }
         }
@@ -1342,18 +1263,7 @@ namespace BloodSword::Test
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
-                if (input.Up)
-                {
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_UP);
-
-                    input.Up = false;
-                }
-                else if (input.Down)
-                {
-                    input.Current = Controls::Find(overlay.Controls, Controls::Type::SCROLL_DOWN);
-
-                    input.Down = false;
-                }
+                Interface::ClearScrolling(overlay, input, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
@@ -1365,48 +1275,11 @@ namespace BloodSword::Test
                     }
                     else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                     {
-                        if (start > 0)
-                        {
-                            start -= 1;
-
-                            if (start < 0)
-                            {
-                                start = 0;
-                            }
-
-                            last = start + limit;
-
-                            if (last > options)
-                            {
-                                last = options;
-                            }
-
-                            input.Up = true;
-                        }
+                        Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                     }
                     else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                     {
-                        if (options - last > 0)
-                        {
-                            if (start < options - limit)
-                            {
-                                start += 1;
-                            }
-
-                            if (start > options - limit)
-                            {
-                                start = options - limit;
-                            }
-
-                            last = start + limit;
-
-                            if (last > options)
-                            {
-                                last = options;
-                            }
-
-                            input.Down = true;
-                        }
+                        Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                     }
                     else if (input.Type == Controls::Type::CHOICE)
                     {
@@ -1745,18 +1618,7 @@ namespace BloodSword::Test
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, Color::Highlight));
 
-            if (input.Up)
-            {
-                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_UP);
-
-                input.Up = false;
-            }
-            else if (input.Down)
-            {
-                input.Current = Controls::Find(scene.Controls, Controls::Type::SCROLL_DOWN);
-
-                input.Down = false;
-            }
+            Interface::ClearScrolling(scene, input, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
 
             input = Input::WaitForInput(graphics, scene, input);
 
@@ -1912,48 +1774,11 @@ namespace BloodSword::Test
                 }
                 else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
                 {
-                    if (start > 0)
-                    {
-                        start -= 1;
-
-                        if (start < 0)
-                        {
-                            start = 0;
-                        }
-
-                        last = start + limit;
-
-                        if (last > options)
-                        {
-                            last = options;
-                        }
-
-                        input.Up = true;
-                    }
+                    Interface::ScrollUp(scene, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                 }
                 else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
                 {
-                    if (options - last > 0)
-                    {
-                        if (start < options - limit)
-                        {
-                            start += 1;
-                        }
-
-                        if (start > options - limit)
-                        {
-                            start = options - limit;
-                        }
-
-                        last = start + limit;
-
-                        if (last > options)
-                        {
-                            last = options;
-                        }
-
-                        input.Down = true;
-                    }
+                    Interface::ScrollDown(scene, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                 }
             }
         }
