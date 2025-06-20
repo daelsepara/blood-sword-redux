@@ -158,6 +158,11 @@ namespace BloodSword::Graphics
 #else
         surface = SDL_CreateRGBSurface(0, w, h, 32, 0x000000FF, 0x0000FF00, 0x00FF0000, 0xFF000000);
 #endif
+        if (surface)
+        {
+            SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
+        }
+
         return surface;
     }
 

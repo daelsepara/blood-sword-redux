@@ -26,17 +26,17 @@
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "\nBlood Sword can be played solo or in a party of up to four characters. Each character is an alter ego in the fantasy world of Legend. Characters have a rank that indicates how experienced and powerful they are. The fewer the number of characters in the party, the higher their starting rank:\n"
+                    "text": "\nBlood Sword can be played solo or in a party of up to four characters. Each character is an alter ego in the fantasy world of Legend. Characters have a rank that indicates how experienced and powerful they are. The fewer the number of characters in the party, the higher their starting rank:"
                 },
                 {
                     "align": "LEFT",
                     "face": "ITALIC",
-                    "text": "number of characters    composition of party"
+                    "text": "\nnumber of characters    composition of party"
                 },
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "one                     a single 8th rank character\ntwo                     two characters of 4th rank\nthree                   three characters of 3rd rank\nfour                    four characters of 2nd rank\n\nEach character belongs to one of the four character types:\n\nThe Warrior believes that strength, courage and nobility of purpose are sufficient to achieve any goal.\n\nThe Enchanter is able to alter reality by casting magic spells.\n\nThe Sage, a learned ascetic, constantly seeks to hone the powers of the human mind.\n\nThe Trickster is a clever and dashing figure with an eye for the main chance.\n\nIf there is more than one character in the party, they must be of different character types."
+                    "text": "\none                     a single 8th rank character\ntwo                     two characters of 4th rank\nthree                   three characters of 3rd rank\nfour                    four characters of 2nd rank\n\nEach character belongs to one of the four character types:\n\nThe Warrior believes that strength, courage and nobility of purpose are sufficient to achieve any goal.\n\nThe Enchanter is able to alter reality by casting magic spells.\n\nThe Sage, a learned ascetic, constantly seeks to hone the powers of the human mind.\n\nThe Trickster is a clever and dashing figure with an eye for the main chance.\n\nIf there is more than one character in the party, they must be of different character types.\n"
                 }
             ]
         },
@@ -51,17 +51,329 @@
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "\nDice rolls used in the game are expressed in this format:\n"
+                    "text": "\nDice rolls used in the game are expressed in this format:\n\n"
                 },
                 {
                     "align": "CENTER",
                     "face": "NORMAL",
-                    "text": "xd6+y"
+                    "text": "xD6+y"
                 },
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "\nmeaning that x dice are rolled and y is added to the total.\n\nFor example, 3d6+1 means rolling three dice and adding 1 to the total, giving a number from 4 to 19. Another example: 1d6-2 means rolling one die and subtracting two. Negative numbers count as zero unless otherwise stated, so this would give a score from 0 to 4."
+                    "text": "\nmeaning that x dice are rolled and y is added to the total.\n\nFor example, 3D6+1 means rolling three dice and adding 1 to the total, giving a number from 4 to 19. Another example: 1D6-2 means rolling one die and subtracting two. Negative numbers count as zero unless otherwise stated, so this would give a score from 0 to 4.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "ATTRIBUTES",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "ATTRIBUTES"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nEach character is described by four attributes. These are:\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "ITALIC",
+                    "text": "FIGHTING PROWESS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis is a measure of how skilled and powerful a fighter the character is.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "ITALIC",
+                    "text": "PSYCHIC ABILITY"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis is an indicator of the character's resistance to hostile spells and, in the case of an Enchanter, his or her aptitude for magic.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "ITALIC",
+                    "text": "AWARENESS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis encompasses quickness of thought, dexterity and wits.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "ITALIC",
+                    "text": "ENDURANCE"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis attribute measures the character's state of health. Wounds are deducted from Endurance, and if it reaches zero then the character dies. Healing spells and potions can increase Endurance, but never higher than your score at the start of the adventure."
+                }
+            ]
+        },
+        {
+            "header": "TACTICAL MAPS",
+            "image": "help/images/tactical-maps.png",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "TACTICAL MAPS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nIt is only possible to fight an opponent in an orthogonally adjacent square (not across a diagonal) and you cannot move on to a square already occupied by another character. You cannot move where there are no squares, nor on to a blacked-out square, which represents an obstacle such as a pillar or a large statue.\n\nShaded squares can be moved through by opponents but not by players. For example, in the map to the left, the shaded squares indicate a bed of coals which the opponents are immune to."
+                }
+            ]
+        },
+        {
+            "header": "OPPONENT ATTACKS",
+            "image": "help/images/tactical-maps-enemy-attack.png",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "TACTICAL MAPS: OPPONENT ATTACKS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nUnless otherwise stated, an opponent will always move to attack the nearest player. If several adventurers are equidistant from the opponent, it will attack the player based on some other criteria, e.g. low Endurance, preferred target, etc.\n\nThe opponent will sometimes give chase, and if they catch up with you then their Endurance will reflect how many wounds you've already inflicted.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "ACTIONS IN COMBAT",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "ACTIONS IN COMBAT"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nCombat takes place in rounds. Each round, every character gets the opportunity to perform one action: to attack, cast a spell, and so on.\n\nActions are taken in sequence based on each combatant's Awareness score. The combatant with the highest Awareness acts first, then the combatant with the next highest Awareness, and so on. A combatant who is killed (reduced to 0 Endurance) before his turn does not get to act.\n\nA character can choose any one option for which he or she is eligible as his or her action for the round:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "MOVE"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou can move to any square on the tactical map. However, you cannot move through or end your move on a square already occupied by another character. There are no diagonal moves. If you begin a round adjacent to an opponent, you can only move away if you chose the defend option last round.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "FIGHT"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nStrike at any opponent who is in a square adjacent to yours (linearly, not diagonally). To hit your opponent you must roll equal to or less than your Fighting Prowess on two dice.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "DEFEND"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis makes you harder to hit. For one full round (i.e. until your turn next round) any opponent trying to hit you must roll three dice instead of the usual two.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "SHOOT"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou can shot an arrow at one opponent anywhere on the tactical map except in a square directly adjacent to yours. This is an option for Sages and Tricksters only; for more information, see the special rules for those character types.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "FLEE"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nIn order to flee, a player must start the round either on an exit square or adjacent to another player who is on or adjacent to the exit square(s) The party only flees successfully if all players agree to flee. The entire party flees on the turn of the slowest player (i.e. lowest Awareness)\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "CALL SPELL TO MIND"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n(Enchanters only.) The Enchanter prepares a spell for casting in the following or subsequent rounds. Calling a spell to mind can be done at any time (not just in combat) and the spell held in readiness indefinitely. Multiple different spells can be held in mind, but each spell held temporarily reduces the Enchanter's Psychic Ability by 1.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "CAST A SPELL IN MIND"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n(Enchanters only.) The Enchanter must previously have called the spell to mind in order to cast it. The rules for spell casting are in the Enchanter's special section.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "When striking at an opponent (i.e., when you choose the fight option for a round), you roll 2D6. A score of equal to or lower than your Fighting Prowess means that your blow has hit. If you hit, you roll damage dice to see how much of an Endurace loss you have inflicted. The amount depends on your character type and rank -- see special rulles for the character.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "If your opponent has armour, reduce your dice roll for damage by their Armour Rating score, and the result (if greater than zero) is deducted from the opponent's Endurance.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "ITALIC",
+                    "text": "Example"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou have a Fighting Prowess of 7 and a damage roll of 1D6+1. You are attacking a troll whose Fighting Prowess is 6 and which rolls for 1D6 for damage. You have the higher Awareness, so you get first blow. Rolling two dice, you score a 3; this is under your Fighting Prowess score, so you have succeeded in hitting the troll. Next you rolle one die and add 1 for the dmage your blow inflicts. You roll a 6, which with +1 gives 7, but the troll has an Armour Rating of 2, so only 5 points are deducted from its Endurance.\n\nIf still alive (i.e. above 0 Endurance) the troll now gets to hack back at you. It rolls on two dice -- exactly equal to its Fighting Prowess, so good enough to hit you, though only just. For its damage die roll it scores a 1; because you have an Armour Rating of 2 this means that you lose no Endurance. The troll's claws hit you, but scrape harmlessly off your studded leather jerkin. The battle rages on for another round.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "If you choose the defend option then your opponent must roll equal to or under his Fighting Prowess on three dice in order to hit you. You do not get to strike a blow yourself in the round you are defending.\n"
+                }
+            ]
+        },
+        {
+            "header": "ARMOUR",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "ARMOUR"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou will start your adventure with a suit of armour. This gives an Armour rating of 3 if you're a Warrior, or of 2 if you belong to one of the other character types.\n\nYour armour protects you in combat by absorbing its Armour Rating from any damage you would otherwise take. For instance, if a monster rolls 2D6+1 for damage and gets a total of 13, that is the number of Endurance points you would lose if your were unarmoured. If you are wearing armour with an Armour Rating of 2, you would take only 11 (i.e., 13 minus 2) points of damage.\n\nYou cannot wear two suits of armour at once in order to combine their Armour Ratings.\n\nIf an opponent's Armour Rating is not given, it is 0.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "WEAPONS",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "WEAPONS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nIf you lose your weapon, reduce your Fighting Prowess and damage dice rolls by 2 until you acquire a new one. For example, an 8th rank Sage normally has a Fighting Prowess of 8 and rolls 3D6 damage. If the Sage were to lose his or her sword and be forced to fight barehanded, he or she would temporarily have a Fighting Prowess of 6 and roll 3D6-2 for damage.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "ENCUMBRANCE",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "ENCUMBRANCE"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou are limited to carrying up to ten items per player. If you are carrying ten items and find another item you want, you must discard one of the items you're already carrying or give it to another player in order to make space for it in your backpack.\n\nYour money pouch counts as one item, regardless of how much money is in it.\n\nA quiver (available to Sages and Tricksters) will hold up to six arrows and counts as one item. That is if you have a quiver containing six arrows then it still only counts as one item and not as seven.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "MAGIC",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "MAGIC"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nMagic is the special province of Enchanters and Sages. The way in which magic works for those classes is fully set out in their special sections, but every adventurer needs to be aware that there are two types of magic spell:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "Blasting spells"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nBlasting spells simply inflic damage, and if you happen to be the target there is not much you can do about it. You deduct the spell's damage (less your Armour Rating) from your Endurance score. A fireball is an example of a blasting spell.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "Psychic spells"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nPsychic spells can be resisted by rolling equal to or less than your Psychic Ability score on two dice. If you make the resistance roll, the spell fails to work against you. A hex is an example of a psychic spell.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "The type of spell will always be indicated whether it is of the psychic or blasting variety.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "EXPERIENCE POINTS",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "EXPERIENCE POINTS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nExperience points are a measure of a character's skill and power. If you survive the Battlepits, you will be awarded a number of experience points to be divided among all surviving characters. You also tally in any special bonus awards (or penalties) you were given during the adventure. The total experience points a character accumulates will enable him or her to rise in rank.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "Rank  Experience points"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "1st   0-249\n2nd   250-499\n3rd   500-749\n4th   750-999\n5th   1000-1249\n6th   1250-1499\n7th   1500-1749\n8th   1750-1999\n9th   2000-2249\n10th  2250-2499\n11th  2500-2749\n12th  2750-2999\n13th  3000-3249\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "You start the adventure with the base level experience points required for your rank: 250 if you are 2nd rank, 500 if you are 3rd, etc. If you play through the adventure with a single (8th-rank) character and receive an award of 1000 experience, for example, then you will advance to 12th rank. If you had the same award as a party of four 2nd-rank characters, each would advance to 3rd rank.\n\n"
                 }
             ]
         }

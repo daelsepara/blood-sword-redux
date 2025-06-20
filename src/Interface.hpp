@@ -1136,8 +1136,6 @@ namespace BloodSword::Interface
 
             if (surface)
             {
-                SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
-
                 SDL_Rect labels_rect, stats_rect;
 
                 labels_rect.w = surface->w;
@@ -1506,8 +1504,6 @@ namespace BloodSword::Interface
 
             if (surface)
             {
-                SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
-
                 // retrieve attribute values
                 auto rnk = std::to_string(character.Rank);
 
@@ -1592,8 +1588,6 @@ namespace BloodSword::Interface
 
             if (surface)
             {
-                SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
-
                 SDL_Rect stats_rect;
 
                 stats_rect.w = surface->w;
@@ -1800,6 +1794,13 @@ namespace BloodSword::Interface
 
             auto x_pad = x + w + pad;
 
+            auto max_item_w = BloodSword::Width(choices[start]);
+
+            for (auto item = 0; item < end; item++)
+            {
+                max_item_w = std::max(max_item_w, BloodSword::Width(choices[start + item]) + adjust);
+            }
+
             for (auto item = 0; item < end; item++)
             {
                 auto id = start_id + item;
@@ -1815,13 +1816,22 @@ namespace BloodSword::Interface
                 // background
                 scene.Add(Scene::Element(x, item_y, w, h, background, border, pixels));
 
-                auto center_x = center ? (w - BloodSword::Width(choices[start + item])) / 2 : 0;
+                auto center_x = center ? ((w + (scroll ? (BloodSword::TileSize + pad) : 0)) - (BloodSword::Width(choices[start + item]))) / 2 : 0;
 
                 auto center_y = center ? (h - BloodSword::Height(choices[start + item])) / 2 : 0;
 
+                auto item_x = x - offset;
+
+                if (center && scroll)
+                {
+                    w_adjust = max_item_w + adjust;
+
+                    item_x = x + ((w + (scroll ? (BloodSword::TileSize + pad) : 0)) - max_item_w) / 2;
+                }
+
                 scene.VerifyAndAdd(Scene::Element(choices[start + item], x + center_x, item_y + center_y));
 
-                scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, x - offset, item_y - offset, w_adjust, h + adjust, highlight));
+                scene.Add(Controls::Base(Controls::Type::CHOICE, id, id, rt, up, dn, center ? item_x - offset : item_x, item_y - offset, w_adjust, h + adjust, highlight));
             }
 
             if (options > limit)
@@ -7525,17 +7535,137 @@ namespace BloodSword::Interface
         return update;
     }
 
-    void Topic(Graphics::Base &graphics, Scene::Base &background, Help::Section &section, Asset::Type button, bool blur = true)
+    void Topic(Graphics::Base &graphics, Help::Section &section, Asset::Type button, bool blur = true)
     {
+        auto background = Scene::Base();
+
         if (section.Items.size() > 0)
         {
             auto has_image = !section.Image.empty();
 
-            auto panel_image_w = BloodSword::TileSize * 5;
+            auto panel_image_w = BloodSword::TileSize * 8;
 
-            auto panel_text_w = has_image ? BloodSword::TileSize * 5 : BloodSword::TileSize * 7;
+            auto panel_text_w = has_image ? BloodSword::TileSize * 8 : BloodSword::TileSize * 12;
 
             auto panel_h = BloodSword::TileSize * 6;
+
+            auto x = has_image ? (graphics.Width - (panel_image_w + panel_text_w + BloodSword::LargePad)) / 2 : (graphics.Width - panel_text_w) / 2;
+
+            auto panel_text_x = has_image ? (x + panel_image_w + BloodSword::LargePad) : x;
+
+            auto y = (graphics.Height - panel_h) / 2;
+
+            auto logo = Asset::Create(graphics.Renderer, "images/logo/bloodsword.png");
+
+            auto logo_x = (graphics.Width - BloodSword::Width(logo)) / 2;
+
+            auto logo_y = (y - BloodSword::Height(logo) - BloodSword::Pad * 2);
+
+            auto texture = Help::GenerateSection(graphics, Fonts::Normal, section, panel_text_w - BloodSword::Pad * 2);
+
+            auto origin = Point(x, y);
+
+            Point image_location;
+
+            SDL_Texture *image = nullptr;
+
+            if (has_image)
+            {
+                image = Graphics::ScaledImage(graphics, section.Image, panel_image_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+
+                image_location = origin + Point(panel_image_w - BloodSword::Width(image), panel_h - BloodSword::Height(image)) / 2;
+            }
+
+            if (texture)
+            {
+                auto offset = 0;
+
+                auto text_h = panel_h - (BloodSword::TileSize + BloodSword::Pad * 3);
+
+                auto texture_h = BloodSword::Height(texture);
+
+                auto text_x = panel_text_x + BloodSword::Pad;
+
+                auto text_y = y + BloodSword::Pad;
+
+                auto input = Controls::User();
+
+                auto controls_x = panel_text_x + (panel_text_w - (BloodSword::TileSize * 3 + BloodSword::Pad * 2)) / 2;
+
+                auto controls_y = y + panel_h - (BloodSword::TileSize + BloodSword::Pad * 2);
+
+                auto scroll_speed = BloodSword::ScrollSpeed;
+
+                auto done = false;
+
+                while (!done)
+                {
+                    auto overlay = Scene::Base();
+
+                    Interface::AddScrollableTextBox(overlay, panel_text_x, y, panel_text_w, panel_h, Color::Background, Color::Active, BloodSword::Border, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, button, scroll_speed);
+
+                    if (has_image)
+                    {
+                        // image panel border
+                        overlay.Add(Scene::Element(origin.X, origin.Y, panel_image_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+
+                        if (image)
+                        {
+                            // add left panel
+                            overlay.VerifyAndAdd(Scene::Element(image, image_location));
+                        }
+                    }
+
+                    // add logo
+                    overlay.VerifyAndAdd(Scene::Element(logo, Point(logo_x, logo_y)));
+
+                    input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, blur);
+
+                    if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                    {
+                        if (input.Type == Controls::Type::LEFT || input.Up)
+                        {
+                            if (text_h < texture_h)
+                            {
+                                offset -= scroll_speed;
+
+                                if (offset < 0)
+                                {
+                                    offset = 0;
+                                }
+                            }
+
+                            Controls::Select(input, overlay.Controls, Controls::Type::LEFT);
+                        }
+                        else if (input.Type == Controls::Type::RIGHT || input.Down)
+                        {
+                            if (text_h < texture_h)
+                            {
+                                offset += scroll_speed;
+
+                                if (offset > (texture_h - text_h))
+                                {
+                                    offset = texture_h - text_h;
+                                }
+                            }
+
+                            Controls::Select(input, overlay.Controls, Controls::Type::RIGHT);
+                        }
+                        else if (input.Type == Controls::Type::CONFIRM)
+                        {
+                            done = true;
+                        }
+
+                        input.Selected = false;
+                    }
+                }
+
+                BloodSword::Free(&texture);
+
+                BloodSword::Free(&logo);
+            }
+
+            BloodSword::Free(&image);
         }
     }
 
@@ -7597,6 +7727,12 @@ namespace BloodSword::Interface
 
             auto y = (graphics.Height - box_h) / 2;
 
+            auto logo = Asset::Create(graphics.Renderer, "images/logo/bloodsword.png");
+
+            auto logo_x = (graphics.Width - BloodSword::Width(logo)) / 2;
+
+            auto logo_y = (y - BloodSword::Height(logo) - BloodSword::Pad * 2);
+
             auto button_x = (graphics.Width - BloodSword::TileSize) / 2;
 
             auto button_y = (y + box_h - BloodSword::TileSize - pad);
@@ -7638,6 +7774,9 @@ namespace BloodSword::Interface
                     input.Down = false;
                 }
 
+                // add logo
+                overlay.VerifyAndAdd(Scene::Element(logo, Point(logo_x, logo_y)));
+
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
                 if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
@@ -7654,7 +7793,7 @@ namespace BloodSword::Interface
 
                         if (choice >= 0 && choice < options)
                         {
-                            Interface::Topic(graphics, overlay, topics[choice], Asset::Type::SWORDTHRUST, true);
+                            Interface::Topic(graphics, topics[choice], Asset::Type::SWORDTHRUST, true);
                         }
                     }
                     else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
@@ -7706,13 +7845,12 @@ namespace BloodSword::Interface
                             Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_DOWN);
                         }
                     }
-                    else if (input.Type == Controls::Type::CHOICE)
-                    {
-                    }
 
                     input.Selected = false;
                 }
             }
+
+            BloodSword::Free(&logo);
 
             BloodSword::Free(menu);
         }

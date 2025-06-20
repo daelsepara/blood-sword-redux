@@ -31,9 +31,6 @@ namespace BloodSword::SpriteSheet
 
             if (surface)
             {
-                // fill entire sheet
-                SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 0));
-
                 auto x = 0;
 
                 auto y = 0;

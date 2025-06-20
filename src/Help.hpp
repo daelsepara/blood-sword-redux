@@ -86,23 +86,44 @@ namespace BloodSword::Help
     {
         auto text = std::string();
 
-        for (auto &item : section.Items)
-        {
-            if (text.size() > 0)
-            {
-                text += "\n";
-            }
-
-            text += item.Text;
-        }
+        auto height = 0;
 
         auto width = 0;
 
-        auto height = 0;
+        for (auto &item : section.Items)
+        {
+            int style = 0;
 
-        Graphics::Estimate(font, text.c_str(), &width, &height);
+            switch (item.Face)
+            {
+            case Face::NORMAL:
+                style = TTF_STYLE_NORMAL;
 
-        width = std::max(wrap, width);
+                break;
+            case Face::BOLD:
+                style = TTF_STYLE_BOLD;
+
+                break;
+            case Face::ITALIC:
+                style = TTF_STYLE_ITALIC;
+
+                break;
+            default:
+                style = TTF_STYLE_NORMAL;
+
+                break;
+            }
+
+            // create test surface
+            auto test_surface = Graphics::CreateSurfaceText(item.Text.c_str(), font, Color::S(Color::Active), style, wrap);
+
+            height += test_surface->h;
+
+            width = std::max(width, test_surface->w);
+
+            // free test surface
+            BloodSword::Free(&test_surface);
+        }
 
         SDL_Texture *texture = nullptr;
 
