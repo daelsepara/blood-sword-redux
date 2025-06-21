@@ -13,7 +13,8 @@ namespace BloodSword::Help
         NONE = -1,
         NORMAL = 0,
         BOLD,
-        ITALIC
+        ITALIC,
+        BOLD_ITALIC
     };
 
     enum class Align
@@ -28,7 +29,8 @@ namespace BloodSword::Help
         {Help::Face::NONE, "NONE"},
         {Help::Face::NORMAL, "NORMAL"},
         {Help::Face::BOLD, "BOLD"},
-        {Help::Face::ITALIC, "ITALIC"}};
+        {Help::Face::ITALIC, "ITALIC"},
+        {Help::Face::BOLD_ITALIC, "BOLD-ITALIC"}};
 
     BloodSword::Mapping<Help::Align> AlignMapping = {
         {Help::Align::NONE, "NONE"},
@@ -82,6 +84,37 @@ namespace BloodSword::Help
 
     typedef std::vector<Help::Section> Sections;
 
+    int SetStyle(BloodSword::Help::Item &item)
+    {
+        auto style = 0;
+
+        switch (item.Face)
+        {
+        case Face::NORMAL:
+            style = TTF_STYLE_NORMAL;
+
+            break;
+        case Face::BOLD:
+            style = TTF_STYLE_BOLD;
+
+            break;
+        case Face::ITALIC:
+            style = TTF_STYLE_ITALIC;
+
+            break;
+        case Face::BOLD_ITALIC:
+            style = TTF_STYLE_BOLD | TTF_STYLE_ITALIC;
+
+            break;
+        default:
+            style = TTF_STYLE_NORMAL;
+
+            break;
+        }
+
+        return style;
+    }
+
     SDL_Texture *GenerateSection(Graphics::Base &graphics, TTF_Font *font, Help::Section &section, int wrap)
     {
         auto text = std::string();
@@ -92,27 +125,7 @@ namespace BloodSword::Help
 
         for (auto &item : section.Items)
         {
-            int style = 0;
-
-            switch (item.Face)
-            {
-            case Face::NORMAL:
-                style = TTF_STYLE_NORMAL;
-
-                break;
-            case Face::BOLD:
-                style = TTF_STYLE_BOLD;
-
-                break;
-            case Face::ITALIC:
-                style = TTF_STYLE_ITALIC;
-
-                break;
-            default:
-                style = TTF_STYLE_NORMAL;
-
-                break;
-            }
+            auto style = Help::SetStyle(item);
 
             // create test surface
             auto test_surface = Graphics::CreateSurfaceText(item.Text.c_str(), font, Color::S(Color::Active), style, wrap);
@@ -143,27 +156,7 @@ namespace BloodSword::Help
 
             for (auto &item : section.Items)
             {
-                int style = 0;
-
-                switch (item.Face)
-                {
-                case Face::NORMAL:
-                    style = TTF_STYLE_NORMAL;
-
-                    break;
-                case Face::BOLD:
-                    style = TTF_STYLE_BOLD;
-
-                    break;
-                case Face::ITALIC:
-                    style = TTF_STYLE_ITALIC;
-
-                    break;
-                default:
-                    style = TTF_STYLE_NORMAL;
-
-                    break;
-                }
+                auto style = Help::SetStyle(item);
 
                 auto surface_asset = Graphics::CreateSurfaceText(item.Text.c_str(), font, Color::S(Color::Active), style, width);
 

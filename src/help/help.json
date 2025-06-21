@@ -376,6 +376,351 @@
                     "text": "You start the adventure with the base level experience points required for your rank: 250 if you are 2nd rank, 500 if you are 3rd, etc. If you play through the adventure with a single (8th-rank) character and receive an award of 1000 experience, for example, then you will advance to 12th rank. If you had the same award as a party of four 2nd-rank characters, each would advance to 3rd rank.\n\n"
                 }
             ]
+        },
+        {
+            "header": "CHARACTER TYPES",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "CHARACTER TYPES"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe following four sections provide detailed rules for each character type"
+                }
+            ]
+        },
+        {
+            "header": "THE WARRIOR",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "THE WARRIOR"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow you inflict more damage. You also have chainmail armour which provides an Armour Rating of 3, which is better than the armour available to other characters.\n\nThee advantages give you a real edge in any fight, but you do not get things all your own way. You have none of the other characters' special skills -- the Sage's ESP, for instance, or the Trickster's low devious cunning. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "NORMAL",
+                    "text": "Your attributes at various ranks are:\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n2nd rank     Fighting Prowess: 8     Damage: 1D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 12"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n3rd rank     Fighting Prowess: 8     Damage: 1D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 18"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n4th rank     Fighting Prowess: 8     Damage: 2D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 24"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n5th rank     Fighting Prowess: 8     Damage: 2D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 30"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n6th rank     Fighting Prowess: 8     Damage: 2D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 36"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n7th rank     Fighting Prowess: 8     Damage: 3D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 42"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n8th rank     Fighting Prowess: 9     Damage: 3D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 48"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou begin with three items:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * sword"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * chainmal (Armour rating 3)"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * money pouch"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe money pouch contains 10 gold pieces if you're 2nd rank, 15 gold pieces if you're 3rd rank, 20 gold pieces if you're 4th rank, and 40 gold pieces if you're 8th rank. Regardless of its contents, the pouch still counts as one item for encumbrance purposes.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "THE TRICKSTER",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "THE TRICKSTER"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nSome adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "NORMAL",
+                    "text": "Your attributes at various ranks are:\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n2nd rank     Fighting Prowess: 7     Damage: 1D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 8"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 12"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n3rd rank     Fighting Prowess: 7     Damage: 1D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 6      Awareness: 8"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 18"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n4th rank     Fighting Prowess: 7     Damage: 1D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 8"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 24"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n5th rank     Fighting Prowess: 7     Damage: 2D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 8"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 30"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n6th rank     Fighting Prowess: 7     Damage: 2D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 8"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 36"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n7th rank     Fighting Prowess: 7     Damage: 2D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 8"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 42"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n8th rank     Fighting Prowess: 8     Damage: 3D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 9"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 48"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou begin with five items:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * sword"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * leather armour (Armour rating 2)"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * money pouch"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * bow"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * quiver"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe money pouch contains 10 gold pieces if you're 2nd rank, 15 gold pieces if you're 3rd rank, 20 gold pieces if you're 4th rank, and 40 gold pieces if you're 8th rank. Regardless of its contents, the pouch counts as one item against the limit of ten item you can carry. The quiver contains six arrows at the start of the adventure.\n\nTwo special rules apply to a Trickster:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Archery"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nAs long as you have your bow and arrows, you can use the shoot option. You do not have to be in an adjacent square to you opponent in order to shoot. A shoot roll is just like a fight roll: to hit you must roll equal to or less than your Fighting Prowess on two dice.\n\nRegardless of your rank, arrows inflict only 1D6 Endurance damage on the target. The target's Armour Rating subtracts from this as usual.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Dodging technique"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYour agility makes you good at evading attacks. When an opponent makes a fight roll against you, they must roll their Fighting Prowess or less on 2D6+1 to hit you, rather than the usual 2D6. If you choose the defend action, the opponent must roll to hit you on 3D6+1.\n\n"
+                }
+            ]
         }
     ]
 }
