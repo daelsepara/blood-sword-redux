@@ -961,6 +961,246 @@
                     "text": "\nThis is the ability to dispel ghosts and other wraiths by stifling the paranormal energies that sustain them.\n\n"
                 }
             ]
+        },
+        {
+            "header": "THE ENCHANTER",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "THE ENCHANTER"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nForget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "NORMAL",
+                    "text": "Your attributes at various ranks are:\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n2nd rank     Fighting Prowess: 6     Damage: 1D6-1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 10"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n3rd rank     Fighting Prowess: 6     Damage: 1D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 15"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n4th rank     Fighting Prowess: 7     Damage: 1D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 20"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n5th rank     Fighting Prowess: 7     Damage: 1D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 25"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n6th rank     Fighting Prowess: 7     Damage: 1D6+3"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 30"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n7th rank     Fighting Prowess: 7     Damage: 2D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 35"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n8th rank     Fighting Prowess: 8     Damage: 2D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 9      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 40"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou begin with three items:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * sword"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * silver armour (Armour rating 2)"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * money pouch"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe money pouch contains 10 gold pieces if you're 2nd rank, 15 gold pieces if you're 3rd rank, 20 gold pieces if you're 4th rank, and 40 gold pieces if you're 8th rank. Regardless of its contents, the pouch counts as one item against the limit of ten item you can carry.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "CASTING SPELLS",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "CASTING SPELLS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYour special skills are more involved than those of other characters because you have a host of useful and deadly spells at your command:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nBefore you can cast a spell, you must call it to mind. If done during combat, this is an action and takes one round.\n\nYou can call spells to mind at any time, and keep them in mind without effort, so you may wish to have a few ready before encountering an enemy -- rather like having a cocked and loaded crossbow.\n\nBut there's a drawback: each spell that you have in mind temporarily reduces your Psychic Ability by 1 until it is cast. If you keep several spells in mind at all times, you will therefore be adventuring with a depleted Psychic Ability, and this makes you more vulnerable to psychic attacks.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe attempt to cast a spell is an action ad takes one round. It does not happen automatically: in order to cast a spell successfully, you must roll equal or less than your Psychic Ability on 2D6. Add the Complexity Level of the spell to the dice roll. If you fail to cast the spell, you can try again the next round; this time the roll is easier, as you subtract 1 from the roll. If you fail again, you subtract 2 from your roll on the next round.\n\nIf the spell-casting process is interrupted (e.g., you take a round out to defend or fight) then you have to go back to rolling 2D6 plus the spell's full Complexity Level.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "ITALIC",
+                    "text": "Example"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou have a Psychic Ability of 9. You have called two spells into mind in case of trouble, so your current Psychic Ability is 7. In an encounter with several hobgoblins, you first try casting a Sheet Lightning spell. This is a Complexity Level Four spell, so on the first round you need to roll 7 or less on 2D6+4. You fail that but continue trying the next round, this time needing to make 7 or less on 2D6+3. You fail again, so on the third round you are rolling 2D6+2. This time you succeed: a crackling bolt blasts the hobgoblins.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "3"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nOnce you have succeeded in casting a spell, it is no longer held in your mind. If you want to cast it a second time in the same battle, you must first call it to mind again.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "4"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nAll your spells except for Ghastly Touch are ranged. That is, you do not have to be in an adjacent square to your opponent in order to cast the spell at them.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "COMBAT SPELLS",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "COMBAT SPELLS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe combat spells available to you are:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Volcanic Spray"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level One\n\nCauses all enemies to lose 1D6 Endurance. This is a Blasting spell, so it cannot be resisted. The enemies' Armour Rating (if any) is deducted from the damage die roll."
+                }
+            ]
         }
     ]
 }

@@ -58,6 +58,7 @@ namespace BloodSword::Help
         return Help::MapAlign(alignment.c_str());
     }
 
+    // text items in section
     class Item
     {
     public:
@@ -70,6 +71,7 @@ namespace BloodSword::Help
         Item() {}
     };
 
+    // main section
     class Section
     {
     public:
@@ -84,6 +86,7 @@ namespace BloodSword::Help
 
     typedef std::vector<Help::Section> Sections;
 
+    // set item stile
     int SetStyle(Help::Item &item)
     {
         auto style = 0;
@@ -115,10 +118,9 @@ namespace BloodSword::Help
         return style;
     }
 
+    // generate texture from all text items
     SDL_Texture *GenerateSection(Graphics::Base &graphics, TTF_Font *font, Help::Section &section, int wrap)
     {
-        auto text = std::string();
-
         auto height = 0;
 
         auto width = 0;
@@ -160,24 +162,27 @@ namespace BloodSword::Help
 
                 auto surface_asset = Graphics::CreateSurfaceText(item.Text.c_str(), font, Color::S(Color::Active), style, width);
 
-                if (item.Align == Align::RIGHT)
+                if (surface_asset)
                 {
-                    rect.x = width - surface_asset->w;
-                }
-                else if (item.Align == Align::CENTER)
-                {
-                    rect.x = (width - surface_asset->w) / 2;
-                }
-                else
-                {
-                    rect.x = 0;
-                }
+                    if (item.Align == Align::RIGHT)
+                    {
+                        rect.x = width - surface_asset->w;
+                    }
+                    else if (item.Align == Align::CENTER)
+                    {
+                        rect.x = (width - surface_asset->w) / 2;
+                    }
+                    else
+                    {
+                        rect.x = 0;
+                    }
 
-                Graphics::RenderAsset(surface, surface_asset, rect);
+                    Graphics::RenderAsset(surface, surface_asset, rect);
 
-                rect.y += surface_asset->h;
+                    rect.y += surface_asset->h;
 
-                BloodSword::Free(&surface_asset);
+                    BloodSword::Free(&surface_asset);
+                }
             }
 
             texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
