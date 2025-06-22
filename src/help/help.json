@@ -721,6 +721,246 @@
                     "text": "\nYour agility makes you good at evading attacks. When an opponent makes a fight roll against you, they must roll their Fighting Prowess or less on 2D6+1 to hit you, rather than the usual 2D6. If you choose the defend action, the opponent must roll to hit you on 3D6+1.\n\n"
                 }
             ]
+        },
+        {
+            "header": "THE SAGE",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "THE SAGE"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYour upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There you studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.\n\n"
+                },
+                {
+                    "align": "CENTER",
+                    "face": "NORMAL",
+                    "text": "Your attributes at various ranks are:\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n2nd rank     Fighting Prowess: 7     Damage: 1D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 10"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n3rd rank     Fighting Prowess: 7     Damage: 1D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 7      Awareness: 6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 15"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n4th rank     Fighting Prowess: 7     Damage: 1D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 20"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n5th rank     Fighting Prowess: 7     Damage: 2D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 25"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n6th rank     Fighting Prowess: 7     Damage: 2D6+1"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 30"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n7th rank     Fighting Prowess: 7     Damage: 2D6+2"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 35"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n8th rank     Fighting Prowess: 8     Damage: 3D6"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Psychic Ability: 8      Awareness: 7"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "             Endurance: 40"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou begin with five items:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * quarterstaff"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * ringmail (Armour rating 2)"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * money pouch"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * bow"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "    * quiver"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe money pouch contains 10 gold pieces if you're 2nd rank, 15 gold pieces if you're 3rd rank, 20 gold pieces if you're 4th rank, and 40 gold pieces if you're 8th rank. Regardless of its contents, the pouch counts as one item against the limit of ten item you can carry. The quiver contains six arrows at the start of the adventure.\n\nSome special rules apply to a Trickster:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Archery"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nAs long as you have your bow and arrows, you can use the shoot option. You do not have to be in an adjacent square to you opponent in order to shoot. A shoot roll is just like a fight roll: to hit you must roll equal to or less than your Fighting Prowess on two dice.\n\nRegardless of your rank, arrows inflict only 1D6 Endurance damage on the target. The target's Armour Rating subtracts from this as usual.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Quarterstaff technique"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYour expertise in quarterstaff fighting gives you a knowledge of critical nerve points. When attacking with the staff, you have the option to make your fight roll on three dice instead of two. This is more difficult, but it means that if you do hit you inflict an extra 1D6 damage and knock your foe off blance, casing him to take his next action at the end of the round (i.e. as if he had an Awareness score of 1).\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Healing"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou can use this ability once each time you turn to a new option, except when the section you've turned to involves a combat. When you attempt to heal, decide how many points of Endurance you are going to use. Deduct these from your Endurance, then roll 1D6-2 and multiply the score by the number of Endurance you expended. The result is the healing energy, in the form of Endurance points, that you are able to draw from the cosmic flux. Distribute the points however you choose among the players.\n\nFor example, say you expend 5 Endurance in a healing attempt. You roll 1D6-2, scoring 3. So you get 15 Endurance points. You can restore your own Endurance to what is was before you tried the healing, and still have 10 points to distribute to your comrades.\n\nIt is not possible to heal a character whose Endurance is at 0 or less. They are dead, and it is beyond your power to restore them.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Other powers"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYour other special powers will be explained in situations where you might need them. They include:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "ESP"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis is the ability to detect thoughts.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "Paranormal Sight"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis is the ability to see through materials such as curtains, fog or water -- though not store or metal.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "Levitation"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis is the ability to negate the force of gravity on your body, allowing you to rise vertically into the air.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "ITALIC",
+                    "text": "Exorcism"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis is the ability to dispel ghosts and other wraiths by stifling the paranormal energies that sustain them.\n\n"
+                }
+            ]
         }
     ]
 }

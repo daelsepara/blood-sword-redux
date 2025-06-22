@@ -84,7 +84,7 @@ namespace BloodSword::Help
 
     typedef std::vector<Help::Section> Sections;
 
-    int SetStyle(BloodSword::Help::Item &item)
+    int SetStyle(Help::Item &item)
     {
         auto style = 0;
 
