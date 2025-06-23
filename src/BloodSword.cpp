@@ -58,9 +58,7 @@ namespace BloodSword::Game
     // show rules of the game
     void Help(Graphics::Base &graphics)
     {
-        auto help = Help::Load(Interface::Settings["help"]);
-
-        Interface::Topics(graphics, help, Asset::Type::SWORDTHRUST, true);
+        Interface::Topics(graphics, Asset::Type::SWORDTHRUST);
     }
 
     // menu text (textures)

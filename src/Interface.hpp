@@ -7308,127 +7308,7 @@ namespace BloodSword::Interface
         Story::Load(Interface::Settings["adventure"]);
     }
 
-    // show game menu (change battle order, load/save game)
-    bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, bool &reload)
-    {
-        auto update = false;
-
-        reload = false;
-
-        Asset::List assets = {
-            Asset::Type::BATTLE_ORDER,
-            Asset::Type::LOAD,
-            Asset::Type::SAVE,
-            Asset::Type::BACK};
-
-        Controls::Collection controls = {
-            Controls::Type::BATTLE_ORDER,
-            Controls::Type::LOAD,
-            Controls::Type::SAVE,
-            Controls::Type::BACK,
-        };
-
-        std::vector<std::string> captions = {
-            "BATTLE ORDER",
-            "LOAD GAME",
-            "SAVE GAME",
-            "BACK"};
-
-        auto values = std::vector<int>();
-
-        for (auto i = 0; i < controls.size(); i++)
-        {
-            values.push_back(i);
-        }
-
-        auto message = Story::CurrentBook.Title;
-
-        auto done = false;
-
-        while (!done)
-        {
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
-
-            if (selection.size() == 1)
-            {
-                auto input = controls[selection[0]];
-
-                if (input == Controls::Type::BACK)
-                {
-                    done = true;
-                }
-                else if (input == Controls::Type::BATTLE_ORDER)
-                {
-                    if (Engine::IsAlive(party))
-                    {
-                        auto current = Story::CurrentBook.Find(party.Location);
-
-                        if (current >= 0 && current < Story::CurrentBook.Sections.size())
-                        {
-                            if (Story::CurrentBook.Sections[current].Has(Feature::Type::BAD_ENDING))
-                            {
-                                Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
-                            }
-                            else if (!Story::CurrentBook.Sections[current].Battle.IsDefined())
-                            {
-                                if (party.Count() > 1)
-                                {
-                                    update = Interface::BattleOrder(graphics, background, party);
-
-                                    done = true;
-                                }
-                                else
-                                {
-                                    Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
-                                }
-                            }
-                            else
-                            {
-                                Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
-                            }
-                        }
-                        else
-                        {
-                            Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
-                        }
-                    }
-                    else
-                    {
-                        Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
-                    }
-                }
-                else if (input == Controls::Type::SAVE)
-                {
-                    done = Interface::LoadSaveGame(graphics, background, saved_party, Controls::Type::SAVE, Asset::Type::SAVE);
-
-                    if (done)
-                    {
-                        Interface::Notify(graphics, background, Interface::MSG_SAVED);
-                    }
-                }
-                else if (input == Controls::Type::LOAD)
-                {
-                    done = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Type::LOAD);
-
-                    if (done)
-                    {
-                        Interface::Notify(graphics, background, Interface::MSG_LOADED);
-
-                        Interface::ReloadStory(graphics, party);
-
-                        reload = true;
-                    }
-                }
-                else
-                {
-                    Interface::NotImplemented(graphics, background);
-                }
-            }
-        }
-
-        return update;
-    }
-
+    // render topic
     void Topic(Graphics::Base &graphics, Help::Section &section, Asset::Type button, bool blur = true)
     {
         auto background = Scene::Base();
@@ -7543,7 +7423,8 @@ namespace BloodSword::Interface
         }
     }
 
-    void Topics(Graphics::Base &graphics, Help::Sections &topics, Asset::Type button, bool blur = true)
+    // display topics menu
+    void Topics(Graphics::Base &graphics, Help::Sections &topics, Asset::Type button)
     {
         auto background = Scene::Base();
 
@@ -7676,6 +7557,141 @@ namespace BloodSword::Interface
 
             BloodSword::Free(menu);
         }
+    }
+
+    // display topics menu
+    void Topics(Graphics::Base &graphics, Asset::Type asset)
+    {
+        auto help = Help::Load(Interface::Settings["help"]);
+
+        Interface::Topics(graphics, help, asset);
+    }
+
+    // show game menu (change battle order, load/save game)
+    bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Party::Base &saved_party, bool &reload)
+    {
+        auto update = false;
+
+        reload = false;
+
+        Asset::List assets = {
+            Asset::Type::BATTLE_ORDER,
+            Asset::Type::LOAD,
+            Asset::Type::SAVE,
+            Asset::Type::BACK};
+
+        Controls::Collection controls = {
+            Controls::Type::BATTLE_ORDER,
+            Controls::Type::LOAD,
+            Controls::Type::SAVE,
+            Controls::Type::ABOUT,
+            Controls::Type::BACK,
+        };
+
+        std::vector<std::string> captions = {
+            "BATTLE ORDER",
+            "LOAD GAME",
+            "SAVE GAME",
+            "HELP",
+            "BACK"};
+
+        auto values = std::vector<int>();
+
+        for (auto i = 0; i < controls.size(); i++)
+        {
+            values.push_back(i);
+        }
+
+        auto message = Story::CurrentBook.Title;
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+
+            if (selection.size() == 1)
+            {
+                auto input = controls[selection[0]];
+
+                if (input == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input == Controls::Type::BATTLE_ORDER)
+                {
+                    if (Engine::IsAlive(party))
+                    {
+                        auto current = Story::CurrentBook.Find(party.Location);
+
+                        if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                        {
+                            if (Story::CurrentBook.Sections[current].Has(Feature::Type::BAD_ENDING))
+                            {
+                                Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
+                            }
+                            else if (!Story::CurrentBook.Sections[current].Battle.IsDefined())
+                            {
+                                if (party.Count() > 1)
+                                {
+                                    update = Interface::BattleOrder(graphics, background, party);
+
+                                    done = true;
+                                }
+                                else
+                                {
+                                    Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+                                }
+                            }
+                            else
+                            {
+                                Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
+                            }
+                        }
+                        else
+                        {
+                            Interface::ErrorMessage(graphics, background, Interface::MSG_ORDER);
+                        }
+                    }
+                    else
+                    {
+                        Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
+                    }
+                }
+                else if (input == Controls::Type::SAVE)
+                {
+                    done = Interface::LoadSaveGame(graphics, background, saved_party, Controls::Type::SAVE, Asset::Type::SAVE);
+
+                    if (done)
+                    {
+                        Interface::Notify(graphics, background, Interface::MSG_SAVED);
+                    }
+                }
+                else if (input == Controls::Type::LOAD)
+                {
+                    done = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Type::LOAD);
+
+                    if (done)
+                    {
+                        Interface::Notify(graphics, background, Interface::MSG_LOADED);
+
+                        Interface::ReloadStory(graphics, party);
+
+                        reload = true;
+                    }
+                }
+                else if (input == Controls::Type::ABOUT)
+                {
+                    Interface::Topics(graphics, Asset::Type::SWORDTHRUST);
+                }
+                else
+                {
+                    Interface::NotImplemented(graphics, background);
+                }
+            }
+        }
+
+        return update;
     }
 }
 
