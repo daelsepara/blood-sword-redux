@@ -123,7 +123,6 @@ namespace BloodSword::FieldOfView
 
     namespace DiamondWalls
     {
-
         int ComputeTopY(Map::Base &map, Slope top, int octant, Point origin, int x)
         {
             if (top.X == 1)
@@ -362,6 +361,42 @@ namespace BloodSword::FieldOfView
                     break;
                 }
             }
+        }
+
+        Points Compute(Map::Base &map, Point origin, int radius)
+        {
+            Points visible = {origin};
+
+            if (radius == 0)
+            {
+                return visible;
+            }
+
+            SDL_Rect area;
+
+            area.x = origin.X - radius;
+
+            area.y = origin.Y - radius;
+
+            area.w = radius * 2 + 1;
+
+            area.h = radius * 2 + 1;
+
+            for (auto x = area.x; x < area.x + area.w; x++)
+            {
+                TraceLine(map, visible, origin, x, area.y, radius);
+
+                TraceLine(map, visible, origin, x, area.y + area.h - 1, radius);
+            }
+
+            for (auto y = area.y + 1; y < area.y + area.h - 1; y++)
+            {
+                TraceLine(map, visible, origin, area.x, y, radius);
+
+                TraceLine(map, visible, origin, area.x + area.w - 1, y, radius);
+            }
+
+            return visible;
         }
     }
 }

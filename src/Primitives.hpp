@@ -170,6 +170,28 @@ namespace BloodSword
 
     typedef std::vector<Point> Points;
 
+    bool In(Points &points, Point point)
+    {
+        auto result = false;
+
+        for (auto &item : points)
+        {
+            if (item == point)
+            {
+                result = true;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    bool In(Points &points, int x, int y)
+    {
+        return In(points, Point(x, y));
+    }
+
     // load an image as an SDL surface
     SDL_Surface *Load(const char *image)
     {
