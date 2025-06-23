@@ -7578,6 +7578,7 @@ namespace BloodSword::Interface
             Asset::Type::BATTLE_ORDER,
             Asset::Type::LOAD,
             Asset::Type::SAVE,
+            Asset::Type::ABOUT,
             Asset::Type::BACK};
 
         Controls::Collection controls = {
