@@ -1,7 +1,7 @@
 #ifndef __MAZE_HPP__
 #define __MAZE_HPP__
 
-#include "Map.hpp"
+#include "FieldOfView.hpp"
 #include "Random.hpp"
 
 // classes and functions for generating a maze on the map

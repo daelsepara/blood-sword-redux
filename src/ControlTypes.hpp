@@ -102,11 +102,15 @@ namespace BloodSword::Controls
         QUIVER,
         STEEL_SCEPTRE,
         TROPHY,
-        LEFT,
-        RIGHT,
         SKILLS,
         STATUS,
-        INFO
+        INFO,
+        UP,
+        DOWN,
+        LEFT,
+        RIGHT,
+        MENU,
+        ACTION
     };
 
     typedef std::vector<Controls::Type> Collection;

@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <memory>
 
-#include "Map.hpp"
+#include "FieldOfView.hpp"
 #include "Random.hpp"
 
 // A C++ version of A* pathfinding algorithm from https://dotnetcoretutorials.com/2020/07/25/a-search-pathfinding-algorithm-in-c/

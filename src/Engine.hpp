@@ -5,7 +5,7 @@
 #include "Book.hpp"
 #include "Character.hpp"
 #include "Item.hpp"
-#include "Map.hpp"
+#include "FieldOfView.hpp"
 #include "Move.hpp"
 #include "Party.hpp"
 #include "Random.hpp"
