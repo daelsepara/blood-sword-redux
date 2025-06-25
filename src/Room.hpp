@@ -34,7 +34,7 @@ namespace BloodSword::Room
 
         std::pair<Point, Point> Inner()
         {
-            return {Point(this->X1 + 1, this->Y1 + 1), Point(this->X2 -1, this->Y2 - 1)};
+            return {Point(this->X1 + 1, this->Y1 + 1), Point(this->X2 - 1, this->Y2 - 1)};
         }
 
         Base(int x, int y, int width, int height): X1(x), Y1(y), Width(width), Height(height)
@@ -111,6 +111,17 @@ namespace BloodSword::Battlepits
         }
     }
 
+    bool Inside(Room::Base &room, Point point)
+    {
+        auto inner = room.Inner();
+
+        auto tl = inner.first;
+
+        auto br = inner.second;
+
+        return ((point.X >= tl.X && point.X < br.X) && (point.Y >= tl.Y && point.Y < br.Y));
+    }
+
     void Generate(Map::Base &map)
     {
         // clear
@@ -120,7 +131,7 @@ namespace BloodSword::Battlepits
             {
                 map[Point(x, y)].Type = Map::Object::NONE;
 
-                map[Point(x, y)].Asset = Asset::Type::IMPASSABLE;
+                map[Point(x, y)].Asset = Asset::Type::NONE;
             }
         }
 
@@ -134,9 +145,12 @@ namespace BloodSword::Battlepits
 
         for (auto point : TunnelBetween(room_1.Center(), room_2.Center()))
         {
-            map[point].Type = Map::Object::PASSABLE;
+            if (!Inside(room_1, point) && !Inside(room_2, point))
+            {
+                map[point].Type = Map::Object::PASSABLE;
 
-            map[point].Asset = Asset::Type::NONE;
+                map[point].Asset = Asset::Type::IMPASSABLE;
+            }
         }
     }
 }

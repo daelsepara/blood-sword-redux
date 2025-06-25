@@ -63,11 +63,7 @@ namespace BloodSword::BattlepitsRenderer
 
                     if (!tile.IsOccupied())
                     {
-                        if (tile.Asset == Asset::Type::EMPTY_SPACE)
-                        {
-                            surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
-                        }
-                        else if (tile.Asset != Asset::Type::NONE)
+                        if (tile.Asset != Asset::Type::NONE)
                         {
                             surface_asset = BloodSword::Asset::Surface(tile.Asset);
                         }
@@ -101,22 +97,6 @@ namespace BloodSword::BattlepitsRenderer
 
             // away opponents
             BattlepitsRenderer::RenderPoints(surface, map.AwayOpponents, rect, offset, Asset::Type::SELECT, true);
-
-            // player locations
-            auto number = 1;
-
-            for (auto &origin : map.Origins)
-            {
-                rect.x = origin.X * BloodSword::TileSize + offset;
-
-                rect.y = origin.Y * BloodSword::TileSize + offset;
-
-                auto character_asset = BloodSword::Asset::Surface(Interface::Numbers[number]);
-
-                Graphics::RenderAssetThenFree(surface, character_asset, rect);
-
-                number++;
-            }
 
             IMG_SavePNG(surface, image_file);
 
