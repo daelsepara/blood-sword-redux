@@ -10,6 +10,8 @@ BSWORD_MAP_RENDERER=MapRenderer.cpp
 BSWORD_MAP_RENDERER_OUTPUT=MapRenderer.exe
 BSWORD_SPRITE_SHEET=SpriteSheet.cpp
 BSWORD_SPRITE_SHEET_OUTPUT=SpriteSheet.exe
+BSWORD_BATTLEPITS=Battlepits.cpp
+BSWORD_BATTLEPITS_OUTPUT=Battlepits.exe
 DEBUG=-g -O0
 LIBS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -fdata-sections -ffunction-sections
 INCLUDES=-I/usr/include/SDL2
@@ -53,6 +55,9 @@ battle-board:
 
 blood-sword:
 	$(CC) -Wall $(BSWORD) $(LIBS) $(INCLUDES) -o $(BSWORD_OUTPUT)
+
+battlepits:
+	$(CC) -Wall $(BSWORD_BATTLEPITS) $(LIBS) $(INCLUDES) -o $(BSWORD_BATTLEPITS_OUTPUT)
 
 clean-blood-sword-test:
 	rm -f $(BSWORD_TEST_OUTPUT) *.o
