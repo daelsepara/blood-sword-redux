@@ -43,6 +43,16 @@ namespace BloodSword::Room
 
             this->Y2 = this->Y1 + this->Height;
         }
+
+        bool Inside(Point point)
+        {
+            return ((point.X > this->X1 && point.X < this->X2 - 1) && (point.Y > this->Y1 && point.Y < this->Y2 - 1));
+        }
+
+        bool Intersects(const Room::Base &room)
+        {
+            return (this->X1 <= room.X2 && this->X2 >= room.X1 && this->Y1 <= room.Y2 && this->Y2 >= room.Y1);
+        }
     };
 }
 
@@ -56,24 +66,60 @@ namespace BloodSword::Battlepits
 
         if (random.NextDouble() < 0.5)
         {
-            for (auto x = start.X; x <= end.X; x++)
+            auto x1 = start.X;
+
+            auto x2 = end.X;
+
+            if (x1 > x2)
+            {
+                std::swap(x1, x2);
+            }
+
+            for (auto x = x1; x <= x2; x++)
             {
                 points.push_back(Point(x, start.Y));
             }
 
-            for (auto y = start.Y; y <= end.Y; y++)
+            auto y1 = start.Y;
+
+            auto y2 = end.Y;
+
+            if (y1 > y2)
+            {
+                std::swap(y1, y2);
+            }
+
+            for (auto y = y1; y <= y2; y++)
             {
                 points.push_back(Point(end.X, y));
             }
         }
         else
         {
-            for (auto y = start.Y; y <= end.Y; y++)
+            auto y1 = start.Y;
+
+            auto y2 = end.Y;
+
+            if (y1 > y2)
+            {
+                std::swap(y1, y2);
+            }
+
+            for (auto y = y1; y <= y2; y++)
             {
                 points.push_back(Point(start.X, y));
             }
 
-            for (auto x = start.X; x <= end.X; x++)
+            auto x1 = start.X;
+
+            auto x2 = end.X;
+
+            if (x1 > x2)
+            {
+                std::swap(x1, x2);
+            }
+
+            for (auto x = x1; x <= x2; x++)
             {
                 points.push_back(Point(x, end.Y));
             }
@@ -111,17 +157,6 @@ namespace BloodSword::Battlepits
         }
     }
 
-    bool Inside(Room::Base &room, Point point)
-    {
-        auto inner = room.Inner();
-
-        auto tl = inner.first;
-
-        auto br = inner.second;
-
-        return ((point.X >= tl.X && point.X < br.X) && (point.Y >= tl.Y && point.Y < br.Y));
-    }
-
     void Generate(Map::Base &map)
     {
         // clear
@@ -137,7 +172,7 @@ namespace BloodSword::Battlepits
 
         auto room_1 = Room::Base(20, 15, 10, 15);
 
-        auto room_2 = Room::Base(35, 15, 10, 15);
+        auto room_2 = Room::Base(5, 5, 10, 15);
 
         Battlepits::Place(map, room_1);
 
@@ -145,7 +180,7 @@ namespace BloodSword::Battlepits
 
         for (auto point : TunnelBetween(room_1.Center(), room_2.Center()))
         {
-            if (!Inside(room_1, point) && !Inside(room_2, point))
+            if (!room_1.Inside(point) && !room_2.Inside(point))
             {
                 map[point].Type = Map::Object::PASSABLE;
 
