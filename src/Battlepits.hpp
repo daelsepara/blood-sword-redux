@@ -23,7 +23,11 @@ namespace BloodSword::Room
 
         Point Center()
         {
-            return Point(this->X1 + this->X2, this->Y1 + this->Y2) / 2;
+            auto x = this->X1 + this->Width / 2;
+
+            auto y = this->Y1 + this->Height / 2;
+
+            return Point(x, y);
         }
 
         std::pair<Point, Point> Inner()
@@ -81,6 +85,44 @@ namespace BloodSword::Battlepits
         return result;
     }
 
+    void VerticalTunnel(Points &points, int x, int y1, int y2)
+    {
+        auto delta = 0;
+
+        if (y1 < y2)
+        {
+            delta = 1;
+        }
+        else if (y1 > y2)
+        {
+            delta = -1;
+        }
+
+        for (auto y = y1; y != y2; y += delta)
+        {
+            points.push_back(Point(x, y));
+        }
+    }
+
+    void HorizontalTunnel(Points &points, int x1, int x2, int y)
+    {
+        auto delta = 0;
+
+        if (x1 < x2)
+        {
+            delta = 1;
+        }
+        else if (x1 > x2)
+        {
+            delta = -1;
+        }
+
+        for (auto x = x1; x != x2; x += delta)
+        {
+            points.push_back(Point(x, y));
+        }
+    }
+
     Points TunnelBetween(Point start, Point end)
     {
         auto random = Random::Base();
@@ -89,75 +131,15 @@ namespace BloodSword::Battlepits
 
         if (random.NextDouble() < 0.5)
         {
-            auto x1 = start.X;
+            Battlepits::VerticalTunnel(points, start.X, start.Y, end.Y);
 
-            auto x2 = end.X;
-
-            if (x1 > x2)
-            {
-                std::swap(x1, x2);
-            }
-
-            for (auto x = x1; x <= x2; x++)
-            {
-                points.push_back(Point(x, start.Y));
-            }
-
-            auto y1 = start.Y;
-
-            auto y2 = end.Y;
-
-            if (y1 > y2)
-            {
-                std::swap(y1, y2);
-
-                y2--;
-            }
-            else
-            {
-                y1++;
-            }
-
-            for (auto y = y1; y <= y2; y++)
-            {
-                points.push_back(Point(end.X, y));
-            }
+            Battlepits::HorizontalTunnel(points, start.X, end.X, end.Y);
         }
         else
         {
-            auto y1 = start.Y;
+            Battlepits::HorizontalTunnel(points, start.X, end.X, start.Y);
 
-            auto y2 = end.Y;
-
-            if (y1 > y2)
-            {
-                std::swap(y1, y2);
-            }
-
-            for (auto y = y1; y <= y2; y++)
-            {
-                points.push_back(Point(start.X, y));
-            }
-
-            auto x1 = start.X;
-
-            auto x2 = end.X;
-
-            if (x1 > x2)
-            {
-                std::swap(x1, x2);
-
-                x2--;
-            }
-            else
-            {
-                x1++;
-            }
-
-            for (auto x = x1; x <= x2; x++)
-            {
-                points.push_back(Point(x, end.Y));
-            }
+            Battlepits::VerticalTunnel(points, end.X, start.Y, end.Y);
         }
 
         return points;
@@ -227,21 +209,25 @@ namespace BloodSword::Battlepits
 
             if (!room.Intersects(rooms))
             {
-                Place(map, room);
+                Battlepits::Place(map, room);
 
                 auto &last = rooms.back();
 
                 if (rooms.size() > 0)
                 {
-                    for (auto point : TunnelBetween(room.Center(), last.Center()))
+                    for (auto point : Battlepits::TunnelBetween(room.Center(), last.Center()))
                     {
-                        if (!Inside(rooms, room, point))
+                        if (!Battlepits::Inside(rooms, room, point))
                         {
                             if (map[point].Type != Map::Object::PASSABLE)
                             {
                                 map[point].Type = Map::Object::PASSABLE;
 
                                 map[point].Asset = Asset::Type::NONE;
+                            }
+                            else
+                            {
+                                break;
                             }
                         }
                     }

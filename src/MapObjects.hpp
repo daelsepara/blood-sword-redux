@@ -15,7 +15,11 @@ namespace BloodSword::Map
         ENEMY_PASSABLE,
         OBSTACLE,
         TEMPORARY_OBSTACLE,
-        EXIT
+        EXIT,
+        ITEM,
+        ITEM_GROUP,
+        PARTY_GROUP,
+        ENEMY_GROUP
     };
 
     BloodSword::Mapping<Map::Object> ObjectMapping = {
@@ -26,7 +30,11 @@ namespace BloodSword::Map
         {Map::Object::ENEMY_PASSABLE, "ENEMY PASSABLE"},
         {Map::Object::OBSTACLE, "OBSTACLE"},
         {Map::Object::TEMPORARY_OBSTACLE, "TEMPORARY OBSTACLE"},
-        {Map::Object::EXIT, "EXIT"}};
+        {Map::Object::EXIT, "EXIT"},
+        {Map::Object::ITEM, "ITEM"},
+        {Map::Object::ITEM_GROUP, "ITEM"},
+        {Map::Object::PARTY_GROUP, "PARTY GROUP"},
+        {Map::Object::ENEMY_GROUP, "ENEMY GROUP"}};
 
     Map::Object MapObject(const char *object)
     {
