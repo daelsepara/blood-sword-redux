@@ -53,6 +53,11 @@ namespace BloodSword::Party
         // variables
         BloodSword::UnorderedMap<std::string, std::string> Variables = {};
 
+        // location on map (rogue mode)
+        int X = -1;
+
+        int Y = -1;
+
         Base() {}
 
         Base(Party::List members) : Members(members) {}
