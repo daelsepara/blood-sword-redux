@@ -513,6 +513,10 @@ namespace BloodSword::Party
                     this->Variables[key] = value;
                 }
             }
+
+            this->X = !data["x"].is_null() ? int(data["x"]) : -1;
+
+            this->Y = !data["y"].is_null() ? int(data["y"]) : -1;
         }
 
         // check if string is a number
@@ -919,6 +923,10 @@ namespace BloodSword::Party
 
             data["variables"] = variables;
         }
+
+        data["x"] = party.X;
+
+        data["y"] = party.Y;
 
         return data;
     }
