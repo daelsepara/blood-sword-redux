@@ -1,20 +1,14 @@
-#ifndef __ROOM_HPP__
-#define __ROOM_HPP__
+#ifndef __BATTLEPITS_HPP__
+#define __BATTLEPITS_HPP__
 
 #include "FieldOfView.hpp"
 #include "Random.hpp"
 
 namespace BloodSword::Room
 {
-    int MinWidth = 10;
-
-    int MaxWidth = 20;
-
     class Base
     {
     public:
-        int Id = -1;
-
         int X1 = -1;
 
         int Y1 = -1;
@@ -37,7 +31,7 @@ namespace BloodSword::Room
             return {Point(this->X1 + 1, this->Y1 + 1), Point(this->X2 - 1, this->Y2 - 1)};
         }
 
-        Base(int x, int y, int width, int height): X1(x), Y1(y), Width(width), Height(height)
+        Base(int x, int y, int width, int height) : X1(x), Y1(y), Width(width), Height(height)
         {
             this->X2 = this->X1 + this->Width;
 
@@ -53,11 +47,40 @@ namespace BloodSword::Room
         {
             return (this->X1 <= room.X2 && this->X2 >= room.X1 && this->Y1 <= room.Y2 && this->Y2 >= room.Y1);
         }
+
+        bool Intersects(const std::vector<Room::Base> &rooms)
+        {
+            auto result = false;
+
+            for (auto room : rooms)
+            {
+                result |= this->Intersects(room);
+
+                if (result)
+                {
+                    break;
+                }
+            }
+
+            return result;
+        }
     };
 }
 
 namespace BloodSword::Battlepits
 {
+    bool Inside(std::vector<Room::Base> &rooms, Room::Base &room, Point point)
+    {
+        auto result = room.Inside(point);
+
+        for (auto room : rooms)
+        {
+            result |= room.Inside(point);
+        }
+
+        return result;
+    }
+
     Points TunnelBetween(Point start, Point end)
     {
         auto random = Random::Base();
@@ -87,6 +110,12 @@ namespace BloodSword::Battlepits
             if (y1 > y2)
             {
                 std::swap(y1, y2);
+
+                y2--;
+            }
+            else
+            {
+                y1++;
             }
 
             for (auto y = y1; y <= y2; y++)
@@ -117,6 +146,12 @@ namespace BloodSword::Battlepits
             if (x1 > x2)
             {
                 std::swap(x1, x2);
+
+                x2--;
+            }
+            else
+            {
+                x1++;
             }
 
             for (auto x = x1; x <= x2; x++)
@@ -140,9 +175,13 @@ namespace BloodSword::Battlepits
         {
             for (auto x = room.X1; x < room.X2; x++)
             {
-                map[Point(x, y)].Type = Map::Object::OBSTACLE;
+                // do not overwrite tunnels
+                if (map[Point(x, y)].Type != Map::Object::PASSABLE)
+                {
+                    map[Point(x, y)].Type = Map::Object::OBSTACLE;
 
-                map[Point(x, y)].Asset = Asset::Type::WALL;
+                    map[Point(x, y)].Asset = Asset::Type::WALL;
+                }
             }
         }
 
@@ -157,8 +196,12 @@ namespace BloodSword::Battlepits
         }
     }
 
-    void Generate(Map::Base &map)
+    void Generate(Map::Base &map, int max_rooms, int min_size, int max_size)
     {
+        auto rooms = std::vector<Room::Base>();
+
+        auto random = Random::Base();
+
         // clear
         for (auto y = 0; y < map.Height; y++)
         {
@@ -166,27 +209,56 @@ namespace BloodSword::Battlepits
             {
                 map[Point(x, y)].Type = Map::Object::NONE;
 
-                map[Point(x, y)].Asset = Asset::Type::NONE;
+                map[Point(x, y)].Asset = Asset::Type::IMPASSABLE;
             }
         }
 
-        auto room_1 = Room::Base(20, 15, 10, 15);
-
-        auto room_2 = Room::Base(5, 5, 10, 15);
-
-        Battlepits::Place(map, room_1);
-
-        Battlepits::Place(map, room_2);
-
-        for (auto point : TunnelBetween(room_1.Center(), room_2.Center()))
+        for (auto r = 0; r < max_rooms; r++)
         {
-            if (!room_1.Inside(point) && !room_2.Inside(point))
-            {
-                map[point].Type = Map::Object::PASSABLE;
+            auto width = random.NextInt(min_size, max_size);
 
-                map[point].Asset = Asset::Type::IMPASSABLE;
+            auto height = random.NextInt(min_size, max_size);
+
+            auto x = random.NextInt(0, map.Width - width - 1);
+
+            auto y = random.NextInt(0, map.Height - height - 1);
+
+            auto room = Room::Base(x, y, width, height);
+
+            if (!room.Intersects(rooms))
+            {
+                Place(map, room);
+
+                auto &last = rooms.back();
+
+                if (rooms.size() > 0)
+                {
+                    for (auto point : TunnelBetween(room.Center(), last.Center()))
+                    {
+                        if (!Inside(rooms, room, point))
+                        {
+                            if (map[point].Type != Map::Object::PASSABLE)
+                            {
+                                map[point].Type = Map::Object::PASSABLE;
+
+                                map[point].Asset = Asset::Type::NONE;
+                            }
+                        }
+                    }
+                }
+
+                rooms.push_back(room);
             }
         }
+    }
+
+    Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size)
+    {
+        auto map = Map::Base(width, height);
+
+        Battlepits::Generate(map, max_rooms, min_size, max_size);
+
+        return map;
     }
 }
 

@@ -52,6 +52,13 @@ namespace Random
 			return uniformIntDistribution(generator);
 		}
 
+		int NextInt(int a, int b)
+		{
+			uniformIntDistribution = std::uniform_int_distribution<int>(a, b);
+
+			return uniformIntDistribution(generator);
+		}
+
 		void NormalDistribution(double mean, double std)
 		{
 			normalDistribution = std::normal_distribution<double>(mean, std);
