@@ -73,7 +73,6 @@ namespace BloodSword::Room
 
             return result;
         }
-
     };
 
     // check if point is inside any of the other rooms
@@ -237,11 +236,13 @@ namespace BloodSword::Battlepits
         return Room::Base(x, y, width, height);
     }
 
-    void Generate(Map::Base &map, int max_rooms, int min_size, int max_size)
+    void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size)
     {
-        auto rooms = std::vector<Room::Base>();
-
+        // initialize RNG
         auto random = Random::Base();
+
+        // clear rooms
+        rooms.clear();
 
         // clear entire map
         Battlepits::ClearMap(map, Asset::Type::IMPASSABLE);
@@ -273,7 +274,9 @@ namespace BloodSword::Battlepits
     {
         auto map = Map::Base(width, height);
 
-        Battlepits::Generate(map, max_rooms, min_size, max_size);
+        auto rooms = std::vector<Room::Base>();
+
+        Battlepits::Generate(map, rooms, max_rooms, min_size, max_size);
 
         return map;
     }

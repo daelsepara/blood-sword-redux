@@ -225,9 +225,9 @@ namespace BloodSword::FieldOfView
 
             visible.push_back(origin);
 
-            for (auto i = 0; i < 8; i++)
+            for (auto octant = 0; octant < 8; octant++)
             {
-                ComputeOctant(map, visible, i, origin, radius, 1, Slope(1, 1), Slope(0, 1));
+                ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(0, 1));
             }
 
             return visible;

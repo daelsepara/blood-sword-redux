@@ -40,6 +40,13 @@ namespace BloodSword::Rogue
         Party::Base Party;
 
         Base() {}
+
+        void GenerateBattlepits(int width, int height, int max_rooms, int min_size, int max_size)
+        {
+            this->Battlepits = Map::Base(width, height);
+
+            Battlepits::Generate(this->Battlepits, this->Rooms, max_rooms, min_size, max_size);
+        }
     };
 }
 
