@@ -36,7 +36,7 @@ endif
 
 .PHONY: all clean
 
-all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet blood-sword
+all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet blood-sword battlepits
 
 map-template:
 	$(CC) -Wall $(BSWORD_MAP) $(LIBS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
