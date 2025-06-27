@@ -21,6 +21,7 @@ namespace BloodSword::Room
 
         int Height = -1;
 
+        // return room's center coordinates
         Point Center()
         {
             auto x = this->X1 + this->Width / 2;
@@ -30,6 +31,7 @@ namespace BloodSword::Room
             return Point(x, y);
         }
 
+        // return room's inner area boundaries
         std::pair<Point, Point> Inner()
         {
             return {Point(this->X1 + 1, this->Y1 + 1), Point(this->X2 - 1, this->Y2 - 1)};
@@ -42,16 +44,19 @@ namespace BloodSword::Room
             this->Y2 = this->Y1 + this->Height;
         }
 
+        // check if point is inside the room
         bool Inside(Point point)
         {
             return ((point.X > this->X1 && point.X < this->X2 - 1) && (point.Y > this->Y1 && point.Y < this->Y2 - 1));
         }
 
+        // check if a room intersects another room
         bool Intersects(const Room::Base &room)
         {
             return (this->X1 <= room.X2 && this->X2 >= room.X1 && this->Y1 <= room.Y2 && this->Y2 >= room.Y1);
         }
 
+        // check if room intersects any of the other rooms
         bool Intersects(const std::vector<Room::Base> &rooms)
         {
             auto result = false;
@@ -68,11 +73,10 @@ namespace BloodSword::Room
 
             return result;
         }
-    };
-}
 
-namespace BloodSword::Battlepits
-{
+    };
+
+    // check if point is inside any of the other rooms
     bool Inside(std::vector<Room::Base> &rooms, Room::Base &room, Point point)
     {
         auto result = room.Inside(point);
@@ -84,7 +88,11 @@ namespace BloodSword::Battlepits
 
         return result;
     }
+}
 
+namespace BloodSword::Battlepits
+{
+    // create vertical tunnel between two points and add to list
     void VerticalTunnel(Points &points, int x, int y1, int y2)
     {
         auto delta = 0;
@@ -104,6 +112,7 @@ namespace BloodSword::Battlepits
         }
     }
 
+    // create horizontal tunnel between two points and add to list
     void HorizontalTunnel(Points &points, int x1, int x2, int y)
     {
         auto delta = 0;
@@ -123,7 +132,8 @@ namespace BloodSword::Battlepits
         }
     }
 
-    Points TunnelBetween(Point start, Point end)
+    // create tunnels between two points
+    Points CreateTunnels(Point start, Point end)
     {
         auto random = Random::Base();
 
@@ -145,37 +155,86 @@ namespace BloodSword::Battlepits
         return points;
     }
 
+    // randomly place room in the map
     void Place(Map::Base &map, Room::Base &room)
     {
-        auto inner = room.Inner();
-
-        auto tl = inner.first;
-
-        auto br = inner.second;
-
+        // create walls around the room
         for (auto y = room.Y1; y < room.Y2; y++)
         {
             for (auto x = room.X1; x < room.X2; x++)
             {
-                // do not overwrite tunnels
-                if (map[Point(x, y)].Type != Map::Object::PASSABLE)
-                {
-                    map[Point(x, y)].Type = Map::Object::OBSTACLE;
+                auto point = Point(x, y);
 
-                    map[Point(x, y)].Asset = Asset::Type::WALL;
+                if (room.Inside(point))
+                {
+                    // carve out inner room area
+                    map[point].Type = Map::Object::PASSABLE;
+
+                    map[point].Asset = Asset::Type::NONE;
+                }
+                else if (map[point].Type != Map::Object::PASSABLE)
+                {
+                    // do not overwrite tunnels
+                    map[point].Type = Map::Object::OBSTACLE;
+
+                    map[point].Asset = Asset::Type::WALL;
                 }
             }
         }
+    }
 
-        for (auto y = tl.Y; y < br.Y; y++)
+    // clears the entire map
+    void ClearMap(BloodSword::Map::Base &map, Asset::Type asset)
+    {
+        for (auto y = 0; y < map.Height; y++)
         {
-            for (auto x = tl.X; x < br.X; x++)
+            for (auto x = 0; x < map.Width; x++)
             {
-                map[Point(x, y)].Type = Map::Object::PASSABLE;
+                auto point = Point(x, y);
 
-                map[Point(x, y)].Asset = Asset::Type::NONE;
+                map[point].Type = Map::Object::NONE;
+
+                map[point].Asset = asset;
             }
         }
+    }
+
+    // connect rooms with a tunnel
+    void ConnectRooms(Map::Base &map, std::vector<Room::Base> &rooms, Room::Base &room, Room::Base &last)
+    {
+        auto tunnel = Battlepits::CreateTunnels(room.Center(), last.Center());
+
+        for (auto point : tunnel)
+        {
+            if (!Room::Inside(rooms, room, point))
+            {
+                // lay out tunnel but stop when it encounters //  an existing
+                if (map[point].Type != Map::Object::PASSABLE)
+                {
+                    map[point].Type = Map::Object::PASSABLE;
+
+                    map[point].Asset = Asset::Type::NONE;
+                }
+                else
+                {
+                    break;
+                }
+            }
+        }
+    }
+
+    // create room with random dimensions
+    Room::Base CreateRoom(Random::Base &random, Map::Base &map, int min_size, int max_size)
+    {
+        auto width = random.NextInt(min_size, max_size);
+
+        auto height = random.NextInt(min_size, max_size);
+
+        auto x = random.NextInt(0, map.Width - width - 1);
+
+        auto y = random.NextInt(0, map.Height - height - 1);
+
+        return Room::Base(x, y, width, height);
     }
 
     void Generate(Map::Base &map, int max_rooms, int min_size, int max_size)
@@ -184,53 +243,25 @@ namespace BloodSword::Battlepits
 
         auto random = Random::Base();
 
-        // clear
-        for (auto y = 0; y < map.Height; y++)
-        {
-            for (auto x = 0; x < map.Width; x++)
-            {
-                map[Point(x, y)].Type = Map::Object::NONE;
-
-                map[Point(x, y)].Asset = Asset::Type::IMPASSABLE;
-            }
-        }
+        // clear entire map
+        Battlepits::ClearMap(map, Asset::Type::IMPASSABLE);
 
         for (auto r = 0; r < max_rooms; r++)
         {
-            auto width = random.NextInt(min_size, max_size);
+            auto room = Battlepits::CreateRoom(random, map, min_size, max_size);
 
-            auto height = random.NextInt(min_size, max_size);
-
-            auto x = random.NextInt(0, map.Width - width - 1);
-
-            auto y = random.NextInt(0, map.Height - height - 1);
-
-            auto room = Room::Base(x, y, width, height);
-
+            // check if room placement is valid
             if (!room.Intersects(rooms))
             {
+                // place room
                 Battlepits::Place(map, room);
 
-                auto &last = rooms.back();
-
+                // if not the first room, create tunnel to previous room
                 if (rooms.size() > 0)
                 {
-                    for (auto point : Battlepits::TunnelBetween(room.Center(), last.Center()))
-                    {
-                        if (!Battlepits::Inside(rooms, room, point))
-                        {
-                            if (map[point].Type != Map::Object::PASSABLE)
-                            {
-                                map[point].Type = Map::Object::PASSABLE;
+                    auto &last = rooms.back();
 
-                                map[point].Asset = Asset::Type::NONE;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
+                    Battlepits::ConnectRooms(map, rooms, room, last);
                 }
 
                 rooms.push_back(room);
