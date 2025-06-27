@@ -77,4 +77,7 @@ clean-map-renderer:
 clean-sprite-sheet:
 	rm -f $(BSWORD_SPRITE_SHEET_OUTPUT) *.o
 
-clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer clean-sprite-sheet clean-blood-sword
+clean-battlepits:
+	rm -f $(BSWORD_BATTLEPITS_OUTPUT) *.o
+
+clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer clean-sprite-sheet clean-blood-sword clean-battlepits
