@@ -236,6 +236,243 @@ namespace BloodSword::Battlepits
         return Room::Base(x, y, width, height);
     }
 
+    bool Empty(Map::Base &map, Point point)
+    {
+        return (map[point].Type == Map::Object::NONE);
+    }
+
+    bool Blocked(Map::Base &map, Point point)
+    {
+        auto &tile = map[point];
+
+        return (tile.Asset == Asset::Type::NONE && (tile.Type == Map::Object::NONE || (tile.Type != Map::Object::PASSABLE && tile.Type != Map::Object::ENEMY_PASSABLE)));
+    }
+
+    void AssignCornerAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y)
+    {
+        auto tl = Battlepits::Empty(map, {x - 1, y - 1});
+
+        auto tr = Battlepits::Empty(map, {x + 1, y - 1});
+
+        auto bl = Battlepits::Empty(map, {x - 1, y + 1});
+
+        auto br = Battlepits::Empty(map, {x + 1, y + 1});
+
+        if (tl && tr && bl && br)
+        {
+            tile.Asset = Asset::Type::FOUR_CORNERS;
+        }
+        else if (tr && tl && bl)
+        {
+            tile.Asset = Asset::Type::TOP_LEFT_CORNERS;
+        }
+        else if (tl && tr && br)
+        {
+            tile.Asset = Asset::Type::TOP_RIGHT_CORNERS;
+        }
+        else if (tl && bl && br)
+        {
+            tile.Asset = Asset::Type::BOTTOM_LEFT_CORNERS;
+        }
+        else if (bl && br && tr)
+        {
+            tile.Asset = Asset::Type::BOTTOM_RIGHT_CORNERS;
+        }
+        else if (tl && tr)
+        {
+            tile.Asset = Asset::Type::TOP_CORNERS;
+        }
+        else if (bl && br)
+        {
+            tile.Asset = Asset::Type::BOTTOM_CORNERS;
+        }
+        else if (tl && bl)
+        {
+            tile.Asset = Asset::Type::LEFT_CORNERS;
+        }
+        else if (tr && br)
+        {
+            tile.Asset = Asset::Type::RIGHT_CORNERS;
+        }
+        else if (tl)
+        {
+            tile.Asset = Asset::Type::TOP_LEFT_CORNER;
+        }
+        else if (tr)
+        {
+            tile.Asset = Asset::Type::TOP_RIGHT_CORNER;
+        }
+        else if (bl)
+        {
+            tile.Asset = Asset::Type::BOTTOM_LEFT_CORNER;
+        }
+        else if (br)
+        {
+            tile.Asset = Asset::Type::BOTTOM_RIGHT_CORNER;
+        }
+    }
+
+    void AssignTunnelAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y)
+    {
+        auto top = (y == 0 || Battlepits::Blocked(map, {x, y - 1}));
+
+        auto left = (x == 0 || Battlepits::Blocked(map, {x - 1, y}));
+
+        auto right = (x >= map.Width - 1 || Battlepits::Blocked(map, {x + 1, y}));
+
+        auto bottom = (y >= map.Height - 1 || Battlepits::Blocked(map, {x, y + 1}));
+
+        if (top && left && right)
+        {
+            tile.Asset = Asset::Type::BORDER_BOTTOM_OPEN;
+        }
+        else if (top && right && bottom)
+        {
+            tile.Asset = (Asset::Type::BORDER_LEFT_OPEN);
+        }
+        else if (left && right && bottom)
+        {
+            tile.Asset = (Asset::Type::BORDER_TOP_OPEN);
+        }
+        else if (top && left && bottom)
+        {
+            tile.Asset = (Asset::Type::BORDER_RIGHT_OPEN);
+        }
+        else if (top && left)
+        {
+            tile.Asset = (Asset::Type::BORDER_TOP_LEFT);
+
+            if (Battlepits::Empty(map, {x + 1, y + 1}))
+            {
+                tile.Asset = Asset::Type::TOP_LEFT_ELBOW;
+            }
+        }
+        else if (top && right)
+        {
+            tile.Asset = (Asset::Type::BORDER_TOP_RIGHT);
+
+            if (Battlepits::Empty(map, {x - 1, y + 1}))
+            {
+                tile.Asset = Asset::Type::TOP_RIGHT_ELBOW;
+            }
+        }
+        else if (bottom && right)
+        {
+            tile.Asset = (Asset::Type::BORDER_BOTTOM_RIGHT);
+
+            if (Battlepits::Empty(map, {x - 1, y - 1}))
+            {
+                tile.Asset = Asset::Type::BOTTOM_RIGHT_ELBOW;
+            }
+        }
+        else if (bottom && left)
+        {
+            tile.Asset = (Asset::Type::BORDER_BOTTOM_LEFT);
+
+            if (Battlepits::Empty(map, {x + 1, y - 1}))
+            {
+                tile.Asset = Asset::Type::BOTTOM_LEFT_ELBOW;
+            }
+        }
+        else if (top && bottom)
+        {
+            tile.Asset = (Asset::Type::BORDER_HORIZONTAL);
+        }
+        else if (left && right)
+        {
+            tile.Asset = (Asset::Type::BORDER_VERTICAL);
+        }
+        else if (top)
+        {
+            tile.Asset = (Asset::Type::BORDER_TOP);
+
+            if (Battlepits::Empty(map, {x - 1, y + 1}) && Battlepits::Empty(map, {x + 1, y + 1}))
+            {
+                tile.Asset = (Asset::Type::TOP_BOTTOM_CORNERS);
+            }
+            else if (Battlepits::Empty(map, {x - 1, y + 1}))
+            {
+                tile.Asset = (Asset::Type::TOP_BOTTOM_LEFT_CORNER);
+            }
+            else if (Battlepits::Empty(map, {x + 1, y + 1}))
+            {
+                tile.Asset = (Asset::Type::TOP_BOTTOM_RIGHT_CORNER);
+            }
+        }
+        else if (bottom)
+        {
+            tile.Asset = (Asset::Type::BORDER_BOTTOM);
+
+            if (Battlepits::Empty(map, {x - 1, y - 1}) && Battlepits::Empty(map, {x + 1, y - 1}))
+            {
+                tile.Asset = (Asset::Type::BOTTOM_TOP_CORNERS);
+            }
+            else if (Battlepits::Empty(map, {x - 1, y - 1}))
+            {
+                tile.Asset = (Asset::Type::BOTTOM_TOP_LEFT_CORNER);
+            }
+            else if (Battlepits::Empty(map, {x + 1, y - 1}))
+            {
+                tile.Asset = (Asset::Type::BOTTOM_TOP_RIGHT_CORNER);
+            }
+        }
+        else if (left)
+        {
+            tile.Asset = (Asset::Type::BORDER_LEFT);
+
+            if (Battlepits::Empty(map, {x + 1, y - 1}) && Battlepits::Empty(map, {x + 1, y + 1}))
+            {
+                tile.Asset = (Asset::Type::LEFT_RIGHT_CORNERS);
+            }
+            else if (Battlepits::Empty(map, {x + 1, y - 1}))
+            {
+                tile.Asset = (Asset::Type::LEFT_TOP_RIGHT_CORNER);
+            }
+            else if (Battlepits::Empty(map, {x + 1, y + 1}))
+            {
+                tile.Asset = (Asset::Type::LEFT_BOTTOM_RIGHT_CORNER);
+            }
+        }
+        else if (right)
+        {
+            tile.Asset = (Asset::Type::BORDER_RIGHT);
+
+            if (Battlepits::Empty(map, {x - 1, y - 1}) && Battlepits::Empty(map, {x - 1, y + 1}))
+            {
+                tile.Asset = (Asset::Type::RIGHT_LEFT_CORNERS);
+            }
+            else if (Battlepits::Empty(map, {x - 1, y - 1}))
+            {
+                tile.Asset = (Asset::Type::RIGHT_TOP_LEFT_CORNER);
+            }
+            else if (Battlepits::Empty(map, {x - 1, y + 1}))
+            {
+                tile.Asset = (Asset::Type::RIGHT_BOTTOM_LEFT_CORNER);
+            }
+        }
+        else
+        {
+            // non-blocked and passable space
+            Battlepits::AssignCornerAssets(map, tile, x, y);
+        }
+    }
+
+    void AssignTunnelAssets(Map::Base &map)
+    {
+        for (auto y = 0; y < map.Height; y++)
+        {
+            for (auto x = 0; x < map.Width; x++)
+            {
+                auto &tile = map[Point(x, y)];
+
+                if (tile.Type == Map::Object::PASSABLE)
+                {
+                    Battlepits::AssignTunnelAssets(map, tile, x, y);
+                }
+            }
+        }
+    }
+
     void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size)
     {
         // initialize RNG
@@ -268,6 +505,8 @@ namespace BloodSword::Battlepits
                 rooms.push_back(room);
             }
         }
+
+        Battlepits::AssignTunnelAssets(map);
     }
 
     Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size)

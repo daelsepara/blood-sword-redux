@@ -3,174 +3,6 @@
 // render map to a png file
 namespace BloodSword::BattlepitsRenderer
 {
-    bool Empty(Map::Base &map, Point point)
-    {
-        return (map[point].Type == Map::Object::NONE);
-    }
-
-    bool Blocked(Map::Base &map, Point point)
-    {
-        auto &tile = map[point];
-
-        return (tile.Asset == Asset::Type::NONE && (tile.Type == Map::Object::NONE || (tile.Type != Map::Object::PASSABLE && tile.Type != Map::Object::ENEMY_PASSABLE)));
-    }
-
-    void RenderCorners(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y)
-    {
-        auto tl = Empty(map, {x - 1, y - 1});
-
-        auto tr = Empty(map, {x + 1, y - 1});
-
-        auto bl = Empty(map, {x - 1, y + 1});
-
-        auto br = Empty(map, {x + 1, y + 1});
-
-        if (tl && tr && bl && br)
-        {
-            tile.Asset = Asset::Type::FOUR_CORNERS;
-        }
-        else if (tr && tl && bl)
-        {
-            tile.Asset = Asset::Type::TL_CORNERS;
-        }
-        else if (tl && tr && br)
-        {
-            tile.Asset = Asset::Type::TR_CORNERS;
-        }
-        else if (tl && bl && br)
-        {
-            tile.Asset = Asset::Type::BL_CORNERS;
-        }
-        else if (bl && br && tr)
-        {
-            tile.Asset = Asset::Type::BR_CORNERS;
-        }
-        else if (tl && tr)
-        {
-            tile.Asset = Asset::Type::TOP_CORNERS;
-        }
-        else if (bl && br)
-        {
-            tile.Asset = Asset::Type::BOTTOM_CORNERS;
-        }
-        else if (tl && bl)
-        {
-            tile.Asset = Asset::Type::LEFT_CORNERS;
-        }
-        else if (tr && br)
-        {
-            tile.Asset = Asset::Type::RIGHT_CORNERS;
-        }
-        else if (tl)
-        {
-            tile.Asset = Asset::Type::CORNER_TL;
-        }
-        else if (tr)
-        {
-            tile.Asset = Asset::Type::CORNER_TR;
-        }
-        else if (bl)
-        {
-            tile.Asset = Asset::Type::CORNER_BL;
-        }
-        else if (br)
-        {
-            tile.Asset = Asset::Type::CORNER_BR;
-        }
-    }
-
-    void RenderTunnel(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y)
-    {
-        auto top = (y == 0 || Blocked(map, {x, y - 1}));
-
-        auto left = (x == 0 || Blocked(map, {x - 1, y}));
-
-        auto right = (x >= map.Width - 1 || Blocked(map, {x + 1, y}));
-
-        auto bottom = (y >= map.Height - 1 || Blocked(map, {x, y + 1}));
-
-        if (top && left && right)
-        {
-            tile.Asset = Asset::Type::BORDER_BON;
-        }
-        else if (top && right && bottom)
-        {
-            tile.Asset = (Asset::Type::BORDER_LON);
-        }
-        else if (left && right && bottom)
-        {
-            tile.Asset = (Asset::Type::BORDER_TON);
-        }
-        else if (top && left && bottom)
-        {
-            tile.Asset = (Asset::Type::BORDER_RON);
-        }
-        else if (top && left)
-        {
-            tile.Asset = (Asset::Type::BORDER_TLT);
-
-            if (Empty(map, {x + 1, y + 1}))
-            {
-                tile.Asset = Asset::Type::BORDER_TLT_E;
-            }
-        }
-        else if (top && right)
-        {
-            tile.Asset = (Asset::Type::BORDER_TRT);
-
-            if (Empty(map, {x - 1, y + 1}))
-            {
-                tile.Asset = Asset::Type::BORDER_TRT_E;
-            }
-        }
-        else if (bottom && right)
-        {
-            tile.Asset = (Asset::Type::BORDER_BRT);
-
-            if (Empty(map, {x - 1, y - 1}))
-            {
-                tile.Asset = Asset::Type::BORDER_BRT_E;
-            }
-        }
-        else if (bottom && left)
-        {
-            tile.Asset = (Asset::Type::BORDER_BLT);
-
-            if (Empty(map, {x + 1, y - 1}))
-            {
-                tile.Asset = Asset::Type::BORDER_BLT_E;
-            }
-        }
-        else if (top && bottom)
-        {
-            tile.Asset = (Asset::Type::BORDER_TBT);
-        }
-        else if (left && right)
-        {
-            tile.Asset = (Asset::Type::BORDER_LRT);
-        }
-        else if (top)
-        {
-            tile.Asset = (Asset::Type::BORDER_TOP);
-        }
-        else if (bottom)
-        {
-            tile.Asset = (Asset::Type::BORDER_BOT);
-        }
-        else if (left)
-        {
-            tile.Asset = (Asset::Type::BORDER_LFT);
-        }
-        else if (right)
-        {
-            tile.Asset = (Asset::Type::BORDER_RHT);
-        }
-        else
-        {
-            RenderCorners(map, tile, x, y);
-        }
-    }
-
     void Render(const char *module, int width, int height, int max_rooms, int min_size, int max_size, const char *image_file)
     {
         // get all available modules
@@ -211,21 +43,15 @@ namespace BloodSword::BattlepitsRenderer
 
                     auto &tile = map[Point(x, y)];
 
-                    if (tile.Type == Map::Object::PASSABLE)
+                    if (tile.Type == Map::Object::EXIT)
                     {
-                        RenderTunnel(map, tile, x, y);
+                        surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
                     }
-                    else if (tile.Type == Map::Object::EXIT)
-                    {
-                        tile.Asset = Asset::Type::SELECT;
-                    }
-
-                    if (tile.Asset != Asset::Type::NONE)
+                    else if (tile.Asset != Asset::Type::NONE)
                     {
                         surface_asset = BloodSword::Asset::Surface(tile.Asset);
                     }
-
-                    if (surface_asset == nullptr)
+                    else
                     {
                         // fill empty space
                         surface_asset = Graphics::CreateSurface(BloodSword::TileSize, BloodSword::TileSize);
