@@ -4,6 +4,7 @@
 #include "Attribute.hpp"
 #include "Book.hpp"
 #include "Character.hpp"
+#include "loggers/Engine.hpp"
 #include "Item.hpp"
 #include "FieldOfView.hpp"
 #include "Move.hpp"
@@ -589,64 +590,6 @@ namespace BloodSword::Engine
         return party.Index(character.Class);
     }
 
-    // BloodSword Engine "Simple Intelligence Logger"
-    void Log(const char *action, const char *attacker, const char *target, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
-    {
-#if defined(DEBUG)
-        std::cerr << "[" << attacker << "]"
-                  << " [" << action << "]"
-                  << " [" << target << "]";
-
-        if (path != -1)
-        {
-            std::cerr << " [PATH] " << std::to_string(path);
-        }
-
-        std::cerr << " [DIST] " << std::to_string(dist);
-
-        if (vuln != -1)
-        {
-            std::cerr << " [VULN] " << std::to_string(vuln);
-        }
-
-        if (prob != -1 && threshold != -1)
-        {
-            std::cerr << " [PROB] "
-                      << std::to_string(prob)
-                      << " "
-                      << (prob <= threshold ? "<=" : ">")
-                      << " "
-                      << std::to_string(threshold);
-        }
-
-        std::cerr << std::endl;
-#endif
-    }
-
-    // log enemy action and target
-    void Log(const char *action, Target::Type attacker, int id, Target::Type target, int target_id, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
-    {
-        auto action_string = std::string(action) + " TARGET " + std::to_string(target_id);
-
-        auto attacker_string = std::string(Target::Mapping[attacker]) + " " + std::to_string(id);
-
-        auto target_string = std::string(Target::Mapping[target]) + " " + std::to_string(target_id);
-
-        Engine::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln, prob, threshold);
-    }
-
-    // log enemy action and target
-    void Log(const char *action, Target::Type target, int id, int target_id, int dist, int path = -1, int vuln = -1)
-    {
-        auto action_string = std::string(action) + " TARGET " + std::to_string(target_id);
-
-        auto attacker_string = std::string("ENEMY ") + std::to_string(id);
-
-        auto target_string = std::string(Target::Mapping[target]) + " " + std::to_string(target_id);
-
-        Engine::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln);
-    }
-
     // generic queue builder (based on distance / endurance)
     Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle, bool fight, bool ranged, bool move, bool spell, bool descending = false)
     {
@@ -676,7 +619,7 @@ namespace BloodSword::Engine
                     {
                         auto vulnerability = map.Free(location);
 
-                        Engine::Log("MOVE", party[i].Target, map[src].Id, i, distance, path.Points.size(), vulnerability);
+                        EngineLogger::Log("MOVE", party[i].Target, map[src].Id, i, distance, path.Points.size(), vulnerability);
 
                         // add vulnerability score (more empty spaces, more vulnerable)
                         distance += (Map::Directions.size() - vulnerability) * VulnerabilityScaler;
@@ -703,7 +646,7 @@ namespace BloodSword::Engine
                             action = "FIGHT";
                         }
 
-                        Engine::Log(action.c_str(), party[i].Target, map[src].Id, i, distance);
+                        EngineLogger::Log(action.c_str(), party[i].Target, map[src].Id, i, distance);
                     }
                 }
 
@@ -813,7 +756,7 @@ namespace BloodSword::Engine
                                 {
                                     auto vulnerability = map.Free(location);
 
-                                    Engine::Log("MOVE", character.Target, id, opponents[i].Target, i, distance, path.Points.size(), vulnerability);
+                                    EngineLogger::Log("MOVE", character.Target, id, opponents[i].Target, i, distance, path.Points.size(), vulnerability);
 
                                     // add vulnerability score (more empty spaces, more vulnerable)
                                     distance += (Map::Directions.size() - vulnerability) * VulnerabilityScaler;
@@ -854,7 +797,7 @@ namespace BloodSword::Engine
                                     threshold = character.TargetProbability;
                                 }
 
-                                Engine::Log(action.c_str(), character.Target, id, opponents[i].Target, i, distance, -1, -1, probability, threshold);
+                                EngineLogger::Log(action.c_str(), character.Target, id, opponents[i].Target, i, distance, -1, -1, probability, threshold);
                             }
 
                             if (map.IsValid(location) && location != src)
@@ -1766,6 +1709,35 @@ namespace BloodSword::Engine
         }
 
         return drop;
+    }
+
+    // generate timestamp string
+    std::string UtcTime(std::time_t time)
+    {
+        char time_string[std::size("yyyy-mm-dd HH:mm:ss")];
+
+        std::strftime(std::data(time_string), std::size(time_string), "%F %T", std::localtime(&time));
+
+        return std::string(time_string);
+    }
+
+    // get current time (string)
+    std::string UtcTimeNow()
+    {
+        std::time_t time = std::time({});
+
+        return Engine::UtcTime(time);
+    }
+
+    // convert a timepoint to time_t using system clock
+    template <typename T>
+    std::time_t ConvertTime(T timepoint)
+    {
+        using namespace std::chrono;
+
+        auto system_clock_timepoint = time_point_cast<system_clock::duration>(timepoint - T::clock::now() + system_clock::now());
+
+        return system_clock::to_time_t(system_clock_timepoint);
     }
 }
 

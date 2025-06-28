@@ -671,7 +671,7 @@ namespace BloodSword::Interface
                     cast = true;
                 }
 
-                Interface::LogSpellStrategy(strategy.AlreadyCast, spells_cast, cast);
+                BattleLogger::LogSpellStrategy(strategy.AlreadyCast, spells_cast, cast);
 
                 if (cast)
                 {
@@ -681,7 +681,7 @@ namespace BloodSword::Interface
         }
         else if (battle.Casters.size() > 0)
         {
-            Interface::LogCaster(caster, caster_id);
+            BattleLogger::LogCaster(caster, caster_id);
         }
 
         return cast;
@@ -723,7 +723,7 @@ namespace BloodSword::Interface
             battle.Casters = subset;
         }
 
-        Interface::LogCasters(battle);
+        BattleLogger::LogCasters(battle);
     }
 
     // enemy casts spells
@@ -753,7 +753,7 @@ namespace BloodSword::Interface
                 targets = Engine::FightTargets(battle.Map, party, src, true, false);
             }
 
-            Interface::LogTargets("SPELL", character.Target, battle.Map[src].Id, targets.size());
+            BattleLogger::LogTargets("SPELL", character.Target, battle.Map[src].Id, targets.size());
 
             // cast spell
             if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
@@ -777,7 +777,7 @@ namespace BloodSword::Interface
                     {
                         if (!spellbook.RequiresTarget())
                         {
-                            Interface::LogSpellCasting(character.Target, battle.Map[src].Id, spell);
+                            BattleLogger::LogSpellCasting(character.Target, battle.Map[src].Id, spell);
 
                             // resolve spell
                             Interface::ResolveSpell(graphics, battle, scene, character, party, spell);
@@ -796,29 +796,29 @@ namespace BloodSword::Interface
 
                                     std::string spell_action = "CASTS " + std::string(Spells::TypeMapping[spell]);
 
-                                    Interface::LogAction(spell_action.c_str(), character.Target, battle.Map[src].Id, defender.Target, target_id);
+                                    BattleLogger::LogAction(spell_action.c_str(), character.Target, battle.Map[src].Id, defender.Target, target_id);
 
                                     Interface::ResolveSpell(graphics, battle, scene, party, character, defender, target_id, spell);
                                 }
                                 else
                                 {
-                                    Interface::LogNoSpellTargets(spell);
+                                    BattleLogger::LogNoSpellTargets(spell);
                                 }
                             }
                             else
                             {
-                                Interface::LogNoSpellTargets(spell);
+                                BattleLogger::LogNoSpellTargets(spell);
                             }
                         }
                     }
                     else
                     {
-                        Interface::LogSpellUnusable(spell);
+                        BattleLogger::LogSpellUnusable(spell);
                     }
                 }
                 else
                 {
-                    Interface::LogSpellMissing(spell);
+                    BattleLogger::LogSpellMissing(spell);
                 }
             }
             else
@@ -862,7 +862,7 @@ namespace BloodSword::Interface
             targets = Engine::RangedTargets(battle.Map, party, src, true, false);
         }
 
-        Interface::LogTargets("SHOOT", character.Target, battle.Map[src].Id, targets.size());
+        BattleLogger::LogTargets("SHOOT", character.Target, battle.Map[src].Id, targets.size());
 
         // shoot only when there are no nearby player enemies
         if (targets.size() > 0 && opponents.size() == 0)
@@ -874,7 +874,7 @@ namespace BloodSword::Interface
                 // shoot first available target
                 if (!defender.IsImmune(character.Shoot))
                 {
-                    Interface::LogAction("SHOOTS", character.Target, battle.Map[src].Id, defender.Target, target.Id);
+                    BattleLogger::LogAction("SHOOTS", character.Target, battle.Map[src].Id, defender.Target, target.Id);
 
                     // shoot
                     Interface::Shoot(graphics, scene, battle, party, character, defender, target.Id);
@@ -904,7 +904,7 @@ namespace BloodSword::Interface
 
         auto valid_target = false;
 
-        Interface::LogTargets("MOVE", character.Target, battle.Map[src].Id, targets.size());
+        BattleLogger::LogTargets("MOVE", character.Target, battle.Map[src].Id, targets.size());
 
         for (auto &target : targets)
         {
@@ -1472,7 +1472,7 @@ namespace BloodSword::Interface
 
                                             auto &defender = (opponents[0].Type == Character::ControlType::PLAYER) ? party[target_id] : battle.Opponents[target_id];
 
-                                            Interface::LogAction("BLASTS", character.Target, character_id, defender.Target, target_id);
+                                            BattleLogger::LogAction("BLASTS", character.Target, character_id, defender.Target, target_id);
 
                                             auto item_id = character.HasChargedWeapon(Item::Type::CHARGE, 1, true);
 
@@ -1492,7 +1492,7 @@ namespace BloodSword::Interface
                                         {
                                             character.Add(Character::Status::IN_COMBAT);
 
-                                            Interface::LogTargets("FIGHT", character.Target, character_id, opponents.size());
+                                            BattleLogger::LogTargets("FIGHT", character.Target, character_id, opponents.size());
 
                                             Engine::ResetSpells(character);
 
@@ -1501,7 +1501,7 @@ namespace BloodSword::Interface
 
                                             auto &defender = ((opponents[0].Type == Character::ControlType::PLAYER) ? party[defender_id] : battle.Opponents[defender_id]);
 
-                                            Interface::LogAction("FIGHTS", character.Target, character_id, defender.Target, defender_id);
+                                            BattleLogger::LogAction("FIGHTS", character.Target, character_id, defender.Target, defender_id);
 
                                             Interface::Fight(graphics, scene, battle, party, character, character_id, defender, defender_id, character.Fight);
                                         }
@@ -1514,7 +1514,7 @@ namespace BloodSword::Interface
                                                 if (target_id >= 0 && target_id < party.Count() && Engine::CanTarget(party[target_id], true))
                                                 {
                                                     // shoot at IN COMBAT target
-                                                    Interface::LogAction("SHOOTS", character.Target, character_id, party[target_id].Target, target_id);
+                                                    BattleLogger::LogAction("SHOOTS", character.Target, character_id, party[target_id].Target, target_id);
 
                                                     Interface::Shoot(graphics, scene, battle, party, character, party[target_id], target_id);
 
@@ -2652,7 +2652,7 @@ namespace BloodSword::Interface
             }
 
             // log battle survivors
-            Interface::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, party.Survivors.size());
+            BattleLogger::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, party.Survivors.size());
         }
 
         if ((result == Battle::Result::VICTORY || result == Battle::Result::ENTHRALLED))
@@ -2700,7 +2700,7 @@ namespace BloodSword::Interface
         }
 
         // log battle results
-        Interface::LogBattleResults(battle, party, initial_result, result);
+        BattleLogger::LogBattleResults(battle, party, initial_result, result);
 
         return result;
     }

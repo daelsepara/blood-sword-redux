@@ -1,5 +1,4 @@
-#include "Battlepits.hpp"
-#include "Interface.hpp"
+#include "Rogue.hpp"
 
 // render map to a png file
 namespace BloodSword::BattlepitsRenderer

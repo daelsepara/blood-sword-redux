@@ -14,6 +14,8 @@ namespace BloodSword::Map
 
     const int NotFound = -1;
 
+    const int Party = 0;
+
     // Define neighbors (X, Y): Up, Down, Left, Right
     const Points Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
 

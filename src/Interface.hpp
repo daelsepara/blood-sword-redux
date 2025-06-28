@@ -1,25 +1,7 @@
 #ifndef __INTERFACE_HPP__
 #define __INTERFACE_HPP__
 
-#include <algorithm>
-#include <ctime>
-#include <filesystem>
-#include <fstream>
-#include <string>
-#include <utility>
-
-#include "nlohmann/json.hpp"
-#include "Animation.hpp"
-#include "Asset.hpp"
-#include "Engine.hpp"
-#include "Input.hpp"
-#include "InterfaceFiles.hpp"
-#include "Maze.hpp"
-#include "Messages.hpp"
-#include "Palette.hpp"
-#include "Section.hpp"
-#include "Sound.hpp"
-#include "Help.hpp"
+#include "loggers/Interface.hpp"
 
 namespace fs = std::filesystem;
 
@@ -219,96 +201,6 @@ namespace BloodSword::Interface
     };
 
     std::vector<Interface::Module> Modules = {};
-
-    void LogSpellFailure(Character::Base &caster, Spells::Type spell)
-    {
-#if defined(DEBUG)
-        if (!caster.HasCalledToMind(spell))
-        {
-            std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT CALLED TO MIND" << std::endl;
-        }
-        else
-        {
-            std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE" << std::endl;
-        }
-#endif
-    }
-
-    void LogOptions(Asset::List &assets, std::vector<int> &selection, std::string selected)
-    {
-#if defined(DEBUG)
-        if (selection.size() > 0)
-        {
-            selected += " (";
-
-            for (auto i = 0; i < selection.size(); i++)
-            {
-                if (i > 0)
-                {
-                    selected += ", ";
-                }
-
-                selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
-            }
-
-            selected += ")";
-
-            std::cerr << selected << std::endl;
-        }
-#endif
-    }
-
-    void LogChoice(const char *message, Asset::Type asset, int selected, int size)
-    {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << message
-                  << " "
-                  << selected
-                  << "] ["
-                  << Asset::TypeMapping[asset]
-                  << "] [SIZE] "
-                  << size
-                  << std::endl;
-#endif
-    }
-
-    void LogPathToTarget(Point target, int path, int distance)
-    {
-#if defined(DEBUG)
-        std::cerr << "[TARGET ("
-                  << target.X
-                  << ", "
-                  << target.Y
-                  << ")] [PATH] "
-                  << path
-                  << " [DIST] "
-                  << distance
-                  << std::endl;
-#endif
-    }
-
-    void LogMoveTargets(const char *type, Target::Type character, int src_id, int dst_id, int path, int valid, int avail)
-    {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << Target::Mapping[character]
-                  << " "
-                  << src_id
-                  << "] [MOVE] "
-                  << "[TARGET "
-                  << type
-                  << " "
-                  << dst_id
-                  << "] [PATH] "
-                  << path
-                  << " [DIST] "
-                  << valid
-                  << " [VULN] "
-                  << avail
-                  << std::endl;
-#endif
-    }
 
     // initialize settings from file
     void Initialize(const char *settings)
@@ -2325,7 +2217,7 @@ namespace BloodSword::Interface
             // move closer to target
             path = Move::FindPath(map, start, path.Closest);
 
-            Interface::LogPathToTarget(target, path.Points.size(), map.Distance(start, target));
+            InterfaceLogger::LogPathToTarget(target, path.Points.size(), map.Distance(start, target));
 
             closer = true;
         }
@@ -2337,7 +2229,7 @@ namespace BloodSword::Interface
         {
             if (map.IsValid(end))
             {
-                Interface::LogMoveTargets((map[end].IsEnemy() ? "ENEMY" : "PLAYER"), character.Target, map[start].Id, map[end].Id, path.Points.size(), valid, map.Free(end));
+                InterfaceLogger::LogMoveTargets((map[end].IsEnemy() ? "ENEMY" : "PLAYER"), character.Target, map[start].Id, map[end].Id, path.Points.size(), valid, map.Free(end));
             }
         }
 
@@ -3631,7 +3523,7 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    Interface::LogSpellFailure(caster, spell);
+                    InterfaceLogger::LogSpellFailure(caster, spell);
                 }
             }
         }
@@ -5044,7 +4936,7 @@ namespace BloodSword::Interface
 
         auto final_assets = assets;
 
-        Interface::LogOptions(assets, values, "[ORDER]");
+        InterfaceLogger::LogOptions(assets, values, "[ORDER]");
 
         if (hidden)
         {
@@ -5056,7 +4948,7 @@ namespace BloodSword::Interface
                 std::shuffle(values.begin(), values.end(), Engine::Random.Generator());
             }
 
-            Interface::LogOptions(assets, values, "[SHUFFLE]");
+            InterfaceLogger::LogOptions(assets, values, "[SHUFFLE]");
         }
 
         auto last_control = (min_select == 1 && max_select == 1) ? Controls::Type::NONE : Controls::Type::CONFIRM;
@@ -5163,13 +5055,13 @@ namespace BloodSword::Interface
                             {
                                 selected_symbols.push_back(values[input.Current]);
 
-                                Interface::LogChoice("SELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                                InterfaceLogger::LogChoice("SELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
                             }
                             else
                             {
                                 selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
 
-                                Interface::LogChoice("DESELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                                InterfaceLogger::LogChoice("DESELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
                             }
                         }
                     }
@@ -6581,35 +6473,6 @@ namespace BloodSword::Interface
         return game_file;
     }
 
-    // generate timestamp string
-    std::string UtcTime(std::time_t time)
-    {
-        char time_string[std::size("yyyy-mm-dd HH:mm:ss")];
-
-        std::strftime(std::data(time_string), std::size(time_string), "%F %T", std::localtime(&time));
-
-        return std::string(time_string);
-    }
-
-    // get current time (string)
-    std::string UtcTimeNow()
-    {
-        std::time_t time = std::time({});
-
-        return Interface::UtcTime(time);
-    }
-
-    // convert a timepoint to time_t using system clock
-    template <typename T>
-    std::time_t ConvertTime(T timepoint)
-    {
-        using namespace std::chrono;
-
-        auto system_clock_timepoint = time_point_cast<system_clock::duration>(timepoint - T::clock::now() + system_clock::now());
-
-        return system_clock::to_time_t(system_clock_timepoint);
-    }
-
     // load module settings
     void LoadModule(std::string load)
     {
@@ -6621,6 +6484,8 @@ namespace BloodSword::Interface
         }
         else
         {
+            load = Engine::ToUpper(load);
+
             // search for the settings file
             for (auto &module : Interface::Modules)
             {
@@ -6770,7 +6635,7 @@ namespace BloodSword::Interface
                         auto file_time = fs::last_write_time(Filename.c_str());
 
                         // get last modified time
-                        saveGame.TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
+                        saveGame.TimeStamp = Engine::UtcTime(Engine::ConvertTime(file_time));
 
                         // check if adventure has been completed
                         if (party.Is("=", "COMPLETED", "TRUE"))
@@ -7097,7 +6962,7 @@ namespace BloodSword::Interface
 
                                 auto file_time = fs::last_write_time(SaveFile.c_str());
 
-                                Interface::GamesList[game].TimeStamp = Interface::UtcTime(Interface::ConvertTime(file_time));
+                                Interface::GamesList[game].TimeStamp = Engine::UtcTime(Engine::ConvertTime(file_time));
 
                                 // mark if game is completed
                                 Interface::GamesList[game].Completed = party.Is("=", "COMPLETED", "TRUE");

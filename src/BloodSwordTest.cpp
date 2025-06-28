@@ -1498,7 +1498,7 @@ namespace BloodSword::Test
             auto current = Story::CurrentBook.Find(party.SaveLocation);
 
             // log missing items
-            Interface::LogSearch(party.SaveLocation, current);
+            StoryLogger::LogSearch(party.SaveLocation, current);
 
             if (current >= 0 && current < Story::CurrentBook.Sections.size())
             {

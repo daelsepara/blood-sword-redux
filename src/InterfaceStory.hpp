@@ -1,37 +1,10 @@
 #ifndef __INTERFACE_STORY_HPP__
 #define __INTERFACE_STORY_HPP__
 
-#include "InterfaceBattle.hpp"
-#include "ConditionsEvaluate.hpp"
+#include "loggers/Story.hpp"
 
 namespace BloodSword::Interface
 {
-    // log major story events
-    void LogSectionHeader(const char *header, Book::Location location, bool newline = true)
-    {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << header
-                  << "] "
-                  << Book::String(location);
-
-        if (newline)
-        {
-            std::cerr << std::endl;
-        }
-#endif
-    }
-
-    // log story search results
-    void LogSearch(Book::Location location, int current)
-    {
-#if defined(DEBUG)
-        Interface::LogSectionHeader("FIND", location, false);
-
-        std::cerr << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
-#endif
-    }
-
     // render story section choices (if present)
     Book::Location RenderChoices(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Choice::List &choices, bool after_battle = false)
     {
@@ -198,7 +171,7 @@ namespace BloodSword::Interface
 
         if (section.Background.size() > 0)
         {
-            Interface::LogSectionHeader("BACKGROUND", section.Location);
+            StoryLogger::LogSectionHeader("BACKGROUND", section.Location);
 
             auto last_result = false;
 
@@ -252,7 +225,7 @@ namespace BloodSword::Interface
 
         if (section.Events.size() > 0)
         {
-            Interface::LogSectionHeader("EVENT", section.Location);
+            StoryLogger::LogSectionHeader("EVENT", section.Location);
 
             auto last_result = false;
 
@@ -291,7 +264,7 @@ namespace BloodSword::Interface
 
         if (section.BattleEvents.size() > 0)
         {
-            Interface::LogSectionHeader("PRE-BATTLE", section.Location);
+            StoryLogger::LogSectionHeader("PRE-BATTLE", section.Location);
 
             auto last_result = false;
 
@@ -349,7 +322,7 @@ namespace BloodSword::Interface
 
         if (section.BattleEvents.size() > 0)
         {
-            Interface::LogSectionHeader("PRE-BATTLE EVENTS", section.Location);
+            StoryLogger::LogSectionHeader("PRE-BATTLE EVENTS", section.Location);
 
             next = Interface::ProcessBattleEvents(graphics, background, party);
         }
@@ -357,7 +330,7 @@ namespace BloodSword::Interface
         // fight battle
         if (Engine::IsAlive(party) && section.Battle.IsDefined() && Book::IsUndefined(next))
         {
-            Interface::LogSectionHeader("BATTLE", section.Battle.Location);
+            StoryLogger::LogSectionHeader("BATTLE", section.Battle.Location);
 
             auto result = Interface::RenderBattle(graphics, section.Battle, party);
 
@@ -388,7 +361,7 @@ namespace BloodSword::Interface
         {
             if (section.Next.size() > 0)
             {
-                Interface::LogSectionHeader("NEXT", section.Location);
+                StoryLogger::LogSectionHeader("NEXT", section.Location);
 
                 auto last_result = false;
 
@@ -446,7 +419,7 @@ namespace BloodSword::Interface
                 // process through any choices
                 while (true)
                 {
-                    Interface::LogSectionHeader("CHOICE", section.Location);
+                    StoryLogger::LogSectionHeader("CHOICE", section.Location);
 
                     next = Interface::RenderChoices(graphics, background, party, section.Choices, after_battle);
 
@@ -1656,7 +1629,7 @@ namespace BloodSword::Interface
     {
         auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        Interface::LogSectionHeader("SECTION", section.Location);
+        StoryLogger::LogSectionHeader("SECTION", section.Location);
 
         // save a copy party prior to background and events (for save game functionality)
         party.SaveLocation = section.Location;
@@ -1775,7 +1748,7 @@ namespace BloodSword::Interface
                 current = story.Find(location);
 
                 // log missing items
-                Interface::LogSearch(location, current);
+                StoryLogger::LogSearch(location, current);
 
                 if (!(current != -1 && Book::IsDefined(story.Sections[current].Location)))
                 {
