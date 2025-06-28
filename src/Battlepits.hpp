@@ -245,7 +245,7 @@ namespace BloodSword::Battlepits
         rooms.clear();
 
         // clear entire map
-        Battlepits::ClearMap(map, Asset::Type::IMPASSABLE);
+        Battlepits::ClearMap(map, Asset::Type::NONE);
 
         for (auto r = 0; r < max_rooms; r++)
         {

@@ -683,6 +683,130 @@
         {
             "id": "PRECOGNITION",
             "path": "images/items/crystal-ball.png"
+        },
+        {
+            "id": "BORDER BOTTOM LEFT",
+            "path": "images/borders/border-bottom-left.png"
+        },
+        {
+            "id": "BORDER BOTTOM LEFT ELBOW",
+            "path": "images/borders/border-bottom-left-elbow.png"
+        },
+        {
+            "id": "BORDER BOTTOM OPEN",
+            "path": "images/borders/border-bottom-open.png"
+        },
+        {
+            "id": "BORDER BOTTOM RIGHT",
+            "path": "images/borders/border-bottom-right.png"
+        },
+        {
+            "id": "BORDER BOTTOM RIGHT ELBOW",
+            "path": "images/borders/border-bottom-right-elbow.png"
+        },
+        {
+            "id": "BORDER BOTTOM",
+            "path": "images/borders/border-bottom.png"
+        },
+        {
+            "id": "BORDER LEFT OPEN",
+            "path": "images/borders/border-left-open.png"
+        },
+        {
+            "id": "BORDER LEFT RIGHT",
+            "path": "images/borders/border-left-right.png"
+        },
+        {
+            "id": "BORDER LEFT",
+            "path": "images/borders/border-left.png"
+        },
+        {
+            "id": "BORDER RIGHT OPEN",
+            "path": "images/borders/border-right-open.png"
+        },
+        {
+            "id": "BORDER RIGHT",
+            "path": "images/borders/border-right.png"
+        },
+        {
+            "id": "BORDER TOP BOTTOM",
+            "path": "images/borders/border-top-bottom.png"
+        },
+        {
+            "id": "BORDER TOP LEFT",
+            "path": "images/borders/border-top-left.png"
+        },
+        {
+            "id": "BORDER TOP LEFT ELBOW",
+            "path": "images/borders/border-top-left-elbow.png"
+        },
+        {
+            "id": "BORDER TOP OPEN",
+            "path": "images/borders/border-top-open.png"
+        },
+        {
+            "id": "BORDER TOP RIGHT",
+            "path": "images/borders/border-top-right.png"
+        },
+        {
+            "id": "BORDER TOP RIGHT ELBOW",
+            "path": "images/borders/border-top-right-elbow.png"
+        },
+        {
+            "id": "BORDER TOP",
+            "path": "images/borders/border-top.png"
+        },
+        {
+            "id": "FOUR CORNERS",
+            "path": "images/borders/four-corners.png"
+        },
+        {
+            "id": "TOP CORNERS",
+            "path": "images/borders/top-corners.png"
+        },
+        {
+            "id": "BOTTOM CORNERS",
+            "path": "images/borders/bottom-corners.png"
+        },
+        {
+            "id": "LEFT CORNERS",
+            "path": "images/borders/left-corners.png"
+        },
+        {
+            "id": "RIGHT CORNERS",
+            "path": "images/borders/right-corners.png"
+        },
+        {
+            "id": "TOP LEFT CORNERS",
+            "path": "images/borders/top-left-corners.png"
+        },
+        {
+            "id": "TOP RIGHT CORNERS",
+            "path": "images/borders/top-right-corners.png"
+        },
+        {
+            "id": "BOTTOM LEFT CORNERS",
+            "path": "images/borders/bottom-left-corners.png"
+        },
+        {
+            "id": "BOTTOM RIGHT CORNERS",
+            "path": "images/borders/bottom-right-corners.png"
+        },
+        {
+            "id": "TOP LEFT CORNER",
+            "path": "images/borders/top-left-corner.png"
+        },
+        {
+            "id": "TOP RIGHT CORNER",
+            "path": "images/borders/top-right-corner.png"
+        },
+        {
+            "id": "BOTTOM LEFT CORNER",
+            "path": "images/borders/bottom-left-corner.png"
+        },
+        {
+            "id": "BOTTOM RIGHT CORNER",
+            "path": "images/borders/bottom-right-corner.png"
         }
     ]
 }
