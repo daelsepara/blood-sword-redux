@@ -236,34 +236,29 @@ namespace BloodSword::Battlepits
         return Room::Base(x, y, width, height);
     }
 
-    // draw tunnel borders and corners within the tile / surrounding tiles
     bool InnerTunnel = false;
 
     typedef bool (*Checker)(Map::Base &map, Point point);
 
-    // tile is empty
     bool Empty(Map::Base &map, Point point)
     {
-        return (map[point].Asset == Asset::Type::NONE && map[point].Type == Map::Object::NONE);
+        return (map[point].Type == Map::Object::NONE);
     }
 
-    // tile is empty, has no assigned asset and is not passable
     bool Blocked(Map::Base &map, Point point)
     {
         auto &tile = map[point];
 
-        return (tile.Asset == Asset::Type::NONE && (tile.Type == Map::Object::NONE || (tile.Type != Map::Object::PASSABLE && tile.Type != Map::Object::ENEMY_PASSABLE)));
+        return tile.Type == Map::Object::NONE || (tile.Type != Map::Object::PASSABLE && tile.Type != Map::Object::ENEMY_PASSABLE);
     }
 
-    // tile is passable and has not assigned asset
     bool Passable(Map::Base &map, Point point)
     {
         auto &tile = map[point];
 
-        return (tile.Asset == Asset::Type::NONE && tile.Type == Map::Object::PASSABLE);
+        return tile.Type == Map::Object::PASSABLE;
     }
 
-    // assign assets to fix rendering of corners
     void AssignCornerAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y)
     {
         Battlepits::Checker Filled = InnerTunnel ? Empty : Passable;
@@ -336,23 +331,21 @@ namespace BloodSword::Battlepits
 
         Battlepits::Checker Filled = InnerTunnel ? Empty : Passable;
 
-        // check if tile is on the edges
-        auto edge_top = InnerTunnel ? (y == 0) : false;
+        auto top_edge = InnerTunnel ? (y == 0) : false;
 
-        auto edge_left = InnerTunnel ? (x == 0) : false;
+        auto left_edge = InnerTunnel ? (x == 0) : false;
 
-        auto edge_right = InnerTunnel ? (x >= map.Width - 1) : false;
+        auto right_edge = InnerTunnel ? (x >= map.Width - 1) : false;
 
-        auto edge_bottom = InnerTunnel ? (y >= map.Height - 1) : false;
+        auto bottom_edge = InnerTunnel ? (y >= map.Height - 1) : false;
 
-        // check borders
-        auto top = edge_top || Check(map, {x, y - 1});
+        auto top = top_edge || Check(map, {x, y - 1});
 
-        auto left = edge_left || Check(map, {x - 1, y});
+        auto left = left_edge || Check(map, {x - 1, y});
 
-        auto right = edge_right || Check(map, {x + 1, y});
+        auto right = right_edge || Check(map, {x + 1, y});
 
-        auto bottom = edge_bottom || Check(map, {x, y + 1});
+        auto bottom = bottom_edge || Check(map, {x, y + 1});
 
         if (top && left && right)
         {
@@ -372,46 +365,38 @@ namespace BloodSword::Battlepits
         }
         else if (top && left)
         {
+            tile.Asset = Asset::Type::BORDER_TOP_LEFT;
+
             if (Filled(map, {x + 1, y + 1}))
             {
                 tile.Asset = Asset::Type::TOP_LEFT_ELBOW;
             }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_TOP_LEFT;
-            }
         }
         else if (top && right)
         {
+            tile.Asset = Asset::Type::BORDER_TOP_RIGHT;
+
             if (Filled(map, {x - 1, y + 1}))
             {
                 tile.Asset = Asset::Type::TOP_RIGHT_ELBOW;
             }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_TOP_RIGHT;
-            }
         }
         else if (bottom && right)
         {
+            tile.Asset = Asset::Type::BORDER_BOTTOM_RIGHT;
+
             if (Filled(map, {x - 1, y - 1}))
             {
                 tile.Asset = Asset::Type::BOTTOM_RIGHT_ELBOW;
             }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_BOTTOM_RIGHT;
-            }
         }
         else if (bottom && left)
         {
+            tile.Asset = Asset::Type::BORDER_BOTTOM_LEFT;
+
             if (Filled(map, {x + 1, y - 1}))
             {
                 tile.Asset = Asset::Type::BOTTOM_LEFT_ELBOW;
-            }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_BOTTOM_LEFT;
             }
         }
         else if (top && bottom)
@@ -424,6 +409,8 @@ namespace BloodSword::Battlepits
         }
         else if (top)
         {
+            tile.Asset = Asset::Type::BORDER_TOP;
+
             if (Filled(map, {x - 1, y + 1}) && Filled(map, {x + 1, y + 1}))
             {
                 tile.Asset = Asset::Type::TOP_BOTTOM_CORNERS;
@@ -436,13 +423,11 @@ namespace BloodSword::Battlepits
             {
                 tile.Asset = Asset::Type::TOP_BOTTOM_RIGHT_CORNER;
             }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_TOP;
-            }
         }
         else if (bottom)
         {
+            tile.Asset = Asset::Type::BORDER_BOTTOM;
+
             if (Filled(map, {x - 1, y - 1}) && Filled(map, {x + 1, y - 1}))
             {
                 tile.Asset = Asset::Type::BOTTOM_TOP_CORNERS;
@@ -455,13 +440,11 @@ namespace BloodSword::Battlepits
             {
                 tile.Asset = Asset::Type::BOTTOM_TOP_RIGHT_CORNER;
             }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_BOTTOM;
-            }
         }
         else if (left)
         {
+            tile.Asset = Asset::Type::BORDER_LEFT;
+
             if (Filled(map, {x + 1, y - 1}) && Filled(map, {x + 1, y + 1}))
             {
                 tile.Asset = Asset::Type::LEFT_RIGHT_CORNERS;
@@ -474,13 +457,11 @@ namespace BloodSword::Battlepits
             {
                 tile.Asset = Asset::Type::LEFT_BOTTOM_RIGHT_CORNER;
             }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_LEFT;
-            }
         }
         else if (right)
         {
+            tile.Asset = Asset::Type::BORDER_RIGHT;
+
             if (Filled(map, {x - 1, y - 1}) && Filled(map, {x - 1, y + 1}))
             {
                 tile.Asset = Asset::Type::RIGHT_LEFT_CORNERS;
@@ -493,14 +474,10 @@ namespace BloodSword::Battlepits
             {
                 tile.Asset = Asset::Type::RIGHT_BOTTOM_LEFT_CORNER;
             }
-            else
-            {
-                tile.Asset = Asset::Type::BORDER_RIGHT;
-            }
         }
         else
         {
-            // non-filled spaces
+            // non-blocked and passable space
             Battlepits::AssignCornerAssets(map, tile, x, y);
         }
     }
