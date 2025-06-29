@@ -93,7 +93,7 @@ namespace BloodSword::Controls
         Controls::Type Type = Controls::Type::NONE;
 
         // ID of the control currently in focus, -1 if none
-        int Current = -1;
+        int Current = 0;
 
         // the control has been explicitly selected
         // i.e. through a mouse button click, pressing a button on the gamepad,

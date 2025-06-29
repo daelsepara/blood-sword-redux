@@ -380,7 +380,7 @@ namespace BloodSword::Input
                 }
             }
         }
-        else if (result.type == SDL_CONTROLLERBUTTONDOWN && result.cbutton.button == SDL_CONTROLLER_BUTTON_A && !controls.empty())
+        else if (result.type == SDL_CONTROLLERBUTTONDOWN && result.cbutton.button == SDL_CONTROLLER_BUTTON_X && !controls.empty())
         {
             input.Hold = true;
 
@@ -417,7 +417,7 @@ namespace BloodSword::Input
                 {
                     input.Current = controls[input.Current].Down;
                 }
-                else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
+                else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_X)
                 {
                     Sound::Play(Sound::Type::BUTTON_CLICK);
 
@@ -618,10 +618,7 @@ namespace BloodSword::Input
             {
                 input.Type = Controls::Type::DOWN;
             }
-        }
-        else if (result.type == SDL_CONTROLLERBUTTONUP)
-        {
-            if (result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
+            else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_X)
             {
                 input.Type = Controls::Type::ACTION;
             }

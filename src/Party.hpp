@@ -58,6 +58,9 @@ namespace BloodSword::Party
 
         int Y = -1;
 
+        // default Field of View Radius
+        int FieldOfView = 3;
+
         Base() {}
 
         Base(Party::List members) : Members(members) {}
@@ -517,6 +520,8 @@ namespace BloodSword::Party
             this->X = !data["x"].is_null() ? int(data["x"]) : -1;
 
             this->Y = !data["y"].is_null() ? int(data["y"]) : -1;
+
+            this->FieldOfView = !data["fov"].is_null() ? int(data["fov"]) : 3;
         }
 
         // check if string is a number
@@ -927,6 +932,8 @@ namespace BloodSword::Party
         data["x"] = party.X;
 
         data["y"] = party.Y;
+
+        data["fov"] = party.FieldOfView;
 
         return data;
     }

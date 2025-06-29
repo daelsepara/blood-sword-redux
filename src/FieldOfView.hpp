@@ -158,7 +158,7 @@ namespace BloodSword::FieldOfView
         {
             for (; x <= radius; x++)
             {
-                auto topY = ComputeTopY(map, top, octant, origin, x);
+                auto topY = Diamond::ComputeTopY(map, top, octant, origin, x);
 
                 auto bottomY = bottom.Y == 0 ? 0 : ((x * 2 - 1) * bottom.Y + bottom.X) / (bottom.X * 2);
 
@@ -198,7 +198,7 @@ namespace BloodSword::FieldOfView
                                 break;
                             }
 
-                            ComputeOctant(map, visible, octant, origin, radius, x + 1, top, Slope(x * 2, y * 2 + 1));
+                            Diamond::ComputeOctant(map, visible, octant, origin, radius, x + 1, top, Slope(x * 2, y * 2 + 1));
                         }
 
                         wasOpaque = true;
@@ -227,7 +227,7 @@ namespace BloodSword::FieldOfView
 
             for (auto octant = 0; octant < 8; octant++)
             {
-                ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(1, 0));
+                Diamond::ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(1, 0));
             }
 
             return visible;
@@ -277,7 +277,7 @@ namespace BloodSword::FieldOfView
                                 break;
                             }
 
-                            ComputeOctant(map, visible, octant, origin, radius, x + 1, top, newBottom);
+                            ShadowCast::ComputeOctant(map, visible, octant, origin, radius, x + 1, top, newBottom);
                         }
 
                         wasOpaque = true;
@@ -308,7 +308,7 @@ namespace BloodSword::FieldOfView
 
             for (auto octant = 0; octant < 8; octant++)
             {
-                ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(1, 0));
+                ShadowCast::ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(1, 0));
             }
 
             return visible;
@@ -398,20 +398,244 @@ namespace BloodSword::FieldOfView
 
             for (auto x = area.x; x < area.x + area.w; x++)
             {
-                TraceLine(map, visible, origin, x, area.y, radius);
+                RayCast::TraceLine(map, visible, origin, x, area.y, radius);
 
-                TraceLine(map, visible, origin, x, area.y + area.h - 1, radius);
+                RayCast::TraceLine(map, visible, origin, x, area.y + area.h - 1, radius);
             }
 
             for (auto y = area.y + 1; y < area.y + area.h - 1; y++)
             {
-                TraceLine(map, visible, origin, area.x, y, radius);
+                RayCast::TraceLine(map, visible, origin, area.x, y, radius);
 
-                TraceLine(map, visible, origin, area.x + area.w - 1, y, radius);
+                RayCast::TraceLine(map, visible, origin, area.x + area.w - 1, y, radius);
             }
 
             return visible;
         }
+    }
+
+    namespace Milazzo
+    {
+        void SetVisible(Points &visible, int x, int y, int octant, Point origin)
+        {
+            visible.push_back(TranslateLocalToMap(x, y, origin, octant));
+        }
+
+        int ComputeTopY(Map::Base &map, int octant, Point origin, int x, Slope top)
+        {
+            int topY;
+
+            if (top.X == 1)
+            {
+                topY = x;
+            }
+            else
+            {
+                topY = ((x * 2 - 1) * top.Y + top.X) / (top.X * 2);
+
+                if (BlocksLight(map, x, topY, octant, origin))
+                {
+                    if (top.GreaterOrEqual(topY * 2 + 1, x * 2) && !BlocksLight(map, x, topY + 1, octant, origin))
+                    {
+                        topY++;
+                    }
+                }
+                else
+                {
+                    auto ax = x * 2;
+
+                    if (BlocksLight(map, x + 1, topY + 1, octant, origin))
+                    {
+                        ax++;
+                    }
+
+                    if (top.Greater(topY * 2 + 1, ax))
+                    {
+                        topY++;
+                    }
+                }
+            }
+
+            return topY;
+        }
+
+        int ComputeBottomY(Map::Base &map, int octant, Point origin, int x, Slope bottom)
+        {
+            int bottomY;
+
+            if (bottom.Y == 0)
+            {
+                bottomY = 0;
+            }
+            else
+            {
+                bottomY = ((x * 2 - 1) * bottom.Y + bottom.X) / (bottom.X * 2);
+
+                if (bottom.GreaterOrEqual(bottomY * 2 + 1, x * 2) && BlocksLight(map, x, bottomY, octant, origin) && !BlocksLight(map, x, bottomY + 1, octant, origin))
+                {
+                    bottomY++;
+                }
+            }
+
+            return bottomY;
+        }
+
+        void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
+        {
+            while (x <= radius)
+            {
+                auto topY = Milazzo::ComputeTopY(map, octant, origin, x, top);
+
+                auto bottomY = Milazzo::ComputeBottomY(map, octant, origin, x, bottom);
+
+                std::optional<bool> wasOpaque = std::nullopt;
+
+                for (auto y = topY; y >= bottomY; y--)
+                {
+                    if (radius >= 0 && GetDistance(x, y) > radius)
+                    {
+                        continue;
+                    }
+
+                    auto isOpaque = BlocksLight(map, x, y, octant, origin);
+
+                    auto isVisible = isOpaque || ((y != topY || top.Greater(y * 4 - 1, x * 4 + 1)) && (y != bottomY || bottom.Less(y * 4 + 1, x * 4 - 1)));
+
+                    if (isVisible)
+                    {
+                        Milazzo::SetVisible(visible, x, y, octant, origin);
+                    }
+
+                    if (x == radius)
+                    {
+                        continue;
+                    }
+
+                    if (isOpaque)
+                    {
+                        if (wasOpaque == false)
+                        {
+                            auto nx = x * 2;
+
+                            auto ny = y * 2 + 1;
+
+                            if (BlocksLight(map, x, y + 1, octant, origin))
+                            {
+                                nx--;
+                            }
+
+                            if (top.Greater(ny, nx))
+                            {
+                                if (y == bottomY)
+                                {
+                                    bottom = Slope(nx, ny);
+
+                                    break;
+                                }
+
+                                Milazzo::ComputeOctant(map, visible, octant, origin, radius, x + 1, top, Slope(nx, ny));
+                            }
+                            else if (y == bottomY)
+                            {
+                                return;
+                            }
+                        }
+
+                        wasOpaque = true;
+                    }
+                    else
+                    {
+                        if (wasOpaque == true)
+                        {
+                            auto nx = x * 2;
+
+                            auto ny = y * 2 + 1;
+
+                            if (BlocksLight(map, x + 1, y + 1, octant, origin))
+                            {
+                                nx++;
+                            }
+
+                            if (bottom.GreaterOrEqual(ny, nx))
+                            {
+                                return;
+                            }
+
+                            top = Slope(nx, ny);
+                        }
+
+                        wasOpaque = false;
+                    }
+                }
+
+                if (wasOpaque != false)
+                {
+                    break;
+                }
+
+                x++;
+            }
+        }
+
+        Points Compute(Map::Base &map, Point origin, int radius)
+        {
+            Points visible = {origin};
+
+            for (auto octant = 0; octant < 8; octant++)
+            {
+                Milazzo::ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(1, 0));
+            }
+
+            return visible;
+        }
+    }
+
+    enum class Method
+    {
+        DIAMOND = 0,
+        SHADOW_CAST,
+        RAY_CAST,
+        MILAZZO
+    };
+
+    Points Compute(Map::Base &map, Point origin, int radius, FieldOfView::Method method)
+    {
+        Points points = {};
+
+        switch (method)
+        {
+        case Method::DIAMOND:
+
+            points = Diamond::Compute(map, origin, radius);
+
+            break;
+
+        case Method::SHADOW_CAST:
+
+            points = ShadowCast::Compute(map, origin, radius);
+
+            break;
+
+        case Method::RAY_CAST:
+
+            points = RayCast::Compute(map, origin, radius);
+
+            break;
+
+        case Method::MILAZZO:
+
+            points = Milazzo::Compute(map, origin, radius);
+
+            break;
+
+        default:
+
+            points = Diamond::Compute(map, origin, radius);
+
+            break;
+        }
+
+        return points;
     }
 }
 

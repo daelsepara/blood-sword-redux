@@ -1477,6 +1477,23 @@ namespace BloodSword::Engine
         return healed;
     }
 
+    int FirstAsset(Items::Inventory &items)
+    {
+        auto first = -1;
+
+        for (auto item = 0; item < items.size(); item++)
+        {
+            if (items[item].Asset != Asset::Type::NONE)
+            {
+                first = item;
+
+                break;
+            }
+        }
+
+        return first;
+    }
+
     // get status of individual task
     Task::Status TaskStatus(Party::Base &party, Character::Class character, std::string task)
     {
