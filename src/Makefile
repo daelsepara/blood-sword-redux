@@ -12,6 +12,8 @@ BSWORD_SPRITE_SHEET=SpriteSheet.cpp
 BSWORD_SPRITE_SHEET_OUTPUT=SpriteSheet.exe
 BSWORD_BATTLEPITS=Battlepits.cpp
 BSWORD_BATTLEPITS_OUTPUT=Battlepits.exe
+BSWORD_ROGUE=BloodSwordRogue.cpp
+BSWORD_ROGUE_OUTPUT=BloodSwordRogue.exe
 DEBUG=-g -O0
 LIBS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -fdata-sections -ffunction-sections
 INCLUDES=-I/usr/include/SDL2
@@ -36,7 +38,7 @@ endif
 
 .PHONY: all clean
 
-all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet blood-sword battlepits
+all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet blood-sword battlepits rogue
 
 map-template:
 	$(CC) -Wall $(BSWORD_MAP) $(LIBS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
@@ -59,6 +61,9 @@ blood-sword:
 battlepits:
 	$(CC) -Wall $(BSWORD_BATTLEPITS) $(LIBS) $(INCLUDES) -o $(BSWORD_BATTLEPITS_OUTPUT)
 
+rogue:
+	$(CC) -Wall $(BSWORD_ROGUE) $(LIBS) $(INCLUDES) -o $(BSWORD_ROGUE_OUTPUT)
+
 clean-blood-sword-test:
 	rm -f $(BSWORD_TEST_OUTPUT) *.o
 
@@ -80,4 +85,7 @@ clean-sprite-sheet:
 clean-battlepits:
 	rm -f $(BSWORD_BATTLEPITS_OUTPUT) *.o
 
-clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer clean-sprite-sheet clean-blood-sword clean-battlepits
+clean-rogue:
+	rm -f $(BSWORD_ROGUE_OUTPUT) *.o
+
+clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer clean-sprite-sheet clean-blood-sword clean-battlepits clean-rogue

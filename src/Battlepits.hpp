@@ -331,13 +331,13 @@ namespace BloodSword::Battlepits
 
         Battlepits::Checker Filled = InnerTunnel ? Empty : Passable;
 
-        auto top_edge = InnerTunnel ? (y == 0) : false;
+        auto top_edge = (y == 0);
 
-        auto left_edge = InnerTunnel ? (x == 0) : false;
+        auto left_edge = (x == 0);
 
-        auto right_edge = InnerTunnel ? (x >= map.Width - 1) : false;
+        auto right_edge = (x >= map.Width - 1);
 
-        auto bottom_edge = InnerTunnel ? (y >= map.Height - 1) : false;
+        auto bottom_edge = (y >= map.Height - 1);
 
         auto top = top_edge || Check(map, {x, y - 1});
 
@@ -365,38 +365,46 @@ namespace BloodSword::Battlepits
         }
         else if (top && left)
         {
-            tile.Asset = Asset::Type::BORDER_TOP_LEFT;
-
             if (Filled(map, {x + 1, y + 1}))
             {
                 tile.Asset = Asset::Type::TOP_LEFT_ELBOW;
             }
+            else if (!(top_edge && left_edge))
+            {
+                tile.Asset = Asset::Type::BORDER_TOP_LEFT;
+            }
         }
         else if (top && right)
         {
-            tile.Asset = Asset::Type::BORDER_TOP_RIGHT;
-
             if (Filled(map, {x - 1, y + 1}))
             {
                 tile.Asset = Asset::Type::TOP_RIGHT_ELBOW;
             }
+            else if (!(top_edge && right_edge))
+            {
+                tile.Asset = Asset::Type::BORDER_TOP_RIGHT;
+            }
         }
         else if (bottom && right)
         {
-            tile.Asset = Asset::Type::BORDER_BOTTOM_RIGHT;
-
             if (Filled(map, {x - 1, y - 1}))
             {
                 tile.Asset = Asset::Type::BOTTOM_RIGHT_ELBOW;
             }
+            else if (!(bottom_edge && right_edge))
+            {
+                tile.Asset = Asset::Type::BORDER_BOTTOM_RIGHT;
+            }
         }
         else if (bottom && left)
         {
-            tile.Asset = Asset::Type::BORDER_BOTTOM_LEFT;
-
             if (Filled(map, {x + 1, y - 1}))
             {
                 tile.Asset = Asset::Type::BOTTOM_LEFT_ELBOW;
+            }
+            else if (!(bottom_edge && left_edge))
+            {
+                tile.Asset = Asset::Type::BORDER_BOTTOM_LEFT;
             }
         }
         else if (top && bottom)
@@ -409,8 +417,6 @@ namespace BloodSword::Battlepits
         }
         else if (top)
         {
-            tile.Asset = Asset::Type::BORDER_TOP;
-
             if (Filled(map, {x - 1, y + 1}) && Filled(map, {x + 1, y + 1}))
             {
                 tile.Asset = Asset::Type::TOP_BOTTOM_CORNERS;
@@ -423,11 +429,13 @@ namespace BloodSword::Battlepits
             {
                 tile.Asset = Asset::Type::TOP_BOTTOM_RIGHT_CORNER;
             }
+            else if (!top_edge)
+            {
+                tile.Asset = Asset::Type::BORDER_TOP;
+            }
         }
         else if (bottom)
         {
-            tile.Asset = Asset::Type::BORDER_BOTTOM;
-
             if (Filled(map, {x - 1, y - 1}) && Filled(map, {x + 1, y - 1}))
             {
                 tile.Asset = Asset::Type::BOTTOM_TOP_CORNERS;
@@ -440,11 +448,13 @@ namespace BloodSword::Battlepits
             {
                 tile.Asset = Asset::Type::BOTTOM_TOP_RIGHT_CORNER;
             }
+            else if (!bottom_edge)
+            {
+                tile.Asset = Asset::Type::BORDER_BOTTOM;
+            }
         }
         else if (left)
         {
-            tile.Asset = Asset::Type::BORDER_LEFT;
-
             if (Filled(map, {x + 1, y - 1}) && Filled(map, {x + 1, y + 1}))
             {
                 tile.Asset = Asset::Type::LEFT_RIGHT_CORNERS;
@@ -457,11 +467,13 @@ namespace BloodSword::Battlepits
             {
                 tile.Asset = Asset::Type::LEFT_BOTTOM_RIGHT_CORNER;
             }
+            else if (!left_edge)
+            {
+                tile.Asset = Asset::Type::BORDER_LEFT;
+            }
         }
         else if (right)
         {
-            tile.Asset = Asset::Type::BORDER_RIGHT;
-
             if (Filled(map, {x - 1, y - 1}) && Filled(map, {x - 1, y + 1}))
             {
                 tile.Asset = Asset::Type::RIGHT_LEFT_CORNERS;
@@ -473,6 +485,10 @@ namespace BloodSword::Battlepits
             else if (Filled(map, {x - 1, y + 1}))
             {
                 tile.Asset = Asset::Type::RIGHT_BOTTOM_LEFT_CORNER;
+            }
+            else if (!right_edge)
+            {
+                tile.Asset = Asset::Type::BORDER_RIGHT;
             }
         }
         else
