@@ -41,6 +41,9 @@ namespace BloodSword::Map
         // Id of the current occupant, -1 if none
         int Id = Map::NotFound;
 
+        // if tile has been explored (Rogue mode)
+        bool Explored = false;
+
         // tile is occupied by an enemy
         bool IsEnemy()
         {

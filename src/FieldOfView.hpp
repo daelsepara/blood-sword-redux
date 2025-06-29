@@ -1,6 +1,8 @@
 #ifndef __FIELD_OF_HPP__
 #define __FIELD_OF_HPP__
 
+#include <optional>
+
 #include "Map.hpp"
 
 // adapted from: https://github.com/BenMakesGames/FoV
@@ -106,14 +108,14 @@ namespace BloodSword::FieldOfView
 
     bool BlocksLight(Map::Base &map, int x, int y)
     {
-        return map(x, y).IsBlocked() || map(x, y).IsOccupied();
+        return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || map(x, y).IsOccupied() || map(x, y).IsBlocked();
     }
 
     bool BlocksLight(Map::Base &map, int x, int y, int octant, Point origin)
     {
         auto point = TranslateLocalToMap(x, y, origin, octant);
 
-        return map[point].IsBlocked() || map[point].IsOccupied();
+        return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || map[point].IsOccupied() || map[point].IsBlocked();
     }
 
     int Sign(int value)
@@ -121,7 +123,7 @@ namespace BloodSword::FieldOfView
         return value < 0 ? -1 : (value > 0 ? 1 : 0);
     }
 
-    namespace DiamondWalls
+    namespace Diamond
     {
         int ComputeTopY(Map::Base &map, Slope top, int octant, Point origin, int x)
         {
@@ -160,7 +162,7 @@ namespace BloodSword::FieldOfView
 
                 auto bottomY = bottom.Y == 0 ? 0 : ((x * 2 - 1) * bottom.Y + bottom.X) / (bottom.X * 2);
 
-                auto wasOpaque = false;
+                std::optional<bool> wasOpaque = std::nullopt;
 
                 for (auto y = topY; y >= bottomY; y--)
                 {
@@ -221,13 +223,11 @@ namespace BloodSword::FieldOfView
 
         Points Compute(Map::Base &map, Point origin, int radius)
         {
-            Points visible = {};
-
-            visible.push_back(origin);
+            Points visible = {origin};
 
             for (auto octant = 0; octant < 8; octant++)
             {
-                ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(0, 1));
+                ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(1, 0));
             }
 
             return visible;
@@ -236,15 +236,15 @@ namespace BloodSword::FieldOfView
 
     namespace ShadowCast
     {
-        void ComputeOctant(Map::Base &map, Points visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
+        void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
-            for (; x <= radius; x++)
+            while (x <= radius)
             {
                 auto topY = top.X == 1 ? x : ((x * 2 + 1) * top.Y + top.X - 1) / (top.X * 2);
 
                 auto bottomY = bottom.Y == 0 ? 0 : ((x * 2 - 1) * bottom.Y + bottom.X) / (bottom.X * 2);
 
-                auto wasOpaque = false;
+                std::optional<bool> wasOpaque = std::nullopt;
 
                 for (auto y = topY; y >= bottomY; y--)
                 {
@@ -297,13 +297,27 @@ namespace BloodSword::FieldOfView
                 {
                     break;
                 }
+
+                x++;
             }
+        }
+
+        Points Compute(Map::Base &map, Point origin, int radius)
+        {
+            Points visible = {origin};
+
+            for (auto octant = 0; octant < 8; octant++)
+            {
+                ComputeOctant(map, visible, octant, origin, radius, 1, Slope(1, 1), Slope(1, 0));
+            }
+
+            return visible;
         }
     }
 
     namespace RayCast
     {
-        void TraceLine(Map::Base &map, Points visible, Point origin, int x2, int y2, int rangeLimit)
+        void TraceLine(Map::Base &map, Points &visible, Point origin, int x2, int y2, int rangeLimit)
         {
             auto xDiff = x2 - origin.X;
 

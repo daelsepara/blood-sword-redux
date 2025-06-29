@@ -517,10 +517,8 @@ namespace BloodSword::Input
     }
 
     // render all scenes and wait for input (Rogue Mode)
-    Controls::User WaitForInput(Graphics::Base &graphics, Graphics::Scenery scenes, int delay = BloodSword::StandardDelay)
+    Controls::User RogueInput(Graphics::Base &graphics, Graphics::Scenery scenes, int delay = BloodSword::StandardDelay)
     {
-        auto input = Controls::User();
-
         Input::RenderWhileWaiting(graphics, scenes);
 
         SDL_Event result;
@@ -536,15 +534,7 @@ namespace BloodSword::Input
             SDL_PollEvent(&result);
         }
 
-        input.Selected = false;
-
-        input.Up = false;
-
-        input.Down = false;
-
-        input.Type = Controls::Type::NONE;
-
-        input.Current = -1;
+        auto input = Controls::User();
 
         if (result.type == SDL_QUIT)
         {
@@ -558,33 +548,31 @@ namespace BloodSword::Input
         {
             Input::InitializeGamePads();
         }
-        if (result.type == SDL_KEYDOWN)
+        else if (result.type == SDL_KEYDOWN)
         {
+            if (result.key.keysym.sym == SDLK_LEFT)
             {
-                if (result.key.keysym.sym == SDLK_LEFT)
-                {
-                    input.Type = Controls::Type::LEFT;
-                }
-                else if (result.key.keysym.sym == SDLK_RIGHT)
-                {
-                    input.Type = Controls::Type::RIGHT;
-                }
-                else if (result.key.keysym.sym == SDLK_UP)
-                {
-                    input.Type = Controls::Type::UP;
-                }
-                else if (result.key.keysym.sym == SDLK_DOWN)
-                {
-                    input.Type = Controls::Type::DOWN;
-                }
-                else if (result.key.keysym.sym == SDLK_KP_ENTER || result.key.keysym.sym == SDLK_RETURN || result.key.keysym.sym == SDLK_RETURN2 || result.key.keysym.sym == SDLK_LCTRL)
-                {
-                    input.Type = Controls::Type::ACTION;
-                }
-                else if (result.key.keysym.sym == SDLK_ESCAPE)
-                {
-                    input.Type = Controls::Type::MENU;
-                }
+                input.Type = Controls::Type::LEFT;
+            }
+            else if (result.key.keysym.sym == SDLK_RIGHT)
+            {
+                input.Type = Controls::Type::RIGHT;
+            }
+            else if (result.key.keysym.sym == SDLK_UP)
+            {
+                input.Type = Controls::Type::UP;
+            }
+            else if (result.key.keysym.sym == SDLK_DOWN)
+            {
+                input.Type = Controls::Type::DOWN;
+            }
+            else if (result.key.keysym.sym == SDLK_KP_ENTER || result.key.keysym.sym == SDLK_RETURN || result.key.keysym.sym == SDLK_RETURN2 || result.key.keysym.sym == SDLK_LCTRL)
+            {
+                input.Type = Controls::Type::ACTION;
+            }
+            else if (result.key.keysym.sym == SDLK_ESCAPE)
+            {
+                input.Type = Controls::Type::MENU;
             }
         }
         else if (result.type == SDL_CONTROLLERAXISMOTION)
@@ -612,7 +600,7 @@ namespace BloodSword::Input
                 }
             }
         }
-        else if (result.type == SDL_CONTROLLERBUTTONUP)
+        else if (result.type == SDL_CONTROLLERBUTTONDOWN)
         {
             if (result.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
             {
@@ -630,7 +618,10 @@ namespace BloodSword::Input
             {
                 input.Type = Controls::Type::DOWN;
             }
-            else if (result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
+        }
+        else if (result.type == SDL_CONTROLLERBUTTONUP)
+        {
+            if (result.cbutton.button == SDL_CONTROLLER_BUTTON_A)
             {
                 input.Type = Controls::Type::ACTION;
             }

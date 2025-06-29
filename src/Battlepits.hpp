@@ -236,8 +236,6 @@ namespace BloodSword::Battlepits
         return Room::Base(x, y, width, height);
     }
 
-    bool InnerTunnel = false;
-
     typedef bool (*Checker)(Map::Base &map, Point point);
 
     bool Empty(Map::Base &map, Point point)
@@ -259,9 +257,9 @@ namespace BloodSword::Battlepits
         return tile.Type == Map::Object::PASSABLE;
     }
 
-    void AssignCornerAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y)
+    void AssignCornerAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y, bool inner_tunnel)
     {
-        Battlepits::Checker Filled = InnerTunnel ? Empty : Passable;
+        Battlepits::Checker Filled = inner_tunnel ? Empty : Passable;
 
         auto tl = Filled(map, {x - 1, y - 1});
 
@@ -325,11 +323,11 @@ namespace BloodSword::Battlepits
         }
     }
 
-    void AssignTunnelAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y)
+    void AssignTunnelAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y, bool inner_tunnel)
     {
-        Battlepits::Checker Check = InnerTunnel ? Blocked : Passable;
+        Battlepits::Checker Check = inner_tunnel ? Blocked : Passable;
 
-        Battlepits::Checker Filled = InnerTunnel ? Empty : Passable;
+        Battlepits::Checker Filled = inner_tunnel ? Empty : Passable;
 
         auto top_edge = (y == 0);
 
@@ -494,11 +492,11 @@ namespace BloodSword::Battlepits
         else
         {
             // non-blocked and passable space
-            Battlepits::AssignCornerAssets(map, tile, x, y);
+            Battlepits::AssignCornerAssets(map, tile, x, y, inner_tunnel);
         }
     }
 
-    void AssignTunnelAssets(Map::Base &map)
+    void AssignTunnelAssets(Map::Base &map, bool inner_tunnel)
     {
         for (auto y = 0; y < map.Height; y++)
         {
@@ -506,17 +504,17 @@ namespace BloodSword::Battlepits
             {
                 auto &tile = map[Point(x, y)];
 
-                auto tile_type = InnerTunnel ? Map::Object::PASSABLE : Map::Object::NONE;
+                auto tile_type = inner_tunnel ? Map::Object::PASSABLE : Map::Object::NONE;
 
                 if (tile.Type == tile_type)
                 {
-                    Battlepits::AssignTunnelAssets(map, tile, x, y);
+                    Battlepits::AssignTunnelAssets(map, tile, x, y, inner_tunnel);
                 }
             }
         }
     }
 
-    void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size)
+    void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size, bool inner_tunnel)
     {
         // initialize RNG
         auto random = Random::Base();
@@ -549,16 +547,16 @@ namespace BloodSword::Battlepits
             }
         }
 
-        Battlepits::AssignTunnelAssets(map);
+        Battlepits::AssignTunnelAssets(map, inner_tunnel);
     }
 
-    Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size)
+    Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size, bool inner_tunnel)
     {
         auto map = Map::Base(width, height);
 
         auto rooms = std::vector<Room::Base>();
 
-        Battlepits::Generate(map, rooms, max_rooms, min_size, max_size);
+        Battlepits::Generate(map, rooms, max_rooms, min_size, max_size, inner_tunnel);
 
         return map;
     }

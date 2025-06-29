@@ -18,7 +18,7 @@ namespace BloodSword::BattlepitsRenderer
         Asset::Load(std::string(Interface::Settings["assets"]).c_str());
 
         // generate battlepits
-        auto map = Battlepits::Generate(width, height, max_rooms, min_size, max_size);
+        auto map = Battlepits::Generate(width, height, max_rooms, min_size, max_size, false);
 
         SDL_Rect rect;
 
