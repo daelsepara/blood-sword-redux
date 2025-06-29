@@ -30,7 +30,7 @@ namespace BloodSword::FieldOfView
 
     double GetDistance(int x, int y)
     {
-        return std::sqrt(x * x + y * y);
+        return x * x + y * y;
     }
 
     double GetDistance(Point origin, int x, int y)
@@ -156,7 +156,9 @@ namespace BloodSword::FieldOfView
 
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
-            for (; x <= radius; x++)
+            auto radius_sq = radius * radius;
+
+            while (x <= radius)
             {
                 auto topY = Diamond::ComputeTopY(map, top, octant, origin, x);
 
@@ -168,7 +170,7 @@ namespace BloodSword::FieldOfView
                 {
                     auto t = TranslateLocalToMap(x, y, origin, octant);
 
-                    auto inRange = radius < 0 || GetDistance(x, y) <= radius;
+                    auto inRange = radius < 0 || GetDistance(x, y) <= radius_sq;
 
                     if (inRange)
                     {
@@ -218,6 +220,8 @@ namespace BloodSword::FieldOfView
                 {
                     break;
                 }
+
+                x++;
             }
         }
 
@@ -238,6 +242,8 @@ namespace BloodSword::FieldOfView
     {
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
+            auto radius_sq = radius * radius;
+
             while (x <= radius)
             {
                 auto topY = top.X == 1 ? x : ((x * 2 + 1) * top.Y + top.X - 1) / (top.X * 2);
@@ -250,7 +256,7 @@ namespace BloodSword::FieldOfView
                 {
                     auto t = TranslateLocalToMap(x, y, origin, octant);
 
-                    auto inRange = radius < 0 || GetDistance(x, y) <= radius;
+                    auto inRange = radius < 0 || GetDistance(x, y) <= radius_sq;
 
                     if (inRange)
                     {
@@ -346,6 +352,8 @@ namespace BloodSword::FieldOfView
 
             auto errorReset = xLen * 2;
 
+            auto range_sq = rangeLimit * rangeLimit;
+
             while (--xLen >= 0)
             {
                 index += xInc;
@@ -363,7 +371,7 @@ namespace BloodSword::FieldOfView
 
                 auto y = index >> 16;
 
-                if (rangeLimit >= 0 && GetDistance(origin, x, y) > rangeLimit)
+                if (rangeLimit >= 0 && GetDistance(origin, x, y) > range_sq)
                 {
                     break;
                 }
@@ -482,6 +490,8 @@ namespace BloodSword::FieldOfView
 
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
+            auto radius_sq = radius * radius;
+
             while (x <= radius)
             {
                 auto topY = Milazzo::ComputeTopY(map, octant, origin, x, top);
@@ -492,7 +502,7 @@ namespace BloodSword::FieldOfView
 
                 for (auto y = topY; y >= bottomY; y--)
                 {
-                    if (radius >= 0 && GetDistance(x, y) > radius)
+                    if (radius >= 0 && GetDistance(x, y) > radius_sq)
                     {
                         continue;
                     }
