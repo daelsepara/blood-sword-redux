@@ -623,7 +623,7 @@ namespace BloodSword::Rogue
                     offset = (loc - text_h / 2);
                 }
 
-                offset = std::min(std::max(0, offset), BloodSword::Height(texture));
+                offset = std::min(std::max(0, offset), BloodSword::Height(texture) - text_h);
 
                 Interface::ScrollableImageBox(graphics, background, texture, width, height, x, y, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, Asset::Type::UP, Asset::Type::DOWN, true, offset);
 
