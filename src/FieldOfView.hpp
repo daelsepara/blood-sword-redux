@@ -30,7 +30,7 @@ namespace BloodSword::FieldOfView
 
     double GetDistance(int x, int y)
     {
-        return x * x + y * y;
+        return (double)(x * x + y * y);
     }
 
     double GetDistance(Point origin, int x, int y)
@@ -108,14 +108,14 @@ namespace BloodSword::FieldOfView
 
     bool BlocksLight(Map::Base &map, int x, int y)
     {
-        return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || map(x, y).IsOccupied() || map(x, y).IsBlocked();
+        return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || (map(x, y).IsOccupied() && map(x, y).Occupant != Map::Object::ITEMS) || map(x, y).IsBlocked();
     }
 
     bool BlocksLight(Map::Base &map, int x, int y, int octant, Point origin)
     {
         auto point = TranslateLocalToMap(x, y, origin, octant);
 
-        return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || map[point].IsOccupied() || map[point].IsBlocked();
+        return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || (map[point].IsOccupied() && map[point].Occupant != Map::Object::ITEMS) || map[point].IsBlocked();
     }
 
     int Sign(int value)
@@ -156,7 +156,7 @@ namespace BloodSword::FieldOfView
 
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
-            auto radius_sq = radius * radius;
+            auto radius_sq = (double)(radius * radius);
 
             while (x <= radius)
             {
@@ -174,7 +174,10 @@ namespace BloodSword::FieldOfView
 
                     if (inRange)
                     {
-                        visible.push_back(t);
+                        if (!BloodSword::In(visible, t))
+                        {
+                            visible.push_back(t);
+                        }
                     }
 
                     auto isOpaque = !inRange || BlocksLight(map, t.X, t.Y);
@@ -242,7 +245,7 @@ namespace BloodSword::FieldOfView
     {
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
-            auto radius_sq = radius * radius;
+            auto radius_sq = (double)(radius * radius);
 
             while (x <= radius)
             {
@@ -260,7 +263,10 @@ namespace BloodSword::FieldOfView
 
                     if (inRange)
                     {
-                        visible.push_back(t);
+                        if (!BloodSword::In(visible, t))
+                        {
+                            visible.push_back(t);
+                        }
                     }
 
                     auto isOpaque = !inRange || BlocksLight(map, t.X, t.Y);
@@ -352,7 +358,7 @@ namespace BloodSword::FieldOfView
 
             auto errorReset = xLen * 2;
 
-            auto range_sq = rangeLimit * rangeLimit;
+            auto range_sq = (double)(rangeLimit * rangeLimit);
 
             while (--xLen >= 0)
             {
@@ -376,7 +382,12 @@ namespace BloodSword::FieldOfView
                     break;
                 }
 
-                visible.push_back(Point(x, y));
+                auto current = Point(x, y);
+
+                if (!BloodSword::In(visible, current))
+                {
+                    visible.push_back(current);
+                }
 
                 if (BlocksLight(map, x, y))
                 {
@@ -426,7 +437,12 @@ namespace BloodSword::FieldOfView
     {
         void SetVisible(Points &visible, int x, int y, int octant, Point origin)
         {
-            visible.push_back(TranslateLocalToMap(x, y, origin, octant));
+            auto local = TranslateLocalToMap(x, y, origin, octant);
+
+            if (!BloodSword::In(visible, local))
+            {
+                visible.push_back(TranslateLocalToMap(x, y, origin, octant));
+            }
         }
 
         int ComputeTopY(Map::Base &map, int octant, Point origin, int x, Slope top)
@@ -490,7 +506,7 @@ namespace BloodSword::FieldOfView
 
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
-            auto radius_sq = radius * radius;
+            auto radius_sq = (double)(radius * radius);
 
             while (x <= radius)
             {
@@ -600,12 +616,114 @@ namespace BloodSword::FieldOfView
         }
     }
 
+    namespace ShadowCastBinary
+    {
+        const double BrightnessThreshold = 0.0;
+
+        void CastLight(Map::Base &map, Points &visible, Point origin, int radius, int row, double start, double end, int xx, int xy, int yx, int yy)
+        {
+            auto radius_sq = (double)(radius * radius);
+
+            auto newStart = 0.0;
+
+            if (start < end)
+            {
+                return;
+            }
+
+            auto blocked = false;
+
+            for (auto distance = row; distance <= radius && !blocked; distance++)
+            {
+                auto deltaY = -distance;
+
+                for (auto deltaX = -distance; deltaX <= 0; deltaX++)
+                {
+                    auto currentX = origin.X + deltaX * xx + deltaY * xy;
+
+                    auto currentY = origin.Y + deltaX * yx + deltaY * yy;
+
+                    auto leftSlope = (deltaX - 0.5) / (deltaY + 0.5);
+
+                    auto rightSlope = (deltaX + 0.5) / (deltaY - 0.5);
+
+                    if (!(currentX >= 0 && currentY >= 0 && currentX < map.Width && currentY < map.Height) || start < rightSlope)
+                    {
+                        continue;
+                    }
+                    else if (end > leftSlope)
+                    {
+                        break;
+                    }
+
+                    // check if it's within the lightable area and light if needed
+                    if (GetDistance(deltaX, deltaY) <= radius_sq)
+                    {
+                        auto bright = (1.0 - (GetDistance(deltaX, deltaY) / radius_sq));
+
+                        auto current = Point(currentX, currentY);
+
+                        if (bright >= BrightnessThreshold && !BloodSword::In(visible, current))
+                        {
+                            visible.push_back(current);
+                        }
+                    }
+
+                    if (blocked)
+                    {
+                        // previous cell was a blocking one
+                        if (BlocksLight(map, currentX, currentY))
+                        {
+                            // hit a wall
+                            newStart = rightSlope;
+
+                            continue;
+                        }
+                        else
+                        {
+                            blocked = false;
+
+                            start = newStart;
+                        }
+                    }
+                    else
+                    {
+                        if (BlocksLight(map, currentX, currentY) && distance < radius)
+                        {
+                            // hit a wall within sight line
+                            blocked = true;
+
+                            CastLight(map, visible, origin, radius, distance + 1, start, leftSlope, xx, xy, yx, yy);
+
+                            newStart = rightSlope;
+                        }
+                    }
+                }
+            }
+        }
+
+        Points Compute(Map::Base &map, Point origin, int radius)
+        {
+            Points lightMap = {origin};
+
+            for (auto delta : Map::Diagonals)
+            {
+                CastLight(map, lightMap, origin, radius, 1, 1.0, 0.0, 0, delta.X, delta.Y, 0);
+
+                CastLight(map, lightMap, origin, radius, 1, 1.0, 0.0, delta.X, 0, 0, delta.Y);
+            }
+
+            return lightMap;
+        }
+    }
+
     enum class Method
     {
         DIAMOND = 0,
         SHADOW_CAST,
         RAY_CAST,
-        MILAZZO
+        MILAZZO,
+        BINARY
     };
 
     Points Compute(Map::Base &map, Point origin, int radius, FieldOfView::Method method)
@@ -635,6 +753,12 @@ namespace BloodSword::FieldOfView
         case Method::MILAZZO:
 
             points = Milazzo::Compute(map, origin, radius);
+
+            break;
+
+        case Method::BINARY:
+
+            points = ShadowCastBinary::Compute(map, origin, radius);
 
             break;
 

@@ -19,6 +19,9 @@ namespace BloodSword::Map
     // Define neighbors (X, Y): Up, Down, Left, Right
     const Points Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
 
+    // Define neighbors and diagonals (X, Y): NW, N, NE, E, SE, S, SW, W
+    const Points Diagonals = {Point(0, -1), Point(1, -1), Point(1, 0), Point(1, 1), Point(0, 1), Point(-1, 1), Point(-1, 0), Point(-1, -1)};
+
     // a single map tile
     class Tile
     {

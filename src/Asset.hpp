@@ -40,7 +40,6 @@ namespace BloodSword::Asset
         return texture;
     }
 
-
     // re-create surface from asset and color adjust
     SDL_Surface *Surface(Asset::Type asset, Uint32 blur)
     {
@@ -192,6 +191,19 @@ namespace BloodSword::Asset
         if (texture)
         {
             SDL_SetTextureColorMod(texture, alpha, alpha, alpha);
+        }
+
+        return texture;
+    }
+
+    // get texture associated with the asset type and modulate the color
+    SDL_Texture *Get(Asset::Type asset, Uint32 color)
+    {
+        auto texture = Asset::Get(asset);
+
+        if (texture)
+        {
+            SDL_SetTextureColorMod(texture, Color::R(color), Color::G(color), Color::B(color));
         }
 
         return texture;
