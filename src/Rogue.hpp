@@ -116,7 +116,7 @@ namespace BloodSword::Rogue
     }
 
     // render battlepits
-    void RenderBattlepits(Scene::Base &scene, Rogue::Base &rogue, bool sight = true)
+    void RenderBattlepits(Scene::Base &scene, Rogue::Base &rogue, FieldOfView::Method method, bool sight = true)
     {
         auto &map = rogue.Battlepits;
 
@@ -132,7 +132,7 @@ namespace BloodSword::Rogue
         auto radius = party[first].Value(Attribute::Type::AWARENESS) / 2;
 
         // calculate field of view
-        auto view = FieldOfView::Compute(map, party.Origin(), radius, FieldOfView::Method::SHADOW_CAST);
+        auto view = FieldOfView::Compute(map, party.Origin(), radius, method);
 
         // offset for FoV illumination
         auto fov_offset = BloodSword::Pad;
@@ -1736,6 +1736,8 @@ namespace BloodSword::Rogue
     {
         auto rogue = Rogue::GenerateBattlepits(50, 50, 100, 5, 7, false);
 
+        auto method = FieldOfView::Map(Engine::ToUpper(Interface::Settings["fov"]));
+
         rogue.Party = party;
 
         if (rogue.Rooms.size() > 0)
@@ -1812,7 +1814,7 @@ namespace BloodSword::Rogue
                     Rogue::Center(rogue, Map::Object::PARTY, Map::Party);
 
                     // add battlepits to scene
-                    Rogue::RenderBattlepits(scene, rogue);
+                    Rogue::RenderBattlepits(scene, rogue, method);
 
                     regenerate_scene = false;
                 }

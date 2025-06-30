@@ -719,12 +719,31 @@ namespace BloodSword::FieldOfView
 
     enum class Method
     {
-        DIAMOND = 0,
+        NONE = -1,
+        DIAMOND,
         SHADOW_CAST,
         RAY_CAST,
         MILAZZO,
         BINARY
     };
+
+    BloodSword::Mapping<FieldOfView::Method> MethodMapping = {
+        {Method::NONE, "NONE"},
+        {Method::DIAMOND, "DIAMOND"},
+        {Method::SHADOW_CAST, "SHADOW CAST"},
+        {Method::RAY_CAST, "RAY CAST"},
+        {Method::MILAZZO, "MILAZZO"},
+        {Method::BINARY, "BINARY"}};
+
+    FieldOfView::Method Map(const char *method)
+    {
+        return BloodSword::Find(FieldOfView::MethodMapping, method);
+    }
+
+    FieldOfView::Method Map(std::string method)
+    {
+        return FieldOfView::Map(method.c_str());
+    }
 
     Points Compute(Map::Base &map, Point origin, int radius, FieldOfView::Method method)
     {
