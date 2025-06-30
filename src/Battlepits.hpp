@@ -550,7 +550,7 @@ namespace BloodSword::Battlepits
 
                     if (top || left || right || bottom || top_right || top_left || bottom_left || bottom_right)
                     {
-                        tile.Asset = Asset::Type::IMPASSABLE;
+                        tile.Asset = Asset::Type::WALL;
 
                         tile.Type = Map::Object::OBSTACLE;
                     }
