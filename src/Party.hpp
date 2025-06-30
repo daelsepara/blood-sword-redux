@@ -436,6 +436,11 @@ namespace BloodSword::Party
             }
         }
 
+        Point Origin()
+        {
+            return Point(this->X, this->Y);
+        }
+
         // Load party from json data
         void Load(nlohmann::json &data)
         {
