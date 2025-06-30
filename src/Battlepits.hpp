@@ -6,6 +6,8 @@
 
 namespace BloodSword::Room
 {
+    const int None = -1;
+
     class Base
     {
     public:
