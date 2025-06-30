@@ -574,6 +574,14 @@ namespace BloodSword::Input
             {
                 input.Type = Controls::Type::MENU;
             }
+            else if (result.key.keysym.sym == SDLK_m)
+            {
+                input.Type = Controls::Type::MAP;
+            }
+            else if (result.key.keysym.sym == SDLK_q)
+            {
+                input.Type = Controls::Type::EXIT;
+            }
         }
         else if (result.type == SDL_CONTROLLERAXISMOTION)
         {

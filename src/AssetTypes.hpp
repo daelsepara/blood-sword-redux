@@ -222,7 +222,8 @@ namespace BloodSword::Asset
         LEFT_BOTTOM_RIGHT_CORNER,
         RIGHT_LEFT_CORNERS,
         RIGHT_TOP_LEFT_CORNER,
-        RIGHT_BOTTOM_LEFT_CORNER
+        RIGHT_BOTTOM_LEFT_CORNER,
+        MAP
     };
 
     template <typename T>
@@ -445,7 +446,8 @@ namespace BloodSword::Asset
         {Asset::Type::LEFT_BOTTOM_RIGHT_CORNER, "LEFT BOTTOM RIGHT CORNER"},
         {Asset::Type::RIGHT_LEFT_CORNERS, "RIGHT LEFT CORNERS"},
         {Asset::Type::RIGHT_TOP_LEFT_CORNER, "RIGHT TOP LEFT CORNER"},
-        {Asset::Type::RIGHT_BOTTOM_LEFT_CORNER, "RIGHT BOTTOM LEFT CORNER"}};
+        {Asset::Type::RIGHT_BOTTOM_LEFT_CORNER, "RIGHT BOTTOM LEFT CORNER"},
+        {Asset::Type::MAP, "MAP"}};
 
     Asset::Type Map(const char *asset)
     {

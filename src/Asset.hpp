@@ -40,23 +40,6 @@ namespace BloodSword::Asset
         return texture;
     }
 
-    // reloads asset as an SDL surface and apply current palette
-    SDL_Surface *Surface(Asset::Type asset)
-    {
-        SDL_Surface *surface = nullptr;
-
-        if (asset != Asset::Type::NONE)
-        {
-            surface = BloodSword::Load(Asset::Locations[asset].c_str());
-
-            if (surface)
-            {
-                SDL_SetSurfaceColorMod(surface, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
-            }
-        }
-
-        return surface;
-    }
 
     // re-create surface from asset and color adjust
     SDL_Surface *Surface(Asset::Type asset, Uint32 blur)
@@ -74,6 +57,12 @@ namespace BloodSword::Asset
         }
 
         return surface;
+    }
+
+    // reloads asset as an SDL surface and apply current palette
+    SDL_Surface *Surface(Asset::Type asset)
+    {
+        return Asset::Surface(asset, Color::Active);
     }
 
     // unload all assets

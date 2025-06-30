@@ -596,18 +596,18 @@ namespace BloodSword::Interface
         Controls::Select(input, overlay.Controls, control);
     }
 
-    void AddScrollableTextBox(Scene::Base &scene, int x, int y, int width, int height, Uint32 bg_color, Uint32 border, int border_size, SDL_Texture *texture, int texture_h, int text_x, int text_y, int text_h, int offset, int controls_x, int controls_y, BloodSword::Asset::Type asset, int scroll_speed)
+    void AddScrollableTextureBox(Scene::Base &scene, int x, int y, int width, int height, Uint32 bg_color, Uint32 border, int border_size, SDL_Texture *texture, int texture_h, int text_x, int text_y, int text_h, int offset, int controls_x, int controls_y, Asset::Type asset, Asset::Type left, Asset::Type right, int scroll_speed)
     {
         auto id = int(scene.Controls.size());
 
-        // text box panel
+        // texture box panel
         scene.Add(Scene::Element(Point(x, y), width, height, bg_color, border, border_size));
 
-        // text
+        // texture
         scene.VerifyAndAdd(Scene::Element(texture, text_x, text_y, text_h, offset));
 
         // scroll up (left)
-        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::LEFT), controls_x, controls_y));
+        scene.VerifyAndAdd(Scene::Element(Asset::Get(left), controls_x, controls_y));
 
         scene.Add(Controls::Base(Controls::Type::LEFT, id, id, id + 1, id, id, controls_x, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -619,7 +619,7 @@ namespace BloodSword::Interface
 
         id++;
 
-        // close textbox
+        // close texturebox
         scene.VerifyAndAdd(Scene::Element(Asset::Get(asset), controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y));
 
         scene.Add(Controls::Base(Controls::Type::CONFIRM, id, id - 1, id + 1, id, id, controls_x + BloodSword::TileSize + BloodSword::Pad, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
@@ -627,7 +627,7 @@ namespace BloodSword::Interface
         id++;
 
         // scroll down (right)
-        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y));
+        scene.VerifyAndAdd(Scene::Element(Asset::Get(right), controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y));
 
         scene.Add(Controls::Base(Controls::Type::RIGHT, id, id - 1, id, id, id, controls_x + BloodSword::TileSize * 2 + BloodSword::Pad * 2, controls_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -638,15 +638,11 @@ namespace BloodSword::Interface
         }
     }
 
-    // draws a scrollable text box (multi-line)
-    void ScrollableTextBox(Graphics::Base &graphics, Scene::Base &background, TTF_Font *font, std::string text, int width, int height, int x, int y, SDL_Color color, int style, Uint32 bg_color, Uint32 border, int border_size, Uint32 highlight, Asset::Type asset, bool blur = true)
+    // draws a scrollable image box
+    void ScrollableImageBox(Graphics::Base &graphics, Scene::Base &background, SDL_Texture *texture, int width, int height, int x, int y, Uint32 bg_color, Uint32 border, int border_size, Uint32 highlight, Asset::Type asset, Asset::Type left, Asset::Type right, bool blur = true, int offset = 0)
     {
-        auto texture = Graphics::CreateText(graphics, text.c_str(), font, color, style, width - BloodSword::Pad * 2);
-
         if (texture)
         {
-            auto offset = 0;
-
             auto text_h = height - (BloodSword::TileSize + BloodSword::Pad * 3);
 
             auto texture_h = BloodSword::Height(texture);
@@ -669,7 +665,7 @@ namespace BloodSword::Interface
             {
                 auto scene = Scene::Base();
 
-                Interface::AddScrollableTextBox(scene, x, y, width, height, bg_color, border, border_size, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, asset, scroll_speed);
+                Interface::AddScrollableTextureBox(scene, x, y, width, height, bg_color, border, border_size, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, asset, left, right, scroll_speed);
 
                 input = Input::WaitForInput(graphics, {background, scene}, scene.Controls, input, blur);
 
@@ -691,6 +687,17 @@ namespace BloodSword::Interface
                     input.Selected = false;
                 }
             }
+        }
+    }
+
+    // draws a scrollable text box (multi-line)
+    void ScrollableTextBox(Graphics::Base &graphics, Scene::Base &background, TTF_Font *font, std::string text, int width, int height, int x, int y, SDL_Color color, int style, Uint32 bg_color, Uint32 border, int border_size, Uint32 highlight, Asset::Type asset, bool blur = true)
+    {
+        auto texture = Graphics::CreateText(graphics, text.c_str(), font, color, style, width - BloodSword::Pad * 2);
+
+        if (texture)
+        {
+            Interface::ScrollableImageBox(graphics, background, texture, width, height, x, y, bg_color, border, border_size, highlight, asset, Asset::Type::LEFT, Asset::Type::RIGHT, blur);
 
             BloodSword::Free(&texture);
         }
@@ -7241,7 +7248,7 @@ namespace BloodSword::Interface
                 {
                     auto overlay = Scene::Base();
 
-                    Interface::AddScrollableTextBox(overlay, panel_text_x, y, panel_text_w, panel_h, Color::Background, Color::Active, BloodSword::Border, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, button, scroll_speed);
+                    Interface::AddScrollableTextureBox(overlay, panel_text_x, y, panel_text_w, panel_h, Color::Background, Color::Active, BloodSword::Border, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, button, Asset::Type::LEFT, Asset::Type::RIGHT, scroll_speed);
 
                     if (has_image)
                     {

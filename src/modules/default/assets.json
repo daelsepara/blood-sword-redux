@@ -855,6 +855,10 @@
         {
             "id": "RIGHT BOTTOM LEFT CORNER",
             "path": "images/border-corners/border-right-bottom-left-corner.png"
+        },
+        {
+            "id": "MAP",
+            "path": "images/system/treasure-map.png"
         }
     ]
 }

@@ -53,12 +53,14 @@ namespace BloodSword::Party
         // variables
         BloodSword::UnorderedMap<std::string, std::string> Variables = {};
 
-        // location on map (rogue mode)
+        // location on map: room, x, y (rogue mode)
+        int Room = -1;
+
         int X = -1;
 
         int Y = -1;
 
-        // default Field of View Radius
+        // default field of view radius
         int FieldOfView = 3;
 
         Base() {}
@@ -517,6 +519,8 @@ namespace BloodSword::Party
                 }
             }
 
+            this->Room = !data["room"].is_null() ? int(data["room"]) : -1;
+
             this->X = !data["x"].is_null() ? int(data["x"]) : -1;
 
             this->Y = !data["y"].is_null() ? int(data["y"]) : -1;
@@ -928,6 +932,8 @@ namespace BloodSword::Party
 
             data["variables"] = variables;
         }
+
+        data["room"] = party.Room;
 
         data["x"] = party.X;
 

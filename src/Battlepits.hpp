@@ -155,7 +155,7 @@ namespace BloodSword::Battlepits
     }
 
     // randomly place room in the map
-    void Place(Map::Base &map, Room::Base &room)
+    void Place(Map::Base &map, Room::Base &room, int room_id)
     {
         // create walls around the room
         for (auto y = room.Y1; y < room.Y2; y++)
@@ -170,6 +170,8 @@ namespace BloodSword::Battlepits
                     map[point].Type = Map::Object::PASSABLE;
 
                     map[point].Asset = Asset::Type::NONE;
+
+                    map[point].Room = room_id;
                 }
                 else if (map[point].Type != Map::Object::PASSABLE)
                 {
@@ -533,10 +535,12 @@ namespace BloodSword::Battlepits
             if (!room.Intersects(rooms))
             {
                 // place room
-                Battlepits::Place(map, room);
+                auto room_id = int(rooms.size());
+
+                Battlepits::Place(map, room, room_id);
 
                 // if not the first room, create tunnel to previous room
-                if (rooms.size() > 0)
+                if (room_id > 0)
                 {
                     auto &last = rooms.back();
 

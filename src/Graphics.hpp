@@ -790,7 +790,7 @@ namespace BloodSword::Graphics
         return textures;
     }
 
-        // renders asset (surface) to a target surface at specified position (rect)
+    // renders asset (surface) to a target surface at specified position (rect)
     void RenderAsset(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
     {
         if (surface_asset)
@@ -804,6 +804,26 @@ namespace BloodSword::Graphics
                 SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
 
                 SDL_BlitSurface(converted_asset, nullptr, surface, &rect);
+
+                // cleanup
+                BloodSword::Free(&converted_asset);
+            }
+        }
+    }
+
+    void RenderAssetScaled(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
+    {
+        if (surface_asset)
+        {
+            // convert surface_asset into target surface's format
+            auto converted_asset = SDL_ConvertSurface(surface_asset, surface->format, 0);
+
+            if (converted_asset)
+            {
+                // place surface in the correct position
+                SDL_SetSurfaceAlphaMod(converted_asset, SDL_ALPHA_OPAQUE);
+
+                SDL_BlitScaled(converted_asset, nullptr, surface, &rect);
 
                 // cleanup
                 BloodSword::Free(&converted_asset);

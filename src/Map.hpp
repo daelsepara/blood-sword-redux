@@ -44,6 +44,9 @@ namespace BloodSword::Map
         // if tile has been explored (Rogue mode)
         bool Explored = false;
 
+        // room number (Rogue mode)
+        int Room = -1;
+
         // tile is occupied by an enemy
         bool IsEnemy()
         {

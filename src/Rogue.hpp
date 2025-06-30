@@ -2,7 +2,7 @@
 #define __ROGUE_HPP__
 
 #include "Battlepits.hpp"
-#include "Interface.hpp"
+#include "InterfaceBattle.hpp"
 
 // classes and functions to enable rogue-like game mode
 namespace BloodSword::Rogue
@@ -70,78 +70,33 @@ namespace BloodSword::Rogue
         return rogue;
     }
 
-    bool Blocked(Rogue::Base &rogue, Point point)
+    // render battlepits
+    void RenderBattlepits(Scene::Base &scene, Rogue::Base &rogue)
     {
-        auto &tile = rogue.Battlepits[point];
-
-        return (tile.IsOccupied() || tile.IsBlocked() || !tile.IsPassable());
-    }
-
-    // center battlepits on entity (map object type, id)
-    void Center(Rogue::Base &rogue, Map::Object entity, int id)
-    {
-        auto src = rogue.Battlepits.Find(entity, id);
-
-        rogue.Battlepits.X = src.X - (rogue.Battlepits.ViewX) / 2 + 1;
-
-        rogue.Battlepits.Y = src.Y - (rogue.Battlepits.ViewY) / 2 + 1;
-
-        rogue.Battlepits.CheckBounds();
-    }
-
-    bool Move(Rogue::Base &rogue, Point point)
-    {
-        auto moved = !Rogue::Blocked(rogue, point);
+        auto &map = rogue.Battlepits;
 
         auto &party = rogue.Party;
 
-        if (moved)
-        {
-            auto from = Point(party.X, party.Y);
-
-            auto &origin = rogue.Battlepits[from];
-
-            auto &destination = rogue.Battlepits[point];
-
-            origin.Occupant = Map::Object::NONE;
-
-            origin.Id = Map::NotFound;
-
-            destination.Occupant = Map::Object::PARTY;
-
-            destination.Id = Map::Party;
-
-            party.X = point.X;
-
-            party.Y = point.Y;
-
-            Rogue::Center(rogue, Map::Object::PARTY, Map::Party);
-        }
-
-        return moved;
-    }
-
-    void RenderBattlepits(Scene::Base &scene, Rogue::Base &rogue)
-    {
         // get fog color
-        auto fog = Color::O(Color::Inactive, 0x08);
+        auto fog = Color::O(Color::Active, 0x14);
 
         // get leading character's awareness
-        auto first = Engine::First(rogue.Party);
+        auto first = Engine::First(party);
 
-        auto radius = rogue.Party[first].Value(Attribute::Type::AWARENESS) / 2;
+        auto radius = party[first].Value(Attribute::Type::AWARENESS) / 2;
 
-        auto view = FieldOfView::Compute(rogue.Battlepits, Point(rogue.Party.X, rogue.Party.Y), radius, FieldOfView::Method::SHADOW_CAST);
+        // calculate field of view
+        auto view = FieldOfView::Compute(map, Point(party.X, party.Y), radius, FieldOfView::Method::SHADOW_CAST);
 
-        for (auto y = rogue.Battlepits.Y; y < rogue.Battlepits.Y + rogue.Battlepits.ViewY; y++)
+        for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {
-            for (auto x = rogue.Battlepits.X; x < rogue.Battlepits.X + rogue.Battlepits.ViewX; x++)
+            for (auto x = map.X; x < map.X + map.ViewX; x++)
             {
-                auto offset = Point(x - rogue.Battlepits.X, y - rogue.Battlepits.Y);
+                auto offset = Point(x - map.X, y - map.Y);
 
-                auto &tile = rogue.Battlepits[Point(x, y)];
+                auto &tile = map[Point(x, y)];
 
-                auto screen = Point(rogue.Battlepits.DrawX, rogue.Battlepits.DrawY) + offset * rogue.Battlepits.TileSize;
+                auto screen = Point(map.DrawX, map.DrawY) + offset * map.TileSize;
 
                 auto visible = BloodSword::In(view, x, y);
 
@@ -151,11 +106,11 @@ namespace BloodSword::Rogue
                     {
                     case Map::Object::PARTY:
 
-                        if (Engine::IsAlive(rogue.Party) && tile.Id == Map::Party)
+                        if (Engine::IsAlive(party) && tile.Id == Map::Party)
                         {
-                            auto first = Engine::First(rogue.Party);
+                            auto first = Engine::First(party);
 
-                            auto &player = rogue.Party[first];
+                            auto &player = party[first];
 
                             if (Engine::IsAlive(player))
                             {
@@ -198,13 +153,15 @@ namespace BloodSword::Rogue
 
                         if (tile.Id >= 0 && tile.Id < rogue.Loot.size() && rogue.Loot.size() > 0)
                         {
-                            if (rogue.Loot[tile.Id].Items.size() > 0)
+                            auto &loot = rogue.Loot[tile.Id];
+
+                            if (loot.Items.size() > 0)
                             {
-                                auto first = Engine::FirstAsset(rogue.Loot[tile.Id].Items);
+                                auto first = Engine::FirstAsset(loot.Items);
 
                                 if (first != Item::NotFound)
                                 {
-                                    auto &item = rogue.Loot[tile.Id].Items[first];
+                                    auto &item = loot.Items[first];
 
                                     scene.VerifyAndAdd(Scene::Element(Asset::Get(item.Asset), screen));
                                 }
@@ -222,6 +179,10 @@ namespace BloodSword::Rogue
                 {
                     scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                 }
+                else if (tile.Asset == Asset::Type::NONE && visible)
+                {
+                    scene.Add(Scene::Element(screen.X, screen.Y, BloodSword::TileSize, BloodSword::TileSize, Color::O(Color::Highlight, 0x20)));
+                }
 
                 if (visible)
                 {
@@ -237,6 +198,57 @@ namespace BloodSword::Rogue
                 }
             }
         }
+    }
+
+    bool Blocked(Rogue::Base &rogue, Point point)
+    {
+        auto &tile = rogue.Battlepits[point];
+
+        return (tile.IsOccupied() || tile.IsBlocked() || !tile.IsPassable());
+    }
+
+    // center battlepits on entity (map object type, id)
+    void Center(Rogue::Base &rogue, Map::Object entity, int id)
+    {
+        auto src = rogue.Battlepits.Find(entity, id);
+
+        rogue.Battlepits.X = src.X - (rogue.Battlepits.ViewX) / 2 + 1;
+
+        rogue.Battlepits.Y = src.Y - (rogue.Battlepits.ViewY) / 2 + 1;
+
+        rogue.Battlepits.CheckBounds();
+    }
+
+    bool Move(Rogue::Base &rogue, Point point)
+    {
+        auto moved = !Rogue::Blocked(rogue, point);
+
+        auto &party = rogue.Party;
+
+        if (moved)
+        {
+            auto from = Point(party.X, party.Y);
+
+            auto &origin = rogue.Battlepits[from];
+
+            auto &destination = rogue.Battlepits[point];
+
+            origin.Occupant = Map::Object::NONE;
+
+            origin.Id = Map::NotFound;
+
+            destination.Occupant = Map::Object::PARTY;
+
+            destination.Id = Map::Party;
+
+            party.Room = destination.Room;
+
+            party.X = point.X;
+
+            party.Y = point.Y;
+        }
+
+        return moved;
     }
 
     void Handle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
@@ -269,6 +281,196 @@ namespace BloodSword::Rogue
         }
 
         return regenerate_scene;
+    }
+
+    void ShowMap(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
+    {
+        auto &map = rogue.Battlepits;
+
+        auto &party = rogue.Party;
+
+        auto scale = Point(8, 8);
+
+        auto surface = Graphics::CreateSurface(map.Width * scale.X, map.Height * scale.Y);
+
+        if (surface)
+        {
+            SDL_FillRect(surface, nullptr, SDL_MapRGBA(surface->format, 0, 0, 0, 255));
+
+            SDL_Rect rect;
+
+            rect.w = scale.X;
+
+            rect.h = scale.Y;
+
+            for (auto y = 0; y < map.Height; y++)
+            {
+                for (auto x = 0; x < map.Width; x++)
+                {
+                    SDL_Surface *surface_asset = nullptr;
+
+                    auto &tile = map[Point(x, y)];
+
+                    rect.x = x * scale.X;
+
+                    rect.y = y * scale.Y;
+
+                    if (party.X == x && party.Y == y)
+                    {
+                        surface_asset = Asset::Surface(Asset::Type::WHITE_SPACE, Color::Highlight);
+                    }
+                    else if (tile.Explored && tile.Asset != Asset::Type::NONE)
+                    {
+                        surface_asset = Asset::Surface(tile.Asset);
+                    }
+                    else if (!tile.Explored)
+                    {
+                        surface_asset = Graphics::CreateSurface(scale.X, scale.Y);
+
+                        SDL_FillRect(surface_asset, nullptr, SDL_MapRGBA(surface_asset->format, Color::R(Color::Inactive), Color::G(Color::Inactive), Color::B(Color::Inactive), 255));
+                    }
+
+                    if (surface_asset)
+                    {
+                        Graphics::RenderAssetScaled(surface, surface_asset, rect);
+
+                        BloodSword::Free(&surface_asset);
+                    }
+                }
+            }
+
+            auto texture = SDL_CreateTextureFromSurface(graphics.Renderer, surface);
+
+            if (texture)
+            {
+                auto width = BloodSword::Width(texture) + BloodSword::LargePad;
+
+                auto height = BloodSword::TileSize * 5 + BloodSword::LargePad;
+
+                auto x = (graphics.Width - width) / 2;
+
+                auto y = (graphics.Height - height) / 2;
+
+                // calculate offset to center current location
+                auto text_h = height - (BloodSword::TileSize + BloodSword::Pad * 3);
+
+                auto offset = 0;
+
+                auto loc = party.Y * scale.Y + scale.Y / 2;
+
+                if (loc >= text_h)
+                {
+                    offset = loc - text_h / 2;
+                }
+
+                offset = std::max(0, offset);
+
+                Interface::ScrollableImageBox(graphics, background, texture, width, height, x, y, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, Asset::Type::UP, Asset::Type::DOWN, true, offset);
+
+                BloodSword::Free(&texture);
+            }
+
+            BloodSword::Free(&surface);
+        }
+    }
+
+    bool GameMenu(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
+    {
+        auto &party = rogue.Party;
+
+        auto quit = false;
+
+        Asset::List assets = {
+            Asset::Type::MAP,
+            Asset::Type::BATTLE_ORDER,
+            Asset::Type::LOAD,
+            Asset::Type::SAVE,
+            Asset::Type::ABOUT,
+            Asset::Type::EXIT,
+            Asset::Type::BACK};
+
+        Controls::Collection controls = {
+            Controls::Type::MAP,
+            Controls::Type::BATTLE_ORDER,
+            Controls::Type::LOAD,
+            Controls::Type::SAVE,
+            Controls::Type::ABOUT,
+            Controls::Type::EXIT,
+            Controls::Type::BACK};
+
+        std::vector<std::string> captions = {
+            "MAP",
+            "BATTLE ORDER",
+            "LOAD GAME",
+            "SAVE GAME",
+            "HELP",
+            "QUIT",
+            "BACK"};
+
+        auto values = std::vector<int>();
+
+        for (auto i = 0; i < controls.size(); i++)
+        {
+            values.push_back(i);
+        }
+
+        auto message = "BloodSword: Rogue";
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, message, assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+
+            if (selection.size() == 1)
+            {
+                auto input = controls[selection[0]];
+
+                if (input == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input == Controls::Type::MAP)
+                {
+                    Rogue::ShowMap(graphics, background, rogue);
+                }
+                else if (input == Controls::Type::BATTLE_ORDER)
+                {
+                    if (Engine::IsAlive(party))
+                    {
+                        if (party.Count() > 1)
+                        {
+                            Interface::BattleOrder(graphics, background, party);
+
+                            done = true;
+                        }
+                        else
+                        {
+                            Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+                        }
+                    }
+                    else
+                    {
+                        Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
+                    }
+                }
+                else if (input == Controls::Type::EXIT)
+                {
+                    if (Interface::Confirm(graphics, background, "ARE YOU SURE?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
+                    {
+                        done = true;
+
+                        quit = true;
+                    }
+                }
+                else
+                {
+                    Interface::NotImplemented(graphics, background);
+                }
+            }
+        }
+
+        return quit;
     }
 
     void Game(Graphics::Base &graphics, Party::Base &party)
@@ -349,7 +551,7 @@ namespace BloodSword::Rogue
                 {
                     if (input.Type == Controls::Type::MENU)
                     {
-                        done = true;
+                        done = Rogue::GameMenu(graphics, scene, rogue);
                     }
                     else if (input.Type == Controls::Type::UP)
                     {
@@ -394,6 +596,14 @@ namespace BloodSword::Rogue
 
                             regenerate_scene = Rogue::Actions(graphics, scene, rogue, point);
                         }
+                    }
+                    else if (input.Type == Controls::Type::MAP)
+                    {
+                        Rogue::ShowMap(graphics, scene, rogue);
+                    }
+                    else if (input.Type == Controls::Type::EXIT)
+                    {
+                        done = Interface::Confirm(graphics, scene, "ARE YOU SURE?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
                     }
 
                     input.Selected = false;
