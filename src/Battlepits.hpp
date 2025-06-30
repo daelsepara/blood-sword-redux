@@ -93,6 +93,28 @@ namespace BloodSword::Room
 
 namespace BloodSword::Battlepits
 {
+    enum class Connection
+    {
+        NONE = -1,
+        TUNNELS,
+        WALLS
+    };
+
+    BloodSword::Mapping<Battlepits::Connection> ConnectionMapping = {
+        {Connection::NONE, "NONE"},
+        {Connection::TUNNELS, "TUNNELS"},
+        {Connection::WALLS, "WALLS"}};
+
+    Battlepits::Connection Map(const char *connection)
+    {
+        return BloodSword::Find(Battlepits::ConnectionMapping, connection);
+    }
+
+    Battlepits::Connection Map(std::string connection)
+    {
+        return Battlepits::Map(connection.c_str());
+    }
+
     // create vertical tunnel between two points and add to list
     void VerticalTunnel(Points &points, int x, int y1, int y2)
     {
@@ -500,6 +522,43 @@ namespace BloodSword::Battlepits
         }
     }
 
+    void SetTunnelWalls(Map::Base &map)
+    {
+        for (auto y = 1; y < map.Height - 1; y++)
+        {
+            for (auto x = 0; x < map.Width - 1; x++)
+            {
+                auto &tile = map[Point(x, y)];
+
+                if (tile.Type == Map::Object::NONE)
+                {
+                    auto top = Passable(map, {x, y - 1});
+
+                    auto left = Passable(map, {x - 1, y});
+
+                    auto right = Passable(map, {x + 1, y});
+
+                    auto bottom = Passable(map, {x, y + 1});
+
+                    auto top_left = Passable(map, {x - 1, y - 1});
+
+                    auto top_right = Passable(map, {x + 1, y - 1});
+
+                    auto bottom_left = Passable(map, {x - 1, y + 1});
+
+                    auto bottom_right = Passable(map, {x + 1, y + 1});
+
+                    if (top || left || right || bottom || top_right || top_left || bottom_left || bottom_right)
+                    {
+                        tile.Asset = Asset::Type::IMPASSABLE;
+
+                        tile.Type = Map::Object::OBSTACLE;
+                    }
+                }
+            }
+        }
+    }
+
     void AssignTunnelAssets(Map::Base &map, bool inner_tunnel)
     {
         for (auto y = 0; y < map.Height; y++)
@@ -518,7 +577,7 @@ namespace BloodSword::Battlepits
         }
     }
 
-    void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size, bool inner_tunnel)
+    void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
     {
         // initialize RNG
         auto random = Random::Base();
@@ -553,16 +612,23 @@ namespace BloodSword::Battlepits
             }
         }
 
-        Battlepits::AssignTunnelAssets(map, inner_tunnel);
+        if (connection == Connection::TUNNELS)
+        {
+            Battlepits::AssignTunnelAssets(map, inner_tunnel);
+        }
+        else if (connection == Connection::WALLS)
+        {
+            Battlepits::SetTunnelWalls(map);
+        }
     }
 
-    Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size, bool inner_tunnel)
+    Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
     {
         auto map = Map::Base(width, height);
 
         auto rooms = std::vector<Room::Base>();
 
-        Battlepits::Generate(map, rooms, max_rooms, min_size, max_size, inner_tunnel);
+        Battlepits::Generate(map, rooms, max_rooms, min_size, max_size, connection, inner_tunnel);
 
         return map;
     }
