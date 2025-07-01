@@ -1571,6 +1571,31 @@ namespace BloodSword::Rogue
         BloodSword::Free(names);
     }
 
+    bool SetBattleOrder(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
+    {
+        auto done = false;
+
+        if (Engine::IsAlive(party))
+        {
+            if (party.Count() > 1)
+            {
+                Interface::BattleOrder(graphics, background, party);
+                
+                done = true;
+            }
+            else
+            {
+                Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
+            }
+        }
+        else
+        {
+            Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
+        }
+
+        return done;
+    }
+
     bool Menu(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
     {
         auto &party = rogue.Party;
@@ -1640,23 +1665,7 @@ namespace BloodSword::Rogue
                 }
                 else if (input == Controls::Type::BATTLE_ORDER)
                 {
-                    if (Engine::IsAlive(party))
-                    {
-                        if (party.Count() > 1)
-                        {
-                            Interface::BattleOrder(graphics, background, party);
-
-                            done = true;
-                        }
-                        else
-                        {
-                            Interface::MessageBox(graphics, background, "YOU DO NOT HAVE ANY COMPANIONS", Color::Inactive);
-                        }
-                    }
-                    else
-                    {
-                        Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
-                    }
+                    done = Rogue::SetBattleOrder(graphics, background, party);
                 }
                 else if (input == Controls::Type::EXIT)
                 {
@@ -1959,6 +1968,10 @@ namespace BloodSword::Rogue
                         auto first = std::max(0, Engine::First(rogue.Party));
 
                         Rogue::PartyInformation(graphics, scene, rogue, first);
+                    }
+                    else if (input.Type == Controls::Type::BATTLE_ORDER)
+                    {
+                        Rogue::SetBattleOrder(graphics, scene, party);
                     }
                     else if (input.Type == Controls::Type::EXIT)
                     {
