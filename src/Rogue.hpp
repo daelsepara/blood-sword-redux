@@ -541,6 +541,8 @@ namespace BloodSword::Rogue
                 rogue.Battlepits[point].Id = -1;
 
                 rogue.Battlepits[point].Occupant = Map::Object::NONE;
+
+                rogue.Loot.erase(rogue.Loot.begin() + loot);
             }
         }
     }
@@ -636,6 +638,24 @@ namespace BloodSword::Rogue
         }
     }
 
+    // check if point is a good spot
+    bool GoodSpot(Rogue::Base &rogue, Room::Base &room, Point point)
+    {
+        auto &map = rogue.Battlepits;
+
+        auto inside = room.Inside(point);
+
+        auto left = ((point.X == room.X1 + 1) && map[Point(room.X1, point.Y)].Type == Map::Object::OBSTACLE) || (point.X > room.X1 + 1 && map[point].Type == Map::Object::PASSABLE && !map[point].IsOccupied());
+
+        auto right = ((point.X == room.X2 - 2) && map[Point(room.X2 - 1, point.Y)].Type == Map::Object::OBSTACLE) || (point.X < room.X2 - 2 && map[point].Type == Map::Object::PASSABLE && !map[point].IsOccupied());
+
+        auto top = ((point.Y == room.Y1 + 1) && map[Point(point.X, room.Y1)].Type == Map::Object::OBSTACLE) || (point.Y > room.Y1 + 1 && map[point].Type == Map::Object::PASSABLE && !map[point].IsOccupied());
+
+        auto bottom = ((point.Y == room.Y2 - 2) && map[Point(point.X, room.Y2 - 1)].Type == Map::Object::OBSTACLE) || (point.Y < room.Y2 - 2 && map[point].Type == Map::Object::PASSABLE && !map[point].IsOccupied());
+
+        return inside && top && bottom && left && right;
+    }
+
     // manage item while in rogue mode
     void ManageItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Character::Class character_class, int id)
     {
@@ -643,70 +663,52 @@ namespace BloodSword::Rogue
 
         auto &character = party[character_class];
 
-        auto &map = rogue.Battlepits;
-
         auto &items = character.Items;
 
         auto exit = false;
 
-        Items::Inventory *destination = nullptr;
+        auto available = Point(-1, -1);
 
         Items::Inventory ether = {};
+
+        auto destination = &ether;
 
         // find location for room where things can be dropped
         if (party.Room != Room::None)
         {
             auto &room = rogue.Rooms[party.Room];
 
-            auto available = Point(-1, -1);
-
+            // check if there is a pre-existing loot bag
             for (auto direction : Map::Directions)
             {
                 auto point = party.Origin() + direction;
 
-                for (auto &loot : rogue.Loot)
+                auto loot_id = FindLoot(rogue, point);
+
+                if (loot_id >= 0 && loot_id < rogue.Loot.size())
                 {
-                    if (point.X == loot.X && point.Y == loot.Y)
-                    {
-                        available = Point(loot.X, loot.Y);
+                    destination = &rogue.Loot[loot_id].Items;
 
-                        destination = &loot.Items;
+                    available = point;
 
-                        break;
-                    }
+                    break;
                 }
             }
 
+            // select a new location
             if (available.IsNone())
             {
                 for (auto direction : Map::Directions)
                 {
                     auto point = party.Origin() + direction;
 
-                    auto inside = (point.X > room.X1 + 1 && point.X < room.X2 - 2 && point.Y > room.Y1 + 1 && point.Y < room.Y2 - 2);
-
-                    auto empty = map[point].IsPassable() && !map[point].IsOccupied();
-
-                    if (inside && empty)
+                    if (Rogue::GoodSpot(rogue, room, point))
                     {
-                        rogue.Loot.push_back(Rogue::Loot(point.X, point.Y));
-
-                        destination = &(rogue.Loot.back().Items);
-
-                        map[point].Occupant = Map::Object::ITEMS;
-
-                        map[point].Id = int(rogue.Loot.size() - 1);
-
                         available = point;
 
                         break;
                     }
                 }
-            }
-
-            if (available.IsNone())
-            {
-                destination = &ether;
             }
         }
 
@@ -1123,6 +1125,18 @@ namespace BloodSword::Rogue
                     }
                 }
             }
+        }
+
+        // create loot bag in map
+        if (destination->size() > 0 && !available.IsNone())
+        {
+            rogue.Battlepits[available].Occupant = Map::Object::ITEMS;
+
+            auto loot = Rogue::Loot(available);
+
+            loot.Items = *destination;
+
+            rogue.Loot.push_back(loot);
         }
     }
 
@@ -1663,23 +1677,65 @@ namespace BloodSword::Rogue
         return quit;
     }
 
-    void PlaceLoot(Rogue::Base &rogue)
+    void PlaceItem(Rogue::Base &rogue, Item::Base item)
     {
-        auto gold = Item::Base("GOLD", Item::Type::GOLD, {}, Item::Type::NONE, Engine::Percentile.NextInt(10, 50));
+        // radomize room location
+        auto id = Engine::Percentile.NextInt(1, rogue.Rooms.size() - 1);
 
-        gold.Asset = Asset::Type::MONEY;
+        auto &room = rogue.Rooms[id];
 
-        auto &room = rogue.Rooms[1];
+        auto good = false;
 
-        auto item = Point(room.X1 + 2, room.Y1 + 2);
+        auto loot = -1;
 
-        auto loot = Rogue::Loot(item.X, item.Y);
+        Point location;
 
-        loot.Items = {gold};
+        // find a good location
+        while (!good)
+        {
+            auto x = Engine::Percentile.NextInt(room.X1 + 2, room.X2 - 2);
 
-        rogue.Battlepits[item].Occupant = Map::Object::ITEMS;
+            auto y = Engine::Percentile.NextInt(room.Y1 + 2, room.Y2 - 2);
 
-        rogue.Loot.push_back(loot);
+            location = Point(x, y);
+
+            loot = Rogue::FindLoot(rogue, location);
+
+            // add to existing loot bag if found
+            if (loot >= 0 && loot < rogue.Loot.size())
+            {
+                break;
+            }
+
+            good = Rogue::GoodSpot(rogue, room, Point(x, y));
+        }
+
+        if (loot != Room::None)
+        {
+            rogue.Loot[loot].Items.push_back(item);
+        }
+        else
+        {
+            rogue.Battlepits[location].Occupant = Map::Object::ITEMS;
+
+            auto loot = Rogue::Loot(location.X, location.Y);
+
+            loot.Items = {item};
+
+            rogue.Loot.push_back(loot);
+        }
+    }
+
+    void PlaceGold(Rogue::Base &rogue, int number, int min_gold, int max_gold)
+    {
+        for (auto items = 0; items < number; items++)
+        {
+            auto gold = Item::Base("GOLD", Item::Type::GOLD, {}, Item::Type::NONE, Engine::Percentile.NextInt(min_gold, max_gold));
+
+            gold.Asset = Asset::Type::MONEY;
+
+            Rogue::PlaceItem(rogue, gold);
+        }
     }
 
     void Handle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
@@ -1744,7 +1800,8 @@ namespace BloodSword::Rogue
 
         if (rogue.Rooms.size() > 0)
         {
-            Rogue::PlaceLoot(rogue);
+            // 25% rooms has gold loot
+            Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
 
             auto center = rogue.Rooms[0].Center();
 
