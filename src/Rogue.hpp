@@ -1588,7 +1588,7 @@ namespace BloodSword::Rogue
             Asset::Type::BACK};
 
         Controls::Collection controls = {
-            Controls::Type::INFO,
+            Controls::Type::PARTY,
             Controls::Type::MAP,
             Controls::Type::BATTLE_ORDER,
             Controls::Type::LOAD,
@@ -1630,7 +1630,7 @@ namespace BloodSword::Rogue
                 {
                     done = true;
                 }
-                else if (input == Controls::Type::INFO)
+                else if (input == Controls::Type::PARTY)
                 {
                     Rogue::PartyInformation(graphics, background, rogue, 0);
                 }
@@ -1953,6 +1953,12 @@ namespace BloodSword::Rogue
                     else if (input.Type == Controls::Type::MAP)
                     {
                         Rogue::ShowMap(graphics, scene, rogue);
+                    }
+                    else if (input.Type == Controls::Type::PARTY)
+                    {
+                        auto first = std::max(0, Engine::First(rogue.Party));
+
+                        Rogue::PartyInformation(graphics, scene, rogue, first);
                     }
                     else if (input.Type == Controls::Type::EXIT)
                     {

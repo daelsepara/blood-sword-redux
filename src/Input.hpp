@@ -582,6 +582,14 @@ namespace BloodSword::Input
             {
                 input.Type = Controls::Type::EXIT;
             }
+            else if (result.key.keysym.sym == SDLK_p)
+            {
+                input.Type = Controls::Type::PARTY;
+            }
+            else if (result.key.keysym.sym == SDLK_o)
+            {
+                input.Type = Controls::Type::BATTLE_ORDER;
+            }
         }
         else if (result.type == SDL_CONTROLLERAXISMOTION)
         {
