@@ -1748,44 +1748,27 @@ namespace BloodSword::Rogue
         }
     }
 
+    Party::Base GenerateMonsters(Character::Base enemy, int min_size, int max_size)
+    {
+        auto monsters = Party::Base();
+
+        for (auto monster = 0; monster < Engine::Percentile.NextInt(min_size, max_size); monster++)
+        {
+            monsters.Add(enemy);
+        }
+
+        return monsters;
+    }
+
     void PlaceMonsters(Rogue::Base &rogue, int number, int min_size, int max_size)
     {
         for (auto enemies = 0; enemies < number; enemies++)
         {
-            Asset::Type asset = Asset::Type::NONE;
-
-            auto enemy_type = Engine::Percentile.NextInt(0, 2);
-
-            switch (enemy_type)
-            {
-            case 0:
-
-                asset = Asset::Type::ASSASSIN;
-
-                break;
-
-            case 1:
-
-                asset = Asset::Type::BARBARIAN;
-
-                break;
-            case 2:
-
-                asset = Asset::Type::CHARACTER;
-
-                break;
-
-            default:
-
-                asset = Asset::Type::BARBARIAN;
-
-                break;
-            }
+            auto center = Point(-1, -1);
 
             auto room = -1;
 
-            auto center = Point(-1, -1);
-
+            // look for un-occupied room
             while (center.IsNone() || room == -1 || rogue.Battlepits[center].IsOccupied())
             {
                 room = Engine::Percentile.NextInt(1, rogue.Rooms.size() - 2);
@@ -1793,48 +1776,26 @@ namespace BloodSword::Rogue
                 center = rogue.Rooms[room].Center();
             }
 
-            auto enemy = Character::Base();
+            Character::Base enemy;
 
-            auto monsters = Party::Base();
+            auto enemy_type = Engine::Percentile.NextInt(0, 100);
 
-            for (auto monster = 0; monster < Engine::Percentile.NextInt(min_size, max_size); monster++)
+            if (enemy_type <= 30)
             {
-                switch (asset)
-                {
-                case Asset::Type::ASSASSIN:
-
-                    enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, asset);
-
-                    monsters.Add(enemy);
-
-                    break;
-
-                case Asset::Type::BARBARIAN:
-
-                    enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, asset);
-
-                    monsters.Add(enemy);
-
-                    break;
-
-                case Asset::Type::CHARACTER:
-
-                    enemy = Generate::NPC("ADVENTURER", {}, 8, 6, 6, 22, 3, 2, 0, BloodSword::MaximumMoves, asset);
-
-                    monsters.Add(enemy);
-
-                    break;
-
-                default:
-
-                    enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, asset);
-
-                    monsters.Add(enemy);
-
-                    break;
-                }
+                enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+            }
+            else if (enemy_type <= 90)
+            {
+                enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, Asset::Type::BARBARIAN);
+            }
+            else
+            {
+                enemy = Generate::NPC("ADVENTURER", {}, 8, 6, 6, 22, 3, 2, 0, BloodSword::MaximumMoves, Asset::Type::CHARACTER);
             }
 
+            auto monsters = Rogue::GenerateMonsters(enemy, min_size, max_size);
+
+            // place monsters in battlepits
             monsters.X = center.X;
 
             monsters.Y = center.Y;
