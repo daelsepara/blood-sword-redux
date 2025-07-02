@@ -178,7 +178,7 @@ namespace BloodSword::Rogue
 
                         break;
 
-                    case Map::Object::ENEMY:
+                    case Map::Object::ENEMIES:
 
                         opponent_id = Rogue::FindOpponents(rogue, Point(x, y));
 
@@ -1580,7 +1580,7 @@ namespace BloodSword::Rogue
             if (party.Count() > 1)
             {
                 Interface::BattleOrder(graphics, background, party);
-                
+
                 done = true;
             }
             else
@@ -1596,11 +1596,20 @@ namespace BloodSword::Rogue
         return done;
     }
 
-    bool Menu(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
+    struct Update
     {
-        auto &party = rogue.Party;
+        bool Scene = false;
 
-        auto quit = false;
+        bool Party = false;
+
+        bool Quit = false;
+    };
+
+    Rogue::Update Menu(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
+    {
+        Rogue::Update update = {false, false, false};
+
+        auto &party = rogue.Party;
 
         Asset::List assets = {
             Asset::Type::CHARACTER,
@@ -1658,6 +1667,8 @@ namespace BloodSword::Rogue
                 else if (input == Controls::Type::PARTY)
                 {
                     Rogue::PartyInformation(graphics, background, rogue, 0);
+
+                    update.Party = true;
                 }
                 else if (input == Controls::Type::MAP)
                 {
@@ -1666,6 +1677,8 @@ namespace BloodSword::Rogue
                 else if (input == Controls::Type::BATTLE_ORDER)
                 {
                     done = Rogue::SetBattleOrder(graphics, background, party);
+
+                    update.Party = true;
                 }
                 else if (input == Controls::Type::EXIT)
                 {
@@ -1673,7 +1686,7 @@ namespace BloodSword::Rogue
                     {
                         done = true;
 
-                        quit = true;
+                        update.Quit = true;
                     }
                 }
                 else
@@ -1683,7 +1696,7 @@ namespace BloodSword::Rogue
             }
         }
 
-        return quit;
+        return update;
     }
 
     void PlaceItem(Rogue::Base &rogue, Item::Base item)
@@ -1735,6 +1748,103 @@ namespace BloodSword::Rogue
         }
     }
 
+    void PlaceMonsters(Rogue::Base &rogue, int number, int min_size, int max_size)
+    {
+        for (auto enemies = 0; enemies < number; enemies++)
+        {
+            Asset::Type asset = Asset::Type::NONE;
+
+            auto enemy_type = Engine::Percentile.NextInt(0, 2);
+
+            switch (enemy_type)
+            {
+            case 0:
+
+                asset = Asset::Type::ASSASSIN;
+
+                break;
+
+            case 1:
+
+                asset = Asset::Type::BARBARIAN;
+
+                break;
+            case 2:
+
+                asset = Asset::Type::CHARACTER;
+
+                break;
+
+            default:
+
+                asset = Asset::Type::BARBARIAN;
+
+                break;
+            }
+
+            auto room = -1;
+
+            auto center = Point(-1, -1);
+
+            while (center.IsNone() || room == -1 || rogue.Battlepits[center].IsOccupied())
+            {
+                room = Engine::Percentile.NextInt(1, rogue.Rooms.size() - 2);
+
+                center = rogue.Rooms[room].Center();
+            }
+
+            auto enemy = Character::Base();
+
+            auto monsters = Party::Base();
+
+            for (auto monster = 0; monster < Engine::Percentile.NextInt(min_size, max_size); monster++)
+            {
+                switch (asset)
+                {
+                case Asset::Type::ASSASSIN:
+
+                    enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, asset);
+
+                    monsters.Add(enemy);
+
+                    break;
+
+                case Asset::Type::BARBARIAN:
+
+                    enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, asset);
+
+                    monsters.Add(enemy);
+
+                    break;
+
+                case Asset::Type::CHARACTER:
+
+                    enemy = Generate::NPC("ADVENTURER", {}, 8, 6, 6, 22, 3, 2, 0, BloodSword::MaximumMoves, asset);
+
+                    monsters.Add(enemy);
+
+                    break;
+
+                default:
+
+                    enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, asset);
+
+                    monsters.Add(enemy);
+
+                    break;
+                }
+            }
+
+            monsters.X = center.X;
+
+            monsters.Y = center.Y;
+
+            rogue.Opponents.push_back(monsters);
+
+            rogue.Battlepits[center].Occupant = Map::Object::ENEMIES;
+        }
+    }
+
     void PlaceGold(Rogue::Base &rogue, int number, int min_gold, int max_gold)
     {
         for (auto items = 0; items < number; items++)
@@ -1747,8 +1857,10 @@ namespace BloodSword::Rogue
         }
     }
 
-    void Handle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
+    Rogue::Update Handle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
     {
+        Rogue::Update update = {false, false, false};
+
         auto &tile = rogue.Battlepits[point];
 
         if (tile.IsOccupied())
@@ -1756,28 +1868,31 @@ namespace BloodSword::Rogue
             if (tile.Occupant == Map::Object::ITEMS)
             {
                 Rogue::ShowLoot(graphics, background, rogue, point);
+
+                update.Scene = true;
+
+                update.Party = true;
             }
             else
             {
                 Interface::MessageBox(graphics, background, "TILE OCCUPIED", Color::Inactive);
+
+                update.Scene = true;
+
+                update.Party = true;
             }
         }
         else
         {
             Sound::Play(Sound::Type::ERROR);
         }
+
+        return update;
     }
 
-    struct ActionResult
+    Rogue::Update Actions(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
     {
-        bool Update = false;
-
-        bool Refresh = false;
-    };
-
-    Rogue::ActionResult Actions(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
-    {
-        Rogue::ActionResult result = {false, false};
+        Rogue::Update result = {false, false};
 
         if (Battlepits::Empty(rogue.Battlepits, point))
         {
@@ -1785,15 +1900,11 @@ namespace BloodSword::Rogue
         }
         else if (Rogue::Blocked(rogue, point))
         {
-            Rogue::Handle(graphics, background, rogue, point);
-
-            result.Update = true;
-
-            result.Refresh = true;
+            result = Rogue::Handle(graphics, background, rogue, point);
         }
         else if (Rogue::Move(rogue, point))
         {
-            result.Update = true;
+            result.Scene = true;
         }
 
         return result;
@@ -1809,6 +1920,9 @@ namespace BloodSword::Rogue
 
         if (rogue.Rooms.size() > 0)
         {
+            // 50% rooms has monsters
+            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2, 4, 6);
+
             // 25% rooms has gold loot
             Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
 
@@ -1843,26 +1957,24 @@ namespace BloodSword::Rogue
                 image_location = Point(BloodSword::TileSize + BloodSword::Pad, BloodSword::TileSize + BloodSword::Pad);
             }
 
-            auto regenerate_scene = true;
-
-            auto refresh_image = false;
-
             auto scene = Scene::Base();
 
             auto done = false;
 
+            Rogue::Update update = {true, false, false};
+
             while (!done)
             {
-                if (refresh_image)
+                if (update.Party)
                 {
                     BloodSword::Free(&image);
 
                     image = Interface::GeneratePartyStats(graphics, rogue.Party, panel_w - BloodSword::LargePad);
 
-                    refresh_image = false;
+                    update.Party = false;
                 }
 
-                if (regenerate_scene)
+                if (update.Scene)
                 {
                     scene = Scene::Base();
 
@@ -1884,7 +1996,7 @@ namespace BloodSword::Rogue
                     // add battlepits to scene
                     Rogue::RenderBattlepits(scene, rogue, method);
 
-                    regenerate_scene = false;
+                    update.Scene = false;
                 }
 
                 auto input = Input::RogueInput(graphics, {scene});
@@ -1893,11 +2005,9 @@ namespace BloodSword::Rogue
                 {
                     if (input.Type == Controls::Type::MENU)
                     {
-                        done = Rogue::Menu(graphics, scene, rogue);
+                        update = Rogue::Menu(graphics, scene, rogue);
 
-                        regenerate_scene = true;
-
-                        refresh_image = true;
+                        done = update.Quit;
                     }
                     else if (input.Type == Controls::Type::UP)
                     {
@@ -1907,11 +2017,7 @@ namespace BloodSword::Rogue
                         {
                             point.Y--;
 
-                            auto result = Rogue::Actions(graphics, scene, rogue, point);
-
-                            regenerate_scene = result.Update;
-
-                            refresh_image = result.Refresh;
+                            update = Rogue::Actions(graphics, scene, rogue, point);
                         }
                     }
                     else if (input.Type == Controls::Type::DOWN)
@@ -1922,11 +2028,7 @@ namespace BloodSword::Rogue
                         {
                             point.Y++;
 
-                            auto result = Rogue::Actions(graphics, scene, rogue, point);
-
-                            regenerate_scene = result.Update;
-
-                            refresh_image = result.Refresh;
+                            update = Rogue::Actions(graphics, scene, rogue, point);
                         }
                     }
                     else if (input.Type == Controls::Type::LEFT)
@@ -1937,11 +2039,7 @@ namespace BloodSword::Rogue
                         {
                             point.X--;
 
-                            auto result = Rogue::Actions(graphics, scene, rogue, point);
-
-                            regenerate_scene = result.Update;
-
-                            refresh_image = result.Refresh;
+                            update = Rogue::Actions(graphics, scene, rogue, point);
                         }
                     }
                     else if (input.Type == Controls::Type::RIGHT)
@@ -1952,11 +2050,7 @@ namespace BloodSword::Rogue
                         {
                             point.X++;
 
-                            auto result = Rogue::Actions(graphics, scene, rogue, point);
-
-                            regenerate_scene = result.Update;
-
-                            refresh_image = result.Refresh;
+                            update = Rogue::Actions(graphics, scene, rogue, point);
                         }
                     }
                     else if (input.Type == Controls::Type::MAP)
