@@ -26,7 +26,7 @@ namespace BloodSword::Interface
 
             auto assets = Asset::List();
 
-            auto controls = Controls::Collection();
+            auto controls = Controls::List();
 
             auto captions = std::vector<std::string>();
 
@@ -523,7 +523,7 @@ namespace BloodSword::Interface
 
         auto assets = Asset::List();
 
-        auto controls = Controls::Collection();
+        auto controls = Controls::List();
 
         auto captions = std::vector<std::string>();
 
@@ -1093,7 +1093,7 @@ namespace BloodSword::Interface
             Asset::Type::STATUS,
             Asset::Type::BACK};
 
-        Controls::Collection controls = {
+        Controls::List controls = {
             Controls::Type::LEFT,
             Controls::Type::RIGHT,
             Controls::Type::ABOUT,

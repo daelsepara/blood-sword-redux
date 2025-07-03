@@ -1287,7 +1287,7 @@ namespace BloodSword::Interface
             "GAME",
             "EXIT"};
 
-        Controls::Collection caption_controls = {
+        Controls::List caption_controls = {
             Controls::Type::NEXT,
             Controls::Type::FIGHT,
             Controls::Type::ITEMS,

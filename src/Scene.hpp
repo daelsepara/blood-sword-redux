@@ -137,7 +137,7 @@ namespace BloodSword::Scene
         Scene::Elements Elements = {};
 
         // locations and dimensions of controls hitboxes associated with the scene lement
-        Controls::List Controls = {};
+        Controls::Collection Controls = {};
 
         // background color of the entire screen. set before rendering each element
         Uint32 Background = 0;
@@ -179,9 +179,9 @@ namespace BloodSword::Scene
             this->Controls.push_back(control);
         }
 
-        Base(Scene::Elements elements, Controls::List controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}
+        Base(Scene::Elements elements, Controls::Collection controls, Uint32 background) : Elements(elements), Controls(controls), Background(background) {}
 
-        Base(Scene::Elements elements, Controls::List controls) : Elements(elements), Controls(controls) {}
+        Base(Scene::Elements elements, Controls::Collection controls) : Elements(elements), Controls(controls) {}
 
         Base(Scene::Elements elements, Uint32 background) : Elements(elements), Background(background) {}
 

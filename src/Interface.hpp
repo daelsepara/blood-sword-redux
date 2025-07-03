@@ -1854,7 +1854,7 @@ namespace BloodSword::Interface
     }
 
     // add horizontal text menu to existing overlay
-    void HorizontalMenu(Scene::Base &overlay, BloodSword::Textures &choices, Controls::Collection controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
+    void HorizontalMenu(Scene::Base &overlay, BloodSword::Textures &choices, Controls::List controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
     {
         if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
         {
@@ -3780,7 +3780,7 @@ namespace BloodSword::Interface
             Asset::Type::CONFIRM,
             Asset::Type::BACK};
 
-        Controls::Collection controls = {
+        Controls::List controls = {
             Controls::Type::LEFT,
             Controls::Type::RIGHT,
             Controls::Type::ABOUT,
@@ -4333,7 +4333,7 @@ namespace BloodSword::Interface
         auto update = false;
 
         // set up overlay controls
-        auto controls = Controls::List();
+        auto controls = Controls::Collection();
 
         // button offset
         auto offset = BloodSword::TileSize + pad;
@@ -4847,7 +4847,7 @@ namespace BloodSword::Interface
     }
 
     // generate horizontal icon menu
-    Scene::Base IconList(Point origin, int w, int h, Asset::List assets, Controls::Collection controls, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, Controls::Type button, Asset::Type asset)
+    Scene::Base IconList(Point origin, int w, int h, Asset::List assets, Controls::List controls, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, Controls::Type button, Asset::Type asset)
     {
         auto overlay = Scene::Base();
 
@@ -4910,7 +4910,7 @@ namespace BloodSword::Interface
 
         auto selection = std::vector<bool>(assets.size());
 
-        auto controls = Controls::Collection(selection.size(), Controls::Type::SELECT);
+        auto controls = Controls::List(selection.size(), Controls::Type::SELECT);
 
         auto texture = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
@@ -7453,7 +7453,7 @@ namespace BloodSword::Interface
             Asset::Type::ABOUT,
             Asset::Type::BACK};
 
-        Controls::Collection controls = {
+        Controls::List controls = {
             Controls::Type::BATTLE_ORDER,
             Controls::Type::LOAD,
             Controls::Type::SAVE,

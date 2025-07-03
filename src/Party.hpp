@@ -938,6 +938,7 @@ namespace BloodSword::Party
             data["variables"] = variables;
         }
 
+        // rogue mode
         data["room"] = party.Room;
 
         data["x"] = party.X;

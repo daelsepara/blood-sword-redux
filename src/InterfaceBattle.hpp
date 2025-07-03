@@ -1132,7 +1132,7 @@ namespace BloodSword::Interface
                 "SPELLS",
                 "ITEMS"};
 
-            Controls::Collection caption_controls = {
+            Controls::List caption_controls = {
                 Controls::Type::EXIT,
                 Controls::Type::CENTER,
                 Controls::Type::MOVE,
@@ -1157,7 +1157,7 @@ namespace BloodSword::Interface
                 Asset::Type::SPELLS,
                 Asset::Type::ITEMS};
 
-            Controls::Collection action_controls = {
+            Controls::List action_controls = {
                 Controls::Type::MOVE,
                 Controls::Type::SHOOT,
                 Controls::Type::SHURIKEN,
@@ -1167,7 +1167,7 @@ namespace BloodSword::Interface
                 Controls::Type::ITEMS};
 
             // controls list
-            Controls::Collection battle_actions = {
+            Controls::List battle_actions = {
                 Controls::Type::MOVE,
                 Controls::Type::DEFEND,
                 Controls::Type::FIGHT,

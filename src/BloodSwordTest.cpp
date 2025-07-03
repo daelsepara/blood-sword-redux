@@ -58,7 +58,7 @@ namespace BloodSword::Test
         auto enchanter_sprite = Scene::Element(enchanter_text, x + ws * 4, y);
 
         // controls
-        Controls::List controls = {
+        Controls::Collection controls = {
             Controls::Base(Controls::Type::WARRIOR, 0, 0, 1, 0, 4, x, y, w, h, Color::Highlight),
             Controls::Base(Controls::Type::TRICKSTER, 1, 0, 2, 1, 5, x + w + s, y, w, h, Color::Highlight),
             Controls::Base(Controls::Type::SAGE, 2, 1, 3, 2, 6, x + ws * 2, y, w, h, Color::Highlight),

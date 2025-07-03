@@ -26,7 +26,7 @@ namespace BloodSword::Interface
         {Spells::Type::NIGHTHOWL, Character::Status::NIGHTHOWL}};
 
     // find map control
-    int Find(Map::Base &map, Controls::List &controls, Controls::Type type, int id)
+    int Find(Map::Base &map, Controls::Collection &controls, Controls::Type type, int id)
     {
         auto result = -1;
 
@@ -130,7 +130,7 @@ namespace BloodSword::Interface
     // setup overlay of battle actions
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size, bool ranged = false)
     {
-        Controls::Collection controls = {};
+        Controls::List controls = {};
 
         auto overlay = Scene::Base();
 
@@ -425,7 +425,7 @@ namespace BloodSword::Interface
     }
 
     // setup battle scene
-    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Scene::Elements &assets, Controls::List &controls, Point location)
+    Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Scene::Elements &assets, Controls::Collection &controls, Point location)
     {
         auto num = int(assets.size() == controls.size() ? controls.size() : 0);
 
@@ -454,7 +454,7 @@ namespace BloodSword::Interface
     {
         Scene::Elements assets = {};
 
-        Controls::List controls = {};
+        Controls::Collection controls = {};
 
         return Interface::BattleScene(battle, party, assets, controls, location);
     }
@@ -509,7 +509,7 @@ namespace BloodSword::Interface
 
         Asset::List asset_list = {Asset::Type::EXIT};
 
-        Controls::Collection controls_list = {Controls::Type::EXIT};
+        Controls::List controls_list = {Controls::Type::EXIT};
 
         if (battle.Map.ViewX < battle.Map.Width || battle.Map.ViewY < battle.Map.Height)
         {
@@ -600,7 +600,7 @@ namespace BloodSword::Interface
 
         Scene::Elements assets = {};
 
-        Controls::List controls = {};
+        Controls::Collection controls = {};
 
         for (auto i = 0; i < controls_list.size(); i++)
         {
@@ -925,7 +925,7 @@ namespace BloodSword::Interface
             Scene::Element(Asset::Get(Asset::Type::CONFIRM), location.X, location.Y + map_h),
             Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
-        Controls::List controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
+        Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
                                    Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
         auto input = Controls::User();
@@ -1125,7 +1125,7 @@ namespace BloodSword::Interface
             Scene::Element(Asset::Get(Asset::Type::CONFIRM), location.X, location.Y + map_h),
             Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
-        Controls::List controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
+        Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
                                    Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
         auto input = Controls::User();
@@ -1338,7 +1338,7 @@ namespace BloodSword::Interface
 
         Scene::Elements assets = {Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
-        Controls::List controls = {Controls::Base(Controls::Type::BACK, id, id, id, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+        Controls::Collection controls = {Controls::Base(Controls::Type::BACK, id, id, id, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
         auto input = Controls::User();
 

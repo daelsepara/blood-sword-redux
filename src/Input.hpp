@@ -115,7 +115,7 @@ namespace BloodSword::Input
     }
 
     // render all scenes while waiting for input
-    void RenderWhileWaiting(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true)
+    void RenderWhileWaiting(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::Collection &controls, Controls::User input, bool blur = true)
     {
         Graphics::Dialog(graphics, scenes, blur);
 
@@ -149,7 +149,7 @@ namespace BloodSword::Input
         SDL_StopTextInput();
     }
 
-    Controls::User WaitForText(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForText(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::Collection &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         Input::RenderWhileWaiting(graphics, scenes, controls, input, blur);
 
@@ -236,7 +236,7 @@ namespace BloodSword::Input
     }
 
     // render all scenes and wait for input from specified controls set
-    Controls::User WaitForInput(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
+    Controls::User WaitForInput(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::Collection &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         if (input.Text)
         {
@@ -332,6 +332,51 @@ namespace BloodSword::Input
                     Sound::Play(Sound::Type::BUTTON_CLICK);
 
                     input.Selected = true;
+                }
+                else if (result.key.keysym.sym == SDLK_ESCAPE)
+                {
+                    auto escape = Controls::Find(controls, Controls::Type::BACK);
+
+                    auto cancel = Controls::Find(controls, Controls::Type::CANCEL);
+
+                    auto exit = Controls::Find(controls, Controls::Type::EXIT);
+
+                    auto confirm = Controls::Find(controls, Controls::Type::CONFIRM);
+
+                    if (escape != -1)
+                    {
+                        input.Current = escape;
+                    }
+                    else if (cancel != -1)
+                    {
+                        input.Current = cancel;
+                    }
+                    else if (exit != -1)
+                    {
+                        input.Current = exit;
+                    }
+                    else if (confirm != -1 && escape == -1 && cancel == -1 && exit == -1)
+                    {
+                        input.Current = confirm;
+                    }
+
+                    if (escape != -1 || cancel != -1 || exit != -1 || confirm != -1)
+                    {
+                        input.Selected = true;
+                    }
+                }
+                else if (result.key.keysym.sym == SDLK_y || result.key.keysym.sym == SDLK_n)
+                {
+                    auto confirm = Controls::Find(controls, Controls::Type::CONFIRM);
+
+                    auto cancel = Controls::Find(controls, Controls::Type::CANCEL);
+
+                    if (confirm != -1 && cancel != -1)
+                    {
+                        input.Current = result.key.keysym.sym == SDLK_y ? confirm : cancel;
+
+                        input.Selected = true;
+                    }
                 }
             }
         }
@@ -671,7 +716,7 @@ namespace BloodSword::Input
     }
 
     // check if user input is valid
-    bool IsValid(Controls::List &controls, Controls::User &input)
+    bool IsValid(Controls::Collection &controls, Controls::User &input)
     {
         return (input.Current >= 0 && input.Current < controls.size());
     }

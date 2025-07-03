@@ -327,7 +327,7 @@ namespace BloodSword::Interface
 
         auto assets = Asset::List();
 
-        auto controls = Controls::Collection();
+        auto controls = Controls::List();
 
         auto captions = std::vector<std::string>();
 

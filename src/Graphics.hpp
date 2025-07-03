@@ -495,7 +495,7 @@ namespace BloodSword::Graphics
     }
 
     // render controls
-    void Render(Graphics::Base &graphics, Controls::List &controls, Controls::User input)
+    void Render(Graphics::Base &graphics, Controls::Collection &controls, Controls::User input)
     {
         for (auto &control : controls)
         {
@@ -516,7 +516,7 @@ namespace BloodSword::Graphics
         Graphics::Render(graphics, scene.Controls, input);
     }
 
-    void Render(Base &graphics, Graphics::Scenery scenes, Controls::List &controls, Controls::User input)
+    void Render(Base &graphics, Graphics::Scenery scenes, Controls::Collection &controls, Controls::User input)
     {
         if (graphics.Renderer && scenes.size() > 0)
         {

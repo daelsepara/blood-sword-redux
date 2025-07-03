@@ -87,6 +87,23 @@ namespace BloodSword::Rogue
         return found;
     }
 
+    int FindOpponents(Rogue::Base &rogue, int room)
+    {
+        auto found = -1;
+
+        for (auto opponent = 0; opponent < rogue.Opponents.size(); opponent++)
+        {
+            if (rogue.Opponents[opponent].Room == room)
+            {
+                found = opponent;
+
+                break;
+            }
+        }
+
+        return found;
+    }
+
     void GenerateBattlepits(Rogue::Base &rogue, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
     {
         rogue.Battlepits = Map::Base(width, height);
@@ -343,7 +360,7 @@ namespace BloodSword::Rogue
 
         auto assets = Asset::List();
 
-        auto controls = Controls::Collection();
+        auto controls = Controls::List();
 
         auto captions = std::vector<std::string>();
 
@@ -716,7 +733,7 @@ namespace BloodSword::Rogue
         {
             auto assets = Asset::List();
 
-            auto controls = Controls::Collection();
+            auto controls = Controls::List();
 
             auto captions = std::vector<std::string>();
 
@@ -1331,7 +1348,7 @@ namespace BloodSword::Rogue
             Asset::Type::STATUS,
             Asset::Type::BACK};
 
-        Controls::Collection controls = {
+        Controls::List controls = {
             Controls::Type::LEFT,
             Controls::Type::RIGHT,
             Controls::Type::ABOUT,
@@ -1573,7 +1590,7 @@ namespace BloodSword::Rogue
 
     bool SetBattleOrder(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
-        auto done = false;
+        auto update = false;
 
         if (Engine::IsAlive(party))
         {
@@ -1581,7 +1598,7 @@ namespace BloodSword::Rogue
             {
                 Interface::BattleOrder(graphics, background, party);
 
-                done = true;
+                update = true;
             }
             else
             {
@@ -1593,7 +1610,7 @@ namespace BloodSword::Rogue
             Interface::ErrorMessage(graphics, background, Interface::MSG_OVER);
         }
 
-        return done;
+        return update;
     }
 
     struct Update
@@ -1621,7 +1638,7 @@ namespace BloodSword::Rogue
             Asset::Type::EXIT,
             Asset::Type::BACK};
 
-        Controls::Collection controls = {
+        Controls::List controls = {
             Controls::Type::PARTY,
             Controls::Type::MAP,
             Controls::Type::BATTLE_ORDER,
@@ -1800,6 +1817,8 @@ namespace BloodSword::Rogue
 
             monsters.Y = center.Y;
 
+            monsters.Room = room;
+
             rogue.Opponents.push_back(monsters);
 
             rogue.Battlepits[center].Occupant = Map::Object::ENEMIES;
@@ -1871,15 +1890,18 @@ namespace BloodSword::Rogue
         return result;
     }
 
-    void Game(Graphics::Base &graphics, Party::Base &party)
+    void Game(Graphics::Base &graphics)
     {
+        // generate battlepits
         auto rogue = Rogue::GenerateBattlepits(50, 50, 100, 5, 7, false);
 
+        // set FOV algorithm
         auto method = FieldOfView::Map(Engine::ToUpper(Interface::Settings["fov"]));
 
-        rogue.Party = party;
+        // create party
+        rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);
 
-        if (rogue.Rooms.size() > 0)
+        if (rogue.Rooms.size() > 0 && rogue.Party.Count() > 0)
         {
             // 50% rooms has monsters
             Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2, 4, 6);
@@ -1932,6 +1954,8 @@ namespace BloodSword::Rogue
 
                     image = Interface::GeneratePartyStats(graphics, rogue.Party, panel_w - BloodSword::LargePad);
 
+                    update.Scene = true;
+
                     update.Party = false;
                 }
 
@@ -1964,6 +1988,8 @@ namespace BloodSword::Rogue
 
                 if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                 {
+                    auto point = rogue.Party.Origin();
+
                     if (input.Type == Controls::Type::MENU)
                     {
                         update = Rogue::Menu(graphics, scene, rogue);
@@ -1972,8 +1998,6 @@ namespace BloodSword::Rogue
                     }
                     else if (input.Type == Controls::Type::UP)
                     {
-                        auto point = rogue.Party.Origin();
-
                         if (point.Y > 0)
                         {
                             point.Y--;
@@ -1983,8 +2007,6 @@ namespace BloodSword::Rogue
                     }
                     else if (input.Type == Controls::Type::DOWN)
                     {
-                        auto point = rogue.Party.Origin();
-
                         if (point.Y < rogue.Battlepits.Height - 1)
                         {
                             point.Y++;
@@ -1994,8 +2016,6 @@ namespace BloodSword::Rogue
                     }
                     else if (input.Type == Controls::Type::LEFT)
                     {
-                        auto point = rogue.Party.Origin();
-
                         if (point.X > 0)
                         {
                             point.X--;
@@ -2005,8 +2025,6 @@ namespace BloodSword::Rogue
                     }
                     else if (input.Type == Controls::Type::RIGHT)
                     {
-                        auto point = rogue.Party.Origin();
-
                         if (point.X < rogue.Battlepits.Width - 1)
                         {
                             point.X++;
@@ -2023,10 +2041,12 @@ namespace BloodSword::Rogue
                         auto first = std::max(0, Engine::First(rogue.Party));
 
                         Rogue::PartyInformation(graphics, scene, rogue, first);
+
+                        update.Party = true;
                     }
                     else if (input.Type == Controls::Type::BATTLE_ORDER)
                     {
-                        Rogue::SetBattleOrder(graphics, scene, party);
+                        update.Party = Rogue::SetBattleOrder(graphics, scene, rogue.Party);
                     }
                     else if (input.Type == Controls::Type::EXIT)
                     {

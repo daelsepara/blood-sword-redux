@@ -15,12 +15,7 @@ namespace BloodSword::BloodSwordRogue
         {
             system.Initialize("BloodSword: Rogue");
 
-            auto party = Interface::CreateParty(system.graphics, {8, 4, 3, 2}, false);
-
-            if (party.Count() > 0)
-            {
-                Rogue::Game(system.graphics, party);
-            }
+            Rogue::Game(system.graphics);
         }
         catch (std::exception &e)
         {

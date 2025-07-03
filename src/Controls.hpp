@@ -173,10 +173,10 @@ namespace BloodSword::Controls
         }
     };
 
-    typedef std::vector<Controls::Base> List;
+    typedef std::vector<Controls::Base> Collection;
 
     // find if control is present in the list
-    int Find(Controls::List &controls, Controls::Type type)
+    int Find(Controls::Collection &controls, Controls::Type type)
     {
         auto result = -1;
 
@@ -193,7 +193,7 @@ namespace BloodSword::Controls
         return result;
     }
 
-    int Find(Controls::Collection &controls, Controls::Type type)
+    int Find(Controls::List &controls, Controls::Type type)
     {
         auto result = -1;
 
@@ -210,7 +210,7 @@ namespace BloodSword::Controls
         return result;
     }
 
-    void Select(Controls::User &input, Controls::List &controls, Controls::Type control)
+    void Select(Controls::User &input, Controls::Collection &controls, Controls::Type control)
     {
         input.Current = Controls::Find(controls, control);
 
@@ -222,7 +222,7 @@ namespace BloodSword::Controls
         input.Selected = false;
     }
 
-    void Select(Controls::User &input, Controls::Collection &controls, Controls::Type control)
+    void Select(Controls::User &input, Controls::List &controls, Controls::Type control)
     {
         input.Current = Controls::Find(controls, control);
 

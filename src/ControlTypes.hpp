@@ -113,9 +113,9 @@ namespace BloodSword::Controls
         ACTION
     };
 
-    typedef std::vector<Controls::Type> Collection;
+    typedef std::vector<Controls::Type> List;
 
-    Controls::Collection Spells = {
+    Controls::List Spells = {
         Controls::Type::VOLCANO_SPRAY,
         Controls::Type::NIGHTHOWL,
         Controls::Type::WHITE_FIRE,
@@ -145,7 +145,7 @@ namespace BloodSword::Controls
         {Controls::Type::ITEMS, "ITEMS"},
         {Controls::Type::STEEL_SCEPTRE, "STEEL SCEPTRE"}};
 
-    Controls::Collection Players = {
+    Controls::List Players = {
         Controls::Type::WARRIOR,
         Controls::Type::TRICKSTER,
         Controls::Type::SAGE,
