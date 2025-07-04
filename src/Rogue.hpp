@@ -1979,6 +1979,25 @@ namespace BloodSword::Rogue
             // events loop
             if (events)
             {
+                if (rogue.Party.Room != Room::None)
+                {
+                    auto enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
+
+                    if (enemy >= 0 && enemy < rogue.Opponents.size())
+                    {
+                        auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
+
+                        if (distance > 1)
+                        {
+                            // move or shoot at party
+                        }
+                        else
+                        {
+                            // engage in melee combat
+                        }
+                    }
+                }
+
                 // enemy movement, ranged and magic attacks
                 events = false;
             }
