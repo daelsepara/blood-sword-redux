@@ -53,13 +53,13 @@ namespace BloodSword::Map
         // tile is occupied by an enemy
         bool IsEnemy()
         {
-            return this->Occupant == Map::Object::ENEMY;
+            return this->Occupant == Map::Object::ENEMY || this->Occupant == Map::Object::ENEMIES;
         }
 
         // tile is occupied by a player
         bool IsPlayer()
         {
-            return this->Occupant == Map::Object::PLAYER;
+            return this->Occupant == Map::Object::PLAYER || this->Occupant == Map::Object::PARTY;
         }
 
         // tile is an exit point, e.g. stairs, door

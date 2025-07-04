@@ -219,7 +219,19 @@ namespace BloodSword::Battlepits
 
                 map[point].Type = Map::Object::NONE;
 
+                map[point].Occupant = Map::Object::NONE;
+
+                map[point].Explored = false;
+
                 map[point].Asset = asset;
+
+                map[point].TemporaryAsset = Asset::Type::NONE;
+
+                map[point].Lifetime = Map::Unlimited;
+
+                map[point].Room = Room::None;
+
+                map[point].Id = Map::NotFound;
             }
         }
     }

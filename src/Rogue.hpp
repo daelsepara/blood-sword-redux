@@ -1890,103 +1890,104 @@ namespace BloodSword::Rogue
         return result;
     }
 
-    void Game(Graphics::Base &graphics)
+    // main game loop
+    void Main(Graphics::Base &graphics, Rogue::Base &rogue)
     {
-        // generate battlepits
-        auto rogue = Rogue::GenerateBattlepits(50, 50, 100, 5, 7, false);
-
         // set FOV algorithm
         auto method = FieldOfView::Map(Engine::ToUpper(Interface::Settings["fov"]));
 
-        // create party
-        rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);
+        // determine panel dimensions and locations
+        auto panel_w = (graphics.Width - BloodSword::TileSize * 3) / 2;
 
-        if (rogue.Rooms.size() > 0 && rogue.Party.Count() > 0)
+        auto panel_h = (graphics.Height - BloodSword::TileSize * 2);
+
+        rogue.Battlepits.ViewX = panel_w / rogue.Battlepits.TileSize;
+
+        rogue.Battlepits.ViewY = panel_h / rogue.Battlepits.TileSize;
+
+        auto offset_x = (panel_w - rogue.Battlepits.ViewX * rogue.Battlepits.TileSize) / 2;
+
+        auto offset_y = (panel_h - rogue.Battlepits.ViewY * rogue.Battlepits.TileSize) / 2;
+
+        rogue.Battlepits.DrawX = (BloodSword::TileSize * 2 + panel_w + offset_x);
+
+        rogue.Battlepits.DrawY = (BloodSword::TileSize + offset_y);
+
+        // generate initial party stats image
+        auto image = Interface::GeneratePartyStats(graphics, rogue.Party, panel_w - BloodSword::LargePad);
+
+        auto image_location = Point(BloodSword::TileSize + BloodSword::Pad, BloodSword::TileSize + BloodSword::Pad);
+
+        if (image)
         {
-            // 50% rooms has monsters
-            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2, 4, 6);
+            image_location = Point(BloodSword::TileSize + BloodSword::Pad, BloodSword::TileSize + BloodSword::Pad);
+        }
 
-            // 25% rooms has gold loot
-            Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
+        // start with a blank scene
+        Rogue::Update update = {true, false, false};
 
-            auto center = rogue.Rooms[0].Center();
+        auto scene = Scene::Base();
 
-            rogue.Party.X = center.X;
+        // animation
+        auto movement = Animation::Base();
 
-            rogue.Party.Y = center.Y;
+        auto animating = false;
 
-            auto panel_w = (graphics.Width - BloodSword::TileSize * 3) / 2;
+        auto done = false;
 
-            auto panel_h = (graphics.Height - BloodSword::TileSize * 2);
+        // moves
+        auto events = true;
 
-            rogue.Battlepits.ViewX = panel_w / rogue.Battlepits.TileSize;
-
-            rogue.Battlepits.ViewY = panel_h / rogue.Battlepits.TileSize;
-
-            auto offset_x = (panel_w - rogue.Battlepits.ViewX * rogue.Battlepits.TileSize) / 2;
-
-            auto offset_y = (panel_h - rogue.Battlepits.ViewY * rogue.Battlepits.TileSize) / 2;
-
-            rogue.Battlepits.DrawX = (BloodSword::TileSize * 2 + panel_w + offset_x);
-
-            rogue.Battlepits.DrawY = (BloodSword::TileSize + offset_y);
-
-            auto image_location = Point(BloodSword::TileSize + BloodSword::Pad, BloodSword::TileSize + BloodSword::Pad);
-
-            auto image = Interface::GeneratePartyStats(graphics, rogue.Party, panel_w - BloodSword::LargePad);
-
-            if (image)
+        while (!done)
+        {
+            if (update.Party)
             {
-                image_location = Point(BloodSword::TileSize + BloodSword::Pad, BloodSword::TileSize + BloodSword::Pad);
+                BloodSword::Free(&image);
+
+                image = Interface::GeneratePartyStats(graphics, rogue.Party, panel_w - BloodSword::LargePad);
+
+                update.Scene = true;
+
+                update.Party = false;
             }
 
-            auto scene = Scene::Base();
-
-            auto done = false;
-
-            Rogue::Update update = {true, false, false};
-
-            while (!done)
+            if (update.Scene || animating)
             {
-                if (update.Party)
+                scene = Scene::Base();
+
+                // left panel border
+                scene.Add(Scene::Element(BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+
+                if (image)
                 {
-                    BloodSword::Free(&image);
-
-                    image = Interface::GeneratePartyStats(graphics, rogue.Party, panel_w - BloodSword::LargePad);
-
-                    update.Scene = true;
-
-                    update.Party = false;
+                    // add left panel
+                    scene.VerifyAndAdd(Scene::Element(image, image_location));
                 }
 
-                if (update.Scene)
-                {
-                    scene = Scene::Base();
+                // map battlepits panel border
+                scene.Add(Scene::Element(BloodSword::TileSize + panel_w + BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
 
-                    // left panel border
-                    scene.Add(Scene::Element(BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+                // center battlepits to party's location
+                Rogue::Center(rogue, Map::Object::PARTY, Map::Party);
 
-                    if (image)
-                    {
-                        // add left panel
-                        scene.VerifyAndAdd(Scene::Element(image, image_location));
-                    }
+                // add battlepits to scene
+                Rogue::RenderBattlepits(scene, rogue, method, !animating);
 
-                    // map battlepits panel border
-                    scene.Add(Scene::Element(BloodSword::TileSize + panel_w + BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+                update.Scene = false;
+            }
 
-                    // center battlepits to party's location
-                    Rogue::Center(rogue, Map::Object::PARTY, Map::Party);
+            // events loop
+            if (events)
+            {
+                // enemy movement, ranged and magic attacks
+                events = false;
+            }
 
-                    // add battlepits to scene
-                    Rogue::RenderBattlepits(scene, rogue, method);
-
-                    update.Scene = false;
-                }
-
+            if (!animating)
+            {
                 auto input = Input::RogueInput(graphics, {scene});
 
-                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold && !events)
                 {
                     auto point = rogue.Party.Origin();
 
@@ -2056,8 +2057,36 @@ namespace BloodSword::Rogue
                     input.Selected = false;
                 }
             }
+        }
 
-            BloodSword::Free(&image);
+        BloodSword::Free(&image);
+    }
+
+    void Game(Graphics::Base &graphics)
+    {
+        // generate battlepits
+        auto rogue = Rogue::GenerateBattlepits(50, 50, 100, 5, 7, false);
+
+        // create party
+        rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);
+
+        if (rogue.Rooms.size() > 0 && rogue.Party.Count() > 0)
+        {
+            // 50% rooms has monsters
+            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2, 4, 6);
+
+            // 25% rooms has gold loot
+            Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
+
+            // place party at the center of the starting room
+            auto center = rogue.Rooms[0].Center();
+
+            rogue.Party.X = center.X;
+
+            rogue.Party.Y = center.Y;
+
+            // run main game loop
+            Rogue::Main(graphics, rogue);
         }
     }
 }
