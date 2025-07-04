@@ -1979,7 +1979,8 @@ namespace BloodSword::Rogue
             // events loop
             if (events)
             {
-                if (rogue.Party.Room != Room::None)
+                // enemy movement, ranged and magic attacks
+                if (rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
                 {
                     auto enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
 
@@ -1998,7 +1999,6 @@ namespace BloodSword::Rogue
                     }
                 }
 
-                // enemy movement, ranged and magic attacks
                 events = false;
             }
 
