@@ -403,6 +403,17 @@ namespace BloodSword::Party
             }
         }
 
+        void Add(std::vector<Character::Status> statuses)
+        {
+            for (auto i = 0; i < this->Count(); i++)
+            {
+                for (auto status : statuses)
+                {
+                    this->Members[i].Add(status);
+                }
+            }
+        }
+
         // remove status from the entire party
         void Remove(Character::Status status)
         {

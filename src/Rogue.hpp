@@ -1,109 +1,12 @@
 #ifndef __ROGUE_HPP__
 #define __ROGUE_HPP__
 
-#include "Battlepits.hpp"
-#include "InterfaceInventory.hpp"
+#include "RogueBase.hpp"
+#include "RogueBattle.hpp"
 
 // classes and functions to enable rogue-like game mode
 namespace BloodSword::Rogue
 {
-    class Loot
-    {
-    public:
-        // location in battlepits
-        int X = -1;
-
-        int Y = -1;
-
-        // items in this location
-        Items::Inventory Items = {};
-
-        Point Location()
-        {
-            return Point(X, Y);
-        }
-
-        Loot() {}
-
-        Loot(int x, int y) : X(x), Y(y) {}
-
-        Loot(Point point) : X(point.X), Y(point.Y) {}
-    };
-
-    class Base
-    {
-    public:
-        // battlepits
-        Map::Base Battlepits;
-
-        // rooms generated in battlepits map
-        std::vector<Room::Base> Rooms = {};
-
-        // groups of enemies in battlepits
-        std::vector<Party::Base> Opponents = {};
-
-        // groups of items in battlepits
-        std::vector<Rogue::Loot> Loot = {};
-
-        // player party adventuring in battlepits
-        Party::Base Party;
-
-        Base() {}
-    };
-
-    int FindLoot(Rogue::Base &rogue, Point point)
-    {
-        auto &Loot = rogue.Loot;
-
-        auto found = -1;
-
-        for (auto loot = 0; loot < Loot.size(); loot++)
-        {
-            if (Loot[loot].Location() == point)
-            {
-                found = loot;
-
-                break;
-            }
-        }
-
-        return found;
-    }
-
-    int FindOpponents(Rogue::Base &rogue, Point point)
-    {
-        auto found = -1;
-
-        for (auto opponent = 0; opponent < rogue.Opponents.size(); opponent++)
-        {
-            if (rogue.Opponents[opponent].Origin() == point)
-            {
-                found = opponent;
-
-                break;
-            }
-        }
-
-        return found;
-    }
-
-    int FindOpponents(Rogue::Base &rogue, int room)
-    {
-        auto found = -1;
-
-        for (auto opponent = 0; opponent < rogue.Opponents.size(); opponent++)
-        {
-            if (rogue.Opponents[opponent].Room == room)
-            {
-                found = opponent;
-
-                break;
-            }
-        }
-
-        return found;
-    }
-
     void GenerateBattlepits(Rogue::Base &rogue, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
     {
         rogue.Battlepits = Map::Base(width, height);
@@ -1664,15 +1567,6 @@ namespace BloodSword::Rogue
         return update;
     }
 
-    struct Update
-    {
-        bool Scene = false;
-
-        bool Party = false;
-
-        bool Quit = false;
-    };
-
     Rogue::Update Menu(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
     {
         Rogue::Update update = {false, false, false};
@@ -1903,6 +1797,19 @@ namespace BloodSword::Rogue
                 update.Scene = true;
 
                 update.Party = true;
+            }
+            else if (tile.Occupant == Map::Object::ENEMIES)
+            {
+                auto enemy = Rogue::FindOpponents(rogue, point);
+
+                if (enemy >= 0 && enemy < rogue.Opponents.size())
+                {
+                    Rogue::Battle(graphics, background, rogue, enemy);
+
+                    update.Scene = true;
+
+                    update.Party = true;
+                }
             }
             else
             {
@@ -2184,7 +2091,7 @@ namespace BloodSword::Rogue
         if (rogue.Rooms.size() > 0 && rogue.Party.Count() > 0)
         {
             // 50% rooms has monsters
-            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2, 4, 6);
+            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2, 3, 5);
 
             // 25% rooms has gold loot
             Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
