@@ -567,9 +567,9 @@ namespace BloodSword::Rogue
                             {
                                 Rogue::Move(character, Character::Status::MELEE);
 
-                                Rogue::RefreshStats(graphics, enemy_stats, character, character_id, stats_w);
-
                                 Interface::FlashMessage(graphics, scene, character.Name + " MOVES TO MELEE RANGE", Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
+
+                                Rogue::RefreshStats(graphics, enemy_stats, character, character_id, stats_w);
                             }
                         }
 
