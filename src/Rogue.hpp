@@ -2065,7 +2065,7 @@ namespace BloodSword::Rogue
     void Game(Graphics::Base &graphics)
     {
         // generate battlepits
-        auto rogue = Rogue::GenerateBattlepits(50, 50, 100, 5, 7, false);
+        auto rogue = Rogue::GenerateBattlepits(50, 100, 100, 5, 7, false);
 
         // create party
         rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);
