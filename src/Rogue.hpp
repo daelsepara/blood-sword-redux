@@ -1806,7 +1806,7 @@ namespace BloodSword::Rogue
 
                     if (!Engine::IsAlive(rogue.Party))
                     {
-                        Interface::FlashMessage(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Background, Color::Highlight, BloodSword::Border, BloodSword::OneSecond * 4);
+                        Interface::MessageBox(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
 
                         update.Quit = true;
                     }
@@ -2005,7 +2005,7 @@ namespace BloodSword::Rogue
 
                         if (!Engine::IsAlive(rogue.Party))
                         {
-                            Interface::FlashMessage(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Background, Color::Highlight, BloodSword::Border, BloodSword::OneSecond * 4);
+                            Interface::MessageBox(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
 
                             done = true;
                         }
