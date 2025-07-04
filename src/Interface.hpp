@@ -2175,11 +2175,10 @@ namespace BloodSword::Interface
         return Interface::CharacterList(origin, w, h, party, popup_w, popup_h, background, border, border_size, back);
     }
 
-    // setup movement animation
-    Animation::Base Movement(Map::Base &map, Character::Base &character, Points path, Point start)
+    Animation::Base Movement(Map::Base &map, Points path, Point start, Asset::Type asset)
     {
         auto movement = Animation::Base(
-            {Animation::Frame(Asset::Get(character.Asset))},
+            {Animation::Frame(Asset::Get(asset))},
             {Animation::Type::MOVE},
             path,
             1,
@@ -2201,6 +2200,12 @@ namespace BloodSword::Interface
         movement.ClipH = map.ViewY * map.TileSize;
 
         return movement;
+    }
+
+    // setup movement animation
+    Animation::Base Movement(Map::Base &map, Character::Base &character, Points path, Point start)
+    {
+        return Interface::Movement(map, path, start, character.Asset);
     }
 
     // setup movement animation

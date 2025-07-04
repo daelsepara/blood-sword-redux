@@ -320,6 +320,11 @@ namespace BloodSword::Move
         return count;
     }
 
+    int Count(Map::Base &map, Move::Path &path)
+    {
+        return Move::Count(map, path, false);
+    }
+
     // check if src is not blocked
     bool Available(Map::Base &map, Point src)
     {

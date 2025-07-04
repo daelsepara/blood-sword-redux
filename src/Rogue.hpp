@@ -321,6 +321,57 @@ namespace BloodSword::Rogue
         rogue.Battlepits.CheckBounds();
     }
 
+    // setup movement animation for enemy parties
+    bool Move(Rogue::Base &rogue, Animation::Base &movement, Point start, Point end)
+    {
+        auto &map = rogue.Battlepits;
+
+        auto moving = false;
+
+        // find a direct path to the destination
+        auto path = Move::FindPath(map, start, end);
+
+        auto closer = false;
+
+        if (path.Points.size() == 0)
+        {
+            // move closer to target
+            path = Move::FindPath(map, start, path.Closest);
+
+            closer = true;
+        }
+
+        // add extra move if enemy is trying to close distance
+        auto valid = Move::Count(map, path) + (closer ? 1 : 0);
+
+        if (valid > 0)
+        {
+            auto group = Rogue::FindOpponents(rogue, start);
+
+            map.Put(start, Map::Object::NONE, -1);
+
+            auto first = path.Points.begin();
+
+            // add destination to the count
+            auto moves = std::min(valid, 1000);
+
+            if (group >= 0 && group < rogue.Opponents.size())
+            {
+                auto character = Engine::First(rogue.Opponents[group]);
+
+                if (character >= 0 && character < rogue.Opponents[group].Count())
+                {
+                    // setup animation
+                    movement = Interface::Movement(map, Points(first, first + moves), start, rogue.Opponents[group][character].Asset);
+
+                    moving = true;
+                }
+            }
+        }
+
+        return moving;
+    }
+
     bool Move(Rogue::Base &rogue, Point point)
     {
         auto moved = !Rogue::Blocked(rogue, point);
@@ -1786,7 +1837,7 @@ namespace BloodSword::Rogue
             auto room = -1;
 
             // look for un-occupied room
-            while (center.IsNone() || room == -1 || rogue.Battlepits[center].IsOccupied())
+            while (center.IsNone() || room == Room::None || rogue.Battlepits[center].IsOccupied())
             {
                 room = Engine::Percentile.NextInt(1, rogue.Rooms.size() - 2);
 
@@ -1935,8 +1986,9 @@ namespace BloodSword::Rogue
 
         auto done = false;
 
-        // moves
         auto events = true;
+
+        auto enemy = -1;
 
         while (!done)
         {
@@ -1976,26 +2028,47 @@ namespace BloodSword::Rogue
                 update.Scene = false;
             }
 
-            // events loop
-            if (events)
+            if (animating)
             {
-                // enemy movement, ranged and magic attacks
-                if (rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
+                animating = !Graphics::Animate(graphics, scene, movement, BloodSword::FrameDelay);
+
+                if (!animating)
                 {
-                    auto enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
+                    rogue.Opponents[enemy].X = movement.Current.X;
 
-                    if (enemy >= 0 && enemy < rogue.Opponents.size())
+                    rogue.Opponents[enemy].Y = movement.Current.Y;
+
+                    movement = Animation::Base();
+
+                    rogue.Battlepits.Put(movement.Current, Map::Object::ENEMIES, -1);
+
+                    enemy = -1;
+
+                    update.Scene = true;
+
+                    Input::Flush();
+
+                    continue;
+                }
+            }
+
+            // enemy movement, ranged and magic attacks
+            if (events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
+            {
+                enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
+
+                if (enemy >= 0 && enemy < rogue.Opponents.size())
+                {
+                    auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
+
+                    if (distance > 1)
                     {
-                        auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
-
-                        if (distance > 1)
-                        {
-                            // move or shoot at party
-                        }
-                        else
-                        {
-                            // engage in melee combat
-                        }
+                        // move or shoot at party
+                        animating = Rogue::Move(rogue, movement, rogue.Opponents[enemy].Origin(), rogue.Party.Origin());
+                    }
+                    else
+                    {
+                        // engage in melee combat
                     }
                 }
 
@@ -2006,7 +2079,9 @@ namespace BloodSword::Rogue
             {
                 auto input = Input::RogueInput(graphics, {scene});
 
-                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold && !events)
+                auto prev = rogue.Party.Origin();
+
+                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                 {
                     auto point = rogue.Party.Origin();
 
@@ -2071,6 +2146,12 @@ namespace BloodSword::Rogue
                     else if (input.Type == Controls::Type::EXIT)
                     {
                         done = Interface::Confirm(graphics, scene, "ARE YOU SURE?", Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
+                    }
+
+                    // trigger event on movement
+                    if (prev != rogue.Party.Origin())
+                    {
+                        events = true;
                     }
 
                     input.Selected = false;
