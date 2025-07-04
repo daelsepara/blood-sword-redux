@@ -223,7 +223,7 @@ namespace BloodSword::Rogue
 
             if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::RANGED, false))
             {
-                auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
+                auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR), false);
 
                 if (hit > 0 && defender.Has(Character::Status::TEMPORARY_INVULNERABILITY))
                 {
@@ -275,6 +275,13 @@ namespace BloodSword::Rogue
             else if (attacker.IsArmed(Item::Type::MAGIC_BOW, Item::Requirements(Item::Type::MAGIC_BOW, true)))
             {
                 attacker.Remove(Item::Requirements(Item::Type::MAGIC_BOW, true), 1);
+            }
+        }
+        else if (Engine::CanShoot(attacker) && attacker.Shoot == Skills::Type::SHURIKEN)
+        {
+            if (attacker.IsArmed(Item::Type::LIMITED_SHURIKEN, Item::Requirements(Item::Type::LIMITED_SHURIKEN, true)))
+            {
+                attacker.Remove(Item::Requirements(Item::Type::LIMITED_SHURIKEN, true), 1);
             }
         }
 
@@ -332,7 +339,7 @@ namespace BloodSword::Rogue
 
             if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::PRIMARY, false))
             {
-                auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR));
+                auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR), false);
 
                 if (attacker.Has(Character::Status::STRONG))
                 {
@@ -433,6 +440,14 @@ namespace BloodSword::Rogue
 
         auto texture = Graphics::CreateText(graphics, "SELECT TARGET", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
+        auto done = false;
+
+        auto input = Controls::User();
+
+        while (!done)
+        {
+        }
+
         BloodSword::Free(&texture);
 
         return target;
@@ -505,7 +520,7 @@ namespace BloodSword::Rogue
 
                         if (has_actions)
                         {
-                            if (character.Has(Character::Status::MELEE) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::MELEE) > 0)
+                            if (character.Has(Character::Status::MELEE))
                             {
                                 auto targets = Engine::Build(party, Attribute::Type::ENDURANCE, true, true);
 
@@ -514,6 +529,15 @@ namespace BloodSword::Rogue
                                     auto defender_id = targets[0].Id;
 
                                     auto &defender = ((targets[0].Type == Character::ControlType::PLAYER) ? party[defender_id] : enemies[defender_id]);
+
+                                    if (defender.Has(Character::Status::MELEE))
+                                    {
+                                        Interface::FlashMessage(graphics, scene, character.Name + " ATTACKS " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
+                                    }
+                                    else if (defender.Has(Character::Status::RANGED))
+                                    {
+                                        Interface::FlashMessage(graphics, scene, character.Name + " RUSHES TO ATTACK " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
+                                    }
 
                                     Rogue::Fight(graphics, scene, character, defender, character.Fight);
 
@@ -532,6 +556,8 @@ namespace BloodSword::Rogue
 
                                     auto &defender = ((targets[0].Type == Character::ControlType::PLAYER) ? party[defender_id] : enemies[defender_id]);
 
+                                    Interface::FlashMessage(graphics, scene, character.Name + " SHOOTS AT " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
+
                                     Rogue::Shoot(graphics, scene, character, defender, defender_id);
 
                                     Rogue::RefreshStats(graphics, party_stats, defender, defender_id, stats_w);
@@ -542,6 +568,8 @@ namespace BloodSword::Rogue
                                 Rogue::Move(character, Character::Status::MELEE);
 
                                 Rogue::RefreshStats(graphics, enemy_stats, character, character_id, stats_w);
+
+                                Interface::FlashMessage(graphics, scene, character.Name + " MOVES TO MELEE RANGE", Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
                             }
                         }
 

@@ -394,6 +394,40 @@ namespace BloodSword::Interface
         Interface::LoadSettings(graphics, settings_file);
     }
 
+    void FlashMessage(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 background, Uint32 border, int border_size, int delay = BloodSword::StandardDelay)
+    {
+        auto texture = Graphics::CreateText(graphics, message.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+
+        if (texture)
+        {
+            auto box = Scene::Base();
+
+            auto texture_w = 0;
+
+            auto texture_h = 0;
+
+            BloodSword::Size(texture, &texture_w, &texture_h);
+
+            auto box_w = std::max(BloodSword::QuadTile, texture_w) + BloodSword::Pad * 2;
+
+            auto box_h = std::max(BloodSword::TileSize * 2, texture_h + BloodSword::Pad * 3);
+
+            auto location_box = (Point(graphics.Width, graphics.Height) - Point(box_w, box_h)) / 2;
+
+            auto location_txt = (Point(graphics.Width, graphics.Height) - Point(texture_w, texture_h)) / 2;
+
+            box.Add(Scene::Element(location_box, box_w, box_h, background, border, border_size));
+
+            box.VerifyAndAdd(Scene::Element(texture, location_txt));
+
+            Input::RenderWhileWaiting(graphics, {scene, box});
+
+            SDL_Delay(delay);
+        }
+
+        BloodSword::Free(&texture);
+    }
+
     // draws a message box on screen
     void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
@@ -2815,7 +2849,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int CombatDamage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle, bool ignore_armour = false)
+    int CombatDamage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, int roll, int modifier, Asset::Type asset, bool in_battle, bool ignore_armour = false, bool blur = true)
     {
         SDL_Texture *damage_value = nullptr;
 
@@ -2967,7 +3001,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
+            input = Input::WaitForInput(graphics, background, overlay, input, true, blur, 0);
 
             if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
@@ -3035,7 +3069,7 @@ namespace BloodSword::Interface
     }
 
     // roll for damage
-    int CombatDamage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type skill, Asset::Type asset, bool in_battle, bool ignore_armour = false)
+    int CombatDamage(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Character::Base &defender, Skills::Type skill, Asset::Type asset, bool in_battle, bool ignore_armour = false, bool blur = true)
     {
         auto shooting = Engine::CanShoot(attacker, skill);
 
@@ -3073,7 +3107,7 @@ namespace BloodSword::Interface
 
         modifier -= (shooting && (skill == Skills::Type::SHURIKEN)) ? 1 : 0;
 
-        return Interface::CombatDamage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle, ignore_armour);
+        return Interface::CombatDamage(graphics, background, origin, w, h, border, border_size, attacker, defender, roll, modifier, asset, in_battle, ignore_armour, blur);
     }
 
     // generic character class selector

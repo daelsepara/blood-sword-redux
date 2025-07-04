@@ -21,6 +21,7 @@ namespace BloodSword::Item
         LEATHER_JERKIN,
         RINGMAIL,
         SILVER_ARMOUR,
+        LIMITED_SHURIKEN,
         SHURIKEN,
         SILVER_RING,
         RUSTY_SWORD,
@@ -96,6 +97,7 @@ namespace BloodSword::Item
         {Item::Type::LEATHER_JERKIN, "LEATHER JERKIN"},
         {Item::Type::RINGMAIL, "RINGMAIL"},
         {Item::Type::SILVER_ARMOUR, "SILVER ARMOUR"},
+        {Item::Type::LIMITED_SHURIKEN, "LIMITED SHURIKEN"},
         {Item::Type::SHURIKEN, "SHURIKEN"},
         {Item::Type::SILVER_RING, "SILVER RING"},
         {Item::Type::RUSTY_SWORD, "RUSTY SWORD"},
@@ -171,6 +173,7 @@ namespace BloodSword::Item
 
     BloodSword::UnorderedMap<Item::Type, Item::Type> RangedRequirements = {
         {Item::Type::BOW, Item::Type::ARROW},
+        {Item::Type::LIMITED_SHURIKEN, Item::Type::SHURIKEN},
         {Item::Type::MAGIC_BOW, Item::Type::ARROW}};
 
     BloodSword::UnorderedMap<Item::Type, Item::Type> StorageRequirements = {

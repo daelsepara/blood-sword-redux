@@ -1121,6 +1121,10 @@ namespace BloodSword::Engine
         {
             can_shoot &= (character.IsArmed(Item::Type::BOW, Item::Requirements(Item::Type::BOW, true)) || character.IsArmed(Item::Type::MAGIC_BOW, Item::Requirements(Item::Type::MAGIC_BOW, true)));
         }
+        else if (shot == Skills::Type::SHURIKEN && character.Has(Item::Type::LIMITED_SHURIKEN))
+        {
+            can_shoot &= character.IsArmed(Item::Type::LIMITED_SHURIKEN, Item::Requirements(Item::Type::LIMITED_SHURIKEN, true));
+        }
 
         return can_shoot;
     }

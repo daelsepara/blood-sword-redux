@@ -51,7 +51,7 @@ namespace BloodSword::Rogue
         auto first = Engine::First(party);
 
         // set field of view radius
-        auto radius = party[first].Value(Attribute::Type::AWARENESS) / 2;
+        auto radius = Engine::IsAlive(party) ? party[first].Value(Attribute::Type::AWARENESS) / 2 : 0;
 
         // calculate field of view
         auto view = FieldOfView::Compute(map, party.Origin(), radius, method);
@@ -104,13 +104,16 @@ namespace BloodSword::Rogue
 
                         if (opponent_id >= 0 && opponent_id < rogue.Opponents.size() && rogue.Opponents.size() > 0)
                         {
-                            auto first = Engine::First(rogue.Opponents[opponent_id]);
-
-                            auto &enemy = rogue.Opponents[opponent_id][first];
-
-                            if (Engine::IsAlive(enemy))
+                            if (Engine::IsAlive(rogue.Opponents[opponent_id]))
                             {
-                                scene.VerifyAndAdd(Scene::Element(Asset::Get(enemy.Asset), screen));
+                                auto first = Engine::First(rogue.Opponents[opponent_id]);
+
+                                auto &enemy = rogue.Opponents[opponent_id][first];
+
+                                if (Engine::IsAlive(enemy))
+                                {
+                                    scene.VerifyAndAdd(Scene::Element(Asset::Get(enemy.Asset), screen));
+                                }
                             }
                         }
 
@@ -1734,6 +1737,8 @@ namespace BloodSword::Rogue
             if (enemy_type <= 30)
             {
                 enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+
+                enemy.Add(Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2));
             }
             else if (enemy_type <= 90)
             {
@@ -1837,6 +1842,31 @@ namespace BloodSword::Rogue
         return result;
     }
 
+    Scene::Base UpdateScene(Rogue::Base &rogue, SDL_Texture *image, Point image_location, int panel_w, int panel_h, FieldOfView::Method method, bool animating)
+    {
+        auto scene = Scene::Base();
+
+        // left panel border
+        scene.Add(Scene::Element(BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+
+        if (image)
+        {
+            // add left panel
+            scene.VerifyAndAdd(Scene::Element(image, image_location));
+        }
+
+        // map battlepits panel border
+        scene.Add(Scene::Element(BloodSword::TileSize + panel_w + BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+
+        // center battlepits to party's location
+        Rogue::Center(rogue, Map::Object::PARTY, Map::Party);
+
+        // add battlepits to scene
+        Rogue::RenderBattlepits(scene, rogue, method, !animating);
+
+        return scene;
+    }
+
     // main game loop
     void Main(Graphics::Base &graphics, Rogue::Base &rogue)
     {
@@ -1901,25 +1931,7 @@ namespace BloodSword::Rogue
 
             if (update.Scene || animating)
             {
-                scene = Scene::Base();
-
-                // left panel border
-                scene.Add(Scene::Element(BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
-
-                if (image)
-                {
-                    // add left panel
-                    scene.VerifyAndAdd(Scene::Element(image, image_location));
-                }
-
-                // map battlepits panel border
-                scene.Add(Scene::Element(BloodSword::TileSize + panel_w + BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
-
-                // center battlepits to party's location
-                Rogue::Center(rogue, Map::Object::PARTY, Map::Party);
-
-                // add battlepits to scene
-                Rogue::RenderBattlepits(scene, rogue, method, !animating);
+                scene = Rogue::UpdateScene(rogue, image, image_location, panel_w, panel_h, method, animating);
 
                 update.Scene = false;
             }
@@ -1952,11 +1964,41 @@ namespace BloodSword::Rogue
                     // update battlepits
                     update.Scene = true;
 
-                    // skip input processing
+                    // skip input and events processing
                     Input::Flush();
 
                     continue;
                 }
+            }
+
+            // enemy movement, ranged and magic attacks
+            if (events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
+            {
+                enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
+
+                if (enemy >= 0 && enemy < rogue.Opponents.size())
+                {
+                    auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
+
+                    if (distance > 1)
+                    {
+                        // move or shoot at party
+                        animating = Rogue::Move(rogue, enemy, movement, rogue.Opponents[enemy].Origin(), rogue.Party.Origin());
+                    }
+                    else
+                    {
+                        // update scene
+                        Rogue::UpdateScene(rogue, image, image_location, panel_w, panel_h, method, true);
+
+                        // flash a message
+                        Interface::FlashMessage(graphics, scene, "PARTY ATTACKED!", Color::Background, Color::Highlight, BloodSword::Border, BloodSword::OneSecond);
+
+                        // commence battle
+                        Rogue::Battle(graphics, scene, rogue, enemy);
+                    }
+                }
+
+                events = false;
             }
 
             if (!animating)
@@ -2040,31 +2082,6 @@ namespace BloodSword::Rogue
 
                     input.Selected = false;
                 }
-            }
-
-            // enemy movement, ranged and magic attacks
-            if (events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
-            {
-                enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
-
-                if (enemy >= 0 && enemy < rogue.Opponents.size())
-                {
-                    auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
-
-                    if (distance > 1)
-                    {
-                        // move or shoot at party
-                        animating = Rogue::Move(rogue, enemy, movement, rogue.Opponents[enemy].Origin(), rogue.Party.Origin());
-                    }
-                    else
-                    {
-                        SDL_Delay(1000);
-
-                        Rogue::Battle(graphics, scene, rogue, enemy);
-                    }
-                }
-
-                events = false;
             }
         }
 
