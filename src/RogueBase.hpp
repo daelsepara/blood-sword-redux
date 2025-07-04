@@ -192,6 +192,46 @@ namespace BloodSword::Rogue
 
                 Graphics::RenderAsset(surface, surface_asset, stats_rect);
 
+                stats_rect.x = BloodSword::Pad;
+
+                stats_rect.y = BloodSword::Pad;
+
+                if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::MELEE))
+                {
+                    auto melee = BloodSword::Asset::Surface(Asset::Type::FIGHT);
+
+                    if (melee)
+                    {
+                        Graphics::RenderAsset(surface, melee, stats_rect);
+
+                        BloodSword::Free(&melee);
+                    }
+                }
+                else if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::RANGED))
+                {
+                    SDL_Surface *ranged = nullptr;
+
+                    if (character.Has(Skills::Type::ARCHERY))
+                    {
+                        ranged = BloodSword::Asset::Surface(Asset::Type::ARCHERY);
+                    }
+                    else if (character.Has(Skills::Type::SHURIKEN))
+                    {
+                        ranged = BloodSword::Asset::Surface(Asset::Type::SHURIKEN);
+                    }
+                    else
+                    {
+                        ranged = BloodSword::Asset::Surface(Asset::Type::SHOOT);
+                    }
+
+                    if (ranged)
+                    {
+                        Graphics::RenderAsset(surface, ranged, stats_rect);
+
+                        BloodSword::Free(&ranged);
+                    }
+                }
+
                 // cleanup
                 BloodSword::Free(&surface_labels);
 

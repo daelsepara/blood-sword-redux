@@ -4909,7 +4909,7 @@ namespace BloodSword::Interface
     }
 
     // icons select popup interface
-    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, Asset::List assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true)
+    std::vector<int> SelectIcons(Graphics::Base &graphics, Scene::Base &background, const char *message, Asset::List assets, std::vector<int> values, std::vector<std::string> captions, int min_select, int max_select, Asset::Type asset_hidden, bool hidden = false, bool centered = true, bool blur = true)
     {
         auto selected_symbols = std::vector<int>();
 
@@ -5037,7 +5037,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+            input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, blur);
 
             if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
