@@ -2034,18 +2034,29 @@ namespace BloodSword::Rogue
 
                 if (!animating)
                 {
+                    // place enemy in final destination
                     rogue.Opponents[enemy].X = movement.Current.X;
 
                     rogue.Opponents[enemy].Y = movement.Current.Y;
 
-                    movement = Animation::Base();
-
                     rogue.Battlepits.Put(movement.Current, Map::Object::ENEMIES, -1);
 
+                    // trigger event if distance closed with party
+                    if (rogue.Battlepits.Distance(movement.Current, rogue.Party.Origin()) <= 1)
+                    {
+                        events = true;
+                    }
+
+                    // reset animation
+                    movement = Animation::Base();
+
+                    // reset enemy
                     enemy = -1;
 
+                    // update battlepits
                     update.Scene = true;
 
+                    // skip input processing
                     Input::Flush();
 
                     continue;
