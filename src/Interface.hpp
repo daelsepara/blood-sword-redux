@@ -34,6 +34,8 @@ namespace BloodSword::Interface
 
     Spells::Mapped<SDL_Texture *> SpellCaptionsInactive = {};
 
+    Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
+
     Spells::Mapped<Controls::Type> SpellControls = {
         {Spells::Type::VOLCANO_SPRAY, Controls::Type::VOLCANO_SPRAY},
         {Spells::Type::NIGHTHOWL, Controls::Type::NIGHTHOWL},
@@ -109,7 +111,25 @@ namespace BloodSword::Interface
         {Character::Class::ENCHANTER, Asset::Type::ENCHANTER},
         {Character::Class::IMRAGARN, Asset::Type::PERSON}};
 
-    Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
+    // SKILL to STATUS mapping
+    BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
+        {Skills::Type::NONE, Character::Status::NONE},
+        {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
+        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED},
+        {Skills::Type::POISONED_DAGGER, Character::Status::POISONED}};
+
+    // SKILL to CONTROL mapping
+    BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
+        {Skills::Type::NONE, Controls::Type::NONE},
+        {Skills::Type::ARCHERY, Controls::Type::SHOOT},
+        {Skills::Type::SHURIKEN, Controls::Type::SHURIKEN},
+        {Skills::Type::QUARTERSTAFF, Controls::Type::QUARTERSTAFF},
+        {Skills::Type::SPELLS, Controls::Type::SPELLS}};
+
+    // SPELL to STATUS mapping
+    BloodSword::UnorderedMap<Spells::Type, Character::Status> SpellEffects = {
+        {Spells::Type::NONE, Character::Status::NONE},
+        {Spells::Type::NIGHTHOWL, Character::Status::NIGHTHOWL}};
 
     SDL_Texture *NoSkills = nullptr;
 
@@ -2534,7 +2554,7 @@ namespace BloodSword::Interface
     }
 
     // attribute level check (with target)
-    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, Item::Property weapon = Item::Property::NONE)
+    bool Target(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &attacker, Asset::Type target, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, Item::Property weapon = Item::Property::NONE, bool blur = true)
     {
         auto result = false;
 
@@ -2675,7 +2695,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            input = Input::WaitForInput(graphics, background, overlay, input, true, true, 0);
+            input = Input::WaitForInput(graphics, background, overlay, input, true, blur, 0);
 
             if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
             {
@@ -5321,13 +5341,13 @@ namespace BloodSword::Interface
     {
         auto assets = Asset::List();
 
-        auto values = std::vector<int>();
+        auto values = std::vector<int>(party.Count());
+
+        std::iota(values.begin(), values.end(), 0);
 
         for (auto i = 0; i < party.Count(); i++)
         {
             assets.push_back(party[i].Asset);
-
-            values.push_back(i);
         }
 
         auto done = false;
@@ -5391,7 +5411,9 @@ namespace BloodSword::Interface
 
         auto captions = std::vector<std::string>();
 
-        auto values = std::vector<int>();
+        auto values = std::vector<int>(attribute_list.size());
+
+        std::iota(values.begin(), values.end(), 0);
 
         auto assets = Asset::List();
 
@@ -5402,8 +5424,6 @@ namespace BloodSword::Interface
             assets.push_back(Attribute::Assets[attribute]);
 
             captions.push_back(Attribute::TypeMapping[attribute]);
-
-            values.push_back(i);
         }
 
         if (Engine::IsAlive(character))
@@ -7473,12 +7493,9 @@ namespace BloodSword::Interface
             "HELP",
             "BACK"};
 
-        auto values = std::vector<int>();
+        auto values = std::vector<int>(controls.size());
 
-        for (auto i = 0; i < controls.size(); i++)
-        {
-            values.push_back(i);
-        }
+        std::iota(values.begin(), values.end(), 0);
 
         auto message = Story::CurrentBook.Title;
 

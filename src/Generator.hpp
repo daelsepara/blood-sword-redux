@@ -1126,12 +1126,19 @@ namespace BloodSword::Generate
         switch (character.Class)
         {
         case Character::Class::TRICKSTER:
+
             character.Shoot = Skills::Type::ARCHERY;
+
             break;
+
         case Character::Class::SAGE:
+
             character.Shoot = Skills::Type::ARCHERY;
+
             break;
+
         default:
+
             break;
         }
     }

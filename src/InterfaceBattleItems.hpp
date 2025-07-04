@@ -343,12 +343,9 @@ namespace BloodSword::Interface
 
         controls.push_back(Controls::Type::BACK);
 
-        auto values = std::vector<int>();
+        auto values = std::vector<int>(controls.size());
 
-        for (auto i = 0; i < controls.size(); i++)
-        {
-            values.push_back(i);
-        }
+        std::iota(values.begin(), values.end(), 0);
 
         auto done = false;
 

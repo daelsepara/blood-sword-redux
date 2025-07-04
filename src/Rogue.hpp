@@ -225,7 +225,7 @@ namespace BloodSword::Rogue
     }
 
     // setup movement animation for enemy parties
-    bool Move(Rogue::Base &rogue, Animation::Base &movement, Point start, Point end)
+    bool Move(Rogue::Base &rogue, int enemy, Animation::Base &movement, Point start, Point end)
     {
         auto &map = rogue.Battlepits;
 
@@ -249,8 +249,6 @@ namespace BloodSword::Rogue
 
         if (valid > 0)
         {
-            auto group = Rogue::FindOpponents(rogue, start);
-
             map.Put(start, Map::Object::NONE, -1);
 
             auto first = path.Points.begin();
@@ -258,14 +256,14 @@ namespace BloodSword::Rogue
             // add destination to the count
             auto moves = std::min(valid, 1000);
 
-            if (group >= 0 && group < rogue.Opponents.size())
+            if (enemy >= 0 && enemy < rogue.Opponents.size())
             {
-                auto character = Engine::First(rogue.Opponents[group]);
+                auto character = Engine::First(rogue.Opponents[enemy]);
 
-                if (character >= 0 && character < rogue.Opponents[group].Count())
+                if (character >= 0 && character < rogue.Opponents[enemy].Count())
                 {
                     // setup animation
-                    movement = Interface::Movement(map, Points(first, first + moves), start, rogue.Opponents[group][character].Asset);
+                    movement = Interface::Movement(map, Points(first, first + moves), start, rogue.Opponents[enemy][character].Asset);
 
                     moving = true;
                 }
@@ -330,12 +328,9 @@ namespace BloodSword::Rogue
 
         controls.push_back(Controls::Type::BACK);
 
-        auto values = std::vector<int>();
+        auto values = std::vector<int>(controls.size());
 
-        for (auto i = 0; i < controls.size(); i++)
-        {
-            values.push_back(i);
-        }
+        std::iota(values.begin(), values.end(), 0);
 
         auto done = false;
 
@@ -827,12 +822,9 @@ namespace BloodSword::Rogue
 
             controls.push_back(Controls::Type::BACK);
 
-            auto values = std::vector<int>();
+            auto values = std::vector<int>(controls.size());
 
-            for (auto i = 0; i < controls.size(); i++)
-            {
-                values.push_back(i);
-            }
+            std::iota(values.begin(), values.end(), 0);
 
             auto done = false;
 
@@ -1603,12 +1595,9 @@ namespace BloodSword::Rogue
             "QUIT",
             "BACK"};
 
-        auto values = std::vector<int>();
+        auto values = std::vector<int>(controls.size());
 
-        for (auto i = 0; i < controls.size(); i++)
-        {
-            values.push_back(i);
-        }
+        std::iota(values.begin(), values.end(), 0);
 
         auto message = "BloodSword: Rogue";
 
@@ -1970,29 +1959,6 @@ namespace BloodSword::Rogue
                 }
             }
 
-            // enemy movement, ranged and magic attacks
-            if (events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
-            {
-                enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
-
-                if (enemy >= 0 && enemy < rogue.Opponents.size())
-                {
-                    auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
-
-                    if (distance > 1)
-                    {
-                        // move or shoot at party
-                        animating = Rogue::Move(rogue, movement, rogue.Opponents[enemy].Origin(), rogue.Party.Origin());
-                    }
-                    else
-                    {
-                        // engage in melee combat
-                    }
-                }
-
-                events = false;
-            }
-
             if (!animating)
             {
                 auto input = Input::RogueInput(graphics, {scene});
@@ -2074,6 +2040,31 @@ namespace BloodSword::Rogue
 
                     input.Selected = false;
                 }
+            }
+
+            // enemy movement, ranged and magic attacks
+            if (events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
+            {
+                enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
+
+                if (enemy >= 0 && enemy < rogue.Opponents.size())
+                {
+                    auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
+
+                    if (distance > 1)
+                    {
+                        // move or shoot at party
+                        animating = Rogue::Move(rogue, enemy, movement, rogue.Opponents[enemy].Origin(), rogue.Party.Origin());
+                    }
+                    else
+                    {
+                        SDL_Delay(1000);
+
+                        Rogue::Battle(graphics, scene, rogue, enemy);
+                    }
+                }
+
+                events = false;
             }
         }
 

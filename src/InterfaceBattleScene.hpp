@@ -5,26 +5,6 @@
 
 namespace BloodSword::Interface
 {
-    // SKILL to STATUS mapping
-    BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
-        {Skills::Type::NONE, Character::Status::NONE},
-        {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
-        {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED},
-        {Skills::Type::POISONED_DAGGER, Character::Status::POISONED}};
-
-    // SKILL to CONTROL mapping
-    BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
-        {Skills::Type::NONE, Controls::Type::NONE},
-        {Skills::Type::ARCHERY, Controls::Type::SHOOT},
-        {Skills::Type::SHURIKEN, Controls::Type::SHURIKEN},
-        {Skills::Type::QUARTERSTAFF, Controls::Type::QUARTERSTAFF},
-        {Skills::Type::SPELLS, Controls::Type::SPELLS}};
-
-    // SPELL to STATUS mapping
-    BloodSword::UnorderedMap<Spells::Type, Character::Status> SpellEffects = {
-        {Spells::Type::NONE, Character::Status::NONE},
-        {Spells::Type::NIGHTHOWL, Character::Status::NIGHTHOWL}};
-
     // find map control
     int Find(Map::Base &map, Controls::Collection &controls, Controls::Type type, int id)
     {
@@ -926,7 +906,7 @@ namespace BloodSword::Interface
             Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
-                                   Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+                                         Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
         auto input = Controls::User();
 
@@ -1126,7 +1106,7 @@ namespace BloodSword::Interface
             Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
-                                   Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
+                                         Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 
         auto input = Controls::User();
 

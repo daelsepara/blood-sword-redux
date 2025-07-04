@@ -232,6 +232,20 @@ namespace BloodSword::Rogue
                     }
                 }
 
+                if (character.Has(Character::Status::DEFENDING))
+                {
+                    stats_rect.x = surface->w - (BloodSword::TileSize + BloodSword::Pad);
+
+                    auto defend = BloodSword::Asset::Surface(Asset::Type::DEFEND);
+
+                    if (defend)
+                    {
+                        Graphics::RenderAsset(surface, defend, stats_rect);
+
+                        BloodSword::Free(&defend);
+                    }
+                }
+
                 // cleanup
                 BloodSword::Free(&surface_labels);
 
