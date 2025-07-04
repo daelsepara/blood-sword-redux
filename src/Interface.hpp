@@ -423,9 +423,9 @@ namespace BloodSword::Interface
             Input::RenderWhileWaiting(graphics, {scene, box});
 
             SDL_Delay(delay);
-        }
 
-        BloodSword::Free(&texture);
+            BloodSword::Free(&texture);
+        }
     }
 
     // draws a message box on screen
