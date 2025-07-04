@@ -2005,7 +2005,7 @@ namespace BloodSword::Rogue
 
                         if (!Engine::IsAlive(rogue.Party))
                         {
-                            Interface::MessageBox(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
+                            Interface::MessageBox(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
 
                             done = true;
                         }
