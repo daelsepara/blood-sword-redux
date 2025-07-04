@@ -35,7 +35,7 @@ namespace BloodSword::Rogue
 
             auto party_y = graphics.Height - (party_h + BloodSword::Pad * 2);
 
-            scene.Add(Scene::Element(party_x, party_y, BloodSword::Width(party_stats[i]), BloodSword::Height(party_stats[i]), Color::Background, (is_enemy && id == i ? Color::Active : Color::Inactive), BloodSword::Border));
+            scene.Add(Scene::Element(party_x, party_y, BloodSword::Width(party_stats[i]), BloodSword::Height(party_stats[i]), Color::Background, (is_player && id == i ? Color::Active : Color::Inactive), BloodSword::Border));
 
             scene.VerifyAndAdd(Scene::Element(party_stats[i], Point(party_x, party_y)));
         }
