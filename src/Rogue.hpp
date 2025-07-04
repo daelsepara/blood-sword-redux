@@ -1803,6 +1803,13 @@ namespace BloodSword::Rogue
                     update.Scene = true;
 
                     update.Party = true;
+
+                    if (!Engine::IsAlive(rogue.Party))
+                    {
+                        Interface::FlashMessage(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Background, Color::Highlight, BloodSword::Border, BloodSword::OneSecond * 4);
+
+                        update.Quit = true;
+                    }
                 }
             }
             else
@@ -1972,7 +1979,7 @@ namespace BloodSword::Rogue
             }
 
             // enemy movement, ranged and magic attacks
-            if (events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
+            if (Engine::IsAlive(rogue.Party) && events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
             {
                 enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
 
@@ -1995,6 +2002,13 @@ namespace BloodSword::Rogue
 
                         // commence battle
                         Rogue::Battle(graphics, scene, rogue, enemy);
+
+                        if (!Engine::IsAlive(rogue.Party))
+                        {
+                            Interface::FlashMessage(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Background, Color::Highlight, BloodSword::Border, BloodSword::OneSecond * 4);
+
+                            done = true;
+                        }
                     }
                 }
 
