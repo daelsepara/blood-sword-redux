@@ -465,7 +465,7 @@ namespace BloodSword::Rogue
 
         auto target_y = is_player ? BloodSword::Pad : graphics.Height - (stats_h + BloodSword::Pad * 2);
 
-        auto selection = 0;
+        auto selection = is_player ? Engine::First(enemies) : Engine::First(party);
 
         auto done = false;
 
