@@ -616,10 +616,10 @@ namespace BloodSword::Rogue
 
                 while (!end_turn && Engine::IsAlive(party) && Engine::IsAlive(enemies, Character::ControlType::NPC) && !exit_battle)
                 {
+                    auto has_actions = !character.Is(Character::Status::PARALYZED) && Engine::IsAlive(character);
+
                     if (is_enemy)
                     {
-                        auto has_actions = !character.Is(Character::Status::PARALYZED) && !character.Is(Character::Status::AWAY) && Engine::IsAlive(character);
-
                         if (has_actions)
                         {
                             if (character.Has(Character::Status::MELEE))
@@ -698,8 +698,8 @@ namespace BloodSword::Rogue
                     }
                     else
                     {
-                        // skip action if dead
-                        if (Engine::IsAlive(character))
+                        // skip action if dead or paralyzed
+                        if (has_actions)
                         {
                             auto input = Rogue::SelectAction(graphics, scene, character);
 
