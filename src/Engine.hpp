@@ -1221,7 +1221,9 @@ namespace BloodSword::Engine
                       Character::Status::FIGHTING_BLIND,
                       Character::Status::STRONG,
                       Character::Status::IN_COMBAT,
-                      Character::Status::IN_BATTLE});
+                      Character::Status::IN_BATTLE,
+                      Character::Status::MELEE,
+                      Character::Status::RANGED});
 
         party.ResetSpells();
     }

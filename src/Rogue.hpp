@@ -1800,16 +1800,14 @@ namespace BloodSword::Rogue
                 {
                     Rogue::Battle(graphics, background, rogue, enemy);
 
+                    // check results
+                    Rogue::BattleResults(graphics, background, rogue, enemy);
+
                     update.Scene = true;
 
                     update.Party = true;
 
-                    if (!Engine::IsAlive(rogue.Party))
-                    {
-                        Interface::MessageBox(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
-
-                        update.Quit = true;
-                    }
+                    Input::Flush();
                 }
             }
             else
@@ -1872,6 +1870,26 @@ namespace BloodSword::Rogue
         Rogue::RenderBattlepits(scene, rogue, method, !animating);
 
         return scene;
+    }
+
+    bool BattleResults(Graphics::Base &graphics, Scene::Base &scene, Rogue::Base &rogue, int &enemy)
+    {
+        auto done = false;
+
+        if (!Engine::IsAlive(rogue.Party))
+        {
+            Interface::MessageBox(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
+
+            done = true;
+        }
+        else if (!Engine::IsAlive(rogue.Opponents[enemy]))
+        {
+            rogue.Opponents.erase(rogue.Opponents.begin() + enemy);
+
+            enemy = -1;
+        }
+
+        return done;
     }
 
     // main game loop
@@ -2003,12 +2021,16 @@ namespace BloodSword::Rogue
                         // commence battle
                         Rogue::Battle(graphics, scene, rogue, enemy);
 
-                        if (!Engine::IsAlive(rogue.Party))
-                        {
-                            Interface::MessageBox(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
+                        // check results
+                        done = Rogue::BattleResults(graphics, scene, rogue, enemy);
 
-                            done = true;
-                        }
+                        update.Scene = true;
+
+                        update.Party = true;
+
+                        Input::Flush();
+
+                        continue;
                     }
                 }
 

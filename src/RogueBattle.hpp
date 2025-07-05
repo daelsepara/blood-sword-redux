@@ -461,6 +461,10 @@ namespace BloodSword::Rogue
 
         auto &enemies = rogue.Opponents[enemy];
 
+        auto saved_party = party;
+
+        auto saved_enemies = enemies;
+
         // set "IN BATTLE" status
         party.Add({Character::Status::IN_BATTLE, Character::Status::RANGED});
 
@@ -611,15 +615,34 @@ namespace BloodSword::Rogue
             round++;
         }
 
+        BloodSword::Free(party_stats);
+
+        BloodSword::Free(enemy_stats);
+
+        if (exit_battle)
+        {
+            party = saved_party;
+
+            enemies = saved_enemies;
+        }
+        else
+        {
+            if (!Engine::IsAlive(party))
+            {
+                Engine::KillAllParalyzed(party);
+            }
+
+            // reset status
+            Engine::ResetAll(party);
+
+            Engine::ResetAll(enemies);
+        }
+
         update.Scene = true;
 
         update.Party = true;
 
         update.Quit = false;
-
-        BloodSword::Free(party_stats);
-
-        BloodSword::Free(enemy_stats);
 
         return update;
     }
