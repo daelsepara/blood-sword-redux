@@ -1762,6 +1762,26 @@ namespace BloodSword::Rogue
         }
     }
 
+    bool BattleResults(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int &enemy)
+    {
+        auto done = false;
+
+        if (!Engine::IsAlive(rogue.Party))
+        {
+            Interface::MessageBox(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
+
+            done = true;
+        }
+        else if (!Engine::IsAlive(rogue.Opponents[enemy]))
+        {
+            rogue.Opponents.erase(rogue.Opponents.begin() + enemy);
+
+            enemy = -1;
+        }
+
+        return done;
+    }
+
     Rogue::Update Handle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
     {
         Rogue::Update update = {false, false, false};
@@ -1856,26 +1876,6 @@ namespace BloodSword::Rogue
         Rogue::RenderBattlepits(scene, rogue, method, !animating);
 
         return scene;
-    }
-
-    bool BattleResults(Graphics::Base &graphics, Scene::Base &scene, Rogue::Base &rogue, int &enemy)
-    {
-        auto done = false;
-
-        if (!Engine::IsAlive(rogue.Party))
-        {
-            Interface::MessageBox(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
-
-            done = true;
-        }
-        else if (!Engine::IsAlive(rogue.Opponents[enemy]))
-        {
-            rogue.Opponents.erase(rogue.Opponents.begin() + enemy);
-
-            enemy = -1;
-        }
-
-        return done;
     }
 
     // main game loop

@@ -412,18 +412,49 @@ namespace BloodSword::Engine
     }
 
     // build targetting queue
-    void Build(Engine::Queue &queue, Party::Base &party, Attribute::Type attribute, bool in_battle = false)
+    void Build(Engine::Queue &queue, Party::Base &party, Attribute::Type attribute, Character::Status status = Character::Status::NONE, bool in_battle = false)
     {
         // add characters in party to queue
         for (auto i = 0; i < party.Count(); i++)
         {
             auto knocked_out = party[i].Is(Character::Status::KNOCKED_OUT);
 
-            if (Engine::CanTarget(party[i], in_battle))
+            if (Engine::CanTarget(party[i], in_battle) && (status == Character::Status::NONE || party[i].Has(status)))
             {
                 queue.push_back(ScoreElement(party[i].ControlType, i, knocked_out ? 1 : Engine::Score(party[i], attribute, in_battle)));
             }
         }
+    }
+
+    // creates queue (order sequence of characters with status ranked according to attribute score)
+    Engine::Queue Build(Party::Base &party, Party::Base &other, Attribute::Type attribute, Character::Status status, bool in_battle = false, bool descending = true)
+    {
+        Engine::Queue queue = {};
+
+        // add characters in party to queue
+        Engine::Build(queue, party, attribute, status, in_battle);
+
+        // add characters from the other party to the queue
+        Engine::Build(queue, other, attribute, status, in_battle);
+
+        // sort queue
+        Engine::Sort(queue, descending);
+
+        return queue;
+    }
+
+    // build queue of characters sorted according to attribute score
+    Engine::Queue Build(Party::Base &party, Attribute::Type attribute, Character::Status status, bool in_battle = false, bool descending = true)
+    {
+        auto empty = Party::Base();
+
+        return Engine::Build(party, empty, attribute, status, in_battle, descending);
+    }
+
+    // build targetting queue
+    void Build(Engine::Queue &queue, Party::Base &party, Attribute::Type attribute, bool in_battle = false)
+    {
+        return Engine::Build(queue, party, attribute, Character::Status::NONE, in_battle);
     }
 
     Engine::Queue Build(Party::Base &party, Attribute::Type attribute, Skills::Type skill, bool in_battle = false, bool descending = true)

@@ -624,13 +624,25 @@ namespace BloodSword::Rogue
                         {
                             if (character.Has(Character::Status::MELEE))
                             {
-                                auto targets = Engine::Build(party, Attribute::Type::ENDURANCE, true, true);
+                                auto targets = Engine::Build(party, Attribute::Type::ENDURANCE, Character::Status::MELEE, true, true);
+
+                                if (targets.size() == 0)
+                                {
+                                    targets = Engine::Build(party, Attribute::Type::ENDURANCE, true, true);
+                                }
 
                                 if (targets.size() > 0)
                                 {
-                                    auto defender_id = targets[0].Id;
+                                    auto target = 0;
 
-                                    auto &defender = ((targets[0].Type == Character::ControlType::PLAYER) ? party[defender_id] : enemies[defender_id]);
+                                    if (Engine::Percentile.NextInt() < 50 && targets.size() > 1)
+                                    {
+                                        target = Engine::Percentile.NextInt(0, targets.size() - 1);
+                                    }
+
+                                    auto defender_id = targets[target].Id;
+
+                                    auto &defender = ((targets[target].Type == Character::ControlType::PLAYER) ? party[defender_id] : enemies[defender_id]);
 
                                     if (defender.Has(Character::Status::MELEE))
                                     {
@@ -654,9 +666,16 @@ namespace BloodSword::Rogue
 
                                 if (targets.size() > 0)
                                 {
-                                    auto defender_id = targets[0].Id;
+                                    auto target = 0;
 
-                                    auto &defender = ((targets[0].Type == Character::ControlType::PLAYER) ? party[defender_id] : enemies[defender_id]);
+                                    if (Engine::Percentile.NextInt() < 50 && targets.size() > 1)
+                                    {
+                                        target = Engine::Percentile.NextInt(0, targets.size() - 1);
+                                    }
+
+                                    auto defender_id = targets[target].Id;
+
+                                    auto &defender = ((targets[target].Type == Character::ControlType::PLAYER) ? party[defender_id] : enemies[defender_id]);
 
                                     Interface::FlashMessage(graphics, scene, character.Name + " SHOOTS AT " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
 
