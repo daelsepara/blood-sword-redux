@@ -417,7 +417,7 @@ namespace BloodSword::Rogue
 
                     auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
-                    auto input = Controls::User();
+                    auto input = Controls::User(0);
 
                     auto done = false;
 
@@ -1139,7 +1139,7 @@ namespace BloodSword::Rogue
 
             auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
-            auto input = Controls::User();
+            auto input = Controls::User(0);
 
             auto done = false;
 
@@ -1318,7 +1318,7 @@ namespace BloodSword::Rogue
 
         auto boxh = controlsy - display_y - BloodSword::LargePad;
 
-        auto input = Controls::User();
+        auto input = Controls::User(0);
 
         auto done = false;
 
