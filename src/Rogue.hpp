@@ -74,9 +74,9 @@ namespace BloodSword::Rogue
 
                 auto visible = BloodSword::In(view, x, y);
 
-                auto loot_id = -1;
+                auto loot_id = Map::NotFound;
 
-                auto opponent_id = -1;
+                auto opponent_id = Map::NotFound;
 
                 if (tile.IsOccupied() && (visible || tile.Explored))
                 {
@@ -500,7 +500,7 @@ namespace BloodSword::Rogue
 
             if (items.size() == 0)
             {
-                rogue.Battlepits[point].Id = -1;
+                rogue.Battlepits[point].Id = Map::NotFound;
 
                 rogue.Battlepits[point].Occupant = Map::Object::NONE;
 
@@ -1648,7 +1648,7 @@ namespace BloodSword::Rogue
 
         auto good = false;
 
-        auto loot = -1;
+        auto loot = Map::NotFound;
 
         Point location;
 
@@ -1702,19 +1702,30 @@ namespace BloodSword::Rogue
 
     void PlaceMonsters(Rogue::Base &rogue, int number, int min_size, int max_size)
     {
+        auto options = std::vector<int>(rogue.Rooms.size() - 2);
+
+        std::iota(options.begin(), options.end(), 1);
+
         for (auto enemies = 0; enemies < number; enemies++)
         {
             auto center = Point(-1, -1);
 
-            auto room = -1;
+            auto room = Room::None;
+
+            auto target = 0;
 
             // look for un-occupied room
             while (center.IsNone() || room == Room::None || rogue.Battlepits[center].IsOccupied())
             {
-                room = Engine::Percentile.NextInt(1, rogue.Rooms.size() - 2);
+                target = Engine::Percentile.NextInt(0, options.size() - 1);
+
+                room = options[target];
 
                 center = rogue.Rooms[room].Center();
             }
+
+            // remove the room from contention
+            options.erase(options.begin() + target);
 
             Character::Base enemy;
 
@@ -1774,9 +1785,15 @@ namespace BloodSword::Rogue
         }
         else if (!Engine::IsAlive(rogue.Opponents[enemy]))
         {
+            auto &tile = rogue.Battlepits[rogue.Opponents[enemy].Origin()];
+
+            tile.Occupant = Map::Object::NONE;
+
+            tile.Id = Map::NotFound;
+
             rogue.Opponents.erase(rogue.Opponents.begin() + enemy);
 
-            enemy = -1;
+            enemy = Map::NotFound;
         }
 
         return done;
@@ -1925,7 +1942,7 @@ namespace BloodSword::Rogue
 
         auto events = true;
 
-        auto enemy = -1;
+        auto enemy = Map::NotFound;
 
         while (!done)
         {
@@ -1970,7 +1987,7 @@ namespace BloodSword::Rogue
                     movement = Animation::Base();
 
                     // reset enemy
-                    enemy = -1;
+                    enemy = Map::NotFound;
 
                     // update battlepits
                     update.Scene = true;
@@ -2015,8 +2032,6 @@ namespace BloodSword::Rogue
                         update.Party = true;
 
                         Input::Flush();
-
-                        continue;
                     }
                 }
 
