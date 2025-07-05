@@ -445,7 +445,6 @@ namespace BloodSword::Rogue
             if (!Engine::IsAlive(attacker))
             {
                 Interface::MessageBox(graphics, background, attacker.Name + " KILLED!", attacker.IsPlayer() ? Color::Highlight : Color::Active);
-
             }
         }
     }
