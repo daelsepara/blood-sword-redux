@@ -1201,22 +1201,14 @@ namespace BloodSword::Test
             // create menu
             auto story_menu = Graphics::CreateText(graphics, story_list);
 
-            // default width
-            auto w = wrap;
-
-            // default height
-            auto h = BloodSword::QuarterTile;
-
             // padding
             auto pads = BloodSword::LargePad;
 
-            // adjust size
-            for (auto &item : story_menu)
-            {
-                w = std::max(BloodSword::Width(item) + pads, wrap);
+            // default width
+            auto w = std::max(BloodSword::Width(story_menu) + pads, wrap);
 
-                h = std::max(BloodSword::Height(item) + pads, h);
-            }
+            // default height
+            auto h = std::max(BloodSword::Height(story_menu) + pads, BloodSword::QuarterTile);
 
             auto x = (graphics.Width - w) / 2;
 
@@ -1569,14 +1561,9 @@ namespace BloodSword::Test
     {
         auto width = BloodSword::DecaTile;
 
-        auto height = BloodSword::DoubleTile;
-
         auto menu = RegenerateMenu(graphics, width);
 
-        for (auto &texture : menu)
-        {
-            height = std::max(height, BloodSword::Height(texture));
-        }
+        auto height = std::max(BloodSword::DoubleTile, BloodSword::Height(menu));
 
         auto title = RegenerateTitle(graphics, width);
 

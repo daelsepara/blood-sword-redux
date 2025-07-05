@@ -89,10 +89,7 @@ namespace BloodSword::Game
 
         auto menu = RegenerateMenu(graphics, module, width);
 
-        for (auto &texture : menu)
-        {
-            height = std::max(height, BloodSword::Height(texture));
-        }
+        height = std::max(height, BloodSword::Height(menu));
 
         auto options = int(menu.size());
 
