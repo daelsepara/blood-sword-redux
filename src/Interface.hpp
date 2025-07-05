@@ -5046,7 +5046,7 @@ namespace BloodSword::Interface
 
         auto num_icons = int(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
 
-        auto popup_w = std::max(num_icons * (BloodSword::TileSize + BloodSword::Pad), BloodSword::Width(texture) + popup_pad * 2);
+        auto popup_w = std::max((num_icons + 1) * (BloodSword::TileSize) + (num_icons * BloodSword::Pad), BloodSword::Width(texture) + popup_pad * 2);
 
         auto popup_h = (BloodSword::TileSize + popup_pad) * 2;
 
@@ -5078,7 +5078,9 @@ namespace BloodSword::Interface
             auto overlay = Interface::IconList(Point(0, 0), graphics.Width, graphics.Height, final_assets, controls, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, last_control, last_asset);
 
             // title
-            overlay.VerifyAndAdd(Scene::Element(texture, popup.X + BloodSword::Pad, popup.Y + BloodSword::Pad));
+            auto center_title = centered ? ((popup_w - BloodSword::Width(texture)) / 2) : BloodSword::Pad;
+
+            overlay.VerifyAndAdd(Scene::Element(texture, popup.X + center_title, popup.Y + BloodSword::Pad));
 
             for (auto i = 0; i < selection.size(); i++)
             {

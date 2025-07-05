@@ -1785,6 +1785,8 @@ namespace BloodSword::Rogue
         }
         else if (!Engine::IsAlive(rogue.Opponents[enemy]))
         {
+            Interface::FlashMessage(graphics, background, "YOUR PARTY IS VICTORIUS", Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond * 2);
+
             auto &tile = rogue.Battlepits[rogue.Opponents[enemy].Origin()];
 
             tile.Occupant = Map::Object::NONE;
