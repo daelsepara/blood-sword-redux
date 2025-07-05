@@ -31,7 +31,8 @@ namespace BloodSword::Skills
         RUSTY_WEAPON,
         BROKEN_WEAPON,
         POISONED_BITE,
-        RETRIBUTIVE_FIRE
+        RETRIBUTIVE_FIRE,
+        FORGET_SPELL
     };
 
     template <typename T>
@@ -60,7 +61,8 @@ namespace BloodSword::Skills
         {Skills::Type::RUSTY_WEAPON, "RUSTY WEAPON"},
         {Skills::Type::BROKEN_WEAPON, "BROKEN WEAPON"},
         {Skills::Type::POISONED_BITE, "POISONED BITE"},
-        {Skills::Type::RETRIBUTIVE_FIRE, "RETRIBUTIVE FIRE"}};
+        {Skills::Type::RETRIBUTIVE_FIRE, "RETRIBUTIVE FIRE"},
+        {Skills::Type::FORGET_SPELL, "FORGET SPELL"}};
 
     typedef std::vector<Skills::Type> List;
 

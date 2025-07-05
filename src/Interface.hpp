@@ -2175,7 +2175,7 @@ namespace BloodSword::Interface
 
     Spells::Type GetSpell(Graphics::Base &graphics, Scene::Base &scene, Character::Base &character, Uint32 background, Uint32 border, int border_size, bool in_battle = false)
     {
-        auto spell = Spells::Type::NONE;
+        auto selected = Spells::Type::NONE;
 
         auto pad = BloodSword::OddPad;
 
@@ -2194,29 +2194,35 @@ namespace BloodSword::Interface
                 {
                     auto &control = overlay.Controls[input.Current];
 
-                    auto &spell_caption = character.Spells[control.Id];
+                    auto &spell = character.Spells[control.Id];
 
                     auto &popup = overlay.Elements[0];
 
-                    if (character.HasCalledToMind(spell_caption.Type) && spell_caption.IsBattle && !spell_caption.IsBasic())
+                    if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                     {
-                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                        auto asset = in_battle ? Asset::Type::CAST_SPELL : Asset::Type::CALL_TO_MIND;
 
-                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell_caption.Type], control.X, control.Y + control.H + pad));
+                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
-                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CAST_SPELL], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
+
+                        auto caption = in_battle ? Skills::Type::CAST_SPELL : Skills::Type::FORGET_SPELL;
+
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[caption], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
                     }
-                    else if (!spell_caption.IsBasic() && spell_caption.IsBattle)
+                    else if (spell.IsBattle && !spell.IsBasic())
                     {
                         overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
-                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell_caption.Type], control.X, control.Y + control.H + pad));
+                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
 
                         overlay.VerifyAndAdd(Scene::Element(Interface::SkillCaptionsActive[Skills::Type::CALL_TO_MIND], popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
                     }
                     else
                     {
-                        overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell_caption.Type], control.X, control.Y + control.H + pad));
+                        auto caption = in_battle ? Interface::SpellCaptionsInactive[spell.Type] : Interface::SpellCaptionsActive[spell.Type];
+
+                        overlay.VerifyAndAdd(Scene::Element(caption, control.X, control.Y + control.H + pad));
                     }
                 }
             }
@@ -2227,14 +2233,14 @@ namespace BloodSword::Interface
             {
                 if (Engine::IsSpell(input.Type) && BloodSword::Has(Interface::ControlSpellMapping, input.Type))
                 {
-                    spell = Interface::ControlSpellMapping[input.Type];
+                    selected = Interface::ControlSpellMapping[input.Type];
                 }
 
                 done = true;
             }
         }
 
-        return spell;
+        return selected;
     }
 
     // choose character from a party
