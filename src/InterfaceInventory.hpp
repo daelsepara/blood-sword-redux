@@ -951,7 +951,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto overlay = Interface::Spells(Point(0, 0), graphics.Width, graphics.Height, character, Color::Background, Color::Active, BloodSword::Border);
+            auto overlay = Interface::Spells(graphics, character, Color::Background, Color::Active, BloodSword::Border);
 
             auto &popup = overlay.Elements[0];
 
