@@ -394,38 +394,90 @@ namespace BloodSword::Interface
         Interface::LoadSettings(graphics, settings_file);
     }
 
+    void Boxed(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *texture, Point box_location, Uint32 background, Uint32 border, int border_size)
+    {
+        auto texture_width = 0;
+
+        auto texture_height = 0;
+
+        BloodSword::Size(texture, &texture_width, &texture_height);
+
+        auto box_width = std::max(BloodSword::QuadTile, texture_width) + BloodSword::Pad * 2;
+
+        auto box_height = std::max(BloodSword::TileSize * 2, texture_height + BloodSword::Pad * 3);
+
+        auto texture_location = box_location + (Point(box_width, box_height) - Point(texture_width, texture_height)) / 2;
+
+        scene.Add(Scene::Element(box_location, box_width, box_height, background, border, border_size));
+
+        scene.VerifyAndAdd(Scene::Element(texture, texture_location));
+    }
+
+    Scene::Base Boxed(Graphics::Base &graphics, SDL_Texture *texture, Point box_location, Uint32 background, Uint32 border, int border_size)
+    {
+        auto boxed = Scene::Base();
+
+        Interface::Boxed(graphics, boxed, texture, box_location, background, border, border_size);
+
+        return boxed;
+    }
+
+    Scene::Base Boxed(Graphics::Base &graphics, SDL_Texture *texture, Uint32 background, Uint32 border, int border_size)
+    {
+        auto texture_width = 0;
+
+        auto texture_height = 0;
+
+        BloodSword::Size(texture, &texture_width, &texture_height);
+
+        auto box_width = std::max(BloodSword::QuadTile, texture_width) + BloodSword::Pad * 2;
+
+        auto box_height = std::max(BloodSword::TileSize * 2, texture_height + BloodSword::Pad * 3);
+
+        auto box_location = (Point(graphics.Width, graphics.Height) - Point(box_width, box_height)) / 2;
+
+        return Interface::Boxed(graphics, texture, box_location, background, border, border_size);
+    }
+
+    void Boxed(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *texture, Uint32 background, Uint32 border, int border_size)
+    {
+        auto texture_width = 0;
+
+        auto texture_height = 0;
+
+        BloodSword::Size(texture, &texture_width, &texture_height);
+
+        auto box_width = std::max(BloodSword::QuadTile, texture_width) + BloodSword::Pad * 2;
+
+        auto box_height = std::max(BloodSword::TileSize * 2, texture_height + BloodSword::Pad * 3);
+
+        auto box_location = (Point(graphics.Width, graphics.Height) - Point(box_width, box_height)) / 2;
+
+        Interface::Boxed(graphics, scene, texture, box_location, background, border, border_size);
+    }
+
+    void FlashTexture(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *texture, Uint32 background, Uint32 border, int border_size, int delay = BloodSword::StandardDelay)
+    {
+        if (texture)
+        {
+            auto message = Interface::Boxed(graphics, texture, background, border, border_size);
+
+            auto ticks = SDL_GetTicks64();
+
+            while ((SDL_GetTicks64() - ticks) < delay)
+            {
+                Input::RenderWhileWaiting(graphics, {scene, message});
+            }
+        }
+    }
+
     void FlashMessage(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 background, Uint32 border, int border_size, int delay = BloodSword::StandardDelay)
     {
         auto texture = Graphics::CreateText(graphics, message.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
-        if (texture)
-        {
-            auto box = Scene::Base();
+        Interface::FlashTexture(graphics, scene, texture, background, border, border_size, delay);
 
-            auto texture_w = 0;
-
-            auto texture_h = 0;
-
-            BloodSword::Size(texture, &texture_w, &texture_h);
-
-            auto box_w = std::max(BloodSword::QuadTile, texture_w) + BloodSword::Pad * 2;
-
-            auto box_h = std::max(BloodSword::TileSize * 2, texture_h + BloodSword::Pad * 3);
-
-            auto location_box = (Point(graphics.Width, graphics.Height) - Point(box_w, box_h)) / 2;
-
-            auto location_txt = (Point(graphics.Width, graphics.Height) - Point(texture_w, texture_h)) / 2;
-
-            box.Add(Scene::Element(location_box, box_w, box_h, background, border, border_size));
-
-            box.VerifyAndAdd(Scene::Element(texture, location_txt));
-
-            Input::RenderWhileWaiting(graphics, {scene, box});
-
-            SDL_Delay(delay);
-
-            BloodSword::Free(&texture);
-        }
+        BloodSword::Free(&texture);
     }
 
     // draws a message box on screen
@@ -5742,21 +5794,14 @@ namespace BloodSword::Interface
 
         auto menu = Graphics::CreateText(graphics, text_list);
 
-        // default width
-        auto w = BloodSword::Wrap;
-
-        // default height
-        auto h = BloodSword::TileSize;
-
         // padding
         auto pads = BloodSword::LargePad;
 
-        for (auto &item : menu)
-        {
-            w = std::max(BloodSword::Width(item) + pads, BloodSword::Wrap);
+        // default width
+        auto w = std::max(BloodSword::Width(menu) + pads, BloodSword::Wrap);
 
-            h = std::max(BloodSword::Height(item) + pads, h);
-        }
+        // default height
+        auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
         auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 
@@ -6283,21 +6328,14 @@ namespace BloodSword::Interface
 
         auto menu = Graphics::CreateText(graphics, text_list);
 
-        // default width
-        auto w = BloodSword::Wrap;
-
-        // default height
-        auto h = BloodSword::TileSize;
-
         // padding
         auto pads = BloodSword::LargePad;
 
-        for (auto &item : menu)
-        {
-            w = std::max(BloodSword::Width(item) + pads, BloodSword::Wrap);
+        // default width
+        auto w = std::max(BloodSword::Width(menu) + pads, BloodSword::Wrap);
 
-            h = std::max(BloodSword::Height(item) + pads, h);
-        }
+        // default height
+        auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
         auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 
@@ -6439,21 +6477,14 @@ namespace BloodSword::Interface
 
         auto menu = Graphics::CreateText(graphics, text_list);
 
-        // default width
-        auto w = BloodSword::Wrap;
-
-        // default height
-        auto h = BloodSword::TileSize;
-
         // padding
         auto pads = BloodSword::LargePad;
 
-        for (auto &item : menu)
-        {
-            w = std::max(BloodSword::Width(item) + pads, BloodSword::Wrap);
+        // default width
+        auto w = std::max(BloodSword::Width(menu) + pads, BloodSword::Wrap);
 
-            h = std::max(BloodSword::Height(item) + pads, h);
-        }
+        // default height
+        auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
         auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 
@@ -7382,23 +7413,16 @@ namespace BloodSword::Interface
 
             auto menu = Graphics::CreateText(graphics, text_list);
 
-            // default width
-            auto w = wrap;
-
-            // default height
-            auto h = BloodSword::HalfTile;
-
             // padding
             auto pad = BloodSword::Pad;
 
             auto pads = BloodSword::LargePad;
 
-            for (auto &item : menu)
-            {
-                w = std::max(BloodSword::Width(item) + pads, wrap);
+            // default width
+            auto w = std::max(BloodSword::Width(menu) + pads, wrap);
 
-                h = std::max(BloodSword::Height(item) + pad, h);
-            }
+            // default height
+            auto h = std::max(BloodSword::Height(menu) + pad, BloodSword::HalfTile);
 
             auto box_w = w + pads;
 

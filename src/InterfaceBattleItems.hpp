@@ -510,21 +510,14 @@ namespace BloodSword::Interface
 
             auto menu = Graphics::CreateText(graphics, text_list);
 
-            // default width
-            auto w = wrap;
-
-            // default height
-            auto h = BloodSword::TileSize;
-
             // padding
             auto pads = BloodSword::LargePad;
 
-            for (auto &item : menu)
-            {
-                w = std::max(BloodSword::Width(item) + pads, wrap);
+            // default width
+            auto w = std::max(BloodSword::Width(menu) + pads, wrap);
 
-                h = std::max(BloodSword::Height(item) + pads, h);
-            }
+            // default height
+            auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
             auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
 

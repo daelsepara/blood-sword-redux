@@ -299,11 +299,35 @@ namespace BloodSword
         return width;
     }
 
+    int Width(Textures &textures)
+    {
+        auto width = 0;
+
+        for (auto i = 0; i < textures.size(); i++)
+        {
+            width = std::max(width, BloodSword::Width(textures[i]));
+        }
+
+        return width;
+    }
+
     int Height(SDL_Texture *texture)
     {
         auto height = 0;
 
         BloodSword::Size(texture, nullptr, &height);
+
+        return height;
+    }
+
+    int Height(Textures &textures)
+    {
+        auto height = 0;
+
+        for (auto i = 0; i < textures.size(); i++)
+        {
+            height = std::max(height, BloodSword::Height(textures[i]));
+        }
 
         return height;
     }
