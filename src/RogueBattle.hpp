@@ -698,93 +698,101 @@ namespace BloodSword::Rogue
                     }
                     else
                     {
-                        auto input = Rogue::SelectAction(graphics, scene, character);
-
-                        if (input != Controls::Type::NONE)
+                        // skip action
+                        if (Engine::IsAlive(character))
                         {
-                            if (input == Controls::Type::EXIT)
+                            auto input = Rogue::SelectAction(graphics, scene, character);
+
+                            if (input != Controls::Type::NONE)
                             {
-                                exit_battle = true;
-                            }
-                            else if (input == Controls::Type::MOVE)
-                            {
-                                Rogue::Move(character, character.Has(Character::Status::RANGED) ? Character::Status::MELEE : Character::Status::RANGED);
-
-                                Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
-
-                                end_turn = true;
-                            }
-                            else if (input == Controls::Type::DEFEND)
-                            {
-                                character.Add(Character::Status::DEFENDING);
-
-                                Engine::ResetStatusAndSpells(character);
-
-                                Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
-
-                                end_turn = true;
-                            }
-                            else if (input == Controls::Type::FIGHT)
-                            {
-                                if (character.Has(Character::Status::MELEE))
+                                if (input == Controls::Type::EXIT)
                                 {
-                                    auto defender_id = Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, true, false, character_id);
+                                    exit_battle = true;
+                                }
+                                else if (input == Controls::Type::MOVE)
+                                {
+                                    Rogue::Move(character, character.Has(Character::Status::RANGED) ? Character::Status::MELEE : Character::Status::RANGED);
 
-                                    if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
+                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
+
+                                    end_turn = true;
+                                }
+                                else if (input == Controls::Type::DEFEND)
+                                {
+                                    character.Add(Character::Status::DEFENDING);
+
+                                    Engine::ResetStatusAndSpells(character);
+
+                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
+
+                                    end_turn = true;
+                                }
+                                else if (input == Controls::Type::FIGHT)
+                                {
+                                    if (character.Has(Character::Status::MELEE))
                                     {
-                                        auto &defender = enemies[defender_id];
+                                        auto defender_id = Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, true, false, character_id);
 
-                                        if (defender.Has(Character::Status::MELEE))
+                                        if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                         {
-                                            Interface::FlashMessage(graphics, scene, character.Name + " ATTACKS " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
+                                            auto &defender = enemies[defender_id];
+
+                                            if (defender.Has(Character::Status::MELEE))
+                                            {
+                                                Interface::FlashMessage(graphics, scene, character.Name + " ATTACKS " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
+                                            }
+                                            else if (defender.Has(Character::Status::RANGED))
+                                            {
+                                                Interface::FlashMessage(graphics, scene, character.Name + " RUSHES TO ATTACK " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
+                                            }
+
+                                            Rogue::ResolveFight(graphics, scene, character, defender);
+
+                                            Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
+
+                                            Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, stats_w);
+
+                                            end_turn = true;
                                         }
-                                        else if (defender.Has(Character::Status::RANGED))
-                                        {
-                                            Interface::FlashMessage(graphics, scene, character.Name + " RUSHES TO ATTACK " + defender.Name, Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond);
-                                        }
+                                    }
+                                    else
+                                    {
+                                        Sound::Play(Sound::Type::ERROR);
 
-                                        Rogue::ResolveFight(graphics, scene, character, defender);
-
-                                        Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
-
-                                        Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, stats_w);
-
-                                        end_turn = true;
+                                        Interface::MessageBox(graphics, scene, "CANNOT ATTACK FROM CURRENT POSITION!", Color::Highlight);
                                     }
                                 }
-                                else
+                                else if (input == Controls::Type::SHOOT)
                                 {
-                                    Sound::Play(Sound::Type::ERROR);
-
-                                    Interface::MessageBox(graphics, scene, "CANNOT ATTACK FROM CURRENT POSITION!", Color::Highlight);
-                                }
-                            }
-                            else if (input == Controls::Type::SHOOT)
-                            {
-                                if (character.Has(Character::Status::RANGED))
-                                {
-                                    auto defender_id = Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, true, false, character_id);
-
-                                    if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
+                                    if (character.Has(Character::Status::RANGED))
                                     {
-                                        auto &defender = enemies[defender_id];
+                                        auto defender_id = Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, true, false, character_id);
 
-                                        Rogue::Shoot(graphics, scene, character, defender, defender_id);
+                                        if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
+                                        {
+                                            auto &defender = enemies[defender_id];
 
-                                        Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
+                                            Rogue::Shoot(graphics, scene, character, defender, defender_id);
 
-                                        Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, stats_w);
+                                            Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
 
-                                        end_turn = true;
+                                            Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, stats_w);
+
+                                            end_turn = true;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Sound::Play(Sound::Type::ERROR);
+
+                                        Interface::MessageBox(graphics, scene, "CANNOT SHOOT FROM CURRENT POSITION!", Color::Highlight);
                                     }
                                 }
-                                else
-                                {
-                                    Sound::Play(Sound::Type::ERROR);
-
-                                    Interface::MessageBox(graphics, scene, "CANNOT SHOOT FROM CURRENT POSITION!", Color::Highlight);
-                                }
                             }
+                        }
+                        else
+                        {
+                            end_turn = true;
                         }
                     }
 
