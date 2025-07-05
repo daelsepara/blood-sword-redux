@@ -698,7 +698,7 @@ namespace BloodSword::Rogue
                     }
                     else
                     {
-                        // skip action
+                        // skip action if dead
                         if (Engine::IsAlive(character))
                         {
                             auto input = Rogue::SelectAction(graphics, scene, character);
