@@ -1785,11 +1785,16 @@ namespace BloodSword::Rogue
         }
     }
 
-    void GenerateItems(Rogue::Base &rogue, std::string name, Item::Type type, Asset::Type asset, int number, int min_quantity, int max_quantity)
+    void GenerateItems(Rogue::Base &rogue, std::string name, Item::Type type, Asset::Type asset, int number, int min_quantity, int max_quantity, Item::Properties properties = {})
     {
         for (auto items = 0; items < number; items++)
         {
-            auto item = Item::Base(name.c_str(), type, {}, Item::Type::NONE, Engine::Percentile.NextInt(min_quantity, max_quantity));
+            auto item = Item::Base(name.c_str(), type, {}, Item::Type::NONE, min_quantity == max_quantity ? min_quantity : Engine::Percentile.NextInt(min_quantity, max_quantity));
+
+            if (properties.size() > 0)
+            {
+                item.Add(properties);
+            }
 
             item.Asset = asset;
 
@@ -1807,6 +1812,12 @@ namespace BloodSword::Rogue
     void PlaceArrows(Rogue::Base &rogue, int number, int min_arrows, int max_arrows)
     {
         Rogue::GenerateItems(rogue, "ARROWS", Item::Type::ARROW, Asset::Type::QUIVER, number, min_arrows, max_arrows);
+    }
+
+    // generate food loot
+    void PlaceFood(Rogue::Base &rogue, int number)
+    {
+        Rogue::GenerateItems(rogue, "FOOD", Item::Type::FOOD, Asset::Type::FOOD, number, 1, 1, {Item::Property::EDIBLE});
     }
 
     bool BattleResults(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int &enemy)
@@ -2180,6 +2191,9 @@ namespace BloodSword::Rogue
 
             // 25% rooms has gold loot
             Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
+
+            // 25% rooms has food loot
+            Rogue::PlaceFood(rogue, rogue.Rooms.size() / 4);
 
             // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
             if (rogue.Party.Has(Character::Class::TRICKSTER) || rogue.Party.Has(Character::Class::SAGE))

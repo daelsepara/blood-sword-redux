@@ -335,7 +335,7 @@ namespace BloodSword::Item
             return !this->Has(property);
         }
 
-        // [PROPERTY] to [ITEM]
+        // add property to item
         bool Add(Item::Property property)
         {
             auto result = !this->Has(property);
@@ -346,6 +346,19 @@ namespace BloodSword::Item
             }
 
             return this->Has(property);
+        }
+
+        // add properties to item
+        bool Add(Item::Properties properties)
+        {
+            auto result = false;
+
+            for (auto property : properties)
+            {
+                result |= this->Add(property);
+            }
+
+            return result;
         }
 
         // remove item property, e.g. remove 'FIGHTING PROWESS' attribute, i.e. it will no longer modify

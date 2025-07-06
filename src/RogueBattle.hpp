@@ -1092,6 +1092,8 @@ namespace BloodSword::Rogue
 
                                                 character.CallToMind(spell);
 
+                                                Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
+
                                                 end_turn = true;
                                             }
                                         }
