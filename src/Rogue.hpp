@@ -1789,12 +1789,7 @@ namespace BloodSword::Rogue
     {
         for (auto items = 0; items < number; items++)
         {
-            auto item = Item::Base(name.c_str(), type, {}, Item::Type::NONE, min_quantity == max_quantity ? min_quantity : Engine::Percentile.NextInt(min_quantity, max_quantity));
-
-            if (properties.size() > 0)
-            {
-                item.Add(properties);
-            }
+            auto item = Item::Base(name.c_str(), type, properties, Item::Type::NONE, min_quantity == max_quantity ? min_quantity : Engine::Percentile.NextInt(min_quantity, max_quantity));
 
             item.Asset = asset;
 
