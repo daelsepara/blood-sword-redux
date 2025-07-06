@@ -1719,9 +1719,11 @@ namespace BloodSword::Rogue
         {
             auto adjust = (3 - Engine::Random.NextInt()) * multiplier;
 
-            enemy.Maximum(Attribute::Type::ENDURANCE, enemy.Maximum(Attribute::Type::ENDURANCE) + adjust);
+            auto endurance = std::max(1, enemy.Maximum(Attribute::Type::ENDURANCE) + adjust);
 
-            enemy.Value(Attribute::Type::ENDURANCE, enemy.Maximum(Attribute::Type::ENDURANCE));
+            enemy.Maximum(Attribute::Type::ENDURANCE, endurance);
+
+            enemy.Value(Attribute::Type::ENDURANCE, endurance);
 
             monsters.Add(enemy);
         }
