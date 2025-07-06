@@ -931,7 +931,7 @@ namespace BloodSword::Rogue
                                 {
                                     if (character.Has(Character::Status::MELEE))
                                     {
-                                        auto defender_id = Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, character_id);
+                                        auto defender_id = enemies.Count() > 1 ? Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, character_id) : Engine::First(enemies);
 
                                         if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                         {
@@ -968,7 +968,7 @@ namespace BloodSword::Rogue
                                 {
                                     if (character.Has(Character::Status::RANGED))
                                     {
-                                        auto defender_id = Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, character_id);
+                                        auto defender_id = enemies.Count() > 1 ? Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, character_id) : Engine::First(enemies);
 
                                         if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                         {
@@ -1009,7 +1009,7 @@ namespace BloodSword::Rogue
                                                 {
                                                     if (Spells::RequiresTarget(spell))
                                                     {
-                                                        auto defender_id = Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, character_id);
+                                                        auto defender_id = enemies.Count() > 1 ? Rogue::SelectTarget(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, character_id) : Engine::First(enemies);
 
                                                         if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                                         {
