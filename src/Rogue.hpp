@@ -9,6 +9,8 @@ namespace BloodSword::Rogue
 {
     void GenerateBattlepits(Rogue::Base &rogue, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
     {
+        std::cerr << "Generating Battlepits ..." << std::endl;
+
         rogue.Battlepits = Map::Base(width, height);
 
         // generate battlepits
@@ -28,11 +30,6 @@ namespace BloodSword::Rogue
 
         // generate battlepits
         Rogue::GenerateBattlepits(rogue, width, height, max_rooms, min_size, max_size, connection, inner_tunnel);
-
-        // place party at the center of the first room
-        rogue.Battlepits[rogue.Rooms[0].Center()].Occupant = Map::Object::PARTY;
-
-        rogue.Battlepits[rogue.Rooms[0].Center()].Id = Map::Party;
 
         return rogue;
     }
@@ -1639,6 +1636,26 @@ namespace BloodSword::Rogue
         return update;
     }
 
+    Points GoodSpots(Rogue::Base &rogue, Room::Base &room)
+    {
+        auto available = Points();
+
+        for (auto y = room.Y1 + 2; y <= room.Y2 - 2; y++)
+        {
+            for (auto x = room.X1 + 2; x <= room.X2 - 2; x++)
+            {
+                auto point = Point(x, y);
+
+                if (Rogue::GoodSpot(rogue, room, point))
+                {
+                    available.push_back(point);
+                }
+            }
+        }
+
+        return available;
+    }
+
     void PlaceItem(Rogue::Base &rogue, Item::Base item)
     {
         // radomize room location
@@ -1646,20 +1663,19 @@ namespace BloodSword::Rogue
 
         auto &room = rogue.Rooms[id];
 
+        
+        auto available = Rogue::GoodSpots(rogue, room);
+
+        // find a good location
         auto good = false;
 
         auto loot = Map::NotFound;
 
         Point location;
 
-        // find a good location
         while (!good)
         {
-            auto x = Engine::Percentile.NextInt(room.X1 + 2, room.X2 - 2);
-
-            auto y = Engine::Percentile.NextInt(room.Y1 + 2, room.Y2 - 2);
-
-            location = Point(x, y);
+            location = available[Engine::Percentile.NextInt(0, available.size() - 1)];
 
             loot = Rogue::FindLoot(rogue, location);
 
@@ -1669,10 +1685,10 @@ namespace BloodSword::Rogue
                 break;
             }
 
-            good = Rogue::GoodSpot(rogue, room, Point(x, y));
+            good = Rogue::GoodSpot(rogue, room, location);
         }
 
-        if (loot != Room::None)
+        if (loot != Map::NotFound)
         {
             rogue.Loot[loot].Items.push_back(item);
         }
@@ -1702,6 +1718,8 @@ namespace BloodSword::Rogue
 
     void PlaceMonsters(Rogue::Base &rogue, int number, int min_size, int max_size)
     {
+        std::cerr << "Generating Monster Poplulation ..." << std::endl;
+
         auto options = std::vector<int>(rogue.Rooms.size() - 2);
 
         std::iota(options.begin(), options.end(), 1);
@@ -1763,6 +1781,8 @@ namespace BloodSword::Rogue
 
     void PlaceGold(Rogue::Base &rogue, int number, int min_gold, int max_gold)
     {
+        std::cerr << "Generating Loot ..." << std::endl;
+
         for (auto items = 0; items < number; items++)
         {
             auto gold = Item::Base("GOLD", Item::Type::GOLD, {}, Item::Type::NONE, Engine::Percentile.NextInt(min_gold, max_gold));
@@ -2132,7 +2152,6 @@ namespace BloodSword::Rogue
         // set default control to the first
         Controls::Default = 0;
 
-        // generate battlepits
         auto rogue = Rogue::GenerateBattlepits(50, 100, 100, 5, 7, false);
 
         // create party
