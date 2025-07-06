@@ -1684,19 +1684,47 @@ namespace BloodSword::Rogue
         }
     }
 
-    Party::Base GenerateMonsters(Character::Base enemy, int min_size, int max_size, int multiplier = 1)
+    Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, std::vector<int> fpr, std::vector<int> psy, std::vector<int> awr, std::vector<int> end, std::vector<int> arm, std::vector<int> dmg_v, std::vector<int> dmg_m, Asset::Type asset)
+    {
+        auto fpr_value = fpr.size() > 1 ? fpr[Engine::Percentile.NextInt(0, fpr.size() - 1)] : fpr[0];
+
+        auto psy_value = psy.size() > 1 ? psy[Engine::Percentile.NextInt(0, psy.size() - 1)] : psy[0];
+
+        auto awr_value = awr.size() > 1 ? awr[Engine::Percentile.NextInt(0, awr.size() - 1)] : awr[0];
+
+        auto end_value = end.size() > 1 ? end[Engine::Percentile.NextInt(0, end.size() - 1)] : end[0];
+
+        auto arm_value = end.size() > 1 ? arm[Engine::Percentile.NextInt(0, arm.size() - 1)] : arm[0];
+
+        auto dmg_v_value = dmg_v.size() > 1 ? dmg_v[Engine::Percentile.NextInt(0, dmg_v.size() - 1)] : dmg_v[0];
+
+        auto dmg_m_value = dmg_m.size() > 1 ? dmg_m[Engine::Percentile.NextInt(0, dmg_m.size() - 1)] : dmg_m[0];
+
+        auto npc = Generate::NPC(name, fight, shoot, skills, fpr_value, psy_value, awr_value, end_value, arm_value, dmg_v_value, dmg_m_value, 1000, asset);
+
+        npc.Target = Target::Type::ENEMY;
+
+        npc.Targets = {Target::Type::PLAYER};
+
+        return npc;
+    }
+
+    // give each member the same item
+    void AddItems(Party::Base &party, Item::Base item)
+    {
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            party[character].Add(item);
+        }
+    }
+
+    Party::Base GenerateMonsters(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, std::vector<int> fpr, std::vector<int> psy, std::vector<int> awr, std::vector<int> end, std::vector<int> arm, std::vector<int> dmg_v, std::vector<int> dmg_m, Asset::Type asset, int min_size, int max_size)
     {
         auto monsters = Party::Base();
 
         for (auto monster = 0; monster < Engine::Percentile.NextInt(min_size, max_size); monster++)
         {
-            auto adjust = (3 - Engine::Random.NextInt()) * multiplier;
-
-            auto endurance = std::max(1, enemy.Maximum(Attribute::Type::ENDURANCE) + adjust);
-
-            enemy.Maximum(Attribute::Type::ENDURANCE, endurance);
-
-            enemy.Value(Attribute::Type::ENDURANCE, endurance);
+            auto enemy = Rogue::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, asset);
 
             monsters.Add(enemy);
         }
@@ -1731,46 +1759,24 @@ namespace BloodSword::Rogue
             // remove the room from contention
             options.erase(options.begin() + target);
 
-            Character::Base enemy;
-
-            auto min_size = 3;
-
-            auto max_size = 5;
-
-            auto multiplier = 1;
+            auto monsters = Party::Base();
 
             auto enemy_type = Engine::Percentile.NextInt(0, 100);
 
             if (enemy_type <= 30)
             {
-                enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 6, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+                monsters = Rogue::GenerateMonsters("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, {5, 6, 7}, {4, 5, 6}, {5, 6, 7}, {4, 5, 6}, {0}, {1}, {0}, Asset::Type::ASSASSIN, 3, 5);
 
-                enemy.Add(Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2));
-
-                min_size = 3;
-
-                max_size = 5;
+                Rogue::AddItems(monsters, Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2));
             }
             else if (enemy_type <= 90)
             {
-                enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, Asset::Type::BARBARIAN);
-
-                min_size = 2;
-
-                max_size = 4;
+                monsters = Rogue::GenerateMonsters("BARBARIAN", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {3, 4, 5}, {5, 6, 7}, {10, 11, 12}, {1}, {1}, {0, 1, 2}, Asset::Type::BARBARIAN, 2, 4);
             }
             else
             {
-                enemy = Generate::NPC("ADVENTURER", {}, 8, 6, 6, 22, 3, 2, 0, BloodSword::MaximumMoves, Asset::Type::CHARACTER);
-
-                min_size = 1;
-
-                max_size = 2;
-
-                multiplier = 2;
+                monsters = Rogue::GenerateMonsters("ADVENTURER", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {4, 5, 6}, {4, 5, 6}, {14, 18, 22}, {1, 2, 3}, {1, 2}, {0, 1, 2}, Asset::Type::CHARACTER, 1, 2);
             }
-
-            auto monsters = Rogue::GenerateMonsters(enemy, min_size, max_size, multiplier);
 
             // place monsters in battlepits
             monsters.X = center.X;
