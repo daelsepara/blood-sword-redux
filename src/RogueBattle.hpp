@@ -974,6 +974,8 @@ namespace BloodSword::Rogue
                                         {
                                             auto &defender = enemies[defender_id];
 
+                                            Interface::FlashMessage(graphics, scene, character.Name + " SHOOTS AT " + defender.Name, Color::Active);
+
                                             Rogue::Shoot(graphics, scene, character, defender, defender_id);
 
                                             Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
@@ -1086,6 +1088,8 @@ namespace BloodSword::Rogue
                                             else
                                             {
                                                 // call spell to mind
+                                                Interface::FlashMessage(graphics, scene, std::string(Spells::TypeMapping[spell]) + " CALLED TO MIND", Color::Active);
+
                                                 character.CallToMind(spell);
 
                                                 end_turn = true;
