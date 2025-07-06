@@ -45,11 +45,11 @@ namespace BloodSword::BattlepitsRenderer
 
                     if (tile.Type == Map::Object::EXIT)
                     {
-                        surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
+                        surface_asset = Asset::Surface(Asset::Type::SELECT);
                     }
                     else if (tile.Asset != Asset::Type::NONE)
                     {
-                        surface_asset = BloodSword::Asset::Surface(tile.Asset);
+                        surface_asset = Asset::Surface(tile.Asset);
                     }
                     else
                     {

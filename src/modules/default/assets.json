@@ -859,6 +859,10 @@
         {
             "id": "MAP",
             "path": "images/system/treasure-map.png"
+        },
+        {
+            "id": "DEAD",
+            "path": "images/system/death-skull.png"
         }
     ]
 }

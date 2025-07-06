@@ -11,7 +11,7 @@ namespace BloodSword::MapRenderer
 
             rect.y = point.Y * BloodSword::TileSize + offset;
 
-            auto surface_sset = blur ? BloodSword::Asset::Surface(asset, 0x7F7F7F7F) : BloodSword::Asset::Surface(asset);
+            auto surface_sset = blur ? Asset::Surface(asset, 0x7F7F7F7F) : Asset::Surface(asset);
 
             Graphics::RenderAssetThenFree(surface, surface_sset, rect);
         }
@@ -90,15 +90,15 @@ namespace BloodSword::MapRenderer
                         {
                             if (tile.Asset == Asset::Type::EMPTY_SPACE)
                             {
-                                surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
+                                surface_asset = Asset::Surface(Asset::Type::SELECT);
                             }
                             else if (tile.Asset != Asset::Type::NONE)
                             {
-                                surface_asset = BloodSword::Asset::Surface(tile.Asset);
+                                surface_asset = Asset::Surface(tile.Asset);
                             }
                             else if (tile.Type == Map::Object::EXIT)
                             {
-                                surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
+                                surface_asset = Asset::Surface(Asset::Type::SELECT);
                             }
                         }
                         else
@@ -108,13 +108,13 @@ namespace BloodSword::MapRenderer
                             case Map::Object::PLAYER:
                                 if (tile.Id >= 0 && tile.Id < party.Count() && party.Count() > 0)
                                 {
-                                    surface_asset = BloodSword::Asset::Surface(Asset::Type::SELECT);
+                                    surface_asset = Asset::Surface(Asset::Type::SELECT);
                                 }
                                 break;
                             case Map::Object::ENEMY:
                                 if (tile.Id >= 0 && tile.Id < battle.Opponents.Count() && battle.Opponents.Count() > 0)
                                 {
-                                    surface_asset = BloodSword::Asset::Surface(battle.Opponents[tile.Id].Asset);
+                                    surface_asset = Asset::Surface(battle.Opponents[tile.Id].Asset);
                                 }
                                 break;
                             case Map::Object::TEMPORARY_OBSTACLE:
@@ -122,12 +122,12 @@ namespace BloodSword::MapRenderer
                                 {
                                     if (tile.TemporaryAsset != Asset::Type::NONE)
                                     {
-                                        surface_asset = BloodSword::Asset::Surface(tile.TemporaryAsset);
+                                        surface_asset = Asset::Surface(tile.TemporaryAsset);
                                     }
                                 }
                                 else if (tile.Asset != Asset::Type::NONE)
                                 {
-                                    surface_asset = BloodSword::Asset::Surface(tile.Asset);
+                                    surface_asset = Asset::Surface(tile.Asset);
                                 }
                                 break;
                             default:
@@ -169,7 +169,7 @@ namespace BloodSword::MapRenderer
 
                     rect.y = origin.Y * BloodSword::TileSize + offset;
 
-                    auto character_asset = BloodSword::Asset::Surface(Interface::Numbers[number]);
+                    auto character_asset = Asset::Surface(Interface::Numbers[number]);
 
                     Graphics::RenderAssetThenFree(surface, character_asset, rect);
 

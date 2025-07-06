@@ -39,7 +39,7 @@ namespace BloodSword::SpriteSheet
                 {
                     if (asset != Asset::Type::NONE)
                     {
-                        auto surface_asset = BloodSword::Asset::Surface(asset);
+                        auto surface_asset = Asset::Surface(asset);
 
                         if (surface_asset == nullptr)
                         {

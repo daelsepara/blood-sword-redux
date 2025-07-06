@@ -184,7 +184,7 @@ namespace BloodSword::Rogue
                 Graphics::RenderAsset(surface, surface_stats, stats_rect);
 
                 // add icon (blur if dead)
-                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(character.Asset) : BloodSword::Asset::Surface(character.Asset, Color::Inactive);
+                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? Asset::Surface(character.Asset) : Asset::Surface(Asset::Type::DEAD);
 
                 stats_rect.x = (surface->w - BloodSword::TileSize) / 2;
 
@@ -196,9 +196,9 @@ namespace BloodSword::Rogue
 
                 stats_rect.y = BloodSword::Pad;
 
-                if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::MELEE))
+                if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::MELEE) && Engine::IsAlive(character))
                 {
-                    auto melee = BloodSword::Asset::Surface(Asset::Type::FIGHT);
+                    auto melee = Asset::Surface(Asset::Type::FIGHT);
 
                     if (melee)
                     {
@@ -207,21 +207,21 @@ namespace BloodSword::Rogue
                         BloodSword::Free(&melee);
                     }
                 }
-                else if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::RANGED))
+                else if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::RANGED) && Engine::IsAlive(character))
                 {
                     SDL_Surface *ranged = nullptr;
 
                     if (character.Has(Skills::Type::ARCHERY))
                     {
-                        ranged = BloodSword::Asset::Surface(Asset::Type::ARCHERY);
+                        ranged = Asset::Surface(Asset::Type::ARCHERY);
                     }
                     else if (character.Has(Skills::Type::SHURIKEN))
                     {
-                        ranged = BloodSword::Asset::Surface(Asset::Type::SHURIKEN);
+                        ranged = Asset::Surface(Asset::Type::SHURIKEN);
                     }
                     else
                     {
-                        ranged = BloodSword::Asset::Surface(Asset::Type::SHOOT);
+                        ranged = Asset::Surface(Asset::Type::SHOOT);
                     }
 
                     if (ranged)
@@ -232,11 +232,11 @@ namespace BloodSword::Rogue
                     }
                 }
 
-                if (character.Has(Character::Status::DEFENDING))
+                if (character.Has(Character::Status::DEFENDING) && Engine::IsAlive(character))
                 {
                     stats_rect.x = surface->w - (BloodSword::TileSize + BloodSword::Pad);
 
-                    auto defend = BloodSword::Asset::Surface(Asset::Type::DEFEND);
+                    auto defend = Asset::Surface(Asset::Type::DEFEND);
 
                     if (defend)
                     {

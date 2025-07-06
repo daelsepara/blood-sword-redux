@@ -1643,7 +1643,7 @@ namespace BloodSword::Interface
                 Graphics::RenderAsset(surface, surface_stats, stats_rect);
 
                 // add icon (blur if dead)
-                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? BloodSword::Asset::Surface(character.Asset) : BloodSword::Asset::Surface(character.Asset, Color::Inactive);
+                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? Asset::Surface(character.Asset) : Asset::Surface(character.Asset, Color::Inactive);
 
                 stats_rect.x = 0;
 
