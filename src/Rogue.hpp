@@ -604,6 +604,11 @@ namespace BloodSword::Rogue
 
         auto inside = room.Inside(point) && empty;
 
+        if (!inside)
+        {
+            return false;
+        }
+
         auto left = ((point.X == room.X1 + 1) && map[Point(room.X1, point.Y)].IsBlocked()) || (point.X > room.X1 + 1);
 
         auto right = ((point.X == room.X2 - 2) && map[Point(room.X2 - 1, point.Y)].IsBlocked()) || (point.X < room.X2 - 2);

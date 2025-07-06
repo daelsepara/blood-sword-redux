@@ -270,9 +270,9 @@ namespace BloodSword::Battlepits
     {
         auto available = Points();
 
-        for (auto y = 0; y < map.Height; y++)
+        for (auto y = 0; y <= map.Height - height; y++)
         {
-            for (auto x = 0; x < map.Width; x++)
+            for (auto x = 0; x <= map.Width - width; x++)
             {
                 auto point = Point(x, y);
 
@@ -284,7 +284,7 @@ namespace BloodSword::Battlepits
 
                 for (auto room : rooms)
                 {
-                    place &= !room.Intersects(point, w, h) && (w < map.Width && h < map.Height);
+                    place &= !room.Intersects(point, w, h);
 
                     if (!place)
                     {
