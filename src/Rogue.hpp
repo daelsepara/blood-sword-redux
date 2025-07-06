@@ -9,8 +9,6 @@ namespace BloodSword::Rogue
 {
     void GenerateBattlepits(Rogue::Base &rogue, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
     {
-        std::cerr << "Generating Battlepits ..." << std::endl;
-
         rogue.Battlepits = Map::Base(width, height);
 
         // generate battlepits
@@ -1716,9 +1714,9 @@ namespace BloodSword::Rogue
         {
             auto adjust = (3 - Engine::Random.NextInt()) * multiplier;
 
-            enemy.Maximum(Attribute::Type::ENDURANCE, enemy.Value(Attribute::Type::ENDURANCE) + adjust);
+            enemy.Maximum(Attribute::Type::ENDURANCE, enemy.Maximum(Attribute::Type::ENDURANCE) + adjust);
 
-            enemy.Value(Attribute::Type::ENDURANCE, enemy.Value(Attribute::Type::ENDURANCE));
+            enemy.Value(Attribute::Type::ENDURANCE, enemy.Maximum(Attribute::Type::ENDURANCE));
 
             monsters.Add(enemy);
         }
@@ -1728,8 +1726,6 @@ namespace BloodSword::Rogue
 
     void PlaceMonsters(Rogue::Base &rogue, int number)
     {
-        std::cerr << "Generating Monster Poplulation ..." << std::endl;
-
         auto options = std::vector<int>(rogue.Rooms.size() - 2);
 
         std::iota(options.begin(), options.end(), 1);
@@ -1767,7 +1763,7 @@ namespace BloodSword::Rogue
 
             if (enemy_type <= 30)
             {
-                enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+                enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 6, 0, 1, 0, 0, Asset::Type::ASSASSIN);
 
                 enemy.Add(Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2));
 
@@ -1811,8 +1807,6 @@ namespace BloodSword::Rogue
 
     void PlaceGold(Rogue::Base &rogue, int number, int min_gold, int max_gold)
     {
-        std::cerr << "Generating Loot ..." << std::endl;
-
         for (auto items = 0; items < number; items++)
         {
             auto gold = Item::Base("GOLD", Item::Type::GOLD, {}, Item::Type::NONE, Engine::Percentile.NextInt(min_gold, max_gold));
