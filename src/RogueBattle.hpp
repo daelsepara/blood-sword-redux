@@ -153,7 +153,9 @@ namespace BloodSword::Rogue
 
         std::iota(values.begin(), values.end(), 0);
 
-        auto selection = Interface::SelectIcons(graphics, background, "SELECT ACTION", assets, values, captions, 1, 1, Asset::Type::NONE, false, true, false);
+        auto action = character.Name + ": SELECT ACTION";
+
+        auto selection = Interface::SelectIcons(graphics, background, action.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true, false);
 
         if (selection.size() == 1)
         {

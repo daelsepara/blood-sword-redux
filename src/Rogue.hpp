@@ -417,7 +417,7 @@ namespace BloodSword::Rogue
 
                     auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
-                    auto input = Controls::User(0);
+                    auto input = Controls::User();
 
                     auto done = false;
 
@@ -1139,7 +1139,7 @@ namespace BloodSword::Rogue
 
             auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
-            auto input = Controls::User(0);
+            auto input = Controls::User();
 
             auto done = false;
 
@@ -1318,7 +1318,7 @@ namespace BloodSword::Rogue
 
         auto boxh = controlsy - display_y - BloodSword::LargePad;
 
-        auto input = Controls::User(0);
+        auto input = Controls::User();
 
         auto done = false;
 
@@ -2129,6 +2129,9 @@ namespace BloodSword::Rogue
 
     void Game(Graphics::Base &graphics)
     {
+        // set default control to the first
+        Controls::Default = 0;
+
         // generate battlepits
         auto rogue = Rogue::GenerateBattlepits(50, 100, 100, 5, 7, false);
 

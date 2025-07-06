@@ -10,6 +10,8 @@ namespace BloodSword::Controls
 {
     const int NotFound = -1;
 
+    int Default = -1;
+
     template <typename T>
     using Mapped = std::unordered_map<Controls::Type, T>;
 
@@ -148,7 +150,7 @@ namespace BloodSword::Controls
 
         User(int current) : Current(current) {}
 
-        User() {}
+        User() { this->Current = Controls::Default; }
 
         void SetText(const char *text)
         {

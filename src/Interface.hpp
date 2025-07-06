@@ -462,12 +462,9 @@ namespace BloodSword::Interface
         {
             auto message = Interface::Boxed(graphics, texture, background, border, border_size);
 
-            auto ticks = SDL_GetTicks64();
+            Input::RenderWhileWaiting(graphics, {scene, message});
 
-            while ((SDL_GetTicks64() - ticks) < delay)
-            {
-                Input::RenderWhileWaiting(graphics, {scene, message});
-            }
+            SDL_Delay(delay);
         }
     }
 
@@ -2179,7 +2176,7 @@ namespace BloodSword::Interface
 
         auto pad = BloodSword::OddPad;
 
-        auto input = Controls::User(0);
+        auto input = Controls::User();
 
         auto done = false;
 

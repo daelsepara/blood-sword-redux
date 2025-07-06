@@ -75,6 +75,11 @@ namespace BloodSword::Room
 
             return result;
         }
+
+        bool Intersects(Point point, int width, int height)
+        {
+            return (this->X1 <= width && this->X2 >= point.X && this->Y1 <= height && this->Y2 >= point.Y);
+        }
     };
 
     // check if point is inside any of the other rooms
@@ -260,18 +265,49 @@ namespace BloodSword::Battlepits
         }
     }
 
-    // create room with random dimensions
-    Room::Base CreateRoom(Random::Base &random, Map::Base &map, int min_size, int max_size)
+    // check if room placement is valid
+    Points Available(Map::Base &map, std::vector<Room::Base> &rooms, int width, int height)
     {
-        auto width = random.NextInt(min_size, max_size);
+        auto available = Points();
 
-        auto height = random.NextInt(min_size, max_size);
+        for (auto y = 0; y < map.Height; y++)
+        {
+            for (auto x = 0; x < map.Width; x++)
+            {
+                auto point = Point(x, y);
 
-        auto x = random.NextInt(0, map.Width - width - 1);
+                auto w = x + width;
 
-        auto y = random.NextInt(0, map.Height - height - 1);
+                auto h = y + height;
 
-        return Room::Base(x, y, width, height);
+                auto place = true;
+
+                for (auto room : rooms)
+                {
+                    place &= !room.Intersects(point, w, h) && (w < map.Width && h < map.Height);
+
+                    if (!place)
+                    {
+                        break;
+                    }
+                }
+
+                if (place)
+                {
+                    available.push_back(point);
+                }
+            }
+        }
+
+        return available;
+    }
+
+    // create room with random dimensions
+    Room::Base CreateRoom(Random::Base &random, Map::Base &map, int width, int height, Points &available)
+    {
+        auto point = available[random.NextInt(0, available.size() - 1)];
+
+        return Room::Base(point.X, point.Y, width, height);
     }
 
     typedef bool (*Checker)(Map::Base &map, Point point);
@@ -602,11 +638,16 @@ namespace BloodSword::Battlepits
 
         for (auto r = 0; r < max_rooms; r++)
         {
-            auto room = Battlepits::CreateRoom(random, map, min_size, max_size);
+            auto width = random.NextInt(min_size, max_size);
 
-            // check if room placement is valid
-            if (!room.Intersects(rooms))
+            auto height = random.NextInt(min_size, max_size);
+
+            auto available = Battlepits::Available(map, rooms, width, height);
+
+            if (available.size() > 0)
             {
+                auto room = Battlepits::CreateRoom(random, map, width, height, available);
+
                 // place room
                 auto room_id = int(rooms.size());
 
