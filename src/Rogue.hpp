@@ -1708,19 +1708,25 @@ namespace BloodSword::Rogue
         }
     }
 
-    Party::Base GenerateMonsters(Character::Base enemy, int min_size, int max_size)
+    Party::Base GenerateMonsters(Character::Base enemy, int min_size, int max_size, int multiplier = 1)
     {
         auto monsters = Party::Base();
 
         for (auto monster = 0; monster < Engine::Percentile.NextInt(min_size, max_size); monster++)
         {
+            auto adjust = (3 - Engine::Random.NextInt()) * multiplier;
+
+            enemy.Maximum(Attribute::Type::ENDURANCE, enemy.Value(Attribute::Type::ENDURANCE) + adjust);
+
+            enemy.Value(Attribute::Type::ENDURANCE, enemy.Value(Attribute::Type::ENDURANCE));
+
             monsters.Add(enemy);
         }
 
         return monsters;
     }
 
-    void PlaceMonsters(Rogue::Base &rogue, int number, int min_size, int max_size)
+    void PlaceMonsters(Rogue::Base &rogue, int number)
     {
         std::cerr << "Generating Monster Poplulation ..." << std::endl;
 
@@ -1751,6 +1757,12 @@ namespace BloodSword::Rogue
 
             Character::Base enemy;
 
+            auto min_size = 3;
+
+            auto max_size = 5;
+
+            auto multiplier = 1;
+
             auto enemy_type = Engine::Percentile.NextInt(0, 100);
 
             if (enemy_type <= 30)
@@ -1758,17 +1770,31 @@ namespace BloodSword::Rogue
                 enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
 
                 enemy.Add(Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2));
+
+                min_size = 3;
+
+                max_size = 5;
             }
             else if (enemy_type <= 90)
             {
                 enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, Asset::Type::BARBARIAN);
+
+                min_size = 2;
+
+                max_size = 4;
             }
             else
             {
                 enemy = Generate::NPC("ADVENTURER", {}, 8, 6, 6, 22, 3, 2, 0, BloodSword::MaximumMoves, Asset::Type::CHARACTER);
+
+                min_size = 1;
+
+                max_size = 2;
+
+                multiplier = 2;
             }
 
-            auto monsters = Rogue::GenerateMonsters(enemy, min_size, max_size);
+            auto monsters = Rogue::GenerateMonsters(enemy, min_size, max_size, multiplier);
 
             // place monsters in battlepits
             monsters.X = center.X;
@@ -1809,7 +1835,7 @@ namespace BloodSword::Rogue
         }
         else if (!Engine::IsAlive(rogue.Opponents[enemy]))
         {
-            Interface::FlashMessage(graphics, background, "YOUR PARTY IS VICTORIUS", Color::Background, Color::Active, BloodSword::Border, BloodSword::OneSecond * 2);
+            Interface::FlashMessage(graphics, background, "YOUR PARTY IS VICTORIUS", Color::Active);
 
             auto &tile = rogue.Battlepits[rogue.Opponents[enemy].Origin()];
 
@@ -2164,7 +2190,7 @@ namespace BloodSword::Rogue
         if (rogue.Rooms.size() > 0 && rogue.Party.Count() > 0)
         {
             // 50% rooms has monsters
-            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2, 3, 5);
+            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2);
 
             // 25% rooms has gold loot
             Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);

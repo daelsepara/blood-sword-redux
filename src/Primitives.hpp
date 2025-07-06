@@ -66,6 +66,8 @@ namespace BloodSword
 
     const int OneSecond = 1000;
 
+    const int TwoSeconds = 2000;
+
     // border constants
     const int Border = 4;
 

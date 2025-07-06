@@ -477,6 +477,11 @@ namespace BloodSword::Interface
         BloodSword::Free(&texture);
     }
 
+    void FlashMessage(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border)
+    {
+        return Interface::FlashMessage(graphics, scene, message, Color::Background, border, BloodSword::Border, BloodSword::TwoSeconds);
+    }
+
     // draws a message box on screen
     void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
@@ -2951,14 +2956,14 @@ namespace BloodSword::Interface
     }
 
     // attribute difficulty check (no targets / self-targetting)
-    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle)
+    bool Test(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Uint32 border, int border_size, Character::Base &character, Attribute::Type attribute, int roll, int modifier, Asset::Type asset, bool in_battle, bool blur = true)
     {
         if (character.Has(Character::Status::SERENITY) && attribute == Attribute::Type::PSYCHIC_ABILITY)
         {
             modifier -= 2;
         }
 
-        return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, asset, in_battle);
+        return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, asset, in_battle, Item::Property::NONE, blur);
     }
 
     // test character [ATTRIBUTE]
@@ -3675,7 +3680,7 @@ namespace BloodSword::Interface
     }
 
     // cast spell (has target)
-    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Asset::Type target, Spells::Type spell, bool in_battle)
+    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Asset::Type target, Spells::Type spell, bool in_battle, bool blur = true)
     {
         auto result = false;
 
@@ -3697,7 +3702,7 @@ namespace BloodSword::Interface
 
                     auto modifier = casting->CurrentComplexity;
 
-                    result = Interface::Target(graphics, background, cast, cast_w, cast_h, Color::Active, BloodSword::Border, caster, target, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, Spells::Assets[spell], in_battle);
+                    result = Interface::Target(graphics, background, cast, cast_w, cast_h, Color::Active, BloodSword::Border, caster, target, Attribute::Type::PSYCHIC_ABILITY, roll, modifier, Spells::Assets[spell], in_battle, Item::Property::NONE, blur);
 
                     if (!result)
                     {
@@ -3723,9 +3728,20 @@ namespace BloodSword::Interface
     }
 
     // cast spell (no targets)
-    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Spells::Type spell, bool in_battle)
+    bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Spells::Type spell, bool in_battle, bool blur = true)
     {
-        return Interface::Cast(graphics, background, origin, w, h, caster, Asset::Type::NONE, spell, in_battle);
+        return Interface::Cast(graphics, background, origin, w, h, caster, Asset::Type::NONE, spell, in_battle, blur);
+    }
+
+    // cast spell (no targets)
+    bool Cast(Graphics::Base &graphics, Scene::Base &background, Character::Base &caster, Spells::Type spell, bool in_battle, bool blur = true)
+    {
+        return Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, caster, Asset::Type::NONE, spell, in_battle, blur);
+    }
+
+    bool Cast(Graphics::Base &graphics, Scene::Base &background, Character::Base &caster, Asset::Type target, Spells::Type spell, bool in_battle, bool blur = true)
+    {
+        return Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, caster, target, spell, in_battle, blur);
     }
 
     // select from a list of options
