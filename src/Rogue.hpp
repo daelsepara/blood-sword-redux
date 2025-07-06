@@ -773,7 +773,7 @@ namespace BloodSword::Rogue
                 }
             }
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1 && !character.Has(Character::Status::TASK))
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1)
             {
                 // money
                 assets.push_back(Asset::Type::MONEY);
@@ -785,9 +785,9 @@ namespace BloodSword::Rogue
                 captions.push_back(gold_string);
             }
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1 && !character.Has(Character::Status::TASK))
+            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1)
             {
-                // money
+                // arrows
                 assets.push_back(Asset::Type::QUIVER);
 
                 controls.push_back(Controls::Type::QUIVER);
@@ -797,7 +797,7 @@ namespace BloodSword::Rogue
                 captions.push_back(arrow_string);
             }
 
-            if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE) && !character.Has(Character::Status::TASK))
+            if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE))
             {
                 // trade
                 assets.push_back(Asset::Type::TRADE);
@@ -934,37 +934,28 @@ namespace BloodSword::Rogue
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                if (!party[other_character].Has(Character::Status::TASK))
+                                std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
+
+                                auto transfer_item = Item::Type::GOLD;
+
+                                auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
+
+                                if (transfer > 0)
                                 {
-                                    std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
-
-                                    auto transfer_item = Item::Type::GOLD;
-
-                                    auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
-
-                                    if (transfer > 0)
+                                    if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                                     {
-                                        if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
-                                        {
-                                            party[other_character].Add(transfer_item, transfer);
+                                        party[other_character].Add(transfer_item, transfer);
 
-                                            character.Remove(transfer_item, transfer);
+                                        character.Remove(transfer_item, transfer);
 
-                                            done = true;
+                                        done = true;
 
-                                            exit = true;
-                                        }
-                                        else
-                                        {
-                                            Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
-                                        }
+                                        exit = true;
                                     }
-                                }
-                                else
-                                {
-                                    message = party[other_character].Name + " IS AWAY";
-
-                                    Interface::MessageBox(graphics, background, message, Color::Highlight);
+                                    else
+                                    {
+                                        Interface::InternalError(graphics, background, std::string("Internal Error: MONEY"));
+                                    }
                                 }
                             }
                         }
@@ -983,46 +974,37 @@ namespace BloodSword::Rogue
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                if (!party[other_character].Has(Character::Status::TASK))
+                                if (party[other_character].Has(Item::Container(Item::Type::ARROW)))
                                 {
-                                    if (party[other_character].Has(Item::Container(Item::Type::ARROW)))
+                                    std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
+
+                                    auto transfer_item = Item::Type::ARROW;
+
+                                    auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Type::QUIVER, Asset::Type::UP, Asset::Type::DOWN);
+
+                                    if (transfer > 0)
                                     {
-                                        std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
-
-                                        auto transfer_item = Item::Type::ARROW;
-
-                                        auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Type::QUIVER, Asset::Type::UP, Asset::Type::DOWN);
-
-                                        if (transfer > 0)
+                                        if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                                         {
-                                            if (other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
-                                            {
-                                                party[other_character].Add(transfer_item, transfer);
+                                            party[other_character].Add(transfer_item, transfer);
 
-                                                character.Remove(transfer_item, transfer);
+                                            character.Remove(transfer_item, transfer);
 
-                                                done = true;
+                                            done = true;
 
-                                                exit = true;
-                                            }
-                                            else
-                                            {
-                                                Interface::InternalError(graphics, background, std::string("Internal Error: ARROWS"));
-                                            }
+                                            exit = true;
                                         }
-                                    }
-                                    else
-                                    {
-                                        std::string quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
-
-                                        Interface::MessageBox(graphics, background, quiver, Color::Highlight);
+                                        else
+                                        {
+                                            Interface::InternalError(graphics, background, std::string("Internal Error: ARROWS"));
+                                        }
                                     }
                                 }
                                 else
                                 {
-                                    message = party[other_character].Name + " IS AWAY";
+                                    std::string quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
 
-                                    Interface::MessageBox(graphics, background, message, Color::Highlight);
+                                    Interface::MessageBox(graphics, background, quiver, Color::Highlight);
                                 }
                             }
                         }
@@ -1041,22 +1023,13 @@ namespace BloodSword::Rogue
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                if (!party[other_character].Has(Character::Status::TASK))
+                                items[id].Has(Item::Property::EQUIPPED);
+
+                                done = Interface::TransferItem(graphics, background, party, party[other_character], items, id);
+
+                                if (done)
                                 {
-                                    items[id].Has(Item::Property::EQUIPPED);
-
-                                    done = Interface::TransferItem(graphics, background, party, party[other_character], items, id);
-
-                                    if (done)
-                                    {
-                                        exit = true;
-                                    }
-                                }
-                                else
-                                {
-                                    message = party[other_character].Name + " IS AWAY";
-
-                                    Interface::MessageBox(graphics, background, message, Color::Highlight);
+                                    exit = true;
                                 }
                             }
                         }
@@ -1812,16 +1785,28 @@ namespace BloodSword::Rogue
         }
     }
 
-    void PlaceGold(Rogue::Base &rogue, int number, int min_gold, int max_gold)
+    void GenerateItems(Rogue::Base &rogue, std::string name, Item::Type type, Asset::Type asset, int number, int min_quantity, int max_quantity)
     {
         for (auto items = 0; items < number; items++)
         {
-            auto gold = Item::Base("GOLD", Item::Type::GOLD, {}, Item::Type::NONE, Engine::Percentile.NextInt(min_gold, max_gold));
+            auto item = Item::Base(name.c_str(), type, {}, Item::Type::NONE, Engine::Percentile.NextInt(min_quantity, max_quantity));
 
-            gold.Asset = Asset::Type::MONEY;
+            item.Asset = asset;
 
-            Rogue::PlaceItem(rogue, gold);
+            Rogue::PlaceItem(rogue, item);
         }
+    }
+
+    // generate gold loot
+    void PlaceGold(Rogue::Base &rogue, int number, int min_gold, int max_gold)
+    {
+        Rogue::GenerateItems(rogue, "GOLD", Item::Type::GOLD, Asset::Type::MONEY, number, min_gold, max_gold);
+    }
+
+    // generate arrows loot
+    void PlaceArrows(Rogue::Base &rogue, int number, int min_arrows, int max_arrows)
+    {
+        Rogue::GenerateItems(rogue, "ARROWS", Item::Type::ARROW, Asset::Type::QUIVER, number, min_arrows, max_arrows);
     }
 
     bool BattleResults(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int &enemy)
@@ -2195,6 +2180,12 @@ namespace BloodSword::Rogue
 
             // 25% rooms has gold loot
             Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
+
+            // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
+            if (rogue.Party.Has(Character::Class::TRICKSTER) || rogue.Party.Has(Character::Class::SAGE))
+            {
+                Rogue::PlaceArrows(rogue, rogue.Rooms.size() / 4, 4, 20);
+            }
 
             // place party at the center of the starting room
             auto center = rogue.Rooms[0].Center();

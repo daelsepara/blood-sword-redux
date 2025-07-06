@@ -133,7 +133,7 @@ namespace BloodSword::Interface
 
             if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1 && !character.Has(Character::Status::TASK))
             {
-                // money
+                // arrows
                 assets.push_back(Asset::Type::QUIVER);
 
                 controls.push_back(Controls::Type::QUIVER);

@@ -661,7 +661,7 @@ namespace BloodSword::Battlepits
         for (auto room_id = 1; room_id < rooms.size(); room_id++)
         {
             auto &last = rooms[room_id - 1];
-            
+
             Battlepits::ConnectRooms(map, rooms, rooms[room_id], last);
         }
 
