@@ -476,6 +476,16 @@ namespace BloodSword::Spells
 
         return count;
     }
+
+    bool IsBasic(Spells::Type type)
+    {
+        return Spells::In(Spells::Basic, type);
+    }
+
+    bool RequiresTarget(Spells::Type type)
+    {
+        return Spells::In(Spells::Target, type);
+    }
 }
 
 #endif

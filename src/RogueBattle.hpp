@@ -796,18 +796,18 @@ namespace BloodSword::Rogue
 
                                     if (spell != Spells::Type::NONE)
                                     {
-                                        if (spell != Spells::Type::PILLAR_OF_SALT && spell != Spells::Type::IMMEDIATE_DELIVERANCE && spell != Spells::Type::SERVILE_ENTHRALMENT)
+                                        if (!Spells::IsBasic(spell) && spell != Spells::Type::PILLAR_OF_SALT && spell != Spells::Type::IMMEDIATE_DELIVERANCE && spell != Spells::Type::SERVILE_ENTHRALMENT)
                                         {
                                             if (character.HasCalledToMind(spell))
                                             {
-                                                // cast spell    
+                                                // cast spell
                                             }
                                             else
                                             {
                                                 // call spell to mind
                                                 character.CallToMind(spell);
                                             }
-                                            
+
                                             end_turn = true;
                                         }
                                         else
