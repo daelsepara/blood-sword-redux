@@ -653,16 +653,16 @@ namespace BloodSword::Battlepits
 
                 Battlepits::Place(map, room, room_id);
 
-                // if not the first room, create tunnel to previous room
-                if (room_id > 0)
-                {
-                    auto &last = rooms.back();
-
-                    Battlepits::ConnectRooms(map, rooms, room, last);
-                }
-
                 rooms.push_back(room);
             }
+        }
+
+        // connect rooms
+        for (auto room_id = 1; room_id < rooms.size(); room_id++)
+        {
+            auto &last = rooms[room_id - 1];
+            
+            Battlepits::ConnectRooms(map, rooms, rooms[room_id], last);
         }
 
         if (connection == Connection::TUNNELS)
