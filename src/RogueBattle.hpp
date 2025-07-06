@@ -790,6 +790,34 @@ namespace BloodSword::Rogue
                                         Interface::MessageBox(graphics, scene, "CANNOT SHOOT FROM CURRENT POSITION!", Color::Highlight);
                                     }
                                 }
+                                else if (input == Controls::Type::SPELLS)
+                                {
+                                    auto spell = Interface::GetSpell(graphics, scene, character, Color::Background, Color::Active, BloodSword::Border, true);
+
+                                    if (spell != Spells::Type::NONE)
+                                    {
+                                        if (spell != Spells::Type::PILLAR_OF_SALT && spell != Spells::Type::IMMEDIATE_DELIVERANCE && spell != Spells::Type::SERVILE_ENTHRALMENT)
+                                        {
+                                            if (character.HasCalledToMind(spell))
+                                            {
+                                                // cast spell    
+                                            }
+                                            else
+                                            {
+                                                // call spell to mind
+                                                character.CallToMind(spell);
+                                            }
+                                            
+                                            end_turn = true;
+                                        }
+                                        else
+                                        {
+                                            Sound::Play(Sound::Type::ERROR);
+
+                                            Interface::MessageBox(graphics, scene, "YOU CANNOT CAST THIS SPELL!", Color::Highlight);
+                                        }
+                                    }
+                                }
                             }
                         }
                         else
