@@ -739,12 +739,18 @@ namespace BloodSword::Input
         return input.Type == Controls::Type::ENEMY;
     }
 
+    // clear all events
+    void Clear()
+    {
+        SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+    }
+
     // flush all events
     void Flush()
     {
         SDL_PumpEvents();
 
-        SDL_FlushEvents(SDL_FIRSTEVENT, SDL_LASTEVENT);
+        Input::Clear();
     }
 }
 

@@ -1879,7 +1879,7 @@ namespace BloodSword::Rogue
 
                     update.Party = true;
 
-                    Input::Flush();
+                    Input::Clear();
                 }
             }
             else
@@ -2042,7 +2042,7 @@ namespace BloodSword::Rogue
                     update.Scene = true;
 
                     // skip input and events processing
-                    Input::Flush();
+                    Input::Clear();
 
                     continue;
                 }
@@ -2080,7 +2080,7 @@ namespace BloodSword::Rogue
 
                         update.Party = true;
 
-                        Input::Flush();
+                        Input::Clear();
                     }
                 }
 

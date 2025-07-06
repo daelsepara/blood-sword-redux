@@ -210,7 +210,7 @@ namespace BloodSword::Rogue
     // shoot action
     bool Shoot(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender, Skills::Type shot, Asset::Type asset)
     {
-        Input::Flush();
+        Input::Clear();
 
         auto alive = true;
 
@@ -230,7 +230,7 @@ namespace BloodSword::Rogue
 
             if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::RANGED, false))
             {
-                Input::Flush();
+                Input::Clear();
 
                 auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, shot, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR), false);
 
@@ -271,7 +271,7 @@ namespace BloodSword::Rogue
     // shoot helper
     void Shoot(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender, int defenderid)
     {
-        Input::Flush();
+        Input::Clear();
 
         auto asset = Engine::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Type::SHOOT;
 
@@ -305,7 +305,7 @@ namespace BloodSword::Rogue
     // fight action
     bool Fight(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender, Skills::Type skill)
     {
-        Input::Flush();
+        Input::Clear();
 
         auto alive = true;
 
@@ -352,7 +352,7 @@ namespace BloodSword::Rogue
 
             if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::PRIMARY, false))
             {
-                Input::Flush();
+                Input::Clear();
 
                 auto hit = Interface::CombatDamage(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender, skill, asset, true, attacker.Has(Skills::Type::IGNORE_ARMOUR), false);
 
@@ -392,7 +392,7 @@ namespace BloodSword::Rogue
                     // process attacks which do not apply an efect first
                     if (alive && skill == Skills::Type::POISONED_BITE)
                     {
-                        Input::Flush();
+                        Input::Clear();
 
                         auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Type::FANGS, 1, 0).Sum;
 
@@ -411,7 +411,7 @@ namespace BloodSword::Rogue
                     }
                     else if (alive && effect != Character::Status::NONE && !defender.IsImmune(skill) && !defender.Has(effect))
                     {
-                        Input::Flush();
+                        Input::Clear();
 
                         // do not stack up effects
                         auto resisted = false;
@@ -474,7 +474,7 @@ namespace BloodSword::Rogue
 
     void ResolveSpell(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &caster, Character::Base &target, int targetid, Spells::Type spell)
     {
-        Input::Flush();
+        Input::Clear();
 
         auto alive = true;
 
@@ -516,7 +516,7 @@ namespace BloodSword::Rogue
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true, false))
             {
-                Input::Flush();
+                Input::Clear();
 
                 Interface::FlashMessage(graphics, background, affected, target.IsEnemy() ? Color::Highlight : Color::Active);
 
@@ -531,7 +531,7 @@ namespace BloodSword::Rogue
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true, false))
             {
-                Input::Flush();
+                Input::Clear();
 
                 Interface::FlashMessage(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
@@ -548,7 +548,7 @@ namespace BloodSword::Rogue
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true, false))
             {
-                Input::Flush();
+                Input::Clear();
 
                 Interface::FlashMessage(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
@@ -568,7 +568,7 @@ namespace BloodSword::Rogue
         {
             if (!Interface::Test(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, target, Attribute::Type::PSYCHIC_ABILITY, Spells::Difficulty[spell], Spells::DifficultyModifier[spell], Spells::Assets[spell], true, false))
             {
-                Input::Flush();
+                Input::Clear();
 
                 Interface::FlashMessage(graphics, background, affected, target.IsEnemy() ? Color::Active : Color::Highlight);
 
@@ -578,7 +578,7 @@ namespace BloodSword::Rogue
             }
             else
             {
-                Input::Flush();
+                Input::Clear();
 
                 Interface::FlashMessage(graphics, background, resisted, target.IsEnemy() ? Color::Highlight : Color::Active);
 
@@ -589,7 +589,7 @@ namespace BloodSword::Rogue
         }
         else if (spell == Spells::Type::SHEET_LIGHTNING)
         {
-            Input::Flush();
+            Input::Clear();
 
             auto hit = Interface::CombatDamage(graphics, background, popup, popup_w, popup_h, Color::Active, BloodSword::Border, caster, target, Spells::Damage[spell], Spells::DamageModifier[spell], Spells::Assets[spell], true, false);
 
@@ -957,7 +957,7 @@ namespace BloodSword::Rogue
                                     }
                                     else
                                     {
-                                        Input::Flush();
+                                        Input::Clear();
 
                                         Sound::Play(Sound::Type::ERROR);
 
@@ -987,7 +987,7 @@ namespace BloodSword::Rogue
                                     }
                                     else
                                     {
-                                        Input::Flush();
+                                        Input::Clear();
 
                                         Sound::Play(Sound::Type::ERROR);
 
@@ -1025,7 +1025,7 @@ namespace BloodSword::Rogue
                                                             {
                                                                 Interface::FlashMessage(graphics, scene, character.Name + " CASTING " + std::string(Spells::TypeMapping[spell]), Color::Active);
 
-                                                                Input::Flush();
+                                                                Input::Clear();
 
                                                                 if (Interface::Cast(graphics, scene, character, defender.Asset, spell, true, false))
                                                                 {
@@ -1053,7 +1053,7 @@ namespace BloodSword::Rogue
                                                     {
                                                         Interface::FlashMessage(graphics, scene, character.Name + " CASTING " + std::string(Spells::TypeMapping[spell]), Color::Active);
 
-                                                        Input::Flush();
+                                                        Input::Clear();
 
                                                         if (Interface::Cast(graphics, scene, character, spell, true, false))
                                                         {
@@ -1099,7 +1099,7 @@ namespace BloodSword::Rogue
                                         }
                                         else
                                         {
-                                            Input::Flush();
+                                            Input::Clear();
 
                                             Sound::Play(Sound::Type::ERROR);
 
