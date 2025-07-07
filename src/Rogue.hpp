@@ -1825,7 +1825,7 @@ namespace BloodSword::Rogue
     {
         auto done = false;
 
-        if (!Engine::IsAlive(rogue.Party))
+        if (!rogue.IsAlive())
         {
             Interface::MessageBox(graphics, background, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
 
@@ -2028,7 +2028,7 @@ namespace BloodSword::Rogue
                     rogue.Battlepits.Put(movement.Current, Map::Object::ENEMIES, -1);
 
                     // trigger event if distance closed with party
-                    if (rogue.Battlepits.Distance(movement.Current, rogue.Party.Origin()) <= 1)
+                    if (rogue.Battlepits.Distance(movement.Current, rogue.Origin()) <= 1)
                     {
                         events = true;
                     }
@@ -2050,18 +2050,18 @@ namespace BloodSword::Rogue
             }
 
             // enemy movement, ranged and magic attacks
-            if (Engine::IsAlive(rogue.Party) && events && !animating && rogue.Party.Room != Room::None && rogue.Rooms[rogue.Party.Room].Inside(rogue.Party.Origin()))
+            if (rogue.IsAlive() && events && !animating && rogue.InsideRoom())
             {
-                enemy = Rogue::FindOpponents(rogue, rogue.Party.Room);
+                enemy = Rogue::FindOpponents(rogue, rogue.Room());
 
                 if (enemy >= 0 && enemy < rogue.Opponents.size())
                 {
-                    auto distance = rogue.Battlepits.Distance(rogue.Party.Origin(), rogue.Opponents[enemy].Origin());
+                    auto distance = rogue.Battlepits.Distance(rogue.Origin(), rogue.Opponents[enemy].Origin());
 
                     if (distance > 1)
                     {
                         // move or shoot at party
-                        animating = Rogue::Move(rogue, enemy, movement, rogue.Opponents[enemy].Origin(), rogue.Party.Origin());
+                        animating = Rogue::Move(rogue, enemy, movement, rogue.Opponents[enemy].Origin(), rogue.Origin());
                     }
                     else
                     {
@@ -2092,11 +2092,11 @@ namespace BloodSword::Rogue
             {
                 auto input = Input::RogueInput(graphics, {scene});
 
-                auto prev = rogue.Party.Origin();
+                auto prev = rogue.Origin();
 
                 if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
                 {
-                    auto point = rogue.Party.Origin();
+                    auto point = rogue.Origin();
 
                     if (input.Type == Controls::Type::MENU)
                     {
@@ -2162,7 +2162,7 @@ namespace BloodSword::Rogue
                     }
 
                     // trigger event on movement
-                    if (prev != rogue.Party.Origin())
+                    if (prev != rogue.Origin())
                     {
                         events = true;
                     }
@@ -2185,7 +2185,7 @@ namespace BloodSword::Rogue
         // create party
         rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);
 
-        if (rogue.Rooms.size() > 0 && rogue.Party.Count() > 0)
+        if (rogue.Rooms.size() > 0 && rogue.Count() > 0)
         {
             // 50% rooms has monsters
             Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2);
@@ -2197,7 +2197,7 @@ namespace BloodSword::Rogue
             Rogue::PlaceFood(rogue, rogue.Rooms.size() / 4);
 
             // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
-            if (rogue.Party.Has(Character::Class::TRICKSTER) || rogue.Party.Has(Character::Class::SAGE))
+            if (rogue.Has(Character::Class::TRICKSTER) || rogue.Has(Character::Class::SAGE))
             {
                 Rogue::PlaceArrows(rogue, rogue.Rooms.size() / 4, 4, 20);
             }

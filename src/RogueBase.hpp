@@ -48,6 +48,36 @@ namespace BloodSword::Rogue
         Party::Base Party;
 
         Base() {}
+
+        int Count()
+        {
+            return this->Party.Count();
+        }
+
+        int Room()
+        {
+            return this->Party.Room;
+        }
+
+        Point Origin()
+        {
+            return this->Party.Origin();
+        }
+
+        bool InsideRoom()
+        {
+            return this->Room() != Room::None && this->Rooms[this->Room()].Inside(this->Origin());
+        }
+
+        bool IsAlive()
+        {
+            return Engine::IsAlive(this->Party);
+        }
+
+        bool Has(Character::Class character)
+        {
+            return this->Party.Has(character);
+        }
     };
 
     int FindLoot(Rogue::Base &rogue, Point point)
