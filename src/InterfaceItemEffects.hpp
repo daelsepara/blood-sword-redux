@@ -244,7 +244,7 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    std::string message = "INTERNAL ERROR: ITEM EFFECTS";
+                    std::string message = "Internal Error: ITEM EFFECTS";
 
                     Interface::InternalError(graphics, background, message);
                 }

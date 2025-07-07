@@ -343,7 +343,7 @@ namespace BloodSword::Rogue
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
+            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
 
             if (selection.size() == 1)
             {
@@ -757,31 +757,6 @@ namespace BloodSword::Rogue
                 }
             }
 
-            // item description / identify
-            if (Items::FoundDescription(items[id].Type))
-            {
-                if (!items[id].Revealed)
-                {
-                    if (character.Class == Character::Class::SAGE)
-                    {
-                        assets.push_back(Asset::Type::IDENTIFY);
-
-                        controls.push_back(Controls::Type::IDENTIFY);
-
-                        captions.push_back("IDENTIFY");
-                    }
-                }
-                else
-                {
-                    // add info button
-                    assets.push_back(Asset::Type::ABOUT);
-
-                    controls.push_back(Controls::Type::ABOUT);
-
-                    captions.push_back("ABOUT");
-                }
-            }
-
             if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1)
             {
                 // money
@@ -915,24 +890,6 @@ namespace BloodSword::Rogue
                             }
                         }
                     }
-                    else if ((input == Controls::Type::IDENTIFY) || (input == Controls::Type::ABOUT))
-                    {
-                        auto is_sage = (character.Class == Character::Class::SAGE);
-
-                        auto is_revealed = items[id].Revealed;
-
-                        if ((is_sage || is_revealed) || (party.Has(Character::Class::SAGE) && Engine::IsAlive(party[Character::Class::SAGE])))
-                        {
-                            if (Items::FoundDescription(items[id].Type) && input == Controls::Type::ABOUT)
-                            {
-                                Interface::ShowBookDescription(graphics, background, items[id].Type);
-                            }
-                        }
-                        else
-                        {
-                            Interface::ErrorMessage(graphics, background, Interface::MSG_IDENTIFY);
-                        }
-                    }
                     else if (input == Controls::Type::MONEY)
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
@@ -1051,12 +1008,7 @@ namespace BloodSword::Rogue
                     {
                         party.ChosenCharacter = character.Class;
 
-                        if (Items::FoundDescription(items[id].Type))
-                        {
-                            Interface::ShowBookDescription(graphics, background, items[id].Type);
-                        }
-
-                        Interface::ItemEffects(graphics, background, party, character, items[id].Type);
+                        Interface::ProcessEffects(graphics, background, party, character, id);
 
                         done = true;
 
@@ -1830,6 +1782,12 @@ namespace BloodSword::Rogue
         Rogue::GenerateItems(rogue, "FOOD", Item::Type::FOOD, Asset::Type::FOOD, number, 1, 1, {Item::Property::EDIBLE});
     }
 
+    // generate potion of healing loot
+    void PlacePotions(Rogue::Base &rogue, int number)
+    {
+        Rogue::GenerateItems(rogue, "POTION", Item::Type::POTION_OF_HEALING, Asset::Type::DRINK, number, 1, 1, {Item::Property::LIQUID, Item::Property::COMBAT});
+    }
+
     bool BattleResults(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int &enemy)
     {
         auto done = false;
@@ -2184,6 +2142,24 @@ namespace BloodSword::Rogue
         BloodSword::Free(&image);
     }
 
+    void PlaceLoot(BloodSword::Rogue::Base &rogue)
+    {
+        // 25% rooms has gold loot
+        Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
+
+        // 25% rooms has food loot
+        Rogue::PlaceFood(rogue, rogue.Rooms.size() / 4);
+
+        // 25% rooms has potion loot
+        Rogue::PlacePotions(rogue, rogue.Rooms.size() / 4);
+
+        // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
+        if (rogue.Has(Character::Class::TRICKSTER) || rogue.Has(Character::Class::SAGE))
+        {
+            Rogue::PlaceArrows(rogue, rogue.Rooms.size() / 4, 4, 20);
+        }
+    }
+
     void Game(Graphics::Base &graphics)
     {
         // set default control to the first
@@ -2199,17 +2175,7 @@ namespace BloodSword::Rogue
             // 50% rooms has monsters
             Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2);
 
-            // 25% rooms has gold loot
-            Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
-
-            // 25% rooms has food loot
-            Rogue::PlaceFood(rogue, rogue.Rooms.size() / 4);
-
-            // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
-            if (rogue.Has(Character::Class::TRICKSTER) || rogue.Has(Character::Class::SAGE))
-            {
-                Rogue::PlaceArrows(rogue, rogue.Rooms.size() / 4, 4, 20);
-            }
+            Rogue::PlaceLoot(rogue);
 
             // place party at the center of the starting room
             auto center = rogue.Rooms[0].Center();
