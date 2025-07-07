@@ -5,6 +5,207 @@
 
 namespace BloodSword::Rogue
 {
+    // manage item found in location
+    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Items::Inventory &items, int id)
+    {
+        auto &party = rogue.Party;
+
+        auto assets = Asset::List();
+
+        auto controls = Controls::List();
+
+        auto captions = std::vector<std::string>();
+
+        // take item
+        assets.push_back(Asset::Type::USE);
+
+        controls.push_back(Controls::Type::TAKE);
+
+        captions.push_back("TAKE");
+
+        // go back
+        assets.push_back(Asset::Type::BACK);
+
+        controls.push_back(Controls::Type::BACK);
+
+        auto values = std::vector<int>(controls.size());
+
+        std::iota(values.begin(), values.end(), 0);
+
+        auto done = false;
+
+        while (!done)
+        {
+            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+
+            if (selection.size() == 1)
+            {
+                auto input = controls[selection[0]];
+
+                if (input == Controls::Type::BACK)
+                {
+                    done = true;
+                }
+                else if (input == Controls::Type::TAKE)
+                {
+                    auto character = Engine::FirstClass(party);
+
+                    if (Engine::Count(party) > 1)
+                    {
+                        std::string message = "WHO TAKES THE " + items[id].Name + "?";
+
+                        character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
+                    }
+
+                    if (character != Character::Class::NONE)
+                    {
+                        done = Interface::TransferItem(graphics, background, party, party[character], items, id);
+                    }
+                }
+            }
+        }
+    }
+
+    // show inventory of a location
+    void ShowLoot(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
+    {
+        auto loot = Rogue::FindLoot(rogue, point);
+
+        if (loot >= 0 && loot < rogue.Loot.size())
+        {
+            auto &items = rogue.Loot[loot].Items;
+
+            auto exit = false;
+
+            if (items.size() > 0)
+            {
+                while (!exit)
+                {
+                    auto limit = std::min(4, int(items.size()));
+
+                    auto start = 0;
+
+                    auto last = start + limit;
+
+                    auto options = int(items.size());
+
+                    // wrap length
+                    auto wrap = BloodSword::TripleTile;
+
+                    auto text_list = Graphics::TextList();
+
+                    for (auto &item : items)
+                    {
+                        text_list.push_back(Graphics::RichText(item.String(true), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0));
+                    }
+
+                    auto menu = Graphics::CreateText(graphics, text_list);
+
+                    // padding
+                    auto pads = BloodSword::LargePad;
+
+                    // default width
+                    auto w = std::max(BloodSword::Width(menu) + pads, wrap);
+
+                    // default height
+                    auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
+
+                    auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+
+                    auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
+
+                    auto input = Controls::User();
+
+                    auto done = false;
+
+                    auto frame_x = x - BloodSword::HalfTile;
+
+                    auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
+
+                    auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+
+                    auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+
+                    while (!done)
+                    {
+                        auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
+
+                        // add frame at the back
+                        overlay.Elements.insert(overlay.Elements.begin(), Scene::Element(frame_x, frame_y, frame_w, frame_h, Color::Background, Color::Active, BloodSword::Border));
+
+                        auto &lastControl = overlay.Controls.back();
+
+                        auto id = lastControl.Id + 1;
+
+                        auto first = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                        auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
+
+                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+
+                        overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
+
+                        Interface::ClearScrolling(overlay, input, Controls::Type::SCROLL_UP, Controls::Type::SCROLL_DOWN);
+
+                        input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
+
+                        if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                        {
+                            if (input.Type == Controls::Type::BACK)
+                            {
+                                done = true;
+
+                                exit = true;
+                            }
+                            else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                            {
+                                Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
+                            }
+                            else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                            {
+                                Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
+                            }
+                            else if (input.Type == Controls::Type::CHOICE)
+                            {
+                                auto list = Controls::Find(overlay.Controls, Controls::Type::CHOICE);
+
+                                auto choice = start + (input.Current - list);
+
+                                if (choice >= 0 && choice < items.size())
+                                {
+                                    Rogue::ManageItem(graphics, background, rogue, items, choice);
+                                }
+
+                                // check if item list is unchanged
+                                if (items.size() == 0)
+                                {
+                                    done = true;
+
+                                    exit = true;
+                                }
+                                else if (items.size() != options)
+                                {
+                                    done = true;
+                                }
+                            }
+                        }
+                    }
+
+                    BloodSword::Free(menu);
+                }
+            }
+
+            if (items.size() == 0)
+            {
+                rogue.Battlepits[point].Id = Map::NotFound;
+
+                rogue.Battlepits[point].Occupant = Map::Object::NONE;
+
+                rogue.Loot.erase(rogue.Loot.begin() + loot);
+            }
+        }
+    }
+
     // use item while in battle or defer to normal use
     Rogue::Update UseItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Character::Class character_class, int id)
     {

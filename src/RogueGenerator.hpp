@@ -287,7 +287,7 @@ namespace BloodSword::Rogue
         // potions 67% more likely than scrolls
         Rogue::PlaceItems(rogue, {potion, potion, scroll}, number);
     }
-    
+
     void PlaceLoot(BloodSword::Rogue::Base &rogue)
     {
         // 25% rooms has gold loot
