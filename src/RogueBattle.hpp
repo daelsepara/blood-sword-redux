@@ -1,71 +1,10 @@
 #ifndef __ROGUE_BATTLE_HPP__
 #define __ROGUE_BATTLE_HPP__
 
-#include "RogueBase.hpp"
+#include "RogueCombat.hpp"
 
 namespace BloodSword::Rogue
 {
-    void RenderCombatant(Scene::Base &scene, SDL_Texture *texture, int x, int y, Uint32 color)
-    {
-        scene.Add(Scene::Element(x, y, BloodSword::Width(texture), BloodSword::Height(texture), Color::Background, color, BloodSword::Border));
-
-        scene.VerifyAndAdd(Scene::Element(texture, Point(x, y)));
-    }
-
-    void RenderCombatants(Graphics::Base &graphics, Scene::Base &scene, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id, Uint32 color)
-    {
-        // estimate positions from window
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
-
-        auto window_y = (graphics.Height - window_h) / 2;
-
-        auto pad = BloodSword::SmallPad;
-
-        auto enemy_offset = (graphics.Width - (enemies.Count() * stats_w + (enemies.Count() - 1) * pad)) / 2;
-
-        auto enemy_h = BloodSword::Height(enemy_stats);
-
-        auto enemy_y = window_y - (BloodSword::TileSize + enemy_h + BloodSword::Pad * 2);
-
-        for (auto i = 0; i < enemies.Count(); i++)
-        {
-            if (!is_enemy || id != i)
-            {
-                auto enemy_x = enemy_offset + i * (stats_w + pad);
-
-                Rogue::RenderCombatant(scene, enemy_stats[i], enemy_x, enemy_y, Color::Inactive);
-            }
-        }
-
-        if (is_enemy)
-        {
-            auto enemy_x = enemy_offset + id * (stats_w + pad);
-
-            Rogue::RenderCombatant(scene, enemy_stats[id], enemy_x, enemy_y, color);
-        }
-
-        auto party_offset = (graphics.Width - (party.Count() * stats_w + (party.Count() - 1) * pad)) / 2;
-
-        auto party_y = window_y + window_h + BloodSword::TileSize + BloodSword::Pad;
-
-        for (auto i = 0; i < party.Count(); i++)
-        {
-            if (!is_player || id != i)
-            {
-                auto party_x = party_offset + i * (stats_w + pad);
-
-                Rogue::RenderCombatant(scene, party_stats[i], party_x, party_y, Color::Inactive);
-            }
-        }
-
-        if (is_player)
-        {
-            auto party_x = party_offset + id * (stats_w + pad);
-
-            Rogue::RenderCombatant(scene, party_stats[id], party_x, party_y, color);
-        }
-    }
-
     Controls::Type SelectAction(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         auto selected = Controls::Type::NONE;
@@ -654,113 +593,6 @@ namespace BloodSword::Rogue
         }
     }
 
-    int SelectTarget(Graphics::Base &graphics, Scene::Base &scene, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
-    {
-        // estimate positions from window
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
-
-        auto window_y = (graphics.Height - window_h) / 2;
-
-        int target = -1;
-
-        auto texture = Graphics::CreateText(graphics, "SELECT TARGET", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-
-        auto pad = BloodSword::SmallPad;
-
-        auto max_selection = is_player ? enemies.Count() : party.Count();
-
-        auto stats_h = is_player ? BloodSword::Height(enemy_stats) : BloodSword::Height(party_stats);
-
-        auto offset = (graphics.Width - (max_selection * stats_w + (max_selection - 1) * pad)) / 2;
-
-        auto target_y = is_player ? (window_y - (BloodSword::TileSize + stats_h + BloodSword::Pad * 2)) : (window_y + window_h + BloodSword::TileSize + BloodSword::Pad);
-
-        auto selection = is_player ? Engine::First(enemies) : Engine::First(party);
-
-        auto done = false;
-
-        while (!done)
-        {
-            auto scene = Scene::Base();
-
-            // render all combatants
-            Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, id, Color::Active);
-
-            // render label
-            Interface::Boxed(graphics, scene, texture, Color::Background, Color::Active, BloodSword::Border);
-
-            // calculate target texture x-coordinate
-            auto target_x = offset + selection * (stats_w + pad);
-
-            // render target
-            Rogue::RenderCombatant(scene, is_player ? enemy_stats[selection] : party_stats[selection], target_x, target_y, Color::Highlight);
-
-            // calculate pointer x-coordinate
-            auto pointer_x = offset + selection * (stats_w + pad) + (stats_w - BloodSword::TileSize) / 2;
-
-            // // calculate pointer y-coordinate, render pointer
-            if (is_player)
-            {
-                auto pointer_y = window_y - (BloodSword::TileSize + BloodSword::Pad);
-
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), pointer_x, pointer_y));
-            }
-            else
-            {
-                auto pointer_y = window_y + window_h + BloodSword::Pad;
-
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), pointer_x, pointer_y));
-            }
-
-            auto input = Input::RogueInput(graphics, {scene});
-
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
-            {
-                if (input.Type == Controls::Type::LEFT)
-                {
-                    if (selection > 0)
-                    {
-                        selection--;
-                    }
-                }
-                else if (input.Type == Controls::Type::RIGHT)
-                {
-                    if (selection < max_selection - 1)
-                    {
-                        selection++;
-                    }
-                }
-                else if (input.Type == Controls::Type::UP || input.Type == Controls::Type::DOWN)
-                {
-                    Sound::Play(Sound::Type::ERROR);
-                }
-                else if (input.Type == Controls::Type::ACTION)
-                {
-                    if (selection >= 0 && selection < max_selection)
-                    {
-                        target = selection;
-
-                        done = true;
-                    }
-                    else
-                    {
-                        Sound::Play(Sound::Type::ERROR);
-                    }
-                }
-                else if (input.Type == Controls::Type::BACK)
-                {
-                    done = true;
-                }
-
-                input.Selected = false;
-            }
-        }
-
-        BloodSword::Free(&texture);
-
-        return target;
-    }
-
     Rogue::Update Battle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int enemy)
     {
         Rogue::Update update = {false, false, false};
@@ -1115,6 +947,26 @@ namespace BloodSword::Rogue
 
                                             Interface::FlashMessage(graphics, scene, "YOU CANNOT CAST THIS SPELL!", Color::Highlight);
                                         }
+                                    }
+                                }
+                                else if (input == Controls::Type::ITEMS)
+                                {
+                                    auto result = Rogue::ShowInventory(graphics, scene, rogue, character);
+
+                                    if (result.Scene || result.Party)
+                                    {
+                                        end_turn = true;
+                                    }
+
+                                    if (result.Party)
+                                    {
+                                        BloodSword::Free(party_stats);
+
+                                        party_stats = Rogue::Stats(graphics, party, stats_w);
+
+                                        BloodSword::Free(enemy_stats);
+
+                                        enemy_stats = Rogue::Stats(graphics, enemies, stats_w);
                                     }
                                 }
                             }
