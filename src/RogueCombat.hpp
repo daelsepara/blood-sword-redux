@@ -182,8 +182,6 @@ namespace BloodSword::Rogue
 
         auto &character = party[character_class];
 
-        auto &items = character.Items;
-
         auto in_battle = character.Is(Character::Status::IN_BATTLE);
 
         party.ChosenCharacter = character.Class;
