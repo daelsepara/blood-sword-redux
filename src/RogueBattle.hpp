@@ -1,7 +1,8 @@
 #ifndef __ROGUE_BATTLE_HPP__
 #define __ROGUE_BATTLE_HPP__
 
-#include "RogueCombat.hpp"
+#include "RogueBase.hpp"
+#include "RogueItems.hpp"
 
 namespace BloodSword::Rogue
 {

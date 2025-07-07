@@ -2,6 +2,7 @@
 #define __ROGUE_HPP__
 
 #include "RogueBase.hpp"
+#include "RogueItems.hpp"
 #include "RogueBattle.hpp"
 
 // classes and functions to enable rogue-like game mode
