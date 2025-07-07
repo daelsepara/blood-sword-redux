@@ -11,6 +11,15 @@ namespace BloodSword::Rogue
     {
         rogue.Battlepits = Map::Base(width, height);
 
+        // clear population
+        rogue.Rooms.clear();
+
+        rogue.Opponents.clear();
+
+        rogue.Loot.clear();
+
+        rogue.Party = Party::Base();
+
         // generate battlepits
         Battlepits::Generate(rogue.Battlepits, rogue.Rooms, max_rooms, min_size, max_size, connection, inner_tunnel);
 

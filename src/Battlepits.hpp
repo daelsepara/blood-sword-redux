@@ -660,9 +660,7 @@ namespace BloodSword::Battlepits
                     auto room = Battlepits::CreateRoom(random, map, width, height, available);
 
                     // place room
-                    auto room_id = int(rooms.size());
-
-                    Battlepits::Place(map, room, room_id);
+                    Battlepits::Place(map, room, int(rooms.size()));
 
                     rooms.push_back(room);
                 }
