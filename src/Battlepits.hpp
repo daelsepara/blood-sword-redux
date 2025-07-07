@@ -642,18 +642,30 @@ namespace BloodSword::Battlepits
 
             auto height = random.NextInt(min_size, max_size);
 
-            auto available = Battlepits::Available(map, rooms, width, height);
-
-            if (available.size() > 0)
+            if (r == 0)
             {
-                auto room = Battlepits::CreateRoom(random, map, width, height, available);
+                // place starting room at the center
+                auto room = Room::Base((map.Width - width) / 2, (map.Height - height) / 2, width, height);
 
-                // place room
-                auto room_id = int(rooms.size());
-
-                Battlepits::Place(map, room, room_id);
+                Battlepits::Place(map, room, 0);
 
                 rooms.push_back(room);
+            }
+            else
+            {
+                auto available = Battlepits::Available(map, rooms, width, height);
+
+                if (available.size() > 0)
+                {
+                    auto room = Battlepits::CreateRoom(random, map, width, height, available);
+
+                    // place room
+                    auto room_id = int(rooms.size());
+
+                    Battlepits::Place(map, room, room_id);
+
+                    rooms.push_back(room);
+                }
             }
         }
 
