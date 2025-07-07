@@ -1615,7 +1615,7 @@ namespace BloodSword::Rogue
 
             while (!good)
             {
-                location = available[Engine::Percentile.NextInt(0, available.size() - 1)];
+                location = available[Engine::Percentile.NextInt() % available.size()];
 
                 loot = Rogue::FindLoot(rogue, location);
 
@@ -1647,19 +1647,19 @@ namespace BloodSword::Rogue
 
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, std::vector<int> fpr, std::vector<int> psy, std::vector<int> awr, std::vector<int> end, std::vector<int> arm, std::vector<int> dmg_v, std::vector<int> dmg_m, Asset::Type asset)
     {
-        auto fpr_value = fpr.size() > 1 ? fpr[Engine::Percentile.NextInt(0, fpr.size() - 1)] : fpr[0];
+        auto fpr_value = fpr.size() > 1 ? fpr[Engine::Percentile.NextInt() % fpr.size()] : fpr[0];
 
-        auto psy_value = psy.size() > 1 ? psy[Engine::Percentile.NextInt(0, psy.size() - 1)] : psy[0];
+        auto psy_value = psy.size() > 1 ? psy[Engine::Percentile.NextInt() % psy.size()] : psy[0];
 
-        auto awr_value = awr.size() > 1 ? awr[Engine::Percentile.NextInt(0, awr.size() - 1)] : awr[0];
+        auto awr_value = awr.size() > 1 ? awr[Engine::Percentile.NextInt() % awr.size()] : awr[0];
 
-        auto end_value = end.size() > 1 ? end[Engine::Percentile.NextInt(0, end.size() - 1)] : end[0];
+        auto end_value = end.size() > 1 ? end[Engine::Percentile.NextInt() % end.size()] : end[0];
 
-        auto arm_value = end.size() > 1 ? arm[Engine::Percentile.NextInt(0, arm.size() - 1)] : arm[0];
+        auto arm_value = arm.size() > 1 ? arm[Engine::Percentile.NextInt() % arm.size()] : arm[0];
 
-        auto dmg_v_value = dmg_v.size() > 1 ? dmg_v[Engine::Percentile.NextInt(0, dmg_v.size() - 1)] : dmg_v[0];
+        auto dmg_v_value = dmg_v.size() > 1 ? dmg_v[Engine::Percentile.NextInt() % dmg_v.size()] : dmg_v[0];
 
-        auto dmg_m_value = dmg_m.size() > 1 ? dmg_m[Engine::Percentile.NextInt(0, dmg_m.size() - 1)] : dmg_m[0];
+        auto dmg_m_value = dmg_m.size() > 1 ? dmg_m[Engine::Percentile.NextInt() % dmg_m.size()] : dmg_m[0];
 
         auto npc = Generate::NPC(name, fight, shoot, skills, fpr_value, psy_value, awr_value, end_value, arm_value, dmg_v_value, dmg_m_value, 1000, asset);
 
@@ -1710,7 +1710,7 @@ namespace BloodSword::Rogue
             // look for un-occupied room
             while (center.IsNone() || room == Room::None || rogue.Battlepits[center].IsOccupied())
             {
-                target = Engine::Percentile.NextInt(0, options.size() - 1);
+                target = Engine::Percentile.NextInt() % options.size();
 
                 room = options[target];
 
@@ -1752,6 +1752,20 @@ namespace BloodSword::Rogue
         }
     }
 
+    // generate from a selection of items
+    void GenerateItems(Rogue::Base &rogue, std::vector<Item::Base> items, int number)
+    {
+        auto options = items.size();
+
+        for (auto i = 0; i < number; i++)
+        {
+            auto item = items[Engine::Percentile.NextInt() % options];
+
+            Rogue::PlaceItem(rogue, item);
+        }
+    }
+
+    // generate items
     void GenerateItems(Rogue::Base &rogue, std::string name, Item::Type type, Asset::Type asset, int number, int min_quantity, int max_quantity, Item::Properties properties = {})
     {
         for (auto items = 0; items < number; items++)
@@ -1782,10 +1796,14 @@ namespace BloodSword::Rogue
         Rogue::GenerateItems(rogue, "FOOD", Item::Type::FOOD, Asset::Type::FOOD, number, 1, 1, {Item::Property::EDIBLE});
     }
 
-    // generate potion of healing loot
+    // generate potion/scroll of healing loot
     void PlacePotions(Rogue::Base &rogue, int number)
     {
-        Rogue::GenerateItems(rogue, "POTION", Item::Type::POTION_OF_HEALING, Asset::Type::DRINK, number, 1, 1, {Item::Property::LIQUID, Item::Property::COMBAT});
+        auto potion = Item::Base("POTION", Item::Type::POTION_OF_HEALING, {Item::Property::LIQUID, Item::Property::COMBAT}, Item::Type::NONE, 1, Asset::Type::DRINK);
+
+        auto scroll = Item::Base("SCROLL", Item::Type::SCROLL_HEALING, {Item::Property::READABLE}, Item::Type::NONE, 1, Asset::Type::READ);
+
+        Rogue::GenerateItems(rogue, {potion, scroll}, number);
     }
 
     bool BattleResults(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int &enemy)
@@ -1852,11 +1870,9 @@ namespace BloodSword::Rogue
             }
             else
             {
-                Interface::MessageBox(graphics, background, "TILE OCCUPIED", Color::Inactive);
+                Interface::FlashMessage(graphics, background, "TILE OCCUPIED", Color::Inactive);
 
-                update.Scene = true;
-
-                update.Party = true;
+                Sound::Play(Sound::Type::ERROR);
             }
         }
         else

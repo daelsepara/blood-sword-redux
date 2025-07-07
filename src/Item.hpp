@@ -141,6 +141,13 @@ namespace BloodSword::Item
              Item::Properties properties,
              Item::Type contains,
              int quantity,
+             Asset::Type asset) : Base(name, type, {}, properties, contains, quantity) { this->Asset = asset; }
+
+        Base(const char *name,
+             Item::Type type,
+             Item::Properties properties,
+             Item::Type contains,
+             int quantity,
              int limit) : Base(name, type, {}, properties, contains, quantity, limit) {}
 
         Base(const char *name,
