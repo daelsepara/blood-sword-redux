@@ -5152,7 +5152,9 @@ namespace BloodSword::Interface
 
         auto num_icons = int(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
 
-        auto popup_w = std::max((num_icons + 1) * (BloodSword::TileSize) + (num_icons * BloodSword::Pad), BloodSword::Width(texture) + popup_pad * 2);
+        auto min_icons = std::max(4, num_icons);
+
+        auto popup_w = std::max(min_icons * BloodSword::TileSize + (min_icons - 1) * BloodSword::Pad, BloodSword::Width(texture) + popup_pad * 2);
 
         auto popup_h = (BloodSword::TileSize + popup_pad) * 2;
 
