@@ -440,13 +440,13 @@ namespace BloodSword::Rogue
                     auto options = int(items.size());
 
                     // wrap length
-                    auto wrap = BloodSword::Wrap;
+                    auto wrap = BloodSword::TripleTile;
 
                     auto text_list = Graphics::TextList();
 
                     for (auto &item : items)
                     {
-                        text_list.push_back(Graphics::RichText(item.String(true), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
+                        text_list.push_back(Graphics::RichText(item.String(true), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0));
                     }
 
                     auto menu = Graphics::CreateText(graphics, text_list);
