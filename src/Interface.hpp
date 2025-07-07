@@ -3220,6 +3220,23 @@ namespace BloodSword::Interface
             modifier -= 2;
         }
 
+        // roguelike specific modifiers
+        if (!shooting)
+        {
+            if (attacker.Has(Character::Status::MELEE) && defender.Has(Character::Status::RANGED))
+            {
+                modifier += 1;
+            }
+            else if (attacker.Has(Character::Status::RANGED) && defender.Has(Character::Status::MELEE))
+            {
+                modifier -= 1;
+            }
+        }
+        else if (attacker.Has(Character::Status::RANGED) && defender.Has(Character::Status::RANGED))
+        {
+            modifier += 1;
+        }
+
         // check for bonus damage to specific target types
         if (attacker.IsPlayer() && attacker.IsArmed() && !shooting && !knockout)
         {

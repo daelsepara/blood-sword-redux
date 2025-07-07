@@ -269,7 +269,7 @@ namespace BloodSword::Rogue
     }
 
     // shoot helper
-    void Shoot(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender, int defenderid)
+    void ResolveShoot(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender, int defenderid)
     {
         Input::Clear();
 
@@ -349,6 +349,16 @@ namespace BloodSword::Rogue
             roll += attacker.Has(Character::Status::NIGHTHOWL) ? 1 : 0;
 
             auto modifier = defender.Has(Skills::Type::DODGING) ? 1 : 0;
+
+            // roguelike mode specific difficulty adjustment
+            if (attacker.Has(Character::Status::MELEE) && defender.Has(Character::Status::RANGED))
+            {
+                modifier += 1;
+            }
+            else if (attacker.Has(Character::Status::RANGED) && defender.Has(Character::Status::MELEE))
+            {
+                modifier -= 1;
+            }
 
             if (Interface::Target(graphics, background, window, window_w, window_h, Color::Active, BloodSword::Border, attacker, defender.Asset, Attribute::Type::FIGHTING_PROWESS, roll, modifier, asset, true, Item::Property::PRIMARY, false))
             {
@@ -879,7 +889,7 @@ namespace BloodSword::Rogue
 
                                     Interface::FlashMessage(graphics, scene, character.Name + " SHOOTS AT " + defender.Name, Color::Active);
 
-                                    Rogue::Shoot(graphics, scene, character, defender, defender_id);
+                                    Rogue::ResolveShoot(graphics, scene, character, defender, defender_id);
 
                                     Rogue::RefreshStats(graphics, party_stats, defender, defender_id, stats_w);
                                 }
@@ -976,7 +986,7 @@ namespace BloodSword::Rogue
 
                                             Interface::FlashMessage(graphics, scene, character.Name + " SHOOTS AT " + defender.Name, Color::Active);
 
-                                            Rogue::Shoot(graphics, scene, character, defender, defender_id);
+                                            Rogue::ResolveShoot(graphics, scene, character, defender, defender_id);
 
                                             Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_w);
 
