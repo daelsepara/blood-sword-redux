@@ -183,13 +183,20 @@ namespace BloodSword::Rogue
         auto &character = party[character_class];
 
         auto in_battle = character.Is(Character::Status::IN_BATTLE);
+        
+        auto usable = (in_battle && character.Items[id].Has(Item::Property::COMBAT)) || !in_battle;
 
         party.ChosenCharacter = character.Class;
 
         // while in battle some items might require a target, otherwise defer to normal processing of effects
-        if (!in_battle)
+        if (usable)
         {
+            // add manual overrides here, otherwise default to processing
             Interface::ProcessEffects(graphics, background, party, character, id);
+
+            update.Scene = true;
+
+            update.Party = true;
         }
 
         return update;
@@ -717,7 +724,7 @@ namespace BloodSword::Rogue
                         {
                             update = Rogue::ManageItem(graphics, background, rogue, character.Class, choice);
 
-                            if (!Engine::IsAlive(character))
+                            if (!Engine::IsAlive(character) || update.Scene || update.Party)
                             {
                                 done = true;
 
