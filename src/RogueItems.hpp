@@ -217,19 +217,27 @@ namespace BloodSword::Rogue
 
         auto in_battle = character.Is(Character::Status::IN_BATTLE);
 
-        auto usable = (in_battle && character.Items[id].Has(Item::Property::COMBAT)) || !in_battle;
+        auto &item = character.Items[id];
+
+        auto usable = (in_battle && item.Has(Item::Property::COMBAT)) || !in_battle;
 
         party.ChosenCharacter = character.Class;
 
         // while in battle some items might require a target, otherwise defer to normal processing of effects
         if (usable)
         {
-            // add manual overrides here, otherwise default to processing
-            Interface::ProcessEffects(graphics, background, party, character, id);
+            if (item.Type == Item::Type::STEEL_SCEPTRE)
+            {
+            }
+            else
+            {
+                // add manual overrides here, otherwise default to processing
+                Interface::ProcessEffects(graphics, background, party, character, id);
 
-            update.Scene = true;
+                update.Scene = true;
 
-            update.Party = true;
+                update.Party = true;
+            }
         }
 
         return update;

@@ -47,6 +47,11 @@ namespace BloodSword::Rogue
         // player party adventuring in battlepits
         Party::Base Party;
 
+        // temporary texture containerss
+        BloodSword::Textures PartyStats = {};
+
+        BloodSword::Textures EnemyStats = {};
+
         Base() {}
 
         int Count()
