@@ -47,10 +47,11 @@ namespace BloodSword::Rogue
         // player party adventuring in battlepits
         Party::Base Party;
 
-        // temporary texture containerss
-        BloodSword::Textures PartyStats = {};
+        // current enemy party
+        int Enemy = Map::NotFound;
 
-        BloodSword::Textures EnemyStats = {};
+        // width (in pixels) of character stats card
+        int StatsWidth = 0;
 
         Base() {}
 
@@ -421,7 +422,7 @@ namespace BloodSword::Rogue
         }
     }
 
-    int SelectTarget(Graphics::Base &graphics, Scene::Base &scene, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
+    int SelectTarget(Graphics::Base &graphics, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
     {
         // estimate positions from window
         auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
@@ -524,6 +525,30 @@ namespace BloodSword::Rogue
         }
 
         BloodSword::Free(&texture);
+
+        return target;
+    }
+
+    int SelectTarget(Graphics::Base &graphics, Rogue::Base &rogue, bool is_player, bool is_enemy, int id)
+    {
+        auto target = Map::NotFound;
+
+        if (rogue.Enemy >= 0 && rogue.Enemy < rogue.Opponents.size())
+        {
+            auto &enemies = rogue.Opponents[rogue.Enemy];
+
+            auto &party = rogue.Party;
+
+            auto enemy_stats = Rogue::Stats(graphics, enemies, rogue.StatsWidth);
+
+            auto party_stats = Rogue::Stats(graphics, party, rogue.StatsWidth);
+
+            target = Rogue::SelectTarget(graphics, party, party_stats, enemies, enemy_stats, rogue.StatsWidth, is_player, is_enemy, id);
+
+            BloodSword::Free(party_stats);
+
+            BloodSword::Free(enemy_stats);
+        }
 
         return target;
     }

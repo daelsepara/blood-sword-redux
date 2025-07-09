@@ -221,13 +221,42 @@ namespace BloodSword::Rogue
 
         auto usable = (in_battle && item.Has(Item::Property::COMBAT)) || !in_battle;
 
-        party.ChosenCharacter = character.Class;
+        party.ChosenCharacter = character_class;
 
         // while in battle some items might require a target, otherwise defer to normal processing of effects
         if (usable)
         {
             if (item.Type == Item::Type::STEEL_SCEPTRE)
             {
+                auto charged = item.Contains == Item::Type::CHARGE;
+
+                auto has_charges = item.IsCharged(Item::Type::CHARGE, 1);
+
+                auto usable = (charged && has_charges) || !charged;
+
+                if (usable)
+                {
+                    auto target = Rogue::SelectTarget(graphics, rogue, true, false, rogue.Party.Index(character_class));
+
+                    if (target >= 0 && target < rogue.Opponents[rogue.Enemy].Count())
+                    {
+                        auto &defender = rogue.Opponents[rogue.Enemy][target];
+
+                        Interface::DamagePlayer(graphics, background, defender, 5, 0, false, true, true);
+
+                        Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
+
+                        item.Remove(Item::Type::CHARGE, 1);
+
+                        update.Scene = true;
+
+                        update.Party = true;
+                    }
+                }
+                else if (!has_charges)
+                {
+                    Interface::MessageBox(graphics, background, "NO CHARGES LEFT!", Color::Highlight);
+                }
             }
             else
             {
