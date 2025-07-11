@@ -288,6 +288,13 @@ namespace BloodSword::Rogue
         Rogue::PlaceItems(rogue, {potion, potion, scroll}, number);
     }
 
+    void PlaceSceptre(Rogue::Base &rogue)
+    {
+        auto sceptre = Item::Base("STEEL SCEPTRE", Item::Type::STEEL_SCEPTRE, {Item::Property::CONTAINER, Item::Property::COMBAT}, Item::Type::CHARGE, 5, Asset::Type::STEEL_SCEPTRE);
+
+        Rogue::PlaceItems(rogue, {sceptre}, 1);
+    }
+
     void PlaceLoot(BloodSword::Rogue::Base &rogue)
     {
         // 25% rooms has gold loot
@@ -298,6 +305,9 @@ namespace BloodSword::Rogue
 
         // 25% rooms has potion loot
         Rogue::PlacePotions(rogue, rogue.Rooms.size() / 4);
+
+        // steel sceptre
+        Rogue::PlaceSceptre(rogue);
 
         // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
         if (rogue.Has(Character::Class::TRICKSTER) || rogue.Has(Character::Class::SAGE))
