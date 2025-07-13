@@ -76,9 +76,9 @@ namespace BloodSword::Room
             return result;
         }
 
-        bool Intersects(Point point, int width, int height)
+        bool Intersects(Point point, int width, int height, int gap = 0)
         {
-            return (this->X1 <= width && this->X2 >= point.X && this->Y1 <= height && this->Y2 >= point.Y);
+            return (this->X1 <= (width + gap) && this->X2 >= (point.X - gap) && this->Y1 <= (height + gap) && this->Y2 >= (point.Y - gap));
         }
     };
 
@@ -284,7 +284,7 @@ namespace BloodSword::Battlepits
 
                 for (auto room : rooms)
                 {
-                    place &= !room.Intersects(point, w, h);
+                    place &= !room.Intersects(point, w, h, 1);
 
                     if (!place)
                     {
