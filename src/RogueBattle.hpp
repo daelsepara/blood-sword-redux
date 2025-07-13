@@ -1000,7 +1000,6 @@ namespace BloodSword::Rogue
             {
                 Engine::KillAllParalyzed(party);
             }
-
         }
 
         // reset status

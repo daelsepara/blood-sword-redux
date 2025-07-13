@@ -99,8 +99,6 @@ namespace BloodSword::Map
         }
     };
 
-    typedef std::vector<Map::Tile> Tiles;
-
     class Base
     {
     private:
@@ -153,23 +151,17 @@ namespace BloodSword::Map
         // initialize the map
         void Initialize(int width, int height)
         {
-            this->Width = width;
+            this->Width = std::max(0, width);
 
-            this->Height = height;
+            this->Height = std::max(0, height);
 
             // make sure that ViewX and ViewY are within map dimensions
             this->ViewX = std::min(this->Width, width);
 
             this->ViewY = std::min(this->Height, height);
 
-            this->Tiles.clear();
-
-            this->Tiles.resize(height);
-
-            for (auto i = 0; i < height; i++)
-            {
-                this->Tiles[i] = Map::Tiles(width);
-            }
+            // re-intialize
+            this->Tiles = std::vector(height, std::vector(width, Map::Tile()));
         }
 
         // set viewable region
