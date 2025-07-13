@@ -87,6 +87,28 @@ namespace BloodSword::Rogue
         return monsters;
     }
 
+    // place ICON THE UNGODLY in last room
+    void PlaceBoss(Rogue::Base &rogue)
+    {
+        auto id = int(rogue.Rooms.size() - 1);
+
+        auto &room = rogue.Rooms[id];
+
+        auto center = room.Center();
+
+        auto monsters = Rogue::GenerateMonsters("ICON THE UNGODLY", Skills::Type::NONE, Skills::Type::NONE, {Skills::Type::RETRIBUTIVE_FIRE}, {8}, {8}, {7}, {28}, {2}, {2}, {2}, Asset::Type::ICON_THE_UNGODLY, 1, 1);
+
+        monsters.X = center.X;
+
+        monsters.Y = center.Y;
+
+        monsters.Room = id;
+
+        rogue.Opponents.push_back(monsters);
+
+        rogue.Battlepits[center].Occupant = Map::Object::ENEMIES;
+    }
+
     void PlaceMonsters(Rogue::Base &rogue, int number)
     {
         auto options = std::vector<int>(rogue.Rooms.size() - 2);
@@ -290,21 +312,21 @@ namespace BloodSword::Rogue
 
     void PlaceSceptre(Rogue::Base &rogue)
     {
-        auto sceptre = Item::Base("STEEL SCEPTRE", Item::Type::STEEL_SCEPTRE, {Item::Property::CONTAINER, Item::Property::COMBAT}, Item::Type::CHARGE, 5, Asset::Type::STEEL_SCEPTRE);
+        auto sceptre = Item::Base("STEEL SCEPTRE", Item::Type::STEEL_SCEPTRE, {Item::Property::CONTAINER, Item::Property::COMBAT, Item::Property::REQUIRES_TARGET}, Item::Type::CHARGE, 5, Asset::Type::STEEL_SCEPTRE);
 
         Rogue::PlaceItems(rogue, {sceptre}, 1);
     }
 
-    void PlaceLoot(BloodSword::Rogue::Base &rogue)
+    void PlaceLoot(BloodSword::Rogue::Base &rogue, int number, int min_gold, int max_gold)
     {
         // 25% rooms has gold loot
-        Rogue::PlaceGold(rogue, rogue.Rooms.size() / 4, 10, 50);
+        Rogue::PlaceGold(rogue, number, min_gold, max_gold);
 
         // 25% rooms has food loot
-        Rogue::PlaceFood(rogue, rogue.Rooms.size() / 4);
+        Rogue::PlaceFood(rogue, number);
 
         // 25% rooms has potion loot
-        Rogue::PlacePotions(rogue, rogue.Rooms.size() / 4);
+        Rogue::PlacePotions(rogue, number);
 
         // steel sceptre
         Rogue::PlaceSceptre(rogue);

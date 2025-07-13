@@ -365,16 +365,22 @@ namespace BloodSword::Rogue
         }
     }
 
-    // center battlepits on entity (map object type, id)
-    void Center(Rogue::Base &rogue, Map::Object entity, int id)
+    // center battlepits on src (point)
+    void Center(Rogue::Base &rogue, Point src)
     {
-        auto src = rogue.Battlepits.Find(entity, id);
-
         rogue.Battlepits.X = src.X - (rogue.Battlepits.ViewX) / 2 + 1;
 
         rogue.Battlepits.Y = src.Y - (rogue.Battlepits.ViewY) / 2 + 1;
 
         rogue.Battlepits.CheckBounds();
+    }
+
+    // center battlepits on entity (map object type, id)
+    void Center(Rogue::Base &rogue, Map::Object entity, int id)
+    {
+        auto src = rogue.Battlepits.Find(entity, id);
+
+        Rogue::Center(rogue, src);
     }
 
     Scene::Base UpdateScene(Rogue::Base &rogue, SDL_Texture *image, Point image_location, int panel_w, int panel_h, FieldOfView::Method method, bool animating)
@@ -1135,7 +1141,11 @@ namespace BloodSword::Rogue
             // 50% rooms has monsters
             Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2);
 
-            Rogue::PlaceLoot(rogue);
+            // place boss
+            Rogue::PlaceBoss(rogue);
+
+            // place loot
+            Rogue::PlaceLoot(rogue, rogue.Rooms.size() / 4, 10, 50);
 
             // place party at the center of the starting room
             auto center = rogue.Rooms[0].Center();

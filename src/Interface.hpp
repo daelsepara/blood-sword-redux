@@ -1570,7 +1570,7 @@ namespace BloodSword::Interface
     std::string StatsLabels()
     {
         // attribute labels
-        auto label_1 = std::string("RNK    FPR        END            ");
+        auto label_1 = std::string("RNK    FPR        END        EXP ");
 
         auto label_2 = std::string("GOLD   AWR        DMG            ");
 
@@ -1612,6 +1612,8 @@ namespace BloodSword::Interface
 
                 auto arm = Interface::ScoreString(character, Attribute::Type::ARMOUR);
 
+                auto exp = std::to_string(character.Experience);
+
                 auto gold = std::to_string(character.Quantity(Item::Type::GOLD));
 
                 auto four = std::string(4, ' ');
@@ -1619,7 +1621,7 @@ namespace BloodSword::Interface
                 // format attribute values
                 auto stats_1 = four + rnk + std::string(3 - rnk.size(), ' ') + four + fpr + std::string(7 - fpr.size(), ' ') + four + end + '\n';
 
-                auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + '\n';
+                auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + std::string(7 - dmg.size(), ' ') + exp + '\n';
 
                 auto stats_3 = gold + std::string(11 - gold.size(), ' ') + psy + std::string(7 - psy.size(), ' ') + four + arm;
 

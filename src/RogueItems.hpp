@@ -232,9 +232,7 @@ namespace BloodSword::Rogue
 
                 auto has_charges = item.IsCharged(Item::Type::CHARGE, 1);
 
-                auto usable = (charged && has_charges) || !charged;
-
-                if (usable)
+                if (charged && has_charges)
                 {
                     auto target = Rogue::SelectTarget(graphics, rogue, true, false, rogue.Party.Index(character_class));
 
@@ -406,28 +404,41 @@ namespace BloodSword::Rogue
                 }
             }
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1 && !in_battle)
+            if (items[id].Has(Item::Property::CONTAINER))
             {
-                // money
-                assets.push_back(Asset::Type::MONEY);
+                if (items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1 && !in_battle)
+                {
+                    // money
+                    assets.push_back(Asset::Type::MONEY);
 
-                controls.push_back(Controls::Type::MONEY);
+                    controls.push_back(Controls::Type::MONEY);
 
-                std::string gold_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
+                    std::string gold_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
 
-                captions.push_back(gold_string);
-            }
+                    captions.push_back(gold_string);
+                }
+                else if (items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1 && !in_battle)
+                {
+                    // arrows
+                    assets.push_back(Asset::Type::QUIVER);
 
-            if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1 && !in_battle)
-            {
-                // arrows
-                assets.push_back(Asset::Type::QUIVER);
+                    controls.push_back(Controls::Type::QUIVER);
 
-                controls.push_back(Controls::Type::QUIVER);
+                    std::string arrow_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
 
-                std::string arrow_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
+                    captions.push_back(arrow_string);
+                }
+                else if (items[id].Contains == Item::Type::CHARGE && items[id].Quantity > 0 && in_battle)
+                {
+                    // arrows
+                    assets.push_back(Asset::Type::STEEL_SCEPTRE);
 
-                captions.push_back(arrow_string);
+                    controls.push_back(Controls::Type::USE);
+
+                    std::string charges = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
+
+                    captions.push_back(charges);
+                }
             }
 
             if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE) && !in_battle)
@@ -653,7 +664,7 @@ namespace BloodSword::Rogue
                             Interface::InternalError(graphics, background, std::string("Internal Error: TRADE"));
                         }
                     }
-                    else if (input == Controls::Type::DRINK || input == Controls::Type::EAT || input == Controls::Type::READ)
+                    else if (input == Controls::Type::DRINK || input == Controls::Type::EAT || input == Controls::Type::READ || input == Controls::Type::USE)
                     {
                         update = Rogue::UseItem(graphics, background, rogue, character_class, id);
 

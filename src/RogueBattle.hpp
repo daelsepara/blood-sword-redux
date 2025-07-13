@@ -994,11 +994,23 @@ namespace BloodSword::Rogue
 
         BloodSword::Free(enemy_stats);
 
-        if (!flee)
+        if (flee)
         {
-            if (!Engine::IsAlive(party))
+            // kill all paralyzed party members when you flee
+            Engine::KillAllParalyzed(party);
+        }
+        else if (Engine::Count(party) > 0)
+        {
+            // gain experience
+            if (enemies[0].Asset == Asset::Type::ICON_THE_UNGODLY)
             {
-                Engine::KillAllParalyzed(party);
+                Engine::GainExperience(party, 250);
+            }
+            else
+            {
+                auto share = (750 / (rogue.Rooms.size() / 2)) / Engine::Count(party);
+
+                Engine::GainExperience(party, share);
             }
         }
 
