@@ -78,7 +78,7 @@ namespace BloodSword::Room
 
         bool Intersects(Point point, int width, int height, int gap = 0)
         {
-            return (this->X1 <= width + gap && this->X2 >= point.X - gap && this->Y1 <= height + gap && this->Y2 >= point.Y - gap);
+            return (this->X1 <= (width + gap) && this->X2 >= (point.X - gap) && this->Y1 <= (height + gap) && this->Y2 >= (point.Y - gap));
         }
     };
 
