@@ -1001,17 +1001,23 @@ namespace BloodSword::Rogue
         }
         else if (Engine::Count(party) > 0)
         {
+            double base = 750.0;
+
+            double scale = rogue.Rooms.size();
+
+            double count = Engine::Count(party);
+
             // gain experience
             if (enemies[0].Asset == Asset::Type::ICON_THE_UNGODLY)
             {
-                Engine::GainExperience(party, 250);
-            }
-            else
-            {
-                auto share = (750 / (rogue.Rooms.size() / 2)) / Engine::Count(party);
+                base = 250.0;
 
-                Engine::GainExperience(party, share);
+                scale = 1.0;
             }
+
+            auto share = int(std::round(base / (scale * count)));
+
+            Engine::GainExperience(party, share);
         }
 
         // reset status
