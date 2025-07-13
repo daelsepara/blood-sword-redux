@@ -16,6 +16,12 @@ namespace BloodSword::Rogue
 
         rogue.Loot.clear();
 
+        rogue.Enemies = 0;
+
+        rogue.Enemy = Map::NotFound;
+
+        rogue.StatsWidth = 0;
+
         rogue.Party = Party::Base();
 
         // generate battlepits
@@ -166,6 +172,8 @@ namespace BloodSword::Rogue
 
             rogue.Battlepits[center].Occupant = Map::Object::ENEMIES;
         }
+
+        rogue.Enemies = rogue.Opponents.size();
     }
 
     // place item in specific room

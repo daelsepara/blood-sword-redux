@@ -47,6 +47,9 @@ namespace BloodSword::Rogue
         // player party adventuring in battlepits
         Party::Base Party;
 
+        // number of enemies
+        int Enemies = 0;
+
         // current enemy party
         int Enemy = Map::NotFound;
 

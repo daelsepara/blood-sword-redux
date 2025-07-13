@@ -1003,7 +1003,7 @@ namespace BloodSword::Rogue
         {
             double base = 750.0;
 
-            double scale = rogue.Rooms.size() / 2;
+            double scale = rogue.Enemies;
 
             double count = Engine::Count(party);
 
