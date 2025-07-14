@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{14d53db2-078f-4e68-a2b4-27490a560b0c}</ProjectGuid>
+    <RootNamespace>BloodSwordRogue</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SDL2\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\SDL2\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;$(CoreLibraryDependencies);%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <PostBuildEvent>
+      <Command>XCOPY "$(ProjectDir)fonts\" "$(TargetDir)fonts\" /S /Y
+XCOPY "$(ProjectDir)help\" "$(TargetDir)help\" /S /Y
+XCOPY "$(ProjectDir)images\" "$(TargetDir)images\" /S /Y
+XCOPY "$(ProjectDir)modules\" "$(TargetDir)modules\" /S /Y
+XCOPY "$(ProjectDir)sounds\" "$(TargetDir)sounds\" /S /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2.dll" "$(TargetDir)" /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_image.dll" "$(TargetDir)" /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_mixer.dll" "$(TargetDir)" /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SDL2\include</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\SDL2\lib\x64</AdditionalLibraryDirectories>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ProgramDatabaseFile />
+    </Link>
+    <PostBuildEvent>
+      <Command>XCOPY "$(ProjectDir)fonts\" "$(TargetDir)fonts\" /S /Y
+XCOPY "$(ProjectDir)help\" "$(TargetDir)help\" /S /Y
+XCOPY "$(ProjectDir)images\" "$(TargetDir)images\" /S /Y
+XCOPY "$(ProjectDir)modules\" "$(TargetDir)modules\" /S /Y
+XCOPY "$(ProjectDir)sounds\" "$(TargetDir)sounds\" /S /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2.dll" "$(TargetDir)" /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_image.dll" "$(TargetDir)" /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_mixer.dll" "$(TargetDir)" /Y
+XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\src\Animation.hpp" />
+    <ClInclude Include="..\src\Asset.hpp" />
+    <ClInclude Include="..\src\AssetTypes.hpp" />
+    <ClInclude Include="..\src\Attribute.hpp" />
+    <ClInclude Include="..\src\Battle.hpp" />
+    <ClInclude Include="..\src\Battlepits.hpp" />
+    <ClInclude Include="..\src\BattleResults.hpp" />
+    <ClInclude Include="..\src\Book.hpp" />
+    <ClInclude Include="..\src\Character.hpp" />
+    <ClInclude Include="..\src\CharacterClasses.hpp" />
+    <ClInclude Include="..\src\CharacterStatus.hpp" />
+    <ClInclude Include="..\src\Choice.hpp" />
+    <ClInclude Include="..\src\Color.hpp" />
+    <ClInclude Include="..\src\Conditions.hpp" />
+    <ClInclude Include="..\src\ConditionsEvaluate.hpp" />
+    <ClInclude Include="..\src\ConditionTypes.hpp" />
+    <ClInclude Include="..\src\Controls.hpp" />
+    <ClInclude Include="..\src\ControlTypes.hpp" />
+    <ClInclude Include="..\src\Engine.hpp" />
+    <ClInclude Include="..\src\Feature.hpp" />
+    <ClInclude Include="..\src\FieldOfView.hpp" />
+    <ClInclude Include="..\src\Fonts.hpp" />
+    <ClInclude Include="..\src\Generator.hpp" />
+    <ClInclude Include="..\src\Graphics.hpp" />
+    <ClInclude Include="..\src\Help.hpp" />
+    <ClInclude Include="..\src\Input.hpp" />
+    <ClInclude Include="..\src\Interface.hpp" />
+    <ClInclude Include="..\src\InterfaceBattle.hpp" />
+    <ClInclude Include="..\src\InterfaceBattleItems.hpp" />
+    <ClInclude Include="..\src\InterfaceBattleScene.hpp" />
+    <ClInclude Include="..\src\InterfaceFiles.hpp" />
+    <ClInclude Include="..\src\InterfaceInventory.hpp" />
+    <ClInclude Include="..\src\InterfaceItemEffects.hpp" />
+    <ClInclude Include="..\src\InterfaceItems.hpp" />
+    <ClInclude Include="..\src\InterfaceStory.hpp" />
+    <ClInclude Include="..\src\Item.hpp" />
+    <ClInclude Include="..\src\ItemProperties.hpp" />
+    <ClInclude Include="..\src\ItemTargetEffects.hpp" />
+    <ClInclude Include="..\src\ItemTypes.hpp" />
+    <ClInclude Include="..\src\Map.hpp" />
+    <ClInclude Include="..\src\MapObjects.hpp" />
+    <ClInclude Include="..\src\Maze.hpp" />
+    <ClInclude Include="..\src\Messages.hpp" />
+    <ClInclude Include="..\src\Move.hpp" />
+    <ClInclude Include="..\src\Palette.hpp" />
+    <ClInclude Include="..\src\Party.hpp" />
+    <ClInclude Include="..\src\Position.hpp" />
+    <ClInclude Include="..\src\Primitives.hpp" />
+    <ClInclude Include="..\src\Random.hpp" />
+    <ClInclude Include="..\src\RichText.hpp" />
+    <ClInclude Include="..\src\Rogue.hpp" />
+    <ClInclude Include="..\src\RogueBase.hpp" />
+    <ClInclude Include="..\src\RogueBattle.hpp" />
+    <ClInclude Include="..\src\RogueGenerator.hpp" />
+    <ClInclude Include="..\src\RogueItems.hpp" />
+    <ClInclude Include="..\src\Scene.hpp" />
+    <ClInclude Include="..\src\Section.hpp" />
+    <ClInclude Include="..\src\Skills.hpp" />
+    <ClInclude Include="..\src\Sound.hpp" />
+    <ClInclude Include="..\src\Spells.hpp" />
+    <ClInclude Include="..\src\System.hpp" />
+    <ClInclude Include="..\src\Target.hpp" />
+    <ClInclude Include="..\src\Task.hpp" />
+    <ClInclude Include="..\src\Templates.hpp" />
+    <ClInclude Include="..\src\Version.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\BloodSwordRogue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\src\locations" />
+    <None Include="..\src\Makefile" />
+    <None Include="..\src\missing" />
+    <None Include="..\src\sections" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
