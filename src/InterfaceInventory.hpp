@@ -282,7 +282,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                std::string message = "INTERNAL ERROR: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "ABOUT");
+                                std::string message = "INTERNAL FAIL: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "ABOUT");
 
                                 Interface::InternalError(graphics, background, message);
                             }
@@ -1234,7 +1234,7 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        Sound::Play(Sound::Type::ERROR);
+                        Sound::Play(Sound::Type::FAIL);
                     }
                 }
                 else if (input.Type == Controls::Type::RIGHT)
@@ -1245,7 +1245,7 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        Sound::Play(Sound::Type::ERROR);
+                        Sound::Play(Sound::Type::FAIL);
                     }
                 }
                 else if (input.Type == Controls::Type::SKILLS)

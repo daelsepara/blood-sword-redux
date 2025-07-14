@@ -9,7 +9,7 @@
             "path": "sounds/dice_roll.wav"
         },
         {
-            "id": "ERROR",
+            "id": "FAIL",
             "path": "sounds/error.wav"
         },
         {

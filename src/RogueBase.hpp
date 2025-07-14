@@ -503,7 +503,7 @@ namespace BloodSword::Rogue
                 }
                 else if (input.Type == Controls::Type::UP || input.Type == Controls::Type::DOWN)
                 {
-                    Sound::Play(Sound::Type::ERROR);
+                    Sound::Play(Sound::Type::FAIL);
                 }
                 else if (input.Type == Controls::Type::ACTION)
                 {
@@ -515,7 +515,7 @@ namespace BloodSword::Rogue
                     }
                     else
                     {
-                        Sound::Play(Sound::Type::ERROR);
+                        Sound::Play(Sound::Type::FAIL);
                     }
                 }
                 else if (input.Type == Controls::Type::BACK)

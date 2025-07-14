@@ -4189,7 +4189,7 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        Sound::Play(Sound::Type::ERROR);
+                        Sound::Play(Sound::Type::FAIL);
                     }
                 }
                 else if (input.Type == Controls::Type::RIGHT)
@@ -4200,7 +4200,7 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        Sound::Play(Sound::Type::ERROR);
+                        Sound::Play(Sound::Type::FAIL);
                     }
                 }
                 else if (input.Type == Controls::Type::SKILLS)
@@ -7211,7 +7211,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                Sound::Play(Sound::Type::ERROR);
+                                Sound::Play(Sound::Type::FAIL);
                             }
                         }
                     }

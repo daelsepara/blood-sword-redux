@@ -804,7 +804,7 @@ namespace BloodSword::Rogue
                                     {
                                         Input::Clear();
 
-                                        Sound::Play(Sound::Type::ERROR);
+                                        Sound::Play(Sound::Type::FAIL);
 
                                         Interface::FlashMessage(graphics, scene, "CANNOT ATTACK FROM CURRENT POSITION!", Color::Highlight);
                                     }
@@ -834,7 +834,7 @@ namespace BloodSword::Rogue
                                     {
                                         Input::Clear();
 
-                                        Sound::Play(Sound::Type::ERROR);
+                                        Sound::Play(Sound::Type::FAIL);
 
                                         Interface::FlashMessage(graphics, scene, "CANNOT SHOOT FROM CURRENT POSITION!", Color::Highlight);
                                     }
@@ -946,7 +946,7 @@ namespace BloodSword::Rogue
                                         {
                                             Input::Clear();
 
-                                            Sound::Play(Sound::Type::ERROR);
+                                            Sound::Play(Sound::Type::FAIL);
 
                                             Interface::FlashMessage(graphics, scene, "YOU CANNOT CAST THIS SPELL!", Color::Highlight);
                                         }

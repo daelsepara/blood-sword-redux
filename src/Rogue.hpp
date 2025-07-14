@@ -182,12 +182,12 @@ namespace BloodSword::Rogue
             {
                 Interface::FlashMessage(graphics, background, "TILE OCCUPIED", Color::Inactive);
 
-                Sound::Play(Sound::Type::ERROR);
+                Sound::Play(Sound::Type::FAIL);
             }
         }
         else
         {
-            Sound::Play(Sound::Type::ERROR);
+            Sound::Play(Sound::Type::FAIL);
         }
 
         return update;
@@ -199,7 +199,7 @@ namespace BloodSword::Rogue
 
         if (Battlepits::Empty(rogue.Battlepits, point))
         {
-            Sound::Play(Sound::Type::ERROR);
+            Sound::Play(Sound::Type::FAIL);
         }
         else if (Rogue::Blocked(rogue, point))
         {
@@ -701,7 +701,7 @@ namespace BloodSword::Rogue
                     }
                     else
                     {
-                        Sound::Play(Sound::Type::ERROR);
+                        Sound::Play(Sound::Type::FAIL);
                     }
                 }
                 else if (input.Type == Controls::Type::RIGHT)
@@ -712,7 +712,7 @@ namespace BloodSword::Rogue
                     }
                     else
                     {
-                        Sound::Play(Sound::Type::ERROR);
+                        Sound::Play(Sound::Type::FAIL);
                     }
                 }
                 else if (input.Type == Controls::Type::SKILLS)

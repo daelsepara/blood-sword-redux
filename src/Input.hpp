@@ -471,7 +471,7 @@ namespace BloodSword::Input
             }
             else
             {
-                Sound::Play(Sound::Type::ERROR);
+                Sound::Play(Sound::Type::FAIL);
             }
         }
         else if (result.type == SDL_MOUSEMOTION)
@@ -511,7 +511,7 @@ namespace BloodSword::Input
                 }
                 else
                 {
-                    Sound::Play(Sound::Type::ERROR);
+                    Sound::Play(Sound::Type::FAIL);
                 }
             }
         }
