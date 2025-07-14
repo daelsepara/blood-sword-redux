@@ -1,6 +1,12 @@
 #ifndef __PRIMITIVES_HPP__
 #define __PRIMITIVES_HPP__
 
+#if defined(_WIN32)
+#define NOMINMAX
+#undef min
+#undef max
+#endif
+
 #include <iomanip>
 #include <iostream>
 #include <vector>
