@@ -34,5 +34,8 @@
 # Visual Studio Code
 .vscode/
 
+# Visual Studio
+.vs/
+
 # OSX
 .DS_Store
