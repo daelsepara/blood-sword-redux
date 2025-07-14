@@ -169,6 +169,8 @@ namespace BloodSword::Graphics
     // create a scaled texture from loaded image
     SDL_Texture *ScaledImage(Graphics::Base &graphics, std::string filename, int target_w, int target_h)
     {
+        SDL_Texture *image = nullptr;
+
         // load image from a file as a surface
         auto original = BloodSword::Load(filename.c_str());
 
@@ -176,55 +178,55 @@ namespace BloodSword::Graphics
         if (original)
         {
             SDL_SetSurfaceColorMod(original, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
+
+            // aspect ratio
+            auto ratio_w = (double)original->w / target_w;
+
+            auto ratio_h = (double)original->h / target_h;
+
+            auto new_w = 0;
+
+            auto new_h = 0;
+
+            if (ratio_w > ratio_h)
+            {
+                new_h = std::round((double)original->h / ratio_w);
+
+                new_w = target_w;
+            }
+            else
+            {
+                new_w = std::round((double)original->w / ratio_h);
+
+                new_h = target_h;
+            }
+
+            auto resized = Graphics::CreateSurface(new_w, new_h);
+
+            auto converted = SDL_ConvertSurface(original, resized->format, 0);
+
+            SDL_SetSurfaceAlphaMod(converted, SDL_ALPHA_OPAQUE);
+
+            SDL_Rect dst;
+
+            dst.w = new_w;
+
+            dst.h = new_h;
+
+            dst.x = 0;
+
+            dst.y = 0;
+
+            SDL_BlitScaled(converted, nullptr, resized, &dst);
+
+            image = SDL_CreateTextureFromSurface(graphics.Renderer, resized);
+
+            BloodSword::Free(&converted);
+
+            BloodSword::Free(&resized);
+
+            BloodSword::Free(&original);
         }
-
-        // aspect ratio
-        auto ratio_w = (double)original->w / target_w;
-
-        auto ratio_h = (double)original->h / target_h;
-
-        auto new_w = 0;
-
-        auto new_h = 0;
-
-        if (ratio_w > ratio_h)
-        {
-            new_h = std::round((double)original->h / ratio_w);
-
-            new_w = target_w;
-        }
-        else
-        {
-            new_w = std::round((double)original->w / ratio_h);
-
-            new_h = target_h;
-        }
-
-        auto resized = Graphics::CreateSurface(new_w, new_h);
-
-        auto converted = SDL_ConvertSurface(original, resized->format, 0);
-
-        SDL_SetSurfaceAlphaMod(converted, SDL_ALPHA_OPAQUE);
-
-        SDL_Rect dst;
-
-        dst.w = new_w;
-
-        dst.h = new_h;
-
-        dst.x = 0;
-
-        dst.y = 0;
-
-        SDL_BlitScaled(converted, nullptr, resized, &dst);
-
-        auto image = SDL_CreateTextureFromSurface(graphics.Renderer, resized);
-
-        BloodSword::Free(&converted);
-
-        BloodSword::Free(&resized);
-
-        BloodSword::Free(&original);
 
         return image;
     }

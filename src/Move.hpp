@@ -31,9 +31,9 @@ namespace BloodSword::Move
     class Node
     {
     public:
-        int X;
+        int X = -1;
 
-        int Y;
+        int Y = -1;
 
         int Cost = 0.0;
 

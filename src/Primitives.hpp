@@ -84,9 +84,9 @@ namespace BloodSword
     class Point
     {
     public:
-        int X;
+        int X = -1;
 
-        int Y;
+        int Y = -1;
 
         Point(int x, int y) : X(x), Y(y) {}
 
