@@ -148,13 +148,13 @@ namespace BloodSword::Rogue
 
             if (enemy_type <= 30)
             {
-                monsters = Rogue::GenerateMonsters("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, {5, 6, 7}, {4, 5, 6}, {5, 6, 7}, {4, 5, 6}, {0}, {1}, {0}, Asset::Type::ASSASSIN, 3, 5);
+                monsters = Rogue::GenerateMonsters("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, {5, 6, 7}, {4, 5, 6}, {5, 6, 7}, {4, 5, 6}, {0}, {1}, {0}, Asset::Type::ASSASSIN, 3, 4);
 
                 Rogue::AddItems(monsters, Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2));
             }
             else if (enemy_type <= 90)
             {
-                monsters = Rogue::GenerateMonsters("BARBARIAN", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {3, 4, 5}, {5, 6, 7}, {10, 11, 12}, {1}, {1}, {0, 1, 2}, Asset::Type::BARBARIAN, 2, 4);
+                monsters = Rogue::GenerateMonsters("BARBARIAN", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {3, 4, 5}, {5, 6, 7}, {8, 10, 12}, {1}, {1}, {0, 1, 2}, Asset::Type::BARBARIAN, 2, 3);
             }
             else
             {
