@@ -36,6 +36,10 @@
 
 # Visual Studio
 .vs/
+x64/
+x32/
+Release/
+Debug/
 
 # OSX
 .DS_Store
