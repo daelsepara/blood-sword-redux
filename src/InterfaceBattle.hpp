@@ -1556,116 +1556,119 @@ namespace BloodSword::Interface
 
                                     if (!actions && !items && !spells)
                                     {
-                                        auto &control = scene.Controls[input.Current];
-
-                                        if (control.OnMap && battle.Map.IsValid(control.Map))
+                                        if (Input::IsValid(scene, input))
                                         {
-                                            // draw path to destination
-                                            if (move)
-                                            {
-                                                auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, character_id) : battle.Map.Find(Map::Object::ENEMY, character_id);
+                                            auto &control = scene.Controls[input.Current];
 
-                                                auto dst = control.Map;
-
-                                                overlay = Interface::Path(battle.Map, character, src, dst);
-
-                                                overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_DEST], battle.Map.DrawX, text_y));
-                                            }
-                                            else if (fight)
+                                            if (control.OnMap && battle.Map.IsValid(control.Map))
                                             {
-                                                // fight mode
-                                                overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_OPPONENT], battle.Map.DrawX, text_y));
-                                            }
-                                            else if (shoot || spell)
-                                            {
-                                                // shoot mode
-                                                overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_TARGET], battle.Map.DrawX, text_y));
+                                                // draw path to destination
+                                                if (move)
+                                                {
+                                                    auto src = is_player ? battle.Map.Find(Map::Object::PLAYER, character_id) : battle.Map.Find(Map::Object::ENEMY, character_id);
+
+                                                    auto dst = control.Map;
+
+                                                    overlay = Interface::Path(battle.Map, character, src, dst);
+
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_DEST], battle.Map.DrawX, text_y));
+                                                }
+                                                else if (fight)
+                                                {
+                                                    // fight mode
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_OPPONENT], battle.Map.DrawX, text_y));
+                                                }
+                                                else if (shoot || spell)
+                                                {
+                                                    // shoot mode
+                                                    overlay.VerifyAndAdd(Scene::Element(Interface::Message[Interface::MSG_TARGET], battle.Map.DrawX, text_y));
+                                                }
+                                                else
+                                                {
+                                                    // round number
+                                                    overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
+                                                }
+
+                                                // show character stats
+                                                if (battle.Map[control.Map].Occupant == Map::Object::PLAYER)
+                                                {
+                                                    auto stats_id = battle.Map[control.Map].Id;
+
+                                                    if (stats_id >= 0 && stats_id < party.Count())
+                                                    {
+                                                        // stats
+                                                        overlay.VerifyAndAdd(Scene::Element(party_stats[stats_id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
+
+                                                        auto &stats = overlay.Elements.back();
+
+                                                        // status
+                                                        overlay.VerifyAndAdd(Scene::Element(party_status[stats_id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
+                                                    }
+                                                }
+                                                else if (battle.Map[control.Map].Occupant == Map::Object::ENEMY)
+                                                {
+                                                    auto stats_id = battle.Map[control.Map].Id;
+
+                                                    if (stats_id >= 0 && stats_id < battle.Opponents.Count())
+                                                    {
+                                                        // enemy stats
+                                                        overlay.VerifyAndAdd(Scene::Element(enemy_stats[stats_id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
+
+                                                        auto &stats = overlay.Elements.back();
+
+                                                        // status
+                                                        overlay.VerifyAndAdd(Scene::Element(enemy_status[stats_id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
+                                                    }
+                                                }
+                                                else if (battle.Map[control.Map].IsExit())
+                                                {
+                                                    if (asset != battle.Map[control.Map].Asset)
+                                                    {
+                                                        asset = battle.Map[control.Map].Asset;
+
+                                                        BloodSword::Free(&texture);
+
+                                                        texture = Graphics::CreateText(graphics, "EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                                                    }
+
+                                                    overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
+                                                }
+                                                else if (battle.Map[control.Map].IsTemporarilyBlocked())
+                                                {
+                                                    if (asset != battle.Map[control.Map].TemporaryAsset || lifetime != battle.Map[control.Map].Lifetime)
+                                                    {
+                                                        asset = battle.Map[control.Map].TemporaryAsset;
+
+                                                        lifetime = battle.Map[control.Map].Lifetime;
+
+                                                        std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
+
+                                                        BloodSword::Free(&texture);
+
+                                                        texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
+                                                    }
+
+                                                    overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
+                                                }
                                             }
                                             else
                                             {
                                                 // round number
                                                 overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
-                                            }
 
-                                            // show character stats
-                                            if (battle.Map[control.Map].Occupant == Map::Object::PLAYER)
-                                            {
-                                                auto stats_id = battle.Map[control.Map].Id;
+                                                auto caption_id = Controls::Find(caption_controls, control.Type);
 
-                                                if (stats_id >= 0 && stats_id < party.Count())
+                                                if (caption_id >= 0 && caption_id < captions.size())
                                                 {
-                                                    // stats
-                                                    overlay.VerifyAndAdd(Scene::Element(party_stats[stats_id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
-
-                                                    auto &stats = overlay.Elements.back();
-
-                                                    // status
-                                                    overlay.VerifyAndAdd(Scene::Element(party_status[stats_id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
-                                                }
-                                            }
-                                            else if (battle.Map[control.Map].Occupant == Map::Object::ENEMY)
-                                            {
-                                                auto stats_id = battle.Map[control.Map].Id;
-
-                                                if (stats_id >= 0 && stats_id < battle.Opponents.Count())
-                                                {
-                                                    // enemy stats
-                                                    overlay.VerifyAndAdd(Scene::Element(enemy_stats[stats_id], info_x, info_y, Color::Background, Color::Active, BloodSword::Border));
-
-                                                    auto &stats = overlay.Elements.back();
-
-                                                    // status
-                                                    overlay.VerifyAndAdd(Scene::Element(enemy_status[stats_id], info_x, info_y + stats.H + pad * 4, Color::Background, Color::Active, BloodSword::Border));
-                                                }
-                                            }
-                                            else if (battle.Map[control.Map].IsExit())
-                                            {
-                                                if (asset != battle.Map[control.Map].Asset)
-                                                {
-                                                    asset = battle.Map[control.Map].Asset;
-
-                                                    BloodSword::Free(&texture);
-
-                                                    texture = Graphics::CreateText(graphics, "EXIT", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-                                                }
-
-                                                overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
-                                            }
-                                            else if (battle.Map[control.Map].IsTemporarilyBlocked())
-                                            {
-                                                if (asset != battle.Map[control.Map].TemporaryAsset || lifetime != battle.Map[control.Map].Lifetime)
-                                                {
-                                                    asset = battle.Map[control.Map].TemporaryAsset;
-
-                                                    lifetime = battle.Map[control.Map].Lifetime;
-
-                                                    std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
-
-                                                    BloodSword::Free(&texture);
-
-                                                    texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
-                                                }
-
-                                                overlay.VerifyAndAdd(Scene::Element(texture, info_x, info_y, Color::Background, Color::Inactive, 4));
-                                            }
-                                        }
-                                        else
-                                        {
-                                            // round number
-                                            overlay.VerifyAndAdd(Scene::Element(round_string, battle.Map.DrawX, text_y));
-
-                                            auto caption_id = Controls::Find(caption_controls, control.Type);
-
-                                            if (caption_id >= 0 && caption_id < captions.size())
-                                            {
-                                                if (input.Current >= 0 && input.Current < scene.Controls.size())
-                                                {
-                                                    if (captions[caption_id])
+                                                    if (input.Current >= 0 && input.Current < scene.Controls.size())
                                                     {
-                                                        // center texture
-                                                        auto center = (control.W - BloodSword::Width(captions[caption_id])) / 2;
+                                                        if (captions[caption_id])
+                                                        {
+                                                            // center texture
+                                                            auto center = (control.W - BloodSword::Width(captions[caption_id])) / 2;
 
-                                                        overlay.VerifyAndAdd(Scene::Element(captions[caption_id], control.X + center, control.Y + control.H + BloodSword::Pad));
+                                                            overlay.VerifyAndAdd(Scene::Element(captions[caption_id], control.X + center, control.Y + control.H + BloodSword::Pad));
+                                                        }
                                                     }
                                                 }
                                             }

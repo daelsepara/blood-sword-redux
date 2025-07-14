@@ -1203,7 +1203,7 @@ namespace BloodSword::Interface
             }
 
             // render button captions
-            if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < overlay.Controls.size())
+            if (input.Type != Controls::Type::BACK && Input::IsValid(overlay, input))
             {
                 auto &control = overlay.Controls[input.Current];
 

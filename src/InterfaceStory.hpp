@@ -1332,7 +1332,7 @@ namespace BloodSword::Interface
 
             if (caption_id >= 0 && caption_id < captions.size())
             {
-                if (input.Current >= 0 && input.Current < overlay.Controls.size())
+                if (Input::IsValid(overlay, input))
                 {
                     auto &control = overlay.Controls[input.Current];
 

@@ -1358,7 +1358,7 @@ namespace BloodSword::Interface
 
             auto overlay = Scene::Base();
 
-            if (!input.Selected && input.Current >= 0 && input.Current < overlay.Controls.size())
+            if (!input.Selected && Input::IsValid(overlay, input))
             {
                 auto &control = overlay.Controls[input.Current];
 
