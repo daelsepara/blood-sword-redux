@@ -40,6 +40,8 @@ x64/
 x32/
 Release/
 Debug/
+*.filters
+*.user
 
 # OSX
 .DS_Store
