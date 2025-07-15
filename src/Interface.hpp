@@ -3304,7 +3304,7 @@ namespace BloodSword::Interface
             if (Input::IsValid(overlay, input))
             {
                 // party popup captions
-                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                if (input.Type != Controls::Type::BACK && Input::IsValid(overlay, input, party.Count()))
                 {
                     auto &control = overlay.Controls[input.Current];
 
@@ -3455,7 +3455,7 @@ namespace BloodSword::Interface
             if (Input::IsValid(overlay, input))
             {
                 // party popup captions
-                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                if (input.Type != Controls::Type::BACK && Input::IsValid(overlay, input, party.Count()))
                 {
                     auto &control = overlay.Controls[input.Current];
 
@@ -3870,7 +3870,7 @@ namespace BloodSword::Interface
             if (Input::IsValid(overlay, input))
             {
                 // party popup captions
-                if (input.Type != Controls::Type::BACK && input.Current >= 0 && input.Current < party.Count())
+                if (input.Type != Controls::Type::BACK && Input::IsValid(overlay, input, party.Count()))
                 {
                     auto &control = overlay.Controls[input.Current];
 
@@ -4894,7 +4894,7 @@ namespace BloodSword::Interface
 
             for (auto i = 0; i < selection.size(); i++)
             {
-                if (selection[i])
+                if (selection[i] && Input::IsValid(overlay, i, selection.size()))
                 {
                     auto &control = overlay.Controls[i];
 
@@ -4906,7 +4906,7 @@ namespace BloodSword::Interface
             if (Input::IsValid(overlay, input))
             {
                 // party popup captions
-                if (input.Type != Controls::Type::CONFIRM && input.Current >= 0 && input.Current < party.Count())
+                if (input.Type != Controls::Type::CONFIRM && Input::IsValid(overlay, input, party.Count()))
                 {
                     auto &control = overlay.Controls[input.Current];
 
@@ -5002,7 +5002,7 @@ namespace BloodSword::Interface
 
                 for (auto i = 0; i < selection.size(); i++)
                 {
-                    if (selection[i])
+                    if (selection[i] && Input::IsValid(overlay, i, selection.size()))
                     {
                         auto &control = overlay.Controls[i];
 
@@ -5014,7 +5014,7 @@ namespace BloodSword::Interface
                 if (Input::IsValid(overlay, input))
                 {
                     // party popup captions
-                    if (input.Type != Controls::Type::CONFIRM && input.Current >= 0 && input.Current < party.Count())
+                    if (input.Type != Controls::Type::CONFIRM && Input::IsValid(overlay, input, party.Count()))
                     {
                         auto &control = overlay.Controls[input.Current];
 
@@ -5194,7 +5194,7 @@ namespace BloodSword::Interface
 
             for (auto i = 0; i < selection.size(); i++)
             {
-                if (selection[i])
+                if (selection[i] && Input::IsValid(overlay, i, selection.size()))
                 {
                     auto &control = overlay.Controls[i];
 
@@ -5230,7 +5230,7 @@ namespace BloodSword::Interface
             if (Input::IsValid(overlay, input) && !hidden)
             {
                 // captions
-                if (input.Type != Controls::Type::CONFIRM && input.Current >= 0 && input.Current < texture_captions.size())
+                if (input.Type != Controls::Type::CONFIRM && Input::IsValid(overlay, input, texture_captions.size()))
                 {
                     auto &control = overlay.Controls[input.Current];
 
@@ -6288,7 +6288,7 @@ namespace BloodSword::Interface
 
                 for (auto i = 0; i < selection.size(); i++)
                 {
-                    if (selection[i])
+                    if (selection[i] && Input::IsValid(overlay, i, selection.size()))
                     {
                         auto &control = overlay.Controls[i];
 
@@ -6300,7 +6300,7 @@ namespace BloodSword::Interface
                 if (Input::IsValid(overlay, input))
                 {
                     // party popup captions
-                    if (input.Type != Controls::Type::CONFIRM && input.Current >= 0 && input.Current < party.Count())
+                    if (input.Type != Controls::Type::CONFIRM && Input::IsValid(overlay, input, party.Count()))
                     {
                         auto &control = overlay.Controls[input.Current];
 

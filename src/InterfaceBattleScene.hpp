@@ -40,7 +40,7 @@ namespace BloodSword::Interface
     {
         auto index = Controls::Find(scene.Controls, control);
 
-        if (index >= 0 && index < scene.Controls.size())
+        if (Input::IsValid(scene, index, scene.Controls.size()))
         {
             auto &element = scene.Controls[index];
 

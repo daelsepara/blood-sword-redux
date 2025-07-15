@@ -716,15 +716,45 @@ namespace BloodSword::Input
     }
 
     // check if user input is valid
+    bool IsValid(Controls::Collection &controls, int input)
+    {
+        return (input >= 0 && input < controls.size());
+    }
+
+    // check if user input is valid
+    bool IsValid(Controls::Collection &controls, int input, int limit)
+    {
+        return (Input::IsValid(controls, input) && input < limit);
+    }
+
+    // check if user input is valid
     bool IsValid(Controls::Collection &controls, Controls::User &input)
     {
-        return (input.Current >= 0 && input.Current < controls.size());
+        return Input::IsValid(controls, input.Current);
     }
 
     // check if user input is valid
     bool IsValid(Scene::Base &scene, Controls::User &input)
     {
         return Input::IsValid(scene.Controls, input);
+    }
+
+    // check if user input is valid
+    bool IsValid(Scene::Base &scene, Controls::User &input, int limit)
+    {
+        return Input::IsValid(scene.Controls, input.Current, limit);
+    }
+
+    // check if user input is valid
+    bool IsValid(Scene::Base &scene, int input)
+    {
+        return (input >= 0 && input < scene.Controls.size());
+    }
+
+    // check if user input is valid
+    bool IsValid(Scene::Base &scene, int input, int limit)
+    {
+        return (Input::IsValid(scene, input) && input < limit);
     }
 
     // control type is player type
