@@ -144,6 +144,41 @@ namespace BloodSword::Rogue
         return done;
     }
 
+    // check rank adjustments
+    void CheckRanks(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
+    {
+        auto &party = rogue.Party;
+
+        for (auto character = 0; character < party.Count(); character++)
+        {
+            if (Engine::IsAlive(party[character]) && !Character::OtherClass(party[character].Class))
+            {
+                auto new_rank = Generate::CalculateRankFromExperience(party[character].Experience);
+
+                if (new_rank > party[character].Rank)
+                {
+                    // clone character
+                    auto improved_character = party[character];
+
+                    // set new rank
+                    improved_character.Rank = new_rank;
+
+                    // regenerate attributes
+                    improved_character.Attributes.clear();
+
+                    Generate::Attributes(improved_character);
+
+                    std::string message = improved_character.Name + " HAS IMPROVED TO RANK " + std::to_string(improved_character.Rank);
+
+                    Interface::MessageBox(graphics, background, message, Color::Active);
+
+                    // overwrite original character in the party
+                    party[character] = improved_character;
+                }
+            }
+        }
+    }
+
     Rogue::Update Handle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
     {
         Rogue::Update update = {false, false, false};
@@ -166,7 +201,11 @@ namespace BloodSword::Rogue
 
                 if (enemy >= 0 && enemy < rogue.Opponents.size())
                 {
+                    // commence battle
                     Rogue::Battle(graphics, background, rogue, enemy);
+
+                    // check rank adjustments
+                    Rogue::CheckRanks(graphics, background, rogue);
 
                     // check results
                     Rogue::BattleResults(graphics, background, rogue, enemy);
@@ -1024,6 +1063,9 @@ namespace BloodSword::Rogue
 
                         // commence battle
                         Rogue::Battle(graphics, scene, rogue, enemy);
+
+                        // check rank adjustments
+                        Rogue::CheckRanks(graphics, scene, rogue);
 
                         // check results
                         done = Rogue::BattleResults(graphics, scene, rogue, enemy);
