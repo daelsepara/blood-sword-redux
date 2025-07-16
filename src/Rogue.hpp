@@ -204,11 +204,11 @@ namespace BloodSword::Rogue
                     // commence battle
                     Rogue::Battle(graphics, background, rogue, enemy);
 
-                    // check rank adjustments
-                    Rogue::CheckRanks(graphics, background, rogue);
-
                     // check results
                     Rogue::BattleResults(graphics, background, rogue, enemy);
+
+                    // check rank adjustments
+                    Rogue::CheckRanks(graphics, background, rogue);
 
                     update.Scene = true;
 
@@ -1064,11 +1064,11 @@ namespace BloodSword::Rogue
                         // commence battle
                         Rogue::Battle(graphics, scene, rogue, enemy);
 
-                        // check rank adjustments
-                        Rogue::CheckRanks(graphics, scene, rogue);
-
                         // check results
                         done = Rogue::BattleResults(graphics, scene, rogue, enemy);
+
+                        // check rank adjustments
+                        Rogue::CheckRanks(graphics, scene, rogue);
 
                         update.Scene = true;
 
