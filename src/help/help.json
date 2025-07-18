@@ -1239,6 +1239,261 @@
                     "align": "LEFT",
                     "face": "NORMAL",
                     "text": "Complexity Level Two\n\nWhen this spell is cast, you can either add +2 to just your own Fighting Prowess and damage rolls, or add +1 to the Fighting Prowess and damage rolls of everyone in the party including yourself. The effect lasts for five rounds.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Immediate Deliverance"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Two\n\nUsable in any combat that gives you the option to flee. Instead of having to move to the exit squares, the entire party flees by teleportation at the moment you cast the spell -- whether the other players wanted to go or not.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Mists of Death"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Three\n\nAll the enemies in the vicinity lose 2D6 Endurance if they fail to resist this Psychic spell. Armour gives not protection.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "The Vampire Spell"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Three\n\nThis Psychic spell can be directed against a single foe, who loses 4D6 Endurance if they fail to resist it. Some of the vital energy stolen is channelled into you: your own Endurance is increased by half the amount the enemy loses (rounded down).\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Pillar of Salt"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Three\n\nCreates a barrier in any one empty square on the map that cannot be passed through by a friend or foe. Lasts five rounds.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Sheet Lightning"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Four\n\nA powerful Blasting spell that inflicts 2D6+2 damage to all opponents. Armour protects from this as usual.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Ghastly Touch"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Four\n\nThis is the only spell that requires you to be in an adjacent square to your intended victim. It is a Psychic spell that affects one opponent, who loses 7D6 Endurance if he fails to resist it -- and 2D6 even if he does resist. Armour gives no protection.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Nemesis Bolt"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Five\n\nThis highly focused bolt of energy strikes one foe, who loses 7D6+7 Endurance. It is a Blasting spell, so armour will reduce the damage.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Servile Enthralment"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Five\n\nThis Psychic spell affects one enemy. If not resisted, it brings the enemy under your control. The enemy simply stops moving and in non-combat situations will respond to your questions. In a combat, if you order an enthralled foe to fight for you against their own former companions, you must roll one die: on a 1-5 they do as you command, but on a 6 the spell is broken. Enthralment lasts long enough for you to slay the enemy, so it effectively functions as an instant kill.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "NON-COMBAT SPELLS",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "NON-COMBAT SPELLS"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nYou also have anumber of non-combat spells. These include:\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Summon Faltyn"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis calls a sly faerie creature to serve you for a time.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Prediction"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis grants a glimpse into possible futures.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Detect Enchantment"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThis informs you when magic is operating nearby.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "There is no need to make dice rolls to cast non-combat spells because it does not usually matter if it takes you several attempts to get them to work.\n\n"
+                }
+            ]
+        },
+        {
+            "header": "GLOSSARY",
+            "items": [
+                {
+                    "align": "CENTER",
+                    "face": "BOLD",
+                    "text": "GLOSSARY"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "The Battlepits"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe name of a large underground complex of tunnels and chambers, located beneath the plains of Krarth. Also used as the name of the contest staged by the Magi of Krarth every thirteen lunar months, wherein a group of champions are sent down into the Battlepits to vie with each other. The aim of the contest is to get through a succession of magical opponents and problems to the Emblem of Victory. The magi bet among themselves on the outcome, of course, and sometimes a magus will intervene covertly to assist his champions or hinder the progress of those sponsored by a rival.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "The Blasting"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe demon-spawned disaster in which Spyte (qv) was laid to ruin and the True Magi were killed. After this holocaust, which lasted for three days and nights, Spyte was left isolated by a deep chasm which many believe goes right down to the fires of Hell.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "The Cauldron"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe name by which peasants and travellers know the deep gorge surrounding the ruins of Spyte. Steam rises in sulphurous clouds from this, thickening in the chill air so that the ruins are rarely visible. The only way across is by flying, as the Cauldron is too wide even for spells such as Immediate Deliverance.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "The Coradian"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe sea around whose shores are located the richest ports and cities of the world. Also used as a collective adjective for the countries of the True Faith -- Algandy, Chaubrette, Kurland, the New Selentine Empire, Asmuly and Emphidor -- surrounding this sea.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "Krarth"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nA large country in the far north, divided into several dozen separate states each of which is ruled over by a Magus. It is divided from the civilised lands around the Coradian Sea by a deep rift valley which cuts through the Coradian continent from eastern to western shore. A cold, inhospitable country full of ancient and xenophobic traditions, Krarth is avoided by most merchants from the souther lands.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "Legend"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe mortal world; Midgard, or middle-earth.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "The Magi"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe lords of Krarth. There are some thirty magi, each essentially a local despot with absolute dominion over his territories. Since the country cannot support a standing army of any size, disputes are settled by means of the Battlepits contest (qv) and sometims by simple assassination.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "Selentium"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe captial of the Old Selentine Empire which once took in most of the western world. After the fall of the Old Empire seven hundred years ago, Selentium has risen to a new importance as the centre of the True Faith.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "Spyte"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nThe 'holy' city of the True Magi, who convened there every seen years in order to commune with the gods of Krarth. Today it stands in ruin, atop a pinnacle of rock in the middle of a vast rift in the earth ('the Cauldron')\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "The True Faith"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\nTHe principal religion of modern Legend.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD",
+                    "text": "The True Magi"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "\noriginal rulers of Krarth, wizards of unimaginable power, who were all slain in the Blasting of Spyte centuries ago. The present magi are for the most part the descendants of seneschals or apprentices who seized power in the ensuing confusion.\n\n"
                 }
             ]
         }
