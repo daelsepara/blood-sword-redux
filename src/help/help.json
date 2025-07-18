@@ -1198,7 +1198,47 @@
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "Complexity Level One\n\nCauses all enemies to lose 1D6 Endurance. This is a Blasting spell, so it cannot be resisted. The enemies' Armour Rating (if any) is deducted from the damage die roll."
+                    "text": "Complexity Level One\n\nCauses all enemies to lose 1D6 Endurance. This is a Blasting spell, so it cannot be resisted. The enemies' Armour Rating (if any) is deducted from the damage die roll.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Nighthowl"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level One\n\nA Psychic spell which affects a single opponent. If the opponent fails to resist, they must make fight or shoot rolls using one die more than usual (i.e. on three dice rather than two dice_ for the next five rounds.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "White Fire"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level One\n\nThis Blasting spell strikes one opponent, causing the loss of 2D6+2 Endurance, less the target's Armour Rating.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Swordthrust"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Two\n\nA Blasting spell affecting one enemy, who loses 3D6+3 Endurance. Armour reduces the damage in the usual way.\n\n"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "BOLD-ITALIC",
+                    "text": "Eye of the Tiger"
+                },
+                {
+                    "align": "LEFT",
+                    "face": "NORMAL",
+                    "text": "Complexity Level Two\n\nWhen this spell is cast, you can either add +2 to just your own Fighting Prowess and damage rolls, or add +1 to the Fighting Prowess and damage rolls of everyone in the party including yourself. The effect lasts for five rounds.\n\n"
                 }
             ]
         }
