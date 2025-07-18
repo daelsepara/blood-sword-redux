@@ -266,7 +266,7 @@ namespace BloodSword::Battlepits
     }
 
     // check if room placement is valid
-    Points Available(Map::Base &map, std::vector<Room::Base> &rooms, int width, int height)
+    Points Available(Map::Base &map, std::vector<Room::Base> &rooms, int width, int height, int gap_size)
     {
         auto available = Points();
 
@@ -284,7 +284,7 @@ namespace BloodSword::Battlepits
 
                 for (auto room : rooms)
                 {
-                    place &= !room.Intersects(point, w, h, 1);
+                    place &= !room.Intersects(point, w, h, 0);
 
                     if (!place)
                     {
@@ -625,7 +625,7 @@ namespace BloodSword::Battlepits
         }
     }
 
-    void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
+    void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size)
     {
         // initialize RNG
         auto random = Random::Base();
@@ -653,7 +653,7 @@ namespace BloodSword::Battlepits
             }
             else
             {
-                auto available = Battlepits::Available(map, rooms, width, height);
+                auto available = Battlepits::Available(map, rooms, width, height, gap_size);
 
                 if (available.size() > 0)
                 {
@@ -683,13 +683,13 @@ namespace BloodSword::Battlepits
         }
     }
 
-    Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
+    Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size)
     {
         auto map = Map::Base(width, height);
 
         auto rooms = std::vector<Room::Base>();
 
-        Battlepits::Generate(map, rooms, max_rooms, min_size, max_size, connection, inner_tunnel);
+        Battlepits::Generate(map, rooms, max_rooms, min_size, max_size, connection, inner_tunnel, gap_size);
 
         return map;
     }

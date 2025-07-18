@@ -3,7 +3,7 @@
 // render map to a png file
 namespace BloodSword::BattlepitsRenderer
 {
-    void Render(const char *module, int width, int height, int max_rooms, int min_size, int max_size, const char *image_file)
+    void Render(const char *module, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size, const char *image_file)
     {
         // get all available modules
         Interface::LoadModules();
@@ -18,7 +18,7 @@ namespace BloodSword::BattlepitsRenderer
         Asset::Load(std::string(Interface::Settings["assets"]).c_str());
 
         // generate battlepits
-        auto map = Battlepits::Generate(width, height, max_rooms, min_size, max_size, Battlepits::Connection::TUNNELS, false);
+        auto map = Battlepits::Generate(width, height, max_rooms, min_size, max_size, connection, inner_tunnel, gap_size);
 
         SDL_Rect rect;
 
@@ -74,13 +74,13 @@ namespace BloodSword::BattlepitsRenderer
     }
 
     // main loop
-    int Main(const char *module, int width, int height, int max_rooms, int min_size, int max_size, const char *image_file)
+    int Main(const char *module, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size, const char *image_file)
     {
         auto return_code = 0;
 
         try
         {
-            BattlepitsRenderer::Render(module, width, height, max_rooms, min_size, max_size, image_file);
+            BattlepitsRenderer::Render(module, width, height, max_rooms, min_size, max_size, connection, inner_tunnel, gap_size, image_file);
         }
         catch (std::exception &e)
         {
@@ -101,11 +101,11 @@ namespace BloodSword::BattlepitsRenderer
 
 int main(int argc, char **argv)
 {
-    if (argc < 8)
+    if (argc < 10)
     {
         std::cerr << "To run:" << std::endl
                   << std::endl
-                  << argv[0] << " [module] [map width] [map height] [max rooms] [min size] [max size] [image.png]"
+                  << argv[0] << " [module] [map width] [map height] [max rooms] [min size] [max size] [INNER | OUTER | WALLS] [gap size] [image.png]"
                   << std::endl;
 
         return 1;
@@ -121,5 +121,31 @@ int main(int argc, char **argv)
 
     int max_size = std::stoi(argv[6], nullptr, 10);
 
-    return BloodSword::BattlepitsRenderer::Main(argv[1], width, height, max_rooms, min_size, max_size, argv[7]);
+    auto connection_type = BloodSword::Engine::ToUpper(std::string(argv[7]));
+
+    int gap_size = std::stoi(argv[8], nullptr, 10);
+
+    auto connection = BloodSword::Battlepits::Connection::NONE;
+
+    auto inner_tunnel = false;
+
+    if (connection_type == "INNER")
+    {
+        connection = BloodSword::Battlepits::Connection::TUNNELS;
+
+        inner_tunnel = true;
+    }
+    else if (connection_type == "OUTER")
+    {
+        connection = BloodSword::Battlepits::Connection::TUNNELS;
+    }
+    else if (connection_type == "WALLS")
+    {
+        connection = BloodSword::Battlepits::Connection::WALLS;
+    }
+
+    if (connection != BloodSword::Battlepits::Connection::NONE)
+    {
+        return BloodSword::BattlepitsRenderer::Main(argv[1], width, height, max_rooms, min_size, max_size, connection, inner_tunnel, gap_size, argv[9]);
+    }
 }

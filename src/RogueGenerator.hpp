@@ -5,7 +5,7 @@
 
 namespace BloodSword::Rogue
 {
-    void GenerateBattlepits(Rogue::Base &rogue, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel)
+    void GenerateBattlepits(Rogue::Base &rogue, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size)
     {
         rogue.Battlepits = Map::Base(width, height);
 
@@ -25,7 +25,7 @@ namespace BloodSword::Rogue
         rogue.Party = Party::Base();
 
         // generate battlepits
-        Battlepits::Generate(rogue.Battlepits, rogue.Rooms, max_rooms, min_size, max_size, connection, inner_tunnel);
+        Battlepits::Generate(rogue.Battlepits, rogue.Rooms, max_rooms, min_size, max_size, connection, inner_tunnel, gap_size);
 
         // place party at the center of the first room
         rogue.Battlepits[rogue.Rooms[0].Center()].Occupant = Map::Object::PARTY;
@@ -33,14 +33,18 @@ namespace BloodSword::Rogue
         rogue.Battlepits[rogue.Rooms[0].Center()].Id = Map::Party;
     }
 
-    Rogue::Base GenerateBattlepits(int width, int height, int max_rooms, int min_size, int max_size, bool inner_tunnel)
+    Rogue::Base GenerateBattlepits(int width, int height, int max_rooms, int min_size, int max_size)
     {
-        auto connection = Battlepits::Map(Engine::ToUpper(Interface::Settings["tunnels"]));
+        auto connection = Battlepits::Map(Engine::ToUpper(Interface::Settings["room_connections"]));
+
+        auto inner_tunnel = Engine::ToUpper(Interface::Settings["tunnels"]) == "INNER";
+
+        auto gap_size = int(Interface::Settings["gap_size"]);
 
         auto rogue = Rogue::Base();
 
         // generate battlepits
-        Rogue::GenerateBattlepits(rogue, width, height, max_rooms, min_size, max_size, connection, inner_tunnel);
+        Rogue::GenerateBattlepits(rogue, width, height, max_rooms, min_size, max_size, connection, inner_tunnel, gap_size);
 
         return rogue;
     }

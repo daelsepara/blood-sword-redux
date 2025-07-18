@@ -1173,7 +1173,7 @@ namespace BloodSword::Rogue
         // set default control to the first
         Controls::Default = 0;
 
-        auto rogue = Rogue::GenerateBattlepits(50, 100, 100, 5, 7, false);
+        auto rogue = Rogue::GenerateBattlepits(50, 100, 100, 5, 7);
 
         // create party
         rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);
