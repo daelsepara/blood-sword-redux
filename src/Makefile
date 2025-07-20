@@ -102,10 +102,10 @@ clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer cl
 .ONESHELL:
 
 debian: blood-sword
-	if  [ -n $(DEBIAN) ]; then
+	@if  [ "$(DEBIAN)" != "" ]; then
+		echo "Building Debian $(DEBIAN_ARCH) package ..."
 		rm -f $(DEBIAN).deb
 		rm -fR $(DEBIAN)
-		echo "Building Debian $(DEBIAN_ARCH) package ..."
 		mkdir -p $(DEBIAN)/DEBIAN
 		mkdir -p $(DEBIAN)/usr/share/applications
 		mkdir -p $(DEBIAN)/usr/local/games
@@ -118,4 +118,6 @@ debian: blood-sword
 		cp -R sounds $(DEBIAN)/usr/local/games
 		cp -R BloodSword.exe $(DEBIAN)/usr/local/games
 		dpkg-deb --build blood-sword.$(DEBIAN_ARCH) && rm -fR $(DEBIAN)
+	else
+		echo "Not a Debian build environment ..."
 	fi
