@@ -311,19 +311,19 @@ namespace BloodSword::Input
             }
             else if (input.Current >= 0 && input.Current < controls.size())
             {
-                if (result.key.keysym.sym == SDLK_LEFT)
+                if (result.key.keysym.sym == SDLK_LEFT || result.key.keysym.sym == SDLK_KP_4)
                 {
                     input.Current = controls[input.Current].Left;
                 }
-                else if (result.key.keysym.sym == SDLK_RIGHT)
+                else if (result.key.keysym.sym == SDLK_RIGHT || result.key.keysym.sym == SDLK_KP_6)
                 {
                     input.Current = controls[input.Current].Right;
                 }
-                else if (result.key.keysym.sym == SDLK_UP)
+                else if (result.key.keysym.sym == SDLK_UP || result.key.keysym.sym == SDLK_KP_8)
                 {
                     input.Current = controls[input.Current].Up;
                 }
-                else if (result.key.keysym.sym == SDLK_DOWN)
+                else if (result.key.keysym.sym == SDLK_DOWN || result.key.keysym.sym == SDLK_KP_2)
                 {
                     input.Current = controls[input.Current].Down;
                 }
@@ -595,19 +595,19 @@ namespace BloodSword::Input
         }
         else if (result.type == SDL_KEYDOWN)
         {
-            if (result.key.keysym.sym == SDLK_LEFT)
+            if (result.key.keysym.sym == SDLK_LEFT || result.key.keysym.sym == SDLK_KP_4)
             {
                 input.Type = Controls::Type::LEFT;
             }
-            else if (result.key.keysym.sym == SDLK_RIGHT)
+            else if (result.key.keysym.sym == SDLK_RIGHT || result.key.keysym.sym == SDLK_KP_6)
             {
                 input.Type = Controls::Type::RIGHT;
             }
-            else if (result.key.keysym.sym == SDLK_UP)
+            else if (result.key.keysym.sym == SDLK_UP || result.key.keysym.sym == SDLK_KP_8)
             {
                 input.Type = Controls::Type::UP;
             }
-            else if (result.key.keysym.sym == SDLK_DOWN)
+            else if (result.key.keysym.sym == SDLK_DOWN || result.key.keysym.sym == SDLK_KP_2)
             {
                 input.Type = Controls::Type::DOWN;
             }
