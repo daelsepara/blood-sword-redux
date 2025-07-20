@@ -116,8 +116,8 @@ debian: blood-sword
 		cp -R images $(DEBIAN)/usr/local/games
 		cp -R modules $(DEBIAN)/usr/local/games
 		cp -R sounds $(DEBIAN)/usr/local/games
-		cp -R BloodSword.exe $(DEBIAN)/usr/local/games
-		dpkg-deb --build blood-sword.$(DEBIAN_ARCH)
+		cp -R $(BSWORD_OUTPUT) $(DEBIAN)/usr/local/games
+		dpkg-deb --build $(DEBIAN)
 		rm -fR $(DEBIAN)
 	else
 		echo "Not a Debian build environment ..."
