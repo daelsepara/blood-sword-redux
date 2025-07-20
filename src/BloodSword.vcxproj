@@ -160,7 +160,6 @@ XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="AssetTypes.hpp" />
     <ClInclude Include="Attribute.hpp" />
     <ClInclude Include="Battle.hpp" />
-    <ClInclude Include="Battlepits.hpp" />
     <ClInclude Include="BattleResults.hpp" />
     <ClInclude Include="Book.hpp" />
     <ClInclude Include="Character.hpp" />
@@ -175,7 +174,6 @@ XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="ControlTypes.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="Feature.hpp" />
-    <ClInclude Include="FieldOfView.hpp" />
     <ClInclude Include="Fonts.hpp" />
     <ClInclude Include="Generator.hpp" />
     <ClInclude Include="Graphics.hpp" />
@@ -205,12 +203,6 @@ XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="Primitives.hpp" />
     <ClInclude Include="Random.hpp" />
     <ClInclude Include="RichText.hpp" />
-    <ClInclude Include="Rogue.hpp" />
-    <ClInclude Include="RogueBase.hpp" />
-    <ClInclude Include="RogueBattle.hpp" />
-    <ClInclude Include="RogueGenerator.hpp" />
-    <ClInclude Include="RogueItems.hpp" />
-    <ClInclude Include="RogueMethods.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Section.hpp" />
     <ClInclude Include="Skills.hpp" />

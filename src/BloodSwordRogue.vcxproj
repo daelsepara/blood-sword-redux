@@ -210,6 +210,7 @@ XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="..\src\RogueBattle.hpp" />
     <ClInclude Include="..\src\RogueGenerator.hpp" />
     <ClInclude Include="..\src\RogueItems.hpp" />
+    <ClInclude Include="..\src\RogueMethods.hpp" />
     <ClInclude Include="..\src\Scene.hpp" />
     <ClInclude Include="..\src\Section.hpp" />
     <ClInclude Include="..\src\Skills.hpp" />
