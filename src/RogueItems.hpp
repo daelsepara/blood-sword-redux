@@ -279,9 +279,14 @@ namespace BloodSword::Rogue
                 // cannot flee this battle
                 rogue.CannotFlee = true;
 
+                // display Smeaborg battle text message
                 std::string text = "You unfurl the scroll. It is covered with glittering scratch-like runes that seem to scuttle to and fro across the page. Wisps of green-black vapour curl out like tentacles to enfold you, cutting off your view of your surroundings. You seem to stand in an endless sea of fog. Then a strong breeze whips up around you. Strangely it blows your hair and you can feel its chill on your skin, but your clothes do not billow up at all. The fog disperses, leaving you with a grim vista. You are on a plain of sticky olive-brown mire, broken at intervals by bones and skulls that protrue from the mud.\n\nA being clad in azure armour stands four metres tall, manlike in form except for his head, which is the huge horned skull of a stag. Green eyes roll in the hollow sockets. He opens his flessless mouth, sending a wave of foetid air rolling towards you. \"Welcome to the realm of Smeaborg the Fleshless,\" he says. \"Our relationship will be a brief and bloody one.\" He hefts his giant halberd and stalks to the attack.\n\nYou cannot flee.";
 
-                Interface::TextBox(graphics, background, text, BloodSword::Wrap, true);
+                auto width = BloodSword::TileSize * 10;
+
+                auto height = BloodSword::TileSize * 6;
+
+                Interface::ScrollableTextBox(graphics, background, Fonts::Normal, text, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
 
                 Rogue::Battle(graphics, background, rogue, enemy_id);
 
