@@ -19,16 +19,25 @@ LIBS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -fdata-sections 
 INCLUDES=-I/usr/include/SDL2
 UNAME_S=$(shell uname -s)
 UNAME_M=$(shell uname -m)
+DEBIAN_ARCH=amd64
+DEBIAN=blood-sword.$(DEBIAN_ARCH)
+
 
 ifeq ($(UNAME_S),Darwin)
+	DEBIAN_ARCH=
+	DEBIAN=
 	LLVM=$(shell brew --prefix llvm)
 	CC=$(LLVM)/bin/clang++
 	LIBS += -stdlib=libc++ -Wl,-dead_strip -L$(LLVM)/lib/c++ -L/usr/local/lib
 	INCLUDES += -I/usr/local/include/SDL2
 else ifeq ($(UNAME_M),aarch64)
+	DEBIAN_ARCH=
+	DEBIAN=
 	CC=g++
 	LIBS += -lstdc++fs -Wl,--gc-sections
 else ifeq ($(UNAME_M),aarch32)
+	DEBIAN_ARCH=
+	DEBIAN=
 	LIBS += -lstdc++fs -Wl,--gc-sections
 	CC=g++
 else
@@ -89,3 +98,24 @@ clean-rogue:
 	rm -f $(BSWORD_ROGUE_OUTPUT) *.o
 
 clean: clean-blood-sword-test clean-battle-board clean-map clean-map-renderer clean-sprite-sheet clean-blood-sword clean-battlepits clean-rogue
+
+.ONESHELL:
+
+debian: blood-sword
+	if  [ -n $(DEBIAN) ]; then
+		rm -f $(DEBIAN).deb
+		rm -fR $(DEBIAN)
+		echo "Building Debian $(DEBIAN_ARCH) package ..."
+		mkdir -p $(DEBIAN)/DEBIAN
+		mkdir -p $(DEBIAN)/usr/share/applications
+		mkdir -p $(DEBIAN)/usr/local/games
+		cp ../build/debian/$(DEBIAN_ARCH)/control $(DEBIAN)/DEBIAN
+		cp ../build/debian/$(DEBIAN_ARCH)/BattlepitsOfKrarth.desktop $(DEBIAN)/usr/share/applications
+		cp -R fonts $(DEBIAN)/usr/local/games
+		cp -R help $(DEBIAN)/usr/local/games
+		cp -R images $(DEBIAN)/usr/local/games
+		cp -R modules $(DEBIAN)/usr/local/games
+		cp -R sounds $(DEBIAN)/usr/local/games
+		cp -R BloodSword.exe $(DEBIAN)/usr/local/games
+		dpkg-deb --build blood-sword.$(DEBIAN_ARCH) && rm -fR $(DEBIAN)
+	fi
