@@ -1,7 +1,7 @@
 #ifndef __ROGUE_BATTLE_HPP__
 #define __ROGUE_BATTLE_HPP__
 
-#include "RogueBase.hpp"
+#include "RogueMethods.hpp"
 #include "RogueItems.hpp"
 
 namespace BloodSword::Rogue
@@ -625,6 +625,25 @@ namespace BloodSword::Rogue
 
         while (Engine::Count(party) > 0 && Engine::Count(enemies) > 0 && Engine::InBattle(party) > 0 && !flee)
         {
+            // activate SLOW MURDER before building the queue
+            for (auto character_id = 0; character_id < party.Count(); character_id++)
+            {
+                auto &character = party[character_id];
+
+                if (Engine::IsAlive(character) && character.Has(Character::Status::SLOW_MURDER))
+                {
+                    auto scene = Scene::Base();
+
+                    Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, stats_width, true, false, character_id, Color::Active);
+
+                    std::string slow_murder = character.Name + " LOSES 1 ENDURANCE TO THE SLOW MURDER SPELL!";
+
+                    Interface::FlashMessage(graphics, scene, slow_murder, Color::Active);
+
+                    Engine::GainEndurance(character, -1, true);
+                }
+            }
+
             auto battle_order = Engine::Build(party, enemies, Attribute::Type::AWARENESS, true, true);
 
             auto combatant = 0;
@@ -667,7 +686,34 @@ namespace BloodSword::Rogue
                     {
                         if (has_actions)
                         {
-                            if (character.Has(Character::Status::MELEE))
+                            if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Type::MISTS_OF_DEATH, 1, 0).Sum == 1)
+                            {
+                                std::string slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
+
+                                Interface::FlashMessage(graphics, scene, slow_murder, Color::Active);
+
+                                for (auto i = 0; i < party.Count(); i++)
+                                {
+                                    std::string resists = party[i].Name + " RESISTS THE SLOW MURDER SPELL!";
+
+                                    std::string succumb = party[i].Name + " SUCCUMBS TO THE SLOW MURDER SPELL!";
+
+                                    if (Engine::CanTarget(party[i], true) && !party[i].Has(Character::Status::SLOW_MURDER))
+                                    {
+                                        if (!Interface::Test(graphics, scene, party[i], Attribute::Type::PSYCHIC_ABILITY))
+                                        {
+                                            Interface::FlashMessage(graphics, scene, succumb, Color::Highlight);
+
+                                            party[i].Add(Character::Status::SLOW_MURDER);
+                                        }
+                                        else
+                                        {
+                                            Interface::FlashMessage(graphics, scene, resists, Color::Active);
+                                        }
+                                    }
+                                }
+                            }
+                            else if (character.Has(Character::Status::MELEE))
                             {
                                 auto targets = Engine::Build(party, Attribute::Type::ENDURANCE, Character::Status::MELEE, true, true);
 
@@ -752,7 +798,18 @@ namespace BloodSword::Rogue
                             {
                                 if (input == Controls::Type::FLEE)
                                 {
-                                    flee = true;
+                                    if (rogue.CannotFlee)
+                                    {
+                                        Input::Clear();
+
+                                        Sound::Play(Sound::Type::FAIL);
+
+                                        Interface::FlashMessage(graphics, scene, "YOU CANNOT FLEE THIS BATTLE!", Color::Highlight);
+                                    }
+                                    else
+                                    {
+                                        flee = true;
+                                    }
                                 }
                                 else if (input == Controls::Type::MOVE)
                                 {

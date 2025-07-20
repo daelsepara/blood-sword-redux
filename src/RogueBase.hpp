@@ -53,6 +53,9 @@ namespace BloodSword::Rogue
         // current enemy party
         int Enemy = Map::NotFound;
 
+        // cannot flee battle
+        bool CannotFlee = false;
+
         // width (in pixels) of character stats card
         int StatsWidth = 0;
 

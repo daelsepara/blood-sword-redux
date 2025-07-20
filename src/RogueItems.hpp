@@ -1,7 +1,7 @@
 #ifndef __ROGUE_ITEMS_HPP__
 #define __ROGUE_ITEMS_HPP__
 
-#include "RogueBase.hpp"
+#include "RogueMethods.hpp"
 
 namespace BloodSword::Rogue
 {
@@ -255,6 +255,41 @@ namespace BloodSword::Rogue
                 {
                     Interface::MessageBox(graphics, background, "NO CHARGES LEFT!", Color::Highlight);
                 }
+            }
+            else if (item.Type == Item::Type::VELLUM_SCROLL)
+            {
+                auto previous_enemy = rogue.Enemy;
+
+                auto cannot_flee = rogue.CannotFlee;
+
+                // create enemy party (SMEABORG)
+                auto enemy_id = rogue.Opponents.size();
+
+                auto enemies = Party::Base();
+
+                auto smeaborg = Generate::NPC("SMEABORG", Skills::Type::NONE, Skills::Type::NONE, {Skills::Type::SLOW_MURDER}, 9, 9, 8, 45, 2, 5, 0, 1000, Asset::Type::SMEABORG);
+
+                enemies.Add(smeaborg);
+
+                rogue.Opponents.push_back(enemies);
+
+                // cannot flee this battle
+                rogue.CannotFlee = true;
+
+                Rogue::Battle(graphics, background, rogue, enemy_id);
+
+                // remove item
+                Interface::ConsumeItem(character, id);
+
+                // restore previous state (if party was fighting an enemy)
+                rogue.Enemy = previous_enemy;
+
+                // restore flee status
+                rogue.CannotFlee = cannot_flee;
+
+                update.Scene = true;
+
+                update.Party = true;
             }
             else
             {
