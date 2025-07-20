@@ -125,6 +125,8 @@ namespace BloodSword::Rogue
 
         std::iota(options.begin(), options.end(), 1);
 
+        std::shuffle(options.begin(), options.end(), Engine::Random.Generator());
+
         for (auto enemies = 0; enemies < number; enemies++)
         {
             auto center = Point(-1, -1);
@@ -247,6 +249,8 @@ namespace BloodSword::Rogue
 
         std::iota(rooms.begin(), rooms.end(), 1);
 
+        std::shuffle(rooms.begin(), rooms.end(), Engine::Random.Generator());
+
         // radomize room location
         for (auto i = 0; i < number; i++)
         {
@@ -266,6 +270,8 @@ namespace BloodSword::Rogue
         auto rooms = std::vector<int>(rogue.Rooms.size() - 2);
 
         std::iota(rooms.begin(), rooms.end(), 1);
+
+        std::shuffle(rooms.begin(), rooms.end(), Engine::Random.Generator());
 
         auto options = items.size();
 
@@ -329,6 +335,13 @@ namespace BloodSword::Rogue
         Rogue::PlaceItems(rogue, {sceptre}, 1);
     }
 
+    void PlaceVellumScroll(Rogue::Base &rogue)
+    {
+        auto vellum = Item::Base("VELLUM SCROLL", Item::Type::VELLUM_SCROLL, {Item::Property::READABLE}, Item::Type::NONE, 1, Asset::Type::READ);
+
+        Rogue::PlaceItems(rogue, {vellum}, 1);
+    }
+
     void PlaceLoot(BloodSword::Rogue::Base &rogue, int number, int min_gold, int max_gold)
     {
         // 25% rooms has gold loot
@@ -342,6 +355,9 @@ namespace BloodSword::Rogue
 
         // steel sceptre
         Rogue::PlaceSceptre(rogue);
+
+        // vellum scroll
+        Rogue::PlaceVellumScroll(rogue);
 
         // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
         if (rogue.Has(Character::Class::TRICKSTER) || rogue.Has(Character::Class::SAGE))

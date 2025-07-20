@@ -655,6 +655,8 @@ namespace BloodSword::Battlepits
             {
                 auto available = Battlepits::Available(map, rooms, width, height, gap_size);
 
+                std::shuffle(available.begin(), available.end(), random.Generator());
+
                 if (available.size() > 0)
                 {
                     auto room = Battlepits::CreateRoom(random, map, available, width, height);

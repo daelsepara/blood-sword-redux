@@ -1072,9 +1072,12 @@ namespace BloodSword::Rogue
                 scale = 1.0;
             }
 
-            auto share = int(std::round(base / (scale * count)));
+            if (enemies[0].Asset != Asset::Type::SMEABORG)
+            {
+                auto share = int(std::round(base / (scale * count)));
 
-            Engine::GainExperience(party, share);
+                Engine::GainExperience(party, share);
+            }
         }
 
         // reset status
