@@ -258,6 +258,9 @@ namespace BloodSword::Rogue
             }
             else if (item.Type == Item::Type::VELLUM_SCROLL)
             {
+                // remove item
+                Interface::ConsumeItem(character, id);
+
                 auto previous_enemy = rogue.Enemy;
 
                 auto cannot_flee = rogue.CannotFlee;
@@ -281,9 +284,6 @@ namespace BloodSword::Rogue
                 Interface::TextBox(graphics, background, text, BloodSword::Wrap, true);
 
                 Rogue::Battle(graphics, background, rogue, enemy_id);
-
-                // remove item
-                Interface::ConsumeItem(character, id);
 
                 // restore previous state (if party was fighting an enemy)
                 rogue.Enemy = previous_enemy;
