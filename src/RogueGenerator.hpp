@@ -264,8 +264,29 @@ namespace BloodSword::Rogue
         }
     }
 
+    // distribute items randomly across several rooms
+    void PlaceItems(Rogue::Base &rogue, Items::Inventory items)
+    {
+        auto rooms = std::vector<int>(rogue.Rooms.size() - 2);
+
+        std::iota(rooms.begin(), rooms.end(), 1);
+
+        std::shuffle(rooms.begin(), rooms.end(), Engine::Random.Generator());
+
+        for (auto item : items)
+        {
+            auto random = Engine::Percentile.NextInt() % rooms.size();
+
+            auto id = rooms[random];
+
+            Rogue::PlaceItem(rogue, item, id);
+
+            rooms.erase(rooms.begin() + random);
+        }
+    }
+
     // generate items from a selection
-    void PlaceItems(Rogue::Base &rogue, std::vector<Item::Base> items, int number)
+    void PlaceItems(Rogue::Base &rogue, Items::Inventory items, int number)
     {
         auto rooms = std::vector<int>(rogue.Rooms.size() - 2);
 

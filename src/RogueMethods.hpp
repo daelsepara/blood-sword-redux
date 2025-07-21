@@ -9,9 +9,9 @@ namespace BloodSword::Rogue
     Rogue::Update UseItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Character::Class character_class, int id);
     Rogue::Update ManageItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Character::Class character_class, int id);
     Rogue::Update ShowInventory(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Character::Base &character);
-    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Items::Inventory &items, int id);
     void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Character::Base &character, bool blur);
     void ShowLoot(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point);
+    void TakeItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Items::Inventory &items, int id);
 
     // battle
     Controls::Type SelectAction(Graphics::Base &graphics, Scene::Base &background, Character::Base &character);

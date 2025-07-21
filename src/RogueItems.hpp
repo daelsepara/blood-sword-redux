@@ -5,8 +5,8 @@
 
 namespace BloodSword::Rogue
 {
-    // manage item found in location
-    void ManageItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Items::Inventory &items, int id)
+    // take item found in location
+    void TakeItem(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Items::Inventory &items, int id)
     {
         auto &party = rogue.Party;
 
@@ -173,7 +173,7 @@ namespace BloodSword::Rogue
 
                                 if (choice >= 0 && choice < items.size())
                                 {
-                                    Rogue::ManageItem(graphics, background, rogue, items, choice);
+                                    Rogue::TakeItem(graphics, background, rogue, items, choice);
                                 }
 
                                 // check if item list is unchanged
