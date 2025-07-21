@@ -242,7 +242,10 @@ namespace BloodSword::Rogue
 
                         Interface::DamagePlayer(graphics, background, defender, 5, 0, false, true, true);
 
-                        Interface::MessageBox(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
+                        if (!Engine::IsAlive(defender))
+                        {
+                            Interface::FlashMessage(graphics, background, defender.Name + " KILLED!", defender.IsPlayer() ? Color::Highlight : Color::Active);
+                        }
 
                         item.Remove(Item::Type::CHARGE, 1);
 

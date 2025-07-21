@@ -6052,6 +6052,8 @@ namespace BloodSword::Interface
         {
             if (damage > 0)
             {
+                Sound::Play(Sound::Type::COMBAT_DAMAGE);
+                
                 Engine::GainEndurance(character, -damage, in_battle);
 
                 std::string message = character.Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
