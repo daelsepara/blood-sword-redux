@@ -20,9 +20,9 @@ namespace BloodSword::Move
     {
     public:
         // List of coordinates of the path
-        Points Points;
+        BloodSword::Points Points;
 
-        Point Closest;
+        BloodSword::Point Closest;
 
         Path() {}
     };
