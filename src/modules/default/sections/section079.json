@@ -34,7 +34,7 @@
             }
         },
         {
-            "text": "(ENCHANTER) Try to Enhtral him",
+            "text": "(ENCHANTER) Try to Enthral him",
             "condition": {
                 "type": "IN PARTY",
                 "location": {

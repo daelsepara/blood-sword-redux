@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 518
     },
-    "text": "You dispose of the last night elf. As he falls, he murmurs something in the lilting Faerie tonque. A dank mist rises around you, and hideous shapes glide to and fro.",
+    "text": "You dispose of the last night elf. As he falls, he murmurs something in the lilting Faerie tongue. A dank mist rises around you, and hideous shapes glide to and fro.",
     "next": [
         {
             "type": "IN PARTY",

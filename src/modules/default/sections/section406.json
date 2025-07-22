@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 406
     },
-    "text": "You push open the door and peer inside. In a glimmer of soft candlelight you see a FIRE-BLACKENED SKULL resting on a plinth. The dust of the floor has been recently distrubed by footprints. You see no other exits.",
+    "text": "You push open the door and peer inside. In a glimmer of soft candlelight you see a FIRE-BLACKENED SKULL resting on a plinth. The dust of the floor has been recently disturbed by footprints. You see no other exits.",
     "image_asset": "modules/default/images/sceptre.png",
     "choices": [
         {

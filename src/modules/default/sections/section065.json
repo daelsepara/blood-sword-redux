@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 65
     },
-    "text": "After recovering for the next Sprial, he has two heads and five tails. You have only four coins left, but all are heads. He can play only a one now, so you automatically win.",
+    "text": "After recovering for the next Spiral, he has two heads and five tails. You have only four coins left, but all are heads. He can play only a one now, so you automatically win.",
     "events": [
         {
             "type": "SET",

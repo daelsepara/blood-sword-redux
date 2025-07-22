@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 10
     },
-    "text": "He is outraged. He half rises from his chair, a tall reed-like figure who seems to unfold rather than stand. His hard thin fingers grip the edge of the table.\n\n\"I am astonished!\" he says at last through clenched teeth. Fangs, really. \"You have had the benefit of tuition from no less than Grandmaster Klef. I am the acknowledged authority on the SPiral of Gold game. I beet Magus Tor -- the true, original Magus Tor -- in a ten-game championship. Yet you cannot understand my explanation! Sickened though I am, I shall not slay you, merely consign you to the lower depths.\"\n\nHe lifts a hand from which tendrils of icy flame spread like a net, entangling you.",
+    "text": "He is outraged. He half rises from his chair, a tall reed-like figure who seems to unfold rather than stand. His hard thin fingers grip the edge of the table.\n\n\"I am astonished!\" he says at last through clenched teeth. Fangs, really. \"You have had the benefit of tuition from no less than Grandmaster Klef. I am the acknowledged authority on the Spiral of Gold game. I beet Magus Tor -- the true, original Magus Tor -- in a ten-game championship. Yet you cannot understand my explanation! Sickened though I am, I shall not slay you, merely consign you to the lower depths.\"\n\nHe lifts a hand from which tendrils of icy flame spread like a net, entangling you.",
     "next": [
         {
             "type": "DAMAGE PLAYER",

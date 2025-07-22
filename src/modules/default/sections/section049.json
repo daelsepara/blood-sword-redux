@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 49
     },
-    "text": "(ENCHANTER) \"There was the warlock known as Icon the Ungodly,\" she replies. \"And two scurvy knaves who resisted all our blandishments. Lastly, there was a single Sage who survived the bridge crossing where all his comrades died. He helped us with your cooking.\" She glances at one of the cauldrons.\n\nYour Enhtralment is slipping. On a whim you snatch the ladle out of a nearby cauldron and pour its noxious contents over her. There is a hissing as it dissolves the wretched hag into a pool of greyish slime. The others scream and spit, but do nothing out of fear of your powers.",
+    "text": "(ENCHANTER) \"There was the warlock known as Icon the Ungodly,\" she replies. \"And two scurvy knaves who resisted all our blandishments. Lastly, there was a single Sage who survived the bridge crossing where all his comrades died. He helped us with your cooking.\" She glances at one of the cauldrons.\n\nYour Enthralment is slipping. On a whim you snatch the ladle out of a nearby cauldron and pour its noxious contents over her. There is a hissing as it dissolves the wretched hag into a pool of greyish slime. The others scream and spit, but do nothing out of fear of your powers.",
     "next": [
         {
             "type": "NORMAL",

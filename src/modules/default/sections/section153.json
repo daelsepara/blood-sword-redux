@@ -6,7 +6,7 @@
     "features": [
         "DOUBLE HEALING"
     ],
-    "text": "(SAGE) You know the proper words of the prayer to this goddess. You speak them now, and the goddess reponds by suffusing your spirt with the energy to do great good.\n\n[HEALING restores twice the amount of ENDURANCE]",
+    "text": "(SAGE) You know the proper words of the prayer to this goddess. You speak them now, and the goddess responds by suffusing your spirit with the energy to do great good.\n\n[HEALING restores twice the amount of ENDURANCE]",
     "choices": [
         {
             "text": "Have a look at the ice block",

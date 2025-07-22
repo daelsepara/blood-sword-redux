@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 355
     },
-    "text": "\"Excellent!\" cries Klef. \"You are a determined opponent, forcing me to lose ground even as you do. Admirable.\" Aflter flipping over the coins for recovery, you both have five heads.",
+    "text": "\"Excellent!\" cries Klef. \"You are a determined opponent, forcing me to lose ground even as you do. Admirable.\" After flipping over the coins for recovery, you both have five heads.",
     "events": [
         {
             "type": "SET",

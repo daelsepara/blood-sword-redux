@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 334
     },
-    "text": "You can just make out the figure of a warrior clad in leather armour frozen into the ice block. A gauntleted hand portrudes from the side of the block where it looks as if someone has chipped away the ice and stolen his sword.",
+    "text": "You can just make out the figure of a warrior clad in leather armour frozen into the ice block. A gauntleted hand protrudes from the side of the block where it looks as if someone has chipped away the ice and stolen his sword.",
     "background": [
         {
             "type": "IF TRUE RETURN",

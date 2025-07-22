@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 431
     },
-    "text": "(ENCHANTER) You murmur the spell that summons a faltyn. If it cannot help you, there is really no hope. It appears in the shadow at the back of the room, away from the light thron up by the boiling lava.\n\n[\"I can aid you,\" it says, \"but the payment must be in proportion to your needs. Since you will fail in your quest -- and probably die -- if you cannot cross the lava moat, I require every item you possess except for weapons.\"\n\nYou have no choice; you tell the faltyn to take what it wants. When it has done so -- it speaks again: \"Use the collapsed doors as rafts. They float on lava, but will probably not catch alight until you have crossed.\"]\n\nThen it departs.",
+    "text": "(ENCHANTER) You murmur the spell that summons a faltyn. If it cannot help you, there is really no hope. It appears in the shadow at the back of the room, away from the light thrown up by the boiling lava.\n\n[\"I can aid you,\" it says, \"but the payment must be in proportion to your needs. Since you will fail in your quest -- and probably die -- if you cannot cross the lava moat, I require every item you possess except for weapons.\"\n\nYou have no choice; you tell the faltyn to take what it wants. When it has done so -- it speaks again: \"Use the collapsed doors as rafts. They float on lava, but will probably not catch alight until you have crossed.\"]\n\nThen it departs.",
     "next": [
         {
             "type": "LOSE EVERYTHING EXCEPT WEAPONS",

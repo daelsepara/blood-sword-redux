@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 463
     },
-    "text": "(SAGE) You identify the liquid inside the phial as a deadly poison. Anyone drinking it will be automaticall killed, and there is no antidote.",
+    "text": "(SAGE) You identify the liquid inside the phial as a deadly poison. Anyone drinking it will be automatically killed, and there is no antidote.",
     "events": [
         {
             "type": "DISCARD ITEMS",

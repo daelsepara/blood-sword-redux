@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 276
     },
-    "text": "(TRICKSTER) Beyond the gateway you see a tall, robed man with a palce face reclining on a couch. At least you thought it was a couch, but when you draw closer you see it is actually a sarcophagus. The man stirs at the sound of your approach and looks up. To your horror you see his mouth open, revealing the fanged teeth of a vampire.",
+    "text": "(TRICKSTER) Beyond the gateway you see a tall, robed man with a pale face reclining on a couch. At least you thought it was a couch, but when you draw closer you see it is actually a sarcophagus. The man stirs at the sound of your approach and looks up. To your horror you see his mouth open, revealing the fanged teeth of a vampire.",
     "events": [
         {
             "type": "HAVE COLLEAGUES",

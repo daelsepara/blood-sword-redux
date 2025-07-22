@@ -16,7 +16,7 @@
             }
         },
         {
-            "text": "Go around to the otherside of the temple",
+            "text": "Go around to the other side of the temple",
             "condition": {
                 "type": "NORMAL",
                 "location": {

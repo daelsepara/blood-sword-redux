@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 8
     },
-    "text": "You glance around. Far across the cavern you see the end of a tunnel that leads further into the Battlepits. A faint winking light can be seen at the end of it. The shore of the lake is covered with several large mounds made of piled stones. These look to you suspiciously like graves. You can also see in your torchlight a large block of mrky ice, and beyond that there is the dull glow of red ritual candles that cast faint light on a bronze shrine that has been set up against one of the cavern walls. Fiercely burning braziers stand to either side of the shrine.\n\nYou now have a number of options.",
+    "text": "You glance around. Far across the cavern you see the end of a tunnel that leads further into the Battlepits. A faint winking light can be seen at the end of it. The shore of the lake is covered with several large mounds made of piled stones. These look to you suspiciously like graves. You can also see in your torchlight a large block of murky ice, and beyond that there is the dull glow of red ritual candles that cast faint light on a bronze shrine that has been set up against one of the cavern walls. Fiercely burning braziers stand to either side of the shrine.\n\nYou now have a number of options.",
     "choices": [
         {
             "text": "Explore one of the mounds by clearing away some of the rocks",

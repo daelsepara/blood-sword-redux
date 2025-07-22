@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 108
     },
-    "text": "(SAGE) You must attempt to awaken the latent powers of your \"inner eye.\" Calling on the teachings of your adept masters, you begin to clear your mind of all distractions, tring to see beyond the natural spectrum.",
+    "text": "(SAGE) You must attempt to awaken the latent powers of your \"inner eye.\" Calling on the teachings of your adept masters, you begin to clear your mind of all distractions, trying to see beyond the natural spectrum.",
     "next": [
         {
             "type": "TEST ATTRIBUTE",

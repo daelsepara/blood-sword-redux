@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 143
     },
-    "text": "(TRICKSTER) You feel a faint tug at your belt, and instantly realise that unseen fingers are trying to steal your possessions! \"Set a thief to catch a thief,\" you whisper to yourself, suddenly whirling around under the waterfall and fending the invisible hands away. One of them is cluthing something -- probably filched from another adventurer who passed this way -- and you grab this as soon as you retreat out of the water. You examine the item you have gained.\n\n[It is a PHIAL OF CHIMERA-SPITTLE: a deadly delyaed-action poison.]",
+    "text": "(TRICKSTER) You feel a faint tug at your belt, and instantly realise that unseen fingers are trying to steal your possessions! \"Set a thief to catch a thief,\" you whisper to yourself, suddenly whirling around under the waterfall and fending the invisible hands away. One of them is clutching something -- probably filched from another adventurer who passed this way -- and you grab this as soon as you retreat out of the water. You examine the item you have gained.\n\n[It is a PHIAL OF CHIMERA-SPITTLE: a deadly delayed-action poison.]",
     "features": [
         "TASK",
         "TASK TRICKSTER"

@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 520
     },
-    "text": "(TRICKSTER) You spot a group of bargemen making their way home along the towpath on the opposite bank. You call them over, saying, \"If you wish to earn a bag of silver for very little effort, come here. I have been told to guard the pennant of Magus Vyl but now remembar an urgent errand. Hold the pennant until I return, and I will reward you lavishly. This I swear, or I am not the Grand Treasurer of the House of Vyl.\"\n\nYou walk a little distance off into the shadows, then double back. While you hide in cover, you hear the bargemen chatting about how they'll spend the money you have promised them.",
+    "text": "(TRICKSTER) You spot a group of bargemen making their way home along the towpath on the opposite bank. You call them over, saying, \"If you wish to earn a bag of silver for very little effort, come here. I have been told to guard the pennant of Magus Vyl but now rember an urgent errand. Hold the pennant until I return, and I will reward you lavishly. This I swear, or I am not the Grand Treasurer of the House of Vyl.\"\n\nYou walk a little distance off into the shadows, then double back. While you hide in cover, you hear the bargemen chatting about how they'll spend the money you have promised them.",
     "next": [
         {
             "type": "NORMAL",

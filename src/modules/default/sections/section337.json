@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 337
     },
-    "text": "(TRICKSTER) You twist to one side at last the moment, deftly evading the ponit of HURONDUS's sword. Even before he has time to realise what you are doing, you've put your hand on his shoulder and vaulted over his head. He gives a wail of despair as, staggering blindly, he topples over into the gorge.",
+    "text": "(TRICKSTER) You twist to one side at last the moment, deftly evading the point of HURONDUS's sword. Even before he has time to realise what you are doing, you've put your hand on his shoulder and vaulted over his head. He gives a wail of despair as, staggering blindly, he topples over into the gorge.",
     "image_asset": "modules/default/images/dirge.png",
     "features": [
         "TASK",

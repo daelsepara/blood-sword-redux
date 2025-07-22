@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 86
     },
-    "text": "(ENCHANTER) You are able to see any spels fluorescing with a bright aura under this spell.\n\n[You see no sign of magic from the sarcophagi, though this does not necessarily mean they don't contain something magical. The dais of grey stone, however, flickers with powerful sorcery. As to whether that sorcery is benign or hostile -- you cannot tell.]",
+    "text": "(ENCHANTER) You are able to see any spells fluorescing with a bright aura under this spell.\n\n[You see no sign of magic from the sarcophagi, though this does not necessarily mean they don't contain something magical. The dais of grey stone, however, flickers with powerful sorcery. As to whether that sorcery is benign or hostile -- you cannot tell.]",
     "next": [
         {
             "type": "NORMAL",

@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 61
     },
-    "text": "You enter a room at the end of the corridor. Three assassins in blood-drenched black robes and face masks lie in a heap at the centre of the room. Presumably they were another magus's champions, but fell foul of the barbarian party. Searching the bodies, you find many of the assassin's favoured missle weapon, the deadly throwing spike. Unfortunately you cannot use this type of weapon as you have not been trained to do so. There is also a smashed black vial that one of the barbarians would seem to have trodden underfoot.",
+    "text": "You enter a room at the end of the corridor. Three assassins in blood-drenched black robes and face masks lie in a heap at the centre of the room. Presumably they were another magus's champions, but fell foul of the barbarian party. Searching the bodies, you find many of the assassin's favoured missile weapon, the deadly throwing spike. Unfortunately you cannot use this type of weapon as you have not been trained to do so. There is also a smashed black vial that one of the barbarians would seem to have trodden underfoot.",
     "items": [
         {
             "name": "SHURIKEN",

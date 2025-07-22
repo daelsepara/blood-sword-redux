@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 407
     },
-    "text": "You rush down the narrow path that leads to the platform. The DIRGES caw angrily and veer to inctercept you. You just reach the ledge as they close to attack.",
+    "text": "You rush down the narrow path that leads to the platform. The DIRGES caw angrily and veer to intercept you. You just reach the ledge as they close to attack.",
     "battle": "modules/default/battles/battle407.json",
     "image_asset": "modules/default/images/battles/alternative/battle407.png",
     "next": [

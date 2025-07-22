@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 393
     },
-    "text": "(SAGE) [This is not a normal dirge, but an occult hybrid. Probably it was once a human who transgressed in some way against the magi of Krarth, and as punishment was translated into this monstrous form. From what you have heard, so dire a fate would be meteted out only to the most treacherous of Krarthian wrongdoers. Krarthian justice is far from just, but at least most criminals are given the mercy of a quick death.]",
+    "text": "(SAGE) [This is not a normal dirge, but an occult hybrid. Probably it was once a human who transgressed in some way against the magi of Krarth, and as punishment was translated into this monstrous form. From what you have heard, so dire a fate would be meted out only to the most treacherous of Krarthian wrongdoers. Krarthian justice is far from just, but at least most criminals are given the mercy of a quick death.]",
     "next": [
         {
             "type": "NORMAL",

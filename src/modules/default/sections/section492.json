@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 492
     },
-    "text": "As you return to the floor of the hall, the blue steel doors at the end burst open as if blasted aside by a tremendous force. A dense black cloud of roiling black smoke shot through with livid blue lightning-bolds sweeps into the room.\n\nYou have no option but to flee the cloud of smoke before it reaches you.",
+    "text": "As you return to the floor of the hall, the blue steel doors at the end burst open as if blasted aside by a tremendous force. A dense black cloud of roiling black smoke shot through with livid blue lightning-bolts sweeps into the room.\n\nYou have no option but to flee the cloud of smoke before it reaches you.",
     "next": [
         {
             "type": "NORMAL",

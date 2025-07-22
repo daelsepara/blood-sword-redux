@@ -3,7 +3,7 @@
         "book": "BOOK1",
         "number": 168
     },
-    "text": "Your fingers close around the sacrificial knife. You feel a sharp stab of agony, but that soon passes. Suddenly you see that all items in your possession have melted away into a murky vile-smelling slime. You try to drop the knife, but you cannot.\n\nBut the knife is not all bad. Although cursed, it is a scred weapon of the demon Vactris.\n\nNow you have no choice but to return the way you came.",
+    "text": "Your fingers close around the sacrificial knife. You feel a sharp stab of agony, but that soon passes. Suddenly you see that all items in your possession have melted away into a murky vile-smelling slime. You try to drop the knife, but you cannot.\n\nBut the knife is not all bad. Although cursed, it is a sacred weapon of the demon Vactris.\n\nNow you have no choice but to return the way you came.",
     "events": [
         {
             "type": "ITEM EFFECT",

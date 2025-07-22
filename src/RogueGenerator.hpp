@@ -358,6 +358,11 @@ namespace BloodSword::Rogue
         auto vellum = Item::Base("VELLUM SCROLL", Item::Type::VELLUM_SCROLL, {Item::Property::READABLE}, Item::Type::NONE, 1, Asset::Type::READ);
 
         Rogue::PlaceItems(rogue, {sceptre, vellum});
+
+        // place emblem of victory
+        auto emblem = Item::Base("EMBLEM OF VICTORY", Item::Type::EMBLEM_OF_VICTORY, {Item::Property::CANNOT_DROP}, Item::Type::NONE, 1, Asset::Type::SWORDTHRUST);
+
+        Rogue::PlaceItem(rogue, emblem, int(rogue.Rooms.size()) - 1);
     }
 
     void PlaceLoot(BloodSword::Rogue::Base &rogue, int number, int min_gold, int max_gold)
