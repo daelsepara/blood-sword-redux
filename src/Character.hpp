@@ -562,7 +562,7 @@ namespace BloodSword::Character
         // is character armed with a charged weapon?
         bool IsArmed(Item::Type weapon, Item::Type content)
         {
-            auto container = Item::Container(weapon);
+            auto container = Item::Container(content);
 
             return this->IsArmed(weapon, container, content);
         }
