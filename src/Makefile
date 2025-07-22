@@ -108,15 +108,15 @@ debian: blood-sword
 		rm -fR $(DEBIAN)
 		mkdir -p $(DEBIAN)/DEBIAN
 		mkdir -p $(DEBIAN)/usr/share/applications
-		mkdir -p $(DEBIAN)/usr/local/games
+		mkdir -p $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
 		cp ../build/debian/$(DEBIAN_ARCH)/control $(DEBIAN)/DEBIAN
 		cp ../build/debian/$(DEBIAN_ARCH)/BattlepitsOfKrarth.desktop $(DEBIAN)/usr/share/applications
-		cp -R fonts $(DEBIAN)/usr/local/games
-		cp -R help $(DEBIAN)/usr/local/games
-		cp -R images $(DEBIAN)/usr/local/games
-		cp -R modules $(DEBIAN)/usr/local/games
-		cp -R sounds $(DEBIAN)/usr/local/games
-		cp -R $(BSWORD_OUTPUT) $(DEBIAN)/usr/local/games
+		cp -R fonts $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
+		cp -R help $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
+		cp -R images $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
+		cp -R modules $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
+		cp -R sounds $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
+		cp -R $(BSWORD_OUTPUT) $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
 		dpkg-deb --build $(DEBIAN)
 		rm -fR $(DEBIAN)
 	else
