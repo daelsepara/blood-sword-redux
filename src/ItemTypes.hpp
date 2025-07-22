@@ -177,6 +177,7 @@ namespace BloodSword::Item
         {Item::Type::MAGIC_BOW, Item::Type::ARROW}};
 
     BloodSword::UnorderedMap<Item::Type, Item::Type> StorageRequirements = {
+        {Item::Type::SHURIKEN, Item::Type::LIMITED_SHURIKEN},
         {Item::Type::ARROW, Item::Type::QUIVER},
         {Item::Type::GOLD, Item::Type::POUCH}};
 
