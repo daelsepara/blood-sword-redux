@@ -30,8 +30,8 @@ ifeq ($(UNAME_S),Darwin)
 	LIBS += -stdlib=libc++ -Wl,-dead_strip -fdata-sections -ffunction-sections -L$(LLVM)/lib/c++ -L/usr/local/lib
 	INCLUDES += -I/usr/local/include/SDL2
 else ifeq ($(UNAME_M),aarch64)
-	DEBIAN_ARCH=
-	DEBIAN=
+	DEBIAN_ARCH=arm64
+	DEBIAN=blood-sword.$(DEBIAN_ARCH)
 	CC=g++
 	LIBS += -lstdc++fs
 else ifeq ($(UNAME_M),aarch32)
