@@ -293,106 +293,99 @@ namespace BloodSword::Rogue
 
                 auto opponent_id = Map::NotFound;
 
-                if (tile.IsOccupied() && (visible || tile.Explored))
+                if (visible || tile.Explored)
                 {
-                    switch (tile.Occupant)
+                    if (tile.IsOccupied())
                     {
-                    case Map::Object::PARTY:
-
-                        if (Engine::IsAlive(party) && tile.Id == Map::Party)
+                        switch (tile.Occupant)
                         {
-                            auto first = Engine::First(party);
+                        case Map::Object::PARTY:
 
-                            auto &player = party[first];
-
-                            if (Engine::IsAlive(player))
+                            if (Engine::IsAlive(party) && tile.Id == Map::Party)
                             {
-                                scene.VerifyAndAdd(Scene::Element(Asset::Get(player.Asset), screen));
-                            }
-                        }
+                                auto first = Engine::First(party);
 
-                        break;
+                                auto &player = party[first];
 
-                    case Map::Object::ENEMIES:
-
-                        opponent_id = Rogue::FindOpponents(rogue, Point(x, y));
-
-                        if (opponent_id >= 0 && opponent_id < rogue.Opponents.size() && rogue.Opponents.size() > 0)
-                        {
-                            if (Engine::IsAlive(rogue.Opponents[opponent_id]))
-                            {
-                                auto first = Engine::First(rogue.Opponents[opponent_id]);
-
-                                auto &enemy = rogue.Opponents[opponent_id][first];
-
-                                if (Engine::IsAlive(enemy))
+                                if (Engine::IsAlive(player))
                                 {
-                                    scene.VerifyAndAdd(Scene::Element(Asset::Get(enemy.Asset), screen));
+                                    scene.VerifyAndAdd(Scene::Element(Asset::Get(player.Asset), screen));
                                 }
                             }
-                        }
 
-                        break;
+                            break;
 
-                    case Map::Object::TEMPORARY_OBSTACLE:
+                        case Map::Object::ENEMIES:
 
-                        if (tile.Lifetime > 0 && tile.TemporaryAsset != Asset::Type::NONE)
-                        {
-                            scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.TemporaryAsset), screen));
-                        }
-                        else if (tile.Asset != Asset::Type::NONE)
-                        {
-                            scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
-                        }
+                            opponent_id = Rogue::FindOpponents(rogue, Point(x, y));
 
-                        break;
-
-                    case Map::Object::ITEMS:
-
-                        loot_id = Rogue::FindLoot(rogue, Point(x, y));
-
-                        if (loot_id >= 0 && loot_id < rogue.Loot.size() && rogue.Loot.size() > 0)
-                        {
-                            auto &loot = rogue.Loot[loot_id];
-
-                            if (loot.Items.size() > 0)
+                            if (opponent_id >= 0 && opponent_id < rogue.Opponents.size() && rogue.Opponents.size() > 0)
                             {
-                                auto first = Engine::FirstAsset(loot.Items);
-
-                                if (first != Item::NotFound)
+                                if (Engine::IsAlive(rogue.Opponents[opponent_id]))
                                 {
-                                    auto &item = loot.Items[first];
+                                    auto first = Engine::First(rogue.Opponents[opponent_id]);
 
-                                    scene.VerifyAndAdd(Scene::Element(Asset::Get(item.Asset), screen));
-                                }
-                                else
-                                {
-                                    scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::ITEMS), screen));
+                                    auto &enemy = rogue.Opponents[opponent_id][first];
+
+                                    if (Engine::IsAlive(enemy))
+                                    {
+                                        scene.VerifyAndAdd(Scene::Element(Asset::Get(enemy.Asset), screen));
+                                    }
                                 }
                             }
+
+                            break;
+
+                        case Map::Object::TEMPORARY_OBSTACLE:
+
+                            if (tile.Lifetime > 0 && tile.TemporaryAsset != Asset::Type::NONE)
+                            {
+                                scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.TemporaryAsset), screen));
+                            }
+                            else if (tile.Asset != Asset::Type::NONE)
+                            {
+                                scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
+                            }
+
+                            break;
+
+                        case Map::Object::ITEMS:
+
+                            loot_id = Rogue::FindLoot(rogue, Point(x, y));
+
+                            if (loot_id >= 0 && loot_id < rogue.Loot.size() && rogue.Loot.size() > 0)
+                            {
+                                auto &loot = rogue.Loot[loot_id];
+
+                                if (loot.Items.size() > 0)
+                                {
+                                    auto first = Engine::FirstAsset(loot.Items);
+
+                                    if (first != Item::NotFound)
+                                    {
+                                        auto &item = loot.Items[first];
+
+                                        scene.VerifyAndAdd(Scene::Element(Asset::Get(item.Asset), screen));
+                                    }
+                                    else
+                                    {
+                                        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::ITEMS), screen));
+                                    }
+                                }
+                            }
+
+                            break;
+
+                        default:
+
+                            break;
                         }
-
-                        break;
-
-                    default:
-
-                        break;
                     }
-                }
-                else if (!tile.IsOccupied() && tile.Asset != Asset::Type::NONE && (visible || tile.Explored))
-                {
-                    scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
-                }
-
-                if ((visible || tile.Explored) && tile.Asset == Asset::Type::NONE)
-                {
-                    // indicate inner room region
-                    if (tile.Room != Room::None && tile.Asset == Asset::Type::NONE && !tile.IsOccupied())
+                    else if (tile.Asset != Asset::Type::NONE)
                     {
-                        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EMPTY_SPACE), screen));
+                        scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                     }
-
-                    if (visible && sight)
+                    else if (visible && sight)
                     {
                         // show field of view
                         scene.Add(Scene::Element(screen.X + fov_offset, screen.Y + fov_offset, fov_size, fov_size, Color::O(Color::Highlight, 0x20)));
@@ -401,6 +394,7 @@ namespace BloodSword::Rogue
 
                 if (visible)
                 {
+                    // mark tile as explored
                     tile.Explored = true;
                 }
                 else if (tile.Explored)
@@ -410,6 +404,7 @@ namespace BloodSword::Rogue
                 }
                 else
                 {
+                    // fog
                     scene.Add(Scene::Element(screen.X, screen.Y, BloodSword::TileSize, BloodSword::TileSize, fog));
                 }
             }
@@ -1193,7 +1188,7 @@ namespace BloodSword::Rogue
         // set default control to the first
         Controls::Default = 0;
 
-        auto rogue = Rogue::GenerateBattlepits(100, 100, 100, 7, 9);
+        auto rogue = Rogue::GenerateBattlepits(100, 100, 100, 2, 3);
 
         // create party
         rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);

@@ -638,9 +638,10 @@ namespace BloodSword::Battlepits
 
         for (auto r = 0; r < max_rooms; r++)
         {
-            auto width = random.NextInt(min_size, max_size);
+            // ensure odd dimensions so midpoint is always at the exact center of the room
+            auto width = random.NextInt(min_size, max_size) * 2 + 1;
 
-            auto height = random.NextInt(min_size, max_size);
+            auto height = random.NextInt(min_size, max_size) * 2 + 1;
 
             if (r == 0)
             {
