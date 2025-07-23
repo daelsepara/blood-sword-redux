@@ -377,7 +377,7 @@ namespace BloodSword::Rogue
     void RenderCombatants(Graphics::Base &graphics, Scene::Base &scene, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id, Uint32 color)
     {
         // estimate positions from window
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto window_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto window_y = (graphics.Height - window_h) / 2;
 
@@ -387,7 +387,7 @@ namespace BloodSword::Rogue
 
         auto enemy_h = BloodSword::Height(enemy_stats);
 
-        auto enemy_y = window_y - (BloodSword::TileSize + enemy_h + BloodSword::Pad * 2);
+        auto enemy_y = window_y - (BloodSword::TileSize + enemy_h + BloodSword::LargePad);
 
         for (auto i = 0; i < enemies.Count(); i++)
         {
@@ -431,7 +431,7 @@ namespace BloodSword::Rogue
     int SelectTarget(Graphics::Base &graphics, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
     {
         // estimate positions from window
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto window_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto window_y = (graphics.Height - window_h) / 2;
 
@@ -447,7 +447,7 @@ namespace BloodSword::Rogue
 
         auto offset = (graphics.Width - (max_selection * stats_w + (max_selection - 1) * pad)) / 2;
 
-        auto target_y = is_player ? (window_y - (BloodSword::TileSize + stats_h + BloodSword::Pad * 2)) : (window_y + window_h + BloodSword::TileSize + BloodSword::Pad);
+        auto target_y = is_player ? (window_y - (BloodSword::TileSize + stats_h + BloodSword::LargePad)) : (window_y + window_h + BloodSword::TileSize + BloodSword::Pad);
 
         auto selection = is_player ? Engine::First(enemies) : Engine::First(party);
 
@@ -488,7 +488,7 @@ namespace BloodSword::Rogue
 
             auto input = Input::RogueInput(graphics, {scene});
 
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            if (Input::Check(input))
             {
                 if (input.Type == Controls::Type::LEFT)
                 {

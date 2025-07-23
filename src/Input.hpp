@@ -782,6 +782,28 @@ namespace BloodSword::Input
 
         Input::Clear();
     }
+
+    // check inputs
+    bool Check(Controls::User &input)
+    {
+        return (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold);
+    }
+
+    // check inputs including scrolling
+    bool Validate(Controls::User &input)
+    {
+        return (Input::Check(input) || input.Up || input.Down);
+    }
+
+    bool IsUp(Controls::User &input)
+    {
+        return (input.Type == Controls::Type::SCROLL_UP || input.Up);
+    }
+
+    bool IsDown(Controls::User &input)
+    {
+        return (input.Type == Controls::Type::SCROLL_DOWN || input.Down);
+    }
 }
 
 #endif

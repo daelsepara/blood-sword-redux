@@ -210,7 +210,7 @@ namespace BloodSword::Interface
 
         auto popup_w = (std::max(int(controls.size()), 2) + (BloodSword::SmallPad / 2)) * BloodSword::TileSize;
 
-        auto popup_h = BloodSword::HalfTile * 5;
+        auto popup_h = BloodSword::FrameHeight;
 
         auto screen = origin + Point(w - popup_w, h - popup_h) / 2;
 
@@ -962,7 +962,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);
 
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            if (Input::Check(input))
             {
                 if (Input::IsValid(map, input))
                 {
@@ -1147,7 +1147,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);
 
-            if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+            if (Input::Check(input))
             {
                 if (Input::IsValid(map, input))
                 {
@@ -1427,7 +1427,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);
 
-            if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+            if (Input::Check(input))
             {
                 if (Input::IsValid(map, input))
                 {

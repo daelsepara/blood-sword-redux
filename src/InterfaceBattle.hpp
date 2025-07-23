@@ -34,7 +34,7 @@ namespace BloodSword::Interface
 
         auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto window_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto window = origin + (Point(w, h) - Point(window_w, window_h)) / 2;
 
@@ -236,7 +236,7 @@ namespace BloodSword::Interface
 
         auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto window_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto window = origin + (Point(w, h) - Point(window_w, window_h)) / 2;
 
@@ -360,7 +360,7 @@ namespace BloodSword::Interface
 
         auto popup_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
-        auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto popup_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto popup = draw + (Point(map_w, map_h) - Point(popup_w, popup_h)) / 2;
 
@@ -1792,7 +1792,7 @@ namespace BloodSword::Interface
                                         }
                                     }
 
-                                    if (input.Selected && (input.Type != Controls::Type::NONE) && !input.Hold)
+                                    if (Input::Check(input))
                                     {
                                         if (Input::IsValid(scene, input) && !actions && !items && !spells && (Controls::Find(battle_actions, input.Type) == Controls::NotFound))
                                         {

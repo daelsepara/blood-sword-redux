@@ -76,7 +76,7 @@
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "\nEach character is described by four attributes. These are:\n"
+                    "text": "\nEach character is described by four attributes. These are:\n\n"
                 },
                 {
                     "align": "CENTER",
@@ -223,7 +223,7 @@
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "\n(Enchanters only.) The Enchanter prepares a spell for casting in the following or subsequent rounds. Calling a spell to mind can be done at any time (not just in combat) and the spell held in readiness indefinitely. Multiple different spells can be held in mind, but each spell held temporarily reduces the Enchanter's Psychic Ability by 1.\n\n"
+                    "text": "\n(Enchanters only) The Enchanter prepares a spell for casting in the following or subsequent rounds. Calling a spell to mind can be done at any time (not just in combat) and the spell held in readiness indefinitely. Multiple different spells can be held in mind, but each spell held temporarily reduces the Enchanter's Psychic Ability by 1.\n\n"
                 },
                 {
                     "align": "LEFT",
@@ -233,7 +233,7 @@
                 {
                     "align": "LEFT",
                     "face": "NORMAL",
-                    "text": "\n(Enchanters only.) The Enchanter must previously have called the spell to mind in order to cast it. The rules for spell casting are in the Enchanter's special section.\n\n"
+                    "text": "\n(Enchanters only) The Enchanter must previously have called the spell to mind in order to cast it. The rules for spell casting are in the Enchanter's special section.\n\n"
                 },
                 {
                     "align": "LEFT",

@@ -632,9 +632,9 @@ namespace BloodSword::Interface
 
             auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
 
-            auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+            auto frame_w = w + (options > limit ? BloodSword::DoubleTile : BloodSword::TileSize);
 
-            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+            auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::OddPad;
 
             while (!done)
             {
@@ -659,7 +659,7 @@ namespace BloodSword::Interface
 
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                if (Input::Validate(input))
                 {
                     if (input.Type == Controls::Type::BACK)
                     {
@@ -667,11 +667,11 @@ namespace BloodSword::Interface
 
                         exit = true;
                     }
-                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                    else if (Input::IsUp(input))
                     {
                         Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                     }
-                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                    else if (Input::IsDown(input))
                     {
                         Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                     }
@@ -763,9 +763,9 @@ namespace BloodSword::Interface
 
             auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
 
-            auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+            auto frame_w = w + (options > limit ? BloodSword::DoubleTile : BloodSword::TileSize);
 
-            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+            auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::OddPad;
 
             while (!done)
             {
@@ -790,7 +790,7 @@ namespace BloodSword::Interface
 
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                if (Input::Validate(input))
                 {
                     if (input.Type == Controls::Type::BACK)
                     {
@@ -798,11 +798,11 @@ namespace BloodSword::Interface
 
                         exit = true;
                     }
-                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                    else if (Input::IsUp(input))
                     {
                         Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                     }
-                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                    else if (Input::IsDown(input))
                     {
                         Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                     }
@@ -1126,7 +1126,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(names[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad)));
 
             // render stats
-            overlay.VerifyAndAdd(Scene::Element(stats[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad * 5)));
+            overlay.VerifyAndAdd(Scene::Element(stats[character], Point(panelx + BloodSword::Pad, panely + BloodSword::EpicPad)));
 
             // render information
             if (character >= 0 && character < party.Count())
@@ -1220,7 +1220,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::BACK)
                 {

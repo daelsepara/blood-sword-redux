@@ -47,11 +47,21 @@ namespace BloodSword
 
     const int DescriptionSize = TileSize * 15;
 
+    const int TextSize = TileSize * 12;
+
+    const int WindowTile = QuarterTile * 18;
+
+    const int FrameHeight = HalfTile * 5;
+
     // max moves
     const int MaximumMoves = 1000;
 
     // padding sizes
+    const int EpicPad = 40;
+
     const int HugePad = 32;
+
+    const int TriplePad = 24;
 
     const int LargePad = 16;
 

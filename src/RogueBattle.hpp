@@ -8,6 +8,9 @@ namespace BloodSword::Rogue
 {
     Controls::Type SelectAction(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
+        // clear input buffer
+        Input::Clear();
+
         auto selected = Controls::Type::NONE;
 
         Asset::List assets = {Asset::Type::DEFEND};
@@ -156,7 +159,7 @@ namespace BloodSword::Rogue
 
         auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto window_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto window = (Point(graphics.Width, graphics.Height) - Point(window_w, window_h)) / 2;
 
@@ -251,7 +254,7 @@ namespace BloodSword::Rogue
 
         auto window_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
-        auto window_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto window_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto window = (Point(graphics.Width, graphics.Height) - Point(window_w, window_h)) / 2;
 
@@ -430,7 +433,7 @@ namespace BloodSword::Rogue
 
         auto popup_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
-        auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto popup_h = BloodSword::WindowTile - BloodSword::Pad;
 
         auto popup = (Point(graphics.Width, graphics.Height) - Point(popup_w, popup_h)) / 2;
 
@@ -599,7 +602,7 @@ namespace BloodSword::Rogue
         Rogue::Update update = {false, false, false};
 
         // set width of character card
-        auto stats_width = BloodSword::TileSize * 3 + BloodSword::HalfTile;
+        auto stats_width = BloodSword::TripleTile + BloodSword::HalfTile;
 
         // set current enemy
         rogue.Enemy = enemy;

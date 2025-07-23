@@ -11,6 +11,8 @@
 
 namespace BloodSword::Sound
 {
+    const int CHANNELS = 4;
+
     enum class Type
     {
         NONE = 0,
@@ -53,12 +55,12 @@ namespace BloodSword::Sound
     void Load(std::string assets)
     {
         // Initialize SDL_mixer
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, Sound::CHANNELS, 2048) < 0)
         {
             std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
         }
 
-        if (Mix_AllocateChannels(4) < 0)
+        if (Mix_AllocateChannels(Sound::CHANNELS) < 0)
         {
             std::cerr << "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: " << Mix_GetError() << std::endl;
         }
@@ -104,7 +106,7 @@ namespace BloodSword::Sound
     // play sound asset
     void Play(Sound::Type sound)
     {
-        Sound::Play(sound, 0);
+        Sound::Play(sound, -1);
     }
 
     // free all sound assets

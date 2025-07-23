@@ -383,9 +383,20 @@ namespace BloodSword::Rogue
                 {
                     scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                 }
-                else if (tile.Asset == Asset::Type::NONE && visible && sight)
+
+                if ((visible || tile.Explored) && tile.Asset == Asset::Type::NONE)
                 {
-                    scene.Add(Scene::Element(screen.X + fov_offset, screen.Y + fov_offset, fov_size, fov_size, Color::O(Color::Highlight, 0x20)));
+                    // indicate inner room region
+                    if (tile.Room != Room::None && tile.Asset == Asset::Type::NONE && !tile.IsOccupied())
+                    {
+                        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EMPTY_SPACE), screen));
+                    }
+
+                    if (visible && sight)
+                    {
+                        // show field of view
+                        scene.Add(Scene::Element(screen.X + fov_offset, screen.Y + fov_offset, fov_size, fov_size, Color::O(Color::Highlight, 0x20)));
+                    }
                 }
 
                 if (visible)
@@ -394,6 +405,7 @@ namespace BloodSword::Rogue
                 }
                 else if (tile.Explored)
                 {
+                    // blur tiles
                     scene.Add(Scene::Element(screen.X, screen.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Blur));
                 }
                 else
@@ -509,14 +521,14 @@ namespace BloodSword::Rogue
             {
                 auto width = BloodSword::Width(texture) + BloodSword::LargePad;
 
-                auto height = BloodSword::TileSize * 6 + BloodSword::LargePad;
+                auto height = BloodSword::Wrap + BloodSword::LargePad;
 
                 auto x = (graphics.Width - width) / 2;
 
                 auto y = (graphics.Height - height) / 2;
 
                 // calculate offset to center current location
-                auto text_h = height - (BloodSword::TileSize + BloodSword::Pad * 3);
+                auto text_h = height - (BloodSword::TileSize + BloodSword::TriplePad);
 
                 auto loc = party.Y * scale.Y + scale.Y / 2;
 
@@ -632,7 +644,7 @@ namespace BloodSword::Rogue
             overlay.VerifyAndAdd(Scene::Element(names[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad)));
 
             // render stats
-            overlay.VerifyAndAdd(Scene::Element(stats[character], Point(panelx + BloodSword::Pad, panely + BloodSword::Pad * 5)));
+            overlay.VerifyAndAdd(Scene::Element(stats[character], Point(panelx + BloodSword::Pad, panely + BloodSword::EpicPad)));
 
             // render information
             if (character >= 0 && character < party.Count())
@@ -726,7 +738,7 @@ namespace BloodSword::Rogue
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::BACK)
                 {
@@ -942,9 +954,9 @@ namespace BloodSword::Rogue
         auto method = FieldOfView::Map(Engine::ToUpper(Interface::Settings["fov"]));
 
         // determine panel dimensions and locations
-        auto panel_w = (graphics.Width - BloodSword::TileSize * 3) / 2;
+        auto panel_w = (graphics.Width - BloodSword::TripleTile) / 2;
 
-        auto panel_h = (graphics.Height - BloodSword::TileSize * 2);
+        auto panel_h = (graphics.Height - BloodSword::DoubleTile);
 
         rogue.Battlepits.ViewX = panel_w / rogue.Battlepits.TileSize;
 
@@ -954,7 +966,7 @@ namespace BloodSword::Rogue
 
         auto offset_y = (panel_h - rogue.Battlepits.ViewY * rogue.Battlepits.TileSize) / 2;
 
-        rogue.Battlepits.DrawX = (BloodSword::TileSize * 2 + panel_w + offset_x);
+        rogue.Battlepits.DrawX = (BloodSword::DoubleTile + panel_w + offset_x);
 
         rogue.Battlepits.DrawY = (BloodSword::TileSize + offset_y);
 
@@ -1087,7 +1099,7 @@ namespace BloodSword::Rogue
 
                 auto prev = rogue.Origin();
 
-                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                if (Input::Check(input))
                 {
                     auto point = rogue.Origin();
 
@@ -1162,6 +1174,14 @@ namespace BloodSword::Rogue
 
                     input.Selected = false;
                 }
+
+                // catch death of entire party, e.g. death by vellum scroll
+                if (!rogue.IsAlive())
+                {
+                    Interface::MessageBox(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
+
+                    done = true;
+                }
             }
         }
 
@@ -1173,7 +1193,7 @@ namespace BloodSword::Rogue
         // set default control to the first
         Controls::Default = 0;
 
-        auto rogue = Rogue::GenerateBattlepits(50, 100, 100, 5, 7);
+        auto rogue = Rogue::GenerateBattlepits(100, 100, 100, 7, 9);
 
         // create party
         rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);

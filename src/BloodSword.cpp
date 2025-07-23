@@ -48,9 +48,9 @@ namespace BloodSword::Game
     {
         auto about = Interface::Settings["about"];
 
-        auto width = BloodSword::TileSize * 10;
+        auto width = BloodSword::DecaTile;
 
-        auto height = BloodSword::TileSize * 6;
+        auto height = BloodSword::Wrap;
 
         Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
     }
@@ -139,7 +139,7 @@ namespace BloodSword::Game
 
             input = Input::WaitForInput(graphics, scene, input);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::CHOICE)
                 {

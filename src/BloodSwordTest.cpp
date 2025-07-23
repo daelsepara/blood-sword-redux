@@ -342,7 +342,7 @@ namespace BloodSword::Test
 
             input = Input::WaitForInput(graphics, scene, input);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::EXIT)
                 {
@@ -380,11 +380,11 @@ namespace BloodSword::Test
 
                     change = true;
                 }
-                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                else if (Input::IsUp(input))
                 {
                     Interface::TextUp(scene, input, Controls::Type::SCROLL_UP, scroll_up, offset, texture_h, background_h, scroll_speed);
                 }
-                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                else if (Input::IsDown(input))
                 {
                     Interface::TextDown(scene, input, Controls::Type::SCROLL_DOWN, scroll_down, offset, texture_h, background_h, scroll_speed);
                 }
@@ -533,7 +533,7 @@ namespace BloodSword::Test
                     input = Input::WaitForInput(graphics, scene, input);
                 }
 
-                if (input.Selected && input.Type != Controls::Type::NONE && !input.Hold)
+                if (Input::Check(input))
                 {
                     if (input.Type == Controls::Type::EXIT)
                     {
@@ -761,7 +761,7 @@ namespace BloodSword::Test
 
             input = Input::WaitForInput(graphics, scene, input);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::EXIT)
                 {
@@ -779,11 +779,11 @@ namespace BloodSword::Test
 
                     done = true;
                 }
-                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                else if (Input::IsUp(input))
                 {
                     Interface::ScrollUp(scene, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                 }
-                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                else if (Input::IsDown(input))
                 {
                     Interface::ScrollDown(scene, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                 }
@@ -821,7 +821,7 @@ namespace BloodSword::Test
 
         auto popup_w = BloodSword::OctaTile + BloodSword::HalfTile;
 
-        auto popup_h = BloodSword::QuarterTile * 18 - BloodSword::Pad;
+        auto popup_h = BloodSword::WindowTile - BloodSword::Pad;
 
         while (!done)
         {
@@ -1212,7 +1212,7 @@ namespace BloodSword::Test
 
             auto x = (graphics.Width - w) / 2;
 
-            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::QuarterTile * 2;
+            auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile;
 
             auto input = Controls::User();
 
@@ -1222,9 +1222,9 @@ namespace BloodSword::Test
 
             auto frame_y = y - BloodSword::HalfTile;
 
-            auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+            auto frame_w = w + (options > limit ? BloodSword::DoubleTile : BloodSword::TileSize);
 
-            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::LargePad + BloodSword::MidPad;
+            auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::LargePad + BloodSword::MidPad;
 
             auto title = Graphics::CreateText(graphics, "SELECT BOOK SECTION", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_UNDERLINE, 0);
 
@@ -1259,17 +1259,17 @@ namespace BloodSword::Test
 
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                if (Input::Validate(input))
                 {
                     if (input.Type == Controls::Type::BACK)
                     {
                         done = true;
                     }
-                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                    else if (Input::IsUp(input))
                     {
                         Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                     }
-                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                    else if (Input::IsDown(input))
                     {
                         Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                     }
@@ -1512,9 +1512,9 @@ namespace BloodSword::Test
     {
         auto about = Interface::Settings["about"];
 
-        auto width = BloodSword::TileSize * 10;
+        auto width = BloodSword::DecaTile;
 
-        auto height = BloodSword::TileSize * 6;
+        auto height = BloodSword::Wrap;
 
         Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
     }
@@ -1609,7 +1609,7 @@ namespace BloodSword::Test
 
             input = Input::WaitForInput(graphics, scene, input);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::EXIT)
                 {
@@ -1759,11 +1759,11 @@ namespace BloodSword::Test
 
                     input.Clear();
                 }
-                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                else if (Input::IsUp(input))
                 {
                     Interface::ScrollUp(scene, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                 }
-                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                else if (Input::IsDown(input))
                 {
                     Interface::ScrollDown(scene, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                 }

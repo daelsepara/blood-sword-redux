@@ -122,9 +122,9 @@ namespace BloodSword::Rogue
 
                     auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
 
-                    auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+                    auto frame_w = w + (options > limit ? BloodSword::DoubleTile : BloodSword::TileSize);
 
-                    auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+                    auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::OddPad;
 
                     while (!done)
                     {
@@ -149,7 +149,7 @@ namespace BloodSword::Rogue
 
                         input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-                        if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                        if (Input::Validate(input))
                         {
                             if (input.Type == Controls::Type::BACK)
                             {
@@ -157,11 +157,11 @@ namespace BloodSword::Rogue
 
                                 exit = true;
                             }
-                            else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                            else if (Input::IsUp(input))
                             {
                                 Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                             }
-                            else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                            else if (Input::IsDown(input))
                             {
                                 Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                             }
@@ -285,9 +285,9 @@ namespace BloodSword::Rogue
                 // display Smeaborg battle text message
                 std::string text = "You unfurl the scroll. It is covered with glittering scratch-like runes that seem to scuttle to and fro across the page. Wisps of green-black vapour curl out like tentacles to enfold you, cutting off your view of your surroundings. You seem to stand in an endless sea of fog. Then a strong breeze whips up around you. Strangely it blows your hair and you can feel its chill on your skin, but your clothes do not billow up at all. The fog disperses, leaving you with a grim vista. You are on a plain of sticky olive-brown mire, broken at intervals by bones and skulls that protrude from the mud.\n\nA being clad in azure armour stands four metres tall, manlike in form except for his head, which is the huge horned skull of a stag. Green eyes roll in the hollow sockets. He opens his fleshless mouth, sending a wave of foetid air rolling towards you. \"Welcome to the realm of Smeaborg the Fleshless,\" he says. \"Our relationship will be a brief and bloody one.\" He hefts his giant halberd and stalks to the attack.\n\nYou cannot flee.";
 
-                auto width = BloodSword::TileSize * 10;
+                auto width = BloodSword::DecaTile;
 
-                auto height = BloodSword::TileSize * 6;
+                auto height = BloodSword::Wrap;
 
                 Interface::ScrollableTextBox(graphics, background, Fonts::Normal, text, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
 
@@ -792,9 +792,9 @@ namespace BloodSword::Rogue
 
             auto frame_y = y - BloodSword::HalfTile + BloodSword::Pad;
 
-            auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+            auto frame_w = w + (options > limit ? BloodSword::DoubleTile : BloodSword::TileSize);
 
-            auto frame_h = (limit * h) + (BloodSword::HalfTile * 5) + BloodSword::OddPad;
+            auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::OddPad;
 
             while (!done)
             {
@@ -819,7 +819,7 @@ namespace BloodSword::Rogue
 
                 input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-                if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+                if (Input::Validate(input))
                 {
                     if (input.Type == Controls::Type::BACK)
                     {
@@ -827,11 +827,11 @@ namespace BloodSword::Rogue
 
                         exit = true;
                     }
-                    else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                    else if (Input::IsUp(input))
                     {
                         Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                     }
-                    else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                    else if (Input::IsDown(input))
                     {
                         Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                     }

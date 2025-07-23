@@ -51,7 +51,7 @@ namespace BloodSword::Interface
 
         auto frame_y = y - BloodSword::HalfTile;
 
-        auto frame_w = w + BloodSword::HalfTile * (options > limit ? 4 : 2);
+        auto frame_w = w + (options > limit ? BloodSword::DoubleTile : BloodSword::TileSize);
 
         auto frame_h = (limit * h) + (BloodSword::HalfTile * (!after_battle ? 5 : 3)) + BloodSword::OddPad;
 
@@ -81,17 +81,17 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::BACK)
                 {
                     done = true;
                 }
-                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                else if (Input::IsUp(input))
                 {
                     Interface::ScrollUp(overlay, input, Controls::Type::SCROLL_UP, options, limit, start, last);
                 }
-                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                else if (Input::IsDown(input))
                 {
                     Interface::ScrollDown(overlay, input, Controls::Type::SCROLL_DOWN, options, limit, start, last);
                 }
@@ -1215,7 +1215,7 @@ namespace BloodSword::Interface
         // location where left-most panel is rendered
         auto origin = Point((graphics.Width - (panel_w * 2 + BloodSword::TileSize + BloodSword::LargePad)) / 2, BloodSword::TileSize + BloodSword::LargePad);
 
-        auto origin_text = origin + Point(panel_w + BloodSword::TileSize + BloodSword::Pad * 3, BloodSword::Pad);
+        auto origin_text = origin + Point(panel_w + BloodSword::TileSize + BloodSword::TriplePad, BloodSword::Pad);
 
         Interface::MapTokensInText(party, text);
 
@@ -1348,7 +1348,7 @@ namespace BloodSword::Interface
 
             input = Input::WaitForInput(graphics, {background, overlay}, overlay.Controls, input, true);
 
-            if ((input.Selected && input.Type != Controls::Type::NONE && !input.Hold) || input.Up || input.Down)
+            if (Input::Validate(input))
             {
                 if (input.Type == Controls::Type::NEXT || input.Type == Controls::Type::FIGHT)
                 {
@@ -1597,11 +1597,11 @@ namespace BloodSword::Interface
 
                     Controls::Select(input, overlay.Controls, Controls::Type::TROPHY);
                 }
-                else if (input.Type == Controls::Type::SCROLL_UP || input.Up)
+                else if (Input::IsUp(input))
                 {
                     Interface::TextUp(overlay, input, Controls::Type::SCROLL_UP, scroll_up, offset, texture_h, text_h, scroll_speed);
                 }
-                else if (input.Type == Controls::Type::SCROLL_DOWN || input.Down)
+                else if (Input::IsDown(input))
                 {
                     Interface::TextDown(overlay, input, Controls::Type::SCROLL_DOWN, scroll_dn, offset, texture_h, text_h, scroll_speed);
                 }
