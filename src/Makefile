@@ -109,7 +109,7 @@ debian: blood-sword
 		mkdir -p $(DEBIAN)/usr/share/applications
 		mkdir -p $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
 		cp ../build/debian/$(DEBIAN_ARCH)/control $(DEBIAN)/DEBIAN
-		cp ../build/debian/$(DEBIAN_ARCH)/BattlepitsOfKrarth.desktop $(DEBIAN)/usr/share/applications
+		cp ../build/debian/BattlepitsOfKrarth.desktop $(DEBIAN)/usr/share/applications
 		cp -R fonts $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
 		cp -R help $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
 		cp -R images $(DEBIAN)/usr/local/games/BattlepitsOfKrarth
