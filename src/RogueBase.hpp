@@ -6,13 +6,15 @@
 
 namespace BloodSword::Rogue
 {
+    const int None = -1;
+
     class Loot
     {
     public:
         // location in battlepits
-        int X = -1;
+        int X = Rogue::None;
 
-        int Y = -1;
+        int Y = Rogue::None;
 
         // items in this location
         Items::Inventory Items = {};
@@ -51,7 +53,7 @@ namespace BloodSword::Rogue
         int Enemies = 0;
 
         // current enemy party
-        int Enemy = Map::NotFound;
+        int Enemy = Rogue::None;
 
         // cannot flee battle
         bool CannotFlee = false;
@@ -96,7 +98,7 @@ namespace BloodSword::Rogue
     {
         auto &Loot = rogue.Loot;
 
-        auto found = -1;
+        auto found = Rogue::None;
 
         for (auto loot = 0; loot < Loot.size(); loot++)
         {
@@ -113,7 +115,7 @@ namespace BloodSword::Rogue
 
     int FindOpponents(Rogue::Base &rogue, Point point)
     {
-        auto found = -1;
+        auto found = Rogue::None;
 
         for (auto opponent = 0; opponent < rogue.Opponents.size(); opponent++)
         {
@@ -130,7 +132,7 @@ namespace BloodSword::Rogue
 
     int FindOpponents(Rogue::Base &rogue, int room)
     {
-        auto found = -1;
+        auto found = Rogue::None;
 
         for (auto opponent = 0; opponent < rogue.Opponents.size(); opponent++)
         {
@@ -435,7 +437,7 @@ namespace BloodSword::Rogue
 
         auto window_y = (graphics.Height - window_h) / 2;
 
-        int target = -1;
+        int target = Rogue::None;
 
         auto texture = Graphics::CreateText(graphics, "SELECT TARGET", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
@@ -537,7 +539,7 @@ namespace BloodSword::Rogue
 
     int SelectTarget(Graphics::Base &graphics, Rogue::Base &rogue, bool is_player, bool is_enemy, int id)
     {
-        auto target = Map::NotFound;
+        auto target = Rogue::None;
 
         if (rogue.Enemy >= 0 && rogue.Enemy < rogue.Opponents.size())
         {

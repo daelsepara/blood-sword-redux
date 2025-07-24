@@ -1088,7 +1088,7 @@ namespace BloodSword::Rogue
 
         Engine::ResetAll(enemies);
 
-        rogue.Enemy = Map::NotFound;
+        rogue.Enemy = Rogue::None;
 
         update.Scene = true;
 

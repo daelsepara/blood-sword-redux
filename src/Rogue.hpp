@@ -60,7 +60,7 @@ namespace BloodSword::Rogue
 
         if (valid > 0)
         {
-            map.Put(start, Map::Object::NONE, -1);
+            map.Put(start, Map::Object::NONE, Rogue::None);
 
             auto first = path.Points.begin();
 
@@ -100,7 +100,7 @@ namespace BloodSword::Rogue
 
             origin.Occupant = Map::Object::NONE;
 
-            origin.Id = Map::NotFound;
+            origin.Id = Rogue::None;
 
             destination.Occupant = Map::Object::PARTY;
 
@@ -126,7 +126,7 @@ namespace BloodSword::Rogue
 
             done = true;
         }
-        else if (!Engine::IsAlive(rogue.Opponents[enemy]))
+        else if (enemy >= 0 && enemy < rogue.Opponents.size() && !Engine::IsAlive(rogue.Opponents[enemy]))
         {
             Interface::FlashMessage(graphics, background, "YOUR PARTY IS VICTORIUS", Color::Active);
 
@@ -134,11 +134,11 @@ namespace BloodSword::Rogue
 
             tile.Occupant = Map::Object::NONE;
 
-            tile.Id = Map::NotFound;
+            tile.Id = Rogue::None;
 
             rogue.Opponents.erase(rogue.Opponents.begin() + enemy);
 
-            enemy = Map::NotFound;
+            enemy = Rogue::None;
         }
 
         return done;
@@ -289,9 +289,9 @@ namespace BloodSword::Rogue
 
                 auto visible = BloodSword::In(view, x, y);
 
-                auto loot_id = Map::NotFound;
+                auto loot_id = Rogue::None;
 
-                auto opponent_id = Map::NotFound;
+                auto opponent_id = Rogue::None;
 
                 if (visible || tile.Explored)
                 {
@@ -989,7 +989,7 @@ namespace BloodSword::Rogue
 
         auto events = true;
 
-        auto enemy = Map::NotFound;
+        auto enemy = Rogue::None;
 
         while (!done)
         {
@@ -1022,7 +1022,7 @@ namespace BloodSword::Rogue
 
                     rogue.Opponents[enemy].Y = movement.Current.Y;
 
-                    rogue.Battlepits.Put(movement.Current, Map::Object::ENEMIES, -1);
+                    rogue.Battlepits.Put(movement.Current, Map::Object::ENEMIES, Rogue::None);
 
                     // trigger event if distance closed with party
                     if (rogue.Battlepits.Distance(movement.Current, rogue.Origin()) <= 1)
@@ -1034,7 +1034,7 @@ namespace BloodSword::Rogue
                     movement = Animation::Base();
 
                     // reset enemy
-                    enemy = Map::NotFound;
+                    enemy = Rogue::None;
 
                     // update battlepits
                     update.Scene = true;
@@ -1171,11 +1171,9 @@ namespace BloodSword::Rogue
                 }
 
                 // catch death of entire party, e.g. death by vellum scroll
-                if (!rogue.IsAlive())
+                if (!done && enemy == Rogue::None)
                 {
-                    Interface::MessageBox(graphics, scene, "YOUR ADVENTURE HAS COME TO AN END", Color::Highlight);
-
-                    done = true;
+                    done = Rogue::BattleResults(graphics, scene, rogue, enemy);
                 }
             }
         }
