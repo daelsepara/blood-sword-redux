@@ -1053,35 +1053,43 @@ namespace BloodSword::Rogue
 
                 if (enemy >= 0 && enemy < rogue.Opponents.size())
                 {
-                    auto distance = rogue.Battlepits.Distance(rogue.Origin(), rogue.Opponents[enemy].Origin());
+                    auto &opponent = rogue.Opponents[enemy];
 
-                    if (distance > 1)
+                    // check if party is visible to enemy
+                    auto enemy_view = FieldOfView::Compute(rogue.Battlepits, opponent.Origin(), opponent.FieldOfView, method);
+
+                    if (BloodSword::In(enemy_view, rogue.Origin()))
                     {
-                        // move or shoot at party
-                        animating = Rogue::Move(rogue, enemy, movement, rogue.Opponents[enemy].Origin(), rogue.Origin());
-                    }
-                    else
-                    {
-                        // update scene
-                        Rogue::UpdateScene(rogue, image, image_location, panel_w, panel_h, method, true);
+                        auto distance = rogue.Battlepits.Distance(rogue.Origin(), opponent.Origin());
 
-                        // flash a message
-                        Interface::FlashMessage(graphics, scene, "PARTY ATTACKED!", Color::Background, Color::Highlight, BloodSword::Border, BloodSword::OneSecond);
+                        if (distance > 1)
+                        {
+                            // move or shoot at party
+                            animating = Rogue::Move(rogue, enemy, movement, opponent.Origin(), rogue.Origin());
+                        }
+                        else
+                        {
+                            // update scene
+                            Rogue::UpdateScene(rogue, image, image_location, panel_w, panel_h, method, true);
 
-                        // commence battle
-                        Rogue::Battle(graphics, scene, rogue, enemy);
+                            // flash a message
+                            Interface::FlashMessage(graphics, scene, "PARTY ATTACKED!", Color::Background, Color::Highlight, BloodSword::Border, BloodSword::OneSecond);
 
-                        // check results
-                        done = Rogue::BattleResults(graphics, scene, rogue, enemy);
+                            // commence battle
+                            Rogue::Battle(graphics, scene, rogue, enemy);
 
-                        // check rank adjustments
-                        Rogue::CheckRanks(graphics, scene, rogue);
+                            // check results
+                            done = Rogue::BattleResults(graphics, scene, rogue, enemy);
 
-                        update.Scene = true;
+                            // check rank adjustments
+                            Rogue::CheckRanks(graphics, scene, rogue);
 
-                        update.Party = true;
+                            update.Scene = true;
 
-                        Input::Clear();
+                            update.Party = true;
+
+                            Input::Clear();
+                        }
                     }
                 }
 
