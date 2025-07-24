@@ -17,6 +17,7 @@ namespace BloodSword::Rogue
 
         auto blockers = (tile.IsOccupied() && tile.Type != Map::Object::ITEMS);
 
+        // additional checks
         if (items)
         {
             auto loot = Rogue::FindLoot(rogue, point);
@@ -27,12 +28,7 @@ namespace BloodSword::Rogue
             }
         }
 
-        if (items)
-        {
-            return true;
-        }
-
-        return (blockers || tile.IsBlocked() || !tile.IsPassable());
+        return (items || blockers || tile.IsBlocked() || !tile.IsPassable());
     }
 
     // setup movement animation for enemy parties
