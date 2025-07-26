@@ -627,6 +627,14 @@ namespace BloodSword::Input
             {
                 input.Type = Controls::Type::EXIT;
             }
+            else if (result.key.keysym.sym == SDLK_i)
+            {
+                input.Type = Controls::Type::INVENTORY;
+            }
+            else if (result.key.keysym.sym == SDLK_h)
+            {
+                input.Type = Controls::Type::HINTS;
+            }
             else if (result.key.keysym.sym == SDLK_p)
             {
                 input.Type = Controls::Type::PARTY;

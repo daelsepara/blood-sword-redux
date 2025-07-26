@@ -110,7 +110,8 @@ namespace BloodSword::Controls
         LEFT,
         RIGHT,
         MENU,
-        ACTION
+        ACTION,
+        HINTS
     };
 
     typedef std::vector<Controls::Type> List;

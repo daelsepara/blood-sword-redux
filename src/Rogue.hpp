@@ -65,12 +65,14 @@ namespace BloodSword::Rogue
 
             if (enemy >= 0 && enemy < rogue.Opponents.size())
             {
-                auto character = Engine::First(rogue.Opponents[enemy]);
+                auto &opponents = rogue.Opponents[enemy];
 
-                if (character >= 0 && character < rogue.Opponents[enemy].Count())
+                auto character = Engine::First(opponents);
+
+                if (character >= 0 && character < opponents.Count())
                 {
                     // setup animation
-                    movement = Interface::Movement(map, Points(first, first + moves), start, rogue.Opponents[enemy][character].Asset);
+                    movement = Interface::Movement(map, Points(first, first + moves), start, opponents[character].Asset);
 
                     moving = true;
                 }
@@ -80,6 +82,7 @@ namespace BloodSword::Rogue
         return moving;
     }
 
+    // check if party can move to location (point)
     bool Move(Rogue::Base &rogue, Point point)
     {
         auto moved = !Rogue::Blocked(rogue, point);
@@ -112,7 +115,8 @@ namespace BloodSword::Rogue
         return moved;
     }
 
-    bool BattleResults(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int &enemy)
+    // check if party is still alive and remove enemy party from the map (after a battle)
+    bool CheckParty(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int &enemy)
     {
         auto done = false;
 
@@ -145,16 +149,19 @@ namespace BloodSword::Rogue
     {
         auto &party = rogue.Party;
 
-        for (auto character = 0; character < party.Count(); character++)
+        for (auto member = 0; member < party.Count(); member++)
         {
-            if (Engine::IsAlive(party[character]) && !Character::OtherClass(party[character].Class))
-            {
-                auto new_rank = Generate::CalculateRankFromExperience(party[character].Experience);
+            auto &character = party[member];
 
-                if (new_rank > party[character].Rank)
+            if (Engine::IsAlive(character) && !Character::OtherClass(character.Class))
+            {
+                auto new_rank = Generate::CalculateRankFromExperience(character.Experience);
+
+                // check if character's rank has increased
+                if (new_rank > character.Rank)
                 {
                     // clone character
-                    auto improved_character = party[character];
+                    auto improved_character = character;
 
                     // set new rank
                     improved_character.Rank = new_rank;
@@ -169,7 +176,7 @@ namespace BloodSword::Rogue
                     Interface::MessageBox(graphics, background, message, Color::Active);
 
                     // overwrite original character in the party
-                    party[character] = improved_character;
+                    character = improved_character;
                 }
             }
         }
@@ -201,7 +208,7 @@ namespace BloodSword::Rogue
                     Rogue::Battle(graphics, background, rogue, enemy);
 
                     // check results
-                    Rogue::BattleResults(graphics, background, rogue, enemy);
+                    Rogue::CheckParty(graphics, background, rogue, enemy);
 
                     // check rank adjustments
                     Rogue::CheckRanks(graphics, background, rogue);
@@ -272,6 +279,8 @@ namespace BloodSword::Rogue
 
         // size of FoV illumination
         auto fov_size = BloodSword::TileSize - fov_offset * 2;
+
+        auto items_default = Asset::Get(Asset::Type::ITEMS);
 
         for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {
@@ -365,7 +374,7 @@ namespace BloodSword::Rogue
                                     }
                                     else
                                     {
-                                        scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::ITEMS), screen));
+                                        scene.VerifyAndAdd(Scene::Element(items_default, screen));
                                     }
                                 }
                             }
@@ -541,7 +550,7 @@ namespace BloodSword::Rogue
         }
     }
 
-    void PartyInformation(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int character = 0)
+    void PartyInformation(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Controls::Type display, int character = 0)
     {
         auto &party = rogue.Party;
 
@@ -611,8 +620,6 @@ namespace BloodSword::Rogue
 
         auto captions = Graphics::CreateText(graphics, Graphics::GenerateTextList(labels, Fonts::Caption, Color::Active, 0));
 
-        auto display = Controls::Type::ABOUT;
-
         auto display_y = panely + BloodSword::TileSize + BloodSword::HalfTile + BloodSword::OddPad * 4;
 
         auto boxh = controlsy - display_y - BloodSword::LargePad;
@@ -620,6 +627,12 @@ namespace BloodSword::Rogue
         auto input = Controls::User();
 
         auto done = false;
+
+        // focus on selected control
+        if (display != Controls::Type::NONE)
+        {
+            Controls::Select(input, controls, display);
+        }
 
         while (!done)
         {
@@ -822,6 +835,11 @@ namespace BloodSword::Rogue
         BloodSword::Free(names);
     }
 
+    void PartyInformation(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int character = 0)
+    {
+        Rogue::PartyInformation(graphics, background, rogue, Controls::Type::ABOUT, character);
+    }
+
     bool SetBattleOrder(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto update = false;
@@ -905,7 +923,7 @@ namespace BloodSword::Rogue
                 }
                 else if (input == Controls::Type::PARTY)
                 {
-                    Rogue::PartyInformation(graphics, background, rogue, 0);
+                    Rogue::PartyInformation(graphics, background, rogue, Engine::First(rogue.Party));
 
                     update.Party = true;
                 }
@@ -1075,7 +1093,7 @@ namespace BloodSword::Rogue
                             Rogue::Battle(graphics, scene, rogue, enemy);
 
                             // check results
-                            done = Rogue::BattleResults(graphics, scene, rogue, enemy);
+                            done = Rogue::CheckParty(graphics, scene, rogue, enemy);
 
                             // check rank adjustments
                             Rogue::CheckRanks(graphics, scene, rogue);
@@ -1156,6 +1174,14 @@ namespace BloodSword::Rogue
 
                         update.Party = true;
                     }
+                    else if (input.Type == Controls::Type::INVENTORY)
+                    {
+                        auto character = std::max(0, Engine::First(rogue.Party));
+
+                        Rogue::PartyInformation(graphics, scene, rogue, Controls::Type::ITEMS, character);
+
+                        update.Party = true;
+                    }
                     else if (input.Type == Controls::Type::BATTLE_ORDER)
                     {
                         update.Party = Rogue::SetBattleOrder(graphics, scene, rogue.Party);
@@ -1177,7 +1203,7 @@ namespace BloodSword::Rogue
                 // catch death of entire party, e.g. death by vellum scroll
                 if (!done && enemy == Rogue::None)
                 {
-                    done = Rogue::BattleResults(graphics, scene, rogue, enemy);
+                    done = Rogue::CheckParty(graphics, scene, rogue, enemy);
                 }
             }
         }
