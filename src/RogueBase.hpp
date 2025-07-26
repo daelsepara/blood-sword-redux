@@ -483,7 +483,7 @@ namespace BloodSword::Rogue
     }
 
     // clears the trigger on the tile
-    void RemoveTrigger(Rogue::Base &rogue, int trigger, bool remove = true)
+    void ClearTrigger(Rogue::Base &rogue, int trigger, bool remove = true)
     {
         auto &battlepits = rogue.Battlepits;
 
