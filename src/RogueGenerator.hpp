@@ -223,7 +223,7 @@ namespace BloodSword::Rogue
                 {
                     rogue.Battlepits[location].Occupant = Map::Object::ITEMS;
 
-                    auto loot = Rogue::Loot(location.X, location.Y);
+                    auto loot = Rogue::Loot(location);
 
                     loot.Items = {item};
 

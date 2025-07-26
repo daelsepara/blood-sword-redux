@@ -19,7 +19,8 @@ namespace BloodSword::Map
         ITEM,
         ITEMS,
         PARTY,
-        ENEMIES
+        ENEMIES,
+        TRIGGER
     };
 
     BloodSword::Mapping<Object> ObjectMapping = {
@@ -34,7 +35,8 @@ namespace BloodSword::Map
         {Object::ITEM, "ITEM"},
         {Object::ITEMS, "ITEMS"},
         {Object::PARTY, "PARTY"},
-        {Object::ENEMIES, "ENEMIES"}};
+        {Object::ENEMIES, "ENEMIES"},
+        {Object::TRIGGER, "TRIGGER"}};
 
     Object MapObject(const char *object)
     {

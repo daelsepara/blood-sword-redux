@@ -13,9 +13,11 @@ namespace BloodSword::Rogue
     {
         auto &tile = rogue.Battlepits[point];
 
+        auto triggered = (tile.Type == Map::Object::TRIGGER);
+
         auto items = (tile.IsOccupied() && tile.Type == Map::Object::ITEMS);
 
-        auto blockers = (tile.IsOccupied() && tile.Type != Map::Object::ITEMS);
+        auto blockers = (tile.IsOccupied() && tile.Type != Map::Object::ITEMS && tile.Type != Map::Object::TRIGGER);
 
         // additional checks
         if (items)
@@ -26,9 +28,18 @@ namespace BloodSword::Rogue
             {
                 items &= (rogue.Loot[loot].Items.size() > 0);
             }
+            else
+            {
+                items = false;
+            }
         }
 
-        return (items || blockers || tile.IsBlocked() || !tile.IsPassable());
+        if (triggered)
+        {
+            triggered &= (Rogue::FindTrigger(rogue, point) != Rogue::None);
+        }
+
+        return (items || blockers || triggered || tile.IsBlocked() || !tile.IsPassable());
     }
 
     // setup movement animation for enemy parties
@@ -226,6 +237,10 @@ namespace BloodSword::Rogue
 
                 Sound::Play(Sound::Type::FAIL);
             }
+        }
+        else if (tile.Type == Map::Object::TRIGGER)
+        {
+            // handle trigger
         }
         else
         {

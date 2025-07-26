@@ -1,104 +1,15 @@
 #ifndef __ROGUE_BASE_HPP__
 #define __ROGUE_BASE_HPP__
 
-#include "Battlepits.hpp"
-#include "InterfaceInventory.hpp"
+#include "RogueClasses.hpp"
 
 namespace BloodSword::Rogue
 {
-    const int None = -1;
-
-    class Loot
-    {
-    public:
-        // location in battlepits
-        int X = Rogue::None;
-
-        int Y = Rogue::None;
-
-        // items in this location
-        Items::Inventory Items = {};
-
-        Point Location()
-        {
-            return Point(X, Y);
-        }
-
-        Loot() {}
-
-        Loot(int x, int y) : X(x), Y(y) {}
-
-        Loot(Point point) : X(point.X), Y(point.Y) {}
-    };
-
-    class Base
-    {
-    public:
-        // battlepits
-        Map::Base Battlepits;
-
-        // rooms generated in battlepits map
-        std::vector<Room::Base> Rooms = {};
-
-        // groups of enemies in battlepits
-        std::vector<Party::Base> Opponents = {};
-
-        // groups of items in battlepits
-        std::vector<Rogue::Loot> Loot = {};
-
-        // player party adventuring in battlepits
-        Party::Base Party;
-
-        // number of enemies
-        int Enemies = 0;
-
-        // current enemy party
-        int Enemy = Rogue::None;
-
-        // cannot flee battle
-        bool CannotFlee = false;
-
-        // width (in pixels) of character stats card
-        int StatsWidth = 0;
-
-        Base() {}
-
-        int Count()
-        {
-            return this->Party.Count();
-        }
-
-        int Room()
-        {
-            return this->Party.Room;
-        }
-
-        Point Origin()
-        {
-            return this->Party.Origin();
-        }
-
-        bool InsideRoom()
-        {
-            return this->Room() != Room::None && this->Rooms[this->Room()].Inside(this->Origin());
-        }
-
-        bool IsAlive()
-        {
-            return Engine::IsAlive(this->Party);
-        }
-
-        bool Has(Character::Class character)
-        {
-            return this->Party.Has(character);
-        }
-    };
-
     int FindLoot(Rogue::Base &rogue, Point point)
     {
-        auto &Loot = rogue.Loot;
-
         auto found = Rogue::None;
+
+        auto &Loot = rogue.Loot;
 
         for (auto loot = 0; loot < Loot.size(); loot++)
         {
@@ -147,14 +58,24 @@ namespace BloodSword::Rogue
         return found;
     }
 
-    struct Update
+    int FindTrigger(Rogue::Base &rogue, Point point)
     {
-        bool Scene = false;
+        auto found = Rogue::None;
 
-        bool Party = false;
+        auto &triggers = rogue.Triggers;
 
-        bool Quit = false;
-    };
+        for (auto trigger = 0; trigger < triggers.size(); trigger++)
+        {
+            if (triggers[trigger].Location() == point)
+            {
+                found = trigger;
+
+                break;
+            }
+        }
+
+        return found;
+    }
 
     // attribute labels
     std::string StatsLabels()
@@ -559,6 +480,39 @@ namespace BloodSword::Rogue
         }
 
         return target;
+    }
+
+    // clears the trigger on the tile
+    void RemoveTrigger(Rogue::Base &rogue, int trigger, bool remove = true)
+    {
+        auto &battlepits = rogue.Battlepits;
+
+        if (trigger >= 0 && trigger < rogue.Triggers.size())
+        {
+            auto location = rogue.Triggers[trigger].Location();
+
+            if (battlepits.IsValid(location))
+            {
+                auto &tile = battlepits[location];
+
+                tile.Type = Map::Object::PASSABLE;
+
+                tile.Asset = Asset::Type::NONE;
+
+                if (remove)
+                {
+                    rogue.Triggers.erase(rogue.Triggers.begin() + trigger);
+                }
+            }
+        }
+    }
+
+    // check if trigger has been activated
+    bool CheckTrigger(Rogue::Base &rogue, int trigger)
+    {
+        auto result = false;
+
+        return result;
     }
 }
 
