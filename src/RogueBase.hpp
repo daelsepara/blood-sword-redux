@@ -483,7 +483,7 @@ namespace BloodSword::Rogue
     }
 
     // clears the trigger on the tile
-    void ClearTrigger(Rogue::Base &rogue, int trigger, bool remove = true)
+    void ClearTrigger(Rogue::Base &rogue, int trigger)
     {
         auto &battlepits = rogue.Battlepits;
 
@@ -498,11 +498,8 @@ namespace BloodSword::Rogue
                 tile.Type = Map::Object::PASSABLE;
 
                 tile.Asset = Asset::Type::NONE;
-
-                if (remove)
-                {
-                    rogue.Triggers.erase(rogue.Triggers.begin() + trigger);
-                }
+                
+                rogue.Triggers.erase(rogue.Triggers.begin() + trigger);
             }
         }
     }
