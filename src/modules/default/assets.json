@@ -863,6 +863,26 @@
         {
             "id": "DEAD",
             "path": "images/system/death-skull.png"
+        },
+        {
+            "id": "SWORD",
+            "path": "images/items/broadsword.png"
+        },
+        {
+            "id": "CHAINMAIL",
+            "path": "images/items/chain-mail.png"
+        },
+        {
+            "id": "RINGMAIL",
+            "path": "images/items/scale-mail.png"
+        },
+        {
+            "id": "LEATHER ARMOUR",
+            "path": "images/items/leather-armor.png"
+        },
+        {
+            "id": "SILVER ARMOUR",
+            "path": "images/items/chest-armor.png"
         }
     ]
 }

@@ -498,7 +498,7 @@ namespace BloodSword::Rogue
                 tile.Type = Map::Object::PASSABLE;
 
                 tile.Asset = Asset::Type::NONE;
-                
+
                 rogue.Triggers.erase(rogue.Triggers.begin() + trigger);
             }
         }

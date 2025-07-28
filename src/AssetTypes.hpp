@@ -224,7 +224,12 @@ namespace BloodSword::Asset
         RIGHT_TOP_LEFT_CORNER,
         RIGHT_BOTTOM_LEFT_CORNER,
         MAP,
-        DEAD
+        DEAD,
+        SWORD,
+        CHAINMAIL,
+        RINGMAIL,
+        LEATHER_ARMOUR,
+        SILVER_ARMOUR
     };
 
     template <typename T>
@@ -449,7 +454,12 @@ namespace BloodSword::Asset
         {Asset::Type::RIGHT_TOP_LEFT_CORNER, "RIGHT TOP LEFT CORNER"},
         {Asset::Type::RIGHT_BOTTOM_LEFT_CORNER, "RIGHT BOTTOM LEFT CORNER"},
         {Asset::Type::MAP, "MAP"},
-        {Asset::Type::DEAD, "DEAD"}};
+        {Asset::Type::DEAD, "DEAD"},
+        {Asset::Type::SWORD, "SWORD"},
+        {Asset::Type::CHAINMAIL, "CHAINMAIL"},
+        {Asset::Type::RINGMAIL, "RINGMAIL"},
+        {Asset::Type::LEATHER_ARMOUR, "LEATHER ARMOUR"},
+        {Asset::Type::SILVER_ARMOUR, "SILVER ARMOUR"}};
 
     Asset::Type Map(const char *asset)
     {

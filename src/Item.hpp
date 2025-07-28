@@ -132,6 +132,13 @@ namespace BloodSword::Item
 
         Base(const char *name,
              Item::Type type,
+             BloodSword::IntMapping<Attribute::Type> attributes,
+             Item::Properties properties,
+             Item::Type contains,
+             int quantity, Asset::Type asset) : Base(name, type, attributes, properties, contains, quantity) { this->Asset = asset; }
+
+        Base(const char *name,
+             Item::Type type,
              Item::Properties properties,
              Item::Type contains,
              int quantity) : Base(name, type, {}, properties, contains, quantity) {}
@@ -158,6 +165,12 @@ namespace BloodSword::Item
                                                  attributes,
                                                  properties,
                                                  Item::Type::NONE, 1) {}
+
+        Base(const char *name,
+             Item::Type type,
+             BloodSword::IntMapping<Attribute::Type> attributes,
+             Item::Properties properties,
+             Asset::Type asset) : Base(name, type, attributes, properties) { this->Asset = asset; }
 
         Base(const char *name,
              Item::Type type,

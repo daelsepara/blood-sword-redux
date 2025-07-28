@@ -993,9 +993,9 @@ namespace BloodSword::Generate
     {
         if (warrior.Rank <= 8)
         {
-            warrior.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
+            warrior.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::SWORD));
 
-            warrior.Add(Item::Base("CHAINMAIL", Item::Type::CHAINMAIL, {{Attribute::Type::ARMOUR, 3}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
+            warrior.Add(Item::Base("CHAINMAIL", Item::Type::CHAINMAIL, {{Attribute::Type::ARMOUR, 3}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::CHAINMAIL));
         }
     }
 
@@ -1004,13 +1004,13 @@ namespace BloodSword::Generate
     {
         if (trickster.Rank <= 8)
         {
-            trickster.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
+            trickster.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::SWORD));
 
-            trickster.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}));
+            trickster.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::ARCHERY));
 
             trickster.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6));
 
-            trickster.Add(Item::Base("LEATHER ARMOUR", Item::Type::LEATHER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
+            trickster.Add(Item::Base("LEATHER ARMOUR", Item::Type::LEATHER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::LEATHER_ARMOUR));
         }
     }
 
@@ -1019,13 +1019,13 @@ namespace BloodSword::Generate
     {
         if (sage.Rank <= 8)
         {
-            sage.Add(Item::Base("QUARTERSTAFF", Item::Type::QUARTERSTAFF, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
+            sage.Add(Item::Base("QUARTERSTAFF", Item::Type::QUARTERSTAFF, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::QUARTERSTAFF));
 
-            sage.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}));
+            sage.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::ARCHERY));
 
             sage.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6));
 
-            sage.Add(Item::Base("RINGMAIL", Item::Type::RINGMAIL, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
+            sage.Add(Item::Base("RINGMAIL", Item::Type::RINGMAIL, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::RINGMAIL));
         }
     }
 
@@ -1034,9 +1034,9 @@ namespace BloodSword::Generate
     {
         if (enchanter.Rank <= 8)
         {
-            enchanter.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}));
+            enchanter.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::ARCHERY));
 
-            enchanter.Add(Item::Base("SILVER ARMOUR", Item::Type::SILVER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}));
+            enchanter.Add(Item::Base("SILVER ARMOUR", Item::Type::SILVER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::SILVER_ARMOUR));
         }
     }
 
