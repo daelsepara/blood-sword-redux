@@ -29,11 +29,17 @@ namespace BloodSword::Rogue
 
         int Y = Rogue::None;
 
-        // message to display
-        std::string Message = std::string();
+        // message to display (upon encountering)
+        std::string EncounterMessage = std::string();
 
-        // trigger values
-        std::vector<std::string> Values = {};
+        // message to display (when successfully triggered)
+        std::string TriggerMessage = std::string();
+
+        // message to display (when trigger fails)
+        std::string FailMessage = std::string();
+
+        // trigger variables
+        std::vector<std::string> Variables = {};
 
         Point Location()
         {
