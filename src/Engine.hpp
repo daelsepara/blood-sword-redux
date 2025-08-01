@@ -1346,7 +1346,6 @@ namespace BloodSword::Engine
     std::string ToLower(std::string str)
     {
         return Engine::ChangeCase(str, ::tolower);
-        ;
     }
 
     // parse color from string
