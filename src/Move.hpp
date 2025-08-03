@@ -35,7 +35,7 @@ namespace BloodSword::Move
 
         int Y = -1;
 
-        int Cost = 0.0;
+        int Cost = 0;
 
         int Distance = 0;
 
