@@ -3,6 +3,10 @@
 
 #include <fstream>
 
+#ifndef SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif
+
 #include <SDL.h>
 #include <SDL_ttf.h>
 

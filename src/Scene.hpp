@@ -1,6 +1,10 @@
 #ifndef __SCENE_HPP__
 #define __SCENE_HPP__
 
+#ifndef SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif
+
 #include <SDL.h>
 
 #include "Controls.hpp"

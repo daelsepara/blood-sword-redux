@@ -1,6 +1,10 @@
 #ifndef __PALETTE_HPP__
 #define __PALETTE_HPP__
 
+#ifndef SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif
+
 #include <SDL.h>
 
 #include "nlohmann/json.hpp"
