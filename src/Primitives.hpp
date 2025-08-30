@@ -263,17 +263,17 @@ namespace BloodSword
         }
     }
 
-    template <typename T>
-    void Free(std::unordered_map<T, SDL_Texture *> &textures)
+    template <typename T, typename R>
+    void Free(std::unordered_map<T, R> &resources)
     {
-        if (!textures.empty())
+        if (!resources.empty())
         {
-            for (auto &texture : textures)
+            for (auto &resource : resources)
             {
-                BloodSword::Free(&texture.second);
+                BloodSword::Free(&resource.second);
             }
 
-            textures.clear();
+            resources.clear();
         }
     }
 
