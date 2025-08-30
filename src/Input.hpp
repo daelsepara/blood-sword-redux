@@ -720,7 +720,7 @@ namespace BloodSword::Input
     {
         auto background = Scene::Base();
 
-        return WaitForInput(graphics, background, scene, input, true);
+        return Input::WaitForInput(graphics, background, scene, input, true);
     }
 
     // check if user input is valid
