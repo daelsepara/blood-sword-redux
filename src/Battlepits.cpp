@@ -45,9 +45,9 @@ namespace BloodSword::BattlepitsRenderer
 
                     if (tile.Type == Map::Object::EXIT)
                     {
-                        surface_asset = Asset::Surface(Asset::Type::SELECT);
+                        surface_asset = Asset::Surface(Asset::Map("SELECT"));
                     }
-                    else if (tile.Asset != Asset::Type::NONE)
+                    else if (tile.Asset != Asset::NONE)
                     {
                         surface_asset = Asset::Surface(tile.Asset);
                     }

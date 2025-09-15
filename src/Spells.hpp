@@ -60,23 +60,25 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, "PREDICTION"},
         {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
-    BloodSword::UnorderedMap<Spells::Type, Asset::Type> Assets = {
-        {Spells::Type::VOLCANO_SPRAY, Asset::Type::VOLCANO_SPRAY},
-        {Spells::Type::NIGHTHOWL, Asset::Type::NIGHTHOWL},
-        {Spells::Type::WHITE_FIRE, Asset::Type::WHITE_FIRE},
-        {Spells::Type::SWORDTHRUST, Asset::Type::SWORDTHRUST},
-        {Spells::Type::EYE_OF_THE_TIGER, Asset::Type::EYE_OF_THE_TIGER},
-        {Spells::Type::IMMEDIATE_DELIVERANCE, Asset::Type::IMMEDIATE_DELIVERANCE},
-        {Spells::Type::MISTS_OF_DEATH, Asset::Type::MISTS_OF_DEATH},
-        {Spells::Type::THE_VAMPIRE_SPELL, Asset::Type::THE_VAMPIRE_SPELL},
-        {Spells::Type::PILLAR_OF_SALT, Asset::Type::PILLAR_OF_SALT},
-        {Spells::Type::SHEET_LIGHTNING, Asset::Type::SHEET_LIGHTNING},
-        {Spells::Type::GHASTLY_TOUCH, Asset::Type::GHASTLY_TOUCH},
-        {Spells::Type::NEMESIS_BOLT, Asset::Type::NEMESIS_BOLT},
-        {Spells::Type::SERVILE_ENTHRALMENT, Asset::Type::SERVILE_ENTHRALMENT},
-        {Spells::Type::SUMMON_FALTYN, Asset::Type::SUMMON_FALTYN},
-        {Spells::Type::PREDICTION, Asset::Type::PREDICTION},
-        {Spells::Type::DETECT_ENCHANTMENT, Asset::Type::DETECT_ENCHANTMENT}};
+    BloodSword::UnorderedMap<Spells::Type, Asset::Type> Assets = {};
+
+    BloodSword::UnorderedMap<Spells::Type, const char *> AssetNames = {
+        {Spells::Type::VOLCANO_SPRAY, "VOLCANO_SPRAY"},
+        {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
+        {Spells::Type::WHITE_FIRE, "WHITE FIRE"},
+        {Spells::Type::SWORDTHRUST, "SWORDTHRUST"},
+        {Spells::Type::EYE_OF_THE_TIGER, "EYE OF THE TIGER"},
+        {Spells::Type::IMMEDIATE_DELIVERANCE, "IMMEDIATE DELIVERANCE"},
+        {Spells::Type::MISTS_OF_DEATH, "MISTS OF DEATH"},
+        {Spells::Type::THE_VAMPIRE_SPELL, "THE VAMPIRE SPELL"},
+        {Spells::Type::PILLAR_OF_SALT, "PILLAR OF SALT"},
+        {Spells::Type::SHEET_LIGHTNING, "SHEET LIGHTNING"},
+        {Spells::Type::GHASTLY_TOUCH, "GHASTLY TOUCH"},
+        {Spells::Type::NEMESIS_BOLT, "NEMESIS BOLT"},
+        {Spells::Type::SERVILE_ENTHRALMENT, "SERVILE ENTHRALMENT"},
+        {Spells::Type::SUMMON_FALTYN, "SUMMON FALTYN"},
+        {Spells::Type::PREDICTION, "PREDICTION"},
+        {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
     BloodSword::Mapping<Spells::Class> ClassMapping = {
         {Spells::Class::NONE, "NONE"},
@@ -205,6 +207,11 @@ namespace BloodSword::Spells
         {Spells::Type::SUMMON_FALTYN, 0},
         {Spells::Type::PREDICTION, 0},
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
+
+    void MapAssets()
+    {
+        Asset::MapTypes(Spells::Assets, Spells::AssetNames);
+    }
 
     Spells::Type Map(const char *spell)
     {

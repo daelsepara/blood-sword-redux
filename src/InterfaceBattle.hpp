@@ -42,15 +42,15 @@ namespace BloodSword::Interface
 
         auto unarmed = (skill != Skills::Type::ARCHERY) && attacker.IsPlayer() && !attacker.IsArmed();
 
-        auto asset = Asset::Type::NONE;
+        auto asset = Asset::NONE;
 
         if (knockout)
         {
-            asset = Asset::Type::QUARTERSTAFF;
+            asset = Asset::Map("QUARTERSTAFF");
         }
         else if (unarmed)
         {
-            asset = Asset::Type::UNARMED_COMBAT;
+            asset = Asset::Map("UNARMED COMBAT");
         }
         else if (skill != Skills::Type::NONE)
         {
@@ -58,7 +58,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            asset = Asset::Type::FIGHT;
+            asset = Asset::Map("FIGHT");
         }
 
         if (!attacker.Is(Character::Status::DEFENDING) && Engine::IsAlive(attacker))
@@ -113,13 +113,13 @@ namespace BloodSword::Interface
                     // process attacks which do not apply an efect first
                     if (alive && skill == Skills::Type::POISONED_BITE)
                     {
-                        auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Type::FANGS, 1, 0).Sum;
+                        auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Map("FANGS"), 1, 0).Sum;
 
                         if (bite == 6)
                         {
                             Interface::MessageBox(graphics, background, "POISON FLOWS INTO THE WOUND!", defender.IsPlayer() ? Color::Highlight : Color::Active);
 
-                            auto venom = Interface::Roll(graphics, background, defender.Asset, Asset::Type::DAMAGE, 3, 0).Sum;
+                            auto venom = Interface::Roll(graphics, background, defender.Asset, Asset::Map("DAMAGE"), 3, 0).Sum;
 
                             alive &= Engine::GainEndurance(defender, -venom, true);
                         }
@@ -295,7 +295,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        auto asset = Engine::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Type::SHOOT;
+        auto asset = Engine::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Map("SHOOT");
 
         auto alive = Interface::Shoot(graphics, background, draw, map_w, map_h, attacker, defender, attacker.Shoot, asset);
 
@@ -958,18 +958,31 @@ namespace BloodSword::Interface
                 switch (clone)
                 {
                 case Battle::Condition::CLONE_WARRIOR:
+
                     character_class = Character::Class::WARRIOR;
+
                     break;
+
                 case Battle::Condition::CLONE_TRICKSTER:
+
                     character_class = Character::Class::TRICKSTER;
+
                     break;
+
                 case Battle::Condition::CLONE_SAGE:
+
                     character_class = Character::Class::SAGE;
+
                     break;
+
                 case Battle::Condition::CLONE_ENCHANTER:
+
                     character_class = Character::Class::ENCHANTER;
+
                     break;
+
                 default:
+
                     break;
                 }
 
@@ -1149,13 +1162,13 @@ namespace BloodSword::Interface
             auto captions = Graphics::CreateText(graphics, Graphics::GenerateTextList(captions_text, Fonts::Caption, Color::Active, 0));
 
             Asset::List action_assets = {
-                Asset::Type::MOVE,
-                Asset::Type::SHOOT,
-                Asset::Type::SHURIKEN,
-                Asset::Type::FIGHT,
-                Asset::Type::QUARTERSTAFF,
-                Asset::Type::SPELLS,
-                Asset::Type::ITEMS};
+                Asset::Map("MOVE"),
+                Asset::Map("SHOOT"),
+                Asset::Map("SHURIKEN"),
+                Asset::Map("FIGHT"),
+                Asset::Map("QUARTERSTAFF"),
+                Asset::Map("SPELLS"),
+                Asset::Map("ITEMS")};
 
             Controls::List action_controls = {
                 Controls::Type::MOVE,
@@ -1197,7 +1210,7 @@ namespace BloodSword::Interface
 
             auto party_status = Interface::GenerateStatus(graphics, party, infow);
 
-            auto asset = Asset::Type::NONE;
+            auto asset = Asset::NONE;
 
             auto lifetime = Battle::Unlimited;
 
@@ -1436,7 +1449,7 @@ namespace BloodSword::Interface
                                         // check if there are adjacent player combatants
                                         auto opponents = Interface::EnemyFights(battle, party, character, src);
 
-                                        if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Type::MISTS_OF_DEATH, 1, 0).Sum == 1)
+                                        if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Map("MISTS OF DEATH"), 1, 0).Sum == 1)
                                         {
                                             std::string slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
 
@@ -1694,7 +1707,7 @@ namespace BloodSword::Interface
 
                                                 if (character.HasCalledToMind(spell_caption.Type) && spell_caption.IsBattle && !spell_caption.IsBasic())
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CAST_SPELL), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CAST SPELL")), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell_caption.Type], control.X, control.Y + control.H + pad));
 
@@ -1702,7 +1715,7 @@ namespace BloodSword::Interface
                                                 }
                                                 else if (!spell_caption.IsBasic() && spell_caption.IsBattle)
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CALL TO MIND")), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell_caption.Type], control.X, control.Y + control.H + pad));
 
@@ -1876,7 +1889,7 @@ namespace BloodSword::Interface
                                                         Interface::MessageBox(graphics, scene, spell_string, Color::Active);
 
                                                         // resolve spell
-                                                        battle.Map.Put(control.Map, Map::Object::TEMPORARY_OBSTACLE, Asset::Type::PILLAR_OF_SALT, 5);
+                                                        battle.Map.Put(control.Map, Map::Object::TEMPORARY_OBSTACLE, Asset::Map("PILLAR OF SALT"), 5, -1);
 
                                                         refresh_textures = true;
                                                     }
@@ -2675,11 +2688,11 @@ namespace BloodSword::Interface
                 {
                     if (Engine::IsAlive(party[character]))
                     {
-                        auto roll = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::GOLDEN_SNUFF_BOX, 1, 0).Sum;
+                        auto roll = Interface::Roll(graphics, scene, party[character].Asset, Asset::Map("GOLDEN SNUFF-BOX"), 1, 0).Sum;
 
                         if (roll)
                         {
-                            auto damage = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::DAMAGE, 1, 0).Sum;
+                            auto damage = Interface::Roll(graphics, scene, party[character].Asset, Asset::Map("DAMAGE"), 1, 0).Sum;
 
                             Engine::GainEndurance(party[character], -damage, false);
 
@@ -2689,7 +2702,7 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            auto heal = Interface::Roll(graphics, scene, party[character].Asset, Asset::Type::HEAL, 1, 0).Sum;
+                            auto heal = Interface::Roll(graphics, scene, party[character].Asset, Asset::Map("HEAL"), 1, 0).Sum;
 
                             Engine::GainEndurance(party[character], heal, false);
 

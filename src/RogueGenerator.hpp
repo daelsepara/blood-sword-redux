@@ -106,7 +106,7 @@ namespace BloodSword::Rogue
 
         auto center = room.Center();
 
-        auto monsters = Rogue::GenerateMonsters("ICON THE UNGODLY", Skills::Type::NONE, Skills::Type::NONE, {Skills::Type::RETRIBUTIVE_FIRE}, {8}, {8}, {7}, {28}, {2}, {2}, {2}, Asset::Type::ICON_THE_UNGODLY, 1, 1);
+        auto monsters = Rogue::GenerateMonsters("ICON THE UNGODLY", Skills::Type::NONE, Skills::Type::NONE, {Skills::Type::RETRIBUTIVE_FIRE}, {8}, {8}, {7}, {28}, {2}, {2}, {2}, Asset::Map("ICON THE UNGODLY"), 1, 1);
 
         monsters.X = center.X;
 
@@ -154,17 +154,17 @@ namespace BloodSword::Rogue
 
             if (enemy_type <= 30)
             {
-                monsters = Rogue::GenerateMonsters("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, {5, 6, 7}, {4, 5, 6}, {5, 6, 7}, {4, 5, 6}, {0}, {1}, {0}, Asset::Type::ASSASSIN, 3, 4);
+                monsters = Rogue::GenerateMonsters("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, {5, 6, 7}, {4, 5, 6}, {5, 6, 7}, {4, 5, 6}, {0}, {1}, {0}, Asset::Map("ASSASSIN"), 3, 4);
 
-                Rogue::AddItems(monsters, Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2));
+                Rogue::AddItems(monsters, Item::Base("SHURIKEN POUCH", Item::Type::LIMITED_SHURIKEN, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE, Item::Property::EQUIPPED, Item::Property::RANGED}, Item::Type::SHURIKEN, 2, 2, Asset::Map("SHURIKEN")));
             }
             else if (enemy_type <= 90)
             {
-                monsters = Rogue::GenerateMonsters("BARBARIAN", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {3, 4, 5}, {5, 6, 7}, {8, 10, 12}, {1}, {1}, {0, 1, 2}, Asset::Type::BARBARIAN, 2, 3);
+                monsters = Rogue::GenerateMonsters("BARBARIAN", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {3, 4, 5}, {5, 6, 7}, {8, 10, 12}, {1}, {1}, {0, 1, 2}, Asset::Map("BARBARIAN"), 2, 3);
             }
             else
             {
-                monsters = Rogue::GenerateMonsters("ADVENTURER", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {4, 5, 6}, {4, 5, 6}, {14, 18, 22}, {1, 2, 3}, {1, 2}, {0, 1, 2}, Asset::Type::CHARACTER, 1, 2);
+                monsters = Rogue::GenerateMonsters("ADVENTURER", Skills::Type::NONE, Skills::Type::NONE, {}, {6, 7, 8}, {4, 5, 6}, {4, 5, 6}, {14, 18, 22}, {1, 2, 3}, {1, 2}, {0, 1, 2}, Asset::Map("ADVENTURER"), 1, 2);
             }
 
             // place monsters in battlepits
@@ -313,9 +313,7 @@ namespace BloodSword::Rogue
     // generate quantities of an item (e.g. GOLD, ARROWS)
     void GenerateItems(Rogue::Base &rogue, std::string name, Item::Type type, Asset::Type asset, int number, int min_quantity, int max_quantity, Item::Properties properties = {})
     {
-        auto item = Item::Base(name.c_str(), type, properties, Item::Type::NONE, min_quantity == max_quantity ? min_quantity : Engine::Percentile.NextInt(min_quantity, max_quantity));
-
-        item.Asset = asset;
+        auto item = Item::Base(name.c_str(), type, properties, Item::Type::NONE, min_quantity == max_quantity ? min_quantity : Engine::Percentile.NextInt(min_quantity, max_quantity), Item::Unlimited, asset);
 
         Rogue::PlaceItems(rogue, item, number);
     }
@@ -323,27 +321,27 @@ namespace BloodSword::Rogue
     // generate gold loot
     void PlaceGold(Rogue::Base &rogue, int number, int min_gold, int max_gold)
     {
-        Rogue::GenerateItems(rogue, "GOLD", Item::Type::GOLD, Asset::Type::MONEY, number, min_gold, max_gold);
+        Rogue::GenerateItems(rogue, "GOLD", Item::Type::GOLD, Asset::Map("MONEY"), number, min_gold, max_gold);
     }
 
     // generate arrows loot
     void PlaceArrows(Rogue::Base &rogue, int number, int min_arrows, int max_arrows)
     {
-        Rogue::GenerateItems(rogue, "ARROWS", Item::Type::ARROW, Asset::Type::QUIVER, number, min_arrows, max_arrows);
+        Rogue::GenerateItems(rogue, "ARROWS", Item::Type::ARROW, Asset::Map("QUIVER"), number, min_arrows, max_arrows);
     }
 
     // generate food loot
     void PlaceFood(Rogue::Base &rogue, int number)
     {
-        Rogue::GenerateItems(rogue, "FOOD", Item::Type::FOOD, Asset::Type::FOOD, number, 1, 1, {Item::Property::EDIBLE});
+        Rogue::GenerateItems(rogue, "FOOD", Item::Type::FOOD, Asset::Map("FOOD"), number, 1, 1, {Item::Property::EDIBLE});
     }
 
     // generate potion/scroll of healing loot
     void PlacePotions(Rogue::Base &rogue, int number)
     {
-        auto potion = Item::Base("POTION", Item::Type::POTION_OF_HEALING, {Item::Property::LIQUID, Item::Property::COMBAT}, Item::Type::NONE, 1, Asset::Type::DRINK);
+        auto potion = Item::Base("POTION", Item::Type::POTION_OF_HEALING, {Item::Property::LIQUID, Item::Property::COMBAT}, Item::Type::NONE, 1, 1, Asset::Map("DRINK"));
 
-        auto scroll = Item::Base("SCROLL", Item::Type::SCROLL_HEALING, {Item::Property::READABLE}, Item::Type::NONE, 1, Asset::Type::READ);
+        auto scroll = Item::Base("SCROLL", Item::Type::SCROLL_HEALING, {Item::Property::READABLE}, Item::Type::NONE, 1, 1, Asset::Map("READ"));
 
         // potions 67% more likely than scrolls
         Rogue::PlaceItems(rogue, {potion, potion, scroll}, number);
@@ -352,15 +350,15 @@ namespace BloodSword::Rogue
     void PlaceUniqueItems(Rogue::Base &rogue)
     {
         // steel sceptre
-        auto sceptre = Item::Base("STEEL SCEPTRE", Item::Type::STEEL_SCEPTRE, {Item::Property::CONTAINER, Item::Property::COMBAT, Item::Property::REQUIRES_TARGET}, Item::Type::CHARGE, 5, Asset::Type::STEEL_SCEPTRE);
+        auto sceptre = Item::Base("STEEL SCEPTRE", Item::Type::STEEL_SCEPTRE, {Item::Property::CONTAINER, Item::Property::COMBAT, Item::Property::REQUIRES_TARGET}, Item::Type::CHARGE, 5, 5, Asset::Map("STEEL SCEPTRE"));
 
         // vellum scroll
-        auto vellum = Item::Base("VELLUM SCROLL", Item::Type::VELLUM_SCROLL, {Item::Property::READABLE}, Item::Type::NONE, 1, Asset::Type::READ);
+        auto vellum = Item::Base("VELLUM SCROLL", Item::Type::VELLUM_SCROLL, {Item::Property::READABLE}, Item::Type::NONE, 1, 1, Asset::Map("READ"));
 
         Rogue::PlaceItems(rogue, {sceptre, vellum});
 
         // place emblem of victory
-        auto emblem = Item::Base("EMBLEM OF VICTORY", Item::Type::EMBLEM_OF_VICTORY, {Item::Property::CANNOT_DROP}, Item::Type::NONE, 1, Asset::Type::SWORDTHRUST);
+        auto emblem = Item::Base("EMBLEM OF VICTORY", Item::Type::EMBLEM_OF_VICTORY, {Item::Property::CANNOT_DROP}, Item::Type::NONE, 1, 1, Asset::Map("SWORDTHRUST"));
 
         Rogue::PlaceItem(rogue, emblem, int(rogue.Rooms.size()) - 1);
     }

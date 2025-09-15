@@ -45,7 +45,7 @@ namespace BloodSword::Asset
     {
         SDL_Surface *surface = nullptr;
 
-        if (asset != Asset::Type::NONE)
+        if (asset != Asset::NONE)
         {
             surface = BloodSword::Load(Asset::Locations[asset].c_str());
 
@@ -99,22 +99,29 @@ namespace BloodSword::Asset
 
             if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
             {
+                auto asset_type = 0;
+
                 for (auto i = 0; i < data["assets"].size(); i++)
                 {
-                    auto object = !data["assets"][i]["id"].is_null() ? Asset::Map(std::string(data["assets"][i]["id"])) : Asset::Type::NONE;
+                    auto object = !data["assets"][i]["id"].is_null() ? std::string(data["assets"][i]["id"]) : std::string();
 
                     auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : "";
 
-                    if (!path.empty() && object != Asset::Type::NONE)
+                    if (!path.empty() && !object.empty())
                     {
                         auto texture = Asset::Create(renderer, path.c_str());
 
                         if (texture)
                         {
-                            Asset::Locations[object] = path;
+                            Asset::Locations[asset_type] = path;
 
-                            Asset::Textures[object] = texture;
+                            Asset::Textures[asset_type] = texture;
+
+                            // update type mapping
+                            Asset::TypeMapping[asset_type] = object;
                         }
+
+                        asset_type++;
                     }
                 }
             }
@@ -148,7 +155,7 @@ namespace BloodSword::Asset
             {
                 for (auto i = 0; i < data["assets"].size(); i++)
                 {
-                    auto object = !data["assets"][i]["id"].is_null() ? Asset::Map(std::string(data["assets"][i]["id"])) : Asset::Type::NONE;
+                    auto object = !data["assets"][i]["id"].is_null() ? Asset::Map(std::string(data["assets"][i]["id"])) : Asset::NONE;
 
                     auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : "";
 

@@ -1519,7 +1519,7 @@ namespace BloodSword::Engine
 
         for (auto item = 0; item < items.size(); item++)
         {
-            if (items[item].Asset != Asset::Type::NONE)
+            if (items[item].Asset != Asset::NONE)
             {
                 first = item;
 

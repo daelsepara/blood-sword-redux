@@ -33,10 +33,10 @@ namespace BloodSword::Map
         Map::Object Occupant = Map::Object::NONE;
 
         // asset type of tile
-        Asset::Type Asset = Asset::Type::NONE;
+        Asset::Type Asset = Asset::NONE;
 
         // asset type of the temporary occupant
-        Asset::Type TemporaryAsset = Asset::Type::NONE;
+        Asset::Type TemporaryAsset = Asset::NONE;
 
         // lifetime of the temporary occupant, -1 if none
         int Lifetime = Map::Unlimited;
@@ -243,7 +243,7 @@ namespace BloodSword::Map
         }
 
         // temporary object
-        void Put(Point location, Map::Object object, Asset::Type asset, int duration)
+        void Put(Point location, Map::Object object, Asset::Type asset, int duration, int id)
         {
             if (this->IsValid(location))
             {
@@ -254,19 +254,23 @@ namespace BloodSword::Map
                 tile.TemporaryAsset = asset;
 
                 tile.Lifetime = duration;
+
+                tile.Id = id;
             }
         }
 
         // set the location type and asset
-        void Put(Point location, Map::Object type, Asset::Type asset)
+        void Put(Point location, Map::Object object, Asset::Type asset, int id)
         {
             if (this->IsValid(location))
             {
                 auto &tile = (*this)[location];
 
-                tile.Type = type;
+                tile.Type = object;
 
                 tile.Asset = asset;
+
+                tile.Id = id;
             }
         }
 
@@ -277,9 +281,9 @@ namespace BloodSword::Map
         }
 
         // set the location type and asset
-        void Put(int x, int y, Map::Object type, Asset::Type asset)
+        void Put(int x, int y, Map::Object object, Asset::Type asset, int id)
         {
-            this->Put(Point(x, y), type, asset);
+            this->Put(Point(x, y), object, asset, id);
         }
 
         void CheckBounds()
@@ -377,9 +381,9 @@ namespace BloodSword::Map
 
                                 map.Occupant = !tile["occupant"].is_null() ? Map::MapObject(std::string(tile["occupant"])) : Map::Object::NONE;
 
-                                map.Asset = !tile["asset"].is_null() ? Asset::Map(std::string(tile["asset"])) : Asset::Type::NONE;
+                                map.Asset = !tile["asset"].is_null() ? Asset::Map(std::string(tile["asset"])) : Asset::NONE;
 
-                                map.TemporaryAsset = !tile["temporary_asset"].is_null() ? Asset::Map(std::string(tile["temporary_asset"])) : Asset::Type::NONE;
+                                map.TemporaryAsset = !tile["temporary_asset"].is_null() ? Asset::Map(std::string(tile["temporary_asset"])) : Asset::NONE;
 
                                 map.Lifetime = !tile["lifetime"].is_null() ? int(tile["lifetime"]) : -1;
                             }
@@ -771,7 +775,7 @@ namespace BloodSword::Map
 
                         if (tile.Lifetime == 0)
                         {
-                            tile.TemporaryAsset = Asset::Type::NONE;
+                            tile.TemporaryAsset = Asset::NONE;
 
                             tile.Occupant = Map::Object::NONE;
 

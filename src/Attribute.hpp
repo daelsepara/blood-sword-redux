@@ -29,14 +29,21 @@ namespace BloodSword::Attribute
         Attribute::Type::DAMAGE,
         Attribute::Type::ARMOUR};
 
-    BloodSword::UnorderedMap<Attribute::Type, Asset::Type> Assets = {
-        {Attribute::Type::NONE, Asset::Type::NONE},
-        {Attribute::Type::FIGHTING_PROWESS, Asset::Type::FIGHT},
-        {Attribute::Type::AWARENESS, Asset::Type::AWARENESS},
-        {Attribute::Type::PSYCHIC_ABILITY, Asset::Type::PSYCHIC_ABILITY},
-        {Attribute::Type::ENDURANCE, Asset::Type::ENDURANCE},
-        {Attribute::Type::DAMAGE, Asset::Type::DAMAGE},
-        {Attribute::Type::ARMOUR, Asset::Type::ARMOUR}};
+    BloodSword::UnorderedMap<Attribute::Type, Asset::Type> Assets = {};
+
+    BloodSword::UnorderedMap<Attribute::Type, const char *> AssetNames = {
+        {Attribute::Type::NONE, "NONE"},
+        {Attribute::Type::FIGHTING_PROWESS, "FIGHT"},
+        {Attribute::Type::AWARENESS, "AWARENESS"},
+        {Attribute::Type::PSYCHIC_ABILITY, "PSYCHIC ABILITY"},
+        {Attribute::Type::ENDURANCE, "ENDURANCE"},
+        {Attribute::Type::DAMAGE, "DAMAGE"},
+        {Attribute::Type::ARMOUR, "ARMOUR"}};
+
+    void MapAssets()
+    {
+        Asset::MapTypes(Attribute::Assets, Attribute::AssetNames);
+    }
 
     // attribute case class
     class Base

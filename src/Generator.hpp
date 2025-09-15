@@ -838,13 +838,19 @@ namespace BloodSword::Generate
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
+
             break;
+
         case Character::Class::TRICKSTER:
+
             character.Skills.push_back(Skills::Type::DODGING);
 
             character.Skills.push_back(Skills::Type::ARCHERY);
+
             break;
+
         case Character::Class::SAGE:
+
             character.Skills.push_back(Skills::Type::HEALING);
 
             character.Skills.push_back(Skills::Type::QUARTERSTAFF);
@@ -860,11 +866,17 @@ namespace BloodSword::Generate
             character.Skills.push_back(Skills::Type::ARCHERY);
 
             character.SkillImmunity.push_back(Skills::Type::PARALYZING_TOUCH);
+
             break;
+
         case Character::Class::ENCHANTER:
+
             character.Skills.push_back(Skills::Type::SPELLS);
+
             break;
+
         default:
+
             break;
         }
     }
@@ -919,9 +931,13 @@ namespace BloodSword::Generate
             switch (character.Class)
             {
             case Character::Class::ENCHANTER:
+
                 Generate::EnchanterSpells(character);
+
                 break;
+
             default:
+
                 break;
             }
         }
@@ -934,18 +950,31 @@ namespace BloodSword::Generate
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
+
             Generate::WarriorAttributes(character);
+
             break;
+
         case Character::Class::TRICKSTER:
+
             Generate::TricksterAttributes(character);
+
             break;
+
         case Character::Class::SAGE:
+
             Generate::SageAttributes(character);
+
             break;
+
         case Character::Class::ENCHANTER:
+
             Generate::EnchanterAttributes(character);
+
             break;
+
         default:
+
             break;
         }
 
@@ -993,9 +1022,9 @@ namespace BloodSword::Generate
     {
         if (warrior.Rank <= 8)
         {
-            warrior.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::SWORD));
+            warrior.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, 1, Asset::Map("SWORD")));
 
-            warrior.Add(Item::Base("CHAINMAIL", Item::Type::CHAINMAIL, {{Attribute::Type::ARMOUR, 3}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::CHAINMAIL));
+            warrior.Add(Item::Base("CHAINMAIL", Item::Type::CHAINMAIL, {{Attribute::Type::ARMOUR, 3}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, 1, 1, Asset::Map("CHAINMAIL")));
         }
     }
 
@@ -1004,13 +1033,13 @@ namespace BloodSword::Generate
     {
         if (trickster.Rank <= 8)
         {
-            trickster.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::SWORD));
+            trickster.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, 1, Asset::Map("SWORD")));
 
-            trickster.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::ARCHERY));
+            trickster.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}, Item::Type::NONE, 1, 1, Asset::Map("ARCHERY")));
 
-            trickster.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6));
+            trickster.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6, Item::Unlimited, Asset::Map("QUIVER")));
 
-            trickster.Add(Item::Base("LEATHER ARMOUR", Item::Type::LEATHER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::LEATHER_ARMOUR));
+            trickster.Add(Item::Base("LEATHER ARMOUR", Item::Type::LEATHER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, 1, 1, Asset::Map("LEATHER ARMOUR")));
         }
     }
 
@@ -1019,13 +1048,13 @@ namespace BloodSword::Generate
     {
         if (sage.Rank <= 8)
         {
-            sage.Add(Item::Base("QUARTERSTAFF", Item::Type::QUARTERSTAFF, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::QUARTERSTAFF));
+            sage.Add(Item::Base("QUARTERSTAFF", Item::Type::QUARTERSTAFF, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, 1, Asset::Map("QUARTERSTAFF")));
 
-            sage.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::ARCHERY));
+            sage.Add(Item::Base("BOW", Item::Type::BOW, {Item::Property::WEAPON, Item::Property::RANGED, Item::Property::EQUIPPED}, Item::Type::NONE, 1, 1, Asset::Map("ARCHERY")));
 
-            sage.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6));
+            sage.Add(Item::Base("QUIVER", Item::Type::QUIVER, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::ARROW, 6, Item::Unlimited, Asset::Map("QUIVER")));
 
-            sage.Add(Item::Base("RINGMAIL", Item::Type::RINGMAIL, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::RINGMAIL));
+            sage.Add(Item::Base("RINGMAIL", Item::Type::RINGMAIL, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, 1, 1, Asset::Map("RINGMAIL")));
         }
     }
 
@@ -1034,9 +1063,9 @@ namespace BloodSword::Generate
     {
         if (enchanter.Rank <= 8)
         {
-            enchanter.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, Asset::Type::ARCHERY));
+            enchanter.Add(Item::Base("SWORD", Item::Type::SWORD, {Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}, Item::Type::NONE, 1, 1, Asset::Map("ARCHERY")));
 
-            enchanter.Add(Item::Base("SILVER ARMOUR", Item::Type::SILVER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, Asset::Type::SILVER_ARMOUR));
+            enchanter.Add(Item::Base("SILVER ARMOUR", Item::Type::SILVER_ARMOUR, {{Attribute::Type::ARMOUR, 2}}, {Item::Property::ARMOUR, Item::Property::EQUIPPED}, 1, 1, Asset::Map("SILVER ARMOUR")));
         }
     }
 
@@ -1046,18 +1075,31 @@ namespace BloodSword::Generate
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
+
             Generate::WarriorItems(character);
+
             break;
+
         case Character::Class::TRICKSTER:
+
             Generate::TricksterItems(character);
+
             break;
+
         case Character::Class::SAGE:
+
             Generate::SageItems(character);
+
             break;
+
         case Character::Class::ENCHANTER:
+
             Generate::EnchanterItems(character);
+
             break;
+
         default:
+
             break;
         }
     }
@@ -1069,7 +1111,7 @@ namespace BloodSword::Generate
 
         character.Rank = std::max(1, character.Rank);
 
-        character.Add(Item::Base("MONEY POUCH", Item::Type::POUCH, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::GOLD, character.Rank * 5));
+        character.Add(Item::Base("MONEY POUCH", Item::Type::POUCH, {Item::Property::CONTAINER, Item::Property::CANNOT_DROP, Item::Property::CANNOT_TRADE}, Item::Type::GOLD, character.Rank * 5, Item::Unlimited, Asset::Map("MONEY")));
     }
 
     // set character asset
@@ -1078,19 +1120,33 @@ namespace BloodSword::Generate
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
-            character.Asset = Asset::Type::WARRIOR;
+
+            character.Asset = Asset::Map("WARRIOR");
+
             break;
+
         case Character::Class::TRICKSTER:
-            character.Asset = Asset::Type::TRICKSTER;
+
+            character.Asset = Asset::Map("TRICKSTER");
+
             break;
+
         case Character::Class::SAGE:
-            character.Asset = Asset::Type::SAGE;
+
+            character.Asset = Asset::Map("SAGE");
+
             break;
+
         case Character::Class::ENCHANTER:
-            character.Asset = Asset::Type::ENCHANTER;
+
+            character.Asset = Asset::Map("ENCHANTER");
+
             break;
+
         default:
-            character.Asset = Asset::Type::PERSON;
+
+            character.Asset = Asset::Map("PERSON");
+
             break;
         }
     }
@@ -1148,18 +1204,31 @@ namespace BloodSword::Generate
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
+
             character.Target = Target::Type::WARRIOR;
+
             break;
+
         case Character::Class::TRICKSTER:
+
             character.Target = Target::Type::TRICKSTER;
+
             break;
+
         case Character::Class::SAGE:
+
             character.Target = Target::Type::SAGE;
+
             break;
+
         case Character::Class::ENCHANTER:
+
             character.Target = Target::Type::ENCHANTER;
+
             break;
+
         default:
+
             break;
         }
     }

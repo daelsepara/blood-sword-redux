@@ -37,7 +37,7 @@ namespace BloodSword::Interface
                 if (items[id].Has(Item::Property::EQUIPPED))
                 {
                     // unequip weapon / armour
-                    assets.push_back(Asset::Type::CANCEL);
+                    assets.push_back(Asset::Map("CANCEL"));
 
                     controls.push_back(Controls::Type::UNEQUIP);
 
@@ -46,7 +46,7 @@ namespace BloodSword::Interface
                 else
                 {
                     // equip weapon / armour
-                    assets.push_back(Asset::Type::CONFIRM);
+                    assets.push_back(Asset::Map("CONFIRM"));
 
                     controls.push_back(Controls::Type::EQUIP);
 
@@ -59,7 +59,7 @@ namespace BloodSword::Interface
                 if (items[id].Has(Item::Property::LIQUID))
                 {
                     // drink
-                    assets.push_back(Asset::Type::DRINK);
+                    assets.push_back(Asset::Map("DRINK"));
 
                     controls.push_back(Controls::Type::DRINK);
 
@@ -68,7 +68,7 @@ namespace BloodSword::Interface
                 else if (items[id].Has(Item::Property::READABLE))
                 {
                     // read / open scroll
-                    assets.push_back(Asset::Type::READ);
+                    assets.push_back(Asset::Map("READ"));
 
                     controls.push_back(Controls::Type::READ);
 
@@ -77,7 +77,7 @@ namespace BloodSword::Interface
                 else if (items[id].Has(Item::Property::EDIBLE))
                 {
                     // read / open scroll
-                    assets.push_back(Asset::Type::FOOD);
+                    assets.push_back(Asset::Map("FOOD"));
 
                     controls.push_back(Controls::Type::EAT);
 
@@ -86,7 +86,7 @@ namespace BloodSword::Interface
                 else
                 {
                     // default: use
-                    assets.push_back(Asset::Type::USE);
+                    assets.push_back(Asset::Map("USE"));
 
                     controls.push_back(Controls::Type::USE);
 
@@ -101,7 +101,7 @@ namespace BloodSword::Interface
                 {
                     if (character.Class == Character::Class::SAGE)
                     {
-                        assets.push_back(Asset::Type::IDENTIFY);
+                        assets.push_back(Asset::Map("IDENTIFY"));
 
                         controls.push_back(Controls::Type::IDENTIFY);
 
@@ -111,7 +111,7 @@ namespace BloodSword::Interface
                 else
                 {
                     // add info button
-                    assets.push_back(Asset::Type::ABOUT);
+                    assets.push_back(Asset::Map("ABOUT"));
 
                     controls.push_back(Controls::Type::ABOUT);
 
@@ -122,7 +122,7 @@ namespace BloodSword::Interface
             if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1 && !character.Has(Character::Status::TASK))
             {
                 // money
-                assets.push_back(Asset::Type::MONEY);
+                assets.push_back(Asset::Map("MONEY"));
 
                 controls.push_back(Controls::Type::MONEY);
 
@@ -134,7 +134,7 @@ namespace BloodSword::Interface
             if (items[id].Has(Item::Property::CONTAINER) && items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1 && !character.Has(Character::Status::TASK))
             {
                 // arrows
-                assets.push_back(Asset::Type::QUIVER);
+                assets.push_back(Asset::Map("QUIVER"));
 
                 controls.push_back(Controls::Type::QUIVER);
 
@@ -146,7 +146,7 @@ namespace BloodSword::Interface
             if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE) && !character.Has(Character::Status::TASK))
             {
                 // trade
-                assets.push_back(Asset::Type::TRADE);
+                assets.push_back(Asset::Map("TRADE"));
 
                 controls.push_back(Controls::Type::TRADE);
 
@@ -155,14 +155,14 @@ namespace BloodSword::Interface
 
             if (!items[id].Has(Item::Property::CANNOT_DROP) && !character.Has(Character::Status::TASK))
             {
-                assets.push_back(Asset::Type::DROP);
+                assets.push_back(Asset::Map("DROP"));
 
                 controls.push_back(Controls::Type::DROP);
 
                 captions.push_back("DROP");
             }
 
-            assets.push_back(Asset::Type::BACK);
+            assets.push_back(Asset::Map("BACK"));
 
             controls.push_back(Controls::Type::BACK);
 
@@ -174,7 +174,7 @@ namespace BloodSword::Interface
 
             while (!done)
             {
-                auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
+                auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
                 if (selection.size() == 1)
                 {
@@ -308,7 +308,7 @@ namespace BloodSword::Interface
 
                                     auto transfer_item = Item::Type::GOLD;
 
-                                    auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
+                                    auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Map("MONEY"), Asset::Map("UP"), Asset::Map("DOWN"));
 
                                     if (transfer > 0)
                                     {
@@ -361,7 +361,7 @@ namespace BloodSword::Interface
 
                                         auto transfer_item = Item::Type::ARROW;
 
-                                        auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Type::QUIVER, Asset::Type::UP, Asset::Type::DOWN);
+                                        auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Map("QUIVER"), Asset::Map("UP"), Asset::Map("DOWN"));
 
                                         if (transfer > 0)
                                         {
@@ -525,14 +525,14 @@ namespace BloodSword::Interface
         auto captions = std::vector<std::string>();
 
         // take item
-        assets.push_back(Asset::Type::USE);
+        assets.push_back(Asset::Map("USE"));
 
         controls.push_back(Controls::Type::TAKE);
 
         captions.push_back("TAKE");
 
         // go back
-        assets.push_back(Asset::Type::BACK);
+        assets.push_back(Asset::Map("BACK"));
 
         controls.push_back(Controls::Type::BACK);
 
@@ -544,7 +544,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
+            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
             if (selection.size() == 1)
             {
@@ -651,7 +651,7 @@ namespace BloodSword::Interface
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -782,7 +782,7 @@ namespace BloodSword::Interface
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -955,7 +955,7 @@ namespace BloodSword::Interface
 
             auto &popup = overlay.Elements[0];
 
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CALL TO MIND")), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
             if (Input::IsValid(overlay, input) && Engine::IsSpell(input.Type))
             {
@@ -1065,13 +1065,13 @@ namespace BloodSword::Interface
         auto panely = (graphics.Height - panelh) / 2;
 
         Asset::List assets = {
-            Asset::Type::LEFT,
-            Asset::Type::RIGHT,
-            Asset::Type::CHARACTER,
-            Asset::Type::INVENTORY,
-            Asset::Type::SKILLS,
-            Asset::Type::STATUS,
-            Asset::Type::BACK};
+            Asset::Map("LEFT"),
+            Asset::Map("RIGHT"),
+            Asset::Map("CHARACTER"),
+            Asset::Map("INVENTORY"),
+            Asset::Map("SKILLS"),
+            Asset::Map("STATUS"),
+            Asset::Map("BACK")};
 
         Controls::List controls = {
             Controls::Type::LEFT,

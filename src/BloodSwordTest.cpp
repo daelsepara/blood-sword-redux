@@ -20,21 +20,21 @@ namespace BloodSword::Test
         auto ws = w + s;
 
         // sprites
-        auto warrior = Scene::Element(Asset::Get(Asset::Type::WARRIOR), x, y);
+        auto warrior = Scene::Element(Asset::Get(Asset::Map("WARRIOR")), x, y);
 
-        auto trickster = Scene::Element(Asset::Get(Asset::Type::TRICKSTER), x + ws, y);
+        auto trickster = Scene::Element(Asset::Get(Asset::Map("TRICKSTER")), x + ws, y);
 
-        auto sage = Scene::Element(Asset::Get(Asset::Type::SAGE), x + ws * 2, y);
+        auto sage = Scene::Element(Asset::Get(Asset::Map("SAGE")), x + ws * 2, y);
 
-        auto enchanter = Scene::Element(Asset::Get(Asset::Type::ENCHANTER), x + ws * 3, y);
+        auto enchanter = Scene::Element(Asset::Get(Asset::Map("ENCHANTER")), x + ws * 3, y);
 
-        auto up = Scene::Element(Asset::Get(Asset::Type::UP), x, y + ws);
+        auto up = Scene::Element(Asset::Get(Asset::Map("UP")), x, y + ws);
 
-        auto down = Scene::Element(Asset::Get(Asset::Type::DOWN), x + ws, y + ws);
+        auto down = Scene::Element(Asset::Get(Asset::Map("DOWN")), x + ws, y + ws);
 
-        auto left = Scene::Element(Asset::Get(Asset::Type::LEFT), x + ws * 2, y + ws);
+        auto left = Scene::Element(Asset::Get(Asset::Map("LEFT")), x + ws * 2, y + ws);
 
-        auto right = Scene::Element(Asset::Get(Asset::Type::RIGHT), x + ws * 3, y + ws);
+        auto right = Scene::Element(Asset::Get(Asset::Map("RIGHT")), x + ws * 3, y + ws);
 
         // text sprites
         auto text = Graphics::CreateText(graphics, "THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
@@ -231,16 +231,16 @@ namespace BloodSword::Test
 
             auto arrow_down = background_h < texture_h && offset < (texture_h - background_h);
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x, y));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), x, y));
 
             if (arrow_up)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), scroll_x, map.DrawY));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), scroll_x, map.DrawY));
             }
 
             if (arrow_down)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), scroll_x, scroll_y));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), scroll_x, scroll_y));
             }
 
             if (arrow_up || arrow_down)
@@ -465,11 +465,11 @@ namespace BloodSword::Test
 
             auto id = int(scene.Controls.size());
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad));
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::MOVE), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize + pad));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("MOVE")), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize + pad));
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize + pad));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize + pad));
 
             scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad, map.TileSize, map.TileSize, Color::Active));
 
@@ -486,11 +486,11 @@ namespace BloodSword::Test
 
             end = Point(map.Width - 1, exit);
 
-            map.Put(start, Map::Object::PASSABLE, Asset::Type::NONE);
+            map.Put(start, Map::Object::PASSABLE, Asset::NONE, -1);
 
             map.Put(start, Map::Object::PLAYER, 0);
 
-            map.Put(end, Map::Object::PASSABLE, Asset::Type::RIGHT);
+            map.Put(end, Map::Object::PASSABLE, Asset::Map("RIGHT"), -1);
         };
 
         // user inputs
@@ -708,7 +708,7 @@ namespace BloodSword::Test
 
             auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x_adjust, bottom_y));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), x_adjust, bottom_y));
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, highlight));
 
@@ -839,7 +839,7 @@ namespace BloodSword::Test
 
                 auto fight = attribute == Attribute::Type::FIGHTING_PROWESS;
 
-                Interface::Test(graphics, scene, origin, popup_w, popup_h, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), fight ? Asset::Type::FIGHT : Asset::Type::NONE, false);
+                Interface::Test(graphics, scene, origin, popup_w, popup_h, Color::Active, 4, character, attribute, 2, difficulty.NextInt(), fight ? Asset::Map("FIGHT") : Asset::NONE, false);
             }
 
             done = (character_class == Character::Class::NONE);
@@ -851,7 +851,7 @@ namespace BloodSword::Test
     {
         auto player = Generate::Character(Character::Class::WARRIOR, 2);
 
-        auto enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, Asset::Type::BARBARIAN);
+        auto enemy = Generate::NPC("BARBARIAN", {}, 8, 5, 7, 12, 1, 1, 2, BloodSword::MaximumMoves, Asset::Map("BARBARIAN"));
 
         auto alive = true;
 
@@ -966,7 +966,7 @@ namespace BloodSword::Test
     {
         auto player = Generate::Character(Character::Class::TRICKSTER, 2);
 
-        auto enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Type::ASSASSIN);
+        auto enemy = Generate::NPC("ASSASSIN", Skills::Type::NONE, Skills::Type::SHURIKEN, {Skills::Type::SHURIKEN}, 7, 6, 7, 5, 0, 1, 0, 0, Asset::Map("ASSASSIN"));
 
         auto alive = true;
 
@@ -1006,7 +1006,7 @@ namespace BloodSword::Test
                     // player turn
                     scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Map("ARCHERY"));
 
                     player.Remove(requirement_bow, 1);
                 }
@@ -1015,7 +1015,7 @@ namespace BloodSword::Test
                     // player turn
                     scene.VerifyAndAdd(Scene::Element(events[0], Point(0, scene.Elements[0].H)));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Map("ARCHERY"));
 
                     player.Remove(requirement_magic_bow, 1);
                 }
@@ -1032,7 +1032,7 @@ namespace BloodSword::Test
                 {
                     scene.Elements[1] = Scene::Element(events[1], Point(0, scene.Elements[0].H));
 
-                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Shoot, Asset::Type::SHURIKEN);
+                    alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Shoot, Asset::Map("SHURIKEN"));
                 }
             }
             else
@@ -1040,7 +1040,7 @@ namespace BloodSword::Test
                 // enemy turn
                 scene.VerifyAndAdd(Scene::Element(events[1], Point(0, scene.Elements[0].H)));
 
-                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Shoot, Asset::Type::SHURIKEN);
+                alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, enemy, player, enemy.Shoot, Asset::Map("SHURIKEN"));
 
                 // player turn
                 if (alive)
@@ -1053,7 +1053,7 @@ namespace BloodSword::Test
                     {
                         scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
-                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
+                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Map("ARCHERY"));
 
                         player.Remove(requirement_bow, 1);
                     }
@@ -1061,7 +1061,7 @@ namespace BloodSword::Test
                     {
                         scene.Elements[1] = Scene::Element(events[0], Point(0, scene.Elements[0].H));
 
-                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Type::ARCHERY);
+                        alive &= Interface::Shoot(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, player, enemy, player.Shoot, Asset::Map("ARCHERY"));
 
                         player.Remove(requirement_magic_bow, 1);
                     }
@@ -1251,7 +1251,7 @@ namespace BloodSword::Test
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -1356,23 +1356,23 @@ namespace BloodSword::Test
     void Select(Graphics::Base &graphics, Scene::Base &background)
     {
         Asset::List assets = {
-            Asset::Type::ACE_CLUBS,
-            Asset::Type::ACE_DIAMONDS,
-            Asset::Type::ACE_SPADES,
-            Asset::Type::CARD_JOKER,
-            Asset::Type::KING_DIAMONDS};
+            Asset::Map("ACE CLUBS"),
+            Asset::Map("ACE DIAMONDS"),
+            Asset::Map("ACE SPADES"),
+            Asset::Map("CARD JOKER"),
+            Asset::Map("KING DIAMONDS")};
 
         std::vector<int> values = {0, 1, 2, 3, 4};
 
-        auto selection = Interface::SelectIcons(graphics, background, "SELECT 3 CARDS", assets, values, {}, 3, 3, Asset::Type::CARD_BLANK, true);
+        auto selection = Interface::SelectIcons(graphics, background, "SELECT 3 CARDS", assets, values, {}, 3, 3, Asset::Map("CARD BLANK"), true);
 
         Test::PrintSelection(graphics, background, assets, selection, 3, 3);
 
         Asset::List party_assets = {
-            Asset::Type::WARRIOR,
-            Asset::Type::TRICKSTER,
-            Asset::Type::SAGE,
-            Asset::Type::ENCHANTER};
+            Asset::Map("WARRIOR"),
+            Asset::Map("TRICKSTER"),
+            Asset::Map("SAGE"),
+            Asset::Map("ENCHANTER")};
 
         std::vector<int> party_values = {0, 1, 2, 3};
 
@@ -1382,7 +1382,7 @@ namespace BloodSword::Test
             "SAGE",
             "ENCHANTER"};
 
-        auto party_selection = Interface::SelectIcons(graphics, background, "SELECT UP TO 4 PLAYERS", party_assets, party_values, captions, 1, 4, Asset::Type::CARD_BLANK, false);
+        auto party_selection = Interface::SelectIcons(graphics, background, "SELECT UP TO 4 PLAYERS", party_assets, party_values, captions, 1, 4, Asset::Map("CARD BLANK"), false);
 
         Test::PrintSelection(graphics, background, party_assets, party_selection, 1, 4);
     }
@@ -1410,7 +1410,7 @@ namespace BloodSword::Test
         {
             party.ChosenCharacter = Interface::SelectCharacter(graphics, background, party, "WHO IS PLAYING?", true, false, false, false, true);
 
-            done = Interface::StakeQuantity(graphics, background, party, Item::Type::GOLD, Asset::Type::MONEY);
+            done = Interface::StakeQuantity(graphics, background, party, Item::Type::GOLD, Asset::Map("MONEY"));
         }
 
         auto variable = party.Get("STAKED GOLD");
@@ -1434,7 +1434,7 @@ namespace BloodSword::Test
             Engine::GainEndurance(party[i], -8, false);
         }
 
-        Interface::EatFood(graphics, background, party, Asset::Type::FOOD, 1, 32);
+        Interface::EatFood(graphics, background, party, Asset::Map("FOOD"), 1, 32);
     }
 
     void TakeItems(Graphics::Base &graphics, Scene::Base &background)
@@ -1442,7 +1442,7 @@ namespace BloodSword::Test
         // load party from file
         auto party = Party::Load("party/rank08.json", "party");
 
-        Interface::TakeItems(graphics, background, party, Item::Type::FOOD, Asset::Type::FOOD, Items::Unlimited);
+        Interface::TakeItems(graphics, background, party, Item::Type::FOOD, Asset::Map("FOOD"), Items::Unlimited);
     }
 
     void UseItems(Graphics::Base &graphics, Scene::Base &background)
@@ -1481,7 +1481,7 @@ namespace BloodSword::Test
     {
         auto party = Party::Load("party/rank02.json", "party");
 
-        auto load = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Type::LOAD);
+        auto load = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Map("LOAD"));
 
         if (load && Book::IsDefined(party.SaveLocation))
         {
@@ -1516,7 +1516,7 @@ namespace BloodSword::Test
 
         auto height = BloodSword::Wrap;
 
-        Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
+        Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Map("SWORDTHRUST"), true);
     }
 
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
@@ -1601,7 +1601,7 @@ namespace BloodSword::Test
 
             auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::EXIT), x_adjust, bottom_y));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), x_adjust, bottom_y));
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, Color::Highlight));
 
