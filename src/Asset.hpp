@@ -91,6 +91,8 @@ namespace BloodSword::Asset
 
         Asset::Textures.clear();
 
+        Asset::TypeMapping.clear();
+
         std::ifstream ifs(assets);
 
         if (ifs.good())
@@ -145,6 +147,8 @@ namespace BloodSword::Asset
 
         Asset::Textures.clear();
 
+        Asset::TypeMapping.clear();
+
         std::ifstream ifs(assets);
 
         if (ifs.good())
@@ -153,13 +157,24 @@ namespace BloodSword::Asset
 
             if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
             {
+                auto asset_type = 0;
+
                 for (auto i = 0; i < data["assets"].size(); i++)
                 {
-                    auto object = !data["assets"][i]["id"].is_null() ? Asset::Map(std::string(data["assets"][i]["id"])) : Asset::NONE;
+                    auto object = !data["assets"][i]["id"].is_null() ? std::string(data["assets"][i]["id"]) : std::string();
 
-                    auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : "";
+                    auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : std::string();
 
-                    Asset::Locations[object] = path;
+                    if (!path.empty() && !object.empty())
+                    {
+                        // update type mapping
+                        Asset::TypeMapping[asset_type] = object;
+
+                        // update location
+                        Asset::Locations[asset_type] = path;
+
+                        asset_type++;
+                    }
                 }
             }
 
