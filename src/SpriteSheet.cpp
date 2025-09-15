@@ -22,7 +22,7 @@ namespace BloodSword::SpriteSheet
         {
             SDL_Rect rect;
 
-            auto height = int(std::nearbyint((double)Asset::Locations.size() / (double)width + 0.5));
+            auto height = Asset::Locations.size() % width == 0 ? int(Asset::Locations.size() / width) : int(std::nearbyint((double)Asset::Locations.size() / (double)width + 0.5));
 
             rect.w = width * BloodSword::TileSize;
 
