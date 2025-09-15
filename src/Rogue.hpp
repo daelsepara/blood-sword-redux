@@ -298,7 +298,7 @@ namespace BloodSword::Rogue
         // size of FoV illumination
         auto fov_size = BloodSword::TileSize - fov_offset * 2;
 
-        auto items_default = Asset::Get(Asset::Map("ITEMS"));
+        auto items_default = Asset::Get("ITEMS");
 
         for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {

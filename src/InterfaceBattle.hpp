@@ -1705,7 +1705,7 @@ namespace BloodSword::Interface
 
                                                 if (character.HasCalledToMind(spell_caption.Type) && spell_caption.IsBattle && !spell_caption.IsBasic())
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CAST SPELL")), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get("CAST SPELL"), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell_caption.Type], control.X, control.Y + control.H + pad));
 
@@ -1713,7 +1713,7 @@ namespace BloodSword::Interface
                                                 }
                                                 else if (!spell_caption.IsBasic() && spell_caption.IsBattle)
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CALL TO MIND")), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get("CALL TO MIND"), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell_caption.Type], control.X, control.Y + control.H + pad));
 

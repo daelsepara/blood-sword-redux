@@ -272,7 +272,7 @@ namespace BloodSword::Interface
         // add controls to scene
         if (left)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("LEFT")), Point(left_x, mid_y - BloodSword::HalfTile)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("LEFT"), Point(left_x, mid_y - BloodSword::HalfTile)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_LEFT, id, id, id, id, id, left_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -292,7 +292,7 @@ namespace BloodSword::Interface
 
         if (up)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), Point(mid_x - BloodSword::HalfTile, top_y)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("UP"), Point(mid_x - BloodSword::HalfTile, top_y)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_UP, id, id, id, id, id, mid_x - BloodSword::HalfTile, top_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -307,7 +307,7 @@ namespace BloodSword::Interface
 
         if (right)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("RIGHT")), Point(right_x, mid_y - BloodSword::HalfTile)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("RIGHT"), Point(right_x, mid_y - BloodSword::HalfTile)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_RIGHT, id, id, id, id, id, right_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -327,7 +327,7 @@ namespace BloodSword::Interface
 
         if (down)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), Point(mid_x - BloodSword::HalfTile, bottom_y)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), Point(mid_x - BloodSword::HalfTile, bottom_y)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_DOWN, id, id, id, id, id, mid_x - BloodSword::HalfTile, bottom_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -903,8 +903,8 @@ namespace BloodSword::Interface
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
         Scene::Elements assets = {
-            Scene::Element(Asset::Get(Asset::Map("CONFIRM")), location.X, location.Y + map_h),
-            Scene::Element(Asset::Get(Asset::Map("BACK")), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+            Scene::Element(Asset::Get("CONFIRM"), location.X, location.Y + map_h),
+            Scene::Element(Asset::Get("BACK"), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
                                          Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
@@ -1103,8 +1103,8 @@ namespace BloodSword::Interface
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
         Scene::Elements assets = {
-            Scene::Element(Asset::Get(Asset::Map("CONFIRM")), location.X, location.Y + map_h),
-            Scene::Element(Asset::Get(Asset::Map("BACK")), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+            Scene::Element(Asset::Get("CONFIRM"), location.X, location.Y + map_h),
+            Scene::Element(Asset::Get("BACK"), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
                                          Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
@@ -1317,7 +1317,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        Scene::Elements assets = {Scene::Element(Asset::Get(Asset::Map("BACK")), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+        Scene::Elements assets = {Scene::Element(Asset::Get("BACK"), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::BACK, id, id, id, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 

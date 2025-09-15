@@ -73,7 +73,7 @@ namespace BloodSword::Interface
 
             if (!after_battle)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }
@@ -452,14 +452,14 @@ namespace BloodSword::Interface
         // add button textures
         if (section.Battle.IsDefined())
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("FIGHT")), buttons.X, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("FIGHT"), buttons.X, buttons.Y));
 
             // fight button hotspot
             overlay.Add(Controls::Base(Controls::Type::FIGHT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("RIGHT")), buttons.X, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("RIGHT"), buttons.X, buttons.Y));
 
             // next button hotspot
             overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
@@ -472,7 +472,7 @@ namespace BloodSword::Interface
         if (heal)
         {
             // heal button icon and hotspot
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("HEAL")), buttons.X + num_buttons * button_spacing, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("HEAL"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
             overlay.Add(Controls::Base(Controls::Type::HEAL, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -484,7 +484,7 @@ namespace BloodSword::Interface
         if (spells)
         {
             // spells button icon and hotspot
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("SPELLS")), buttons.X + num_buttons * button_spacing, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("SPELLS"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
             overlay.Add(Controls::Base(Controls::Type::SPELLS, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -494,7 +494,7 @@ namespace BloodSword::Interface
         }
 
         // party information
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("INFO")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("INFO"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         overlay.Add(Controls::Base(Controls::Type::INFO, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -503,7 +503,7 @@ namespace BloodSword::Interface
         id++;
 
         // game functions
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("GAME")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("GAME"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         overlay.Add(Controls::Base(Controls::Type::GAME, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -512,17 +512,17 @@ namespace BloodSword::Interface
         id++;
 
         // exit button icon
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         // scroll button icons
         if (arrow_up)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), scroll_top.X, scroll_top.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("UP"), scroll_top.X, scroll_top.Y));
         }
 
         if (arrow_dn)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), scroll_bot.X, scroll_bot.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), scroll_bot.X, scroll_bot.Y));
         }
 
         if (arrow_up && arrow_dn)
@@ -608,14 +608,14 @@ namespace BloodSword::Interface
         // add button textures
         if (section.Battle.IsDefined())
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("FIGHT")), buttons.X, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("FIGHT"), buttons.X, buttons.Y));
 
             // fight button hotspot
             overlay.Add(Controls::Base(Controls::Type::FIGHT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("RIGHT")), buttons.X, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("RIGHT"), buttons.X, buttons.Y));
 
             // next button hotspot
             overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
@@ -628,7 +628,7 @@ namespace BloodSword::Interface
         if (items)
         {
             // items in the area
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("ITEMS")), buttons.X + num_buttons * button_spacing, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("ITEMS"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
             overlay.Add(Controls::Base(Controls::Type::ITEMS, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -640,7 +640,7 @@ namespace BloodSword::Interface
         if (heal)
         {
             // heal button icon and hotspot
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("HEAL")), buttons.X + num_buttons * button_spacing, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("HEAL"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
             overlay.Add(Controls::Base(Controls::Type::HEAL, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -652,7 +652,7 @@ namespace BloodSword::Interface
         if (spells)
         {
             // spells button icon and hotspot
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("SPELLS")), buttons.X + num_buttons * button_spacing, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("SPELLS"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
             overlay.Add(Controls::Base(Controls::Type::SPELLS, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -662,7 +662,7 @@ namespace BloodSword::Interface
         }
 
         // party information
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("INFO")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("INFO"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         overlay.Add(Controls::Base(Controls::Type::INFO, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -671,7 +671,7 @@ namespace BloodSword::Interface
         id++;
 
         // game functions
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("GAME")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("GAME"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         overlay.Add(Controls::Base(Controls::Type::GAME, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -680,17 +680,17 @@ namespace BloodSword::Interface
         id++;
 
         // exit button icon
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         // scroll button icons
         if (arrow_up)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), scroll_top.X, scroll_top.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("UP"), scroll_top.X, scroll_top.Y));
         }
 
         if (arrow_dn)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), scroll_bot.X, scroll_bot.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), scroll_bot.X, scroll_bot.Y));
         }
 
         if (arrow_up && arrow_dn)
@@ -801,14 +801,14 @@ namespace BloodSword::Interface
         // add button textures
         if (section.Battle.IsDefined())
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("FIGHT")), buttons.X, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("FIGHT"), buttons.X, buttons.Y));
 
             // next button hotspot
             overlay.Add(Controls::Base(Controls::Type::FIGHT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
         }
         else
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("RIGHT")), buttons.X, buttons.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("RIGHT"), buttons.X, buttons.Y));
 
             // next button hotspot
             overlay.Add(Controls::Base(Controls::Type::NEXT, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
@@ -819,7 +819,7 @@ namespace BloodSword::Interface
         id++;
 
         // game functions
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("GAME")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("GAME"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         overlay.Add(Controls::Base(Controls::Type::GAME, id, id - 1, id + 1, id, id, buttons.X + num_buttons * button_spacing, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -828,17 +828,17 @@ namespace BloodSword::Interface
         id++;
 
         // exit button icon
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), buttons.X + num_buttons * button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), buttons.X + num_buttons * button_spacing, buttons.Y));
 
         // scroll button icons
         if (arrow_up)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), scroll_top.X, scroll_top.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("UP"), scroll_top.X, scroll_top.Y));
         }
 
         if (arrow_dn)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), scroll_bot.X, scroll_bot.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), scroll_bot.X, scroll_bot.Y));
         }
 
         if (arrow_up && arrow_dn)
@@ -912,7 +912,7 @@ namespace BloodSword::Interface
         auto id = 0;
 
         // ending (trophy)
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("TROPHY")), buttons.X, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("TROPHY"), buttons.X, buttons.Y));
 
         overlay.Add(Controls::Base(Controls::Type::TROPHY, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -921,17 +921,17 @@ namespace BloodSword::Interface
         id++;
 
         // exit button icon
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), buttons.X + button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), buttons.X + button_spacing, buttons.Y));
 
         // scroll button icons
         if (arrow_up)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), scroll_top.X, scroll_top.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("UP"), scroll_top.X, scroll_top.Y));
         }
 
         if (arrow_dn)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), scroll_bot.X, scroll_bot.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), scroll_bot.X, scroll_bot.Y));
         }
 
         if (arrow_up && arrow_dn)
@@ -1005,7 +1005,7 @@ namespace BloodSword::Interface
         auto id = 0;
 
         // game functions
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("GAME")), buttons.X, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("GAME"), buttons.X, buttons.Y));
 
         overlay.Add(Controls::Base(Controls::Type::GAME, id, id, id + 1, id, id, buttons.X, buttons.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -1014,17 +1014,17 @@ namespace BloodSword::Interface
         id++;
 
         // exit button icon
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), buttons.X + button_spacing, buttons.Y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), buttons.X + button_spacing, buttons.Y));
 
         // scroll button icons
         if (arrow_up)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), scroll_top.X, scroll_top.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("UP"), scroll_top.X, scroll_top.Y));
         }
 
         if (arrow_dn)
         {
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), scroll_bot.X, scroll_bot.Y));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), scroll_bot.X, scroll_bot.Y));
         }
 
         if (arrow_up && arrow_dn)

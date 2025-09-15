@@ -119,16 +119,27 @@ namespace BloodSword::Fonts
         switch (id)
         {
         case Fonts::ID::CAPTION:
+
             font = Fonts::Caption;
+
             break;
+
         case Fonts::ID::NORMAL:
+
             font = Fonts::Normal;
+
             break;
+
         case Fonts::ID::FIXED:
+
             font = Fonts::Fixed;
+
             break;
+
         default:
+
             font = Fonts::Normal;
+
             break;
         }
 

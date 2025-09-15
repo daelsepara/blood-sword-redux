@@ -20,21 +20,21 @@ namespace BloodSword::Test
         auto ws = w + s;
 
         // sprites
-        auto warrior = Scene::Element(Asset::Get(Asset::Map("WARRIOR")), x, y);
+        auto warrior = Scene::Element(Asset::Get("WARRIOR"), x, y);
 
-        auto trickster = Scene::Element(Asset::Get(Asset::Map("TRICKSTER")), x + ws, y);
+        auto trickster = Scene::Element(Asset::Get("TRICKSTER"), x + ws, y);
 
-        auto sage = Scene::Element(Asset::Get(Asset::Map("SAGE")), x + ws * 2, y);
+        auto sage = Scene::Element(Asset::Get("SAGE"), x + ws * 2, y);
 
-        auto enchanter = Scene::Element(Asset::Get(Asset::Map("ENCHANTER")), x + ws * 3, y);
+        auto enchanter = Scene::Element(Asset::Get("ENCHANTER"), x + ws * 3, y);
 
-        auto up = Scene::Element(Asset::Get(Asset::Map("UP")), x, y + ws);
+        auto up = Scene::Element(Asset::Get("UP"), x, y + ws);
 
-        auto down = Scene::Element(Asset::Get(Asset::Map("DOWN")), x + ws, y + ws);
+        auto down = Scene::Element(Asset::Get("DOWN"), x + ws, y + ws);
 
-        auto left = Scene::Element(Asset::Get(Asset::Map("LEFT")), x + ws * 2, y + ws);
+        auto left = Scene::Element(Asset::Get("LEFT"), x + ws * 2, y + ws);
 
-        auto right = Scene::Element(Asset::Get(Asset::Map("RIGHT")), x + ws * 3, y + ws);
+        auto right = Scene::Element(Asset::Get("RIGHT"), x + ws * 3, y + ws);
 
         // text sprites
         auto text = Graphics::CreateText(graphics, "THE BATTLEPITS OF KRARTH\n\nEvery thirteen lunar months the Magi of Krarth hold a desperate contest to see which of them will rule that bleak and icy land. Teams of daring adventurers are sent down into the labyrinths that lie beneath the tundra, each searching for the Emblem of Victory that will win power for their patron.\n\nOnly one team can prevail. The others must die.", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 8 * ws - s);
@@ -231,16 +231,16 @@ namespace BloodSword::Test
 
             auto arrow_down = background_h < texture_h && offset < (texture_h - background_h);
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), x, y));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), x, y));
 
             if (arrow_up)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), scroll_x, map.DrawY));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get("UP"), scroll_x, map.DrawY));
             }
 
             if (arrow_down)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), scroll_x, scroll_y));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), scroll_x, scroll_y));
             }
 
             if (arrow_up || arrow_down)
@@ -465,11 +465,11 @@ namespace BloodSword::Test
 
             auto id = int(scene.Controls.size());
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad));
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("MOVE")), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize + pad));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("MOVE"), map.DrawX + map.TileSize, map.DrawY + map.ViewY * map.TileSize + pad));
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize + pad));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), map.DrawX + map.TileSize * 2, map.DrawY + map.ViewY * map.TileSize + pad));
 
             scene.Add(Controls::Base(Controls::Type::BACK, id, id, id + 1, id - map.ViewX, id, map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad, map.TileSize, map.TileSize, Color::Active));
 
@@ -709,7 +709,7 @@ namespace BloodSword::Test
 
             auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), x_adjust, bottom_y));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), x_adjust, bottom_y));
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, highlight));
 
@@ -1254,7 +1254,7 @@ namespace BloodSword::Test
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -1620,7 +1620,7 @@ namespace BloodSword::Test
 
             auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("EXIT")), x_adjust, bottom_y));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), x_adjust, bottom_y));
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, Color::Highlight));
 

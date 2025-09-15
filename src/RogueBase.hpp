@@ -410,13 +410,13 @@ namespace BloodSword::Rogue
             {
                 auto pointer_y = window_y - (BloodSword::TileSize + BloodSword::Pad);
 
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), pointer_x, pointer_y));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get("UP"), pointer_x, pointer_y));
             }
             else
             {
                 auto pointer_y = window_y + window_h + BloodSword::Pad;
 
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), pointer_x, pointer_y));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), pointer_x, pointer_y));
             }
 
             auto input = Input::RogueInput(graphics, {scene});

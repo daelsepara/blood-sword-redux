@@ -190,6 +190,18 @@ namespace BloodSword::Asset
         return texture;
     }
 
+    // get texture associated with the asset type string
+    SDL_Texture *Get(const char *asset)
+    {
+        return Asset::Get(Asset::Map(asset));
+    }
+
+    // get texture associated with the asset type string
+    SDL_Texture *Get(std::string asset)
+    {
+        return Asset::Get(Asset::Map(asset));
+    }
+
     // get texture associated with the asset type and modulate the color
     SDL_Texture *Get(Asset::Type asset, Uint8 alpha)
     {

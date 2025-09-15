@@ -550,7 +550,7 @@ namespace BloodSword::Interface
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
