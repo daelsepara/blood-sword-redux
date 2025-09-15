@@ -22,7 +22,7 @@ namespace BloodSword
 
     // maps object/type to a constant character string
     template <typename T>
-    using Mapping = BloodSword::UnorderedMap<T, const char *>;
+    using Mapping = BloodSword::UnorderedMap<T, std::string>;
 
     // maps object/type to an integer
     template <typename T>
@@ -30,13 +30,13 @@ namespace BloodSword
 
     // search for a constant string key in a map
     template <typename T>
-    T Find(BloodSword::Mapping<T> &unordered_map, const char *key)
+    T Find(BloodSword::Mapping<T> &unordered_map, std::string key)
     {
         auto result = T::NONE;
 
         for (auto &keys : unordered_map)
         {
-            if (std::strcmp(keys.second, key) == 0)
+            if (keys.second == key)
             {
                 result = keys.first;
 

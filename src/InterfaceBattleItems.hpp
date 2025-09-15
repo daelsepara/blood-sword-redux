@@ -332,14 +332,14 @@ namespace BloodSword::Interface
         auto captions = std::vector<std::string>();
 
         // take item
-        assets.push_back(Asset::Type::USE);
+        assets.push_back(Asset::Map("USE"));
 
         controls.push_back(Controls::Type::USE);
 
         captions.push_back("USE");
 
         // go back
-        assets.push_back(Asset::Type::BACK);
+        assets.push_back(Asset::Map("BACK"));
 
         controls.push_back(Controls::Type::BACK);
 
@@ -353,7 +353,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, character.Items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
+            auto selection = Interface::SelectIcons(graphics, background, character.Items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
             if (selection.size() == 1)
             {
@@ -408,7 +408,7 @@ namespace BloodSword::Interface
                             }
                             else if (targets.size() > 0)
                             {
-                                auto asset = item.Asset != Asset::Type::NONE ? item.Asset : Asset::Type::SHOOT;
+                                auto asset = item.Asset != Asset::NONE ? item.Asset : Asset::Map("SHOOT");
 
                                 auto target = Point(-1, -1);
 
@@ -440,9 +440,9 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                auto asset = Asset::Type::FIGHT;
+                                auto asset = Asset::Map("FIGHT");
 
-                                if (item.Asset != Asset::Type::NONE)
+                                if (item.Asset != Asset::NONE)
                                 {
                                     asset = item.Asset;
                                 }
@@ -550,7 +550,7 @@ namespace BloodSword::Interface
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 

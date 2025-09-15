@@ -79,17 +79,19 @@ namespace BloodSword::Interface
         {Character::Class::ENCHANTER, Controls::Type::ENCHANTER},
         {Character::Class::IMRAGARN, Controls::Type::IMRAGARN}};
 
-    Controls::Mapped<Asset::Type> BattleControls = {
-        {Controls::Type::MOVE, Asset::Type::MOVE},
-        {Controls::Type::FIGHT, Asset::Type::FIGHT},
-        {Controls::Type::SHOOT, Asset::Type::SHOOT},
-        {Controls::Type::SHURIKEN, Asset::Type::SHURIKEN},
-        {Controls::Type::QUARTERSTAFF, Asset::Type::QUARTERSTAFF},
-        {Controls::Type::SPELLS, Asset::Type::SPELLS},
-        {Controls::Type::DEFEND, Asset::Type::DEFEND},
-        {Controls::Type::FLEE, Asset::Type::FLEE},
-        {Controls::Type::ITEMS, Asset::Type::ITEMS},
-        {Controls::Type::BACK, Asset::Type::BACK}};
+    Controls::Mapped<Asset::Type> BattleControls = {};
+
+    BloodSword::UnorderedMap<Controls::Type, const char *> BattleControlsAssetNames = {
+        {Controls::Type::MOVE, "MOVE"},
+        {Controls::Type::FIGHT, "FIGHT"},
+        {Controls::Type::SHOOT, "SHOOT"},
+        {Controls::Type::SHURIKEN, "SHURIKEN"},
+        {Controls::Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Controls::Type::SPELLS, "SPELLS"},
+        {Controls::Type::DEFEND, "DEFEND"},
+        {Controls::Type::FLEE, "FLEE"},
+        {Controls::Type::ITEMS, "ITEMS"},
+        {Controls::Type::BACK, "BACK"}};
 
     Controls::Mapped<const char *> BattleControlsText = {
         {Controls::Type::MOVE, "MOVE"},
@@ -103,13 +105,14 @@ namespace BloodSword::Interface
         {Controls::Type::SHURIKEN, "SHOOT SHURIKEN"},
         {Controls::Type::BACK, "BACK"}};
 
-    BloodSword::UnorderedMap<Character::Class, Asset::Type> ClassAssets = {
-        {Character::Class::NONE, Asset::Type::NONE},
-        {Character::Class::WARRIOR, Asset::Type::WARRIOR},
-        {Character::Class::TRICKSTER, Asset::Type::TRICKSTER},
-        {Character::Class::SAGE, Asset::Type::SAGE},
-        {Character::Class::ENCHANTER, Asset::Type::ENCHANTER},
-        {Character::Class::IMRAGARN, Asset::Type::PERSON}};
+    BloodSword::UnorderedMap<Character::Class, Asset::Type> ClassAssets = {};
+
+    BloodSword::UnorderedMap<Character::Class, const char *> ClassAssetsNames = {
+        {Character::Class::WARRIOR, "WARRIOR"},
+        {Character::Class::TRICKSTER, "TRICKSTER"},
+        {Character::Class::SAGE, "SAGE"},
+        {Character::Class::ENCHANTER, "ENCHANTER"},
+        {Character::Class::IMRAGARN, "PERSON"}};
 
     // SKILL to STATUS mapping
     BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
@@ -136,25 +139,29 @@ namespace BloodSword::Interface
     SDL_Texture *NoSpells = nullptr;
 
     // dice assets
-    Asset::List Dice = {
-        Asset::Type::DICE1,
-        Asset::Type::DICE2,
-        Asset::Type::DICE3,
-        Asset::Type::DICE4,
-        Asset::Type::DICE5,
-        Asset::Type::DICE6};
+    Asset::List Dice = {};
 
-    Asset::List Numbers = {
-        Asset::Type::ZERO,
-        Asset::Type::ONE,
-        Asset::Type::TWO,
-        Asset::Type::THREE,
-        Asset::Type::FOUR,
-        Asset::Type::FIVE,
-        Asset::Type::SIX,
-        Asset::Type::SEVEN,
-        Asset::Type::EIGHT,
-        Asset::Type::NINE};
+    std::vector<const char *> DiceAssets = {
+        "DICE1",
+        "DICE2",
+        "DICE3",
+        "DICE4",
+        "DICE5",
+        "DICE6"};
+
+    Asset::List Numbers = {};
+
+    std::vector<const char *> NumbersNames = {
+        "ZERO",
+        "ONE",
+        "TWO",
+        "THREE",
+        "FOUR",
+        "FIVE",
+        "SIX",
+        "SEVEN",
+        "EIGHT",
+        "NINE"};
 
     const int BoxSize = 16;
 
@@ -249,9 +256,9 @@ namespace BloodSword::Interface
     {
         for (auto &skill : Skills::TypeMapping)
         {
-            auto active = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            auto active = Graphics::CreateText(graphics, skill.second.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-            auto inactive = Graphics::CreateText(graphics, skill.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
+            auto inactive = Graphics::CreateText(graphics, skill.second.c_str(), Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
 
             SkillCaptionsActive[skill.first] = active;
 
@@ -262,9 +269,9 @@ namespace BloodSword::Interface
 
         for (auto &spell : Spells::TypeMapping)
         {
-            auto active = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            auto active = Graphics::CreateText(graphics, spell.second.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-            auto inactive = Graphics::CreateText(graphics, spell.second, Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
+            auto inactive = Graphics::CreateText(graphics, spell.second.c_str(), Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
 
             SpellCaptionsActive[spell.first] = active;
 
@@ -324,6 +331,25 @@ namespace BloodSword::Interface
     void LoadTextures(Graphics::Base &graphics)
     {
         Asset::Load(graphics.Renderer, Interface::Settings["assets"]);
+
+        // get attribute to asset mapping
+        Attribute::MapAssets();
+
+        // get skill to asset mapping
+        Skills::MapAssets();
+
+        // get spell to asset mapping
+        Spells::MapAssets();
+
+        Items::MapCardAssets();
+
+        Asset::MapTypes(Interface::BattleControls, Interface::BattleControlsAssetNames);
+
+        Asset::MapTypes(Interface::ClassAssets, Interface::ClassAssetsNames);
+
+        Asset::MapTypes(Interface::Dice, Interface::DiceAssets);
+
+        Asset::MapTypes(Interface::Numbers, Interface::NumbersNames);
 
         Graphics::InitializeTextures(graphics);
 
@@ -513,7 +539,7 @@ namespace BloodSword::Interface
 
             box.VerifyAndAdd(Scene::Element(message, location_txt + Point(0, pad)));
 
-            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
+            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CONFIRM")), confirm));
 
             box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, confirm.X, confirm.Y, BloodSword::TileSize, BloodSword::TileSize, highlight));
 
@@ -805,7 +831,7 @@ namespace BloodSword::Interface
 
         if (texture)
         {
-            Interface::ScrollableImageBox(graphics, background, texture, width, height, x, y, bg_color, border, border_size, highlight, asset, Asset::Type::LEFT, Asset::Type::RIGHT, blur);
+            Interface::ScrollableImageBox(graphics, background, texture, width, height, x, y, bg_color, border, border_size, highlight, asset, Asset::Map("LEFT"), Asset::Map("RIGHT"), blur);
 
             BloodSword::Free(&texture);
         }
@@ -939,6 +965,7 @@ namespace BloodSword::Interface
                     switch (tile.Occupant)
                     {
                     case Map::Object::PLAYER:
+
                         if (tile.Id >= 0 && tile.Id < party.Count() && party.Count() > 0)
                         {
                             if (Engine::IsAlive(party[tile.Id]))
@@ -953,8 +980,11 @@ namespace BloodSword::Interface
                                 color = Color::Active;
                             }
                         }
+
                         break;
+
                     case Map::Object::ENEMY:
+
                         if (tile.Id >= 0 && tile.Id < enemies.Count() && enemies.Count() > 0)
                         {
                             if (Engine::IsAlive(enemies[tile.Id]))
@@ -966,11 +996,14 @@ namespace BloodSword::Interface
                                 color = Color::Highlight;
                             }
                         }
+
                         break;
+
                     case Map::Object::TEMPORARY_OBSTACLE:
+
                         if (tile.Lifetime > 0)
                         {
-                            if (tile.TemporaryAsset != Asset::Type::NONE)
+                            if (tile.TemporaryAsset != Asset::NONE)
                             {
                                 scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.TemporaryAsset), screen));
 
@@ -981,13 +1014,16 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            if (tile.Asset != Asset::Type::NONE)
+                            if (tile.Asset != Asset::NONE)
                             {
                                 scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                             }
                         }
+
                         break;
+
                     default:
+
                         break;
                     }
                 }
@@ -1010,7 +1046,7 @@ namespace BloodSword::Interface
                         color = Color::Highlight;
                     }
 
-                    if (tile.Asset != Asset::Type::NONE)
+                    if (tile.Asset != Asset::NONE)
                     {
                         scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                     }
@@ -1760,22 +1796,39 @@ namespace BloodSword::Interface
         switch (character.Class)
         {
         case Character::Class::WARRIOR:
+
             text = Graphics::RichText("You are a master of the fighting arts. You have better Fighting Prowess than any other character type, and when you strike a blow, you inflict more damage.\n\nThese advantages give you a real edge in any fight but you have none of the others' special skills. Also, because you follow the honourable traditions of your class, you must be careful to stay true to the code of chivalry.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+
             break;
+
         case Character::Class::TRICKSTER:
+
             text = Graphics::RichText("Some adventurers are honourable and prefer to face their foes in a straight fight. You live by your wits. If you can win by trickery or by shooting someone in the back, you will. You know how to wield a sword if you have to, but your main weapon is cunning.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+
             break;
+
         case Character::Class::SAGE:
+
             text = Graphics::RichText("Your upbringing has been in the spartan Monastery of Illumination on the barren island of Kaxos. There, you have studied the Mystic Way, a series of demanding spiritual disciplines combined with rigorous physical training.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+
             break;
+
         case Character::Class::ENCHANTER:
+
             text = Graphics::RichText("Forget the mundane arts of swordplay. You know that true power lies in the manipulation of occult powers of sorcery.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+
             break;
+
         case Character::Class::IMRAGARN:
+
             text = Graphics::RichText("You have been frozen in ice for almost a decade, since you entered the Battlepits with several companions as the champion of Magus Laglor.", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+
             break;
+
         default:
+
             text = Graphics::RichText("You have only one goal going into the Battlepits: emerge with the Emblem of Victory or die trying ...", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, w);
+
             break;
         }
 
@@ -1933,7 +1986,7 @@ namespace BloodSword::Interface
             {
                 if (scroll_up)
                 {
-                    scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), x_pad, y));
+                    scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), x_pad, y));
 
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_UP,
@@ -1945,7 +1998,7 @@ namespace BloodSword::Interface
 
                 if (scroll_dn)
                 {
-                    scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), x_pad, y + y_adjust));
+                    scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), x_pad, y + y_adjust));
 
                     scene.Add(Controls::Base(
                         Controls::Type::SCROLL_DOWN,
@@ -2075,7 +2128,7 @@ namespace BloodSword::Interface
 
         auto id = int(character.Skills.size());
 
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), screen.X + character.Skills.size() * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), screen.X + character.Skills.size() * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
 
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -2164,7 +2217,7 @@ namespace BloodSword::Interface
 
         auto y = screen.Y + row * (BloodSword::TileSize + BloodSword::HalfTile) + pad + BloodSword::HalfTile;
 
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x, y));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x, y));
 
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id - 1, id, col < 6 ? id - 6 : id, id, x, y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -2204,7 +2257,7 @@ namespace BloodSword::Interface
 
                     if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                     {
-                        auto asset = in_battle ? Asset::Type::CAST_SPELL : Asset::Type::CALL_TO_MIND;
+                        auto asset = in_battle ? Asset::Map("CAST SPELL") : Asset::Map("CALL TO MIND");
 
                         overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
@@ -2216,7 +2269,7 @@ namespace BloodSword::Interface
                     }
                     else if (spell.IsBattle && !spell.IsBasic())
                     {
-                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CALL_TO_MIND), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CALL TO MIND")), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                         overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
 
@@ -2272,7 +2325,7 @@ namespace BloodSword::Interface
 
                 auto rt = 0;
 
-                if (button != Controls::Type::NONE && asset != Asset::Type::NONE)
+                if (button != Controls::Type::NONE && asset != Asset::NONE)
                 {
                     rt = i < party.Count() ? i + 1 : i;
                 }
@@ -2294,7 +2347,7 @@ namespace BloodSword::Interface
         }
 
         // add last button if requested
-        if (button != Controls::Type::NONE && asset != Asset::Type::NONE)
+        if (button != Controls::Type::NONE && asset != Asset::NONE)
         {
             auto id = party.Count();
 
@@ -2340,7 +2393,7 @@ namespace BloodSword::Interface
     // choose character from a party
     Scene::Base CharacterList(Point origin, int w, int h, Party::Base &party, int popup_w, int popup_h, Uint32 background, Uint32 border, int border_size, bool back = true)
     {
-        auto asset = back ? Asset::Type::BACK : Asset::Type::NONE;
+        auto asset = back ? Asset::Map("BACK") : Asset::NONE;
 
         auto button = back ? Controls::Type::BACK : Controls::Type::NONE;
 
@@ -2777,7 +2830,7 @@ namespace BloodSword::Interface
 
         score = std::max(0, score);
 
-        auto character_offset = (target != Asset::Type::NONE) ? 3 : 1;
+        auto character_offset = (target != Asset::NONE) ? 3 : 1;
 
         auto origin_character = origin + Point(w - pad * character_offset - (character_offset * BloodSword::TileSize), pad);
 
@@ -2800,7 +2853,7 @@ namespace BloodSword::Interface
             // draw border
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
 
-            if (target != Asset::Type::NONE)
+            if (target != Asset::NONE)
             {
                 // add target icon
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), origin_target));
@@ -2810,7 +2863,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin_character));
 
             // set up icon
-            if (asset == Asset::Type::NONE)
+            if (asset == Asset::NONE)
             {
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(Attribute::Assets[attribute]), origin_type));
             }
@@ -2965,7 +3018,7 @@ namespace BloodSword::Interface
             modifier -= 2;
         }
 
-        return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::Type::NONE, attribute, roll, modifier, asset, in_battle, Item::Property::NONE, blur);
+        return Interface::Target(graphics, background, origin, w, h, border, border_size, character, Asset::NONE, attribute, roll, modifier, asset, in_battle, Item::Property::NONE, blur);
     }
 
     // test character [ATTRIBUTE]
@@ -2977,7 +3030,7 @@ namespace BloodSword::Interface
 
         auto origin = Point(graphics.Width - w, graphics.Height - h) / 2;
 
-        return Interface::Test(graphics, background, origin, w, h, Color::Active, BloodSword::Border, character, attribute, 2, 0, Asset::Type::NONE, false);
+        return Interface::Test(graphics, background, origin, w, h, Color::Active, BloodSword::Border, character, attribute, 2, 0, Asset::NONE, false);
     }
 
     // roll for damage
@@ -3568,9 +3621,9 @@ namespace BloodSword::Interface
 
             box.VerifyAndAdd(Scene::Element(message, Point(message_x, location.Y + pad)));
 
-            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), confirm));
+            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CONFIRM")), confirm));
 
-            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CANCEL), confirm + Point(TileSize + pad * 2, 0)));
+            box.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CANCEL")), confirm + Point(TileSize + pad * 2, 0)));
 
             box.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 1, 0, 0, confirm.X, confirm.Y, BloodSword::TileSize, BloodSword::TileSize, highlight));
 
@@ -3749,13 +3802,13 @@ namespace BloodSword::Interface
     // cast spell (no targets)
     bool Cast(Graphics::Base &graphics, Scene::Base &background, Point origin, int w, int h, Character::Base &caster, Spells::Type spell, bool in_battle, bool blur = true)
     {
-        return Interface::Cast(graphics, background, origin, w, h, caster, Asset::Type::NONE, spell, in_battle, blur);
+        return Interface::Cast(graphics, background, origin, w, h, caster, Asset::NONE, spell, in_battle, blur);
     }
 
     // cast spell (no targets)
     bool Cast(Graphics::Base &graphics, Scene::Base &background, Character::Base &caster, Spells::Type spell, bool in_battle, bool blur = true)
     {
-        return Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, caster, Asset::Type::NONE, spell, in_battle, blur);
+        return Interface::Cast(graphics, background, Point(0, 0), graphics.Width, graphics.Height, caster, Asset::NONE, spell, in_battle, blur);
     }
 
     bool Cast(Graphics::Base &graphics, Scene::Base &background, Character::Base &caster, Asset::Type target, Spells::Type spell, bool in_battle, bool blur = true)
@@ -3991,13 +4044,13 @@ namespace BloodSword::Interface
         auto partyx = (graphics.Width - (BloodSword::TileSize + BloodSword::Pad) * party_size + BloodSword::Pad) / 2;
 
         Asset::List assets = {
-            Asset::Type::LEFT,
-            Asset::Type::RIGHT,
-            Asset::Type::CHARACTER,
-            Asset::Type::INVENTORY,
-            Asset::Type::SKILLS,
-            Asset::Type::CONFIRM,
-            Asset::Type::BACK};
+            Asset::Map("LEFT"),
+            Asset::Map("RIGHT"),
+            Asset::Map("CHARACTER"),
+            Asset::Map("INVENTORY"),
+            Asset::Map("SKILLS"),
+            Asset::Map("CONFIRM"),
+            Asset::Map("BACK")};
 
         Controls::List controls = {
             Controls::Type::LEFT,
@@ -4589,7 +4642,7 @@ namespace BloodSword::Interface
             // stats location
             auto line = pad;
 
-            if (target != Asset::Type::NONE)
+            if (target != Asset::NONE)
             {
                 overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), asset));
 
@@ -4622,12 +4675,12 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(decrease), Point(button.X + offset, button.Y)));
 
             // confirm (icon)
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(button.X + offset * 2, button.Y)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CONFIRM")), Point(button.X + offset * 2, button.Y)));
 
             if (cancel)
             {
                 // cancel (icon)
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CANCEL), Point(button.X + offset * 3, button.Y)));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CANCEL")), Point(button.X + offset * 3, button.Y)));
             }
 
             // add boxes
@@ -4737,13 +4790,13 @@ namespace BloodSword::Interface
 
                                 if (endurance > 1)
                                 {
-                                    auto cost = Interface::GetNumber(graphics, background, "HOW MANY ENDURANCE TO SPEND?", 0, endurance - 1, character.Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+                                    auto cost = Interface::GetNumber(graphics, background, "HOW MANY ENDURANCE TO SPEND?", 0, endurance - 1, character.Asset, Asset::Map("HEAL"), Asset::Map("DAMAGE"));
 
                                     if (cost > 0)
                                     {
                                         Engine::GainEndurance(character, -cost, false);
 
-                                        auto score = cost * Interface::Roll(graphics, background, character.Asset, Asset::Type::HEALING, 1, -2).Sum;
+                                        auto score = cost * Interface::Roll(graphics, background, character.Asset, Asset::Map("HEALING"), 1, -2).Sum;
 
                                         done = !(score > 0);
 
@@ -4774,7 +4827,7 @@ namespace BloodSword::Interface
                                                         auto max_healing = std::min(score, party[target].Maximum(Attribute::Type::ENDURANCE) - party[target].Value(Attribute::Type::ENDURANCE));
 
                                                         // heal
-                                                        auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, max_healing, party[target].Asset, Asset::Type::HEAL, Asset::Type::DAMAGE);
+                                                        auto heal = Interface::GetNumber(graphics, background, heal_string.c_str(), 0, max_healing, party[target].Asset, Asset::Map("HEAL"), Asset::Map("DAMAGE"));
 
                                                         if (heal > 0)
                                                         {
@@ -4887,7 +4940,7 @@ namespace BloodSword::Interface
         {
             auto overlay = Scene::Base();
 
-            overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+            overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Map("CONFIRM"));
 
             // title
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
@@ -4995,7 +5048,7 @@ namespace BloodSword::Interface
             {
                 auto overlay = Scene::Base();
 
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Map("CONFIRM"));
 
                 // title
                 overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
@@ -5076,7 +5129,7 @@ namespace BloodSword::Interface
 
         overlay.Add(Scene::Element(screen, popup_w, popup_h, background, border, border_size));
 
-        auto size_icons = (assets.size() + ((button != Controls::Type::NONE && asset != Asset::Type::NONE) ? 1 : 0)) * (BloodSword::TileSize + pad) - pad;
+        auto size_icons = (assets.size() + ((button != Controls::Type::NONE && asset != Asset::NONE) ? 1 : 0)) * (BloodSword::TileSize + pad) - pad;
 
         auto offset = popup_w > size_icons ? (popup_w - size_icons) / 2 : 0;
 
@@ -5092,7 +5145,7 @@ namespace BloodSword::Interface
 
                 auto rt = 0;
 
-                if (button != Controls::Type::NONE && asset != Asset::Type::NONE)
+                if (button != Controls::Type::NONE && asset != Asset::NONE)
                 {
                     rt = i < assets.size() ? i + 1 : i;
                 }
@@ -5110,7 +5163,7 @@ namespace BloodSword::Interface
         }
 
         // add last button if requested
-        if (button != Controls::Type::NONE && asset != Asset::Type::NONE)
+        if (button != Controls::Type::NONE && asset != Asset::NONE)
         {
             auto id = assets.size();
 
@@ -5181,7 +5234,7 @@ namespace BloodSword::Interface
 
         auto last_control = (min_select == 1 && max_select == 1) ? Controls::Type::NONE : Controls::Type::CONFIRM;
 
-        auto last_asset = (min_select == 1 && max_select == 1) ? Asset::Type::NONE : Asset::Type::CONFIRM;
+        auto last_asset = (min_select == 1 && max_select == 1) ? Asset::NONE : Asset::Map("CONFIRM");
 
         while (!done)
         {
@@ -5353,7 +5406,7 @@ namespace BloodSword::Interface
 
                 if (stake != Character::Class::NONE)
                 {
-                    auto staked = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[stake].Quantity(to_stake), stake_asset, Asset::Type::UP, Asset::Type::DOWN);
+                    auto staked = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[stake].Quantity(to_stake), stake_asset, Asset::Map("UP"), Asset::Map("DOWN"));
 
                     if (staked > 0)
                     {
@@ -5436,7 +5489,7 @@ namespace BloodSword::Interface
 
                 if (from != Character::Class::NONE)
                 {
-                    auto collected = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[from].Quantity(to_collect), collect_asset, Asset::Type::UP, Asset::Type::DOWN);
+                    auto collected = Interface::GetNumber(graphics, background, stake_message.c_str(), 0, party[from].Quantity(to_collect), collect_asset, Asset::Map("UP"), Asset::Map("DOWN"));
 
                     if (collected > 0)
                     {
@@ -5506,7 +5559,7 @@ namespace BloodSword::Interface
 
                     auto max_food = (limit != Item::Unlimited) ? food_left : max_heal;
 
-                    auto eaten = Interface::GetNumber(graphics, background, "HOW MANY PORTIONS TO EAT?", 0, std::min(max_food, max_heal), food, Asset::Type::UP, Asset::Type::DOWN);
+                    auto eaten = Interface::GetNumber(graphics, background, "HOW MANY PORTIONS TO EAT?", 0, std::min(max_food, max_heal), food, Asset::Map("UP"), Asset::Map("DOWN"));
 
                     if (eaten > 0)
                     {
@@ -5552,7 +5605,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, "SET BATTLE ORDER", assets, values, {}, party.Count(), party.Count(), Asset::Type::NONE, false, true);
+            auto selection = Interface::SelectIcons(graphics, background, "SET BATTLE ORDER", assets, values, {}, party.Count(), party.Count(), Asset::NONE, false, true);
 
             if (selection.size() == party.Count())
             {
@@ -5634,7 +5687,7 @@ namespace BloodSword::Interface
                 {
                     std::string message = character.Name + ":" + " " + std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " POINT" + (gain > 1 ? "S" : "") + " TO ONE ATTRIBUTE (PERMANENT)";
 
-                    auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+                    auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true);
 
                     if (selection.size() == 1)
                     {
@@ -5826,7 +5879,7 @@ namespace BloodSword::Interface
 
                         std::string message = "HOW MANY " + Items::Defaults[item].Name + (items_left > 1 ? "S" : "") + " TO TAKE?";
 
-                        auto taken = Interface::GetNumber(graphics, background, message.c_str(), 0, std::min(max_take, party[taker].SpaceLeft()), asset, Asset::Type::UP, Asset::Type::DOWN);
+                        auto taken = Interface::GetNumber(graphics, background, message.c_str(), 0, std::min(max_take, party[taker].SpaceLeft()), asset, Asset::Map("UP"), Asset::Map("DOWN"));
 
                         if (taken > 0)
                         {
@@ -5946,7 +5999,7 @@ namespace BloodSword::Interface
 
             auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
 
             overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -6037,7 +6090,7 @@ namespace BloodSword::Interface
 
         if (display)
         {
-            damage = Interface::Roll(graphics, background, character.Asset, Asset::Type::DAMAGE, roll, modifier).Sum;
+            damage = Interface::Roll(graphics, background, character.Asset, Asset::Map("DAMAGE"), roll, modifier).Sum;
         }
         else
         {
@@ -6135,12 +6188,12 @@ namespace BloodSword::Interface
         auto result = Engine::RollResult();
 
         Asset::List assets = {
-            Asset::Type::DICE1,
-            Asset::Type::DICE2,
-            Asset::Type::DICE3,
-            Asset::Type::DICE4,
-            Asset::Type::DICE5,
-            Asset::Type::DICE6};
+            Asset::Map("DICE1"),
+            Asset::Map("DICE2"),
+            Asset::Map("DICE3"),
+            Asset::Map("DICE4"),
+            Asset::Map("DICE5"),
+            Asset::Map("DICE6")};
 
         std::vector<int> values = {0, 1, 2, 3, 4, 5};
 
@@ -6148,7 +6201,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, {}, number, number, Asset::Type::NONE, false, false);
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, {}, number, number, Asset::NONE, false, false);
 
             if (selection.size() == number)
             {
@@ -6283,7 +6336,7 @@ namespace BloodSword::Interface
             {
                 auto overlay = Scene::Base();
 
-                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Type::CONFIRM);
+                overlay = Interface::CharacterList(Point(0, 0), graphics.Width, graphics.Height, party, popup_w, popup_h, Color::Background, Color::Active, BloodSword::Border, Controls::Type::CONFIRM, Asset::Map("CONFIRM"));
 
                 // title
                 overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
@@ -6348,7 +6401,7 @@ namespace BloodSword::Interface
 
                                         std::string message = "HOW MANY " + Items::Defaults[item].Name + (item_count > 1 ? "S" : "") + " TO USE?";
 
-                                        counts[input.Current] = Interface::GetNumber(graphics, background, message.c_str(), 1, item_count, Asset::Type::ITEMS, Asset::Type::UP, Asset::Type::DOWN);
+                                        counts[input.Current] = Interface::GetNumber(graphics, background, message.c_str(), 1, item_count, Asset::Map("ITEMS"), Asset::Map("UP"), Asset::Map("DOWN"));
                                     }
                                     else
                                     {
@@ -6530,45 +6583,58 @@ namespace BloodSword::Interface
     {
         if (Engine::IsAlive(character))
         {
-            auto effect = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0).Sum;
+            auto effect = Interface::Roll(graphics, background, character.Asset, Asset::Map("DRINK"), 1, 0).Sum;
 
             switch (effect)
             {
             case 1:
+
                 Interface::MessageBox(graphics, background, "NOTHING HAPPENS", Color::Inactive);
 
                 break;
+
             case 2:
+
                 Interface::MessageBox(graphics, background, "+1 FIGHTING PROWESS", Color::Active);
 
                 Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::FIGHTING_PROWESS, 1);
 
                 break;
+
             case 3:
+
                 Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY INVULNERABILITY", Color::Active);
 
                 character.Add(Character::Status::TEMPORARY_INVULNERABILITY);
 
                 break;
+
             case 4:
+
                 Interface::MessageBox(graphics, background, "YOU ARE WEAKENED", Color::Highlight);
 
                 character.Add(Character::Status::WEAKENED);
 
                 break;
+
             case 5:
+
                 Interface::MessageBox(graphics, background, "-1 AWARENESS", Color::Highlight);
 
                 Interface::PermanentAttributeGain(graphics, background, character, Attribute::Type::AWARENESS, -1);
 
                 break;
+
             case 6:
+
                 Interface::MessageBox(graphics, background, "YOU GAIN TEMPORARY STRENGTH", Color::Active);
 
                 character.Add(Character::Status::STRONG);
 
                 break;
+
             default:
+
                 break;
             }
         }
@@ -6962,13 +7028,13 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
 
             // render trophy icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::LargePad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("TROPHY")), Point(iconx, panely + BloodSword::LargePad)));
 
             // render completion text
             overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::TriplePad)));
 
             // render confirmation button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(iconx, confirmy)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CONFIRM")), Point(iconx, confirmy)));
 
             overlay.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, iconx, confirmy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -7097,7 +7163,7 @@ namespace BloodSword::Interface
                     {
                         auto characterx = boxx + BloodSword::Pad + 5 * space;
 
-                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), Point(characterx, charactery)));
+                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("RIGHT")), Point(characterx, charactery)));
                     }
                 }
                 else
@@ -7105,7 +7171,7 @@ namespace BloodSword::Interface
                     // add dummy icon
                     auto characterx = boxx + BloodSword::Pad;
 
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CHARACTER), Point(characterx, charactery)));
+                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CHARACTER")), Point(characterx, charactery)));
                 }
 
                 // game mode button
@@ -7114,7 +7180,7 @@ namespace BloodSword::Interface
                 auto dn = id + 1;
 
                 // check if game has been completed
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::GamesList[game].Completed ? Asset::Type::TROPHY : asset), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::GamesList[game].Completed ? Asset::Map("TROPHY") : asset), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
 
                 overlay.Add(Controls::Base(Controls::Type::CHOICE, id, id, id, up, dn, boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -7125,7 +7191,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(GameMode, Point(boxx + boxw - (BloodSword::Width(GameMode) - BloodSword::Pixel), controlsy + BloodSword::Pad)));
 
             // add back button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), Point(boxx - BloodSword::MidPad + 1, controlsy)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), Point(boxx - BloodSword::MidPad + 1, controlsy)));
 
             overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, id - 1, id, boxx - BloodSword::MidPad + 1, controlsy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -7335,7 +7401,7 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
 
             // render trophy icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::TROPHY), Point(iconx, panely + BloodSword::LargePad)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("TROPHY")), Point(iconx, panely + BloodSword::LargePad)));
 
             // render rankings text
             overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::TriplePad)));
@@ -7344,7 +7410,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(stats, Point(statsx, panely + BloodSword::TileSize + BloodSword::HugePad + BloodSword::Height(texture))));
 
             // render confirmation button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::CONFIRM), Point(iconx, confirmy)));
+            overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("CONFIRM")), Point(iconx, confirmy)));
 
             overlay.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, iconx, confirmy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -7357,7 +7423,7 @@ namespace BloodSword::Interface
                     // confirm completed
                     if (Interface::Confirm(graphics, background, "SAVE THIS PARTY TO COMPLETE THE GAME?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true))
                     {
-                        saved = Interface::LoadSaveGame(graphics, background, new_party, Controls::Type::SAVE, Asset::Type::SAVE);
+                        saved = Interface::LoadSaveGame(graphics, background, new_party, Controls::Type::SAVE, Asset::Map("SAVE"));
                     }
 
                     done = true;
@@ -7452,7 +7518,7 @@ namespace BloodSword::Interface
                 {
                     auto overlay = Scene::Base();
 
-                    Interface::AddScrollableTextureBox(overlay, panel_text_x, y, panel_text_w, panel_h, Color::Background, Color::Active, BloodSword::Border, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, button, Asset::Type::LEFT, Asset::Type::RIGHT, scroll_speed);
+                    Interface::AddScrollableTextureBox(overlay, panel_text_x, y, panel_text_w, panel_h, Color::Background, Color::Active, BloodSword::Border, texture, texture_h, text_x, text_y, text_h, offset, controls_x, controls_y, button, Asset::Map("LEFT"), Asset::Map("RIGHT"), scroll_speed);
 
                     if (has_image)
                     {
@@ -7606,7 +7672,7 @@ namespace BloodSword::Interface
 
                         if (choice >= 0 && choice < options)
                         {
-                            Interface::Topic(graphics, topics[choice], Asset::Type::SWORDTHRUST, true);
+                            Interface::Topic(graphics, topics[choice], Asset::Map("SWORDTHRUST"), true);
                         }
                     }
                     else if (Input::IsUp(input))
@@ -7644,11 +7710,11 @@ namespace BloodSword::Interface
         reload = false;
 
         Asset::List assets = {
-            Asset::Type::BATTLE_ORDER,
-            Asset::Type::LOAD,
-            Asset::Type::SAVE,
-            Asset::Type::ABOUT,
-            Asset::Type::BACK};
+            Asset::Map("BATTLE ORDER"),
+            Asset::Map("LOAD"),
+            Asset::Map("SAVE"),
+            Asset::Map("ABOUT"),
+            Asset::Map("BACK")};
 
         Controls::List controls = {
             Controls::Type::BATTLE_ORDER,
@@ -7675,7 +7741,7 @@ namespace BloodSword::Interface
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true);
 
             if (selection.size() == 1)
             {
@@ -7727,7 +7793,7 @@ namespace BloodSword::Interface
                 }
                 else if (input == Controls::Type::SAVE)
                 {
-                    done = Interface::LoadSaveGame(graphics, background, saved_party, Controls::Type::SAVE, Asset::Type::SAVE);
+                    done = Interface::LoadSaveGame(graphics, background, saved_party, Controls::Type::SAVE, Asset::Map("SAVE"));
 
                     if (done)
                     {
@@ -7736,7 +7802,7 @@ namespace BloodSword::Interface
                 }
                 else if (input == Controls::Type::LOAD)
                 {
-                    done = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Type::LOAD);
+                    done = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Map("LOAD"));
 
                     if (done)
                     {
@@ -7749,7 +7815,7 @@ namespace BloodSword::Interface
                 }
                 else if (input == Controls::Type::ABOUT)
                 {
-                    Interface::Topics(graphics, Asset::Type::SWORDTHRUST);
+                    Interface::Topics(graphics, Asset::Map("SWORDTHRUST"));
                 }
                 else
                 {

@@ -17,14 +17,14 @@ namespace BloodSword::Rogue
         auto captions = std::vector<std::string>();
 
         // take item
-        assets.push_back(Asset::Type::USE);
+        assets.push_back(Asset::Map("USE"));
 
         controls.push_back(Controls::Type::TAKE);
 
         captions.push_back("TAKE");
 
         // go back
-        assets.push_back(Asset::Type::BACK);
+        assets.push_back(Asset::Map("BACK"));
 
         controls.push_back(Controls::Type::BACK);
 
@@ -36,7 +36,7 @@ namespace BloodSword::Rogue
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+            auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true);
 
             if (selection.size() == 1)
             {
@@ -141,7 +141,7 @@ namespace BloodSword::Rogue
 
                         auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
 
                         overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -273,7 +273,7 @@ namespace BloodSword::Rogue
 
                 auto enemies = Party::Base();
 
-                auto smeaborg = Generate::NPC("SMEABORG", Skills::Type::NONE, Skills::Type::NONE, {Skills::Type::SLOW_MURDER}, 9, 9, 8, 45, 2, 5, 0, 1000, Asset::Type::SMEABORG);
+                auto smeaborg = Generate::NPC("SMEABORG", Skills::Type::NONE, Skills::Type::NONE, {Skills::Type::SLOW_MURDER}, 9, 9, 8, 45, 2, 5, 0, 1000, Asset::Map("SMEABORD"));
 
                 enemies.Add(smeaborg);
 
@@ -289,7 +289,7 @@ namespace BloodSword::Rogue
 
                 auto height = BloodSword::Wrap;
 
-                Interface::ScrollableTextBox(graphics, background, Fonts::Normal, text, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
+                Interface::ScrollableTextBox(graphics, background, Fonts::Normal, text, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Map("SWORDTHRUST"), true);
 
                 Rogue::Battle(graphics, background, rogue, enemy_id);
 
@@ -394,7 +394,7 @@ namespace BloodSword::Rogue
                 if (items[id].Has(Item::Property::EQUIPPED))
                 {
                     // unequip weapon / armour
-                    assets.push_back(Asset::Type::CANCEL);
+                    assets.push_back(Asset::Map("CANCEL"));
 
                     controls.push_back(Controls::Type::UNEQUIP);
 
@@ -403,7 +403,7 @@ namespace BloodSword::Rogue
                 else
                 {
                     // equip weapon / armour
-                    assets.push_back(Asset::Type::CONFIRM);
+                    assets.push_back(Asset::Map("CONFIRM"));
 
                     controls.push_back(Controls::Type::EQUIP);
 
@@ -416,7 +416,7 @@ namespace BloodSword::Rogue
                 if (items[id].Has(Item::Property::LIQUID))
                 {
                     // drink
-                    assets.push_back(Asset::Type::DRINK);
+                    assets.push_back(Asset::Map("DRINK"));
 
                     controls.push_back(Controls::Type::DRINK);
 
@@ -425,7 +425,7 @@ namespace BloodSword::Rogue
                 else if (items[id].Has(Item::Property::READABLE))
                 {
                     // read / open scroll
-                    assets.push_back(Asset::Type::READ);
+                    assets.push_back(Asset::Map("READ"));
 
                     controls.push_back(Controls::Type::READ);
 
@@ -434,7 +434,7 @@ namespace BloodSword::Rogue
                 else if (items[id].Has(Item::Property::EDIBLE))
                 {
                     // read / open scroll
-                    assets.push_back(Asset::Type::FOOD);
+                    assets.push_back(Asset::Map("FOOD"));
 
                     controls.push_back(Controls::Type::EAT);
 
@@ -443,7 +443,7 @@ namespace BloodSword::Rogue
                 else
                 {
                     // default: use
-                    assets.push_back(Asset::Type::USE);
+                    assets.push_back(Asset::Map("USE"));
 
                     controls.push_back(Controls::Type::USE);
 
@@ -456,7 +456,7 @@ namespace BloodSword::Rogue
                 if (items[id].Contains == Item::Type::GOLD && items[id].Quantity > 0 && Engine::Count(party) > 1 && !in_battle)
                 {
                     // money
-                    assets.push_back(Asset::Type::MONEY);
+                    assets.push_back(Asset::Map("MONEY"));
 
                     controls.push_back(Controls::Type::MONEY);
 
@@ -467,7 +467,7 @@ namespace BloodSword::Rogue
                 else if (items[id].Contains == Item::Type::ARROW && items[id].Quantity > 0 && Engine::Count(party) > 1 && !in_battle)
                 {
                     // arrows
-                    assets.push_back(Asset::Type::QUIVER);
+                    assets.push_back(Asset::Map("QUIVER"));
 
                     controls.push_back(Controls::Type::QUIVER);
 
@@ -478,7 +478,7 @@ namespace BloodSword::Rogue
                 else if (items[id].Contains == Item::Type::CHARGE && items[id].Quantity > 0 && in_battle)
                 {
                     // arrows
-                    assets.push_back(Asset::Type::STEEL_SCEPTRE);
+                    assets.push_back(Asset::Map("STEEL SCEPTRE"));
 
                     controls.push_back(Controls::Type::USE);
 
@@ -491,7 +491,7 @@ namespace BloodSword::Rogue
             if (Engine::Count(party) > 1 && !items[id].Has(Item::Property::CANNOT_TRADE) && !in_battle)
             {
                 // trade
-                assets.push_back(Asset::Type::TRADE);
+                assets.push_back(Asset::Map("TRADE"));
 
                 controls.push_back(Controls::Type::TRADE);
 
@@ -500,14 +500,14 @@ namespace BloodSword::Rogue
 
             if (!items[id].Has(Item::Property::CANNOT_DROP) && party.Room != Room::None && !in_battle)
             {
-                assets.push_back(Asset::Type::DROP);
+                assets.push_back(Asset::Map("DROP"));
 
                 controls.push_back(Controls::Type::DROP);
 
                 captions.push_back("DROP");
             }
 
-            assets.push_back(Asset::Type::BACK);
+            assets.push_back(Asset::Map("BACK"));
 
             controls.push_back(Controls::Type::BACK);
 
@@ -519,7 +519,7 @@ namespace BloodSword::Rogue
 
             while (!done)
             {
-                auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false);
+                auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
                 if (selection.size() == 1)
                 {
@@ -611,7 +611,7 @@ namespace BloodSword::Rogue
 
                                 auto transfer_item = Item::Type::GOLD;
 
-                                auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Type::MONEY, Asset::Type::UP, Asset::Type::DOWN);
+                                auto transfer = Interface::GetNumber(graphics, background, transfer_money.c_str(), 0, character.Quantity(transfer_item), Asset::Map("MONEY"), Asset::Map("UP"), Asset::Map("DOWN"));
 
                                 if (transfer > 0)
                                 {
@@ -653,7 +653,7 @@ namespace BloodSword::Rogue
 
                                     auto transfer_item = Item::Type::ARROW;
 
-                                    auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Type::QUIVER, Asset::Type::UP, Asset::Type::DOWN);
+                                    auto transfer = Interface::GetNumber(graphics, background, transfer_arrows.c_str(), 0, character.Quantity(transfer_item), Asset::Map("QUIVER"), Asset::Map("UP"), Asset::Map("DOWN"));
 
                                     if (transfer > 0)
                                     {
@@ -811,7 +811,7 @@ namespace BloodSword::Rogue
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::BACK), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("BACK")), x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 

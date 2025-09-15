@@ -295,7 +295,7 @@ namespace BloodSword::Rogue
         // size of FoV illumination
         auto fov_size = BloodSword::TileSize - fov_offset * 2;
 
-        auto items_default = Asset::Get(Asset::Type::ITEMS);
+        auto items_default = Asset::Get(Asset::Map("ITEMS"));
 
         for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {
@@ -358,11 +358,11 @@ namespace BloodSword::Rogue
 
                         case Map::Object::TEMPORARY_OBSTACLE:
 
-                            if (tile.Lifetime > 0 && tile.TemporaryAsset != Asset::Type::NONE)
+                            if (tile.Lifetime > 0 && tile.TemporaryAsset != Asset::NONE)
                             {
                                 scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.TemporaryAsset), screen));
                             }
-                            else if (tile.Asset != Asset::Type::NONE)
+                            else if (tile.Asset != Asset::NONE)
                             {
                                 scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                             }
@@ -401,7 +401,7 @@ namespace BloodSword::Rogue
                             break;
                         }
                     }
-                    else if (tile.Asset != Asset::Type::NONE)
+                    else if (tile.Asset != Asset::NONE)
                     {
                         scene.VerifyAndAdd(Scene::Element(Asset::Get(tile.Asset), screen));
                     }
@@ -508,9 +508,9 @@ namespace BloodSword::Rogue
 
                     if (party.Origin() == Point(x, y))
                     {
-                        surface_asset = Asset::Surface(Asset::Type::WHITE_SPACE, Color::Highlight);
+                        surface_asset = Asset::Surface(Asset::Map("WHITE SPACE"), Color::Highlight);
                     }
-                    else if (tile.Explored && tile.Asset != Asset::Type::NONE)
+                    else if (tile.Explored && tile.Asset != Asset::NONE)
                     {
                         surface_asset = Asset::Surface(tile.Asset);
                     }
@@ -556,7 +556,7 @@ namespace BloodSword::Rogue
 
                 offset = std::min(std::max(0, offset), BloodSword::Height(texture) - text_h);
 
-                Interface::ScrollableImageBox(graphics, background, texture, width, height, x, y, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, Asset::Type::UP, Asset::Type::DOWN, true, offset);
+                Interface::ScrollableImageBox(graphics, background, texture, width, height, x, y, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Map("SWORDTHRUST"), Asset::Map("UP"), Asset::Map("DOWN"), true, offset);
 
                 BloodSword::Free(&texture);
             }
@@ -598,13 +598,13 @@ namespace BloodSword::Rogue
         auto panely = (graphics.Height - panelh) / 2;
 
         Asset::List assets = {
-            Asset::Type::LEFT,
-            Asset::Type::RIGHT,
-            Asset::Type::CHARACTER,
-            Asset::Type::INVENTORY,
-            Asset::Type::SKILLS,
-            Asset::Type::STATUS,
-            Asset::Type::BACK};
+            Asset::Map("LEFT"),
+            Asset::Map("RIGHT"),
+            Asset::Map("CHARACTER"),
+            Asset::Map("INVENTORY"),
+            Asset::Map("SKILLS"),
+            Asset::Map("STATUS"),
+            Asset::Map("BACK")};
 
         Controls::List controls = {
             Controls::Type::LEFT,
@@ -887,14 +887,14 @@ namespace BloodSword::Rogue
         auto &party = rogue.Party;
 
         Asset::List assets = {
-            Asset::Type::CHARACTER,
-            Asset::Type::MAP,
-            Asset::Type::BATTLE_ORDER,
-            Asset::Type::LOAD,
-            Asset::Type::SAVE,
-            Asset::Type::ABOUT,
-            Asset::Type::EXIT,
-            Asset::Type::BACK};
+            Asset::Map("CHARACTER"),
+            Asset::Map("MAP"),
+            Asset::Map("BATTLE ORDER"),
+            Asset::Map("LOAD"),
+            Asset::Map("SAVE"),
+            Asset::Map("ABOUT"),
+            Asset::Map("EXIT"),
+            Asset::Map("BACK")};
 
         Controls::List controls = {
             Controls::Type::PARTY,
@@ -926,7 +926,7 @@ namespace BloodSword::Rogue
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, message, assets, values, captions, 1, 1, Asset::Type::NONE, false, true);
+            auto selection = Interface::SelectIcons(graphics, background, message, assets, values, captions, 1, 1, Asset::NONE, false, true);
 
             if (selection.size() == 1)
             {

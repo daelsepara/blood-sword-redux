@@ -44,7 +44,7 @@ namespace BloodSword::Character
 
         std::string Name = std::string();
 
-        Asset::Type Asset = Asset::Type::NONE;
+        Asset::Type Asset = Asset::NONE;
 
         Skills::Type Fight = Skills::Type::NONE;
 
@@ -106,9 +106,9 @@ namespace BloodSword::Character
         Base(const char *name,
              Character::Class character_class) : Base(name, character_class, {}, {}, BloodSword::MaximumMoves, 2) {}
 
-        Base(Character::Class character_class, int rank) : Base(Character::ClassMapping[character_class], character_class, {}, {}, BloodSword::MaximumMoves, rank) {}
+        Base(Character::Class character_class, int rank) : Base(Character::ClassMapping[character_class].c_str(), character_class, {}, {}, BloodSword::MaximumMoves, rank) {}
 
-        Base(Character::Class character_class) : Base(Character::ClassMapping[character_class], character_class, {}, {}, BloodSword::MaximumMoves, 2) {}
+        Base(Character::Class character_class) : Base(Character::ClassMapping[character_class].c_str(), character_class, {}, {}, BloodSword::MaximumMoves, 2) {}
 
         Base(const char *name,
              Attributes::List attributes,
@@ -903,7 +903,7 @@ namespace BloodSword::Character
 
         character.ControlType = !data["control_type"].is_null() ? Character::MapControlType(std::string(data["control_type"])) : Character::ControlType::NONE;
 
-        character.Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::Type::NONE;
+        character.Asset = !data["asset"].is_null() ? Asset::Map(std::string(data["asset"])) : Asset::NONE;
 
         character.Fight = !data["fight"].is_null() ? Skills::Map(std::string(data["fight"])) : Skills::Type::NONE;
 

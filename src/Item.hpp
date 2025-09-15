@@ -67,7 +67,7 @@ namespace BloodSword::Item
         int Limit = Item::Unlimited;
 
         // item asset
-        Asset::Type Asset = Asset::Type::NONE;
+        Asset::Type Asset = Asset::NONE;
 
         // item name
         std::string Name;
@@ -110,71 +110,43 @@ namespace BloodSword::Item
              Item::Properties properties,
              Item::Type contains,
              int quantity,
-             int limit) : Attributes(attributes),
+             int limit,
+             int asset) : Attributes(attributes),
                           Properties(properties),
                           Type(type),
                           Contains(contains),
                           Quantity(quantity),
                           Limit(limit),
+                          Asset(asset),
                           Name(name) {}
 
         Base(const char *name,
              Item::Type type,
              BloodSword::IntMapping<Attribute::Type> attributes,
              Item::Properties properties,
-             Item::Type contains,
-             int quantity) : Attributes(attributes),
-                             Properties(properties),
-                             Type(type),
-                             Contains(contains),
-                             Quantity(quantity),
-                             Name(name) {}
-
-        Base(const char *name,
-             Item::Type type,
-             BloodSword::IntMapping<Attribute::Type> attributes,
-             Item::Properties properties,
-             Item::Type contains,
-             int quantity, Asset::Type asset) : Base(name, type, attributes, properties, contains, quantity) { this->Asset = asset; }
-
-        Base(const char *name,
-             Item::Type type,
-             Item::Properties properties,
-             Item::Type contains,
-             int quantity) : Base(name, type, {}, properties, contains, quantity) {}
+             int quantity,
+             int limit,
+             int asset) : Attributes(attributes),
+                          Properties(properties),
+                          Type(type),
+                          Quantity(quantity),
+                          Limit(limit),
+                          Asset(asset),
+                          Name(name) {}
 
         Base(const char *name,
              Item::Type type,
              Item::Properties properties,
              Item::Type contains,
              int quantity,
-             Asset::Type asset) : Base(name, type, {}, properties, contains, quantity) { this->Asset = asset; }
-
-        Base(const char *name,
-             Item::Type type,
-             Item::Properties properties,
-             Item::Type contains,
-             int quantity,
-             int limit) : Base(name, type, {}, properties, contains, quantity, limit) {}
-
-        Base(const char *name,
-             Item::Type type,
-             BloodSword::IntMapping<Attribute::Type> attributes,
-             Item::Properties properties) : Base(name,
-                                                 type,
-                                                 attributes,
-                                                 properties,
-                                                 Item::Type::NONE, 1) {}
-
-        Base(const char *name,
-             Item::Type type,
-             BloodSword::IntMapping<Attribute::Type> attributes,
-             Item::Properties properties,
-             Asset::Type asset) : Base(name, type, attributes, properties) { this->Asset = asset; }
-
-        Base(const char *name,
-             Item::Type type,
-             Item::Properties properties) : Base(name, type, {}, properties, Item::Type::NONE, 1) {}
+             int limit,
+             Asset::Type asset) : Properties(properties),
+                                  Type(type),
+                                  Contains(contains),
+                                  Quantity(quantity),
+                                  Limit(limit),
+                                  Asset(asset),
+                                  Name(name) {}
 
         // check if item has this property
         bool Has(Item::Property property)
@@ -595,7 +567,7 @@ namespace BloodSword::Item
 
         item.Limit = !data["limit"].is_null() ? int(data["limit"]) : Item::Unlimited;
 
-        item.Asset = !data["asset"].is_null() ? Asset::Map(data["asset"]) : Asset::Type::NONE;
+        item.Asset = !data["asset"].is_null() ? Asset::Map(data["asset"]) : Asset::NONE;
 
         item.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string();
 
@@ -728,14 +700,21 @@ namespace BloodSword::Items
         Item::CardType::ACE_OF_RINGS,
         Item::CardType::BUFFOON};
 
-    Asset::List CardAssets = {
-        Asset::Type::KING_DIAMONDS,
-        Asset::Type::ACE_DIAMONDS,
-        Asset::Type::ACE_CLUBS,
-        Asset::Type::ACE_HEARTS,
-        Asset::Type::CARD_JOKER};
+    Asset::List CardAssets = {};
+
+    std::vector<const char *> CardStrings = {
+        "KING DIAMONDS",
+        "ACE DIAMONDS",
+        "ACE CLUBS",
+        "ACE HEARTS",
+        "CARD JOKER"};
 
     std::vector<int> KalugenValues = {0, 1, 2, 3, 4};
+
+    void MapCardAssets()
+    {
+        Asset::MapTypes(Items::CardAssets, Items::CardStrings);
+    }
 
     // load [INVENTORY] from json data
     Items::Inventory Load(nlohmann::json &data)

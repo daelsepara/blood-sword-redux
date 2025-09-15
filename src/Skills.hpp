@@ -94,28 +94,35 @@ namespace BloodSword::Skills
         Skills::Type::LEVITATION,
         Skills::Type::EXORCISM};
 
-    BloodSword::UnorderedMap<Skills::Type, Asset::Type> Assets = {
-        {Skills::Type::NONE, Asset::Type::NONE},
-        {Skills::Type::ARCHERY, Asset::Type::ARCHERY},
-        {Skills::Type::DODGING, Asset::Type::DODGING},
-        {Skills::Type::QUARTERSTAFF, Asset::Type::QUARTERSTAFF},
-        {Skills::Type::HEALING, Asset::Type::HEALING},
-        {Skills::Type::ESP, Asset::Type::ESP},
-        {Skills::Type::PARANORMAL_SIGHT, Asset::Type::PARANORMAL_SIGHT},
-        {Skills::Type::LEVITATION, Asset::Type::LEVITATION},
-        {Skills::Type::EXORCISM, Asset::Type::EXORCISM},
-        {Skills::Type::SPELLS, Asset::Type::SPELLS},
-        {Skills::Type::CALL_TO_MIND, Asset::Type::CALL_TO_MIND},
-        {Skills::Type::CAST_SPELL, Asset::Type::CAST_SPELL},
-        {Skills::Type::SHURIKEN, Asset::Type::SHURIKEN},
-        {Skills::Type::IGNORE_ARMOUR, Asset::Type::IGNORE_ARMOUR},
-        {Skills::Type::PARALYZING_TOUCH, Asset::Type::GHASTLY_TOUCH},
-        {Skills::Type::POISONED_DAGGER, Asset::Type::POISONED_DAGGER},
-        {Skills::Type::SLOW_MURDER, Asset::Type::MISTS_OF_DEATH},
-        {Skills::Type::RUSTY_WEAPON, Asset::Type::RUSTY_WEAPON},
-        {Skills::Type::BROKEN_WEAPON, Asset::Type::BROKEN_WEAPON},
-        {Skills::Type::POISONED_BITE, Asset::Type::FANGS},
-        {Skills::Type::RETRIBUTIVE_FIRE, Asset::Type::FIRE_SHIELD}};
+    BloodSword::UnorderedMap<Skills::Type, Asset::Type> Assets = {};
+
+    BloodSword::UnorderedMap<Skills::Type, const char *> AssetNames = {
+        {Skills::Type::NONE, "NONE"},
+        {Skills::Type::ARCHERY, "ARCHERY"},
+        {Skills::Type::DODGING, "DODGING"},
+        {Skills::Type::QUARTERSTAFF, "QUARTERSTAFF"},
+        {Skills::Type::HEALING, "HEALING"},
+        {Skills::Type::ESP, "ESP"},
+        {Skills::Type::PARANORMAL_SIGHT, "PARANORMAL SIGHT"},
+        {Skills::Type::LEVITATION, "LEVITATION"},
+        {Skills::Type::EXORCISM, "EXORCISM"},
+        {Skills::Type::SPELLS, "SPELLS"},
+        {Skills::Type::CALL_TO_MIND, "CALL TO MIND"},
+        {Skills::Type::CAST_SPELL, "CAST SPELL"},
+        {Skills::Type::SHURIKEN, "SHURIKEN"},
+        {Skills::Type::IGNORE_ARMOUR, "IGNORE ARMOUR"},
+        {Skills::Type::PARALYZING_TOUCH, "GHASTLY TOUCH"},
+        {Skills::Type::POISONED_DAGGER, "POISONED DAGGER"},
+        {Skills::Type::SLOW_MURDER, "MISTS OF DEATH"},
+        {Skills::Type::RUSTY_WEAPON, "RUSTY WEAPON"},
+        {Skills::Type::BROKEN_WEAPON, "BROKEN WEAPON"},
+        {Skills::Type::POISONED_BITE, "FANGS"},
+        {Skills::Type::RETRIBUTIVE_FIRE, "FIRE SHIELD"}};
+
+    void MapAssets()
+    {
+        Asset::MapTypes(Skills::Assets, Skills::AssetNames);
+    }
 
     Skills::Type Map(const char *skill)
     {

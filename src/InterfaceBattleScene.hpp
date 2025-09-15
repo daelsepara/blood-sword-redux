@@ -271,7 +271,7 @@ namespace BloodSword::Interface
         // add controls to scene
         if (left)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::LEFT), Point(left_x, mid_y - BloodSword::HalfTile)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("LEFT")), Point(left_x, mid_y - BloodSword::HalfTile)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_LEFT, id, id, id, id, id, left_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -291,7 +291,7 @@ namespace BloodSword::Interface
 
         if (up)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), Point(mid_x - BloodSword::HalfTile, top_y)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), Point(mid_x - BloodSword::HalfTile, top_y)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_UP, id, id, id, id, id, mid_x - BloodSword::HalfTile, top_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -306,7 +306,7 @@ namespace BloodSword::Interface
 
         if (right)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::RIGHT), Point(right_x, mid_y - BloodSword::HalfTile)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("RIGHT")), Point(right_x, mid_y - BloodSword::HalfTile)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_RIGHT, id, id, id, id, id, right_x, mid_y - BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -326,7 +326,7 @@ namespace BloodSword::Interface
 
         if (down)
         {
-            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), Point(mid_x - BloodSword::HalfTile, bottom_y)));
+            scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), Point(mid_x - BloodSword::HalfTile, bottom_y)));
 
             scene.Add(Controls::Base(Controls::Type::MAP_DOWN, id, id, id, id, id, mid_x - BloodSword::HalfTile, bottom_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -487,13 +487,13 @@ namespace BloodSword::Interface
         // exits
         auto exits = !battle.Map.Find(Map::Object::EXIT).IsNone();
 
-        Asset::List asset_list = {Asset::Type::EXIT};
+        Asset::List asset_list = {Asset::Map("EXIT")};
 
         Controls::List controls_list = {Controls::Type::EXIT};
 
         if (battle.Map.ViewX < battle.Map.Width || battle.Map.ViewY < battle.Map.Height)
         {
-            asset_list.push_back(Asset::Type::CENTER);
+            asset_list.push_back(Asset::Map("CENTER"));
 
             controls_list.push_back(Controls::Type::CENTER);
         }
@@ -503,13 +503,13 @@ namespace BloodSword::Interface
             // can move
             if (Move::Available(battle.Map, origin) && !character.Is(Character::Status::ENTANGLED) && !ranged)
             {
-                asset_list.push_back(Asset::Type::MOVE);
+                asset_list.push_back(Asset::Map("MOVE"));
 
                 controls_list.push_back(Controls::Type::MOVE);
             }
 
             // defend
-            asset_list.push_back(Asset::Type::DEFEND);
+            asset_list.push_back(Asset::Map("DEFEND"));
 
             controls_list.push_back(Controls::Type::DEFEND);
 
@@ -522,14 +522,14 @@ namespace BloodSword::Interface
                 if ((player_fighter || enemy_fighter) && !ranged)
                 {
                     // can fight
-                    asset_list.push_back(Asset::Type::FIGHT);
+                    asset_list.push_back(Asset::Map("FIGHT"));
 
                     controls_list.push_back(Controls::Type::FIGHT);
 
                     // has quarterstaff skill
                     if (character.Has(Skills::Type::QUARTERSTAFF) && character.IsArmed(Item::Type::QUARTERSTAFF))
                     {
-                        asset_list.push_back(Asset::Type::QUARTERSTAFF);
+                        asset_list.push_back(Asset::Map("QUARTERSTAFF"));
 
                         controls_list.push_back(Interface::ActionControls[Skills::Type::QUARTERSTAFF]);
                     }
@@ -544,11 +544,11 @@ namespace BloodSword::Interface
                     // can shoot
                     if (character.Shoot == Skills::Type::SHURIKEN)
                     {
-                        asset_list.push_back(Asset::Type::SHURIKEN);
+                        asset_list.push_back(Asset::Map("SHURIKEN"));
                     }
                     else
                     {
-                        asset_list.push_back(Asset::Type::SHOOT);
+                        asset_list.push_back(Asset::Map("SHOOT"));
                     }
 
                     controls_list.push_back(Interface::ActionControls[character.Shoot]);
@@ -557,21 +557,21 @@ namespace BloodSword::Interface
                 // can cast spells
                 if (character.Has(Skills::Type::SPELLS) && !ranged)
                 {
-                    asset_list.push_back(Asset::Type::SPELLS);
+                    asset_list.push_back(Asset::Map("SPELLS"));
 
                     controls_list.push_back(Interface::ActionControls[Skills::Type::SPELLS]);
                 }
 
                 if (is_player && exits && !battle.Has(Battle::Condition::CANNOT_FLEE) && ((Engine::CanFlee(battle.Map, party, id) && !ranged) || character.Has(Character::Status::INVISIBLE)))
                 {
-                    asset_list.push_back(Asset::Type::FLEE);
+                    asset_list.push_back(Asset::Map("FLEE"));
 
                     controls_list.push_back(Controls::Type::FLEE);
                 }
 
                 if (is_player && character.Items.size() > 0 && !ranged)
                 {
-                    asset_list.push_back(Asset::Type::ITEMS);
+                    asset_list.push_back(Asset::Map("ITEMS"));
 
                     controls_list.push_back(Controls::Type::ITEMS);
                 }
@@ -902,8 +902,8 @@ namespace BloodSword::Interface
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
         Scene::Elements assets = {
-            Scene::Element(Asset::Get(Asset::Type::CONFIRM), location.X, location.Y + map_h),
-            Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+            Scene::Element(Asset::Get(Asset::Map("CONFIRM")), location.X, location.Y + map_h),
+            Scene::Element(Asset::Get(Asset::Map("BACK")), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
                                          Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
@@ -1102,8 +1102,8 @@ namespace BloodSword::Interface
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
         Scene::Elements assets = {
-            Scene::Element(Asset::Get(Asset::Type::CONFIRM), location.X, location.Y + map_h),
-            Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+            Scene::Element(Asset::Get(Asset::Map("CONFIRM")), location.X, location.Y + map_h),
+            Scene::Element(Asset::Get(Asset::Map("BACK")), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::CONFIRM, id, id, id + 1, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active),
                                          Controls::Base(Controls::Type::BACK, id + 1, id - 1, id + 1, id + 1 - battle.Map.ViewX, id + 1, location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
@@ -1179,7 +1179,7 @@ namespace BloodSword::Interface
                                 // add location
                                 origins.push_back(control.Map);
 
-                                battle.Map[control.Map].Asset = Asset::Type::SELECT;
+                                battle.Map[control.Map].Asset = Asset::Map("SELECT");
 
                                 regenerate_scene = true;
 
@@ -1195,7 +1195,7 @@ namespace BloodSword::Interface
                             // remove location
                             origins.erase(origins.begin() + remove);
 
-                            battle.Map[control.Map].Asset = Asset::Type::NONE;
+                            battle.Map[control.Map].Asset = Asset::NONE;
 
                             regenerate_scene = true;
 
@@ -1227,7 +1227,7 @@ namespace BloodSword::Interface
                         {
                             if (battle.Map.IsValid(origins[i]))
                             {
-                                battle.Map[origins[i]].Asset = Asset::Type::NONE;
+                                battle.Map[origins[i]].Asset = Asset::NONE;
                             }
                         }
 
@@ -1316,7 +1316,7 @@ namespace BloodSword::Interface
 
         auto map_h = battle.Map.ViewY * battle.Map.TileSize;
 
-        Scene::Elements assets = {Scene::Element(Asset::Get(Asset::Type::BACK), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
+        Scene::Elements assets = {Scene::Element(Asset::Get(Asset::Map("BACK")), location.X + BloodSword::TileSize + BloodSword::Pad, location.Y + map_h)};
 
         Controls::Collection controls = {Controls::Base(Controls::Type::BACK, id, id, id, id - battle.Map.ViewX, id, location.X, location.Y + map_h, battle.Map.TileSize, battle.Map.TileSize, Color::Active)};
 

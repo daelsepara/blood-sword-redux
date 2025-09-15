@@ -198,7 +198,7 @@ namespace BloodSword::Battlepits
                     // carve out inner room area
                     map[point].Type = Map::Object::PASSABLE;
 
-                    map[point].Asset = Asset::Type::NONE;
+                    map[point].Asset = Asset::NONE;
 
                     map[point].Room = room_id;
                 }
@@ -207,7 +207,7 @@ namespace BloodSword::Battlepits
                     // do not overwrite tunnels
                     map[point].Type = Map::Object::OBSTACLE;
 
-                    map[point].Asset = Asset::Type::WALL;
+                    map[point].Asset = Asset::Map("WALL");
                 }
             }
         }
@@ -230,7 +230,7 @@ namespace BloodSword::Battlepits
 
                 map[point].Asset = asset;
 
-                map[point].TemporaryAsset = Asset::Type::NONE;
+                map[point].TemporaryAsset = Asset::NONE;
 
                 map[point].Lifetime = Map::Unlimited;
 
@@ -255,7 +255,7 @@ namespace BloodSword::Battlepits
                 {
                     map[point].Type = Map::Object::PASSABLE;
 
-                    map[point].Asset = Asset::Type::NONE;
+                    map[point].Asset = Asset::NONE;
                 }
                 else
                 {
@@ -345,55 +345,55 @@ namespace BloodSword::Battlepits
 
         if (tl && tr && bl && br)
         {
-            tile.Asset = Asset::Type::FOUR_CORNERS;
+            tile.Asset = Asset::Map("FOUR CORNERS");
         }
         else if (tr && tl && bl)
         {
-            tile.Asset = Asset::Type::TOP_LEFT_CORNERS;
+            tile.Asset = Asset::Map("TOP LEFT CORNERS");
         }
         else if (tl && tr && br)
         {
-            tile.Asset = Asset::Type::TOP_RIGHT_CORNERS;
+            tile.Asset = Asset::Map("TOP RIGHT CORNERS");
         }
         else if (tl && bl && br)
         {
-            tile.Asset = Asset::Type::BOTTOM_LEFT_CORNERS;
+            tile.Asset = Asset::Map("BOTTOM LEFT CORNERS");
         }
         else if (bl && br && tr)
         {
-            tile.Asset = Asset::Type::BOTTOM_RIGHT_CORNERS;
+            tile.Asset = Asset::Map("BOTTOM RIGHT CORNERS");
         }
         else if (tl && tr)
         {
-            tile.Asset = Asset::Type::TOP_CORNERS;
+            tile.Asset = Asset::Map("TOP CORNERS");
         }
         else if (bl && br)
         {
-            tile.Asset = Asset::Type::BOTTOM_CORNERS;
+            tile.Asset = Asset::Map("BOTTOM CORNERS");
         }
         else if (tl && bl)
         {
-            tile.Asset = Asset::Type::LEFT_CORNERS;
+            tile.Asset = Asset::Map("LEFT CORNERS");
         }
         else if (tr && br)
         {
-            tile.Asset = Asset::Type::RIGHT_CORNERS;
+            tile.Asset = Asset::Map("RIGHT CORNERS");
         }
         else if (tl)
         {
-            tile.Asset = Asset::Type::TOP_LEFT_CORNER;
+            tile.Asset = Asset::Map("TOP LEFT CORNER");
         }
         else if (tr)
         {
-            tile.Asset = Asset::Type::TOP_RIGHT_CORNER;
+            tile.Asset = Asset::Map("TOP RIGHT CORNER");
         }
         else if (bl)
         {
-            tile.Asset = Asset::Type::BOTTOM_LEFT_CORNER;
+            tile.Asset = Asset::Map("BOTTOM LEFT CORNER");
         }
         else if (br)
         {
-            tile.Asset = Asset::Type::BOTTOM_RIGHT_CORNER;
+            tile.Asset = Asset::Map("BOTTOM RIGHT CORNER");
         }
     }
 
@@ -421,146 +421,146 @@ namespace BloodSword::Battlepits
 
         if (top && left && right)
         {
-            tile.Asset = Asset::Type::BORDER_BOTTOM_OPEN;
+            tile.Asset = Asset::Map("BORDER BOTTOM OPEN");
         }
         else if (top && right && bottom)
         {
-            tile.Asset = Asset::Type::BORDER_LEFT_OPEN;
+            tile.Asset = Asset::Map("BORDER LEFT OPEN");
         }
         else if (left && right && bottom)
         {
-            tile.Asset = Asset::Type::BORDER_TOP_OPEN;
+            tile.Asset = Asset::Map("BORDER TOP OPEN");
         }
         else if (top && left && bottom)
         {
-            tile.Asset = Asset::Type::BORDER_RIGHT_OPEN;
+            tile.Asset = Asset::Map("BORDER RIGHT OPEN");
         }
         else if (top && left)
         {
             if (Filled(map, {x + 1, y + 1}))
             {
-                tile.Asset = Asset::Type::TOP_LEFT_ELBOW;
+                tile.Asset = Asset::Map("TOP LEFT ELBOW");
             }
             else if (!(top_edge && left_edge))
             {
-                tile.Asset = Asset::Type::BORDER_TOP_LEFT;
+                tile.Asset = Asset::Map("BORDER TOP LEFT");
             }
         }
         else if (top && right)
         {
             if (Filled(map, {x - 1, y + 1}))
             {
-                tile.Asset = Asset::Type::TOP_RIGHT_ELBOW;
+                tile.Asset = Asset::Map("TOP RIGHT ELBOW");
             }
             else if (!(top_edge && right_edge))
             {
-                tile.Asset = Asset::Type::BORDER_TOP_RIGHT;
+                tile.Asset = Asset::Map("BORDER TOP RIGHT");
             }
         }
         else if (bottom && right)
         {
             if (Filled(map, {x - 1, y - 1}))
             {
-                tile.Asset = Asset::Type::BOTTOM_RIGHT_ELBOW;
+                tile.Asset = Asset::Map("BOTTOM RIGHT ELBOW");
             }
             else if (!(bottom_edge && right_edge))
             {
-                tile.Asset = Asset::Type::BORDER_BOTTOM_RIGHT;
+                tile.Asset = Asset::Map("BORDER BOTTOM RIGHT");
             }
         }
         else if (bottom && left)
         {
             if (Filled(map, {x + 1, y - 1}))
             {
-                tile.Asset = Asset::Type::BOTTOM_LEFT_ELBOW;
+                tile.Asset = Asset::Map("BOTTOM LEFT ELBOW");
             }
             else if (!(bottom_edge && left_edge))
             {
-                tile.Asset = Asset::Type::BORDER_BOTTOM_LEFT;
+                tile.Asset = Asset::Map("BORDER BOTTOM LEFT");
             }
         }
         else if (top && bottom)
         {
-            tile.Asset = Asset::Type::BORDER_HORIZONTAL;
+            tile.Asset = Asset::Map("BORDER HORIZONTAL");
         }
         else if (left && right)
         {
-            tile.Asset = Asset::Type::BORDER_VERTICAL;
+            tile.Asset = Asset::Map("BORDER VERTICAL");
         }
         else if (top)
         {
             if (Filled(map, {x - 1, y + 1}) && Filled(map, {x + 1, y + 1}))
             {
-                tile.Asset = Asset::Type::TOP_BOTTOM_CORNERS;
+                tile.Asset = Asset::Map("TOP BOTTOM CORNERS");
             }
             else if (Filled(map, {x - 1, y + 1}))
             {
-                tile.Asset = Asset::Type::TOP_BOTTOM_LEFT_CORNER;
+                tile.Asset = Asset::Map("TOP BOTTOM LEFT CORNER");
             }
             else if (Filled(map, {x + 1, y + 1}))
             {
-                tile.Asset = Asset::Type::TOP_BOTTOM_RIGHT_CORNER;
+                tile.Asset = Asset::Map("TOP BOTTOM RIGHT CORNER");
             }
             else if (!top_edge)
             {
-                tile.Asset = Asset::Type::BORDER_TOP;
+                tile.Asset = Asset::Map("BORDER TOP");
             }
         }
         else if (bottom)
         {
             if (Filled(map, {x - 1, y - 1}) && Filled(map, {x + 1, y - 1}))
             {
-                tile.Asset = Asset::Type::BOTTOM_TOP_CORNERS;
+                tile.Asset = Asset::Map("BOTTOM TOP CORNERS");
             }
             else if (Filled(map, {x - 1, y - 1}))
             {
-                tile.Asset = Asset::Type::BOTTOM_TOP_LEFT_CORNER;
+                tile.Asset = Asset::Map("BOTTOM TOP LEFT CORNER");
             }
             else if (Filled(map, {x + 1, y - 1}))
             {
-                tile.Asset = Asset::Type::BOTTOM_TOP_RIGHT_CORNER;
+                tile.Asset = Asset::Map("BOTTOM TOP RIGHT CORNER");
             }
             else if (!bottom_edge)
             {
-                tile.Asset = Asset::Type::BORDER_BOTTOM;
+                tile.Asset = Asset::Map("BORDER BOTTOM");
             }
         }
         else if (left)
         {
             if (Filled(map, {x + 1, y - 1}) && Filled(map, {x + 1, y + 1}))
             {
-                tile.Asset = Asset::Type::LEFT_RIGHT_CORNERS;
+                tile.Asset = Asset::Map("LEFT RIGHT CORNERS");
             }
             else if (Filled(map, {x + 1, y - 1}))
             {
-                tile.Asset = Asset::Type::LEFT_TOP_RIGHT_CORNER;
+                tile.Asset = Asset::Map("LEFT TOP RIGHT CORNER");
             }
             else if (Filled(map, {x + 1, y + 1}))
             {
-                tile.Asset = Asset::Type::LEFT_BOTTOM_RIGHT_CORNER;
+                tile.Asset = Asset::Map("LEFT BOTTOM RIGHT CORNER");
             }
             else if (!left_edge)
             {
-                tile.Asset = Asset::Type::BORDER_LEFT;
+                tile.Asset = Asset::Map("BORDER LEFT");
             }
         }
         else if (right)
         {
             if (Filled(map, {x - 1, y - 1}) && Filled(map, {x - 1, y + 1}))
             {
-                tile.Asset = Asset::Type::RIGHT_LEFT_CORNERS;
+                tile.Asset = Asset::Map("RIGHT LEFT CORNERS");
             }
             else if (Filled(map, {x - 1, y - 1}))
             {
-                tile.Asset = Asset::Type::RIGHT_TOP_LEFT_CORNER;
+                tile.Asset = Asset::Map("RIGHT TOP LEFT CORNER");
             }
             else if (Filled(map, {x - 1, y + 1}))
             {
-                tile.Asset = Asset::Type::RIGHT_BOTTOM_LEFT_CORNER;
+                tile.Asset = Asset::Map("RIGHT BOTTOM LEFT CORNER");
             }
             else if (!right_edge)
             {
-                tile.Asset = Asset::Type::BORDER_RIGHT;
+                tile.Asset = Asset::Map("BORDER RIGHT");
             }
         }
         else
@@ -598,7 +598,7 @@ namespace BloodSword::Battlepits
 
                     if (top || left || right || bottom || top_right || top_left || bottom_left || bottom_right)
                     {
-                        tile.Asset = Asset::Type::WALL;
+                        tile.Asset = Asset::Map("WALL");
 
                         tile.Type = Map::Object::OBSTACLE;
                     }
@@ -634,7 +634,7 @@ namespace BloodSword::Battlepits
         rooms.clear();
 
         // clear entire map
-        Battlepits::ClearMap(map, Asset::Type::NONE);
+        Battlepits::ClearMap(map, Asset::NONE);
 
         for (auto r = 0; r < max_rooms; r++)
         {

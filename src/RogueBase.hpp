@@ -149,7 +149,7 @@ namespace BloodSword::Rogue
                 Graphics::RenderAsset(surface, surface_stats, stats_rect);
 
                 // add icon (blur if dead)
-                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? Asset::Surface(character.Asset) : Asset::Surface(Asset::Type::DEAD);
+                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? Asset::Surface(character.Asset) : Asset::Surface(Asset::Map("DEAD"));
 
                 stats_rect.x = (surface->w - BloodSword::TileSize) / 2;
 
@@ -163,7 +163,7 @@ namespace BloodSword::Rogue
 
                 if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::MELEE) && Engine::IsAlive(character))
                 {
-                    auto melee = Asset::Surface(Asset::Type::FIGHT);
+                    auto melee = Asset::Surface(Asset::Map("FIGHT"));
 
                     if (melee)
                     {
@@ -178,15 +178,15 @@ namespace BloodSword::Rogue
 
                     if (character.Has(Skills::Type::ARCHERY))
                     {
-                        ranged = Asset::Surface(Asset::Type::ARCHERY);
+                        ranged = Asset::Surface(Asset::Map("ARCHERY"));
                     }
                     else if (character.Has(Skills::Type::SHURIKEN))
                     {
-                        ranged = Asset::Surface(Asset::Type::SHURIKEN);
+                        ranged = Asset::Surface(Asset::Map("SHURIKEN"));
                     }
                     else
                     {
-                        ranged = Asset::Surface(Asset::Type::SHOOT);
+                        ranged = Asset::Surface(Asset::Map("SHOOT"));
                     }
 
                     if (ranged)
@@ -201,7 +201,7 @@ namespace BloodSword::Rogue
                 {
                     stats_rect.x = surface->w - (BloodSword::TileSize + BloodSword::Pad);
 
-                    auto defend = Asset::Surface(Asset::Type::DEFEND);
+                    auto defend = Asset::Surface(Asset::Map("DEFEND"));
 
                     if (defend)
                     {
@@ -400,13 +400,13 @@ namespace BloodSword::Rogue
             {
                 auto pointer_y = window_y - (BloodSword::TileSize + BloodSword::Pad);
 
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::UP), pointer_x, pointer_y));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("UP")), pointer_x, pointer_y));
             }
             else
             {
                 auto pointer_y = window_y + window_h + BloodSword::Pad;
 
-                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Type::DOWN), pointer_x, pointer_y));
+                scene.VerifyAndAdd(Scene::Element(Asset::Get(Asset::Map("DOWN")), pointer_x, pointer_y));
             }
 
             auto input = Input::RogueInput(graphics, {scene});
@@ -497,7 +497,7 @@ namespace BloodSword::Rogue
 
                 tile.Type = Map::Object::PASSABLE;
 
-                tile.Asset = Asset::Type::NONE;
+                tile.Asset = Asset::NONE;
 
                 rogue.Triggers.erase(rogue.Triggers.begin() + trigger);
             }

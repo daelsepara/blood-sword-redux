@@ -37,7 +37,7 @@ namespace BloodSword::SpriteSheet
 
                 for (const auto &[asset, name] : Asset::TypeMapping)
                 {
-                    if (asset != Asset::Type::NONE)
+                    if (asset != Asset::NONE)
                     {
                         auto surface_asset = Asset::Surface(asset);
 

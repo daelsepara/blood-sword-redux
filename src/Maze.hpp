@@ -68,7 +68,7 @@ namespace BloodSword::Maze
     {
         auto tile = (p1 + p2) / 2;
 
-        map.Put(tile, Map::Object::PASSABLE, Asset::Type::NONE);
+        map.Put(tile, Map::Object::PASSABLE, Asset::NONE, -1);
     }
 
     // remove location from the list
@@ -104,11 +104,11 @@ namespace BloodSword::Maze
             {
                 if (y % 2 == 0 || x % 2 == 0)
                 {
-                    map.Put(x, y, Map::Object::OBSTACLE, Asset::Type::WALL);
+                    map.Put(x, y, Map::Object::OBSTACLE, Asset::Map("WALL"), -1);
                 }
                 else
                 {
-                    map.Put(x, y, Map::Object::NONE, Asset::Type::NONE);
+                    map.Put(x, y, Map::Object::NONE, Asset::NONE, -1);
 
                     unvisited.push_back(Point(x, y));
                 }
@@ -122,7 +122,7 @@ namespace BloodSword::Maze
 
         visited.push_back(current);
 
-        map.Put(current, Map::Object::PASSABLE, Asset::Type::NONE);
+        map.Put(current, Map::Object::PASSABLE, Asset::NONE, -1);
 
         // generate maze
         while (unvisited.size() != 0)
@@ -136,7 +136,7 @@ namespace BloodSword::Maze
 
                 Maze::Remove(unvisited, neighbor);
 
-                map.Put(neighbor, Map::Object::PASSABLE, Asset::Type::NONE);
+                map.Put(neighbor, Map::Object::PASSABLE, Asset::NONE, -1);
 
                 visited.push_back(neighbor);
 

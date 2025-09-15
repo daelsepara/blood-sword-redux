@@ -24,7 +24,7 @@ namespace BloodSword::Game
             party.Add(character);
         }
 
-        auto load = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Type::LOAD);
+        auto load = Interface::LoadSaveGame(graphics, background, party, Controls::Type::LOAD, Asset::Map("LOAD"));
 
         if (load && Book::IsDefined(party.SaveLocation))
         {
@@ -52,13 +52,13 @@ namespace BloodSword::Game
 
         auto height = BloodSword::Wrap;
 
-        Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Type::SWORDTHRUST, true);
+        Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Map("SWORDTHRUST"), true);
     }
 
     // show rules of the game
     void Help(Graphics::Base &graphics)
     {
-        Interface::Topics(graphics, Asset::Type::SWORDTHRUST);
+        Interface::Topics(graphics, Asset::Map("SWORDTHRUST"));
     }
 
     // menu text (textures)

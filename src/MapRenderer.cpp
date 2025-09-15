@@ -88,17 +88,17 @@ namespace BloodSword::MapRenderer
 
                         if (!tile.IsOccupied())
                         {
-                            if (tile.Asset == Asset::Type::EMPTY_SPACE)
+                            if (tile.Asset == Asset::Map("EMPTY SPACE"))
                             {
-                                surface_asset = Asset::Surface(Asset::Type::SELECT);
+                                surface_asset = Asset::Surface(Asset::Map("SELECT"));
                             }
-                            else if (tile.Asset != Asset::Type::NONE)
+                            else if (tile.Asset != Asset::NONE)
                             {
                                 surface_asset = Asset::Surface(tile.Asset);
                             }
                             else if (tile.Type == Map::Object::EXIT)
                             {
-                                surface_asset = Asset::Surface(Asset::Type::SELECT);
+                                surface_asset = Asset::Surface(Asset::Map("SELECT"));
                             }
                         }
                         else
@@ -106,31 +106,41 @@ namespace BloodSword::MapRenderer
                             switch (tile.Occupant)
                             {
                             case Map::Object::PLAYER:
+
                                 if (tile.Id >= 0 && tile.Id < party.Count() && party.Count() > 0)
                                 {
-                                    surface_asset = Asset::Surface(Asset::Type::SELECT);
+                                    surface_asset = Asset::Surface(Asset::Map("SELECT"));
                                 }
+
                                 break;
+
                             case Map::Object::ENEMY:
+
                                 if (tile.Id >= 0 && tile.Id < battle.Opponents.Count() && battle.Opponents.Count() > 0)
                                 {
                                     surface_asset = Asset::Surface(battle.Opponents[tile.Id].Asset);
                                 }
+
                                 break;
+
                             case Map::Object::TEMPORARY_OBSTACLE:
+
                                 if (tile.Lifetime > 0)
                                 {
-                                    if (tile.TemporaryAsset != Asset::Type::NONE)
+                                    if (tile.TemporaryAsset != Asset::NONE)
                                     {
                                         surface_asset = Asset::Surface(tile.TemporaryAsset);
                                     }
                                 }
-                                else if (tile.Asset != Asset::Type::NONE)
+                                else if (tile.Asset != Asset::NONE)
                                 {
                                     surface_asset = Asset::Surface(tile.Asset);
                                 }
+
                                 break;
+
                             default:
+
                                 break;
                             }
                         }
@@ -152,13 +162,13 @@ namespace BloodSword::MapRenderer
                 }
 
                 // away players
-                MapRenderer::RenderPoints(surface, battle.Map.AwayPlayers, rect, offset, Asset::Type::CIRCLE, true);
+                MapRenderer::RenderPoints(surface, battle.Map.AwayPlayers, rect, offset, Asset::Map("CIRCLE"), true);
 
                 // survivors
-                MapRenderer::RenderPoints(surface, battle.Map.Survivors, rect, offset, Asset::Type::SELECT, true);
+                MapRenderer::RenderPoints(surface, battle.Map.Survivors, rect, offset, Asset::Map("SELECT"), true);
 
                 // away opponents
-                MapRenderer::RenderPoints(surface, battle.Map.AwayOpponents, rect, offset, Asset::Type::SELECT, true);
+                MapRenderer::RenderPoints(surface, battle.Map.AwayOpponents, rect, offset, Asset::Map("SELECT"), true);
 
                 // player locations
                 auto number = 1;

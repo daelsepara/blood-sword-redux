@@ -1144,14 +1144,14 @@ namespace BloodSword::Conditions
                     auto values = std::vector<int>();
 
                     // set hidden asset
-                    auto asset_hidden = hidden ? Asset::Map(condition.Variables[5 + options]) : Asset::Type::NONE;
+                    auto asset_hidden = hidden ? Asset::Map(condition.Variables[5 + options]) : Asset::NONE;
 
                     // collect assets and set values
                     for (auto i = 0; i < options; i++)
                     {
                         auto asset = Asset::Map(condition.Variables[5 + i]);
 
-                        if (asset != Asset::Type::NONE)
+                        if (asset != Asset::NONE)
                         {
                             assets.push_back(asset);
                         }
@@ -1841,7 +1841,7 @@ namespace BloodSword::Conditions
 
                     auto max_number = party.Number(condition.Variables[3]);
 
-                    party.ChosenNumber = Interface::GetNumber(graphics, background, condition.Variables[1].c_str(), min_number, max_number, Asset::Type::DICE1, Asset::Type::UP, Asset::Type::DOWN, false);
+                    party.ChosenNumber = Interface::GetNumber(graphics, background, condition.Variables[1].c_str(), min_number, max_number, Asset::Map("DICE1"), Asset::Map("UP"), Asset::Map("DOWN"), false);
 
                     result = true;
                 }
@@ -1875,7 +1875,7 @@ namespace BloodSword::Conditions
 
                     auto action = Asset::Map(condition.Variables[4]);
 
-                    if (asset != Asset::Type::NONE && action != Asset::Type::NONE && !variable.empty())
+                    if (asset != Asset::NONE && action != Asset::NONE && !variable.empty())
                     {
                         party.Set(variable, Interface::Roll(graphics, background, asset, action, roll, mods).Sum);
 
@@ -2183,7 +2183,7 @@ namespace BloodSword::Conditions
 
                 auto asset = Asset::Map(condition.Variables[2]);
 
-                if (item != Item::Type::NONE && asset != Asset::Type::NONE && (limit == Item::Unlimited || limit > 0))
+                if (item != Item::Type::NONE && asset != Asset::NONE && (limit == Item::Unlimited || limit > 0))
                 {
                     Interface::TakeItems(graphics, background, party, item, asset, limit);
 
@@ -2209,7 +2209,7 @@ namespace BloodSword::Conditions
 
                 auto limit = (Engine::ToUpper(condition.Variables[2]) == "UNLIMITED") ? Items::Unlimited : party.Number(condition.Variables[2]);
 
-                if (asset != Asset::Type::NONE && (limit == Item::Unlimited || limit > 0) && gain > 0)
+                if (asset != Asset::NONE && (limit == Item::Unlimited || limit > 0) && gain > 0)
                 {
                     Interface::EatFood(graphics, background, party, asset, gain, limit);
 
@@ -2320,7 +2320,7 @@ namespace BloodSword::Conditions
 
                 auto ignore_armour = (Engine::ToUpper(condition.Variables[7]) == "TRUE");
 
-                if (character != Character::Class::NONE && spell != Spells::Type::NONE && target != Asset::Type::NONE && dmg_act != Asset::Type::NONE && difficulty > 0 && dmg_rol > 0)
+                if (character != Character::Class::NONE && spell != Spells::Type::NONE && target != Asset::NONE && dmg_act != Asset::NONE && difficulty > 0 && dmg_rol > 0)
                 {
                     if (party.Has(character) && Engine::IsAlive(party[character]))
                     {
@@ -2404,7 +2404,7 @@ namespace BloodSword::Conditions
 
                 auto gain = party.Number(condition.Variables[5]);
 
-                if (character != Character::Class::NONE && spell != Spells::Type::NONE && target != Asset::Type::NONE && attribute != Attribute::Type::NONE && difficulty > 0 && gain != 0)
+                if (character != Character::Class::NONE && spell != Spells::Type::NONE && target != Asset::NONE && attribute != Attribute::Type::NONE && difficulty > 0 && gain != 0)
                 {
                     if (party.Has(character) && Engine::IsAlive(party[character]))
                     {
@@ -2461,7 +2461,7 @@ namespace BloodSword::Conditions
 
                 auto max_collect = party.Number(condition.Variables[3]);
 
-                if (item != Item::Type::NONE && asset != Asset::Type::NONE)
+                if (item != Item::Type::NONE && asset != Asset::NONE)
                 {
                     if (Engine::Quantity(party, item) >= min_collect)
                     {
@@ -3950,7 +3950,7 @@ namespace BloodSword::Conditions
 
                 auto prefix = condition.Variables[7];
 
-                if (gauntlet.Rounds > 0 && gauntlet.Rolls > 0 && gauntlet.Difficulty > 0 && gauntlet.Damage > 0 && asset != Asset::Type::NONE && !prefix.empty())
+                if (gauntlet.Rounds > 0 && gauntlet.Rolls > 0 && gauntlet.Difficulty > 0 && gauntlet.Damage > 0 && asset != Asset::NONE && !prefix.empty())
                 {
                     result = Interface::RunGauntlet(graphics, background, party, gauntlet, asset, prefix);
 

@@ -13,7 +13,7 @@ namespace BloodSword::Rogue
 
         auto selected = Controls::Type::NONE;
 
-        Asset::List assets = {Asset::Type::DEFEND};
+        Asset::List assets = {Asset::Map("DEFEND")};
 
         Controls::List controls = {Controls::Type::DEFEND};
 
@@ -22,13 +22,13 @@ namespace BloodSword::Rogue
         // character not in MELEE area
         if (character.Has(Character::Status::MELEE))
         {
-            assets.push_back(Asset::Type::MOVE);
+            assets.push_back(Asset::Map("MOVE"));
 
             controls.push_back(Controls::Type::MOVE);
 
             captions.push_back("MOVE TO RANGED");
 
-            assets.push_back(Asset::Type::FIGHT);
+            assets.push_back(Asset::Map("FIGHT"));
 
             controls.push_back(Controls::Type::FIGHT);
 
@@ -37,7 +37,7 @@ namespace BloodSword::Rogue
             // has quarterstaff skill
             if (character.Has(Skills::Type::QUARTERSTAFF) && character.IsArmed(Item::Type::QUARTERSTAFF))
             {
-                assets.push_back(Asset::Type::QUARTERSTAFF);
+                assets.push_back(Asset::Map("QUARTERSTAFF"));
 
                 controls.push_back(Controls::Type::QUARTERSTAFF);
 
@@ -47,7 +47,7 @@ namespace BloodSword::Rogue
 
         if (character.Has(Character::Status::RANGED))
         {
-            assets.push_back(Asset::Type::MOVE);
+            assets.push_back(Asset::Map("MOVE"));
 
             controls.push_back(Controls::Type::MOVE);
 
@@ -58,7 +58,7 @@ namespace BloodSword::Rogue
                 // can shoot
                 if (character.Shoot == Skills::Type::SHURIKEN)
                 {
-                    assets.push_back(Asset::Type::SHURIKEN);
+                    assets.push_back(Asset::Map("SHURIKEN"));
 
                     controls.push_back(Controls::Type::SHURIKEN);
 
@@ -66,7 +66,7 @@ namespace BloodSword::Rogue
                 }
                 else
                 {
-                    assets.push_back(Asset::Type::SHOOT);
+                    assets.push_back(Asset::Map("SHOOT"));
 
                     controls.push_back(Controls::Type::SHOOT);
 
@@ -77,7 +77,7 @@ namespace BloodSword::Rogue
 
         if (character.Has(Skills::Type::SPELLS))
         {
-            assets.push_back(Asset::Type::SPELLS);
+            assets.push_back(Asset::Map("SPELLS"));
 
             controls.push_back(Controls::Type::SPELLS);
 
@@ -86,14 +86,14 @@ namespace BloodSword::Rogue
 
         if (character.Items.size() > 0)
         {
-            assets.push_back(Asset::Type::ITEMS);
+            assets.push_back(Asset::Map("ITEMS"));
 
             controls.push_back(Controls::Type::ITEMS);
 
             captions.push_back("ITEMS");
         }
 
-        assets.push_back(Asset::Type::FLEE);
+        assets.push_back(Asset::Map("FLEE"));
 
         controls.push_back(Controls::Type::FLEE);
 
@@ -105,7 +105,7 @@ namespace BloodSword::Rogue
 
         auto action = character.Name + ": SELECT ACTION";
 
-        auto selection = Interface::SelectIcons(graphics, background, action.c_str(), assets, values, captions, 1, 1, Asset::Type::NONE, false, true, false);
+        auto selection = Interface::SelectIcons(graphics, background, action.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true, false);
 
         if (selection.size() == 1)
         {
@@ -216,7 +216,7 @@ namespace BloodSword::Rogue
     {
         Input::Clear();
 
-        auto asset = Engine::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Type::SHOOT;
+        auto asset = Engine::CanShoot(attacker) ? Skills::Assets[attacker.Shoot] : Asset::Map("SHOOT");
 
         auto alive = Rogue::Shoot(graphics, background, attacker, defender, attacker.Shoot, asset);
 
@@ -262,15 +262,15 @@ namespace BloodSword::Rogue
 
         auto unarmed = (skill != Skills::Type::ARCHERY) && attacker.IsPlayer() && !attacker.IsArmed();
 
-        auto asset = Asset::Type::NONE;
+        auto asset = Asset::NONE;
 
         if (knockout)
         {
-            asset = Asset::Type::QUARTERSTAFF;
+            asset = Asset::Map("QUARTERSTAFF");
         }
         else if (unarmed)
         {
-            asset = Asset::Type::UNARMED_COMBAT;
+            asset = Asset::Map("UNARMED COMBAT");
         }
         else if (skill != Skills::Type::NONE)
         {
@@ -278,7 +278,7 @@ namespace BloodSword::Rogue
         }
         else
         {
-            asset = Asset::Type::FIGHT;
+            asset = Asset::Map("FIGHT");
         }
 
         if (!attacker.Is(Character::Status::DEFENDING) && Engine::IsAlive(attacker))
@@ -347,13 +347,13 @@ namespace BloodSword::Rogue
                     {
                         Input::Clear();
 
-                        auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Type::FANGS, 1, 0).Sum;
+                        auto bite = Interface::Roll(graphics, background, defender.Asset, Asset::Map("FANGS"), 1, 0).Sum;
 
                         if (bite == 6)
                         {
                             Interface::FlashMessage(graphics, background, "POISON FLOWS INTO THE WOUND!", defender.IsPlayer() ? Color::Highlight : Color::Active);
 
-                            auto venom = Interface::Roll(graphics, background, defender.Asset, Asset::Type::DAMAGE, 3, 0).Sum;
+                            auto venom = Interface::Roll(graphics, background, defender.Asset, Asset::Map("DAMAGE"), 3, 0).Sum;
 
                             alive &= Engine::GainEndurance(defender, -venom, true);
                         }
@@ -689,7 +689,7 @@ namespace BloodSword::Rogue
                     {
                         if (has_actions)
                         {
-                            if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Type::MISTS_OF_DEATH, 1, 0).Sum == 1)
+                            if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Map("MISTS OF DEATH"), 1, 0).Sum == 1)
                             {
                                 std::string slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
 
@@ -1068,14 +1068,14 @@ namespace BloodSword::Rogue
             double count = Engine::Count(party);
 
             // gain experience
-            if (enemies[0].Asset == Asset::Type::ICON_THE_UNGODLY)
+            if (enemies[0].Asset == Asset::Map("ICON THE UNGODLY"))
             {
                 base = 250.0;
 
                 scale = 1.0;
             }
 
-            if (enemies[0].Asset != Asset::Type::SMEABORG)
+            if (enemies[0].Asset != Asset::Map("SMEABORD"))
             {
                 auto share = int(std::round(base / (scale * count)));
 

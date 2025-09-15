@@ -32,7 +32,7 @@ namespace BloodSword::Interface
         }
         else if (item.Type == Item::Type::MAUVE_LIQUID)
         {
-            auto result = Interface::Roll(graphics, background, character.Asset, Asset::Type::DRINK, 1, 0).Sum;
+            auto result = Interface::Roll(graphics, background, character.Asset, Asset::Map("DRINK"), 1, 0).Sum;
 
             if (result)
             {
@@ -181,7 +181,7 @@ namespace BloodSword::Interface
         }
         else if (item.Type == Item::Type::SCROLL_PRECOGNITION)
         {
-            auto rolls = Interface::Roll(graphics, background, character.Asset, Asset::Type::PRECOGNITION, 3, 0);
+            auto rolls = Interface::Roll(graphics, background, character.Asset, Asset::Map("PRECOGNITION"), 3, 0);
 
             auto number = rolls.Rolls[0] * 100 + rolls.Rolls[1] * 10 + rolls.Rolls[2];
 
