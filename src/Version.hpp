@@ -4,8 +4,10 @@
 #include <sstream>
 #include <string>
 
+// version information
 namespace BloodSword
 {
+    // version numbers
     const int MajorVersion = 0;
 
     const int MinorVersion = 2;

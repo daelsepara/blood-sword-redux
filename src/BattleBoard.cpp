@@ -1,9 +1,10 @@
 #include "InterfaceBattle.hpp"
 #include "System.hpp"
 
-// framework for Battle Board
+// Play Battle Board
 namespace BloodSword::BattleBoard
 {
+    // main menu
     void Menu(Graphics::Base &graphics, const char *battle_file)
     {
         auto party = Interface::CreateParty(graphics, Book::Number::BOOK1, false);
@@ -27,6 +28,7 @@ namespace BloodSword::BattleBoard
             Interface::BattleOrder(graphics, scene, party);
         }
 
+        // check if battle is defined
         if (battle.IsDefined())
         {
             if (Book::IsDefined(battle.Location))
@@ -34,12 +36,14 @@ namespace BloodSword::BattleBoard
                 party.Set(battle.Location);
             }
 
+            // play battle
             auto result = Interface::RenderBattle(graphics, battle, party);
 
             Graphics::RichText message;
 
             auto border = Color::Active;
 
+            // check battle result
             switch (result)
             {
             case Battle::Result::VICTORY:

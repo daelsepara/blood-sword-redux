@@ -3,6 +3,7 @@
 // render map to a png file
 namespace BloodSword::MapRenderer
 {
+    // render points
     void RenderPoints(SDL_Surface *surface, Points &points, SDL_Rect &rect, int offset, Asset::Type asset, bool blur = false)
     {
         for (auto point : points)
@@ -17,6 +18,7 @@ namespace BloodSword::MapRenderer
         }
     }
 
+    // render map to a png file
     void Render(const char *module, const char *battle_file, const char *image_file)
     {
         // get all available modules

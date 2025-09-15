@@ -4,9 +4,10 @@
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"
 
+// functions for managing character skills
 namespace BloodSword::Skills
 {
-    // skill type
+    // skill types
     enum class Type
     {
         NONE = -1,
@@ -35,9 +36,11 @@ namespace BloodSword::Skills
         FORGET_SPELL
     };
 
+    // skill type mapping template
     template <typename T>
     using Mapped = std::unordered_map<Skills::Type, T>;
 
+    // skill type to string mapping
     BloodSword::Mapping<Skills::Type> TypeMapping = {
         {Skills::Type::NONE, "NONE"},
         {Skills::Type::ARCHERY, "ARCHERY"},
@@ -64,8 +67,10 @@ namespace BloodSword::Skills
         {Skills::Type::RETRIBUTIVE_FIRE, "RETRIBUTIVE FIRE"},
         {Skills::Type::FORGET_SPELL, "FORGET SPELL"}};
 
+    // list of skills
     typedef std::vector<Skills::Type> List;
 
+    // battle skills
     Skills::List BattleSkills = {
         Skills::Type::ARCHERY,
         Skills::Type::DODGING,
@@ -82,10 +87,12 @@ namespace BloodSword::Skills
         Skills::Type::POISONED_BITE,
         Skills::Type::RETRIBUTIVE_FIRE};
 
+    // ranged attack skills
     Skills::List RangedAttack = {
         Skills::Type::ARCHERY,
         Skills::Type::SHURIKEN};
 
+    // story skills
     Skills::List StorySkills = {
         Skills::Type::HEALING,
         Skills::Type::ESP,
@@ -94,8 +101,10 @@ namespace BloodSword::Skills
         Skills::Type::LEVITATION,
         Skills::Type::EXORCISM};
 
+    // mapping of skills to asset type ids
     BloodSword::UnorderedMap<Skills::Type, Asset::Type> Assets = {};
 
+    // mapping of skills to asset names
     BloodSword::UnorderedMap<Skills::Type, const char *> AssetNames = {
         {Skills::Type::NONE, "NONE"},
         {Skills::Type::ARCHERY, "ARCHERY"},
@@ -119,41 +128,49 @@ namespace BloodSword::Skills
         {Skills::Type::POISONED_BITE, "FANGS"},
         {Skills::Type::RETRIBUTIVE_FIRE, "FIRE SHIELD"}};
 
+    // map all skill types to asset ids
     void MapAssets()
     {
         Asset::MapTypes(Skills::Assets, Skills::AssetNames);
     }
 
+    // get skill type from string
     Skills::Type Map(const char *skill)
     {
         return BloodSword::Find(Skills::TypeMapping, skill);
     }
 
+    // get skill type from string
     Skills::Type Map(std::string skill)
     {
         return Skills::Map(skill.c_str());
     }
 
+    // is this skill in the list?
     bool In(Skills::List &list, Skills::Type skill)
     {
         return list.size() > 0 && BloodSword::Has(list, skill);
     }
 
+    // is this skill a battle skill?
     bool IsBattleSkill(Skills::Type skill)
     {
         return Skills::In(Skills::BattleSkills, skill);
     }
 
+    // is this skill a ranged attack skill?
     bool IsRangedAttack(Skills::Type skill)
     {
         return Skills::In(Skills::RangedAttack, skill);
     }
 
+    // is this skill a story skill?
     bool IsStorySkill(Skills::Type skill)
     {
         return Skills::In(Skills::StorySkills, skill);
     }
 
+    // load list of skills from json data
     Skills::List Load(nlohmann::json &data)
     {
         auto skills = Skills::List();
@@ -171,6 +188,7 @@ namespace BloodSword::Skills
         return skills;
     }
 
+    // generate json data from list of skills
     nlohmann::json Data(Skills::List &skills)
     {
         nlohmann::json data;

@@ -3,8 +3,10 @@
 
 #include "RogueBase.hpp"
 
+// functions for generating rogue-like map elements / entities
 namespace BloodSword::Rogue
 {
+    // generate battlepits map
     void GenerateBattlepits(Rogue::Base &rogue, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size)
     {
         rogue.Battlepits = Map::Base(width, height);
@@ -33,6 +35,7 @@ namespace BloodSword::Rogue
         rogue.Battlepits[rogue.Rooms[0].Center()].Id = Map::Party;
     }
 
+    // generate battlepits map
     Rogue::Base GenerateBattlepits(int width, int height, int max_rooms, int min_size, int max_size)
     {
         auto connection = Battlepits::Map(Engine::ToUpper(Interface::Settings["room_connections"]));
@@ -49,6 +52,7 @@ namespace BloodSword::Rogue
         return rogue;
     }
 
+    // generate NPC with random attributes from given ranges
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, std::vector<int> fpr, std::vector<int> psy, std::vector<int> awr, std::vector<int> end, std::vector<int> arm, std::vector<int> dmg_v, std::vector<int> dmg_m, Asset::Type asset)
     {
         auto fpr_value = fpr.size() > 1 ? fpr[Engine::Percentile.NextInt() % fpr.size()] : fpr[0];
@@ -83,6 +87,7 @@ namespace BloodSword::Rogue
         }
     }
 
+    // generate group of monsters with random attributes from given ranges
     Party::Base GenerateMonsters(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, std::vector<int> fpr, std::vector<int> psy, std::vector<int> awr, std::vector<int> end, std::vector<int> arm, std::vector<int> dmg_v, std::vector<int> dmg_m, Asset::Type asset, int min_size, int max_size)
     {
         auto monsters = Party::Base();
@@ -119,6 +124,7 @@ namespace BloodSword::Rogue
         rogue.Battlepits[center].Occupant = Map::Object::ENEMIES;
     }
 
+    // place monsters in random rooms
     void PlaceMonsters(Rogue::Base &rogue, int number)
     {
         auto options = std::vector<int>(rogue.Rooms.size() - 2);

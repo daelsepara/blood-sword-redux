@@ -5,6 +5,7 @@
 
 namespace BloodSword::Battle
 {
+    // battle result types
     enum class Result
     {
         NONE = -1,
@@ -15,6 +16,7 @@ namespace BloodSword::Battle
         ENTHRALLED
     };
 
+    // battle result to string mapping
     BloodSword::Mapping<Battle::Result> ResultMapping = {
         {Battle::Result::NONE, "NONE"},
         {Battle::Result::DETERMINE, "DETERMINE"},
@@ -23,11 +25,13 @@ namespace BloodSword::Battle
         {Battle::Result::FLEE, "FLEE"},
         {Battle::Result::ENTHRALLED, "ENTHRALLED"}};
 
+    // map string to battle result
     Battle::Result MapResult(const char *result)
     {
         return BloodSword::Find(Battle::ResultMapping, result);
     }
 
+    // map string to battle result
     Battle::Result MapResult(std::string result)
     {
         return Battle::MapResult(result.c_str());

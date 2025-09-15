@@ -7,6 +7,7 @@
 // classes and functions for managing story choices
 namespace BloodSword::Choice
 {
+    // choice base class
     class Base
     {
     public:
@@ -18,8 +19,10 @@ namespace BloodSword::Choice
         Base() {}
     };
 
+    // list of choices
     typedef std::vector<Choice::Base> List;
 
+    // parse choice from json
     Choice::Base Parse(nlohmann::json &data)
     {
         auto choice = Choice::Base();

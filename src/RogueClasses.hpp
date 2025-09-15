@@ -4,10 +4,13 @@
 #include "Battlepits.hpp"
 #include "InterfaceInventory.hpp"
 
+// classes and functions to define rogue-like game mode entities
 namespace BloodSword::Rogue
 {
+    // generic "not found" constant
     const int None = -1;
 
+    // trigger types
     enum class TriggerType
     {
         NONE = -1,
@@ -22,6 +25,7 @@ namespace BloodSword::Rogue
     class Trigger
     {
     public:
+        // trigger type
         Rogue::TriggerType Type = Rogue::TriggerType::NONE;
 
         // location in battlepits
@@ -107,37 +111,44 @@ namespace BloodSword::Rogue
 
         Base() {}
 
+        // number of characters in party
         int Count()
         {
             return this->Party.Count();
         }
 
+        // current room number
         int Room()
         {
             return this->Party.Room;
         }
 
+        // current location as point
         Point Origin()
         {
             return this->Party.Origin();
         }
 
+        // check if party is inside a room
         bool InsideRoom()
         {
             return this->Room() != Room::None && this->Rooms[this->Room()].Inside(this->Origin());
         }
 
+        // check if party is alive
         bool IsAlive()
         {
             return Engine::IsAlive(this->Party);
         }
 
+        // check if party has specific character class
         bool Has(Character::Class character)
         {
             return this->Party.Has(character);
         }
     };
 
+    // update flags struct
     struct Update
     {
         bool Scene = false;

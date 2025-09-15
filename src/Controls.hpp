@@ -12,13 +12,17 @@
 
 namespace BloodSword::Controls
 {
+    // control type not found
     const int NotFound = -1;
 
+    // default selected control
     int Default = -1;
 
+    // template for mapping control types to other types
     template <typename T>
     using Mapped = std::unordered_map<Controls::Type, T>;
 
+    // base control class
     class Base
     {
     public:
@@ -156,21 +160,25 @@ namespace BloodSword::Controls
 
         User() { this->Current = Controls::Default; }
 
+        // set input text
         void SetText(const char *text)
         {
             this->TextInput = std::string(text);
         }
 
+        // set input text
         void SetText(std::string text)
         {
             this->TextInput = text;
         }
 
+        // clear input text
         void ClearText()
         {
             this->TextInput.clear();
         }
 
+        // clear input
         void Clear()
         {
             this->Type = Controls::Type::NONE;
@@ -181,6 +189,7 @@ namespace BloodSword::Controls
         }
     };
 
+    // list of controls
     typedef std::vector<Controls::Base> Collection;
 
     // find if control is present in the list
@@ -201,6 +210,7 @@ namespace BloodSword::Controls
         return result;
     }
 
+    // find control type in the list
     int Find(Controls::List &controls, Controls::Type type)
     {
         auto result = -1;
@@ -218,6 +228,7 @@ namespace BloodSword::Controls
         return result;
     }
 
+    // select control from list of controls
     void Select(Controls::User &input, Controls::Collection &controls, Controls::Type control)
     {
         input.Current = Controls::Find(controls, control);
@@ -230,6 +241,7 @@ namespace BloodSword::Controls
         input.Selected = false;
     }
 
+    // select control from list of controls
     void Select(Controls::User &input, Controls::List &controls, Controls::Type control)
     {
         input.Current = Controls::Find(controls, control);

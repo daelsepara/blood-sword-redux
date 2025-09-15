@@ -4,8 +4,10 @@
 #include <chrono>
 #include <random>
 
+// random number generation
 namespace Random
 {
+	// random number generator class
 	class Base
 	{
 	private:

@@ -1,6 +1,7 @@
 #include "InterfaceStory.hpp"
 #include "System.hpp"
 
+// blood sword gamebook player
 namespace BloodSword::Game
 {
     // new game

@@ -8,6 +8,7 @@
 // classes for describing battle (combatants, map, conditions)
 namespace BloodSword::Battle
 {
+    // battle condition types
     enum class Condition
     {
         NONE = -1,
@@ -37,8 +38,10 @@ namespace BloodSword::Battle
         EXCLUDE_OTHERS
     };
 
+    // unlimited battle duration
     const int Unlimited = -1;
 
+    // battle condition to string mapping
     BloodSword::Mapping<Battle::Condition> ConditionMapping = {
         {Battle::Condition::NONE, "NONE"},
         {Battle::Condition::NO_COMBAT, "NO COMBAT"},
@@ -66,18 +69,22 @@ namespace BloodSword::Battle
         {Battle::Condition::MISSION, "MISSION"},
         {Battle::Condition::EXCLUDE_OTHERS, "EXCLUDE OTHERS"}};
 
+    // map string to battle condition
     Battle::Condition MapCondition(const char *condition)
     {
         return BloodSword::Find(Battle::ConditionMapping, condition);
     }
 
+    // map string to battle condition
     Battle::Condition MapCondition(std::string condition)
     {
         return BloodSword::Find(Battle::ConditionMapping, condition.c_str());
     }
 
+    // list of battle conditions
     typedef std::vector<Battle::Condition> Conditions;
 
+    // fleeing damage
     struct FleeDamage
     {
         int Rounds = 0;
@@ -93,6 +100,7 @@ namespace BloodSword::Battle
         FleeDamage(int rounds, int value, int modifier, bool ignore_armour) : Rounds(rounds), Value(value), Modifier(modifier), IgnoreArmour(false) {}
     };
 
+    // battle base class
     class Base
     {
     public:
@@ -177,6 +185,7 @@ namespace BloodSword::Battle
 
         Base() {}
 
+        // check if battle has a specific condition
         bool Has(Battle::Condition condition)
         {
             auto result = false;
@@ -194,6 +203,7 @@ namespace BloodSword::Battle
             return result;
         }
 
+        // check if battle action can be cancelled
         bool Has(Controls::Type action)
         {
             auto actions = (this->ActionCancels.size() > 0);
@@ -203,11 +213,13 @@ namespace BloodSword::Battle
             return (actions && cancel && Book::IsDefined(this->ActionCancels[action]));
         }
 
+        // check if battle is defined
         bool IsDefined()
         {
             return (this->Opponents.Count() > 0 || Book::IsDefined(this->Survivors) || this->Has(Battle::Condition::LAST_BATTLE)) && Map.IsValid();
         }
 
+        // save round state
         void SaveRound(Party::Base &party)
         {
             this->RoundOpponents = this->Opponents;
@@ -318,6 +330,7 @@ namespace BloodSword::Battle
         }
     };
 
+    // load battle from file
     Battle::Base Load(const char *filename)
     {
         Battle::Base battle;

@@ -9,10 +9,13 @@
 #include "Book.hpp"
 #include "Character.hpp"
 
+// functions for managing the party of characters
 namespace BloodSword::Party
 {
+    // list of characters
     typedef std::vector<Character::Base> List;
 
+    // party base class
     class Base
     {
     private:
@@ -20,7 +23,7 @@ namespace BloodSword::Party
         Party::List Members = {};
 
     public:
-        // Module loaded
+        // current module loaded
         std::string Module = "DEFAULT";
 
         // current book and section number
@@ -56,6 +59,7 @@ namespace BloodSword::Party
         // location on map: room, x, y (rogue mode)
         int Room = -1;
 
+        // location on map: x, y (rogue mode)
         int X = -1;
 
         int Y = -1;
@@ -238,6 +242,7 @@ namespace BloodSword::Party
             return result;
         }
 
+        // check if party has all items in list
         bool HasAll(Items::List items)
         {
             auto result = true;
@@ -289,11 +294,13 @@ namespace BloodSword::Party
             return result;
         }
 
+        // check if anyone in the party has this status
         bool Has(Character::Status status)
         {
             return (this->Find(status) != -1);
         }
 
+        // check if party has this card in deck
         bool Has(Item::CardType card)
         {
             return BloodSword::Found(this->Cards, card);
@@ -403,6 +410,7 @@ namespace BloodSword::Party
             }
         }
 
+        // add these statuses to party
         void Add(std::vector<Character::Status> statuses)
         {
             for (auto i = 0; i < this->Count(); i++)
@@ -447,12 +455,13 @@ namespace BloodSword::Party
             }
         }
 
+        // get current location as point
         Point Origin()
         {
             return Point(this->X, this->Y);
         }
 
-        // Load party from json data
+        // load party from json data
         void Load(nlohmann::json &data)
         {
             // set module
@@ -863,8 +872,10 @@ namespace BloodSword::Party
         }
     };
 
+    // other characters (in the book that can be added to the party)
     Party::Base Characters = Party::Base();
 
+    // initialize party from json data
     Party::Base Initialize(nlohmann::json &data)
     {
         auto party = Party::Base();
@@ -877,6 +888,7 @@ namespace BloodSword::Party
         return party;
     }
 
+    // get party data as json
     nlohmann::json Data(Party::Base &party)
     {
         nlohmann::json data;
@@ -961,6 +973,7 @@ namespace BloodSword::Party
         return data;
     }
 
+    // save party to file
     void Save(Party::Base &party, const char *filename, const char *name)
     {
         nlohmann::json data;
@@ -977,6 +990,7 @@ namespace BloodSword::Party
         }
     }
 
+    // load party from file
     Party::Base Load(const char *filename, const char *name)
     {
         auto party = Party::Base();
@@ -998,6 +1012,7 @@ namespace BloodSword::Party
         return party;
     }
 
+    // load named party from file
     Party::Base Load(std::string filename, std::string name)
     {
         return Party::Load(filename.c_str(), name.c_str());

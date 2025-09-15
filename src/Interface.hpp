@@ -5,18 +5,25 @@
 
 namespace fs = std::filesystem;
 
+// functions for handling interface elements
 namespace BloodSword::Interface
 {
+    // path to settings file
     std::string SettingsFile = std::string();
 
+    // game settings (json object)
     nlohmann::json Settings;
 
+    // inactive skill textures
     Skills::Mapped<SDL_Texture *> SkillsTexturesInactive = {};
 
+    // active skill captions
     Skills::Mapped<SDL_Texture *> SkillCaptionsActive = {};
 
+    // inactive skill captions
     Skills::Mapped<SDL_Texture *> SkillCaptionsInactive = {};
 
+    // skill to control mapping
     Skills::Mapped<Controls::Type> SkillControls = {
         {Skills::Type::ARCHERY, Controls::Type::ARCHERY},
         {Skills::Type::DODGING, Controls::Type::DODGING},
@@ -28,14 +35,19 @@ namespace BloodSword::Interface
         {Skills::Type::EXORCISM, Controls::Type::EXORCISM},
         {Skills::Type::SPELLS, Controls::Type::SPELLS}};
 
+    // inactive spell textures
     Spells::Mapped<SDL_Texture *> SpellsTexturesInactive = {};
 
+    // active spell captions
     Spells::Mapped<SDL_Texture *> SpellCaptionsActive = {};
 
+    // inactive spell captions
     Spells::Mapped<SDL_Texture *> SpellCaptionsInactive = {};
 
+    // battle control captions
     Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
 
+    // spell to control mapping
     Spells::Mapped<Controls::Type> SpellControls = {
         {Spells::Type::VOLCANO_SPRAY, Controls::Type::VOLCANO_SPRAY},
         {Spells::Type::NIGHTHOWL, Controls::Type::NIGHTHOWL},
@@ -54,6 +66,7 @@ namespace BloodSword::Interface
         {Spells::Type::PREDICTION, Controls::Type::PREDICTION},
         {Spells::Type::DETECT_ENCHANTMENT, Controls::Type::DETECT_ENCHANTMENT}};
 
+    // control type to spell mapping
     Controls::Mapped<Spells::Type> ControlSpellMapping = {
         {Controls::Type::VOLCANO_SPRAY, Spells::Type::VOLCANO_SPRAY},
         {Controls::Type::NIGHTHOWL, Spells::Type::NIGHTHOWL},
@@ -72,6 +85,7 @@ namespace BloodSword::Interface
         {Controls::Type::PREDICTION, Spells::Type::PREDICTION},
         {Controls::Type::DETECT_ENCHANTMENT, Spells::Type::DETECT_ENCHANTMENT}};
 
+    // character class to control type mapping
     Character::Mapped<Controls::Type> CharacterControls = {
         {Character::Class::WARRIOR, Controls::Type::WARRIOR},
         {Character::Class::TRICKSTER, Controls::Type::TRICKSTER},
@@ -79,8 +93,10 @@ namespace BloodSword::Interface
         {Character::Class::ENCHANTER, Controls::Type::ENCHANTER},
         {Character::Class::IMRAGARN, Controls::Type::IMRAGARN}};
 
+    // battle controls asset ids
     Controls::Mapped<Asset::Type> BattleControls = {};
 
+    // battle controls asset names
     BloodSword::UnorderedMap<Controls::Type, const char *> BattleControlsAssetNames = {
         {Controls::Type::MOVE, "MOVE"},
         {Controls::Type::FIGHT, "FIGHT"},
@@ -93,6 +109,7 @@ namespace BloodSword::Interface
         {Controls::Type::ITEMS, "ITEMS"},
         {Controls::Type::BACK, "BACK"}};
 
+    // battle controls text
     Controls::Mapped<const char *> BattleControlsText = {
         {Controls::Type::MOVE, "MOVE"},
         {Controls::Type::FIGHT, "FIGHT"},
@@ -105,8 +122,10 @@ namespace BloodSword::Interface
         {Controls::Type::SHURIKEN, "SHOOT SHURIKEN"},
         {Controls::Type::BACK, "BACK"}};
 
+    // character class to asset type mapping
     BloodSword::UnorderedMap<Character::Class, Asset::Type> ClassAssets = {};
 
+    // character class to asset name mapping
     BloodSword::UnorderedMap<Character::Class, const char *> ClassAssetsNames = {
         {Character::Class::WARRIOR, "WARRIOR"},
         {Character::Class::TRICKSTER, "TRICKSTER"},
@@ -114,14 +133,14 @@ namespace BloodSword::Interface
         {Character::Class::ENCHANTER, "ENCHANTER"},
         {Character::Class::IMRAGARN, "PERSON"}};
 
-    // SKILL to STATUS mapping
+    // skill to character status mapping
     BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
         {Skills::Type::NONE, Character::Status::NONE},
         {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
         {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED},
         {Skills::Type::POISONED_DAGGER, Character::Status::POISONED}};
 
-    // SKILL to CONTROL mapping
+    // skill to control type mapping
     BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
         {Skills::Type::NONE, Controls::Type::NONE},
         {Skills::Type::ARCHERY, Controls::Type::SHOOT},
@@ -134,13 +153,16 @@ namespace BloodSword::Interface
         {Spells::Type::NONE, Character::Status::NONE},
         {Spells::Type::NIGHTHOWL, Character::Status::NIGHTHOWL}};
 
+    // texture of "no special skills" text
     SDL_Texture *NoSkills = nullptr;
 
+    // texture of "no spells" text
     SDL_Texture *NoSpells = nullptr;
 
-    // dice assets
+    // dice asset ids
     Asset::List Dice = {};
 
+    // dice asset names
     std::vector<const char *> DiceAssets = {
         "DICE1",
         "DICE2",
@@ -149,8 +171,10 @@ namespace BloodSword::Interface
         "DICE5",
         "DICE6"};
 
+    // number assets ids
     Asset::List Numbers = {};
 
+    // number asset names
     std::vector<const char *> NumbersNames = {
         "ZERO",
         "ONE",
@@ -163,8 +187,10 @@ namespace BloodSword::Interface
         "EIGHT",
         "NINE"};
 
+    // size of box in number input
     const int BoxSize = 16;
 
+    // max number of rows in number input
     const int MaxBoxRow = 16;
 
     // struct to hold results of using/consuming an item
@@ -197,16 +223,22 @@ namespace BloodSword::Interface
     class SavedGame
     {
     public:
+        // slot number
         int Number = 0;
 
+        // name of saved game file
         std::string Filename;
 
+        // timestamp of saved game (string)
         std::string TimeStamp = std::string();
 
+        // party composition in saved game
         std::vector<Character::Class> Players = {};
 
+        // current location in book
         Book::Location Location = Book::Undefined;
 
+        // whether game is completed
         bool Completed = false;
 
         SavedGame() {};
@@ -215,18 +247,24 @@ namespace BloodSword::Interface
     // save game slots
     const int MaxGameFiles = 4;
 
+    // list of saved games
     std::vector<Interface::SavedGame> GamesList = {};
 
+    // struct to represent a game module
     class Module
     {
     public:
+        // unique id of module
         std::string Id = std::string();
 
+        // title of module
         std::string Title = std::string();
 
+        // settings file
         std::string SettingsFile = std::string();
     };
 
+    // list of available modules
     std::vector<Interface::Module> Modules = {};
 
     // initialize settings from file
@@ -254,19 +292,17 @@ namespace BloodSword::Interface
     // create textures
     void InitializeTextures(Graphics::Base &graphics)
     {
+        // create skill captions and textures
         for (auto &skill : Skills::TypeMapping)
         {
-            auto active = Graphics::CreateText(graphics, skill.second.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+            SkillCaptionsActive[skill.first] = Graphics::CreateText(graphics, skill.second.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-            auto inactive = Graphics::CreateText(graphics, skill.second.c_str(), Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
-
-            SkillCaptionsActive[skill.first] = active;
-
-            SkillCaptionsInactive[skill.first] = inactive;
+            SkillCaptionsInactive[skill.first] = Graphics::CreateText(graphics, skill.second.c_str(), Fonts::Caption, Color::S(Color::Inactive), TTF_STYLE_NORMAL, 0);
 
             SkillsTexturesInactive[skill.first] = Asset::Copy(graphics.Renderer, Skills::Assets[skill.first], Color::Inactive);
         }
 
+        // create spell captions and textures
         for (auto &spell : Spells::TypeMapping)
         {
             auto active = Graphics::CreateText(graphics, spell.second.c_str(), Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
@@ -280,10 +316,12 @@ namespace BloodSword::Interface
             SpellsTexturesInactive[spell.first] = Asset::Copy(graphics.Renderer, Spells::Assets[spell.first], Color::Inactive);
         }
 
-        NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+        // create "no skills" and "no spells" textures
+        Interface::NoSkills = Graphics::CreateText(graphics, "No special skills", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        NoSpells = Graphics::CreateText(graphics, "No spells", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
+        Interface::NoSpells = Graphics::CreateText(graphics, "No spells", Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
+        // create battle control captions
         for (auto &control : BattleControlsText)
         {
             BattleControlCaptions[control.first] = Graphics::CreateText(graphics, control.second, Fonts::Caption, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
@@ -330,42 +368,54 @@ namespace BloodSword::Interface
     // load all textures
     void LoadTextures(Graphics::Base &graphics)
     {
+        // load all assets, initialize asset type ids
         Asset::Load(graphics.Renderer, Interface::Settings["assets"]);
 
-        // get attribute to asset mapping
+        // initialize attribute to asset mapping
         Attribute::MapAssets();
 
-        // get skill to asset mapping
+        // initialize skill to asset mapping
         Skills::MapAssets();
 
-        // get spell to asset mapping
+        // initialize spell to asset mapping
         Spells::MapAssets();
 
+        // initialize card to asset mapping
         Items::MapCardAssets();
 
+        // initialize battle controls to asset mapping
         Asset::MapTypes(Interface::BattleControls, Interface::BattleControlsAssetNames);
 
+        // initialize character class to asset mapping
         Asset::MapTypes(Interface::ClassAssets, Interface::ClassAssetsNames);
 
+        // initialize dice assets
         Asset::MapTypes(Interface::Dice, Interface::DiceAssets);
 
+        // initialize number assets
         Asset::MapTypes(Interface::Numbers, Interface::NumbersNames);
 
+        // initialize system textures
         Graphics::InitializeTextures(graphics);
 
+        // initialize interface textures
         Interface::InitializeTextures(graphics);
     }
 
     // switch texture and reload all textures
     void ReloadTextures(Graphics::Base &graphics, int palette = 0, bool override = true)
     {
+        // unload all textures
         Interface::UnloadTextures();
 
+        // set palette
         Palette::Switch(palette, override);
 
+        // re-load textures
         Interface::LoadTextures(graphics);
 
-        InitializeMessages(graphics);
+        // initialize system messages
+        Interface::InitializeMessages(graphics);
     }
 
     // load settings from file
@@ -402,24 +452,30 @@ namespace BloodSword::Interface
         Party::Characters = Party::Load(Interface::Settings["characters"], "characters");
     }
 
-    // unload texture assets
+    // unload sound, fonts, texture assets
     void UnloadAssets()
     {
+        // unload sound assets
         Sound::Free();
 
+        // unload fonts
         Fonts::Free();
 
+        // unload all textures
         Interface::UnloadTextures();
     }
 
     // reload settings
     void ReloadSettings(Graphics::Base &graphics, std::string settings_file)
     {
+        // unload all assets (texture, sound, fonts)
         Interface::UnloadAssets();
 
+        // reload all setings
         Interface::LoadSettings(graphics, settings_file);
     }
 
+    // render texture inside a box background
     void Boxed(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *texture, Point box_location, Uint32 background, Uint32 border, int border_size)
     {
         auto texture_width = 0;
@@ -439,6 +495,7 @@ namespace BloodSword::Interface
         scene.VerifyAndAdd(Scene::Element(texture, texture_location));
     }
 
+    // render texture inside a box background
     Scene::Base Boxed(Graphics::Base &graphics, SDL_Texture *texture, Point box_location, Uint32 background, Uint32 border, int border_size)
     {
         auto boxed = Scene::Base();
@@ -448,6 +505,7 @@ namespace BloodSword::Interface
         return boxed;
     }
 
+    // render texture inside a box background
     Scene::Base Boxed(Graphics::Base &graphics, SDL_Texture *texture, Uint32 background, Uint32 border, int border_size)
     {
         auto texture_width = 0;
@@ -465,6 +523,7 @@ namespace BloodSword::Interface
         return Interface::Boxed(graphics, texture, box_location, background, border, border_size);
     }
 
+    // render texture inside a box background
     void Boxed(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *texture, Uint32 background, Uint32 border, int border_size)
     {
         auto texture_width = 0;
@@ -482,6 +541,7 @@ namespace BloodSword::Interface
         Interface::Boxed(graphics, scene, texture, box_location, background, border, border_size);
     }
 
+    // render texture for a fixed time
     void FlashTexture(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *texture, Uint32 background, Uint32 border, int border_size, int delay = BloodSword::StandardDelay)
     {
         if (texture)
@@ -494,6 +554,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // display message for a fixed time
     void FlashMessage(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 background, Uint32 border, int border_size, int delay = BloodSword::StandardDelay)
     {
         auto texture = Graphics::CreateText(graphics, message.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
@@ -503,6 +564,7 @@ namespace BloodSword::Interface
         BloodSword::Free(&texture);
     }
 
+    // display message for a fixed time
     void FlashMessage(Graphics::Base &graphics, Scene::Base &scene, std::string message, Uint32 border)
     {
         return Interface::FlashMessage(graphics, scene, message, Color::Background, border, BloodSword::Border, BloodSword::TwoSeconds);
@@ -624,6 +686,7 @@ namespace BloodSword::Interface
         Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
     }
 
+    // scroll up on list of controls
     void ScrollUp(Scene::Base &overlay, Controls::User &input, Controls::Type control, int options, int limit, int &start, int &last)
     {
         if (start > 0)
@@ -648,6 +711,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // scroll down on list of controls
     void ScrollDown(Scene::Base &overlay, Controls::User &input, Controls::Type control, int options, int limit, int &start, int &last)
     {
         if (options - last > 0)
@@ -675,6 +739,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // clear scroll states
     void ClearScrolling(Scene::Base &overlay, Controls::User &input, bool &scroll_up, bool &scroll_dn, Controls::Type up, Controls::Type down)
     {
         if (scroll_up)
@@ -691,11 +756,13 @@ namespace BloodSword::Interface
         }
     }
 
+    // clear scroll states
     void ClearScrolling(Scene::Base &overlay, Controls::User &input, Controls::Type up, Controls::Type down)
     {
         Interface::ClearScrolling(overlay, input, input.Up, input.Down, up, down);
     }
 
+    // scroll up on texture
     void TextUp(Scene::Base &overlay, Controls::User &input, Controls::Type control, bool &up, int &offset, int texture_h, int text_h, int speed)
     {
         if (text_h < texture_h)
@@ -713,6 +780,7 @@ namespace BloodSword::Interface
         Controls::Select(input, overlay.Controls, control);
     }
 
+    // scroll down on texture
     void TextDown(Scene::Base &overlay, Controls::User &input, Controls::Type control, bool &down, int &offset, int texture_h, int text_h, int speed)
     {
         if (text_h < texture_h)
@@ -730,6 +798,7 @@ namespace BloodSword::Interface
         Controls::Select(input, overlay.Controls, control);
     }
 
+    // add scrollable texture (inside a box background) to scene
     void AddScrollableTextureBox(Scene::Base &scene, int x, int y, int width, int height, Uint32 bg_color, Uint32 border, int border_size, SDL_Texture *texture, int texture_h, int text_x, int text_y, int text_h, int offset, int controls_x, int controls_y, Asset::Type asset, Asset::Type left, Asset::Type right, int scroll_speed)
     {
         auto id = int(scene.Controls.size());
@@ -2414,6 +2483,7 @@ namespace BloodSword::Interface
         return Interface::CharacterList(origin, w, h, party, popup_w, popup_h, background, border, border_size, back);
     }
 
+    // setup movement animation
     Animation::Base Movement(Map::Base &map, Points path, Point start, Asset::Type asset)
     {
         auto movement = Animation::Base(
@@ -6640,7 +6710,7 @@ namespace BloodSword::Interface
         }
     }
 
-    // Lose endurance or drop item
+    // lose endurance or drop item
     void LoseEnduranceOrDropItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         auto limit = 2;

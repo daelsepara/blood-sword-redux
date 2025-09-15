@@ -131,9 +131,10 @@ namespace BloodSword::Scene
                 Uint32 background) : Element(nullptr, x, y, h, 0, w, h, background, 0, 0) {}
     };
 
+    // list of scene elements
     typedef std::vector<Scene::Element> Elements;
 
-    // Scene base class
+    // scene base class
     class Base
     {
     public:
@@ -149,6 +150,7 @@ namespace BloodSword::Scene
         // clipping area
         Point Clip = Point(-1, -1);
 
+        // width and height of clipping area
         int ClipW = 0;
 
         int ClipH = 0;
@@ -169,6 +171,7 @@ namespace BloodSword::Scene
             this->Elements.push_back(element);
         }
 
+        // add element to the scene if it has a valid texture
         void VerifyAndAdd(Scene::Element element)
         {
             if (element.Texture != nullptr)

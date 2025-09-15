@@ -11,43 +11,59 @@
 // classes and functions for managing story sections
 namespace BloodSword::Section
 {
+    // section base class
     class Base
     {
     public:
+        // book and section number
         Book::Location Location = Book::Undefined;
 
+        // features of the section
         Features::List Features = {};
 
+        // choices available in the section
         Choice::List Choices = {};
 
+        // position of image on screen
         Position::Type ImagePosition = Position::Type::NONE;
 
+        // battle associated with the section
         Battle::Base Battle;
 
+        // image asset file name
         std::string ImageAsset;
 
+        // story section text
         std::string Text;
 
+        // background events (if any)
         Conditions::List Background = {};
 
+        // real-time/run-once events (if any)
         Conditions::List Events = {};
 
+        // jumps to next section based on conditions
         Conditions::List Next = {};
 
+        // items found in this section
         Items::Inventory Items = {};
 
+        // events happening before battle
         Conditions::List BattleEvents = {};
 
         Base() {}
 
+        // check if section has a feature
         bool Has(Feature::Type feature)
         {
             return BloodSword::Has(this->Features, feature);
         }
     };
 
+    // load section from json data
     Section::Base Load(nlohmann::json &data)
     {
+        // initialize section
         auto section = Section::Base();
 
         // set book and section number
@@ -102,6 +118,7 @@ namespace BloodSword::Section
         // image asset and position
         section.ImagePosition = !data["image_position"].is_null() ? Position::Map(data["image_position"]) : Position::Type::NONE;
 
+        // image asset file name
         section.ImageAsset = !data["image_asset"].is_null() ? std::string(data["image_asset"]) : std::string();
 
         // story section text
@@ -167,6 +184,7 @@ namespace BloodSword::Section
             section.Next = conditions;
         }
 
+        // load items found in section
         if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
         {
             section.Items = Items::Load(data["items"]);
@@ -175,6 +193,7 @@ namespace BloodSword::Section
         return section;
     }
 
+    // load section from file
     Section::Base Load(const char *filename)
     {
         auto section = Section::Base();
@@ -197,21 +216,28 @@ namespace BloodSword::Section
     }
 }
 
+// classes and functions for managing the entire story
 namespace BloodSword::Story
 {
+    // list of sections
     typedef std::vector<Section::Base> Sections;
 
+    // story base class
     class Base
     {
     public:
+        // title of the story
         std::string Title = std::string();
 
+        // description
         std::string Description = std::string();
 
+        // sections in the story
         Story::Sections Sections = Story::Sections();
 
         Base() {}
 
+        // find section by book and section number
         int Find(Book::Location location)
         {
             auto section = -1;
@@ -233,6 +259,7 @@ namespace BloodSword::Story
     // global "book" variable to save on passing by reference all the time
     Story::Base CurrentBook = Story::Base();
 
+    // load story from file
     void Load(const char *story)
     {
         // re-initalize
@@ -290,11 +317,13 @@ namespace BloodSword::Story
 #endif
     }
 
+    // load story from file
     void Load(std::string story)
     {
         Story::Load(story.c_str());
     }
 
+    // load character ranks from file
     std::vector<int> LoadRanks(const char *ranks)
     {
         auto result = std::vector<int>();
@@ -318,6 +347,7 @@ namespace BloodSword::Story
         return result;
     }
 
+    // load character ranks from file
     std::vector<int> LoadRanks(std::string ranks)
     {
         return Story::LoadRanks(ranks.c_str());

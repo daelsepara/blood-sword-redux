@@ -3,8 +3,10 @@
 
 #include "RogueClasses.hpp"
 
+// base class for rogue-like game mode
 namespace BloodSword::Rogue
 {
+    // check if there is loot at this location
     int FindLoot(Rogue::Base &rogue, Point point)
     {
         auto found = Rogue::None;
@@ -24,6 +26,7 @@ namespace BloodSword::Rogue
         return found;
     }
 
+    // check if there is an opponent party at this location
     int FindOpponents(Rogue::Base &rogue, Point point)
     {
         auto found = Rogue::None;
@@ -41,6 +44,7 @@ namespace BloodSword::Rogue
         return found;
     }
 
+    // check if there is an opponent party in this room
     int FindOpponents(Rogue::Base &rogue, int room)
     {
         auto found = Rogue::None;
@@ -58,6 +62,7 @@ namespace BloodSword::Rogue
         return found;
     }
 
+    // check if there is a trigger at this location
     int FindTrigger(Rogue::Base &rogue, Point point)
     {
         auto found = Rogue::None;
@@ -92,6 +97,7 @@ namespace BloodSword::Rogue
         return labels;
     }
 
+    // generate texture of character stats
     SDL_Texture *Stats(Graphics::Base &graphics, Character::Base &character, int w)
     {
         auto surface_labels = TTF_RenderUTF8_Blended_Wrapped(Fonts::Normal, Rogue::StatsLabels().c_str(), Color::S(Color::Active), 0);
@@ -270,6 +276,7 @@ namespace BloodSword::Rogue
         return inside && top && bottom && left && right && empty;
     }
 
+    // get list of good spots in room
     Points GoodSpots(Rogue::Base &rogue, Room::Base &room)
     {
         auto available = Points();
@@ -290,6 +297,7 @@ namespace BloodSword::Rogue
         return available;
     }
 
+    // render combatant at (x, y) with border color
     void RenderCombatant(Scene::Base &scene, SDL_Texture *texture, int x, int y, Uint32 color)
     {
         scene.Add(Scene::Element(x, y, BloodSword::Width(texture), BloodSword::Height(texture), Color::Background, color, BloodSword::Border));
@@ -297,6 +305,7 @@ namespace BloodSword::Rogue
         scene.VerifyAndAdd(Scene::Element(texture, Point(x, y)));
     }
 
+    // render all combatants
     void RenderCombatants(Graphics::Base &graphics, Scene::Base &scene, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id, Uint32 color)
     {
         // estimate positions from window
@@ -351,6 +360,7 @@ namespace BloodSword::Rogue
         }
     }
 
+    // select target from party or enemies
     int SelectTarget(Graphics::Base &graphics, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
     {
         // estimate positions from window
@@ -458,6 +468,7 @@ namespace BloodSword::Rogue
         return target;
     }
 
+    // select target from party or enemies
     int SelectTarget(Graphics::Base &graphics, Rogue::Base &rogue, bool is_player, bool is_enemy, int id)
     {
         auto target = Rogue::None;

@@ -43,6 +43,7 @@ namespace BloodSword::Palette
     // current palette set
     int Current = 0;
 
+    // load palettes from a JSON file
     bool Load(const char *palettes)
     {
         auto result = false;
@@ -103,6 +104,7 @@ namespace BloodSword::Palette
         return result;
     }
 
+    // load palettes from a JSON file
     bool Load(std::string palettes)
     {
         return Palette::Load(palettes.c_str());

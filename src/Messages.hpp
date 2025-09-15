@@ -3,8 +3,10 @@
 
 #include "RichText.hpp"
 
+// predefined interface messages
 namespace BloodSword::Interface
 {
+    // formatted message texts
     Graphics::TextList Text = {
         Graphics::RichText("SELECT OPPONENT", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("SELECT TARGET", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
@@ -41,6 +43,7 @@ namespace BloodSword::Interface
         Graphics::RichText("GAME SAVED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0),
         Graphics::RichText("GAME LOADED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
+    // message textures
     BloodSword::Textures Message = {};
 
     const int MSG_OPPONENT = 0;
@@ -111,11 +114,13 @@ namespace BloodSword::Interface
 
     const int MSG_LOADED = 33;
 
+    // free message textures
     void FreeMessages()
     {
         BloodSword::Free(Message);
     }
 
+    // initialize message textures
     void InitializeMessages(Graphics::Base &graphics)
     {
         // initialize battle messages
@@ -129,7 +134,7 @@ namespace BloodSword::Interface
 
         Interface::FreeMessages();
 
-        Message = Graphics::CreateText(graphics, Text);
+        Interface::Message = Graphics::CreateText(graphics, Text);
     }
 }
 

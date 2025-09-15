@@ -22,8 +22,10 @@
 
 #include "Version.hpp"
 
+// primitive classes, functions, and constants used throughout the program
 namespace BloodSword
 {
+    // list of textures
     typedef std::vector<SDL_Texture *> Textures;
 
     // default tile dimensions
@@ -98,6 +100,7 @@ namespace BloodSword
     class Point
     {
     public:
+        // x, y
         int X = -1;
 
         int Y = -1;
@@ -190,8 +193,10 @@ namespace BloodSword
         }
     };
 
+    // list of points
     typedef std::vector<Point> Points;
 
+    // check if point is in list of points
     bool In(Points &points, Point point)
     {
         auto result = false;
@@ -209,6 +214,7 @@ namespace BloodSword
         return result;
     }
 
+    // check if point is in list of points
     bool In(Points &points, int x, int y)
     {
         return In(points, Point(x, y));
@@ -263,6 +269,7 @@ namespace BloodSword
         }
     }
 
+    // free resources in a map
     template <typename T, typename R>
     void Free(std::unordered_map<T, R> &resources)
     {
@@ -294,6 +301,7 @@ namespace BloodSword
         }
     }
 
+    // sanitize string by removing specific characters
     std::string CleanString(std::string text, const char *chars)
     {
         for (auto i = 0; i < strlen(chars); ++i)
@@ -304,6 +312,7 @@ namespace BloodSword
         return text;
     }
 
+    // get size of texture
     void Size(SDL_Texture *texture, int *texture_w, int *texture_h)
     {
         if (texture)
@@ -312,6 +321,7 @@ namespace BloodSword
         }
     }
 
+    // get width of texture
     int Width(SDL_Texture *texture)
     {
         auto width = 0;
@@ -321,6 +331,7 @@ namespace BloodSword
         return width;
     }
 
+    // get max width of list of textures
     int Width(Textures &textures)
     {
         auto width = 0;
@@ -333,6 +344,7 @@ namespace BloodSword
         return width;
     }
 
+    // get height of texture
     int Height(SDL_Texture *texture)
     {
         auto height = 0;
@@ -342,6 +354,7 @@ namespace BloodSword
         return height;
     }
 
+    // get max height of list of textures
     int Height(Textures &textures)
     {
         auto height = 0;

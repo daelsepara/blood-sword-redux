@@ -3,6 +3,7 @@
 
 #include "RogueMethods.hpp"
 
+// item management functions for rogue-like game mode
 namespace BloodSword::Rogue
 {
     // take item found in location
@@ -873,6 +874,7 @@ namespace BloodSword::Rogue
         return update;
     }
 
+    // manage inventory
     void ManageInventory(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Character::Base &character, bool blur = true)
     {
         if (!Engine::IsAlive(character))

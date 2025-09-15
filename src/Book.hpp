@@ -23,8 +23,10 @@ namespace BloodSword::Book
     // book location specifier: book and section number pair
     typedef std::pair<Book::Number, int> Location;
 
+    // list of book locations
     typedef std::vector<Book::Location> Locations;
 
+    // book titles
     BloodSword::Mapping<Book::Number> Title = {
         {Book::Number::NONE, "Blood Sword"},
         {Book::Number::BOOK1, "The Battlepits of Krarth"},
@@ -33,6 +35,7 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, "Doomwalk"},
         {Book::Number::BOOK5, "The Walls of Spyte"}};
 
+    // book number to string mapping
     BloodSword::Mapping<Book::Number> Mapping = {
         {Book::Number::NONE, "NONE"},
         {Book::Number::BOOK1, "BOOK1"},
@@ -41,6 +44,7 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, "BOOK4"},
         {Book::Number::BOOK5, "BOOK5"}};
 
+    // book ranks (max rank per number of players in the party)
     BloodSword::UnorderedMap<Book::Number, std::vector<int>> Ranks = {
         {Book::Number::NONE, {1, 1, 1, 1}},
         {Book::Number::BOOK1, {8, 4, 3, 2}},
@@ -49,33 +53,40 @@ namespace BloodSword::Book
         {Book::Number::BOOK4, {20, 10, 7, 5}},
         {Book::Number::BOOK5, {20, 12, 8, 6}}};
 
+    // book location for undefined
     Location Undefined = {Book::Number::NONE, -1};
 
+    // check if book location is undefined
     bool IsUndefined(Location location)
     {
         return (location.first == Book::Number::NONE || location.second == -1);
     }
 
+    // check if book location is defined
     bool IsDefined(Location location)
     {
         return !Book::IsUndefined(location);
     }
 
+    // map string to book number
     Book::Number MapTitle(const char *book)
     {
         return BloodSword::Find(Book::Title, book);
     }
 
+    // map string to book number
     Book::Number MapTitle(std::string book)
     {
         return Book::MapTitle(book.c_str());
     }
 
+    // map string to book number
     Book::Number MapBook(const char *book)
     {
         return BloodSword::Find(Book::Mapping, book);
     }
 
+    // map string to book number
     Book::Number MapBook(std::string book)
     {
         return Book::MapBook(book.c_str());
@@ -87,6 +98,7 @@ namespace BloodSword::Book
         return ((current.first == next.first) && (current.second == next.second));
     }
 
+    // generate json data for book location
     nlohmann::json Data(Book::Location &location)
     {
         nlohmann::json data;
@@ -102,6 +114,7 @@ namespace BloodSword::Book
         return data;
     }
 
+    // load book location from json data
     Book::Location Load(nlohmann::json &data)
     {
         auto book = !data["book"].is_null() ? Book::MapBook(std::string(data["book"])) : Book::Number::NONE;
@@ -111,6 +124,7 @@ namespace BloodSword::Book
         return {book, number};
     }
 
+    // convert book location to string (for logging)
     std::string String(Book::Location location)
     {
         std::stringstream book;

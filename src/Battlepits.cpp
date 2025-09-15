@@ -3,6 +3,7 @@
 // render map to a png file
 namespace BloodSword::BattlepitsRenderer
 {
+    // main render function
     void Render(const char *module, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size, const char *image_file)
     {
         // get all available modules

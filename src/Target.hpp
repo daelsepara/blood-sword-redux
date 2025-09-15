@@ -7,8 +7,10 @@
 // for specific targetting
 namespace BloodSword::Target
 {
+    // target not found
     const int NotFound = -1;
 
+    // target types
     enum class Type
     {
         NONE = -1,
@@ -32,8 +34,10 @@ namespace BloodSword::Target
         EIDOLON
     };
 
+    // list of target types
     typedef std::vector<Target::Type> List;
 
+    // mapping of target types to strings
     BloodSword::Mapping<Target::Type> Mapping = {
         {Target::Type::NONE, "NONE"},
         {Target::Type::PLAYER, "PLAYER"},
@@ -54,16 +58,19 @@ namespace BloodSword::Target
         {Target::Type::NEBULARON, "NEBULARON"},
         {Target::Type::EIDOLON, "EIDOLON"}};
 
+    // map string to target type
     Target::Type Map(const char *target)
     {
         return BloodSword::Find(Target::Mapping, target);
     }
 
+    // map string to target type
     Target::Type Map(std::string target)
     {
         return Target::Map(target.c_str());
     }
 
+    // load list of target types from json data
     Target::List Load(nlohmann::json &data)
     {
         auto targets = Target::List();
@@ -81,6 +88,7 @@ namespace BloodSword::Target
         return targets;
     }
 
+    // generate json data from list of target types
     nlohmann::json Data(Target::List &targets)
     {
         nlohmann::json data;

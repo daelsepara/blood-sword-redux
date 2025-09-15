@@ -6,6 +6,7 @@
 
 namespace BloodSword::Rogue
 {
+    // select action for character
     Controls::Type SelectAction(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
         // clear input buffer
@@ -115,6 +116,7 @@ namespace BloodSword::Rogue
         return selected;
     }
 
+    // change character range/melee status
     void Move(Character::Base &character, Character::Status move)
     {
         switch (move)
@@ -143,6 +145,7 @@ namespace BloodSword::Rogue
         }
     }
 
+    // refresh character stats texture
     void RefreshStats(Graphics::Base &graphics, Textures &textures, Character::Base &character, int id, int stats_width)
     {
         BloodSword::Free(&textures[id]);
@@ -406,6 +409,7 @@ namespace BloodSword::Rogue
         return alive;
     }
 
+    // fight helper
     void ResolveFight(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender)
     {
         auto alive = Rogue::Fight(graphics, background, attacker, defender, attacker.Fight);
@@ -425,6 +429,7 @@ namespace BloodSword::Rogue
         }
     }
 
+    // spell action
     void ResolveSpell(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &caster, Character::Base &target, int targetid, Spells::Type spell)
     {
         Input::Clear();
@@ -597,6 +602,7 @@ namespace BloodSword::Rogue
         }
     }
 
+    // main battle loop
     Rogue::Update Battle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int enemy)
     {
         Rogue::Update update = {false, false, false};

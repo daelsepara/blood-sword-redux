@@ -10,10 +10,13 @@
 #include "ItemProperties.hpp"
 #include "ItemTypes.hpp"
 
+// item (classes and functions)
 namespace BloodSword::Item
 {
+    // unlimited quantity
     const int Unlimited = -1;
 
+    // not found constant
     const int NotFound = -1;
 
     // item damage modifier
@@ -64,6 +67,7 @@ namespace BloodSword::Item
         // amount/number of the items above it currently contains
         int Quantity = 0;
 
+        // maximum number of items it can contain
         int Limit = Item::Unlimited;
 
         // item asset
@@ -90,7 +94,7 @@ namespace BloodSword::Item
         // flag to see if it drops when used (e.g. thrown)
         bool Drops = false;
 
-        // For encumbrance checks
+        // for encumbrance checks
         int Encumbrance = 1;
 
         // for specific targetting (damage rolls/modifiers)
@@ -166,7 +170,7 @@ namespace BloodSword::Item
             return (this->Is(Property::CONTAINER) && (this->Contains == type) && (this->Quantity >= quantity) && ((this->Limit != Item::Unlimited && quantity >= 1) || this->Limit == Item::Unlimited));
         }
 
-        // [ITEM] is of [TYPE]
+        // check if item is of this type
         bool Is(Item::Type item)
         {
             return (this->Type == item);
@@ -184,25 +188,25 @@ namespace BloodSword::Item
             return BloodSword::Has(this->Attributes, attribute);
         }
 
-        // [ITEM] has an effect
+        // item has target-specific effect
         bool HasEffect(Target::Type target)
         {
             return BloodSword::Has(this->TargetEffects, target);
         }
 
-        // [ITEM] has target-specific damage type
+        // item has target-specific damage type
         bool HasDamageType(Target::Type target)
         {
             return BloodSword::Has(this->DamageTypes, target);
         }
 
-        // [ITEM] has target-specific damage modifiers
+        // item has target-specific damage modifiers
         bool HasDamageModifier(Target::Type target)
         {
             return BloodSword::Has(this->DamageModifiers, target);
         }
 
-        // [ITEM] has all of the [PROPERTIES]
+        // item has all of the properties
         bool HasAll(Item::Properties properties)
         {
             auto has = true;
@@ -215,7 +219,7 @@ namespace BloodSword::Item
             return has;
         }
 
-        // [ITEM] has any of the [PROPERTIES]
+        // item has any of the properties
         bool HasAny(Item::Properties properties)
         {
             auto has = false;
@@ -258,7 +262,7 @@ namespace BloodSword::Item
             return result;
         }
 
-        // is the [ITEM] charged? or does it have sufficient charge?
+        // is the item charged? or does it have sufficient charge?
         bool IsCharged(Item::Type charge, int quantity)
         {
             return (this->Contains == charge && this->Quantity >= quantity);
@@ -503,7 +507,7 @@ namespace BloodSword::Item
         return requirement;
     }
 
-    // get container for [ITEM]
+    // get container for item
     Item::Type Container(Item::Type item)
     {
         auto container = BloodSword::Find(Item::StorageRequirements, item);
@@ -683,16 +687,22 @@ namespace BloodSword::Items
     // default stats/properties for in-game items
     BloodSword::UnorderedMap<Item::Type, Item::Base> Defaults = {};
 
+    // item descriptions
     BloodSword::UnorderedMap<Item::Type, std::string> Descriptions = {};
 
+    // global inventory (for item defaults)
     typedef std::vector<Item::Base> Inventory;
 
+    // list of card types
     typedef std::vector<Item::CardType> Deck;
 
+    // list of item types
     typedef std::vector<Item::Type> List;
 
+    // constant for unlimited quantity
     const int Unlimited = -1;
 
+    // kalugen's deck of cards
     Items::Deck KalugenDeck = {
         Item::CardType::KING_OF_SERPENTS,
         Item::CardType::ACE_OF_STARS,
@@ -700,8 +710,10 @@ namespace BloodSword::Items
         Item::CardType::ACE_OF_RINGS,
         Item::CardType::BUFFOON};
 
+    // list of card assets
     Asset::List CardAssets = {};
 
+    // list of card asset names
     std::vector<const char *> CardStrings = {
         "KING DIAMONDS",
         "ACE DIAMONDS",
@@ -709,14 +721,16 @@ namespace BloodSword::Items
         "ACE HEARTS",
         "CARD JOKER"};
 
+    // kalugen card values
     std::vector<int> KalugenValues = {0, 1, 2, 3, 4};
 
+    // map card assets
     void MapCardAssets()
     {
         Asset::MapTypes(Items::CardAssets, Items::CardStrings);
     }
 
-    // load [INVENTORY] from json data
+    // load inventory from json data
     Items::Inventory Load(nlohmann::json &data)
     {
         auto items = Items::Inventory();
@@ -734,7 +748,7 @@ namespace BloodSword::Items
         return items;
     }
 
-    // generate [INVENTORY] json data
+    // generate inventory json data
     nlohmann::json Data(Items::Inventory &items)
     {
         nlohmann::json data;
@@ -937,7 +951,7 @@ namespace BloodSword::Items
         }
     }
 
-    // load [ITEMS] defaults
+    // load items (defaults)
     void LoadDefaults(std::string filename)
     {
         Items::LoadDefaults(filename.c_str());
@@ -995,7 +1009,7 @@ namespace BloodSword::Items
         return BloodSword::Has(Items::Descriptions, item);
     }
 
-    // find [ITEM] which contains [TYPE]
+    // find item which contains type
     Items::Inventory::iterator Find(Items::Inventory &items, Item::Type container, Item::Type type)
     {
         auto result = items.end();
@@ -1053,7 +1067,7 @@ namespace BloodSword::Items
         return result;
     }
 
-    // add [ITEM] to inventory
+    // add item to inventory
     void Add(Items::Inventory &items, Item::Base item)
     {
         if (item.Type != Item::Type::NONE && item.Name.size() > 0)
@@ -1098,7 +1112,7 @@ namespace BloodSword::Items
         }
     }
 
-    // check if [ITEM] is in the [LIST]
+    // check if item is in the list
     bool Included(Items::List list, Item::Type item)
     {
         auto included = false;

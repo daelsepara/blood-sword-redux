@@ -3,9 +3,10 @@
 
 #include "InterfaceItemEffects.hpp"
 
+// item interface functions
 namespace BloodSword::Interface
 {
-    // TRANSFER (DROP/GIVE/TAKE)
+    // transfer (drop/give/take) item between inventories
     void TransferItem(Graphics::Base &graphics, Scene::Base &background, std::string message, Uint32 border, Items::Inventory &destination, Items::Inventory &source, int id)
     {
         if (id >= 0 && id < source.size())
@@ -23,7 +24,7 @@ namespace BloodSword::Interface
         }
     }
 
-    // DROP
+    // drop item from inventory to ground (or section)
     bool DropItem(Graphics::Base &graphics, Scene::Base &background, std::string action, Items::Inventory &destination, Items::Inventory &items, int id)
     {
         auto result = false;
@@ -46,7 +47,7 @@ namespace BloodSword::Interface
         return result;
     }
 
-    // GIVE / TAKE
+    // give / take item between characters
     bool TransferItem(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &receiver, Items::Inventory &source, int id)
     {
         auto result = false;

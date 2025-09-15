@@ -3,8 +3,10 @@
 
 #include "Templates.hpp"
 
+// functions for managing in-game "player" tasks
 namespace BloodSword::Task
 {
+    // task status
     enum class Status
     {
         NONE = -1,
@@ -14,6 +16,7 @@ namespace BloodSword::Task
         COMPLETE
     };
 
+    // task status to string mapping
     BloodSword::Mapping<Task::Status> Mapping = {
         {Task::Status::NONE, "NONE"},
         {Task::Status::START, "START"},
@@ -21,11 +24,13 @@ namespace BloodSword::Task
         {Task::Status::INCOMPLETE, "INCOMPLETE"},
         {Task::Status::COMPLETE, "COMPLETE"}};
 
+    // map string to task status
     Task::Status Map(const char *task)
     {
         return BloodSword::Find(Task::Mapping, task);
     }
 
+    // map string to task status
     Task::Status Map(std::string task)
     {
         return Task::Map(task.c_str());

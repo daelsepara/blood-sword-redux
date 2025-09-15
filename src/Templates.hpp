@@ -54,12 +54,14 @@ namespace BloodSword
         return std::find(vector.begin(), vector.end(), key);
     }
 
+    // check if the vector contains the key/object
     template <typename T>
     bool Has(std::vector<T> &vector, T &key)
     {
         return BloodSword::Find(vector, key) != vector.end();
     }
 
+    // check if the vector contains the key/object
     template <typename T>
     bool In(std::vector<T> &vector, T &key)
     {
@@ -74,6 +76,7 @@ namespace BloodSword
                             { return F(key, f); });
     }
 
+    // search for a key in a vector (of type/objects)
     template <typename T, typename R = typename std::vector<T>::iterator>
     R Search(std::vector<T> &vector, T &key)
     {
@@ -87,7 +90,7 @@ namespace BloodSword
         return BloodSword::Find(vector, key) != vector.end();
     }
 
-    // search for
+    // search for a key in an unordered map
     template <typename T, typename R>
     R Find(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
     {
@@ -106,6 +109,7 @@ namespace BloodSword
         return result;
     }
 
+    // check if the unordered map contains the key/object
     template <typename T, typename R>
     bool Has(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
     {

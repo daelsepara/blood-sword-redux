@@ -5,6 +5,7 @@
 
 namespace BloodSword::Conditions
 {
+    // condition types
     enum class Type
     {
         NONE = -1,
@@ -139,6 +140,7 @@ namespace BloodSword::Conditions
         GAIN_DELAYED_EFFECT
     };
 
+    // condition type mapping
     BloodSword::Mapping<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},

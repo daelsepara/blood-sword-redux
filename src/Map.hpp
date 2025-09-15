@@ -8,18 +8,22 @@
 #include "MapObjects.hpp"
 #include "Primitives.hpp"
 
+// map handling
 namespace BloodSword::Map
 {
+    // unlimited duration
     const int Unlimited = -1;
 
+    // object not found in map
     const int NotFound = -1;
 
+    // party on map
     const int Party = 0;
 
-    // Define neighbors (X, Y): Up, Down, Left, Right
+    // define neighbors (X, Y): up, down, left, right
     const Points Directions = {Point(0, -1), Point(1, 0), Point(0, 1), Point(-1, 0)};
 
-    // Define neighbors and diagonals (X, Y): NW, N, NE, E, SE, S, SW, W
+    // define neighbors and diagonals (X, Y): NW, N, NE, E, SE, S, SW, W
     const Points Diagonals = {Point(0, -1), Point(1, -1), Point(1, 0), Point(1, 1), Point(0, 1), Point(-1, 1), Point(-1, 0), Point(-1, -1)};
 
     // a single map tile
@@ -47,7 +51,7 @@ namespace BloodSword::Map
         // if tile has been explored (Rogue mode)
         bool Explored = false;
 
-        // room number (Rogue mode)
+        // room number (rogue mode)
         int Room = -1;
 
         // tile is occupied by an enemy
@@ -99,6 +103,7 @@ namespace BloodSword::Map
         }
     };
 
+    // a map of tiles (base class)
     class Base
     {
     private:
@@ -286,6 +291,7 @@ namespace BloodSword::Map
             this->Put(Point(x, y), object, asset, id);
         }
 
+        // check that the current view is within map boundaries
         void CheckBounds()
         {
             if (this->X < 0)
@@ -309,6 +315,7 @@ namespace BloodSword::Map
             }
         }
 
+        // load points from json data
         BloodSword::Points LoadPoints(nlohmann::json &data)
         {
             auto points = BloodSword::Points();
@@ -332,6 +339,7 @@ namespace BloodSword::Map
             return points;
         }
 
+        // setup map from json data
         bool Setup(nlohmann::json &data)
         {
             auto load_error = false;
@@ -457,6 +465,7 @@ namespace BloodSword::Map
             return !LoadError;
         }
 
+        // save points to json data
         nlohmann::json Points(BloodSword::Points &points)
         {
             nlohmann::json data;
@@ -475,6 +484,7 @@ namespace BloodSword::Map
             return data;
         }
 
+        // save map to json file
         void Save(const char *filename)
         {
             nlohmann::json map;
@@ -650,6 +660,7 @@ namespace BloodSword::Map
             return point;
         }
 
+        // check if there is an occupant aject to this location
         bool Next(Point src, Map::Object occupant, int id)
         {
             auto next = false;
@@ -710,6 +721,7 @@ namespace BloodSword::Map
             return adjacent;
         }
 
+        // count free adjacent tiles
         int Free(Point src)
         {
             int space = 0;
@@ -761,6 +773,7 @@ namespace BloodSword::Map
             }
         }
 
+        // cooldown temporary obstacles
         void CoolDown()
         {
             for (auto y = 0; y < this->Height; y++)

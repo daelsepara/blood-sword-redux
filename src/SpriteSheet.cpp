@@ -3,6 +3,7 @@
 // generate sprite sheet
 namespace BloodSword::SpriteSheet
 {
+    // generate sprite sheet image file
     void Generate(const char *module, const char *image_file, int width, bool reverse)
     {
         // get all available modules

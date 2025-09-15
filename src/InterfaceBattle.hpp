@@ -1195,9 +1195,7 @@ namespace BloodSword::Interface
 
             for (auto i = 0; i < action_assets.size(); i++)
             {
-                auto texture = Asset::Copy(graphics.Renderer, action_assets[i], Color::Highlight);
-
-                highlight[action_controls[i]] = texture;
+                highlight[action_controls[i]] = Asset::Copy(graphics.Renderer, action_assets[i], Color::Highlight);
             }
 
             auto infow = battle.Map.TileSize * 5;

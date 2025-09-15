@@ -13,32 +13,38 @@
 // This version uses smart pointers
 namespace BloodSword::Move
 {
+    // random number generator
     auto Random = Random::Base();
 
-    // Path found by A* algorithm
+    // path found by A* algorithm
     class Path
     {
     public:
-        // List of coordinates of the path
+        // list of coordinates of the path
         BloodSword::Points Points;
 
+        // closest point to the destination if path to destination is not possible
         BloodSword::Point Closest;
 
         Path() {}
     };
 
-    // Class representing a node in the graph
+    // class representing a node in the graph
     class Node
     {
     public:
+        // coordinates of the node
         int X = -1;
 
         int Y = -1;
 
+        // cost to traverse this node
         int Cost = 0;
 
+        // estimated distance to the target
         int Distance = 0;
 
+        // parent node in the path
         Smart<Move::Node> Parent = nullptr;
 
         Node(int x, int y, int cost, Smart<Move::Node> &parent) : X(x), Y(y), Cost(cost), Parent(parent) {}
@@ -51,7 +57,7 @@ namespace BloodSword::Move
 
         Node() {}
 
-        // Total cost to traverse this node
+        // total cost to traverse this node
         int CostDistance()
         {
             return (this->Cost + this->Distance);
@@ -133,7 +139,7 @@ namespace BloodSword::Move
         return result;
     }
 
-    // Get all traversible nodes from current node
+    // get all traversible nodes from current node
     Moves Nodes(Map::Base &map, Smart<Move::Node> &current, Smart<Move::Node> &target, bool is_enemy, int enemy_target = Map::NotFound)
     {
         auto traversable = Moves();
@@ -164,13 +170,13 @@ namespace BloodSword::Move
         return traversable;
     }
 
-    // Get index of node from a list
+    // get index of node from a list
     Moves::const_iterator Find(Moves &nodes, Smart<Move::Node> &node)
     {
         return BloodSword::Find(nodes, node, Move::Compare);
     }
 
-    // Remove node from list
+    // remove node from list
     void Remove(Moves &nodes, Smart<Move::Node> &node)
     {
         auto found = Move::Find(nodes, node);
@@ -181,13 +187,13 @@ namespace BloodSword::Move
         }
     }
 
-    // Check if node is on the list
+    // check if node is on the list
     bool In(Moves &nodes, Smart<Move::Node> &node)
     {
         return Move::Find(nodes, node) != nodes.end();
     }
 
-    // Find path from src to dst using the A* algorithm
+    // find path from src to dst using the A* algorithm
     Move::Path FindPath(Map::Base &map, Point src, Point dst, int enemy_target = Map::NotFound)
     {
         auto path = Move::Path();
@@ -320,6 +326,7 @@ namespace BloodSword::Move
         return count;
     }
 
+    // return the number of valid moves that can be made in the path
     int Count(Map::Base &map, Move::Path &path)
     {
         return Move::Count(map, path, false);

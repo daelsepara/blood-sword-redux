@@ -881,6 +881,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // enchanter's starting spells
     void EnchanterSpells(Character::Base &character)
     {
         if (!character.Has(Skills::Type::SPELLS) || character.Class != Character::Class::ENCHANTER)
@@ -1199,6 +1200,7 @@ namespace BloodSword::Generate
         }
     }
 
+    // set target type
     void Target(Character::Base &character)
     {
         switch (character.Class)
@@ -1259,6 +1261,7 @@ namespace BloodSword::Generate
         return character;
     }
 
+    // generate NPC
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, Attributes::List attributes, int moves, Asset::Type asset)
     {
         auto character = Character::Base(name, attributes, Character::ControlType::NPC, skills, moves);
@@ -1296,6 +1299,7 @@ namespace BloodSword::Generate
         return Generate::NPC(name, skills, {FPR, PSY, AWR, END, ARM, DMG}, moves, asset);
     }
 
+    // generate NPC
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
         auto npc = Generate::NPC(name, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
@@ -1307,6 +1311,7 @@ namespace BloodSword::Generate
         return npc;
     }
 
+    // generate NPC
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
         auto npc = Generate::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);
@@ -1316,6 +1321,7 @@ namespace BloodSword::Generate
         return npc;
     }
 
+    // generate NPC
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Target::Type target, Skills::List skills, Target::List targets, int fpr, int psy, int awr, int end, int arm, int dmg_v, int dmg_m, int moves, Asset::Type asset)
     {
         auto npc = Generate::NPC(name, fight, shoot, skills, fpr, psy, awr, end, arm, dmg_v, dmg_m, moves, asset);

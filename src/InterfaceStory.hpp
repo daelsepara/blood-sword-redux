@@ -3,6 +3,7 @@
 
 #include "loggers/Story.hpp"
 
+// story interface functions
 namespace BloodSword::Interface
 {
     // render story section choices (if present)

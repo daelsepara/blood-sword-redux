@@ -3,6 +3,7 @@
 
 #include "Templates.hpp"
 
+// map objects and their string representations
 namespace BloodSword::Map
 {
     // the tile's (or its occupant) type
@@ -23,6 +24,7 @@ namespace BloodSword::Map
         TRIGGER
     };
 
+    // mapping of map object types to strings
     BloodSword::Mapping<Object> ObjectMapping = {
         {Object::NONE, "NONE"},
         {Object::PLAYER, "PLAYER"},
@@ -38,11 +40,13 @@ namespace BloodSword::Map
         {Object::ENEMIES, "ENEMIES"},
         {Object::TRIGGER, "TRIGGER"}};
 
+    // get map object type from string
     Object MapObject(const char *object)
     {
         return BloodSword::Find(Map::ObjectMapping, object);
     }
 
+    // get map object type from string
     Object MapObject(std::string object)
     {
         return Map::MapObject(object.c_str());

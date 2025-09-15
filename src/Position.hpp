@@ -4,6 +4,7 @@
 #include "Primitives.hpp"
 #include "Templates.hpp"
 
+// functions for managing relative positions
 namespace BloodSword::Position
 {
     // relative positions
@@ -16,6 +17,7 @@ namespace BloodSword::Position
         BOTTOM
     };
 
+    // mapping of position types to strings
     BloodSword::Mapping<Position::Type> TypeMapping = {
         {Position::Type::NONE, "NONE"},
         {Position::Type::TOP, "TOP"},
@@ -23,11 +25,13 @@ namespace BloodSword::Position
         {Position::Type::RIGHT, "RIGHT"},
         {Position::Type::BOTTOM, "BOTTOM"}};
 
+    // map string to position type
     Position::Type Map(const char *position)
     {
         return BloodSword::Find(Position::TypeMapping, position);
     }
 
+    // map string to position type
     Position::Type Map(std::string position)
     {
         return Position::Map(position.c_str());

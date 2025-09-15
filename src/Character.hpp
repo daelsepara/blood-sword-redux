@@ -18,48 +18,69 @@
 
 namespace BloodSword::Character
 {
+    // map template (character class -> T)
     template <typename T>
     using Mapped = std::unordered_map<Character::Class, T>;
 
+    // character base class
     class Base
     {
     public:
+        // character status (and duration, -1 if permanent)
         BloodSword::IntMapping<Character::Status> Status = {};
 
+        // character attributes
         Attributes::List Attributes = {};
 
+        // character skills
         Skills::List Skills = {};
 
+        // inventory
         Items::Inventory Items = {};
 
+        // spells known
         Spells::Grimoire Spells = {};
 
+        // spells called to mind
         Spells::List CalledToMind = {};
 
+        // spell casting strategy (for AI characters)
         Spells::Strategy SpellStrategy = {};
 
+        // character control type
         Character::ControlType ControlType = ControlType::NONE;
 
+        // character class
         Character::Class Class = Character::Class::NONE;
 
+        // character name
         std::string Name = std::string();
 
+        // character asset type
         Asset::Type Asset = Asset::NONE;
 
+        // fighting skill
         Skills::Type Fight = Skills::Type::NONE;
 
+        // shooting skill
         Skills::Type Shoot = Skills::Type::NONE;
 
+        // experience points
         int Experience = 0;
 
+        // movement points
         int Moves = BloodSword::MaximumMoves;
 
+        // character rank (1 to 20)
         int Rank = 0;
 
+        // encumbrance limit
         int EncumbranceLimit = 10;
 
+        // list of spell immunities
         Spells::List SpellImmunity = {};
 
+        // list of skill immunities
         Skills::List SkillImmunity = {};
 
         // target type (self)
@@ -74,6 +95,7 @@ namespace BloodSword::Character
         // location (survivor tracking in a battle)
         Book::Location Location = Book::Undefined;
 
+        // item delayed effects
         BloodSword::UnorderedMap<Character::Status, Item::Type> DelayedEffects = {};
 
         Base(const char *name,
@@ -122,11 +144,13 @@ namespace BloodSword::Character
 
         Base() {}
 
+        // does a character have this skill?
         bool Has(Skills::Type skill)
         {
             return this->Skills.size() > 0 && BloodSword::Found(this->Skills, skill);
         }
 
+        // does a character have any of these skills?
         bool HasAny(Skills::List skills)
         {
             auto result = false;
@@ -139,6 +163,7 @@ namespace BloodSword::Character
             return result;
         }
 
+        // add skill to character
         void Add(Skills::Type skill)
         {
             if (!this->Has(skill))
@@ -157,11 +182,13 @@ namespace BloodSword::Character
             return has_status && is_active && status != Character::Status::NONE;
         }
 
+        // does a character have a delayed effect for this status?
         bool HasDelayedEffect(Character::Status status)
         {
             return BloodSword::Has(this->DelayedEffects, status);
         }
 
+        // get location when delayed effect is triggered
         Book::Location DelayedEffect(Character::Status status)
         {
             auto location = Book::Undefined;
@@ -179,6 +206,7 @@ namespace BloodSword::Character
             return location;
         }
 
+        // is character affected by this status?
         bool Is(Character::Status status)
         {
             return this->Has(status);
@@ -220,11 +248,13 @@ namespace BloodSword::Character
             }
         }
 
+        // does character have this attribute?
         bool Is(Attributes::List::iterator attribute)
         {
             return attribute != this->Attributes.end();
         }
 
+        // search for attribute
         Attributes::List::iterator Attribute(Attribute::Type type)
         {
             auto result = this->Attributes.end();
@@ -242,6 +272,7 @@ namespace BloodSword::Character
             return result;
         }
 
+        // get attribute value
         int Value(Attribute::Type type)
         {
             auto attribute = this->Attribute(type);
@@ -249,6 +280,7 @@ namespace BloodSword::Character
             return this->Is(attribute) ? attribute->Value : 0;
         }
 
+        // set attribute value
         void Value(Attribute::Type type, int value)
         {
             auto attribute = this->Attribute(type);
@@ -266,6 +298,7 @@ namespace BloodSword::Character
             }
         }
 
+        // get attribute modifier
         int Modifier(Attribute::Type type)
         {
             auto attribute = this->Attribute(type);
@@ -273,6 +306,7 @@ namespace BloodSword::Character
             return this->Is(attribute) ? attribute->Modifier : 0;
         }
 
+        // set attribute modifier
         void Modifier(Attribute::Type type, int modifier)
         {
             auto attribute = this->Attribute(type);
@@ -283,6 +317,7 @@ namespace BloodSword::Character
             }
         }
 
+        // get attribute maximum value
         int Maximum(Attribute::Type type)
         {
             auto attribute = this->Attribute(type);
@@ -290,6 +325,7 @@ namespace BloodSword::Character
             return this->Is(attribute) ? attribute->Maximum : 0;
         }
 
+        // set attribute maximum value
         void Maximum(Attribute::Type type, int maximum)
         {
             auto attribute = this->Attribute(type);
@@ -300,11 +336,13 @@ namespace BloodSword::Character
             }
         }
 
+        // set character location
         void Set(Book::Location location)
         {
             this->Location = location;
         }
 
+        // set attribute values
         void Set(Attribute::Type type, int value, int modifier, int maximum)
         {
             auto attribute = this->Attribute(type);
@@ -321,6 +359,7 @@ namespace BloodSword::Character
             }
         }
 
+        // set attribute values
         void Set(Attribute::Type type, int value, int modifier)
         {
             auto attribute = this->Attribute(type);
@@ -353,6 +392,7 @@ namespace BloodSword::Character
             return result;
         }
 
+        // count items of specific type in inventory
         int Count(Item::Type type)
         {
             auto count = 0;
@@ -368,11 +408,13 @@ namespace BloodSword::Character
             return count;
         }
 
+        // check if character has item of specific type
         bool Has(Item::Type item)
         {
             return this->Find(item) != this->Items.end();
         }
 
+        // check if character has all items in list
         bool HasAll(Items::List items)
         {
             auto has_all = true;
@@ -385,6 +427,7 @@ namespace BloodSword::Character
             return has_all;
         }
 
+        // check if character has charged item (e.g. STEEL SCEPTRE with CHARGES)
         bool HasCharged(Item::Type item, Item::Type charge, int quantity)
         {
             auto found = this->Find(item);
@@ -403,6 +446,7 @@ namespace BloodSword::Character
             return has_item && has_charge;
         }
 
+        // find index of charged item (e.g. STEEL SCEPTRE with CHARGES)
         int HasChargedWeapon(Item::Type charge, int quantity, bool melee)
         {
             auto found = -1;
@@ -427,6 +471,7 @@ namespace BloodSword::Character
             return found;
         }
 
+        // add charges to charged item (e.g. STEEL SCEPTRE with CHARGES)
         bool AddCharge(Item::Type item, Item::Type charge, int quantity)
         {
             auto result = this->HasCharged(item, charge, quantity < 0 ? -quantity : 0);
@@ -459,11 +504,13 @@ namespace BloodSword::Character
             return result;
         }
 
+        // has a container with a sufficient amount of the item
         bool Has(Item::Type container, Item::Type item, int quantity)
         {
             return this->Find(container, item, quantity) != this->Items.end();
         }
 
+        // has a container with at least one of the item
         bool Has(Item::Type container, Item::Type item)
         {
             return this->Has(container, item, 1);
@@ -487,6 +534,7 @@ namespace BloodSword::Character
             return result;
         }
 
+        // has type of item with specific property
         bool Has(Item::Type item, Item::Property property)
         {
             return this->Find(item, property) != this->Items.end();
@@ -510,6 +558,7 @@ namespace BloodSword::Character
             return result;
         }
 
+        // has type of item with specific property and attribute
         bool Has(Item::Type item, Item::Property property, Attribute::Type attribute)
         {
             return this->Find(item, property, attribute) != this->Items.end();
@@ -619,11 +668,13 @@ namespace BloodSword::Character
             return armed;
         }
 
+        // is the character armed?
         bool IsArmed()
         {
             return this->IsArmed(Item::Property::PRIMARY);
         }
 
+        // get modifier from equipped weapon (if any)
         int WeaponModifier(Item::Property weapon_type, Attribute::Type attribute)
         {
             auto modifier = 0;
@@ -638,6 +689,7 @@ namespace BloodSword::Character
             return modifier;
         }
 
+        // get index of equipped weapon (if any)
         int EquippedWeapon(Item::Property weapon_type)
         {
             auto equipped = -1;
@@ -658,6 +710,7 @@ namespace BloodSword::Character
             return equipped;
         }
 
+        // total encumbrance from all items
         int TotalEncumbrance()
         {
             auto total = 0;
@@ -670,11 +723,13 @@ namespace BloodSword::Character
             return total;
         }
 
+        // space left before reaching encumbrance limit
         int SpaceLeft()
         {
             return (this->EncumbranceLimit - this->TotalEncumbrance());
         }
 
+        // get index of equipped armour (if any)
         int EquippedArmour()
         {
             auto equipped = -1;
@@ -698,16 +753,19 @@ namespace BloodSword::Character
             return this->ControlType == Character::ControlType::PLAYER;
         }
 
+        // is the character an NPC?
         bool IsEnemy()
         {
             return this->ControlType == Character::ControlType::NPC;
         }
 
+        // is the character immune to this skill?
         bool IsImmune(Skills::Type skill)
         {
             return this->SkillImmunity.size() > 0 && BloodSword::Found(this->SkillImmunity, skill);
         }
 
+        // is the character immune to this spell?
         bool IsImmune(Spells::Type spell)
         {
             return this->SpellImmunity.size() > 0 && BloodSword::Found(this->SpellImmunity, spell);
@@ -795,6 +853,7 @@ namespace BloodSword::Character
             }
         }
 
+        // add item or increase quantity in character's possessions
         void Add(Item::Type something, int quantity)
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
@@ -806,11 +865,13 @@ namespace BloodSword::Character
             }
         }
 
+        // add item to inventory
         void Add(Item::Base item)
         {
             Items::Add(this->Items, item);
         }
 
+        // remove item or decrease quantity in character's possessions
         void Remove(Item::Type content, int quantity)
         {
             for (auto item = this->Items.begin(); item != this->Items.end(); item++)
@@ -822,6 +883,7 @@ namespace BloodSword::Character
             }
         }
 
+        // remove item from inventory
         void Remove(Item::Type item)
         {
             if (this->Has(item))
@@ -849,6 +911,7 @@ namespace BloodSword::Character
         }
     };
 
+    // load status from json data
     BloodSword::IntMapping<Character::Status> LoadStatus(nlohmann::json &data)
     {
         BloodSword::IntMapping<Character::Status> all_status = {};
@@ -866,6 +929,7 @@ namespace BloodSword::Character
         return all_status;
     }
 
+    // load delayed effects from json data
     BloodSword::UnorderedMap<Character::Status, Item::Type> LoadDelayedEffects(nlohmann::json &data)
     {
         auto delayed_effects = BloodSword::UnorderedMap<Character::Status, Item::Type>();
@@ -885,6 +949,7 @@ namespace BloodSword::Character
         return delayed_effects;
     }
 
+    // load character from json data
     Character::Base Load(nlohmann::json &data)
     {
         auto character = Character::Base();
@@ -976,6 +1041,7 @@ namespace BloodSword::Character
         return character;
     }
 
+    // generate json data from character
     nlohmann::json Data(Character::Base character)
     {
         nlohmann::json data;

@@ -9,10 +9,13 @@
 #include "nlohmann/json.hpp"
 #include "Templates.hpp"
 
+// functions for managing sound effects
 namespace BloodSword::Sound
 {
+    // number of mixing channels
     const int CHANNELS = 4;
 
+    // sound effect types
     enum class Type
     {
         NONE = 0,
@@ -27,6 +30,7 @@ namespace BloodSword::Sound
         CAST_SPELL
     };
 
+    // mapping of sound types to strings
     BloodSword::Mapping<Sound::Type> Mapping = {
         {Sound::Type::NONE, "NONE"},
         {Sound::Type::BUTTON_CLICK, "BUTTON CLICK"},
@@ -39,13 +43,16 @@ namespace BloodSword::Sound
         {Sound::Type::WEAPON_THROW, "WEAPON THROW"},
         {Sound::Type::CAST_SPELL, "CAST SPELL"}};
 
+    // loaded sound assets
     BloodSword::UnorderedMap<Sound::Type, Mix_Chunk *> Assets = {};
 
+    // map string to sound type
     Sound::Type Map(const char *sound)
     {
         return BloodSword::Find(Sound::Mapping, sound);
     }
 
+    // map string to sound type
     Sound::Type Map(std::string sound)
     {
         return Sound::Map(sound.c_str());

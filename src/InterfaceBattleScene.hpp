@@ -3,6 +3,7 @@
 
 #include "loggers/Battle.hpp"
 
+// battle interface functions
 namespace BloodSword::Interface
 {
     // find map control

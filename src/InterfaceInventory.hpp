@@ -899,6 +899,7 @@ namespace BloodSword::Interface
         return update;
     }
 
+    // manage inventory of a character in the party
     Interface::ItemResult ManageInventory(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Class character, bool blur = true)
     {
         Interface::ItemResult update;

@@ -16,10 +16,13 @@
 // classes and functions for handling fonts
 namespace BloodSword::Fonts
 {
+    // font for captions (titles, headings)
     TTF_Font *Caption = nullptr;
 
+    // normal font for most text
     TTF_Font *Normal = nullptr;
 
+    // fixed-width font for tables, code, etc.
     TTF_Font *Fixed = nullptr;
 
     // font IDs
@@ -102,11 +105,13 @@ namespace BloodSword::Fonts
         return result;
     }
 
+    // load font definitions from settings file
     bool Load(std::string fonts)
     {
         return Fonts::Load(fonts.c_str());
     }
 
+    // get font by ID
     TTF_Font *Set(Fonts::ID id)
     {
         TTF_Font *font = nullptr;

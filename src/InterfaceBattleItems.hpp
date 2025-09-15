@@ -3,7 +3,7 @@
 
 #include "InterfaceBattleScene.hpp"
 
-// in battle use of item
+// in-battle use of item
 namespace BloodSword::Interface
 {
     // show item book description

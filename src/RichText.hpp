@@ -38,6 +38,7 @@ namespace BloodSword::Graphics
 
         RichText() {}
 
+        // load font if not already set
         void Load()
         {
             this->Font = Fonts::Set(this->ID);
@@ -49,6 +50,7 @@ namespace BloodSword::Graphics
         }
     };
 
+    // list of rich text
     typedef std::vector<Graphics::RichText> TextList;
 
     // reload fonts
@@ -60,6 +62,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // generate list of rich text from list of strings
     Graphics::TextList GenerateTextList(std::vector<std::string> collection, TTF_Font *font, Uint32 color, int wrap = 0)
     {
         auto text_list = Graphics::TextList();

@@ -19,8 +19,10 @@ namespace BloodSword::Attribute
         ARMOUR
     };
 
+    // list of attribute types
     typedef std::vector<Attribute::Type> Types;
 
+    // list of all attribute types
     Attribute::Types All = {
         Attribute::Type::FIGHTING_PROWESS,
         Attribute::Type::AWARENESS,
@@ -29,8 +31,10 @@ namespace BloodSword::Attribute
         Attribute::Type::DAMAGE,
         Attribute::Type::ARMOUR};
 
+    // attribute to asset mapping
     BloodSword::UnorderedMap<Attribute::Type, Asset::Type> Assets = {};
 
+    // attribute type to asset name mapping
     BloodSword::UnorderedMap<Attribute::Type, const char *> AssetNames = {
         {Attribute::Type::NONE, "NONE"},
         {Attribute::Type::FIGHTING_PROWESS, "FIGHT"},
@@ -40,17 +44,50 @@ namespace BloodSword::Attribute
         {Attribute::Type::DAMAGE, "DAMAGE"},
         {Attribute::Type::ARMOUR, "ARMOUR"}};
 
+    // attribute type to string mapping
+    BloodSword::Mapping<Attribute::Type> TypeMapping = {
+        {Attribute::Type::NONE, "NONE"},
+        {Attribute::Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
+        {Attribute::Type::AWARENESS, "AWARENESS"},
+        {Attribute::Type::PSYCHIC_ABILITY, "PSYCHIC ABILITY"},
+        {Attribute::Type::ENDURANCE, "ENDURANCE"},
+        {Attribute::Type::DAMAGE, "DAMAGE"},
+        {Attribute::Type::ARMOUR, "ARMOUR"}};
+
+    // attribute string abbreviations
+    BloodSword::Mapping<Attribute::Type> Abbreviations = {
+        {Attribute::Type::NONE, "---"},
+        {Attribute::Type::FIGHTING_PROWESS, "FPR"},
+        {Attribute::Type::AWARENESS, "AWR"},
+        {Attribute::Type::PSYCHIC_ABILITY, "PSY"},
+        {Attribute::Type::ENDURANCE, "END"},
+        {Attribute::Type::DAMAGE, "DMG"},
+        {Attribute::Type::ARMOUR, "ARM"}};
+
+    // map attribute types to asset type ids
     void MapAssets()
     {
         Asset::MapTypes(Attribute::Assets, Attribute::AssetNames);
     }
 
-    // attribute case class
+    // get attribute type
+    Attribute::Type Map(const char *attribute)
+    {
+        return BloodSword::Find(Attribute::TypeMapping, attribute);
+    }
+
+    // get attribute type
+    Attribute::Type Map(std::string attribute)
+    {
+        return Attribute::Map(attribute.c_str());
+    }
+
+    // attribute base class
     class Base
     {
     public:
         // attribute type
-        Attribute::Type Type = Type::NONE;
+        Attribute::Type Type = Attribute::Type::NONE;
 
         // base value
         int Value = 0;
@@ -67,40 +104,14 @@ namespace BloodSword::Attribute
 
         Base() {}
     };
-
-    BloodSword::Mapping<Attribute::Type> TypeMapping = {
-        {Attribute::Type::NONE, "NONE"},
-        {Attribute::Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
-        {Attribute::Type::AWARENESS, "AWARENESS"},
-        {Attribute::Type::PSYCHIC_ABILITY, "PSYCHIC ABILITY"},
-        {Attribute::Type::ENDURANCE, "ENDURANCE"},
-        {Attribute::Type::DAMAGE, "DAMAGE"},
-        {Attribute::Type::ARMOUR, "ARMOUR"}};
-
-    BloodSword::Mapping<Attribute::Type> Abbreviations = {
-        {Attribute::Type::NONE, "---"},
-        {Attribute::Type::FIGHTING_PROWESS, "FPR"},
-        {Attribute::Type::AWARENESS, "AWR"},
-        {Attribute::Type::PSYCHIC_ABILITY, "PSY"},
-        {Attribute::Type::ENDURANCE, "END"},
-        {Attribute::Type::DAMAGE, "DMG"},
-        {Attribute::Type::ARMOUR, "ARM"}};
-
-    Attribute::Type Map(const char *attribute)
-    {
-        return BloodSword::Find(Attribute::TypeMapping, attribute);
-    }
-
-    Attribute::Type Map(std::string attribute)
-    {
-        return Attribute::Map(attribute.c_str());
-    }
 }
 
 namespace BloodSword::Attributes
 {
+    // attributes list
     typedef std::vector<Attribute::Base> List;
 
+    // load attributes from json data
     Attributes::List Load(nlohmann::json &data)
     {
         auto characteristics = Attributes::List();
@@ -126,6 +137,7 @@ namespace BloodSword::Attributes
         return characteristics;
     }
 
+    // generate json data from attributes
     nlohmann::json Data(Attributes::List &attributes)
     {
         nlohmann::json data;

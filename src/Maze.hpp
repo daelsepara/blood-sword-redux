@@ -85,6 +85,7 @@ namespace BloodSword::Maze
         }
     }
 
+    // generate maze on the map
     void Generate(Map::Base &map, int width, int height)
     {
         // locations not yet visited

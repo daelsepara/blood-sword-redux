@@ -3,6 +3,7 @@
 
 #include "RogueBase.hpp"
 
+// function prototypes for rogue-like game mode
 namespace BloodSword::Rogue
 {
     // items

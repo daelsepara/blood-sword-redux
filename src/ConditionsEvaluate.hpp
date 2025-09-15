@@ -3,6 +3,7 @@
 
 #include "loggers/Eval.hpp"
 
+// evaluate conditions
 namespace BloodSword::Conditions
 {
     // results of evaluating a condition
@@ -4612,10 +4613,12 @@ namespace BloodSword::Conditions
             Conditions::InternalError(graphics, background, condition.Type);
         }
 
+        // check for inversion
         result = condition.Invert ? !result : result;
 
         EvalLogger::Log(condition, result, failed, text);
 
+        // return evaluation
         return failed ? Conditions::Evaluation(result, failed, text) : Conditions::Evaluation(result, text);
     }
 }

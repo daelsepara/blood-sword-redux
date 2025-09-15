@@ -5,18 +5,21 @@
 
 namespace BloodSword::Asset
 {
+    // asset missing or invalid
     int NONE = -1;
 
-    // asset type
+    // asset type id
     typedef int Type;
 
     template <typename T>
     using AssetMapping = BloodSword::UnorderedMap<Asset::Type, T>;
 
+    // asset list
     typedef std::vector<Asset::Type> List;
 
     BloodSword::UnorderedMap<Asset::Type, std::string> TypeMapping = {};
 
+    // get asset type id
     Asset::Type Map(std::string asset)
     {
         auto result = Asset::NONE;
@@ -34,6 +37,13 @@ namespace BloodSword::Asset
         return result;
     }
 
+    // get asset type id
+    Asset::Type Map(const char *asset)
+    {
+        return Asset::Map(std::string(asset));
+    }
+
+    // generate T -> asset type id mapping
     template <typename T>
     void MapTypes(BloodSword::UnorderedMap<T, Asset::Type> &types, BloodSword::UnorderedMap<T, const char *> &assets)
     {
@@ -41,19 +51,18 @@ namespace BloodSword::Asset
 
         for (auto asset : assets)
         {
-            auto asset_type = Asset::Map(std::string(asset.second));
-
-            types[asset.first] = asset_type;
+            types[asset.first] = Asset::Map(std::string(asset.second));
         }
     }
 
-    void MapTypes(std::vector<Asset::Type> &types, std::vector<const char *> &assets)
+    // generate vector of asset type ids, must be a vector of type T
+    void MapTypes(Asset::List &types, std::vector<const char *> &assets)
     {
         types.clear();
 
         for (auto asset : assets)
         {
-            auto asset_type = Asset::Map(std::string(asset));
+            auto asset_type = Asset::Map(asset);
 
             types.push_back(asset_type);
         }

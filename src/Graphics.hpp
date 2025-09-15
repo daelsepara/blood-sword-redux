@@ -10,6 +10,7 @@
 // classes and functions for the graphics rendering engine
 namespace BloodSword::Graphics
 {
+    // list scenes (references) that can be rendered
     typedef std::vector<std::reference_wrapper<Scene::Base>> Scenery;
 
     // version string texture overlay
@@ -511,6 +512,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scene and highlight the control currently in focus (if any)
     void Overlay(Base &graphics, Scene::Base &scene, Controls::User input)
     {
         Graphics::Overlay(graphics, scene);
@@ -518,6 +520,7 @@ namespace BloodSword::Graphics
         Graphics::Render(graphics, scene.Controls, input);
     }
 
+    // render scenes and highlight the control currently in focus (if any)
     void Render(Base &graphics, Graphics::Scenery scenes, Controls::Collection &controls, Controls::User input)
     {
         if (graphics.Renderer && scenes.size() > 0)
@@ -528,6 +531,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scenes and highlight the control currently in focus (if any)
     void Render(Base &graphics, Graphics::Scenery scenes, Controls::User input)
     {
         Graphics::Render(graphics, scenes, scenes.back().get().Controls, input);
@@ -553,6 +557,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scenes and highlight the control currently in focus (if any)
     void Dialog(Base &graphics, Graphics::Scenery scenes, bool blur = true)
     {
         if (graphics.Renderer && scenes.size() > 0)
@@ -573,6 +578,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // render scene and highlight the control currently in focus (if any)
     void Dialog(Base &graphics, Graphics::Scenery scenes, Controls::User input, bool blur = true)
     {
         if (graphics.Renderer && scenes.size() > 0)
@@ -589,6 +595,7 @@ namespace BloodSword::Graphics
         Graphics::Dialog(graphics, {background, dialog}, input, blur);
     }
 
+    // render scene now without waiting for user input
     void RenderNow(Base &graphics)
     {
         if (graphics.Renderer)
@@ -614,7 +621,6 @@ namespace BloodSword::Graphics
     }
 
     // render scene (background scene + foreground scene on top) now without waiting for user input
-    // used in animation
     void RenderNow(Base &graphics, Scene::Base &background, Scene::Base &foreground)
     {
         if (graphics.Renderer)
@@ -762,11 +768,13 @@ namespace BloodSword::Graphics
         return texture;
     }
 
+    // create a texture representation of a string (without line wrapping)
     SDL_Texture *CreateText(Graphics::Base &graphics, const char *text, TTF_Font *font, SDL_Color text_color, int style)
     {
         return Graphics::CreateText(graphics, text, font, text_color, style, 0);
     }
 
+    // create a texture representation of a rich text
     SDL_Texture *CreateText(Graphics::Base &graphics, Graphics::RichText &text)
     {
         auto texture = Graphics::CreateText(graphics, text.Text.c_str(), text.Font, text.Color, text.Style, text.Wrap);
@@ -813,6 +821,7 @@ namespace BloodSword::Graphics
         }
     }
 
+    // renders asset (surface) to a target surface at specified position (rect) with scaling
     void RenderAssetScaled(SDL_Surface *surface, SDL_Surface *surface_asset, SDL_Rect &rect)
     {
         if (surface_asset)

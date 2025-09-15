@@ -8,6 +8,7 @@ namespace BloodSword::Room
 {
     const int None = -1;
 
+    // room base class
     class Base
     {
     public:
@@ -98,6 +99,7 @@ namespace BloodSword::Room
 
 namespace BloodSword::Battlepits
 {
+    // room connection types
     enum class Connection
     {
         NONE = -1,
@@ -105,16 +107,19 @@ namespace BloodSword::Battlepits
         WALLS
     };
 
+    // connection type to string mapping
     BloodSword::Mapping<Battlepits::Connection> ConnectionMapping = {
         {Connection::NONE, "NONE"},
         {Connection::TUNNELS, "TUNNELS"},
         {Connection::WALLS, "WALLS"}};
 
+    // map string to connection type
     Battlepits::Connection Map(const char *connection)
     {
         return BloodSword::Find(Battlepits::ConnectionMapping, connection);
     }
 
+    // map string to connection type
     Battlepits::Connection Map(std::string connection)
     {
         return Battlepits::Map(connection.c_str());
@@ -310,13 +315,16 @@ namespace BloodSword::Battlepits
         return Room::Base(point.X, point.Y, width, height);
     }
 
+    // checker function type
     typedef bool (*Checker)(Map::Base &map, Point point);
 
+    // check if map tile is empty
     bool Empty(Map::Base &map, Point point)
     {
         return (map[point].Type == Map::Object::NONE);
     }
 
+    // check if map tile is blocked
     bool Blocked(Map::Base &map, Point point)
     {
         auto &tile = map[point];
@@ -324,6 +332,7 @@ namespace BloodSword::Battlepits
         return tile.Type == Map::Object::NONE || (tile.Type != Map::Object::PASSABLE && tile.Type != Map::Object::ENEMY_PASSABLE);
     }
 
+    // check if map tile is passable
     bool Passable(Map::Base &map, Point point)
     {
         auto &tile = map[point];
@@ -331,6 +340,7 @@ namespace BloodSword::Battlepits
         return tile.Type == Map::Object::PASSABLE;
     }
 
+    // assign wall assets based on surrounding tiles
     void AssignCornerAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y, bool inner_tunnel)
     {
         Battlepits::Checker Filled = inner_tunnel ? Empty : Passable;
@@ -397,6 +407,7 @@ namespace BloodSword::Battlepits
         }
     }
 
+    // assign tunnel wall assets based on surrounding tiles
     void AssignTunnelAssets(BloodSword::Map::Base &map, BloodSword::Map::Tile &tile, int x, int y, bool inner_tunnel)
     {
         Battlepits::Checker Check = inner_tunnel ? Blocked : Passable;
@@ -570,6 +581,7 @@ namespace BloodSword::Battlepits
         }
     }
 
+    // assign walls to all tunnel tiles
     void SetTunnelWalls(Map::Base &map)
     {
         for (auto y = 1; y < map.Height - 1; y++)
@@ -607,6 +619,7 @@ namespace BloodSword::Battlepits
         }
     }
 
+    // assign wall assets to all tunnel tiles
     void AssignTunnelAssets(Map::Base &map, bool inner_tunnel)
     {
         for (auto y = 0; y < map.Height; y++)
@@ -625,6 +638,7 @@ namespace BloodSword::Battlepits
         }
     }
 
+    // generate battlepits map
     void Generate(Map::Base &map, std::vector<Room::Base> &rooms, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size)
     {
         // initialize RNG
@@ -676,6 +690,7 @@ namespace BloodSword::Battlepits
             Battlepits::ConnectRooms(map, rooms, rooms[room_id], rooms[room_id - 1]);
         }
 
+        // assign wall assets
         if (connection == Connection::TUNNELS)
         {
             Battlepits::AssignTunnelAssets(map, inner_tunnel);
@@ -686,6 +701,7 @@ namespace BloodSword::Battlepits
         }
     }
 
+    // generate battlepits map
     Map::Base Generate(int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size)
     {
         auto map = Map::Base(width, height);

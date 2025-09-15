@@ -4,6 +4,7 @@
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"
 
+// functions for managing spells
 namespace BloodSword::Spells
 {
     // spell type
@@ -28,9 +29,11 @@ namespace BloodSword::Spells
         DETECT_ENCHANTMENT
     };
 
+    // spell type mapping template
     template <typename T>
     using Mapped = std::unordered_map<Spells::Type, T>;
 
+    // list of spell types
     typedef std::vector<Spells::Type> List;
 
     // spell class (blasting or psychic)
@@ -41,6 +44,7 @@ namespace BloodSword::Spells
         PSYCHIC
     };
 
+    // map string to spell type
     BloodSword::Mapping<Spells::Type> TypeMapping = {
         {Spells::Type::NONE, "NONE"},
         {Spells::Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
@@ -60,8 +64,10 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, "PREDICTION"},
         {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
+    // map spell types to asset ids
     BloodSword::UnorderedMap<Spells::Type, Asset::Type> Assets = {};
 
+    // map spell types to asset names
     BloodSword::UnorderedMap<Spells::Type, const char *> AssetNames = {
         {Spells::Type::VOLCANO_SPRAY, "VOLCANO_SPRAY"},
         {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
@@ -80,6 +86,7 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, "PREDICTION"},
         {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
+    // spell class mapping to strings
     BloodSword::Mapping<Spells::Class> ClassMapping = {
         {Spells::Class::NONE, "NONE"},
         {Spells::Class::BLASTING, "BLASTING"},
@@ -208,31 +215,37 @@ namespace BloodSword::Spells
         {Spells::Type::PREDICTION, 0},
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
+    // map all spell types to asset ids
     void MapAssets()
     {
         Asset::MapTypes(Spells::Assets, Spells::AssetNames);
     }
 
+    // map string to spell type
     Spells::Type Map(const char *spell)
     {
         return BloodSword::Find(Spells::TypeMapping, spell);
     }
 
+    // map string to spell type
     Spells::Type Map(std::string spell)
     {
         return Spells::Map(spell.c_str());
     }
 
+    // map string to spell class
     Spells::Class MapClass(const char *spell_class)
     {
         return BloodSword::Find(Spells::ClassMapping, spell_class);
     }
 
+    // map string to spell class
     Spells::Class MapClass(std::string spell)
     {
         return Spells::MapClass(spell.c_str());
     }
 
+    // is this spell in the list?
     bool In(Spells::List &list, Spells::Type spell)
     {
         return list.size() > 0 && BloodSword::Has(list, spell);
@@ -282,16 +295,19 @@ namespace BloodSword::Spells
              bool ranged,
              int complexity) : Base(type, spell_class, is_battle, ranged, complexity, -1) {}
 
+        // is this a basic spell?
         bool IsBasic()
         {
             return Spells::In(Spells::Basic, this->Type);
         }
 
+        // does this spell require a target?
         bool RequiresTarget()
         {
             return Spells::In(Spells::Target, this->Type);
         }
 
+        // does this spell target multiple opponents?
         bool MultipleTargets()
         {
             return Spells::In(Spells::TargetsParty, this->Type);
@@ -302,8 +318,10 @@ namespace BloodSword::Spells
     class Usage
     {
     public:
+        // spell type
         Spells::Type Spell = Spells::Type::NONE;
 
+        // number of times spell can be used, 0 for unlimited
         int Uses = 0;
 
         // min number of opponents before it is used
@@ -327,10 +345,13 @@ namespace BloodSword::Spells
         Usage() {}
     };
 
+    // strategies for opponent spell usage
     typedef std::vector<Spells::Usage> Strategy;
 
+    // spell book / grinoire (all spells known)
     typedef std::vector<Spells::Base> Grimoire;
 
+    // load spell data from json
     Spells::Grimoire Load(nlohmann::json &data)
     {
         auto spells = Spells::Grimoire();
@@ -358,6 +379,7 @@ namespace BloodSword::Spells
         return spells;
     }
 
+    // load list of spells from json data
     Spells::List LoadList(nlohmann::json &data)
     {
         auto spells = Spells::List();
@@ -375,6 +397,7 @@ namespace BloodSword::Spells
         return spells;
     }
 
+    // load spell strategy from json data
     Spells::Strategy LoadStrategy(nlohmann::json &data)
     {
         auto strategies = Spells::Strategy();
@@ -402,6 +425,7 @@ namespace BloodSword::Spells
         return strategies;
     }
 
+    // load grimoire from file
     nlohmann::json Data(Spells::Grimoire &spells)
     {
         nlohmann::json data;
@@ -428,6 +452,7 @@ namespace BloodSword::Spells
         return data;
     }
 
+    // generate json data from list of spells
     nlohmann::json Data(Spells::List &memorized)
     {
         nlohmann::json data;
@@ -440,6 +465,7 @@ namespace BloodSword::Spells
         return data;
     }
 
+    // generate json data from spell strategies
     nlohmann::json Data(Spells::Strategy &strategies)
     {
         nlohmann::json data;
@@ -462,6 +488,7 @@ namespace BloodSword::Spells
         return data;
     }
 
+    // count number of times a spell appears in a list, or total if spell is NONE
     int Count(Spells::List spells, Spells::Type spell)
     {
         auto count = 0;
@@ -484,11 +511,13 @@ namespace BloodSword::Spells
         return count;
     }
 
+    // is this a basic spell?
     bool IsBasic(Spells::Type type)
     {
         return Spells::In(Spells::Basic, type);
     }
 
+    // does this spell require a target?
     bool RequiresTarget(Spells::Type type)
     {
         return Spells::In(Spells::Target, type);

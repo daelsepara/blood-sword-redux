@@ -3,6 +3,7 @@
 
 #include "Interface.hpp"
 
+// item effects interface functions
 namespace BloodSword::Interface
 {
     // removes item from inventory
@@ -209,6 +210,7 @@ namespace BloodSword::Interface
         }
     }
 
+    // applies item effects
     void ItemEffects(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character, Item::Type item)
     {
         if (Engine::IsAlive(character))

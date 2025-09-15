@@ -6,6 +6,7 @@
 
 namespace BloodSword::Character
 {
+    // character control type
     enum class ControlType
     {
         NONE = -1,
@@ -13,16 +14,19 @@ namespace BloodSword::Character
         NPC
     };
 
+    // control type to string mapping
     BloodSword::Mapping<Character::ControlType> ControlTypeMapping = {
         {Character::ControlType::NONE, "NONE"},
         {Character::ControlType::PLAYER, "PLAYER"},
         {Character::ControlType::NPC, "NPC"}};
 
+    // map string to control type
     Character::ControlType MapControlType(const char *control_type)
     {
         return BloodSword::Find(Character::ControlTypeMapping, control_type);
     }
 
+    // map string to control type
     Character::ControlType MapControlType(std::string control_type)
     {
         return Character::MapControlType(control_type.c_str());
@@ -39,8 +43,10 @@ namespace BloodSword::Character
         IMRAGARN
     };
 
+    // list of character classes
     typedef std::vector<Character::Class> Classes;
 
+    // character class to string mapping
     BloodSword::Mapping<Character::Class> ClassMapping = {
         {Character::Class::NONE, "NONE"},
         {Character::Class::WARRIOR, "WARRIOR"},
@@ -49,22 +55,26 @@ namespace BloodSword::Character
         {Character::Class::ENCHANTER, "ENCHANTER"},
         {Character::Class::IMRAGARN, "IMRAGARN"}};
 
+    // all normal character classes
     Character::Classes All = {
         Character::Class::WARRIOR,
         Character::Class::TRICKSTER,
         Character::Class::SAGE,
         Character::Class::ENCHANTER};
 
+    // map string to character class
     Character::Class Map(const char *character_class)
     {
         return BloodSword::Find(Character::ClassMapping, character_class);
     }
 
+    // map string to character class
     Character::Class Map(std::string character_class)
     {
         return Character::Map(character_class.c_str());
     }
 
+    // check if character class is not a normal class
     bool OtherClass(Character::Class character)
     {
         auto found = true;

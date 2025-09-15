@@ -5,9 +5,12 @@
 
 #include "Map.hpp"
 
+// functions for calculating field of view
+//
 // adapted from: https://github.com/BenMakesGames/FoV
 namespace BloodSword::FieldOfView
 {
+    // functions for calculating and comparing slopes
     class Slope
     {
     public:
@@ -28,11 +31,13 @@ namespace BloodSword::FieldOfView
         bool LessOrEqual(int y, int x) { return this->Y * x <= this->X * y; }
     };
 
+    // get squared distance
     double GetDistance(int x, int y)
     {
         return (double)(x * x + y * y);
     }
 
+    // get squared distance between two points
     double GetDistance(Point origin, int x, int y)
     {
         auto dx = origin.X - x;
@@ -42,6 +47,7 @@ namespace BloodSword::FieldOfView
         return GetDistance(dx, dy);
     }
 
+    // translate local coordinates to map coordinates
     Point TranslateLocalToMap(int x, int y, Point origin, int octant)
     {
         Point point = {-1, -1};
@@ -106,11 +112,13 @@ namespace BloodSword::FieldOfView
         return point;
     }
 
+    // check if map cell blocks light
     bool BlocksLight(Map::Base &map, int x, int y)
     {
         return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || (map(x, y).IsOccupied() && map(x, y).Occupant != Map::Object::ITEMS) || map(x, y).IsBlocked();
     }
 
+    // check if map cell blocks light with local coordinates
     bool BlocksLight(Map::Base &map, int x, int y, int octant, Point origin)
     {
         auto point = TranslateLocalToMap(x, y, origin, octant);
@@ -118,13 +126,16 @@ namespace BloodSword::FieldOfView
         return (x < 0 || x >= map.Width || y < 0 || y >= map.Height) || (map[point].IsOccupied() && map[point].Occupant != Map::Object::ITEMS) || map[point].IsBlocked();
     }
 
+    // compute the sign of a value
     int Sign(int value)
     {
         return value < 0 ? -1 : (value > 0 ? 1 : 0);
     }
 
+    // diamond-shaped field of view
     namespace Diamond
     {
+        // compute the top Y coordinate for a given X coordinate
         int ComputeTopY(Map::Base &map, Slope top, int octant, Point origin, int x)
         {
             if (top.X == 1)
@@ -154,6 +165,7 @@ namespace BloodSword::FieldOfView
             return topY;
         }
 
+        // compute field of view for a given octant
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
             auto radius_sq = (double)(radius * radius);
@@ -228,6 +240,7 @@ namespace BloodSword::FieldOfView
             }
         }
 
+        // compute diamond-shaped field of view
         Points Compute(Map::Base &map, Point origin, int radius)
         {
             Points visible = {origin};
@@ -241,8 +254,10 @@ namespace BloodSword::FieldOfView
         }
     }
 
+    // shadow-casting field of view
     namespace ShadowCast
     {
+        // compute field of view for a given octant
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
             auto radius_sq = (double)(radius * radius);
@@ -314,6 +329,7 @@ namespace BloodSword::FieldOfView
             }
         }
 
+        // compute shadow-casting field of view
         Points Compute(Map::Base &map, Point origin, int radius)
         {
             Points visible = {origin};
@@ -327,8 +343,10 @@ namespace BloodSword::FieldOfView
         }
     }
 
+    // ray-casting field of view
     namespace RayCast
     {
+        // trace a line from the origin to a given point
         void TraceLine(Map::Base &map, Points &visible, Point origin, int x2, int y2, int rangeLimit)
         {
             auto xDiff = x2 - origin.X;
@@ -396,6 +414,7 @@ namespace BloodSword::FieldOfView
             }
         }
 
+        // compute ray-casting field of view
         Points Compute(Map::Base &map, Point origin, int radius)
         {
             Points visible = {origin};
@@ -433,8 +452,10 @@ namespace BloodSword::FieldOfView
         }
     }
 
+    // Milazzo's field of view
     namespace Milazzo
     {
+        // set a map cell as visible
         void SetVisible(Points &visible, int x, int y, int octant, Point origin)
         {
             auto local = TranslateLocalToMap(x, y, origin, octant);
@@ -445,6 +466,7 @@ namespace BloodSword::FieldOfView
             }
         }
 
+        // compute the top Y coordinate for a given X coordinate
         int ComputeTopY(Map::Base &map, int octant, Point origin, int x, Slope top)
         {
             int topY;
@@ -483,6 +505,7 @@ namespace BloodSword::FieldOfView
             return topY;
         }
 
+        // compute the bottom Y coordinate for a given X coordinate
         int ComputeBottomY(Map::Base &map, int octant, Point origin, int x, Slope bottom)
         {
             int bottomY;
@@ -504,6 +527,7 @@ namespace BloodSword::FieldOfView
             return bottomY;
         }
 
+        // compute field of view for a given octant
         void ComputeOctant(Map::Base &map, Points &visible, int octant, Point origin, int radius, int x, Slope top, Slope bottom)
         {
             auto radius_sq = (double)(radius * radius);
@@ -603,6 +627,7 @@ namespace BloodSword::FieldOfView
             }
         }
 
+        // compute Milazzo's field of view
         Points Compute(Map::Base &map, Point origin, int radius)
         {
             Points visible = {origin};
@@ -616,10 +641,13 @@ namespace BloodSword::FieldOfView
         }
     }
 
+    // binary shadow-casting field of view
     namespace ShadowCastBinary
     {
+        // minimum brightness threshold for a cell to be considered visible
         const double BrightnessThreshold = 0.0;
 
+        // cast light in a given octant
         void CastLight(Map::Base &map, Points &visible, Point origin, int radius, int row, double start, double end, int xx, int xy, int yx, int yy)
         {
             auto radius_sq = (double)(radius * radius);
@@ -702,6 +730,7 @@ namespace BloodSword::FieldOfView
             }
         }
 
+        // compute binary shadow-casting field of view
         Points Compute(Map::Base &map, Point origin, int radius)
         {
             Points lightMap = {origin};
@@ -717,6 +746,7 @@ namespace BloodSword::FieldOfView
         }
     }
 
+    // field of view calculation methods
     enum class Method
     {
         NONE = -1,
@@ -727,6 +757,7 @@ namespace BloodSword::FieldOfView
         BINARY
     };
 
+    // field of view method to string mapping
     BloodSword::Mapping<FieldOfView::Method> MethodMapping = {
         {Method::NONE, "NONE"},
         {Method::DIAMOND, "DIAMOND"},
@@ -735,16 +766,19 @@ namespace BloodSword::FieldOfView
         {Method::MILAZZO, "MILAZZO"},
         {Method::BINARY, "BINARY"}};
 
+    // map string to field of view method
     FieldOfView::Method Map(const char *method)
     {
         return BloodSword::Find(FieldOfView::MethodMapping, method);
     }
 
+    // map string to field of view method
     FieldOfView::Method Map(std::string method)
     {
         return FieldOfView::Map(method.c_str());
     }
 
+    // compute field of view using the specified method
     Points Compute(Map::Base &map, Point origin, int radius, FieldOfView::Method method)
     {
         Points points = {};

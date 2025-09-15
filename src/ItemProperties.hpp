@@ -3,9 +3,10 @@
 
 #include "Templates.hpp"
 
+// item properties
 namespace BloodSword::Item
 {
-    // item property
+    // item property types
     enum class Property
     {
         NONE = -1,
@@ -34,8 +35,10 @@ namespace BloodSword::Item
         ACCESSORY
     };
 
+    // list of item properties
     typedef std::vector<Item::Property> Properties;
 
+    // mapping of item properties to strings
     BloodSword::Mapping<Item::Property> PropertyMapping = {
         {Item::Property::NONE, "NONE"},
         {Item::Property::NORMAL, "NORMAL"},
@@ -62,6 +65,7 @@ namespace BloodSword::Item
         {Item::Property::RESURRECTION, "RESURRECTION"},
         {Item::Property::ALL_RANGES, "ALL RANGES"}};
 
+    // invisible properties (hide from item description)
     Item::Properties Invisible = {
         Item::Property::NONE,
         Item::Property::CONTAINER,
@@ -73,16 +77,19 @@ namespace BloodSword::Item
         Item::Property::REQUIRES_TARGET,
         Item::Property::ALL_RANGES};
 
+    // map string to item property
     Item::Property MapProperty(const char *property)
     {
         return BloodSword::Find(Item::PropertyMapping, property);
     }
 
+    // map string to item property
     Item::Property MapProperty(std::string property)
     {
         return Item::MapProperty(property.c_str());
     }
 
+    // this property is invisible
     bool IsInvisible(Item::Property property)
     {
         return property != Item::Property::NONE && BloodSword::Has(Item::Invisible, property);

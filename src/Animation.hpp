@@ -29,8 +29,10 @@ namespace BloodSword::Animation
         FRAME
     };
 
+    // list of animation frames
     typedef std::vector<Animation::Frame> Frames;
 
+    // list of animation typess
     typedef std::vector<Animation::Type> Types;
 
     // animation base class
@@ -87,6 +89,7 @@ namespace BloodSword::Animation
         // clipping area
         Point Clip = Point(-1, -1);
 
+        // clipping width and height
         int ClipW = 0;
 
         int ClipH = 0;
@@ -172,6 +175,7 @@ namespace BloodSword::Animation
             this->Set(Point(originx, originy), Point(x, y));
         }
 
+        // set frame size
         void SetFrameSize(int width, int height)
         {
             this->FrameW = width;
@@ -179,6 +183,7 @@ namespace BloodSword::Animation
             this->FrameH = height;
         }
 
+        // set trail size
         void SetTrailSize(int size)
         {
             this->TrailSize = size;
@@ -392,13 +397,15 @@ namespace BloodSword::Animations
             this->Delay = delay;
         }
 
-        // Clip Area
+        // clip Area
         Point Clip = Point(-1, -1);
 
+        // clipping width and height
         int ClipW = 0;
 
         int ClipH = 0;
 
+        // setup clipping area based on all animations
         void SetupClipping()
         {
             for (auto i = 0; i < this->List.size(); i++)

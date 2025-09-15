@@ -3,9 +3,10 @@
 
 #include "Templates.hpp"
 
+// item types
 namespace BloodSword::Item
 {
-    // item type
+    // item types
     enum class Type
     {
         NONE = -1,
@@ -83,6 +84,7 @@ namespace BloodSword::Item
         RING_OF_SORCERY
     };
 
+    // mapping of item types to strings
     BloodSword::Mapping<Item::Type> TypeMapping = {
         {Item::Type::NONE, "NONE"},
         {Item::Type::SWORD, "SWORD"},
@@ -158,24 +160,29 @@ namespace BloodSword::Item
         {Item::Type::MAGIC_BOW, "MAGIC BOW"},
         {Item::Type::RING_OF_SORCERY, "RING OF SORCERY"}};
 
+    // map string to item type
     Item::Type Map(const char *item)
     {
         return BloodSword::Find(Item::TypeMapping, item);
     }
 
+    // map string to item type
     Item::Type Map(std::string item)
     {
         return Item::Map(item.c_str());
     }
 
+    // melee weapon (range) requirements
     BloodSword::UnorderedMap<Item::Type, Item::Type> MeleeRequirements = {
         {Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE}};
 
+    // ranged weapon (ammunition) requirements
     BloodSword::UnorderedMap<Item::Type, Item::Type> RangedRequirements = {
         {Item::Type::BOW, Item::Type::ARROW},
         {Item::Type::LIMITED_SHURIKEN, Item::Type::SHURIKEN},
         {Item::Type::MAGIC_BOW, Item::Type::ARROW}};
 
+    // container requirements
     BloodSword::UnorderedMap<Item::Type, Item::Type> StorageRequirements = {
         {Item::Type::SHURIKEN, Item::Type::LIMITED_SHURIKEN},
         {Item::Type::ARROW, Item::Type::QUIVER},
@@ -192,6 +199,7 @@ namespace BloodSword::Item
         BUFFOON
     };
 
+    // mapping of kalugen card types to strings
     BloodSword::Mapping<Item::CardType> CardMapping = {
         {Item::CardType::NONE, "NONE"},
         {Item::CardType::KING_OF_SERPENTS, "KING OF SERPENTS"},
@@ -200,11 +208,13 @@ namespace BloodSword::Item
         {Item::CardType::ACE_OF_RINGS, "ACE OF RINGS"},
         {Item::CardType::BUFFOON, "BUFFOON"}};
 
+    // map string to kalugen card type
     Item::CardType MapCard(const char *item)
     {
         return BloodSword::Find(Item::CardMapping, item);
     }
 
+    // map string to kalugen card type
     Item::CardType MapCard(std::string item)
     {
         return Item::MapCard(item.c_str());

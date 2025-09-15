@@ -149,6 +149,7 @@ namespace BloodSword::Input
         SDL_StopTextInput();
     }
 
+    // wait for text input from user
     Controls::User WaitForText(Graphics::Base &graphics, Graphics::Scenery scenes, Controls::Collection &controls, Controls::User input, bool blur = true, int delay = BloodSword::StandardDelay)
     {
         Input::RenderWhileWaiting(graphics, scenes, controls, input, blur);
@@ -803,11 +804,13 @@ namespace BloodSword::Input
         return (Input::Check(input) || input.Up || input.Down);
     }
 
+    // check if input is up or scroll up
     bool IsUp(Controls::User &input)
     {
         return (input.Type == Controls::Type::SCROLL_UP || input.Up);
     }
 
+    // check if input is down or scroll down
     bool IsDown(Controls::User &input)
     {
         return (input.Type == Controls::Type::SCROLL_DOWN || input.Down);

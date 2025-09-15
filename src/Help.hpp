@@ -6,8 +6,10 @@
 #include "nlohmann/json.hpp"
 #include "Graphics.hpp"
 
+// classes and functions for rendering help sections
 namespace BloodSword::Help
 {
+    // font face styles
     enum class Face
     {
         NONE = -1,
@@ -17,6 +19,7 @@ namespace BloodSword::Help
         BOLD_ITALIC
     };
 
+    // text alignment
     enum class Align
     {
         NONE = -1,
@@ -25,6 +28,7 @@ namespace BloodSword::Help
         RIGHT
     };
 
+    // font face style to string mapping
     BloodSword::Mapping<Help::Face> FaceMapping = {
         {Help::Face::NONE, "NONE"},
         {Help::Face::NORMAL, "NORMAL"},
@@ -32,27 +36,32 @@ namespace BloodSword::Help
         {Help::Face::ITALIC, "ITALIC"},
         {Help::Face::BOLD_ITALIC, "BOLD-ITALIC"}};
 
+    // text alignment to string mapping
     BloodSword::Mapping<Help::Align> AlignMapping = {
         {Help::Align::NONE, "NONE"},
         {Help::Align::LEFT, "LEFT"},
         {Help::Align::CENTER, "CENTER"},
         {Help::Align::RIGHT, "RIGHT"}};
 
+    // map string to font face style
     Help::Face MapFace(const char *face)
     {
         return BloodSword::Find(Help::FaceMapping, face);
     }
 
+    // map string to font face style
     Help::Face MapFace(std::string face)
     {
         return Help::MapFace(face.c_str());
     }
 
+    // map string to text alignment
     Help::Align MapAlign(const char *alignment)
     {
         return BloodSword::Find(Help::AlignMapping, alignment);
     }
 
+    // map string to text alignment
     Help::Align MapAlign(std::string alignment)
     {
         return Help::MapAlign(alignment.c_str());
@@ -62,10 +71,13 @@ namespace BloodSword::Help
     class Item
     {
     public:
+        // text alignment
         Help::Align Align = Help::Align::LEFT;
 
+        // font face style
         Help::Face Face = Help::Face::NORMAL;
 
+        // text content
         std::string Text = std::string();
 
         Item() {}
@@ -75,15 +87,19 @@ namespace BloodSword::Help
     class Section
     {
     public:
+        // section header
         std::string Header = std::string();
 
+        // section image (if any)
         std::string Image = std::string();
 
+        // list of items
         std::vector<Help::Item> Items = {};
 
         Section() {}
     };
 
+    // list of sections
     typedef std::vector<Help::Section> Sections;
 
     // set item stile
@@ -94,22 +110,31 @@ namespace BloodSword::Help
         switch (item.Face)
         {
         case Face::NORMAL:
+
             style = TTF_STYLE_NORMAL;
 
             break;
+
         case Face::BOLD:
+
             style = TTF_STYLE_BOLD;
 
             break;
+
         case Face::ITALIC:
+
             style = TTF_STYLE_ITALIC;
 
             break;
+
         case Face::BOLD_ITALIC:
+
             style = TTF_STYLE_BOLD | TTF_STYLE_ITALIC;
 
             break;
+
         default:
+
             style = TTF_STYLE_NORMAL;
 
             break;
@@ -193,6 +218,7 @@ namespace BloodSword::Help
         return texture;
     }
 
+    // load a single help item from json data
     Help::Item LoadItem(nlohmann::json &data)
     {
         auto item = Help::Item();
@@ -206,6 +232,7 @@ namespace BloodSword::Help
         return item;
     }
 
+    // load help sections from file
     Help::Sections Load(const char *help)
     {
         auto sections = Help::Sections();
@@ -252,6 +279,7 @@ namespace BloodSword::Help
         return sections;
     }
 
+    // load help sections from file
     Help::Sections Load(std::string help)
     {
         return Help::Load(help.c_str());

@@ -2,6 +2,7 @@
 
 #include "Map.hpp"
 
+// generate a blank map
 int main(int argc, char **argv)
 {
     if (argc < 4)

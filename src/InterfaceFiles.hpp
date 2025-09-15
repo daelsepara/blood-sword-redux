@@ -14,8 +14,10 @@
 #include <pwd.h>
 #endif
 
+// filesystem namespace alias
 namespace fs = std::filesystem;
 
+// file interface functions
 namespace BloodSword::Interface
 {
     // patform-dependent function for returning user document directory and save location

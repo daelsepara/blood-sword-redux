@@ -47,6 +47,7 @@ namespace BloodSword::Character
         RANGED
     };
 
+    // character status to string mapping
     BloodSword::Mapping<Character::Status> StatusMapping = {
         {Character::Status::NONE, "NONE"},
         {Character::Status::DEFENDING, "DEFENDING"},
@@ -86,6 +87,7 @@ namespace BloodSword::Character
         {Character::Status::MELEE, "MELEE"},
         {Character::Status::RANGED, "RANGED"}};
 
+    // character status durations
     BloodSword::IntMapping<Character::Status> Duration = {
         {Character::Status::NONE, -1},
         {Character::Status::DEFENDING, -1},
@@ -124,11 +126,13 @@ namespace BloodSword::Character
         {Character::Status::MELEE, -1},
         {Character::Status::RANGED, -1}};
 
+    // list of global status
     std::vector<Character::Status> GlobalStatus = {
         Character::Status::DYING_SLOWLY,
         Character::Status::IMMUNE_DYING_SLOWLY,
         Character::Status::OSTEAL_WEAKNESS};
 
+    // list of character status that should not be displayed
     std::vector<Character::Status> InvisibleStatus = {
         Character::Status::TASK,
         Character::Status::ALONE,
@@ -136,17 +140,21 @@ namespace BloodSword::Character
         Character::Status::MELEE,
         Character::Status::RANGED};
 
+    // list of status that have a cooldown
     std::vector<Character::Status> StatusCooldowns = {
         Character::Status::DYING_SLOWLY};
 
+    // mapping of status to their counter effects
     BloodSword::UnorderedMap<Character::Status, Character::Status> CounterEffects = {
         {Character::Status::DYING_SLOWLY, Character::Status::IMMUNE_DYING_SLOWLY}};
 
+    // map string to status
     Character::Status MapStatus(const char *status)
     {
         return BloodSword::Find(Character::StatusMapping, status);
     }
 
+    // map string to status
     Character::Status MapStatus(std::string status)
     {
         return Character::MapStatus(status.c_str());

@@ -4,11 +4,14 @@
 #include "nlohmann/json.hpp"
 #include "Interface.hpp"
 
+// main game system class
 namespace BloodSword
 {
+    // main system class
     class System
     {
     public:
+        // graphics system
         Graphics::Base graphics;
 
         // initialize all subsytems
@@ -33,6 +36,7 @@ namespace BloodSword
             Input::Flush();
         }
 
+        // initialize all subsystems with default session name
         void Initialize()
         {
             this->Initialize("Blood Sword");
@@ -48,6 +52,7 @@ namespace BloodSword
 
         System() {}
 
+        // initialize all subsystems with specified session name
         System(const char *session_name)
         {
             this->Initialize(session_name);

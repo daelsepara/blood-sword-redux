@@ -9,6 +9,7 @@
 // classes and functions to enable rogue-like game mode
 namespace BloodSword::Rogue
 {
+    // check if tile is blocked for movement
     bool Blocked(Rogue::Base &rogue, Point point)
     {
         auto &tile = rogue.Battlepits[point];
@@ -193,6 +194,7 @@ namespace BloodSword::Rogue
         }
     }
 
+    // handle tile interaction (items/enemies)
     Rogue::Update Handle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
     {
         Rogue::Update update = {false, false, false};
@@ -250,6 +252,7 @@ namespace BloodSword::Rogue
         return update;
     }
 
+    // process party actions
     Rogue::Update Actions(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
     {
         Rogue::Update result = {false, false};
@@ -449,6 +452,7 @@ namespace BloodSword::Rogue
         Rogue::Center(rogue, src);
     }
 
+    // update scene for rogue mode
     Scene::Base UpdateScene(Rogue::Base &rogue, SDL_Texture *image, Point image_location, int panel_w, int panel_h, FieldOfView::Method method, bool animating)
     {
         auto scene = Scene::Base();
@@ -474,6 +478,7 @@ namespace BloodSword::Rogue
         return scene;
     }
 
+    // show explored areas of the map
     void ShowMap(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
     {
         auto &map = rogue.Battlepits;
@@ -565,6 +570,7 @@ namespace BloodSword::Rogue
         }
     }
 
+    // display party information panel
     void PartyInformation(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Controls::Type display, int character = 0)
     {
         auto &party = rogue.Party;
@@ -850,11 +856,13 @@ namespace BloodSword::Rogue
         BloodSword::Free(names);
     }
 
+    // display party information panel (default to first character)
     void PartyInformation(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int character = 0)
     {
         Rogue::PartyInformation(graphics, background, rogue, Controls::Type::ABOUT, character);
     }
 
+    // set battle order for the party
     bool SetBattleOrder(Graphics::Base &graphics, Scene::Base &background, Party::Base &party)
     {
         auto update = false;
@@ -880,6 +888,7 @@ namespace BloodSword::Rogue
         return update;
     }
 
+    // main menu for rogue mode
     Rogue::Update Menu(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue)
     {
         Rogue::Update update = {false, false, false};
@@ -1226,6 +1235,7 @@ namespace BloodSword::Rogue
         BloodSword::Free(&image);
     }
 
+    // entry point for rogue mode
     void Game(Graphics::Base &graphics)
     {
         // set default control to the first

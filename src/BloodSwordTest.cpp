@@ -1,7 +1,7 @@
 #include "InterfaceStory.hpp"
 #include "System.hpp"
 
-// framework for testing game subsystems
+// blood sword test suite
 namespace BloodSword::Test
 {
     // user input test
@@ -637,6 +637,7 @@ namespace BloodSword::Test
         BloodSword::Free(&fps_texture);
     }
 
+    // palette test
     void Palette(Graphics::Base &graphics)
     {
         Interface::ReloadTextures(graphics, 0, false);
@@ -799,6 +800,7 @@ namespace BloodSword::Test
         Interface::ReloadTextures(graphics, palette);
     }
 
+    // attribute test
     void Attribute(Graphics::Base &graphics)
     {
         auto random = Random::Base();
@@ -961,7 +963,7 @@ namespace BloodSword::Test
         BloodSword::Free(events);
     }
 
-    // shoot demo
+    // shoot test
     void Shoot(Graphics::Base &graphics)
     {
         auto player = Generate::Character(Character::Class::TRICKSTER, 2);
@@ -1157,6 +1159,7 @@ namespace BloodSword::Test
         Interface::MessageBox(graphics, scene, message, Color::Background, border, 4, Color::Highlight, true);
     }
 
+    // story test
     void Story(Graphics::Base &graphics)
     {
         auto background = Scene::Base();
@@ -1303,6 +1306,7 @@ namespace BloodSword::Test
         }
     }
 
+    // text input test
     void TextInput(Graphics::Base &graphics, Scene::Base &background)
     {
         auto input_string = Interface::TextInput(graphics, background, "INPUT TEXT", true);
@@ -1312,6 +1316,7 @@ namespace BloodSword::Test
         Interface::MessageBox(graphics, background, Graphics::RichText(input_string.c_str(), Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
     }
 
+    // healing test
     void Heal(Graphics::Base &graphics, Scene::Base &background)
     {
         // load party from file
@@ -1333,6 +1338,7 @@ namespace BloodSword::Test
         Interface::Heal(graphics, background, party, character, true);
     }
 
+    // select icons print utility
     void PrintSelection(Graphics::Base &graphics, Scene::Base &background, Asset::List &assets, std::vector<int> &selection, int min_select, int max_select)
     {
         if (selection.size() >= min_select && selection.size() <= max_select)
@@ -1353,6 +1359,7 @@ namespace BloodSword::Test
         }
     }
 
+    // select icons test
     void Select(Graphics::Base &graphics, Scene::Base &background)
     {
         Asset::List assets = {
@@ -1387,6 +1394,7 @@ namespace BloodSword::Test
         Test::PrintSelection(graphics, background, party_assets, party_selection, 1, 4);
     }
 
+    // inventory test
     void Inventory(Graphics::Base &graphics, Scene::Base &background)
     {
         // load party from file
@@ -1397,6 +1405,7 @@ namespace BloodSword::Test
         Interface::ManageInventory(graphics, background, party, true);
     }
 
+    // variables test
     void Variables(Graphics::Base &graphics, Scene::Base &background)
     {
         // load party from file
@@ -1423,6 +1432,7 @@ namespace BloodSword::Test
         }
     }
 
+    // eat food test
     void EatFood(Graphics::Base &graphics, Scene::Base &background)
     {
         // load party from file
@@ -1437,6 +1447,7 @@ namespace BloodSword::Test
         Interface::EatFood(graphics, background, party, Asset::Map("FOOD"), 1, 32);
     }
 
+    // take items test
     void TakeItems(Graphics::Base &graphics, Scene::Base &background)
     {
         // load party from file
@@ -1445,6 +1456,7 @@ namespace BloodSword::Test
         Interface::TakeItems(graphics, background, party, Item::Type::FOOD, Asset::Map("FOOD"), Items::Unlimited);
     }
 
+    // use items test
     void UseItems(Graphics::Base &graphics, Scene::Base &background)
     {
         // load party from file
@@ -1469,6 +1481,7 @@ namespace BloodSword::Test
         }
     }
 
+    // party information test
     void PartyInformation(Graphics::Base &graphics, Scene::Base &background)
     {
         // load party from file
@@ -1477,6 +1490,7 @@ namespace BloodSword::Test
         Interface::PartyInformation(graphics, background, party);
     }
 
+    // load game test
     void LoadGame(Graphics::Base &graphics, Scene::Base &background)
     {
         auto party = Party::Load("party/rank02.json", "party");
@@ -1503,11 +1517,13 @@ namespace BloodSword::Test
         }
     }
 
+    // new game test
     void NewGame(Graphics::Base &graphics)
     {
         Interface::NewGame(graphics, true);
     }
 
+    // about module test
     void AboutModule(Graphics::Base &graphics, Scene::Base &background)
     {
         auto about = Interface::Settings["about"];
@@ -1519,6 +1535,7 @@ namespace BloodSword::Test
         Interface::ScrollableTextBox(graphics, background, Fonts::Normal, about, width, height, Color::S(Color::Active), TTF_STYLE_NORMAL, Color::Background, Color::Active, BloodSword::Border, Color::Active, Asset::Map("SWORDTHRUST"), true);
     }
 
+    // regenerate menu
     BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
@@ -1552,11 +1569,13 @@ namespace BloodSword::Test
         return menu;
     }
 
+    // regenerate title texture
     SDL_Texture *RegenerateTitle(Graphics::Base &graphics, int width)
     {
         return Graphics::CreateText(graphics, "Blood Sword Test Suite", Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_UNDERLINE, width);
     }
 
+    // main menu
     void Menu(Graphics::Base &graphics)
     {
         auto width = BloodSword::DecaTile;
@@ -1628,21 +1647,25 @@ namespace BloodSword::Test
                         Test::Controls(graphics);
 
                         break;
+
                     case 2:
                         // map rendering test
                         Test::Map(graphics);
 
                         break;
+
                     case 3:
                         // animation test
                         Test::Animation(graphics);
 
                         break;
+
                     case 4:
                         // battle order
                         Test::Battle(graphics, "battles/queue.json");
 
                         break;
+
                     case 5:
                         // palette tests
                         Test::Palette(graphics);
@@ -1657,101 +1680,121 @@ namespace BloodSword::Test
                         menu = RegenerateMenu(graphics, width);
 
                         break;
+
                     case 6:
                         // enable / disable scanlines
                         Graphics::ToggleScanLines();
 
                         break;
+
                     case 7:
                         // attribute test (FIGHTING PROWESS, etc.)
                         Test::Attribute(graphics);
 
                         break;
+
                     case 8:
                         // Fight action
                         Test::Fight(graphics);
 
                         break;
+
                     case 9:
                         // Shoot action
                         Test::Shoot(graphics);
 
                         break;
+
                     case 10:
                         // Battle Engine test
                         Test::Battle(graphics, "battles/test-complete.json");
 
                         break;
+
                     case 11:
                         // Test story sections
                         Test::Story(graphics);
 
                         break;
+
                     case 12:
                         // Text input (textbox)
                         Test::TextInput(graphics, scene);
 
                         break;
+
                     case 13:
                         // Sage healing
                         Test::Heal(graphics, scene);
 
                         break;
+
                     case 14:
                         // select from icons
                         Test::Select(graphics, scene);
 
                         break;
+
                     case 15:
                         // inventory management
                         Test::Inventory(graphics, scene);
 
                         break;
+
                     case 16:
                         // in-game variables, staking quantities
                         Test::Variables(graphics, scene);
 
                         break;
+
                     case 17:
                         // Eat Food
                         Test::EatFood(graphics, scene);
 
                         break;
+
                     case 18:
                         // Take Items
                         Test::TakeItems(graphics, scene);
 
                         break;
+
                     case 19:
                         // Battle Engine test (preferred targets)
                         Test::Battle(graphics, "battles/targets.json");
 
                         break;
+
                     case 20:
                         // Use Items
                         Test::UseItems(graphics, scene);
 
                         break;
+
                     case 21:
                         // Party Information
                         Test::PartyInformation(graphics, scene);
 
                         break;
+
                     case 22:
                         // Load Game
                         Test::LoadGame(graphics, scene);
 
                         break;
+
                     case 23:
                         // New Game
                         Test::NewGame(graphics);
 
                         break;
+
                     case 24:
                         // About Module
                         Test::AboutModule(graphics, scene);
 
                         break;
+
                     default:
                         // do nothing - menu test
                         break;

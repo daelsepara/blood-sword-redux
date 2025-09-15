@@ -5,6 +5,7 @@
 
 namespace BloodSword::Controls
 {
+    // control types
     enum class Type
     {
         NONE = -1,
@@ -114,8 +115,10 @@ namespace BloodSword::Controls
         HINTS
     };
 
+    // list of control types
     typedef std::vector<Controls::Type> List;
 
+    // list of spell control types
     Controls::List Spells = {
         Controls::Type::VOLCANO_SPRAY,
         Controls::Type::NIGHTHOWL,
@@ -134,6 +137,7 @@ namespace BloodSword::Controls
         Controls::Type::PREDICTION,
         Controls::Type::DETECT_ENCHANTMENT};
 
+    // mapping of control types to strings
     BloodSword::Mapping<Controls::Type> TypeMapping = {
         {Controls::Type::NONE, "NONE"},
         {Controls::Type::MOVE, "MOVE"},
@@ -146,6 +150,7 @@ namespace BloodSword::Controls
         {Controls::Type::ITEMS, "ITEMS"},
         {Controls::Type::STEEL_SCEPTRE, "STEEL SCEPTRE"}};
 
+    // list of player control types
     Controls::List Players = {
         Controls::Type::WARRIOR,
         Controls::Type::TRICKSTER,
@@ -154,11 +159,13 @@ namespace BloodSword::Controls
         Controls::Type::IMRAGARN,
     };
 
+    // map control type from string
     Controls::Type MapType(const char *control)
     {
         return BloodSword::Find(Controls::TypeMapping, control);
     }
 
+    // map control type from string
     Controls::Type MapType(std::string control)
     {
         return Controls::MapType(control.c_str());
