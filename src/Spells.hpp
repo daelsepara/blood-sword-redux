@@ -69,7 +69,7 @@ namespace BloodSword::Spells
 
     // map spell types to asset names
     BloodSword::UnorderedMap<Spells::Type, const char *> AssetNames = {
-        {Spells::Type::VOLCANO_SPRAY, "VOLCANO_SPRAY"},
+        {Spells::Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
         {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
         {Spells::Type::WHITE_FIRE, "WHITE FIRE"},
         {Spells::Type::SWORDTHRUST, "SWORDTHRUST"},
