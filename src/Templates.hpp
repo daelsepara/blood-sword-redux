@@ -20,17 +20,21 @@ namespace BloodSword
     template <typename T, typename R>
     using UnorderedMap = std::unordered_map<T, R>;
 
-    // maps object/type to a constant character string
+    // maps object/type to a basic string
     template <typename T>
-    using Mapping = BloodSword::UnorderedMap<T, std::string>;
+    using StringMap = BloodSword::UnorderedMap<T, std::string>;
+
+    // maps object/type to a constant string
+    template <typename T>
+    using ConstStrings = BloodSword::UnorderedMap<T, const char *>;
 
     // maps object/type to an integer
     template <typename T>
-    using IntMapping = BloodSword::UnorderedMap<T, int>;
+    using IntegerMap = BloodSword::UnorderedMap<T, int>;
 
     // search for a constant string key in a map
     template <typename T>
-    T Find(BloodSword::Mapping<T> &unordered_map, std::string key)
+    T Find(BloodSword::StringMap<T> &unordered_map, std::string key)
     {
         auto result = T::NONE;
 

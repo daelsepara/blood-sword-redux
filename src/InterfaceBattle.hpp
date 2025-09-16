@@ -930,12 +930,12 @@ namespace BloodSword::Interface
         // check if enemy can move towards the player-controlled characters
         if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
-            // PREFERRED TARGET
+            // preferred targetting
             return Engine::FightTargets(battle.Map, battle.Opponents, party, src, true);
         }
         else
         {
-            // DEFAULT
+            // default targetting
             return Engine::FightTargets(battle.Map, party, src, true, false);
         }
     }
@@ -992,27 +992,24 @@ namespace BloodSword::Interface
                     {
                         auto &character = party[character_class];
 
-                        Attribute::Types attributes = {
-                            Attribute::Type::FIGHTING_PROWESS,
-                            Attribute::Type::PSYCHIC_ABILITY,
-                            Attribute::Type::AWARENESS,
-                            Attribute::Type::ENDURANCE,
-                            Attribute::Type::DAMAGE,
-                        };
-
+                        // clone attributes to all opponents
                         for (auto i = 0; i < battle.Opponents.Count(); i++)
                         {
-                            for (auto attribute : attributes)
+                            for (auto attribute : Attribute::All)
                             {
-                                auto value = battle.Opponents[i].Value(attribute);
+                                // do not clone ARMOUR attribute
+                                if (attribute != Attribute::Type::ARMOUR)
+                                {
+                                    auto value = battle.Opponents[i].Value(attribute);
 
-                                auto modifier = battle.Opponents[i].Modifier(attribute);
+                                    auto modifier = battle.Opponents[i].Modifier(attribute);
 
-                                // set maximum attibute value
-                                battle.Opponents[i].Maximum(attribute, character.Maximum(attribute) + value);
+                                    // set maximum attibute value
+                                    battle.Opponents[i].Maximum(attribute, character.Maximum(attribute) + value);
 
-                                // clone attributes
-                                battle.Opponents[i].Set(attribute, character.Maximum(attribute) + value, character.Modifier(attribute) + modifier);
+                                    // clone attributes
+                                    battle.Opponents[i].Set(attribute, character.Maximum(attribute) + value, character.Modifier(attribute) + modifier);
+                                }
                             }
                         }
                     }
@@ -1132,6 +1129,7 @@ namespace BloodSword::Interface
             // current tile
             SDL_Texture *texture = nullptr;
 
+            // captions text
             std::vector<std::string> captions_text = {
                 "EXIT",
                 "CENTER",
@@ -1145,6 +1143,7 @@ namespace BloodSword::Interface
                 "SPELLS",
                 "ITEMS"};
 
+            // caption controls
             Controls::List caption_controls = {
                 Controls::Type::EXIT,
                 Controls::Type::CENTER,
@@ -1161,6 +1160,7 @@ namespace BloodSword::Interface
             // create captions textures
             auto captions = Graphics::CreateText(graphics, Graphics::GenerateTextList(captions_text, Fonts::Caption, Color::Active, 0));
 
+            // caption icons
             Asset::List action_assets = {
                 Asset::Map("MOVE"),
                 Asset::Map("SHOOT"),
@@ -1191,7 +1191,8 @@ namespace BloodSword::Interface
                 Controls::Type::SPELLS,
                 Controls::Type::ITEMS};
 
-            BloodSword::UnorderedMap<Controls::Type, SDL_Texture *> highlight = {};
+            // highlighted action icons
+            Controls::Mapped<SDL_Texture *> highlight = {};
 
             for (auto i = 0; i < action_assets.size(); i++)
             {

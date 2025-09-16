@@ -20,14 +20,14 @@ namespace BloodSword::Character
 {
     // map template (character class -> T)
     template <typename T>
-    using Mapped = std::unordered_map<Character::Class, T>;
+    using Mapped = BloodSword::UnorderedMap<Character::Class, T>;
 
     // character base class
     class Base
     {
     public:
         // character status (and duration, -1 if permanent)
-        BloodSword::IntMapping<Character::Status> Status = {};
+        BloodSword::IntegerMap<Character::Status> Status = {};
 
         // character attributes
         Attributes::List Attributes = {};
@@ -912,9 +912,9 @@ namespace BloodSword::Character
     };
 
     // load status from json data
-    BloodSword::IntMapping<Character::Status> LoadStatus(nlohmann::json &data)
+    BloodSword::IntegerMap<Character::Status> LoadStatus(nlohmann::json &data)
     {
-        BloodSword::IntMapping<Character::Status> all_status = {};
+        BloodSword::IntegerMap<Character::Status> all_status = {};
 
         for (auto &[key, value] : data.items())
         {

@@ -11,13 +11,19 @@ namespace BloodSword::Asset
     // asset type id
     typedef int Type;
 
+    // mapping of asset type ids to other types
     template <typename T>
-    using AssetMapping = BloodSword::UnorderedMap<Asset::Type, T>;
+    using Mapping = BloodSword::UnorderedMap<Asset::Type, T>;
+
+    // lookup table for mapping T to asset type id
+    template <typename T>
+    using Lookup = BloodSword::UnorderedMap<T, Asset::Type>;
 
     // asset list
     typedef std::vector<Asset::Type> List;
 
-    BloodSword::UnorderedMap<Asset::Type, std::string> TypeMapping = {};
+    // asset type to string mapping
+    Asset::Mapping<std::string> TypeMapping = {};
 
     // get asset type id
     Asset::Type Map(std::string asset)
@@ -45,7 +51,7 @@ namespace BloodSword::Asset
 
     // generate T -> asset type id mapping
     template <typename T>
-    void MapTypes(BloodSword::UnorderedMap<T, Asset::Type> &types, BloodSword::UnorderedMap<T, const char *> &assets)
+    void MapTypes(Asset::Lookup<T> &types, BloodSword::ConstStrings<T> &assets)
     {
         types.clear();
 

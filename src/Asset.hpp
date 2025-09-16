@@ -11,10 +11,10 @@
 namespace BloodSword::Asset
 {
     // mapping of assets to their relative location
-    AssetMapping<std::string> Locations = {};
+    Asset::Mapping<std::string> Locations = {};
 
     // mapping of asset types their respective loaded texture
-    AssetMapping<SDL_Texture *> Textures = {};
+    Asset::Mapping<SDL_Texture *> Textures = {};
 
     // create texture from a file
     SDL_Texture *Create(SDL_Renderer *renderer, const char *path)

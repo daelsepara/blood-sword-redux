@@ -17,7 +17,7 @@ namespace BloodSword::Task
     };
 
     // task status to string mapping
-    BloodSword::Mapping<Task::Status> Mapping = {
+    BloodSword::StringMap<Task::Status> Mapping = {
         {Task::Status::NONE, "NONE"},
         {Task::Status::START, "START"},
         {Task::Status::PROGRESS, "PROGRESS"},

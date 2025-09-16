@@ -27,7 +27,7 @@ namespace BloodSword::Book
     typedef std::vector<Book::Location> Locations;
 
     // book titles
-    BloodSword::Mapping<Book::Number> Title = {
+    BloodSword::StringMap<Book::Number> Title = {
         {Book::Number::NONE, "Blood Sword"},
         {Book::Number::BOOK1, "The Battlepits of Krarth"},
         {Book::Number::BOOK2, "The Kingdom of Wyrd"},
@@ -36,7 +36,7 @@ namespace BloodSword::Book
         {Book::Number::BOOK5, "The Walls of Spyte"}};
 
     // book number to string mapping
-    BloodSword::Mapping<Book::Number> Mapping = {
+    BloodSword::StringMap<Book::Number> Mapping = {
         {Book::Number::NONE, "NONE"},
         {Book::Number::BOOK1, "BOOK1"},
         {Book::Number::BOOK2, "BOOK2"},

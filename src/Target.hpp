@@ -37,8 +37,12 @@ namespace BloodSword::Target
     // list of target types
     typedef std::vector<Target::Type> List;
 
+    // spell type mapping template
+    template <typename T>
+    using Mapped = BloodSword::UnorderedMap<Target::Type, T>;
+
     // mapping of target types to strings
-    BloodSword::Mapping<Target::Type> Mapping = {
+    BloodSword::StringMap<Target::Type> Mapping = {
         {Target::Type::NONE, "NONE"},
         {Target::Type::PLAYER, "PLAYER"},
         {Target::Type::ENEMY, "ENEMY"},

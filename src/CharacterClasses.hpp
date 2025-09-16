@@ -15,7 +15,7 @@ namespace BloodSword::Character
     };
 
     // control type to string mapping
-    BloodSword::Mapping<Character::ControlType> ControlTypeMapping = {
+    BloodSword::StringMap<Character::ControlType> ControlTypeMapping = {
         {Character::ControlType::NONE, "NONE"},
         {Character::ControlType::PLAYER, "PLAYER"},
         {Character::ControlType::NPC, "NPC"}};
@@ -47,7 +47,7 @@ namespace BloodSword::Character
     typedef std::vector<Character::Class> Classes;
 
     // character class to string mapping
-    BloodSword::Mapping<Character::Class> ClassMapping = {
+    BloodSword::StringMap<Character::Class> ClassMapping = {
         {Character::Class::NONE, "NONE"},
         {Character::Class::WARRIOR, "WARRIOR"},
         {Character::Class::TRICKSTER, "TRICKSTER"},

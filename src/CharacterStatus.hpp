@@ -48,7 +48,7 @@ namespace BloodSword::Character
     };
 
     // character status to string mapping
-    BloodSword::Mapping<Character::Status> StatusMapping = {
+    BloodSword::StringMap<Character::Status> StatusMapping = {
         {Character::Status::NONE, "NONE"},
         {Character::Status::DEFENDING, "DEFENDING"},
         {Character::Status::DEFENDED, "DEFENDED"},
@@ -88,7 +88,7 @@ namespace BloodSword::Character
         {Character::Status::RANGED, "RANGED"}};
 
     // character status durations
-    BloodSword::IntMapping<Character::Status> Duration = {
+    BloodSword::IntegerMap<Character::Status> Duration = {
         {Character::Status::NONE, -1},
         {Character::Status::DEFENDING, -1},
         {Character::Status::DEFENDED, 1},

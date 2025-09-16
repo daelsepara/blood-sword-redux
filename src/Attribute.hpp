@@ -32,10 +32,10 @@ namespace BloodSword::Attribute
         Attribute::Type::ARMOUR};
 
     // attribute to asset mapping
-    BloodSword::UnorderedMap<Attribute::Type, Asset::Type> Assets = {};
+    Asset::Lookup<Attribute::Type> Assets = {};
 
     // attribute type to asset name mapping
-    BloodSword::UnorderedMap<Attribute::Type, const char *> AssetNames = {
+    BloodSword::ConstStrings<Attribute::Type> AssetNames = {
         {Attribute::Type::NONE, "NONE"},
         {Attribute::Type::FIGHTING_PROWESS, "FIGHT"},
         {Attribute::Type::AWARENESS, "AWARENESS"},
@@ -45,7 +45,7 @@ namespace BloodSword::Attribute
         {Attribute::Type::ARMOUR, "ARMOUR"}};
 
     // attribute type to string mapping
-    BloodSword::Mapping<Attribute::Type> TypeMapping = {
+    BloodSword::StringMap<Attribute::Type> TypeMapping = {
         {Attribute::Type::NONE, "NONE"},
         {Attribute::Type::FIGHTING_PROWESS, "FIGHTING PROWESS"},
         {Attribute::Type::AWARENESS, "AWARENESS"},
@@ -55,7 +55,7 @@ namespace BloodSword::Attribute
         {Attribute::Type::ARMOUR, "ARMOUR"}};
 
     // attribute string abbreviations
-    BloodSword::Mapping<Attribute::Type> Abbreviations = {
+    BloodSword::StringMap<Attribute::Type> Abbreviations = {
         {Attribute::Type::NONE, "---"},
         {Attribute::Type::FIGHTING_PROWESS, "FPR"},
         {Attribute::Type::AWARENESS, "AWR"},

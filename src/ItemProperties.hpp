@@ -39,7 +39,7 @@ namespace BloodSword::Item
     typedef std::vector<Item::Property> Properties;
 
     // mapping of item properties to strings
-    BloodSword::Mapping<Item::Property> PropertyMapping = {
+    BloodSword::StringMap<Item::Property> PropertyMapping = {
         {Item::Property::NONE, "NONE"},
         {Item::Property::NORMAL, "NORMAL"},
         {Item::Property::WEAPON, "WEAPON"},

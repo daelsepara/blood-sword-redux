@@ -108,7 +108,7 @@ namespace BloodSword::Battlepits
     };
 
     // connection type to string mapping
-    BloodSword::Mapping<Battlepits::Connection> ConnectionMapping = {
+    BloodSword::StringMap<Battlepits::Connection> ConnectionMapping = {
         {Connection::NONE, "NONE"},
         {Connection::TUNNELS, "TUNNELS"},
         {Connection::WALLS, "WALLS"}};

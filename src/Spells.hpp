@@ -31,7 +31,7 @@ namespace BloodSword::Spells
 
     // spell type mapping template
     template <typename T>
-    using Mapped = std::unordered_map<Spells::Type, T>;
+    using Mapped = BloodSword::UnorderedMap<Spells::Type, T>;
 
     // list of spell types
     typedef std::vector<Spells::Type> List;
@@ -45,7 +45,7 @@ namespace BloodSword::Spells
     };
 
     // map string to spell type
-    BloodSword::Mapping<Spells::Type> TypeMapping = {
+    BloodSword::StringMap<Spells::Type> TypeMapping = {
         {Spells::Type::NONE, "NONE"},
         {Spells::Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
         {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
@@ -65,10 +65,10 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
     // map spell types to asset ids
-    BloodSword::UnorderedMap<Spells::Type, Asset::Type> Assets = {};
+    Asset::Lookup<Spells::Type> Assets = {};
 
     // map spell types to asset names
-    BloodSword::UnorderedMap<Spells::Type, const char *> AssetNames = {
+    BloodSword::ConstStrings<Spells::Type> AssetNames = {
         {Spells::Type::VOLCANO_SPRAY, "VOLCANO SPRAY"},
         {Spells::Type::NIGHTHOWL, "NIGHTHOWL"},
         {Spells::Type::WHITE_FIRE, "WHITE FIRE"},
@@ -87,7 +87,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, "DETECT ENCHANTMENT"}};
 
     // spell class mapping to strings
-    BloodSword::Mapping<Spells::Class> ClassMapping = {
+    BloodSword::StringMap<Spells::Class> ClassMapping = {
         {Spells::Class::NONE, "NONE"},
         {Spells::Class::BLASTING, "BLASTING"},
         {Spells::Class::PSYCHIC, "PSYCHIC"}};
@@ -116,7 +116,7 @@ namespace BloodSword::Spells
         Spells::Type::SHEET_LIGHTNING};
 
     // spell difficulty (number of die rolls)
-    BloodSword::IntMapping<Spells::Type> Difficulty = {
+    BloodSword::IntegerMap<Spells::Type> Difficulty = {
         {Spells::Type::NONE, 2},
         {Spells::Type::VOLCANO_SPRAY, 2},
         {Spells::Type::NIGHTHOWL, 2},
@@ -136,7 +136,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 2}};
 
     // default spell difficulty modifier
-    BloodSword::IntMapping<Spells::Type> DifficultyModifier = {
+    BloodSword::IntegerMap<Spells::Type> DifficultyModifier = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
         {Spells::Type::NIGHTHOWL, 0},
@@ -156,7 +156,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
     // damage (number of die rolls)
-    BloodSword::IntMapping<Spells::Type> Damage = {
+    BloodSword::IntegerMap<Spells::Type> Damage = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 1},
         {Spells::Type::NIGHTHOWL, 0},
@@ -176,7 +176,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
     // alternate damage rolls
-    BloodSword::IntMapping<Spells::Type> AlternateDamage = {
+    BloodSword::IntegerMap<Spells::Type> AlternateDamage = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 1},
         {Spells::Type::NIGHTHOWL, 0},
@@ -196,7 +196,7 @@ namespace BloodSword::Spells
         {Spells::Type::DETECT_ENCHANTMENT, 0}};
 
     // default damage roll modifier
-    BloodSword::IntMapping<Spells::Type> DamageModifier = {
+    BloodSword::IntegerMap<Spells::Type> DamageModifier = {
         {Spells::Type::NONE, 0},
         {Spells::Type::VOLCANO_SPRAY, 0},
         {Spells::Type::NIGHTHOWL, 0},

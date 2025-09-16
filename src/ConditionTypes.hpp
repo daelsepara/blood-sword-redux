@@ -141,7 +141,7 @@ namespace BloodSword::Conditions
     };
 
     // condition type mapping
-    BloodSword::Mapping<Conditions::Type> TypeMapping = {
+    BloodSword::StringMap<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
         {Conditions::Type::IN_PARTY, "IN PARTY"},

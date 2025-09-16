@@ -17,7 +17,7 @@ namespace BloodSword::Battle
     };
 
     // battle result to string mapping
-    BloodSword::Mapping<Battle::Result> ResultMapping = {
+    BloodSword::StringMap<Battle::Result> ResultMapping = {
         {Battle::Result::NONE, "NONE"},
         {Battle::Result::DETERMINE, "DETERMINE"},
         {Battle::Result::DEFEAT, "DEFEAT"},

@@ -25,7 +25,7 @@ namespace BloodSword::Map
     };
 
     // mapping of map object types to strings
-    BloodSword::Mapping<Object> ObjectMapping = {
+    BloodSword::StringMap<Object> ObjectMapping = {
         {Object::NONE, "NONE"},
         {Object::PLAYER, "PLAYER"},
         {Object::ENEMY, "ENEMY"},

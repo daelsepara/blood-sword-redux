@@ -29,7 +29,7 @@ namespace BloodSword::Help
     };
 
     // font face style to string mapping
-    BloodSword::Mapping<Help::Face> FaceMapping = {
+    BloodSword::StringMap<Help::Face> FaceMapping = {
         {Help::Face::NONE, "NONE"},
         {Help::Face::NORMAL, "NORMAL"},
         {Help::Face::BOLD, "BOLD"},
@@ -37,7 +37,7 @@ namespace BloodSword::Help
         {Help::Face::BOLD_ITALIC, "BOLD-ITALIC"}};
 
     // text alignment to string mapping
-    BloodSword::Mapping<Help::Align> AlignMapping = {
+    BloodSword::StringMap<Help::Align> AlignMapping = {
         {Help::Align::NONE, "NONE"},
         {Help::Align::LEFT, "LEFT"},
         {Help::Align::CENTER, "CENTER"},

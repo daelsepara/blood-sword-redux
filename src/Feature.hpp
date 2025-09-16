@@ -23,7 +23,7 @@ namespace BloodSword::Feature
     };
 
     // feature type to string mapping
-    BloodSword::Mapping<Feature::Type> TypeMapping = {
+    BloodSword::StringMap<Feature::Type> TypeMapping = {
         {Feature::Type::NONE, "NONE"},
         {Feature::Type::ENDING, "ENDING"},
         {Feature::Type::BAD_ENDING, "BAD ENDING"},

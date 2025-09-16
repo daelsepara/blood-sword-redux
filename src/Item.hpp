@@ -53,7 +53,7 @@ namespace BloodSword::Item
     {
     public:
         // attributes and modifiers
-        BloodSword::IntMapping<Attribute::Type> Attributes = {};
+        BloodSword::IntegerMap<Attribute::Type> Attributes = {};
 
         // item properties
         Item::Properties Properties = {};
@@ -98,19 +98,19 @@ namespace BloodSword::Item
         int Encumbrance = 1;
 
         // for specific targetting (damage rolls/modifiers)
-        BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageTypes = {};
+        Target::Mapped<Item::Damage> DamageTypes = {};
 
         // modifiers (+/- damage rolls/modifiers)
-        BloodSword::UnorderedMap<Target::Type, Item::Damage> DamageModifiers = {};
+        Target::Mapped<Item::Damage> DamageModifiers = {};
 
         // for specific targetting effects
-        BloodSword::UnorderedMap<Target::Type, Item::TargetEffect> TargetEffects = {};
+        Target::Mapped<Item::TargetEffect> TargetEffects = {};
 
         Base() {}
 
         Base(const char *name,
              Item::Type type,
-             BloodSword::IntMapping<Attribute::Type> attributes,
+             BloodSword::IntegerMap<Attribute::Type> attributes,
              Item::Properties properties,
              Item::Type contains,
              int quantity,
@@ -126,7 +126,7 @@ namespace BloodSword::Item
 
         Base(const char *name,
              Item::Type type,
-             BloodSword::IntMapping<Attribute::Type> attributes,
+             BloodSword::IntegerMap<Attribute::Type> attributes,
              Item::Properties properties,
              int quantity,
              int limit,
@@ -516,9 +516,9 @@ namespace BloodSword::Item
     }
 
     // load item attributes from json data
-    BloodSword::IntMapping<Attribute::Type> LoadAttributes(nlohmann::json &data)
+    BloodSword::IntegerMap<Attribute::Type> LoadAttributes(nlohmann::json &data)
     {
-        BloodSword::IntMapping<Attribute::Type> attributes = {};
+        BloodSword::IntegerMap<Attribute::Type> attributes = {};
 
         for (auto &[key, value] : data.items())
         {
@@ -685,10 +685,10 @@ namespace BloodSword::Item
 namespace BloodSword::Items
 {
     // default stats/properties for in-game items
-    BloodSword::UnorderedMap<Item::Type, Item::Base> Defaults = {};
+    Item::Mapped<Item::Base> Defaults = {};
 
     // item descriptions
-    BloodSword::UnorderedMap<Item::Type, std::string> Descriptions = {};
+    BloodSword::StringMap<Item::Type> Descriptions = {};
 
     // global inventory (for item defaults)
     typedef std::vector<Item::Base> Inventory;

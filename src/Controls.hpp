@@ -20,7 +20,7 @@ namespace BloodSword::Controls
 
     // template for mapping control types to other types
     template <typename T>
-    using Mapped = std::unordered_map<Controls::Type, T>;
+    using Mapped = BloodSword::UnorderedMap<Controls::Type, T>;
 
     // base control class
     class Base

@@ -42,7 +42,7 @@ namespace BloodSword::Battle
     const int Unlimited = -1;
 
     // battle condition to string mapping
-    BloodSword::Mapping<Battle::Condition> ConditionMapping = {
+    BloodSword::StringMap<Battle::Condition> ConditionMapping = {
         {Battle::Condition::NONE, "NONE"},
         {Battle::Condition::NO_COMBAT, "NO COMBAT"},
         {Battle::Condition::AMBUSH_PLAYER, "AMBUSH PLAYER"},
@@ -143,7 +143,7 @@ namespace BloodSword::Battle
         Items::Inventory Loot = {};
 
         // message to display when cancelling a battle action
-        BloodSword::UnorderedMap<Controls::Type, Book::Location> ActionCancels = {};
+        Controls::Mapped<Book::Location> ActionCancels = {};
 
         // number of rounds for ambush
         int AmbushRounds = 0;

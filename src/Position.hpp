@@ -18,7 +18,7 @@ namespace BloodSword::Position
     };
 
     // mapping of position types to strings
-    BloodSword::Mapping<Position::Type> TypeMapping = {
+    BloodSword::StringMap<Position::Type> TypeMapping = {
         {Position::Type::NONE, "NONE"},
         {Position::Type::TOP, "TOP"},
         {Position::Type::LEFT, "LEFT"},

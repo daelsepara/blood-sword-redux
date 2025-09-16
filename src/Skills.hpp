@@ -38,10 +38,10 @@ namespace BloodSword::Skills
 
     // skill type mapping template
     template <typename T>
-    using Mapped = std::unordered_map<Skills::Type, T>;
+    using Mapped = BloodSword::UnorderedMap<Skills::Type, T>;
 
     // skill type to string mapping
-    BloodSword::Mapping<Skills::Type> TypeMapping = {
+    BloodSword::StringMap<Skills::Type> TypeMapping = {
         {Skills::Type::NONE, "NONE"},
         {Skills::Type::ARCHERY, "ARCHERY"},
         {Skills::Type::DODGING, "DODGING"},
@@ -102,10 +102,10 @@ namespace BloodSword::Skills
         Skills::Type::EXORCISM};
 
     // mapping of skills to asset type ids
-    BloodSword::UnorderedMap<Skills::Type, Asset::Type> Assets = {};
+    Asset::Lookup<Skills::Type> Assets = {};
 
     // mapping of skills to asset names
-    BloodSword::UnorderedMap<Skills::Type, const char *> AssetNames = {
+    BloodSword::ConstStrings<Skills::Type> AssetNames = {
         {Skills::Type::NONE, "NONE"},
         {Skills::Type::ARCHERY, "ARCHERY"},
         {Skills::Type::DODGING, "DODGING"},

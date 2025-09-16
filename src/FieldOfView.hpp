@@ -758,7 +758,7 @@ namespace BloodSword::FieldOfView
     };
 
     // field of view method to string mapping
-    BloodSword::Mapping<FieldOfView::Method> MethodMapping = {
+    BloodSword::StringMap<FieldOfView::Method> MethodMapping = {
         {Method::NONE, "NONE"},
         {Method::DIAMOND, "DIAMOND"},
         {Method::SHADOW_CAST, "SHADOW CAST"},

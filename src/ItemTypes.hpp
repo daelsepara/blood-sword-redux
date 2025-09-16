@@ -85,7 +85,7 @@ namespace BloodSword::Item
     };
 
     // mapping of item types to strings
-    BloodSword::Mapping<Item::Type> TypeMapping = {
+    BloodSword::StringMap<Item::Type> TypeMapping = {
         {Item::Type::NONE, "NONE"},
         {Item::Type::SWORD, "SWORD"},
         {Item::Type::BOW, "BOW"},
@@ -160,6 +160,10 @@ namespace BloodSword::Item
         {Item::Type::MAGIC_BOW, "MAGIC BOW"},
         {Item::Type::RING_OF_SORCERY, "RING OF SORCERY"}};
 
+    // item type mapping template
+    template <typename T>
+    using Mapped = BloodSword::UnorderedMap<Item::Type, T>;
+
     // map string to item type
     Item::Type Map(const char *item)
     {
@@ -173,17 +177,17 @@ namespace BloodSword::Item
     }
 
     // melee weapon (range) requirements
-    BloodSword::UnorderedMap<Item::Type, Item::Type> MeleeRequirements = {
+    Item::Mapped<Item::Type> MeleeRequirements = {
         {Item::Type::STEEL_SCEPTRE, Item::Type::CHARGE}};
 
     // ranged weapon (ammunition) requirements
-    BloodSword::UnorderedMap<Item::Type, Item::Type> RangedRequirements = {
+    Item::Mapped<Item::Type> RangedRequirements = {
         {Item::Type::BOW, Item::Type::ARROW},
         {Item::Type::LIMITED_SHURIKEN, Item::Type::SHURIKEN},
         {Item::Type::MAGIC_BOW, Item::Type::ARROW}};
 
     // container requirements
-    BloodSword::UnorderedMap<Item::Type, Item::Type> StorageRequirements = {
+    Item::Mapped<Item::Type> StorageRequirements = {
         {Item::Type::SHURIKEN, Item::Type::LIMITED_SHURIKEN},
         {Item::Type::ARROW, Item::Type::QUIVER},
         {Item::Type::GOLD, Item::Type::POUCH}};
@@ -200,7 +204,7 @@ namespace BloodSword::Item
     };
 
     // mapping of kalugen card types to strings
-    BloodSword::Mapping<Item::CardType> CardMapping = {
+    BloodSword::StringMap<Item::CardType> CardMapping = {
         {Item::CardType::NONE, "NONE"},
         {Item::CardType::KING_OF_SERPENTS, "KING OF SERPENTS"},
         {Item::CardType::ACE_OF_STARS, "ACE OF STARS"},

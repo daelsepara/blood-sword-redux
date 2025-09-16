@@ -97,7 +97,7 @@ namespace BloodSword::Interface
     Controls::Mapped<Asset::Type> BattleControls = {};
 
     // battle controls asset names
-    BloodSword::UnorderedMap<Controls::Type, const char *> BattleControlsAssetNames = {
+    BloodSword::ConstStrings<Controls::Type> BattleControlsAssetNames = {
         {Controls::Type::MOVE, "MOVE"},
         {Controls::Type::FIGHT, "FIGHT"},
         {Controls::Type::SHOOT, "SHOOT"},
@@ -123,10 +123,10 @@ namespace BloodSword::Interface
         {Controls::Type::BACK, "BACK"}};
 
     // character class to asset type mapping
-    BloodSword::UnorderedMap<Character::Class, Asset::Type> ClassAssets = {};
+    Asset::Lookup<Character::Class> ClassAssets = {};
 
     // character class to asset name mapping
-    BloodSword::UnorderedMap<Character::Class, const char *> ClassAssetsNames = {
+    BloodSword::ConstStrings<Character::Class> ClassAssetsNames = {
         {Character::Class::WARRIOR, "WARRIOR"},
         {Character::Class::TRICKSTER, "TRICKSTER"},
         {Character::Class::SAGE, "SAGE"},
@@ -134,14 +134,14 @@ namespace BloodSword::Interface
         {Character::Class::IMRAGARN, "PERSON"}};
 
     // skill to character status mapping
-    BloodSword::UnorderedMap<Skills::Type, Character::Status> SkillEffects = {
+    Skills::Mapped<Character::Status> SkillEffects = {
         {Skills::Type::NONE, Character::Status::NONE},
         {Skills::Type::QUARTERSTAFF, Character::Status::KNOCKED_OUT},
         {Skills::Type::PARALYZING_TOUCH, Character::Status::PARALYZED},
         {Skills::Type::POISONED_DAGGER, Character::Status::POISONED}};
 
     // skill to control type mapping
-    BloodSword::UnorderedMap<Skills::Type, Controls::Type> ActionControls = {
+    Skills::Mapped<Controls::Type> ActionControls = {
         {Skills::Type::NONE, Controls::Type::NONE},
         {Skills::Type::ARCHERY, Controls::Type::SHOOT},
         {Skills::Type::SHURIKEN, Controls::Type::SHURIKEN},
@@ -149,7 +149,7 @@ namespace BloodSword::Interface
         {Skills::Type::SPELLS, Controls::Type::SPELLS}};
 
     // SPELL to STATUS mapping
-    BloodSword::UnorderedMap<Spells::Type, Character::Status> SpellEffects = {
+    Spells::Mapped<Character::Status> SpellEffects = {
         {Spells::Type::NONE, Character::Status::NONE},
         {Spells::Type::NIGHTHOWL, Character::Status::NIGHTHOWL}};
 

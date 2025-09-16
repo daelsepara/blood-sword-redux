@@ -1352,7 +1352,7 @@ namespace BloodSword::Test
                     selected += ", ";
                 }
 
-                selected += std::string(Asset::TypeMapping[assets[selection[i]]]);
+                selected += Asset::TypeMapping[assets[selection[i]]];
             }
 
             Interface::MessageBox(graphics, background, selected, Color::Active);
