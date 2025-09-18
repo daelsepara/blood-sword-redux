@@ -783,9 +783,9 @@ namespace BloodSword::Graphics
     }
 
     // create a list of texture representation of a collection of strings
-    BloodSword::Textures CreateText(Graphics::Base &graphics, Graphics::TextList collection)
+    Asset::TextureList CreateText(Graphics::Base &graphics, Graphics::TextList collection)
     {
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         for (auto &text : collection)
         {

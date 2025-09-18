@@ -63,7 +63,7 @@ namespace BloodSword::Game
     }
 
     // menu text (textures)
-    BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, std::string module, int width)
+    Asset::TextureList RegenerateMenu(Graphics::Base &graphics, std::string module, int width)
     {
         auto menu = Graphics::CreateText(
             graphics,

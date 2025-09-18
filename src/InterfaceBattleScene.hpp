@@ -81,13 +81,13 @@ namespace BloodSword::Interface
     }
 
     // generate textures of party status
-    BloodSword::Textures GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
+    Asset::TextureList GenerateStatus(Graphics::Base &graphics, Party::Base &party, bool in_battle = true)
     {
         return Interface::Status(graphics, party, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, in_battle);
     }
 
     // regenerate textures stats
-    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, BloodSword::Textures &party_stats, BloodSword::Textures &party_status, BloodSword::Textures &enemy_stats, BloodSword::Textures &enemy_status)
+    void RegenerateStats(Graphics::Base &graphics, Battle::Base &battle, Party::Base &party, Asset::TextureList &party_stats, Asset::TextureList &party_status, Asset::TextureList &enemy_stats, Asset::TextureList &enemy_status)
     {
         BloodSword::Free(enemy_stats);
 

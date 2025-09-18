@@ -44,7 +44,7 @@ namespace BloodSword::Interface
         Graphics::RichText("GAME LOADED!", Fonts::ID::NORMAL, Color::S(Color::Active), TTF_STYLE_NORMAL, 0)};
 
     // message textures
-    BloodSword::Textures Message = {};
+    Asset::TextureList Message = {};
 
     const int MSG_OPPONENT = 0;
 

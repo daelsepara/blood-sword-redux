@@ -14,7 +14,7 @@ namespace BloodSword::Asset
     Asset::Mapping<std::string> Locations = {};
 
     // mapping of asset types their respective loaded texture
-    Asset::Mapping<SDL_Texture *> Textures = {};
+    Asset::TextureMap<Asset::Type> Textures = {};
 
     // create texture from a file
     SDL_Texture *Create(SDL_Renderer *renderer, const char *path)
@@ -130,7 +130,7 @@ namespace BloodSword::Asset
 
             ifs.close();
 
-            result = (!Locations.empty() && !Textures.empty() && (Textures.size() == Locations.size()));
+            result = (!Asset::Locations.empty() && !Asset::Textures.empty() && (Asset::Textures.size() == Asset::Locations.size()));
         }
 
         return result;

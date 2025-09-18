@@ -25,9 +25,6 @@
 // primitive classes, functions, and constants used throughout the program
 namespace BloodSword
 {
-    // list of textures
-    typedef std::vector<SDL_Texture *> Textures;
-
     // default tile dimensions
     const int TileSize = 64;
 
@@ -256,7 +253,7 @@ namespace BloodSword
     }
 
     // free textures
-    void Free(BloodSword::Textures &textures)
+    void Free(std::vector<SDL_Texture *> &textures)
     {
         if (!textures.empty())
         {
@@ -332,7 +329,7 @@ namespace BloodSword
     }
 
     // get max width of list of textures
-    int Width(Textures &textures)
+    int Width(std::vector<SDL_Texture *> &textures)
     {
         auto width = 0;
 
@@ -355,7 +352,7 @@ namespace BloodSword
     }
 
     // get max height of list of textures
-    int Height(Textures &textures)
+    int Height(std::vector<SDL_Texture *> &textures)
     {
         auto height = 0;
 

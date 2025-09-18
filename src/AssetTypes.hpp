@@ -1,6 +1,8 @@
 #ifndef __ASSET_TYPES_HPP__
 #define __ASSET_TYPES_HPP__
 
+#include <SDL.h>
+
 #include "Templates.hpp"
 
 namespace BloodSword::Asset
@@ -18,6 +20,13 @@ namespace BloodSword::Asset
     // lookup table for mapping T to asset type id
     template <typename T>
     using Lookup = BloodSword::UnorderedMap<T, Asset::Type>;
+
+    // mapping of T to SDL sextures
+    template <typename T>
+    using TextureMap = BloodSword::UnorderedMap<T, SDL_Texture *>;
+
+    // list of textures
+    typedef std::vector<SDL_Texture *> TextureList;
 
     // asset list
     typedef std::vector<Asset::Type> List;

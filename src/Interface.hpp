@@ -15,13 +15,13 @@ namespace BloodSword::Interface
     nlohmann::json Settings;
 
     // inactive skill textures
-    Skills::Mapped<SDL_Texture *> SkillsTexturesInactive = {};
+    Asset::TextureMap<Skills::Type> SkillsTexturesInactive = {};
 
     // active skill captions
-    Skills::Mapped<SDL_Texture *> SkillCaptionsActive = {};
+    Asset::TextureMap<Skills::Type> SkillCaptionsActive = {};
 
     // inactive skill captions
-    Skills::Mapped<SDL_Texture *> SkillCaptionsInactive = {};
+    Asset::TextureMap<Skills::Type> SkillCaptionsInactive = {};
 
     // skill to control mapping
     Skills::Mapped<Controls::Type> SkillControls = {
@@ -36,16 +36,16 @@ namespace BloodSword::Interface
         {Skills::Type::SPELLS, Controls::Type::SPELLS}};
 
     // inactive spell textures
-    Spells::Mapped<SDL_Texture *> SpellsTexturesInactive = {};
+    Asset::TextureMap<Spells::Type> SpellsTexturesInactive = {};
 
     // active spell captions
-    Spells::Mapped<SDL_Texture *> SpellCaptionsActive = {};
+    Asset::TextureMap<Spells::Type> SpellCaptionsActive = {};
 
     // inactive spell captions
-    Spells::Mapped<SDL_Texture *> SpellCaptionsInactive = {};
+    Asset::TextureMap<Spells::Type> SpellCaptionsInactive = {};
 
     // battle control captions
-    Controls::Mapped<SDL_Texture *> BattleControlCaptions = {};
+    Asset::TextureMap<Controls::Type> BattleControlCaptions = {};
 
     // spell to control mapping
     Spells::Mapped<Controls::Type> SpellControls = {
@@ -110,7 +110,7 @@ namespace BloodSword::Interface
         {Controls::Type::BACK, "BACK"}};
 
     // battle controls text
-    Controls::Mapped<const char *> BattleControlsText = {
+    BloodSword::ConstStrings<Controls::Type> BattleControlsText = {
         {Controls::Type::MOVE, "MOVE"},
         {Controls::Type::FIGHT, "FIGHT"},
         {Controls::Type::SHOOT, "SHOOT"},
@@ -1383,9 +1383,9 @@ namespace BloodSword::Interface
     }
 
     // create party attributes text box collection
-    BloodSword::Textures Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, Uint32 stats_color, int style, int wrap, bool add_name = false, bool in_battle = false)
+    Asset::TextureList Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, Uint32 stats_color, int style, int wrap, bool add_name = false, bool in_battle = false)
     {
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1403,13 +1403,13 @@ namespace BloodSword::Interface
     }
 
     // generate stats
-    BloodSword::Textures GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool in_battle = true)
+    Asset::TextureList GenerateStats(Graphics::Base &graphics, Party::Base &party, int width, bool names = true, bool in_battle = true)
     {
         return Interface::Attributes(graphics, party, Fonts::Normal, Color::Active, Color::Highlight, TTF_STYLE_NORMAL, width, names, in_battle);
     }
 
     // generate textures of character's class'
-    BloodSword::Textures GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
+    Asset::TextureList GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
     {
         Graphics::TextList characters = {};
 
@@ -1424,7 +1424,7 @@ namespace BloodSword::Interface
     }
 
     // generate textures of character's names
-    BloodSword::Textures GenerateNameCaptions(Graphics::Base &graphics, Party::Base &party)
+    Asset::TextureList GenerateNameCaptions(Graphics::Base &graphics, Party::Base &party)
     {
         Graphics::TextList characters = {};
 
@@ -1466,9 +1466,9 @@ namespace BloodSword::Interface
     }
 
     // create party skills text box collection
-    BloodSword::Textures Skills(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 skills_color, int style, int wrap)
+    Asset::TextureList Skills(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 skills_color, int style, int wrap)
     {
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1579,9 +1579,9 @@ namespace BloodSword::Interface
     }
 
     // create party status text box collection
-    BloodSword::Textures Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style, bool in_battle = false)
+    Asset::TextureList Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style, bool in_battle = false)
     {
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1652,9 +1652,9 @@ namespace BloodSword::Interface
     }
 
     // create party status text box collection
-    BloodSword::Textures BasicStatus(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style)
+    Asset::TextureList BasicStatus(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style)
     {
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1843,9 +1843,9 @@ namespace BloodSword::Interface
     }
 
     // generate textures of party stats
-    BloodSword::Textures PartyStats(Graphics::Base &graphics, Party::Base &party, int w)
+    Asset::TextureList PartyStats(Graphics::Base &graphics, Party::Base &party, int w)
     {
-        auto textures = std::vector<SDL_Texture *>();
+        auto textures = Asset::TextureList();
 
         for (auto character = 0; character < party.Count(); character++)
         {
@@ -1905,9 +1905,9 @@ namespace BloodSword::Interface
     }
 
     // generate textures of character backgrounds
-    BloodSword::Textures PartyBackgrounds(Graphics::Base &graphics, Party::Base &party, int w)
+    Asset::TextureList PartyBackgrounds(Graphics::Base &graphics, Party::Base &party, int w)
     {
-        auto textures = std::vector<SDL_Texture *>();
+        auto textures = Asset::TextureList();
 
         for (auto character = 0; character < party.Count(); character++)
         {
@@ -1947,9 +1947,9 @@ namespace BloodSword::Interface
     }
 
     // create party items text box collection
-    BloodSword::Textures Items(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 items_color, int style, int wrap)
+    Asset::TextureList Items(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 items_color, int style, int wrap)
     {
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1967,7 +1967,7 @@ namespace BloodSword::Interface
     }
 
     // add vertical text menu to the scene
-    Scene::Base Menu(BloodSword::Textures &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false, bool center = false)
+    Scene::Base Menu(Asset::TextureList &choices, int x, int y, int w, int h, int start, int last, int limit, Uint32 background, Uint32 border, Uint32 highlight, bool others = false, bool center = false)
     {
         auto scene = Scene::Base();
 
@@ -2086,7 +2086,7 @@ namespace BloodSword::Interface
     }
 
     // add horizontal text menu to existing overlay
-    void HorizontalMenu(Scene::Base &overlay, BloodSword::Textures &choices, Controls::List controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
+    void HorizontalMenu(Scene::Base &overlay, Asset::TextureList &choices, Controls::List controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
     {
         if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
         {
@@ -3506,7 +3506,7 @@ namespace BloodSword::Interface
 
         auto infow = BloodSword::PentaTile;
 
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         switch (mode)
         {
@@ -5258,7 +5258,7 @@ namespace BloodSword::Interface
 
         auto has_captions = (captions.size() > 0 && captions.size() <= assets.size());
 
-        auto texture_captions = has_captions ? Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0)) : BloodSword::Textures();
+        auto texture_captions = has_captions ? Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0)) : Asset::TextureList();
 
         auto ordering_captions = std::vector<std::string>();
 
@@ -7003,9 +7003,9 @@ namespace BloodSword::Interface
     }
 
     // generate textures of book locations from games list
-    BloodSword::Textures GameLocations(Graphics::Base &graphics, std::vector<Book::Location> &locations, std::string undefined)
+    Asset::TextureList GameLocations(Graphics::Base &graphics, std::vector<Book::Location> &locations, std::string undefined)
     {
-        BloodSword::Textures textures = {};
+        Asset::TextureList textures = {};
 
         for (auto &location : locations)
         {
@@ -7042,9 +7042,9 @@ namespace BloodSword::Interface
     }
 
     // generate game (file) timestamp textures from list of games
-    BloodSword::Textures TimeStamps(Graphics::Base &graphics)
+    Asset::TextureList TimeStamps(Graphics::Base &graphics)
     {
-        BloodSword::Textures timestamps = {};
+        Asset::TextureList timestamps = {};
 
         for (auto time = 0; time < Interface::GamesList.size(); time++)
         {

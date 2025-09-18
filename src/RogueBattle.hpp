@@ -146,7 +146,7 @@ namespace BloodSword::Rogue
     }
 
     // refresh character stats texture
-    void RefreshStats(Graphics::Base &graphics, Textures &textures, Character::Base &character, int id, int stats_width)
+    void RefreshStats(Graphics::Base &graphics, Asset::TextureList &textures, Character::Base &character, int id, int stats_width)
     {
         BloodSword::Free(&textures[id]);
 

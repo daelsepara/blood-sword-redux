@@ -17,7 +17,7 @@ namespace BloodSword::Rogue
     // battle
     Controls::Type SelectAction(Graphics::Base &graphics, Scene::Base &background, Character::Base &character);
     Rogue::Update Battle(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int enemy);
-    void RefreshStats(Graphics::Base &graphics, Textures &textures, Character::Base &character, int id, int stats_width);
+    void RefreshStats(Graphics::Base &graphics, Asset::TextureList &textures, Character::Base &character, int id, int stats_width);
     void ResolveFight(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender);
     void ResolveShoot(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender, int defenderid);
     void ResolveSpell(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &caster, Character::Base &target, int targetid, Spells::Type spell);

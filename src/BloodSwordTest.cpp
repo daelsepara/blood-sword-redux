@@ -1536,7 +1536,7 @@ namespace BloodSword::Test
     }
 
     // regenerate menu
-    BloodSword::Textures RegenerateMenu(Graphics::Base &graphics, int width)
+    Asset::TextureList RegenerateMenu(Graphics::Base &graphics, int width)
     {
         auto menu = Graphics::CreateText(
             graphics,

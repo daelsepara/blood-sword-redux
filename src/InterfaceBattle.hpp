@@ -1192,7 +1192,7 @@ namespace BloodSword::Interface
                 Controls::Type::ITEMS};
 
             // highlighted action icons
-            Controls::Mapped<SDL_Texture *> highlight = {};
+            Asset::TextureMap<Controls::Type> highlight = {};
 
             for (auto i = 0; i < action_assets.size(); i++)
             {

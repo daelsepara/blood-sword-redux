@@ -237,9 +237,9 @@ namespace BloodSword::Rogue
     }
 
     // generate textures of party stats
-    BloodSword::Textures Stats(Graphics::Base &graphics, Party::Base &party, int w)
+    Asset::TextureList Stats(Graphics::Base &graphics, Party::Base &party, int w)
     {
-        auto textures = std::vector<SDL_Texture *>();
+        auto textures = Asset::TextureList();
 
         for (auto character = 0; character < party.Count(); character++)
         {
@@ -306,7 +306,7 @@ namespace BloodSword::Rogue
     }
 
     // render all combatants
-    void RenderCombatants(Graphics::Base &graphics, Scene::Base &scene, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id, Uint32 color)
+    void RenderCombatants(Graphics::Base &graphics, Scene::Base &scene, Party::Base &party, Asset::TextureList &party_stats, Party::Base &enemies, Asset::TextureList &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id, Uint32 color)
     {
         // estimate positions from window
         auto window_h = BloodSword::WindowTile - BloodSword::Pad;
@@ -361,7 +361,7 @@ namespace BloodSword::Rogue
     }
 
     // select target from party or enemies
-    int SelectTarget(Graphics::Base &graphics, Party::Base &party, Textures &party_stats, Party::Base &enemies, BloodSword::Textures &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
+    int SelectTarget(Graphics::Base &graphics, Party::Base &party, Asset::TextureList &party_stats, Party::Base &enemies, Asset::TextureList &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
     {
         // estimate positions from window
         auto window_h = BloodSword::WindowTile - BloodSword::Pad;
