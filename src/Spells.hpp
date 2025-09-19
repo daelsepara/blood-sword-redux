@@ -237,7 +237,6 @@ namespace BloodSword::Spells
     Spells::Class MapClass(std::string spell_class)
     {
         return BloodSword::Find(Spells::ClassMapping, spell_class);
-
     }
 
     // map string to spell class
