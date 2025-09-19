@@ -32,6 +32,24 @@ namespace BloodSword
     template <typename T>
     using IntegerMap = BloodSword::UnorderedMap<T, int>;
 
+    template<typename T, typename R>
+    T Find(BloodSword::UnorderedMap<T, R> &unordered_map, R key, T default_value)
+    {
+        auto result = default_value;
+
+        for (auto &keys : unordered_map)
+        {
+            if (keys.second == key)
+            {
+                result = keys.first;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
     // search for a constant string key in a map
     template <typename T>
     T Find(BloodSword::ConstStrings<T> &unordered_map, const char *key)
@@ -55,19 +73,7 @@ namespace BloodSword
     template <typename T>
     T Find(BloodSword::StringMap<T> &unordered_map, std::string key)
     {
-        auto result = T::NONE;
-
-        for (auto &keys : unordered_map)
-        {
-            if (keys.second == key)
-            {
-                result = keys.first;
-
-                break;
-            }
-        }
-
-        return result;
+        return BloodSword::Find(unordered_map, key, T::NONE);
     }
 
     // search for a key in a vector of type/objects

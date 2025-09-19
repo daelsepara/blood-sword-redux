@@ -37,19 +37,7 @@ namespace BloodSword::Asset
     // get asset type id
     Asset::Type Map(std::string asset)
     {
-        auto result = Asset::NONE;
-
-        for (auto &type : Asset::TypeMapping)
-        {
-            if (type.second == asset)
-            {
-                result = type.first;
-
-                break;
-            }
-        }
-
-        return result;
+        return BloodSword::Find(Asset::TypeMapping, asset, Asset::NONE);
     }
 
     // get asset type id
