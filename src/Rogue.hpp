@@ -513,7 +513,7 @@ namespace BloodSword::Rogue
 
                     if (party.Origin() == Point(x, y))
                     {
-                        surface_asset = Asset::Surface(Asset::Map("WHITE SPACE"), Color::Highlight);
+                        surface_asset = Asset::Surface("WHITE SPACE", Color::Highlight);
                     }
                     else if (tile.Explored && tile.Asset != Asset::NONE)
                     {

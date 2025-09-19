@@ -155,7 +155,7 @@ namespace BloodSword::Rogue
                 Graphics::RenderAsset(surface, surface_stats, stats_rect);
 
                 // add icon (blur if dead)
-                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? Asset::Surface(character.Asset) : Asset::Surface(Asset::Map("DEAD"));
+                auto surface_asset = Engine::Score(character, Attribute::Type::ENDURANCE) > 0 ? Asset::Surface(character.Asset) : Asset::Surface("DEAD");
 
                 stats_rect.x = (surface->w - BloodSword::TileSize) / 2;
 
@@ -169,7 +169,7 @@ namespace BloodSword::Rogue
 
                 if (character.Has(Character::Status::IN_BATTLE) && character.Has(Character::Status::MELEE) && Engine::IsAlive(character))
                 {
-                    auto melee = Asset::Surface(Asset::Map("FIGHT"));
+                    auto melee = Asset::Surface("FIGHT");
 
                     if (melee)
                     {
@@ -184,15 +184,15 @@ namespace BloodSword::Rogue
 
                     if (character.Has(Skills::Type::ARCHERY))
                     {
-                        ranged = Asset::Surface(Asset::Map("ARCHERY"));
+                        ranged = Asset::Surface("ARCHERY");
                     }
                     else if (character.Has(Skills::Type::SHURIKEN))
                     {
-                        ranged = Asset::Surface(Asset::Map("SHURIKEN"));
+                        ranged = Asset::Surface("SHURIKEN");
                     }
                     else
                     {
-                        ranged = Asset::Surface(Asset::Map("SHOOT"));
+                        ranged = Asset::Surface("SHOOT");
                     }
 
                     if (ranged)
@@ -207,7 +207,7 @@ namespace BloodSword::Rogue
                 {
                     stats_rect.x = surface->w - (BloodSword::TileSize + BloodSword::Pad);
 
-                    auto defend = Asset::Surface(Asset::Map("DEFEND"));
+                    auto defend = Asset::Surface("DEFEND");
 
                     if (defend)
                     {

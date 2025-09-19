@@ -92,7 +92,7 @@ namespace BloodSword::MapRenderer
                         {
                             if (tile.Asset == Asset::Map("EMPTY SPACE"))
                             {
-                                surface_asset = Asset::Surface(Asset::Map("SELECT"));
+                                surface_asset = Asset::Surface("SELECT");
                             }
                             else if (tile.Asset != Asset::NONE)
                             {
@@ -100,7 +100,7 @@ namespace BloodSword::MapRenderer
                             }
                             else if (tile.Type == Map::Object::EXIT)
                             {
-                                surface_asset = Asset::Surface(Asset::Map("SELECT"));
+                                surface_asset = Asset::Surface("SELECT");
                             }
                         }
                         else
@@ -111,7 +111,7 @@ namespace BloodSword::MapRenderer
 
                                 if (tile.Id >= 0 && tile.Id < party.Count() && party.Count() > 0)
                                 {
-                                    surface_asset = Asset::Surface(Asset::Map("SELECT"));
+                                    surface_asset = Asset::Surface("SELECT");
                                 }
 
                                 break;

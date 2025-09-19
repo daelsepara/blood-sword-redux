@@ -58,10 +58,26 @@ namespace BloodSword::Asset
         return surface;
     }
 
+    // reloads asset as an SDL surface and adjust color
+    SDL_Surface *Surface(std::string asset, Uint32 blur)
+    {
+        auto asset_type = Asset::Map(asset);
+
+        return Asset::Surface(asset_type, blur);
+    }
+
     // reloads asset as an SDL surface and apply current palette
     SDL_Surface *Surface(Asset::Type asset)
     {
         return Asset::Surface(asset, Color::Active);
+    }
+
+    // reloads asset as an SDL surface and apply current palette
+    SDL_Surface *Surface(std::string asset)
+    {
+        auto asset_type = Asset::Map(asset);
+
+        return Asset::Surface(asset_type);
     }
 
     // unload all assets
