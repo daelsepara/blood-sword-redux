@@ -32,6 +32,7 @@ namespace BloodSword
     template <typename T>
     using IntegerMap = BloodSword::UnorderedMap<T, int>;
 
+    // search for key (using its value), return default value if not found
     template<typename T, typename R>
     T Find(BloodSword::UnorderedMap<T, R> &unordered_map, R key, T default_value)
     {
@@ -116,7 +117,7 @@ namespace BloodSword
     template <typename T>
     bool Found(std::vector<T> &vector, T &key)
     {
-        return BloodSword::Find(vector, key) != vector.end();
+        return BloodSword::In(vector, key);
     }
 
     // search for a key in an unordered map
