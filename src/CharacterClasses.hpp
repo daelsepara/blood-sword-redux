@@ -15,7 +15,7 @@ namespace BloodSword::Character
     };
 
     // control type to string mapping
-    BloodSword::StringMap<Character::ControlType> ControlTypeMapping = {
+    BloodSword::ConstStrings<Character::ControlType> ControlTypeMapping = {
         {Character::ControlType::NONE, "NONE"},
         {Character::ControlType::PLAYER, "PLAYER"},
         {Character::ControlType::NPC, "NPC"}};

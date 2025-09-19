@@ -437,7 +437,7 @@ namespace BloodSword::Item
                             item_string += ", ";
                         }
 
-                        item_string += std::string(Item::TypeMapping[this->Contains]) + ": " + std::to_string(this->Quantity);
+                        item_string += Item::TypeMapping[this->Contains] + ": " + std::to_string(this->Quantity);
 
                         stats++;
                     }
@@ -785,9 +785,9 @@ namespace BloodSword::Items
 
             row["name"] = item.Name;
 
-            row["contains"] = std::string(Item::TypeMapping[item.Contains]);
+            row["contains"] = Item::TypeMapping[item.Contains];
 
-            row["type"] = std::string(Item::TypeMapping[item.Type]);
+            row["type"] = Item::TypeMapping[item.Type];
 
             row["quantity"] = item.Quantity;
 
@@ -842,7 +842,7 @@ namespace BloodSword::Items
                 {
                     nlohmann::json damage_type;
 
-                    auto target = std::string(Target::Mapping[damage.first]);
+                    auto target = Target::Mapping[damage.first];
 
                     auto value = damage.second.Value;
 
@@ -866,7 +866,7 @@ namespace BloodSword::Items
                 {
                     nlohmann::json target_effect;
 
-                    auto target = std::string(Target::Mapping[targets.first]);
+                    auto target = Target::Mapping[targets.first];
 
                     auto effect = std::string(Item::TargetEffectMapping[targets.second]);
 
@@ -912,7 +912,7 @@ namespace BloodSword::Items
         {
             for (auto &card : deck)
             {
-                deck_list.push_back(Item::CardMapping[card]);
+                deck_list.push_back(std::string(Item::CardMapping[card]));
             }
         }
 

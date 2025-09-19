@@ -135,15 +135,15 @@ namespace BloodSword::Skills
     }
 
     // get skill type from string
-    Skills::Type Map(const char *skill)
+    Skills::Type Map(std::string skill)
     {
         return BloodSword::Find(Skills::TypeMapping, skill);
     }
 
     // get skill type from string
-    Skills::Type Map(std::string skill)
+    Skills::Type Map(const char *skill)
     {
-        return Skills::Map(skill.c_str());
+        return Skills::Map(std::string(skill));
     }
 
     // is this skill in the list?

@@ -42,7 +42,7 @@ namespace BloodSword::Battle
     const int Unlimited = -1;
 
     // battle condition to string mapping
-    BloodSword::StringMap<Battle::Condition> ConditionMapping = {
+    BloodSword::ConstStrings<Battle::Condition> ConditionMapping = {
         {Battle::Condition::NONE, "NONE"},
         {Battle::Condition::NO_COMBAT, "NO COMBAT"},
         {Battle::Condition::AMBUSH_PLAYER, "AMBUSH PLAYER"},
@@ -78,7 +78,7 @@ namespace BloodSword::Battle
     // map string to battle condition
     Battle::Condition MapCondition(std::string condition)
     {
-        return BloodSword::Find(Battle::ConditionMapping, condition.c_str());
+        return Battle::MapCondition(condition.c_str());
     }
 
     // list of battle conditions

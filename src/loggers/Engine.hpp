@@ -44,9 +44,9 @@ namespace BloodSword::EngineLogger
     {
         auto action_string = std::string(action) + " TARGET " + std::to_string(target_id);
 
-        auto attacker_string = std::string(Target::Mapping[attacker]) + " " + std::to_string(id);
+        auto attacker_string = Target::Mapping[attacker] + " " + std::to_string(id);
 
-        auto target_string = std::string(Target::Mapping[target]) + " " + std::to_string(target_id);
+        auto target_string = Target::Mapping[target] + " " + std::to_string(target_id);
 
         EngineLogger::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln, prob, threshold);
     }
@@ -58,7 +58,7 @@ namespace BloodSword::EngineLogger
 
         auto attacker_string = std::string("ENEMY ") + std::to_string(id);
 
-        auto target_string = std::string(Target::Mapping[target]) + " " + std::to_string(target_id);
+        auto target_string = Target::Mapping[target] + " " + std::to_string(target_id);
 
         EngineLogger::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln);
     }

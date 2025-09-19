@@ -63,15 +63,15 @@ namespace BloodSword::Target
         {Target::Type::EIDOLON, "EIDOLON"}};
 
     // map string to target type
-    Target::Type Map(const char *target)
+    Target::Type Map(std::string target)
     {
         return BloodSword::Find(Target::Mapping, target);
     }
 
     // map string to target type
-    Target::Type Map(std::string target)
+    Target::Type Map(const char *target)
     {
-        return Target::Map(target.c_str());
+        return Target::Map(std::string(target));
     }
 
     // load list of target types from json data

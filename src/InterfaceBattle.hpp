@@ -364,9 +364,9 @@ namespace BloodSword::Interface
 
         auto popup = draw + (Point(map_w, map_h) - Point(popup_w, popup_h)) / 2;
 
-        auto affected = target.Name + " SUCCUMBS TO " + std::string(Spells::TypeMapping[spell]);
+        auto affected = target.Name + " SUCCUMBS TO " + Spells::TypeMapping[spell];
 
-        auto resisted = target.Name + " RESISTS " + std::string(Spells::TypeMapping[spell]);
+        auto resisted = target.Name + " RESISTS " + Spells::TypeMapping[spell];
 
         if (spell == Spells::Type::VOLCANO_SPRAY)
         {
@@ -762,7 +762,7 @@ namespace BloodSword::Interface
                 battle.AlreadyCast.push_back(spell);
 
                 // spellcasting successful
-                Interface::MessageBox(graphics, scene, std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Color::Highlight);
+                Interface::MessageBox(graphics, scene, Spells::TypeMapping[spell] + " SUCCESSFULLY CAST", Color::Highlight);
 
                 // update caster's spell strategy
                 character.CastSpell(spell);
@@ -794,7 +794,7 @@ namespace BloodSword::Interface
 
                                     auto &defender = targets[target].Type == Character::ControlType::NPC ? battle.Opponents[target_id] : party[target_id];
 
-                                    std::string spell_action = "CASTS " + std::string(Spells::TypeMapping[spell]);
+                                    std::string spell_action = "CASTS " + Spells::TypeMapping[spell];
 
                                     BattleLogger::LogAction(spell_action.c_str(), character.Target, battle.Map[src].Id, defender.Target, target_id);
 
@@ -836,7 +836,7 @@ namespace BloodSword::Interface
                 {
                     character.CallToMind(strategy.Spell);
 
-                    auto spell_string = std::string(Spells::TypeMapping[strategy.Spell]) + " CALLED TO MIND!";
+                    auto spell_string = Spells::TypeMapping[strategy.Spell] + " CALLED TO MIND!";
 
                     Interface::MessageBox(graphics, scene, spell_string, Color::Highlight);
 
@@ -1883,7 +1883,7 @@ namespace BloodSword::Interface
                                                     if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, cast, true))
                                                     {
                                                         // spellcasting successful
-                                                        auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST";
+                                                        auto spell_string = Spells::TypeMapping[cast] + " SUCCESSFULLY CAST";
 
                                                         Interface::MessageBox(graphics, scene, spell_string, Color::Active);
 
@@ -2005,7 +2005,7 @@ namespace BloodSword::Interface
                                                                 if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell_target.Asset, cast, true))
                                                                 {
                                                                     // spellcasting successful
-                                                                    auto spell_string = std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST";
+                                                                    auto spell_string = Spells::TypeMapping[cast] + " SUCCESSFULLY CAST";
 
                                                                     Interface::MessageBox(graphics, scene, spell_string, Color::Active);
 
@@ -2329,7 +2329,7 @@ namespace BloodSword::Interface
                                                                             if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell_target.Asset, cast, true))
                                                                             {
                                                                                 // spellcasting successful
-                                                                                Interface::MessageBox(graphics, scene, std::string(Spells::TypeMapping[cast]) + " SUCCESSFULLY CAST", Color::Active);
+                                                                                Interface::MessageBox(graphics, scene, Spells::TypeMapping[cast] + " SUCCESSFULLY CAST", Color::Active);
 
                                                                                 // resolve spell
                                                                                 Interface::ResolveSpell(graphics, battle, scene, battle.Opponents, character, spell_target, battle.Map[target].Id, cast);
@@ -2379,7 +2379,7 @@ namespace BloodSword::Interface
                                                                     if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spellbook.Type, true))
                                                                     {
                                                                         // spellcasting successful
-                                                                        Interface::MessageBox(graphics, scene, std::string(Spells::TypeMapping[spellbook.Type]) + " SUCCESSFULLY CAST", Color::Active);
+                                                                        Interface::MessageBox(graphics, scene, Spells::TypeMapping[spellbook.Type] + " SUCCESSFULLY CAST", Color::Active);
 
                                                                         // check if spell targets own party
                                                                         auto my_party = (spellbook.Type == Spells::Type::EYE_OF_THE_TIGER) || (spellbook.Type == Spells::Type::IMMEDIATE_DELIVERANCE);

@@ -5472,7 +5472,7 @@ namespace BloodSword::Interface
                     stake = Interface::SelectCharacter(graphics, background, party, "WHO IS ADDING TO THE STAKE?", true, true, false, false, true);
                 }
 
-                std::string stake_message = "HOW MUCH " + std::string(Item::TypeMapping[to_stake]) + " TO STAKE?";
+                auto stake_message = "HOW MUCH " + Item::TypeMapping[to_stake] + " TO STAKE?";
 
                 if (stake != Character::Class::NONE)
                 {
@@ -5488,7 +5488,7 @@ namespace BloodSword::Interface
 
                 if (Engine::Count(party) == 1 || stake == Character::Class::NONE)
                 {
-                    std::string message = "STAKED: " + std::to_string(total_staked) + " " + std::string(Item::TypeMapping[to_stake]) + ", PROCEED?";
+                    auto message = "STAKED: " + std::to_string(total_staked) + " " + Item::TypeMapping[to_stake] + ", PROCEED?";
 
                     if (Interface::Confirm(graphics, background, message.c_str(), Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
                     {
@@ -5499,7 +5499,7 @@ namespace BloodSword::Interface
 
             if (total_staked > 0)
             {
-                std::string stake_variable = "STAKED " + std::string(Item::TypeMapping[to_stake]);
+                auto stake_variable = "STAKED " + Item::TypeMapping[to_stake];
 
                 party.Set(stake_variable, std::to_string(total_staked));
             }
@@ -5555,7 +5555,7 @@ namespace BloodSword::Interface
                     from = Interface::SelectCharacter(graphics, background, party, "WHO IS ADDING TO THE POOL?", true, true, false, false, true);
                 }
 
-                std::string stake_message = "HOW MUCH " + std::string(Item::TypeMapping[to_collect]) + " TO ADD?";
+                auto stake_message = "HOW MUCH " + Item::TypeMapping[to_collect] + " TO ADD?";
 
                 if (from != Character::Class::NONE)
                 {
@@ -5571,7 +5571,7 @@ namespace BloodSword::Interface
 
                 if ((Engine::Count(party) == 1 || from == Character::Class::NONE))
                 {
-                    std::string message = "COLLECTED: " + std::to_string(total_collected) + " " + std::string(Item::TypeMapping[to_collect]) + ", PROCEED?";
+                    auto message = "COLLECTED: " + std::to_string(total_collected) + " " + Item::TypeMapping[to_collect] + ", PROCEED?";
 
                     if (Interface::Confirm(graphics, background, message.c_str(), Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
                     {
@@ -6022,9 +6022,7 @@ namespace BloodSword::Interface
 
         for (auto &item : items)
         {
-            std::string item_string = Item::TypeMapping[item];
-
-            text_list.push_back(Graphics::RichText(item_string, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::Wrap));
+            text_list.push_back(Graphics::RichText(Item::TypeMapping[item], Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, BloodSword::Wrap));
         }
 
         auto menu = Graphics::CreateText(graphics, text_list);
@@ -6485,7 +6483,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                std::string text = party[input.Current].Name + " DOES NOT HAVE THE " + std::string(Item::TypeMapping[item]) + "!";
+                                auto text = party[input.Current].Name + " DOES NOT HAVE THE " + Item::TypeMapping[item] + "!";
 
                                 Interface::MessageBox(graphics, background, text, Color::Highlight);
                             }

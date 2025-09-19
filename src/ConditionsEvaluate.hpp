@@ -574,11 +574,11 @@ namespace BloodSword::Conditions
 
                                 party[character].Remove(item, party[character].Quantity(item));
 
-                                text = std::string("YOU LOSE ALL ") + std::string(Item::TypeMapping[item]) + "!";
+                                text = "YOU LOSE ALL " + Item::TypeMapping[item] + "!";
                             }
                             else
                             {
-                                text = std::string("YOU DO NOT HAVE ANY ") + Item::TypeMapping[item] + "!";
+                                text = "YOU DO NOT HAVE ANY " + Item::TypeMapping[item] + "!";
                             }
                         }
                         else
@@ -1055,13 +1055,13 @@ namespace BloodSword::Conditions
                     {
                         party[character].CallToMind(spell);
 
-                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] CALLED TO MIND.";
+                        text = "[" + Spells::TypeMapping[spell] + "] CALLED TO MIND.";
 
                         result = true;
                     }
                     else
                     {
-                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] ALREADY CALLED TO MIND.";
+                        text = "[" + Spells::TypeMapping[spell] + "] ALREADY CALLED TO MIND.";
 
                         result = true;
                     }
@@ -1097,13 +1097,13 @@ namespace BloodSword::Conditions
                     {
                         party[character].Forget(spell);
 
-                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] UN-CALLED FROM MIND.";
+                        text = "[" + Spells::TypeMapping[spell] + "] UN-CALLED FROM MIND.";
 
                         result = true;
                     }
                     else
                     {
-                        text = "[" + std::string(Spells::TypeMapping[spell]) + "] WAS NOT CALLED TO MIND.";
+                        text = "[" + Spells::TypeMapping[spell] + "] WAS NOT CALLED TO MIND.";
 
                         result = true;
                     }
@@ -1612,7 +1612,7 @@ namespace BloodSword::Conditions
                 {
                     if (Engine::Count(party) > 1)
                     {
-                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : ("WHO SHALL PAY " + std::to_string(quantity) + " " + std::string(Item::TypeMapping[currency]) + "?");
+                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : ("WHO SHALL PAY " + std::to_string(quantity) + " " + Item::TypeMapping[currency] + "?");
 
                         chosen = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                     }
@@ -1664,7 +1664,7 @@ namespace BloodSword::Conditions
                 {
                     if (Engine::Count(party) > 1)
                     {
-                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : (std::string("WHO BUYS THE ") + Item::TypeMapping[item] + " (" + std::to_string(quantity) + " " + Item::TypeMapping[currency] + ")?");
+                        auto message = !condition.Variables[0].empty() ? condition.Variables[0] : ("WHO BUYS THE " + Item::TypeMapping[item] + " (" + std::to_string(quantity) + " " + Item::TypeMapping[currency] + ")?");
 
                         chosen = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                     }
@@ -1693,7 +1693,7 @@ namespace BloodSword::Conditions
                             }
                             else
                             {
-                                text = "You cannot buy the " + std::string(Item::TypeMapping[item]) + ".";
+                                text = "You cannot buy the " + Item::TypeMapping[item] + ".";
                             }
                         }
                         else
@@ -1704,7 +1704,7 @@ namespace BloodSword::Conditions
 
                             party.ChosenCharacter = chosen;
 
-                            text = party[chosen].Name + " buys the " + std::string(Item::TypeMapping[item]) + ".";
+                            text = party[chosen].Name + " buys the " + Item::TypeMapping[item] + ".";
                         }
 
                         internal_error = false;
@@ -2080,11 +2080,11 @@ namespace BloodSword::Conditions
 
                                 if (quantity > 0)
                                 {
-                                    text = std::string("YOU GAINED ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                                    text = "YOU GAINED " + std::to_string(quantity) + " " + Item::TypeMapping[item] + "!";
                                 }
                                 else
                                 {
-                                    text = std::string("YOU LOST ") + std::to_string(quantity) + " " + std::string(Item::TypeMapping[item]) + "!";
+                                    text = "YOU LOST " + std::to_string(quantity) + " " + Item::TypeMapping[item] + "!";
                                 }
                             }
                             else
@@ -3574,7 +3574,7 @@ namespace BloodSword::Conditions
                         }
                         else
                         {
-                            text = std::string(Item::TypeMapping[charge]) + " EXHAUSTED";
+                            text = Item::TypeMapping[charge] + " EXHAUSTED";
                         }
                     }
                     else if (current >= 0 && current < Story::CurrentBook.Sections.size())

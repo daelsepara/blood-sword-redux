@@ -253,7 +253,7 @@ namespace BloodSword::Interface
             }
             else if (item != Item::Type::NONE)
             {
-                std::string message = "YOU DO NOT HAVE THE " + std::string(Item::TypeMapping[item]) + "!";
+                auto message = "YOU DO NOT HAVE THE " + Item::TypeMapping[item] + "!";
 
                 Interface::MessageBox(graphics, background, message, Color::Highlight);
             }

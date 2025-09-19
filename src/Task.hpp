@@ -25,15 +25,15 @@ namespace BloodSword::Task
         {Task::Status::COMPLETE, "COMPLETE"}};
 
     // map string to task status
-    Task::Status Map(const char *task)
+    Task::Status Map(std::string task)
     {
         return BloodSword::Find(Task::Mapping, task);
     }
 
     // map string to task status
-    Task::Status Map(std::string task)
+    Task::Status Map(const char *task)
     {
-        return Task::Map(task.c_str());
+        return Task::Map(std::string(task));
     }
 }
 

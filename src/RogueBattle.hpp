@@ -442,9 +442,9 @@ namespace BloodSword::Rogue
 
         auto popup = (Point(graphics.Width, graphics.Height) - Point(popup_w, popup_h)) / 2;
 
-        auto affected = target.Name + " SUCCUMBS TO " + std::string(Spells::TypeMapping[spell]);
+        auto affected = target.Name + " SUCCUMBS TO " + Spells::TypeMapping[spell];
 
-        auto resisted = target.Name + " RESISTS " + std::string(Spells::TypeMapping[spell]);
+        auto resisted = target.Name + " RESISTS " + Spells::TypeMapping[spell];
 
         if (spell == Spells::Type::VOLCANO_SPRAY)
         {
@@ -934,14 +934,14 @@ namespace BloodSword::Rogue
                                                             }
                                                             else if (spellbook->Ranged)
                                                             {
-                                                                Interface::FlashMessage(graphics, scene, character.Name + " CASTING " + std::string(Spells::TypeMapping[spell]), Color::Active);
+                                                                Interface::FlashMessage(graphics, scene, character.Name + " CASTING " + Spells::TypeMapping[spell], Color::Active);
 
                                                                 Input::Clear();
 
                                                                 if (Interface::Cast(graphics, scene, character, defender.Asset, spell, true, false))
                                                                 {
                                                                     // spellcasting successful
-                                                                    Interface::FlashMessage(graphics, scene, std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Color::Active);
+                                                                    Interface::FlashMessage(graphics, scene, Spells::TypeMapping[spell] + " SUCCESSFULLY CAST", Color::Active);
 
                                                                     // resolve spell
                                                                     Rogue::ResolveSpell(graphics, scene, enemies, character, defender, defender_id, spell);
@@ -962,13 +962,13 @@ namespace BloodSword::Rogue
                                                     }
                                                     else
                                                     {
-                                                        Interface::FlashMessage(graphics, scene, character.Name + " CASTING " + std::string(Spells::TypeMapping[spell]), Color::Active);
+                                                        Interface::FlashMessage(graphics, scene, character.Name + " CASTING " + Spells::TypeMapping[spell], Color::Active);
 
                                                         Input::Clear();
 
                                                         if (Interface::Cast(graphics, scene, character, spell, true, false))
                                                         {
-                                                            Interface::FlashMessage(graphics, scene, std::string(Spells::TypeMapping[spell]) + " SUCCESSFULLY CAST", Color::Active);
+                                                            Interface::FlashMessage(graphics, scene, Spells::TypeMapping[spell] + " SUCCESSFULLY CAST", Color::Active);
 
                                                             auto my_party = (spell == Spells::Type::EYE_OF_THE_TIGER);
 
@@ -999,7 +999,7 @@ namespace BloodSword::Rogue
                                             else
                                             {
                                                 // call spell to mind
-                                                Interface::FlashMessage(graphics, scene, std::string(Spells::TypeMapping[spell]) + " CALLED TO MIND", Color::Active);
+                                                Interface::FlashMessage(graphics, scene, Spells::TypeMapping[spell] + " CALLED TO MIND", Color::Active);
 
                                                 character.CallToMind(spell);
 

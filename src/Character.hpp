@@ -1058,7 +1058,7 @@ namespace BloodSword::Character
 
         data["encumbrance_limit"] = character.EncumbranceLimit;
 
-        data["control_type"] = Character::ControlTypeMapping[character.ControlType];
+        data["control_type"] = std::string(Character::ControlTypeMapping[character.ControlType]);
 
         data["class"] = Character::ClassMapping[character.Class];
 
@@ -1121,7 +1121,7 @@ namespace BloodSword::Character
             {
                 auto status = std::string(Character::StatusMapping[effect.first]);
 
-                auto item = std::string(Item::TypeMapping[effect.second]);
+                auto item = Item::TypeMapping[effect.second];
 
                 row.emplace(status, item);
             }

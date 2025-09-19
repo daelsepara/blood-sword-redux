@@ -165,15 +165,15 @@ namespace BloodSword::Item
     using Mapped = BloodSword::UnorderedMap<Item::Type, T>;
 
     // map string to item type
-    Item::Type Map(const char *item)
+    Item::Type Map(std::string item)
     {
         return BloodSword::Find(Item::TypeMapping, item);
     }
 
     // map string to item type
-    Item::Type Map(std::string item)
+    Item::Type Map(const char *item)
     {
-        return Item::Map(item.c_str());
+        return Item::Map(std::string(item));
     }
 
     // melee weapon (range) requirements
@@ -204,7 +204,7 @@ namespace BloodSword::Item
     };
 
     // mapping of kalugen card types to strings
-    BloodSword::StringMap<Item::CardType> CardMapping = {
+    BloodSword::ConstStrings<Item::CardType> CardMapping = {
         {Item::CardType::NONE, "NONE"},
         {Item::CardType::KING_OF_SERPENTS, "KING OF SERPENTS"},
         {Item::CardType::ACE_OF_STARS, "ACE OF STARS"},

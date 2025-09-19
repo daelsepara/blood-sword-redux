@@ -31,7 +31,7 @@ namespace BloodSword::Sound
     };
 
     // mapping of sound types to strings
-    BloodSword::StringMap<Sound::Type> Mapping = {
+    BloodSword::ConstStrings<Sound::Type> Mapping = {
         {Sound::Type::NONE, "NONE"},
         {Sound::Type::BUTTON_CLICK, "BUTTON CLICK"},
         {Sound::Type::DICE_ROLL, "DICE ROLL"},

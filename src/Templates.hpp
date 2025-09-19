@@ -34,6 +34,25 @@ namespace BloodSword
 
     // search for a constant string key in a map
     template <typename T>
+    T Find(BloodSword::ConstStrings<T> &unordered_map, const char *key)
+    {
+        auto result = T::NONE;
+
+        for (auto &keys : unordered_map)
+        {
+            if (std::strcmp(keys.second, key) == 0)
+            {
+                result = keys.first;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    // search for a string key in a map
+    template <typename T>
     T Find(BloodSword::StringMap<T> &unordered_map, std::string key)
     {
         auto result = T::NONE;
@@ -98,19 +117,7 @@ namespace BloodSword
     template <typename T, typename R>
     R Find(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
     {
-        auto result = R::NONE;
-
-        for (auto &keys : unordered_map)
-        {
-            if (keys.first == key)
-            {
-                result = keys.second;
-
-                break;
-            }
-        }
-
-        return result;
+        return unordered_map.find(key) != unordered_map.end() ? unordered_map[key] : R::NONE;
     }
 
     // check if the unordered map contains the key/object

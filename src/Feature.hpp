@@ -23,7 +23,7 @@ namespace BloodSword::Feature
     };
 
     // feature type to string mapping
-    BloodSword::StringMap<Feature::Type> TypeMapping = {
+    BloodSword::ConstStrings<Feature::Type> TypeMapping = {
         {Feature::Type::NONE, "NONE"},
         {Feature::Type::ENDING, "ENDING"},
         {Feature::Type::BAD_ENDING, "BAD ENDING"},
@@ -78,7 +78,7 @@ namespace BloodSword::Features
         {
             if (feature != Feature::Type::NONE)
             {
-                data.push_back(Feature::TypeMapping[feature]);
+                data.push_back(std::string(Feature::TypeMapping[feature]));
             }
         }
 

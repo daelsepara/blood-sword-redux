@@ -71,15 +71,15 @@ namespace BloodSword::Attribute
     }
 
     // get attribute type
-    Attribute::Type Map(const char *attribute)
+    Attribute::Type Map(std::string attribute)
     {
         return BloodSword::Find(Attribute::TypeMapping, attribute);
     }
 
     // get attribute type
-    Attribute::Type Map(std::string attribute)
+    Attribute::Type Map(const char *attribute)
     {
-        return Attribute::Map(attribute.c_str());
+        return Attribute::Map(std::string(attribute));
     }
 
     // attribute base class

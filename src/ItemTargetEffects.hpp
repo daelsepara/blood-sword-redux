@@ -21,7 +21,7 @@ namespace BloodSword::Item
     typedef std::vector<Item::TargetEffect> TargetEffects;
 
     // mapping of item target effects to strings
-    BloodSword::StringMap<Item::TargetEffect> TargetEffectMapping = {
+    BloodSword::ConstStrings<Item::TargetEffect> TargetEffectMapping = {
         {Item::TargetEffect::NONE, "NONE"},
         {Item::TargetEffect::KILL_TARGET, "KILL TARGET"},
         {Item::TargetEffect::DAMAGE_TARGET, "DAMAGE TARGET"},

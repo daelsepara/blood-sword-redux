@@ -461,7 +461,7 @@ namespace BloodSword::Rogue
 
                     controls.push_back(Controls::Type::MONEY);
 
-                    std::string gold_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
+                    auto gold_string = Item::TypeMapping[items[id].Contains] + ": " + std::to_string(character.Quantity(items[id].Contains));
 
                     captions.push_back(gold_string);
                 }
@@ -472,7 +472,7 @@ namespace BloodSword::Rogue
 
                     controls.push_back(Controls::Type::QUIVER);
 
-                    std::string arrow_string = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
+                    auto arrow_string = Item::TypeMapping[items[id].Contains] + ": " + std::to_string(character.Quantity(items[id].Contains));
 
                     captions.push_back(arrow_string);
                 }
@@ -483,7 +483,7 @@ namespace BloodSword::Rogue
 
                     controls.push_back(Controls::Type::USE);
 
-                    std::string charges = std::string(Item::TypeMapping[items[id].Contains]) + ": " + std::to_string(character.Quantity(items[id].Contains));
+                    auto charges = Item::TypeMapping[items[id].Contains] + ": " + std::to_string(character.Quantity(items[id].Contains));
 
                     captions.push_back(charges);
                 }

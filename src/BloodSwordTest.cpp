@@ -1196,7 +1196,7 @@ namespace BloodSword::Test
             {
                 auto number = std::to_string(story.Sections[i].Location.second);
 
-                auto section = std::string(Book::Mapping[story.Sections[i].Location.first]) + " " + std::string(3 - number.length(), '0') + number;
+                auto section = Book::Mapping[story.Sections[i].Location.first] + " " + std::string(3 - number.length(), '0') + number;
 
                 story_list.push_back(Graphics::RichText(section, Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, wrap));
             }

@@ -222,27 +222,28 @@ namespace BloodSword::Spells
     }
 
     // map string to spell type
-    Spells::Type Map(const char *spell)
+    Spells::Type Map(std::string spell)
     {
         return BloodSword::Find(Spells::TypeMapping, spell);
     }
 
     // map string to spell type
-    Spells::Type Map(std::string spell)
+    Spells::Type Map(const char *spell)
     {
-        return Spells::Map(spell.c_str());
+        return Spells::Map(std::string(spell));
+    }
+
+    // map string to spell class
+    Spells::Class MapClass(std::string spell_class)
+    {
+        return BloodSword::Find(Spells::ClassMapping, spell_class);
+
     }
 
     // map string to spell class
     Spells::Class MapClass(const char *spell_class)
     {
-        return BloodSword::Find(Spells::ClassMapping, spell_class);
-    }
-
-    // map string to spell class
-    Spells::Class MapClass(std::string spell)
-    {
-        return Spells::MapClass(spell.c_str());
+        return Spells::MapClass(std::string(spell_class));
     }
 
     // is this spell in the list?
@@ -459,7 +460,7 @@ namespace BloodSword::Spells
 
         for (auto &spell : memorized)
         {
-            data.push_back(std::string(Spells::TypeMapping[spell]));
+            data.push_back(Spells::TypeMapping[spell]);
         }
 
         return data;
@@ -474,7 +475,7 @@ namespace BloodSword::Spells
         {
             nlohmann::json spell;
 
-            spell["spell"] = std::string(Spells::TypeMapping[strategy.Spell]);
+            spell["spell"] = Spells::TypeMapping[strategy.Spell];
 
             spell["uses"] = strategy.Uses;
 

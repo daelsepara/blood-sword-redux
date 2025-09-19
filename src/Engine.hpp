@@ -1306,13 +1306,13 @@ namespace BloodSword::Engine
     // helper string function (not carrying the item)
     std::string NoItem(Item::Type &item)
     {
-        return (std::string("YOU DO NOT HAVE THE ") + std::string(Item::TypeMapping[item]) + "!");
+        return "YOU DO NOT HAVE THE " + Item::TypeMapping[item] + "!";
     }
 
     // helper string function (not enough quantities of the item)
     std::string NotEnough(Item::Type &item)
     {
-        return (std::string("YOU DO NOT HAVE ENOUGH ") + Item::TypeMapping[item] + "!");
+        return "YOU DO NOT HAVE ENOUGH " + Item::TypeMapping[item] + "!";
     }
 
     // change string case using input transform function (functptr)
