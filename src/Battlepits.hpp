@@ -170,7 +170,7 @@ namespace BloodSword::Battlepits
     {
         auto random = Random::Base();
 
-        Points points = {};
+        auto points = Points();
 
         if (random.NextDouble() < 0.5)
         {

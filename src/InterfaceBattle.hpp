@@ -81,7 +81,7 @@ namespace BloodSword::Interface
                 {
                     auto rolls = Engine::Roll(1);
 
-                    std::string strong_damage = std::string("STRONG: +") + std::to_string(rolls.Sum) + " DAMAGE";
+                    auto strong_damage = std::string("STRONG: +") + std::to_string(rolls.Sum) + " DAMAGE";
 
                     Interface::MessageBox(graphics, background, strong_damage, attacker.IsPlayer() ? Color::Active : Color::Highlight);
 
@@ -794,7 +794,7 @@ namespace BloodSword::Interface
 
                                     auto &defender = targets[target].Type == Character::ControlType::NPC ? battle.Opponents[target_id] : party[target_id];
 
-                                    std::string spell_action = "CASTS " + Spells::TypeMapping[spell];
+                                    auto spell_action = "CASTS " + Spells::TypeMapping[spell];
 
                                     BattleLogger::LogAction(spell_action.c_str(), character.Target, battle.Map[src].Id, defender.Target, target_id);
 
@@ -1316,7 +1316,7 @@ namespace BloodSword::Interface
                 }
 
                 // initialize battle order
-                battle.Order = {};
+                battle.Order.clear();
 
                 // spells already cast by NPC players
                 battle.AlreadyCast.clear();
@@ -1450,15 +1450,15 @@ namespace BloodSword::Interface
 
                                         if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Map("MISTS OF DEATH"), 1, 0).Sum == 1)
                                         {
-                                            std::string slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
+                                            auto slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
 
                                             Interface::MessageBox(graphics, scene, slow_murder, Color::Highlight);
 
                                             for (auto i = 0; i < party.Count(); i++)
                                             {
-                                                std::string resists = party[i].Name + " RESISTS THE SLOW MURDER SPELL!";
+                                                auto resists = party[i].Name + " RESISTS THE SLOW MURDER SPELL!";
 
-                                                std::string succumb = party[i].Name + " SUCCUMBS TO THE SLOW MURDER SPELL!";
+                                                auto succumb = party[i].Name + " SUCCUMBS TO THE SLOW MURDER SPELL!";
 
                                                 if (Engine::CanTarget(party[i], true) && !party[i].Has(Character::Status::SLOW_MURDER))
                                                 {
@@ -1653,7 +1653,7 @@ namespace BloodSword::Interface
 
                                                         lifetime = battle.Map[control.Map].Lifetime;
 
-                                                        std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
+                                                        auto text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
 
                                                         BloodSword::Free(&texture);
 
@@ -2174,7 +2174,7 @@ namespace BloodSword::Interface
                                                 }
                                                 else
                                                 {
-                                                    Engine::Queue targets = {};
+                                                    auto targets = Engine::Queue();
 
                                                     if (shot_ambush)
                                                     {
@@ -2695,7 +2695,7 @@ namespace BloodSword::Interface
 
                             Engine::GainEndurance(party[character], -damage, false);
 
-                            std::string message = party[character].Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
+                            auto message = party[character].Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
 
                             Interface::MessageBox(graphics, scene, message, Color::Highlight);
                         }
@@ -2705,7 +2705,7 @@ namespace BloodSword::Interface
 
                             Engine::GainEndurance(party[character], heal, false);
 
-                            std::string message = party[character].Name + " GAINS " + std::to_string(heal) + " ENDURANCE";
+                            auto message = party[character].Name + " GAINS " + std::to_string(heal) + " ENDURANCE";
 
                             Interface::MessageBox(graphics, scene, message, Color::Active);
                         }

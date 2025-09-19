@@ -74,7 +74,7 @@ namespace BloodSword::Item
         Asset::Type Asset = Asset::NONE;
 
         // item name
-        std::string Name;
+        std::string Name = std::string();
 
         // book description as sections
         Book::Location Description = Book::Undefined;
@@ -975,7 +975,7 @@ namespace BloodSword::Items
                 {
                     auto item = !data["descriptions"][i]["item"].is_null() ? Item::Map(data["descriptions"][i]["item"]) : Item::Type::NONE;
 
-                    std::string description = !data["descriptions"][i]["description"].is_null() ? data["descriptions"][i]["description"] : "";
+                    auto description = std::string(!data["descriptions"][i]["description"].is_null() ? data["descriptions"][i]["description"] : "");
 
                     if (item != Item::Type::NONE)
                     {

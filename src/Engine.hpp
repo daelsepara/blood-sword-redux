@@ -87,7 +87,7 @@ namespace BloodSword::Engine
     // roll number of dice and include modifiers
     Engine::RollResult Roll(int count, int modifier)
     {
-        std::vector<int> rolls = {};
+        auto rolls = std::vector<int>();
 
         auto sum = 0;
 
@@ -429,7 +429,7 @@ namespace BloodSword::Engine
     // creates queue (order sequence of characters with status ranked according to attribute score)
     Engine::Queue Build(Party::Base &party, Party::Base &other, Attribute::Type attribute, Character::Status status, bool in_battle = false, bool descending = true)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         // add characters in party to queue
         Engine::Build(queue, party, attribute, status, in_battle);
@@ -459,7 +459,7 @@ namespace BloodSword::Engine
 
     Engine::Queue Build(Party::Base &party, Attribute::Type attribute, Skills::Type skill, bool in_battle = false, bool descending = true)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -479,7 +479,7 @@ namespace BloodSword::Engine
     // creates queue (order sequence of characters ranked according to attribute score)
     Engine::Queue Build(Party::Base &party, Party::Base &other, Attribute::Type attribute, bool in_battle = false, bool descending = true)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         // add characters in party to queue
         Engine::Build(queue, party, attribute, in_battle);
@@ -624,7 +624,7 @@ namespace BloodSword::Engine
     // generic queue builder (based on distance / endurance)
     Engine::Queue Build(Map::Base &map, Party::Base &party, Point &src, bool in_battle, bool fight, bool ranged, bool move, bool spell, bool descending = false)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -727,7 +727,7 @@ namespace BloodSword::Engine
     // build targets sort by distance
     Engine::Queue AllTargets(Map::Base &map, Party::Base &party, Point &src, bool in_battle = false, bool descending = false)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -853,7 +853,7 @@ namespace BloodSword::Engine
     // search preferred fight targets
     Engine::Queue FightTargets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         if (map.IsValid(src))
         {
@@ -874,7 +874,7 @@ namespace BloodSword::Engine
     // search preferred ranged targets
     Engine::Queue RangedTargets(Map::Base &map, Party::Base &mine, Party::Base &other, Point &src, bool in_battle = false)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         if (map.IsValid(src))
         {
@@ -895,7 +895,7 @@ namespace BloodSword::Engine
     // search preferred move targets
     Engine::Queue MoveTargets(Map::Base &map, Party::Base &party, Party::Base &opponents, Point &src, bool in_battle = false)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         if (map.IsValid(src))
         {
@@ -1169,7 +1169,7 @@ namespace BloodSword::Engine
     // build a queue of shooters
     Engine::Queue Shooters(Party::Base &party, Attribute::Type attribute, bool in_battle = false, bool descending = false)
     {
-        Engine::Queue queue = {};
+        auto queue = Engine::Queue();
 
         // add characters in party to queue
         for (auto i = 0; i < party.Count(); i++)
@@ -1294,7 +1294,7 @@ namespace BloodSword::Engine
     // helper string function (character is not in party)
     std::string NotInParty(Character::Class &character)
     {
-        return (std::string("YOU DO NOT HAVE THE ") + std::string(Character::ClassMapping[character]) + " IN YOUR PARTY!");
+        return "YOU DO NOT HAVE THE " + Character::ClassMapping[character] + " IN YOUR PARTY!";
     }
 
     // helper string function (character is dead)
@@ -1539,7 +1539,7 @@ namespace BloodSword::Engine
         {
             task = Engine::ToUpper(task);
 
-            std::string variable = task + " " + Character::ClassMapping[character];
+            auto variable = task + " " + Character::ClassMapping[character];
 
             if (party.IsPresent(variable))
             {
@@ -1559,7 +1559,7 @@ namespace BloodSword::Engine
 
             if (party.Has(character))
             {
-                std::string variable = task + " " + Character::ClassMapping[character];
+                auto variable = task + " " + Character::ClassMapping[character];
 
                 if (!party.IsPresent(variable))
                 {
@@ -1599,7 +1599,7 @@ namespace BloodSword::Engine
         {
             task = Engine::ToUpper(task);
 
-            std::string variable = task + " " + Character::ClassMapping[character];
+            auto variable = task + " " + Character::ClassMapping[character];
 
             if (party.IsPresent(variable))
             {
@@ -1648,7 +1648,7 @@ namespace BloodSword::Engine
 
             if (party.Has(character))
             {
-                std::string variable = task + " " + Character::ClassMapping[character];
+                auto variable = task + " " + Character::ClassMapping[character];
 
                 if (party.IsPresent(variable))
                 {
@@ -1711,7 +1711,7 @@ namespace BloodSword::Engine
     // replace instances of the [TOKEN] in [VARIABLE] with [REPLACEMENT]
     std::string MapToken(std::string variable, std::string token, std::string replacement)
     {
-        std::vector<std::string> tokens = {};
+        auto tokens = std::vector<std::string>();
 
         auto space = std::string(" ");
 
@@ -1738,7 +1738,7 @@ namespace BloodSword::Engine
         }
 
         // TODO: Add other tokens that can be replaced
-        auto mapped = Engine::MapToken(variable, "CHOSEN", std::string(Character::ClassMapping[chosen]));
+        auto mapped = Engine::MapToken(variable, "CHOSEN", Character::ClassMapping[chosen]);
 
         return mapped;
     }

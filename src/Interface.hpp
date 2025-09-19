@@ -227,7 +227,7 @@ namespace BloodSword::Interface
         int Number = 0;
 
         // name of saved game file
-        std::string Filename;
+        std::string Filename = std::string();
 
         // timestamp of saved game (string)
         std::string TimeStamp = std::string();
@@ -1153,7 +1153,7 @@ namespace BloodSword::Interface
     // form attribute score string
     std::string ScoreString(Character::Base &character, Attribute::Type attribute, bool in_battle = false, Item::Property weapon = Item::Property::NONE)
     {
-        std::string stats;
+        auto stats = std::string();
 
         auto value = std::min(character.Value(attribute), character.Maximum(attribute));
 
@@ -1260,7 +1260,9 @@ namespace BloodSword::Interface
     {
         SDL_Texture *texture = nullptr;
 
-        std::string labels, stats;
+        auto labels = std::string();
+
+        auto stats = std::string();
 
         if (character.ControlType == Character::ControlType::PLAYER)
         {
@@ -1385,7 +1387,7 @@ namespace BloodSword::Interface
     // create party attributes text box collection
     Asset::TextureList Attributes(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, Uint32 stats_color, int style, int wrap, bool add_name = false, bool in_battle = false)
     {
-        Asset::TextureList textures = {};
+        auto textures = Asset::TextureList();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1411,7 +1413,7 @@ namespace BloodSword::Interface
     // generate textures of character's class'
     Asset::TextureList GenerateCharacterClassCaptions(Graphics::Base &graphics, Party::Base &party)
     {
-        Graphics::TextList characters = {};
+        auto characters = Graphics::TextList();
 
         for (auto character = 0; character < party.Count(); character++)
         {
@@ -1426,7 +1428,7 @@ namespace BloodSword::Interface
     // generate textures of character's names
     Asset::TextureList GenerateNameCaptions(Graphics::Base &graphics, Party::Base &party)
     {
-        Graphics::TextList characters = {};
+        auto characters = Graphics::TextList();
 
         for (auto character = 0; character < party.Count(); character++)
         {
@@ -1441,7 +1443,7 @@ namespace BloodSword::Interface
     // generate character skills
     SDL_Texture *Skills(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 skills_color, int style, int wrap)
     {
-        std::string skills;
+        auto skills = std::string();
 
         if (character.Skills.size() > 0)
         {
@@ -1468,7 +1470,7 @@ namespace BloodSword::Interface
     // create party skills text box collection
     Asset::TextureList Skills(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 skills_color, int style, int wrap)
     {
-        Asset::TextureList textures = {};
+        auto textures = Asset::TextureList();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1490,7 +1492,7 @@ namespace BloodSword::Interface
     {
         SDL_Texture *texture = nullptr;
 
-        std::string list;
+        auto list = std::string();
 
         auto labels_w = 0;
 
@@ -1581,7 +1583,7 @@ namespace BloodSword::Interface
     // create party status text box collection
     Asset::TextureList Status(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style, bool in_battle = false)
     {
-        Asset::TextureList textures = {};
+        auto textures = Asset::TextureList();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1603,7 +1605,7 @@ namespace BloodSword::Interface
     {
         SDL_Texture *texture = nullptr;
 
-        std::string list;
+        auto list = std::string();
 
         auto labels_w = 0;
 
@@ -1654,7 +1656,7 @@ namespace BloodSword::Interface
     // create party status text box collection
     Asset::TextureList BasicStatus(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 label_color, int style)
     {
-        Asset::TextureList textures = {};
+        auto textures = Asset::TextureList();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -1922,7 +1924,7 @@ namespace BloodSword::Interface
     // generate character items list
     SDL_Texture *Items(Graphics::Base &graphics, Character::Base &character, TTF_Font *font, Uint32 items_color, int style, int wrap)
     {
-        std::string items;
+        auto items = std::string();
 
         if (character.Items.size() > 0)
         {
@@ -1949,7 +1951,7 @@ namespace BloodSword::Interface
     // create party items text box collection
     Asset::TextureList Items(Graphics::Base &graphics, Party::Base &party, TTF_Font *font, Uint32 items_color, int style, int wrap)
     {
-        Asset::TextureList textures = {};
+        auto textures = Asset::TextureList();
 
         for (auto i = 0; i < party.Count(); i++)
         {
@@ -2631,7 +2633,7 @@ namespace BloodSword::Interface
     {
         Engine::RollResult result;
 
-        std::string roll_string = "ROLL: " + std::to_string(roll) + 'D';
+        auto roll_string = "ROLL: " + std::to_string(roll) + 'D';
 
         if (modifier != 0)
         {
@@ -2847,7 +2849,7 @@ namespace BloodSword::Interface
     {
         auto result = false;
 
-        std::string attribute_string = Attribute::TypeMapping[attribute] + std::string(": ") + Interface::ScoreString(attacker, attribute, in_battle);
+        auto attribute_string = Attribute::TypeMapping[attribute] + ": " + Interface::ScoreString(attacker, attribute, in_battle);
 
         attribute_string += "\nDIFFICULTY: " + std::to_string(roll) + "D";
 
@@ -3120,7 +3122,7 @@ namespace BloodSword::Interface
             modifier += 1;
         }
 
-        std::string damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, in_battle) + "\n" + std::string("DMG: ") + std::to_string(roll) + 'D';
+        auto damage_string = "END: " + Interface::ScoreString(attacker, Attribute::Type::ENDURANCE, in_battle) + "\n" + "DMG: " + std::to_string(roll) + 'D';
 
         if (modifier != 0)
         {
@@ -3132,7 +3134,7 @@ namespace BloodSword::Interface
             damage_string += std::to_string(modifier);
         }
 
-        std::string armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, in_battle) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, in_battle);
+        auto armour_string = "END: " + Interface::ScoreString(defender, Attribute::Type::ENDURANCE, in_battle) + "\n" + std::string("ARM: ") + Interface::ScoreString(defender, Attribute::Type::ARMOUR, in_battle);
 
         auto damage_texture = Graphics::CreateText(graphics, damage_string.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
@@ -3506,7 +3508,7 @@ namespace BloodSword::Interface
 
         auto infow = BloodSword::PentaTile;
 
-        Asset::TextureList textures = {};
+        auto textures = Asset::TextureList();
 
         switch (mode)
         {
@@ -4274,13 +4276,13 @@ namespace BloodSword::Interface
                     {
                         current_party.Add(party[character]);
 
-                        Interface::MessageBox(graphics, overlay, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+                        Interface::MessageBox(graphics, overlay, Graphics::RichText(Character::ClassMapping[character_class] + " added to the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
                     }
                     else
                     {
                         current_party.Remove(character_class);
 
-                        Interface::MessageBox(graphics, overlay, Graphics::RichText(std::string(Character::ClassMapping[character_class]) + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+                        Interface::MessageBox(graphics, overlay, Graphics::RichText(Character::ClassMapping[character_class] + " removed from the party!", Fonts::Normal, Color::Active, TTF_STYLE_NORMAL, 0), Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
                     }
 
                     if (current_party.Count() == party_size)
@@ -4642,11 +4644,11 @@ namespace BloodSword::Interface
 
         auto number = std::max(0, minimum);
 
-        std::string string_current = "NOW: ";
+        auto string_current = std::string("NOW: ");
 
-        std::string string_min = "MIN: " + std::to_string(minimum);
+        auto string_min = "MIN: " + std::to_string(minimum);
 
-        std::string string_max = "MAX: " + std::to_string(maximum);
+        auto string_max = "MAX: " + std::to_string(maximum);
 
         auto texture = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
@@ -4892,7 +4894,7 @@ namespace BloodSword::Interface
                                                 {
                                                     if (!character.Has(Character::Status::TASK) || target == character.Class)
                                                     {
-                                                        std::string heal_string = "HEAL " + party[target].Name;
+                                                        auto heal_string = "HEAL " + party[target].Name;
 
                                                         auto max_healing = std::min(score, party[target].Maximum(Attribute::Type::ENDURANCE) - party[target].Value(Attribute::Type::ENDURANCE));
 
@@ -4911,7 +4913,7 @@ namespace BloodSword::Interface
                                                     }
                                                     else
                                                     {
-                                                        std::string message = party[target].Name + " IS AWAY";
+                                                        auto message = party[target].Name + " IS AWAY";
 
                                                         Interface::MessageBox(graphics, background, message, Color::Highlight);
                                                     }
@@ -5713,7 +5715,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            std::string error = std::string("CANNOT ADJUST ") + Attribute::TypeMapping[attribute] + " CANNOT BE ADJUSTED FURTHER!";
+            auto error = "CANNOT ADJUST " + Attribute::TypeMapping[attribute] + " CANNOT BE ADJUSTED FURTHER!";
 
             Interface::MessageBox(graphics, background, error, Color::Highlight);
         }
@@ -5755,7 +5757,7 @@ namespace BloodSword::Interface
 
                 while (!done)
                 {
-                    std::string message = character.Name + ":" + " " + std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " POINT" + (gain > 1 ? "S" : "") + " TO ONE ATTRIBUTE (PERMANENT)";
+                    auto message = character.Name + ":" + " " + std::string(gain > 0 ? "GAIN" : "LOSE") + " " + std::to_string(std::abs(gain)) + " POINT" + (gain > 1 ? "S" : "") + " TO ONE ATTRIBUTE (PERMANENT)";
 
                     auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true);
 
@@ -5938,7 +5940,7 @@ namespace BloodSword::Interface
 
                     if (Engine::Count(party) > 1)
                     {
-                        std::string message = "WHO IS TAKING THE " + Items::Defaults[item].Name + ((limit == Items::Unlimited || items_left > 1) ? "S?" : "?");
+                        auto message = "WHO IS TAKING THE " + Items::Defaults[item].Name + ((limit == Items::Unlimited || items_left > 1) ? "S?" : "?");
 
                         taker = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
                     }
@@ -5947,7 +5949,7 @@ namespace BloodSword::Interface
                     {
                         auto max_take = (limit != Item::Unlimited) ? items_left : party[taker].SpaceLeft();
 
-                        std::string message = "HOW MANY " + Items::Defaults[item].Name + (items_left > 1 ? "S" : "") + " TO TAKE?";
+                        auto message = "HOW MANY " + Items::Defaults[item].Name + (items_left > 1 ? "S" : "") + " TO TAKE?";
 
                         auto taken = Interface::GetNumber(graphics, background, message.c_str(), 0, std::min(max_take, party[taker].SpaceLeft()), asset, Asset::Map("UP"), Asset::Map("DOWN"));
 
@@ -6133,7 +6135,7 @@ namespace BloodSword::Interface
     // resurrect character
     void Resurrect(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Base &character)
     {
-        if (Engine::IsAlive(character) && character.IsPlayer() && character.Has(Item::Property::RESURRECTION) && !party.Is("=", std::string(Character::ClassMapping[character.Class]) + " RESURRECTED", "TRUE"))
+        if (Engine::IsAlive(character) && character.IsPlayer() && character.Has(Item::Property::RESURRECTION) && !party.Is("=", Character::ClassMapping[character.Class] + " RESURRECTED", "TRUE"))
         {
             auto item = character.Find(Item::Property::RESURRECTION);
 
@@ -6177,13 +6179,13 @@ namespace BloodSword::Interface
 
                 Engine::GainEndurance(character, -damage, in_battle);
 
-                std::string message = character.Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
+                auto message = character.Name + " LOSES " + std::to_string(damage) + " ENDURANCE";
 
                 Interface::MessageBox(graphics, background, message, Color::Highlight);
             }
             else
             {
-                std::string message = character.Name + " UNHARMED";
+                auto message = character.Name + " UNHARMED";
 
                 Interface::MessageBox(graphics, background, message, Color::Inactive);
             }
@@ -6309,7 +6311,7 @@ namespace BloodSword::Interface
                 {
                     if (Interface::Roll(graphics, background, party[character].Asset, asset, gauntlet.Rolls, gauntlet.RollModifier).Sum < gauntlet.Difficulty)
                     {
-                        std::string message = prefix + " " + party[character].Name + "!";
+                        auto message = prefix + " " + party[character].Name + "!";
 
                         Interface::TextBox(graphics, background, message, Color::Highlight, BloodSword::Wrap, true);
 
@@ -6467,7 +6469,7 @@ namespace BloodSword::Interface
                                     {
                                         auto item_count = party[input.Current].Count(item);
 
-                                        std::string message = "HOW MANY " + Items::Defaults[item].Name + (item_count > 1 ? "S" : "") + " TO USE?";
+                                        auto message = "HOW MANY " + Items::Defaults[item].Name + (item_count > 1 ? "S" : "") + " TO USE?";
 
                                         counts[input.Current] = Interface::GetNumber(graphics, background, message.c_str(), 1, item_count, Asset::Map("ITEMS"), Asset::Map("UP"), Asset::Map("DOWN"));
                                     }
@@ -6619,7 +6621,7 @@ namespace BloodSword::Interface
                     {
                         if (!character.Items[choice].Has(Item::Property::CANNOT_DROP))
                         {
-                            std::string drop_message = std::string("DROP THE ") + character.Items[choice].Name + "?";
+                            auto drop_message = "DROP THE " + character.Items[choice].Name + "?";
 
                             if (Interface::Confirm(graphics, overlay, drop_message, Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true))
                             {
@@ -6629,7 +6631,7 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            std::string drop_message = character.Items[choice].Name + " CANNOT BE DROPPED";
+                            auto drop_message = character.Items[choice].Name + " CANNOT BE DROPPED";
 
                             Interface::MessageBox(graphics, background, drop_message, Color::Highlight);
                         }
@@ -6813,7 +6815,7 @@ namespace BloodSword::Interface
     // generate base game filename
     std::string GameFile(int game)
     {
-        std::string game_file = "game" + std::to_string(game) + ".json";
+        auto game_file = "game" + std::to_string(game) + ".json";
 
         return game_file;
     }
@@ -6845,7 +6847,7 @@ namespace BloodSword::Interface
 
         if (Interface::SettingsFile.empty())
         {
-            std::string error_message = "MODULE: " + load + " NOT LOADED!";
+            auto error_message = "MODULE: " + load + " NOT LOADED!";
 
             throw std::invalid_argument(error_message.c_str());
         }
@@ -6950,9 +6952,9 @@ namespace BloodSword::Interface
 
             for (auto game = 0; game < Interface::MaxGameFiles; game++)
             {
-                std::string GameFile = Interface::GameFile(game);
+                auto GameFile = Interface::GameFile(game);
 
-                std::string Filename = GamesPath + "/" + GameFile;
+                auto Filename = GamesPath + "/" + GameFile;
 
                 std::ifstream ifs(Filename, std::ios::in);
 
@@ -7003,7 +7005,7 @@ namespace BloodSword::Interface
     // generate textures of book locations from games list
     Asset::TextureList GameLocations(Graphics::Base &graphics, std::vector<Book::Location> &locations, std::string undefined)
     {
-        Asset::TextureList textures = {};
+        auto textures = Asset::TextureList();
 
         for (auto &location : locations)
         {
@@ -7042,7 +7044,7 @@ namespace BloodSword::Interface
     // generate game (file) timestamp textures from list of games
     Asset::TextureList TimeStamps(Graphics::Base &graphics)
     {
-        Asset::TextureList timestamps = {};
+        auto timestamps = Asset::TextureList();
 
         for (auto time = 0; time < Interface::GamesList.size(); time++)
         {
@@ -7161,7 +7163,7 @@ namespace BloodSword::Interface
 
         auto timestamps = Interface::TimeStamps(graphics);
 
-        std::string mode_string = std::string();
+        auto mode_string = std::string();
 
         switch (mode)
         {
@@ -7412,7 +7414,7 @@ namespace BloodSword::Interface
 
         auto earned_experience = total_experience - base_experience;
 
-        std::string text = Engine::Count(new_party) > 1 ? "Surviving members of the party" : "You";
+        auto text = std::string(Engine::Count(new_party) > 1 ? "Surviving members of the party" : "You");
 
         text += " have earned " + std::to_string(earned_experience) + " points in this adventure. ";
 

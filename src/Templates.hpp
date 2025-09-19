@@ -33,7 +33,7 @@ namespace BloodSword
     using IntegerMap = BloodSword::UnorderedMap<T, int>;
 
     // search for key (using its value), return default value if not found
-    template<typename T, typename R>
+    template <typename T, typename R>
     T Find(BloodSword::UnorderedMap<T, R> &unordered_map, R key, T default_value)
     {
         auto result = default_value;
@@ -98,6 +98,13 @@ namespace BloodSword
         return BloodSword::Find(vector, key) != vector.end();
     }
 
+    // check if the vector contains the key/object
+    template <typename T>
+    bool Found(std::vector<T> &vector, T &key)
+    {
+        return BloodSword::In(vector, key);
+    }
+
     // search for a key in a vector (of type/objects) and use a custom compare function
     template <typename T, typename R = typename std::vector<T>::const_iterator>
     R Find(std::vector<T> &vector, T &key, bool F(T &, T &))
@@ -113,25 +120,18 @@ namespace BloodSword
         return std::find(vector.begin(), vector.end(), key);
     }
 
-    // check if the vector contains the key/object
-    template <typename T>
-    bool Found(std::vector<T> &vector, T &key)
+    // check if the unordered map contains the key/object
+    template <typename T, typename R>
+    bool Has(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
     {
-        return BloodSword::In(vector, key);
+        return (unordered_map.find(key) != unordered_map.end());
     }
 
     // search for a key in an unordered map
     template <typename T, typename R>
     R Find(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
     {
-        return unordered_map.find(key) != unordered_map.end() ? unordered_map[key] : R::NONE;
-    }
-
-    // check if the unordered map contains the key/object
-    template <typename T, typename R>
-    bool Has(BloodSword::UnorderedMap<T, R> &unordered_map, T &key)
-    {
-        return (unordered_map.find(key) != unordered_map.end());
+        return BloodSword::Has(unordered_map, key) ? unordered_map[key] : R::NONE;
     }
 }
 

@@ -236,7 +236,7 @@ namespace BloodSword::Interface
                     {
                         if (Interface::Confirm(graphics, background, "ARE YOU SURE?", Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true))
                         {
-                            std::string action = character.Name + " DROPPED";
+                            auto action = character.Name + " DROPPED";
 
                             Interface::DropItem(graphics, background, action, destination, items, id);
 
@@ -282,7 +282,7 @@ namespace BloodSword::Interface
                             }
                             else
                             {
-                                std::string message = "INTERNAL FAIL: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "ABOUT");
+                                auto message = "INTERNAL FAIL: " + std::string(input == Controls::Type::IDENTIFY ? "IDENTIFY" : "ABOUT");
 
                                 Interface::InternalError(graphics, background, message);
                             }
@@ -296,7 +296,7 @@ namespace BloodSword::Interface
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
                         {
-                            std::string message = "SELECT THE PLAYER TO RECEIVE GOLD";
+                            auto message = std::string("SELECT THE PLAYER TO RECEIVE GOLD");
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
@@ -304,7 +304,7 @@ namespace BloodSword::Interface
                             {
                                 if (!party[other_character].Has(Character::Status::TASK))
                                 {
-                                    std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
+                                    auto transfer_money = std::string("SELECT HOW MUCH GOLD WILL BE TRANSFERRED");
 
                                     auto transfer_item = Item::Type::GOLD;
 
@@ -347,7 +347,7 @@ namespace BloodSword::Interface
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
                         {
-                            std::string message = "SELECT THE PLAYER TO RECEIVE ARROWS";
+                            auto message = std::string("SELECT THE PLAYER TO RECEIVE ARROWS");
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
@@ -357,7 +357,7 @@ namespace BloodSword::Interface
                                 {
                                     if (party[other_character].Has(Item::Container(Item::Type::ARROW)))
                                     {
-                                        std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
+                                        auto transfer_arrows = std::string("HOW MANY ARROWS TO TRANSFER?");
 
                                         auto transfer_item = Item::Type::ARROW;
 
@@ -385,7 +385,7 @@ namespace BloodSword::Interface
                                     }
                                     else
                                     {
-                                        std::string quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
+                                        auto quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
 
                                         Interface::MessageBox(graphics, background, quiver, Color::Highlight);
                                     }
@@ -407,7 +407,7 @@ namespace BloodSword::Interface
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
                         {
-                            std::string message = "WHO SHALL RECEIVE THE " + items[id].Name + "?";
+                            auto message = "WHO SHALL RECEIVE THE " + items[id].Name + "?";
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
@@ -560,7 +560,7 @@ namespace BloodSword::Interface
 
                     if (Engine::Count(party) > 1)
                     {
-                        std::string message = "WHO TAKES THE " + items[id].Name + "?";
+                        auto message = "WHO TAKES THE " + items[id].Name + "?";
 
                         character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
                     }

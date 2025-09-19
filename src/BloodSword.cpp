@@ -187,7 +187,7 @@ namespace BloodSword::Game
 
         auto system = BloodSword::System();
 
-        std::string session_name = "BloodSword " + BloodSword::Version();
+        auto session_name = "BloodSword " + BloodSword::Version();
 
         system.Initialize(session_name.c_str());
 

@@ -141,7 +141,7 @@ namespace BloodSword::Conditions
     };
 
     // condition type mapping
-    BloodSword::StringMap<Conditions::Type> TypeMapping = {
+    BloodSword::ConstStrings<Conditions::Type> TypeMapping = {
         {Conditions::Type::NONE, "NONE"},
         {Conditions::Type::NORMAL, "NORMAL"},
         {Conditions::Type::IN_PARTY, "IN PARTY"},
@@ -273,11 +273,13 @@ namespace BloodSword::Conditions
         {Conditions::Type::KILL_OTHERS, "KILL OTHERS"},
         {Conditions::Type::GAIN_DELAYED_EFFECT, "GAIN DELAYED EFFECT"}};
 
+    // map string to condition type
     Conditions::Type Map(const char *Conditions)
     {
         return BloodSword::Find(Conditions::TypeMapping, Conditions);
     }
 
+    // map string to condition type
     Conditions::Type Map(std::string Conditions)
     {
         return Conditions::Map(Conditions.c_str());

@@ -90,7 +90,7 @@ namespace BloodSword::Party
         {
             if (index < 0 || index > this->Count() - 1)
             {
-                std::string missing = "CHARACTER: " + std::to_string(index) + " NOT IN PARTY!";
+                auto missing = "CHARACTER: " + std::to_string(index) + " NOT IN PARTY!";
 
                 throw std::invalid_argument(missing);
             }
@@ -311,7 +311,7 @@ namespace BloodSword::Party
         {
             if (!this->Has(character_class))
             {
-                std::string missing = "CHARACTER: " + std::string(Character::ClassMapping[character_class]) + " NOT IN PARTY!";
+                auto missing = "CHARACTER: " + Character::ClassMapping[character_class] + " NOT IN PARTY!";
 
                 throw std::invalid_argument(missing);
             }
@@ -378,7 +378,7 @@ namespace BloodSword::Party
 
             if (!this->Has(character_class))
             {
-                std::string missing = "CHARACTER: " + std::string(Character::ClassMapping[character_class]) + " NOT IN PARTY!";
+                auto missing = "CHARACTER: " + Character::ClassMapping[character_class] + " NOT IN PARTY!";
 
                 throw std::invalid_argument(missing);
             }

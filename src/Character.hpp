@@ -964,7 +964,7 @@ namespace BloodSword::Character
 
         character.Class = !data["class"].is_null() ? Character::Map(std::string(data["class"])) : Character::Class::NONE;
 
-        character.Name = !data["name"].is_null() ? std::string(data["name"]) : std::string(Character::ClassMapping[character.Class]);
+        character.Name = !data["name"].is_null() ? std::string(data["name"]) : Character::ClassMapping[character.Class];
 
         character.ControlType = !data["control_type"].is_null() ? Character::MapControlType(std::string(data["control_type"])) : Character::ControlType::NONE;
 
@@ -1105,7 +1105,7 @@ namespace BloodSword::Character
 
             for (auto &status : character.Status)
             {
-                auto status_name = std::string(Character::StatusMapping[status.first]);
+                auto status_name = Character::StatusMapping[status.first];
 
                 row.emplace(status_name, status.second);
             }
@@ -1119,7 +1119,7 @@ namespace BloodSword::Character
 
             for (auto &effect : character.DelayedEffects)
             {
-                auto status = std::string(Character::StatusMapping[effect.first]);
+                auto status = Character::StatusMapping[effect.first];
 
                 auto item = Item::TypeMapping[effect.second];
 

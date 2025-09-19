@@ -1553,7 +1553,7 @@ namespace BloodSword::Interface
                         }
                         else if (in_task != Character::Class::NONE && character != in_task)
                         {
-                            std::string message = party[character].Name + " IS AWAY";
+                            auto message = party[character].Name + " IS AWAY";
 
                             Interface::MessageBox(graphics, overlay, message, Color::Highlight);
                         }

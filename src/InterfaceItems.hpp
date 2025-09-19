@@ -31,7 +31,7 @@ namespace BloodSword::Interface
 
         if (id >= 0 && id <= items.size())
         {
-            std::string message = action + " THE " + items[id].Name;
+            auto message = action + " THE " + items[id].Name;
 
             // if equipped, then un-equip first then drop
             if (items[id].Has(Item::Property::EQUIPPED))
@@ -54,13 +54,13 @@ namespace BloodSword::Interface
 
         if (!Engine::IsAlive(receiver))
         {
-            std::string message = Engine::IsDead(receiver);
+            auto message = Engine::IsDead(receiver);
 
             Interface::MessageBox(graphics, background, receiver.Name, Color::Highlight);
         }
         else if (source[id].Type == Item::Type::GOLD)
         {
-            std::string message = receiver.Name + " TAKES THE " + std::to_string(source[id].Quantity) + " " + source[id].Name;
+            auto message = receiver.Name + " TAKES THE " + std::to_string(source[id].Quantity) + " " + source[id].Name;
 
             Interface::MessageBox(graphics, background, message, Color::Active);
 
@@ -74,7 +74,7 @@ namespace BloodSword::Interface
         {
             if (receiver.Has(Item::Container(Item::Type::ARROW)))
             {
-                std::string message = receiver.Name + " TAKES THE " + std::to_string(source[id].Quantity) + " " + source[id].Name;
+                auto message = receiver.Name + " TAKES THE " + std::to_string(source[id].Quantity) + " " + source[id].Name;
 
                 Interface::MessageBox(graphics, background, message, Color::Active);
 
@@ -86,14 +86,14 @@ namespace BloodSword::Interface
             }
             else
             {
-                std::string quiver = receiver.Name + " DOES NOT HAVE A QUIVER";
+                auto quiver = receiver.Name + " DOES NOT HAVE A QUIVER";
 
                 Interface::MessageBox(graphics, background, quiver, Color::Highlight);
             }
         }
         else if (Interface::CanReceive(receiver))
         {
-            std::string message = receiver.Name + " TAKES THE " + source[id].Name;
+            auto message = receiver.Name + " TAKES THE " + source[id].Name;
 
             Interface::TransferItem(graphics, background, message, Color::Active, receiver.Items, source, id);
 
@@ -110,7 +110,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            std::string message = receiver.Name + "'S INVENTORY IS FULL!";
+            auto message = receiver.Name + "'S INVENTORY IS FULL!";
 
             Interface::MessageBox(graphics, background, message, Color::Highlight);
         }

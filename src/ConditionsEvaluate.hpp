@@ -28,7 +28,7 @@ namespace BloodSword::Conditions
 
     void InternalError(Graphics::Base &graphics, Scene::Base &background, Conditions::Type condition)
     {
-        std::string message = "Internal Error: " + std::string(Conditions::TypeMapping[condition]) + "!";
+        auto message = "Internal Error: " + std::string(Conditions::TypeMapping[condition]) + "!";
 
         Interface::InternalError(graphics, background, message);
     }
@@ -707,11 +707,11 @@ namespace BloodSword::Conditions
                         {
                             if (Engine::Count(party) > 1)
                             {
-                                text = "EVERYONE GAINS [" + std::string(Character::StatusMapping[status]) + "]";
+                                text = "EVERYONE GAINS [" + Character::StatusMapping[status] + "]";
                             }
                             else
                             {
-                                text = "YOU GAIN [" + std::string(Character::StatusMapping[status]) + "]";
+                                text = "YOU GAIN [" + Character::StatusMapping[status] + "]";
                             }
                         }
 
@@ -778,11 +778,11 @@ namespace BloodSword::Conditions
                             {
                                 if (Engine::Count(party) > 1)
                                 {
-                                    text = "EVERYONE LOSES [" + std::string(Character::StatusMapping[status]) + "]";
+                                    text = "EVERYONE LOSES [" + Character::StatusMapping[status] + "]";
                                 }
                                 else
                                 {
-                                    text = "YOU LOSE [" + std::string(Character::StatusMapping[status]) + "]";
+                                    text = "YOU LOSE [" + Character::StatusMapping[status] + "]";
                                 }
                             }
                         }
@@ -852,7 +852,7 @@ namespace BloodSword::Conditions
 
                         if (!result)
                         {
-                            text = std::string(Character::ClassMapping[character]) + " NOT THE FIRST IN BATTLE ORDER!";
+                            text = Character::ClassMapping[character] + " NOT THE FIRST IN BATTLE ORDER!";
                         }
                     }
 
@@ -890,7 +890,7 @@ namespace BloodSword::Conditions
 
                         if (!result)
                         {
-                            text = std::string(Character::ClassMapping[character]) + " NOT THE LAST IN BATTLE ORDER!";
+                            text = Character::ClassMapping[character] + " NOT THE LAST IN BATTLE ORDER!";
                         }
                     }
 
@@ -1439,7 +1439,7 @@ namespace BloodSword::Conditions
                     }
                     else if (selected || (is_character && (!party.Has(character) || (party.Has(character) && !Engine::IsAlive(party[character]))) && select_next))
                     {
-                        std::string message = "WHO RECEIVES THE " + Items::Defaults[item].Name + "?";
+                        auto message = "WHO RECEIVES THE " + Items::Defaults[item].Name + "?";
 
                         character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
 
@@ -2355,7 +2355,7 @@ namespace BloodSword::Conditions
 
                                 if (!Engine::IsAlive(party[character]))
                                 {
-                                    std::string message = party[character].Name + " KILLED!";
+                                    auto message = party[character].Name + " KILLED!";
 
                                     Interface::MessageBox(graphics, background, message, Color::Highlight);
 
@@ -2776,7 +2776,7 @@ namespace BloodSword::Conditions
 
                         if (Engine::Count(party) > 1)
                         {
-                            std::string message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
+                            auto message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
 
                             character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                         }
@@ -3359,7 +3359,7 @@ namespace BloodSword::Conditions
 
                             if (!test)
                             {
-                                std::string message = party[characters[i]].Name + " " + condition.Variables[2];
+                                auto message = party[characters[i]].Name + " " + condition.Variables[2];
 
                                 Interface::MessageBox(graphics, background, message, Color::Highlight);
 
@@ -3673,7 +3673,7 @@ namespace BloodSword::Conditions
 
                 if (is_party || character != Character::Class::NONE)
                 {
-                    std::vector<Character::Class> characters = {};
+                    auto characters = std::vector<Character::Class>();
 
                     if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
@@ -3745,7 +3745,7 @@ namespace BloodSword::Conditions
 
                 if (is_party || character != Character::Class::NONE)
                 {
-                    std::vector<Character::Class> characters = {};
+                    auto characters = std::vector<Character::Class>();
 
                     if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
@@ -3817,7 +3817,7 @@ namespace BloodSword::Conditions
 
                 if (is_party || character != Character::Class::NONE)
                 {
-                    std::vector<Character::Class> characters = {};
+                    auto characters = std::vector<Character::Class>();
 
                     if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
@@ -3884,7 +3884,7 @@ namespace BloodSword::Conditions
                 {
                     if (party.Has(character) && Engine::IsAlive(party[character]))
                     {
-                        Items::List items = {};
+                        auto items = Items::List();
 
                         for (auto i = 1; i < condition.Variables.size(); i++)
                         {
@@ -4457,7 +4457,7 @@ namespace BloodSword::Conditions
                         }
                         else
                         {
-                            std::string message = "TAKE " + Items::Defaults[item].Name + "?";
+                            auto message = "TAKE " + Items::Defaults[item].Name + "?";
 
                             if (Interface::Confirm(graphics, background, message, Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
                             {
@@ -4467,7 +4467,7 @@ namespace BloodSword::Conditions
                     }
                     else
                     {
-                        std::string message = "TAKE " + Items::Defaults[item].Name + "?";
+                        auto message = "TAKE " + Items::Defaults[item].Name + "?";
 
                         if (Interface::Confirm(graphics, background, message, Color::Background, Color::Active, BloodSword::Border, Color::Active, true))
                         {
@@ -4483,7 +4483,7 @@ namespace BloodSword::Conditions
 
                             if (Engine::Count(party) > 1)
                             {
-                                std::string message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
+                                auto message = "WHO GETS THE " + Items::Defaults[item].Name + "?";
 
                                 character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                             }

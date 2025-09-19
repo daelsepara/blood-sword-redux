@@ -54,9 +54,9 @@ namespace BloodSword::Palette
         {
             auto data = nlohmann::json::parse(ifs);
 
-            std::vector<std::string> names = {};
+            auto names = std::vector<std::string>();
 
-            BloodSword::Array<Uint32> list = {};
+            auto list = BloodSword::Array<Uint32>();
 
             if (!data["palettes"].is_null() && data["palettes"].is_array() && data["palettes"].size() > 0)
             {

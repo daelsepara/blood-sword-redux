@@ -149,15 +149,15 @@ namespace BloodSword::Character
         {Character::Status::DYING_SLOWLY, Character::Status::IMMUNE_DYING_SLOWLY}};
 
     // map string to status
-    Character::Status MapStatus(const char *status)
+    Character::Status MapStatus(std::string status)
     {
         return BloodSword::Find(Character::StatusMapping, status);
     }
 
     // map string to status
-    Character::Status MapStatus(std::string status)
+    Character::Status MapStatus(const char *status)
     {
-        return Character::MapStatus(status.c_str());
+        return Character::MapStatus(std::string(status));
     }
 }
 

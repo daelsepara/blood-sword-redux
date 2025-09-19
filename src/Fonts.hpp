@@ -88,7 +88,7 @@ namespace BloodSword::Fonts
 
             if (!data["font-settings"].is_null())
             {
-                std::string font = !data["font-settings"]["font"].is_null() ? std::string(data["font-settings"]["font"]) : "fonts/bookman-old-style.ttf";
+                auto font = std::string(!data["font-settings"]["font"].is_null() ? data["font-settings"]["font"] : "fonts/bookman-old-style.ttf");
 
                 auto caption = !data["font-settings"]["caption"].is_null() ? int(data["font-settings"]["caption"]) : 22;
 

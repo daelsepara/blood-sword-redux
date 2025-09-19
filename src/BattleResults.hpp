@@ -26,15 +26,15 @@ namespace BloodSword::Battle
         {Battle::Result::ENTHRALLED, "ENTHRALLED"}};
 
     // map string to battle result
-    Battle::Result MapResult(const char *result)
+    Battle::Result MapResult(std::string result)
     {
         return BloodSword::Find(Battle::ResultMapping, result);
     }
 
     // map string to battle result
-    Battle::Result MapResult(std::string result)
+    Battle::Result MapResult(const char *result)
     {
-        return Battle::MapResult(result.c_str());
+        return Battle::MapResult(std::string(result));
     }
 }
 

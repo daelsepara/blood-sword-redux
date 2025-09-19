@@ -53,7 +53,7 @@ namespace BloodSword::Rogue
 
                     if (Engine::Count(party) > 1)
                     {
-                        std::string message = "WHO TAKES THE " + items[id].Name + "?";
+                        auto message = "WHO TAKES THE " + items[id].Name + "?";
 
                         character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
                     }
@@ -284,7 +284,7 @@ namespace BloodSword::Rogue
                 rogue.CannotFlee = true;
 
                 // display Smeaborg battle text message
-                std::string text = "You unfurl the scroll. It is covered with glittering scratch-like runes that seem to scuttle to and fro across the page. Wisps of green-black vapour curl out like tentacles to enfold you, cutting off your view of your surroundings. You seem to stand in an endless sea of fog. Then a strong breeze whips up around you. Strangely it blows your hair and you can feel its chill on your skin, but your clothes do not billow up at all. The fog disperses, leaving you with a grim vista. You are on a plain of sticky olive-brown mire, broken at intervals by bones and skulls that protrude from the mud.\n\nA being clad in azure armour stands four metres tall, manlike in form except for his head, which is the huge horned skull of a stag. Green eyes roll in the hollow sockets. He opens his fleshless mouth, sending a wave of foetid air rolling towards you. \"Welcome to the realm of Smeaborg the Fleshless,\" he says. \"Our relationship will be a brief and bloody one.\" He hefts his giant halberd and stalks to the attack.\n\nYou cannot flee.";
+                auto text = std::string("You unfurl the scroll. It is covered with glittering scratch-like runes that seem to scuttle to and fro across the page. Wisps of green-black vapour curl out like tentacles to enfold you, cutting off your view of your surroundings. You seem to stand in an endless sea of fog. Then a strong breeze whips up around you. Strangely it blows your hair and you can feel its chill on your skin, but your clothes do not billow up at all. The fog disperses, leaving you with a grim vista. You are on a plain of sticky olive-brown mire, broken at intervals by bones and skulls that protrude from the mud.\n\nA being clad in azure armour stands four metres tall, manlike in form except for his head, which is the huge horned skull of a stag. Green eyes roll in the hollow sockets. He opens his fleshless mouth, sending a wave of foetid air rolling towards you. \"Welcome to the realm of Smeaborg the Fleshless,\" he says. \"Our relationship will be a brief and bloody one.\" He hefts his giant halberd and stalks to the attack.\n\nYou cannot flee.");
 
                 auto width = BloodSword::DecaTile;
 
@@ -333,7 +333,7 @@ namespace BloodSword::Rogue
 
         auto available = Point(-1, -1);
 
-        Items::Inventory ether = {};
+        auto ether = Items::Inventory();
 
         auto destination = &ether;
 
@@ -584,7 +584,7 @@ namespace BloodSword::Rogue
                         {
                             if (destination)
                             {
-                                std::string action = character.Name + " DROPPED";
+                                auto action = character.Name + " DROPPED";
 
                                 Interface::DropItem(graphics, background, action, *destination, items, id);
 
@@ -602,13 +602,13 @@ namespace BloodSword::Rogue
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
                         {
-                            std::string message = "SELECT THE PLAYER TO RECEIVE GOLD";
+                            auto message = std::string("SELECT THE PLAYER TO RECEIVE GOLD");
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
                             if (character.Class != other_character && other_character != Character::Class::NONE && party.Has(other_character) && Engine::IsAlive(party[other_character]))
                             {
-                                std::string transfer_money = "SELECT HOW MUCH GOLD WILL BE TRANSFERRED";
+                                auto transfer_money = std::string("SELECT HOW MUCH GOLD WILL BE TRANSFERRED");
 
                                 auto transfer_item = Item::Type::GOLD;
 
@@ -642,7 +642,7 @@ namespace BloodSword::Rogue
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
                         {
-                            std::string message = "SELECT THE PLAYER TO RECEIVE ARROWS";
+                            auto message = std::string("SELECT THE PLAYER TO RECEIVE ARROWS");
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 
@@ -650,7 +650,7 @@ namespace BloodSword::Rogue
                             {
                                 if (party[other_character].Has(Item::Container(Item::Type::ARROW)))
                                 {
-                                    std::string transfer_arrows = "HOW MANY ARROWS TO TRANSFER?";
+                                    auto transfer_arrows = std::string("HOW MANY ARROWS TO TRANSFER?");
 
                                     auto transfer_item = Item::Type::ARROW;
 
@@ -676,7 +676,7 @@ namespace BloodSword::Rogue
                                 }
                                 else
                                 {
-                                    std::string quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
+                                    auto quiver = party[other_character].Name + " DOES NOT HAVE A QUIVER";
 
                                     Interface::MessageBox(graphics, background, quiver, Color::Highlight);
                                 }
@@ -691,7 +691,7 @@ namespace BloodSword::Rogue
                     {
                         if (Engine::IsAlive(party) && Engine::Count(party) > 1)
                         {
-                            std::string message = "WHO SHALL RECEIVE THE " + items[id].Name + "?";
+                            auto message = "WHO SHALL RECEIVE THE " + items[id].Name + "?";
 
                             auto other_character = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, true, false, false, true);
 

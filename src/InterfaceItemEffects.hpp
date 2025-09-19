@@ -47,9 +47,9 @@ namespace BloodSword::Interface
 
                 character.Modifier(Attribute::Type::ENDURANCE, character.Modifier(Attribute::Type::ENDURANCE) - 1);
 
-                std::string message = "FIGHTING PROWESS: +1\nAWARENESS: +1\nPSYCHIC ABILITY: -1\nENDURANCE: -1";
+                auto message = "FIGHTING PROWESS: +1\nAWARENESS: +1\nPSYCHIC ABILITY: -1\nENDURANCE: -1";
 
-                Interface::TextBox(graphics, background, message.c_str(), (BloodSword::PentaTile));
+                Interface::TextBox(graphics, background, message, (BloodSword::PentaTile));
             }
             else
             {
@@ -84,7 +84,7 @@ namespace BloodSword::Interface
             }
             else
             {
-                std::string message = character.Name + " IS AT MAXIMUM ENDURANCE";
+                auto message = character.Name + " IS AT MAXIMUM ENDURANCE";
 
                 Interface::MessageBox(graphics, background, message, Color::Inactive);
             }
@@ -95,7 +95,7 @@ namespace BloodSword::Interface
             {
                 auto rolls = Engine::Roll(2);
 
-                std::string message = "HEALED " + std::to_string(rolls.Sum) + " ENDURANCE";
+                auto message = "HEALED " + std::to_string(rolls.Sum) + " ENDURANCE";
 
                 Interface::MessageBox(graphics, background, message, Color::Active);
 
@@ -105,7 +105,7 @@ namespace BloodSword::Interface
             }
             else
             {
-                std::string message = character.Name + " IS AT MAXIMUM ENDURANCE";
+                auto message = character.Name + " IS AT MAXIMUM ENDURANCE";
 
                 Interface::MessageBox(graphics, background, message, Color::Inactive);
             }
@@ -116,7 +116,7 @@ namespace BloodSword::Interface
             {
                 auto rolls = Engine::Roll(2);
 
-                std::string message = "HEALED " + std::to_string(rolls.Sum) + " ENDURANCE";
+                auto message = "HEALED " + std::to_string(rolls.Sum) + " ENDURANCE";
 
                 Interface::MessageBox(graphics, background, message, Color::Active);
 
@@ -126,7 +126,7 @@ namespace BloodSword::Interface
             }
             else
             {
-                std::string message = character.Name + " IS AT MAXIMUM ENDURANCE";
+                auto message = character.Name + " IS AT MAXIMUM ENDURANCE";
 
                 Interface::MessageBox(graphics, background, message, Color::Inactive);
             }
@@ -246,7 +246,7 @@ namespace BloodSword::Interface
                 }
                 else
                 {
-                    std::string message = "Internal Error: ITEM EFFECTS";
+                    auto message = std::string("Internal Error: ITEM EFFECTS");
 
                     Interface::InternalError(graphics, background, message);
                 }

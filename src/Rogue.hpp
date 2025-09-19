@@ -183,7 +183,7 @@ namespace BloodSword::Rogue
 
                     Generate::Attributes(improved_character);
 
-                    std::string message = improved_character.Name + " HAS IMPROVED TO RANK " + std::to_string(improved_character.Rank);
+                    auto message = improved_character.Name + " HAS IMPROVED TO RANK " + std::to_string(improved_character.Rank);
 
                     Interface::MessageBox(graphics, background, message, Color::Active);
 

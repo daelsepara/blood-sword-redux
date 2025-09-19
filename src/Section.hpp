@@ -31,10 +31,10 @@ namespace BloodSword::Section
         Battle::Base Battle;
 
         // image asset file name
-        std::string ImageAsset;
+        std::string ImageAsset = std::string();
 
         // story section text
-        std::string Text;
+        std::string Text = std::string();
 
         // background events (if any)
         Conditions::List Background = {};

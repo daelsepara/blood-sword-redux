@@ -138,7 +138,7 @@ namespace BloodSword::Controls
         Controls::Type::DETECT_ENCHANTMENT};
 
     // mapping of control types to strings
-    BloodSword::StringMap<Controls::Type> TypeMapping = {
+    BloodSword::ConstStrings<Controls::Type> TypeMapping = {
         {Controls::Type::NONE, "NONE"},
         {Controls::Type::MOVE, "MOVE"},
         {Controls::Type::FIGHT, "FIGHT"},

@@ -164,9 +164,9 @@ namespace BloodSword::BattleLogger
     void LogSurvivors(Book::Location location, const char *first, const char *second, int count_first, int count_second)
     {
 #if defined(DEBUG)
-        std::string group_first = std::string(first) + " SURVIVORS";
+        auto group_first = std::string(first) + " SURVIVORS";
 
-        std::string group_second = std::string(second) + " SURVIVORS";
+        auto group_second = std::string(second) + " SURVIVORS";
 
         BattleLogger::LogGroup(location, group_first.c_str(), group_second.c_str(), count_first, count_second);
 #endif

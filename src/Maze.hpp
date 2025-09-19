@@ -10,7 +10,7 @@ namespace BloodSword::Maze
     // generate list of valid nearby locations
     Points Neighbors(Map::Base &map, Point &coords)
     {
-        Points neighbors = {};
+        auto neighbors = Points();
 
         for (auto direction : Map::Directions)
         {
@@ -48,7 +48,7 @@ namespace BloodSword::Maze
     // get a random nearby location that has not been visited yet
     Point RandomUnvisited(Random::Base &random, Map::Base &map, Point &coords)
     {
-        Points unvisited = {};
+        auto unvisited = Points();
 
         auto neighbors = Maze::Neighbors(map, coords);
 
@@ -89,10 +89,10 @@ namespace BloodSword::Maze
     void Generate(Map::Base &map, int width, int height)
     {
         // locations not yet visited
-        Points unvisited = {};
+        auto unvisited = Points();
 
         // locations already visited
-        Points visited = {};
+        auto visited = Points();
 
         auto random = Random::Base();
 

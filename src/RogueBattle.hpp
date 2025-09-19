@@ -316,7 +316,7 @@ namespace BloodSword::Rogue
                 {
                     auto rolls = Engine::Roll(1);
 
-                    std::string strong_damage = std::string("STRONG: +") + std::to_string(rolls.Sum) + " DAMAGE";
+                    auto strong_damage = std::string("STRONG: +") + std::to_string(rolls.Sum) + " DAMAGE";
 
                     Interface::FlashMessage(graphics, background, strong_damage, attacker.IsPlayer() ? Color::Active : Color::Highlight);
 
@@ -645,7 +645,7 @@ namespace BloodSword::Rogue
 
                     Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, stats_width, true, false, character_id, Color::Active);
 
-                    std::string slow_murder = character.Name + " LOSES 1 ENDURANCE TO THE SLOW MURDER SPELL!";
+                    auto slow_murder = character.Name + " LOSES 1 ENDURANCE TO THE SLOW MURDER SPELL!";
 
                     Interface::FlashMessage(graphics, scene, slow_murder, Color::Active);
 
@@ -697,15 +697,15 @@ namespace BloodSword::Rogue
                         {
                             if (character.Has(Skills::Type::SLOW_MURDER) && Engine::Count(party, Character::ControlType::PLAYER, Character::Status::SLOW_MURDER) < Engine::Count(party) && Interface::Roll(graphics, scene, character.Asset, Asset::Map("MISTS OF DEATH"), 1, 0).Sum == 1)
                             {
-                                std::string slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
+                                auto slow_murder = character.Name + " UNLEASHES THE SLOW MURDER SPELL!";
 
                                 Interface::FlashMessage(graphics, scene, slow_murder, Color::Active);
 
                                 for (auto i = 0; i < party.Count(); i++)
                                 {
-                                    std::string resists = party[i].Name + " RESISTS THE SLOW MURDER SPELL!";
+                                    auto resists = party[i].Name + " RESISTS THE SLOW MURDER SPELL!";
 
-                                    std::string succumb = party[i].Name + " SUCCUMBS TO THE SLOW MURDER SPELL!";
+                                    auto succumb = party[i].Name + " SUCCUMBS TO THE SLOW MURDER SPELL!";
 
                                     if (Engine::CanTarget(party[i], true) && !party[i].Has(Character::Status::SLOW_MURDER))
                                     {

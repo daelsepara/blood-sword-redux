@@ -111,7 +111,7 @@ namespace BloodSword::Interface
     // setup overlay of battle actions
     Scene::Base BattleActions(Point origin, int w, int h, Battle::Base &battle, Party::Base &party, int id, Uint32 background, Uint32 border, int border_size, bool ranged = false)
     {
-        Controls::List controls = {};
+        auto controls = Controls::List();
 
         auto overlay = Scene::Base();
 
@@ -433,11 +433,11 @@ namespace BloodSword::Interface
     // regenerate battle map (starting at point location without controls)
     Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Point location)
     {
-        Scene::Elements assets = {};
+        auto elements = Scene::Elements();
 
-        Controls::Collection controls = {};
+        auto controls = Controls::Collection();
 
-        return Interface::BattleScene(battle, party, assets, controls, location);
+        return Interface::BattleScene(battle, party, elements, controls, location);
     }
 
     // regenerate battle map
@@ -579,9 +579,9 @@ namespace BloodSword::Interface
             }
         }
 
-        Scene::Elements assets = {};
+        auto elements = Scene::Elements();
 
-        Controls::Collection controls = {};
+        auto controls = Controls::Collection();
 
         for (auto i = 0; i < controls_list.size(); i++)
         {
@@ -599,11 +599,11 @@ namespace BloodSword::Interface
 
                 controls.push_back(Controls::Base(controls_list[i], control, lt, rt, up, control, location.X + i * space, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
-                assets.push_back(Scene::Element(texture, location.X + i * space, bottom));
+                elements.push_back(Scene::Element(texture, location.X + i * space, bottom));
             }
         }
 
-        return Interface::BattleScene(battle, party, assets, controls, location);
+        return Interface::BattleScene(battle, party, elements, controls, location);
     }
 
     // setup battle scene
@@ -1017,7 +1017,7 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            std::string message = "YOU HAVE NOT PLACED THE " + std::string(Character::ClassMapping[character]);
+                            auto message = "YOU HAVE NOT PLACED THE " + Character::ClassMapping[character];
 
                             Interface::MessageBox(graphics, map, message, Color::Highlight);
                         }
@@ -1406,7 +1406,7 @@ namespace BloodSword::Interface
                 {
                     BloodSword::Free(&texture);
 
-                    std::string text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
+                    auto text = " OBSTACLE (" + std::to_string(battle.Map[control.Map].Lifetime) + ") ";
 
                     texture = Graphics::CreateText(graphics, text.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 

@@ -758,7 +758,7 @@ namespace BloodSword::FieldOfView
     };
 
     // field of view method to string mapping
-    BloodSword::StringMap<FieldOfView::Method> MethodMapping = {
+    BloodSword::ConstStrings<FieldOfView::Method> MethodMapping = {
         {Method::NONE, "NONE"},
         {Method::DIAMOND, "DIAMOND"},
         {Method::SHADOW_CAST, "SHADOW CAST"},
@@ -781,7 +781,7 @@ namespace BloodSword::FieldOfView
     // compute field of view using the specified method
     Points Compute(Map::Base &map, Point origin, int radius, FieldOfView::Method method)
     {
-        Points points = {};
+        auto points = Points();
 
         switch (method)
         {

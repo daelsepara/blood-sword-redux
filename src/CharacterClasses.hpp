@@ -63,15 +63,15 @@ namespace BloodSword::Character
         Character::Class::ENCHANTER};
 
     // map string to character class
-    Character::Class Map(const char *character_class)
+    Character::Class Map(std::string character_class)
     {
         return BloodSword::Find(Character::ClassMapping, character_class);
     }
 
     // map string to character class
-    Character::Class Map(std::string character_class)
+    Character::Class Map(const char *character_class)
     {
-        return Character::Map(character_class.c_str());
+        return Character::Map(std::string(character_class));
     }
 
     // check if character class is not a normal class

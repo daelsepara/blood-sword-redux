@@ -13,7 +13,7 @@ namespace BloodSword::Graphics
     {
     public:
         // raw text
-        std::string Text;
+        std::string Text = std::string();
 
         // font to render text in
         TTF_Font *Font = nullptr;

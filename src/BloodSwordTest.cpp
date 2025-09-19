@@ -612,7 +612,7 @@ namespace BloodSword::Test
 
                         fps = (double)(frames * BloodSword::OneSecond) / (double)msec;
 
-                        std::string fpsString = "FPS: " + std::to_string(fps) + "/sec";
+                        auto fpsString = "FPS: " + std::to_string(fps) + "/sec";
 
                         fps_texture = Graphics::CreateText(graphics, fpsString.c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
                     }
@@ -642,7 +642,7 @@ namespace BloodSword::Test
     {
         Interface::ReloadTextures(graphics, 0, false);
 
-        Graphics::TextList collection = {};
+        auto collection = Graphics::TextList();
 
         Uint32 fixed = Color::Active;
 
@@ -875,7 +875,7 @@ namespace BloodSword::Test
         {
             scene = Scene::Base();
 
-            std::string round_text = "ROUND: " + std::to_string(round + 1);
+            auto round_text = "ROUND: " + std::to_string(round + 1);
 
             auto texture = Graphics::CreateText(graphics, ("ROUND: " + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
@@ -991,7 +991,7 @@ namespace BloodSword::Test
         {
             scene = Scene::Base();
 
-            std::string round_text = "ROUND: " + std::to_string(round + 1);
+            auto round_text = "ROUND: " + std::to_string(round + 1);
 
             auto texture = Graphics::CreateText(graphics, ("ROUND: " + std::to_string(round + 1)).c_str(), Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL);
 
@@ -1426,7 +1426,7 @@ namespace BloodSword::Test
 
         if (!variable.empty())
         {
-            std::string staked = "STAKED GOLD: " + variable;
+            auto staked = "STAKED GOLD: " + variable;
 
             Interface::MessageBox(graphics, background, staked, Color::Active);
         }

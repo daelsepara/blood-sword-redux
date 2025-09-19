@@ -23,7 +23,7 @@ namespace BloodSword::Interface
     // patform-dependent function for returning user document directory and save location
     std::string GetGamesPath()
     {
-        std::string GamesPath = "/Saved Games/Blood Sword";
+        auto GamesPath = std::string("/Saved Games/Blood Sword");
 
 #if defined(_WIN32)
         PWSTR PathString;
@@ -47,7 +47,7 @@ namespace BloodSword::Interface
             HomeDirectory = getpwuid(getuid())->pw_dir;
         }
 
-        std::string UserGamesPath = std::string(HomeDirectory) + "/Documents" + GamesPath;
+        auto UserGamesPath = std::string(HomeDirectory) + "/Documents" + GamesPath;
 #endif
 
         return UserGamesPath;
