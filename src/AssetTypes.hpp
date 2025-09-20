@@ -1,6 +1,10 @@
 #ifndef __ASSET_TYPES_HPP__
 #define __ASSET_TYPES_HPP__
 
+#ifndef SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif
+
 #include <SDL.h>
 
 #include "Templates.hpp"
