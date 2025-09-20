@@ -15,7 +15,7 @@ BSWORD_BATTLEPITS_OUTPUT=Battlepits.exe
 BSWORD_ROGUE=BloodSwordRogue.cpp
 BSWORD_ROGUE_OUTPUT=BloodSwordRogue.exe
 DEBUG=-g -O0
-LIBS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer
+LIBS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lminizip
 INCLUDES=-I/usr/include/SDL2
 UNAME_S=$(shell uname -s)
 UNAME_M=$(shell uname -m)
@@ -28,7 +28,7 @@ ifeq ($(UNAME_S),Darwin)
 	LLVM=$(shell brew --prefix llvm)
 	CC=$(LLVM)/bin/clang++
 	LIBS += -stdlib=libc++ -Wl,-dead_strip -fdata-sections -ffunction-sections -L$(LLVM)/lib/c++ -L/usr/local/lib
-	INCLUDES += -I/usr/local/include/SDL2
+	INCLUDES += -I/usr/local/include/SDL2 -I/usr/local/include
 else ifeq ($(UNAME_M),aarch64)
 	DEBIAN_ARCH=arm64
 	DEBIAN=blood-sword.$(DEBIAN_ARCH)

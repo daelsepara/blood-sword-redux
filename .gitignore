@@ -46,7 +46,8 @@ Debug/
 # OSX
 .DS_Store
 
-# DEBIAN package build files
+# DEBIAN/ZIP package build files
 *.deb
+*.zip
 blood-sword.*/
 

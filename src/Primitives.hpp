@@ -7,6 +7,7 @@
 #undef max
 #endif
 
+#include <fstream>
 #include <iomanip>
 #include <iostream>
 #include <vector>
@@ -362,6 +363,18 @@ namespace BloodSword
         }
 
         return height;
+    }
+
+    // reads entire file into string (for use with nlohmann json)
+    std::string Read(const char *source)
+    {
+        std::ifstream input_file(source);
+
+        std::string file_content((std::istreambuf_iterator<char>(input_file)), (std::istreambuf_iterator<char>()));
+
+        input_file.close();
+
+        return file_content;
     }
 }
 

@@ -391,6 +391,8 @@ namespace BloodSword::Interface
         // load all assets, initialize asset type ids
         Asset::Load(graphics.Renderer, Interface::Settings["assets"]);
 
+        // TODO: Asset::Load(graphics.Renderer, "modules/default.zip", "assets.json");
+
         // initialize attribute to asset mapping
         Attribute::MapAssets();
 

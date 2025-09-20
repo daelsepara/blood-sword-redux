@@ -3,10 +3,18 @@
 
 #include <fstream>
 
+#ifndef SDL_MAIN_HANDLED
+#define SDL_MAIN_HANDLED
+#endif
+
+#include <SDL.h>
+#include <SDL_image.h>
+
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"
 #include "Color.hpp"
 #include "Primitives.hpp"
+#include "ZipFileLibrary.hpp"
 
 namespace BloodSword::Asset
 {
@@ -96,11 +104,58 @@ namespace BloodSword::Asset
         }
     }
 
-    // load all assets and create textures
-    bool Load(SDL_Renderer *renderer, const char *assets)
+    // create surface from buffer
+    SDL_Surface *Surface(char *buffer, size_t size)
     {
-        auto result = false;
+        auto rw = SDL_RWFromMem((void *)buffer, size);
 
+        if (!rw)
+        {
+            // handle error
+            return nullptr;
+        }
+
+        // create surface and close SDL_RWops
+        auto surface = IMG_Load_RW(rw, 1);
+
+        return surface;
+    }
+
+    // create texture from a file
+    SDL_Texture *ZipCreate(SDL_Renderer *renderer, const char *zip_file, const char *path)
+    {
+        SDL_Texture *texture = nullptr;
+
+        // read file from zip archive
+        auto asset = BloodSword::ZipFile::Read(zip_file, path);
+
+        // create a modifiable buffer
+        auto buffer = asset.data();
+
+        // create surface from memory buffer
+        auto surface = Asset::Surface(buffer, asset.size());
+
+        asset.clear();
+
+        if (surface)
+        {
+            texture = SDL_CreateTextureFromSurface(renderer, surface);
+
+            if (texture)
+            {
+                SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
+                SDL_SetTextureColorMod(texture, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
+            }
+
+            BloodSword::Free(&surface);
+        }
+
+        return texture;
+    }
+
+    bool Load(SDL_Renderer *renderer, std::string json_file, const char *zip_file, bool is_zip)
+    {
         Asset::Unload();
 
         Asset::Locations.clear();
@@ -109,47 +164,84 @@ namespace BloodSword::Asset
 
         Asset::TypeMapping.clear();
 
-        std::ifstream ifs(assets);
+        auto data = nlohmann::json::parse(json_file);
 
-        if (ifs.good())
+        if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
         {
-            auto data = nlohmann::json::parse(ifs);
+            auto asset_type = 0;
 
-            if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
+            for (auto i = 0; i < data["assets"].size(); i++)
             {
-                auto asset_type = 0;
+                auto object = !data["assets"][i]["id"].is_null() ? std::string(data["assets"][i]["id"]) : std::string();
 
-                for (auto i = 0; i < data["assets"].size(); i++)
+                auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : "";
+
+                if (!path.empty() && !object.empty())
                 {
-                    auto object = !data["assets"][i]["id"].is_null() ? std::string(data["assets"][i]["id"]) : std::string();
+                    auto texture = is_zip ? Asset::ZipCreate(renderer, zip_file, path.c_str()) : Asset::Create(renderer, path.c_str());
 
-                    auto path = !data["assets"][i]["path"].is_null() ? std::string(data["assets"][i]["path"]) : "";
-
-                    if (!path.empty() && !object.empty())
+                    if (texture)
                     {
-                        auto texture = Asset::Create(renderer, path.c_str());
+                        Asset::Locations[asset_type] = path;
 
-                        if (texture)
-                        {
-                            Asset::Locations[asset_type] = path;
+                        Asset::Textures[asset_type] = texture;
 
-                            Asset::Textures[asset_type] = texture;
-
-                            // update type mapping
-                            Asset::TypeMapping[asset_type] = object;
-                        }
-
-                        asset_type++;
+                        // update type mapping
+                        Asset::TypeMapping[asset_type] = object;
                     }
+
+                    asset_type++;
                 }
             }
+        }
 
-            ifs.close();
+        return (!Asset::Locations.empty() && !Asset::Textures.empty() && (Asset::Textures.size() == Asset::Locations.size()));
+    }
 
-            result = (!Asset::Locations.empty() && !Asset::Textures.empty() && (Asset::Textures.size() == Asset::Locations.size()));
+    // load all assets and create textures
+    bool Load(SDL_Renderer *renderer, const char *assets)
+    {
+        auto result = false;
+
+        auto json_file = BloodSword::Read(assets);
+
+        if (!json_file.empty())
+        {
+            result = Asset::Load(renderer, json_file, nullptr, false);
+
+            json_file.clear();
         }
 
         return result;
+    }
+
+    // load assets and create textures
+    bool Load(SDL_Renderer *renderer, std::string assets)
+    {
+        return Asset::Load(renderer, assets.c_str());
+    }
+
+    // load all assets from zip file and create textures
+    bool Load(SDL_Renderer *renderer, const char *zip_file, const char *assets)
+    {
+        auto result = false;
+
+        auto json_file = BloodSword::ZipFile::Read(zip_file, assets);
+
+        if (!json_file.empty())
+        {
+            result = Asset::Load(renderer, json_file, zip_file, true);
+
+            json_file.clear();
+        }
+
+        return result;
+    }
+
+    // load all assets from zip file and create textures
+    bool Load(SDL_Renderer *renderer, std::string zip_file, std::string assets)
+    {
+        return Asset::Load(renderer, zip_file.c_str(), assets.c_str());
     }
 
     // load asset locations
@@ -165,11 +257,11 @@ namespace BloodSword::Asset
 
         Asset::TypeMapping.clear();
 
-        std::ifstream ifs(assets);
+        std::ifstream json_file(assets);
 
-        if (ifs.good())
+        if (json_file.good())
         {
-            auto data = nlohmann::json::parse(ifs);
+            auto data = nlohmann::json::parse(json_file);
 
             if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
             {
@@ -194,18 +286,12 @@ namespace BloodSword::Asset
                 }
             }
 
-            ifs.close();
+            json_file.close();
 
             result = !Locations.empty();
         }
 
         return result;
-    }
-
-    // load assets and create textures
-    bool Load(SDL_Renderer *renderer, std::string assets)
-    {
-        return Asset::Load(renderer, assets.c_str());
     }
 
     // get texture associated with the asset type
