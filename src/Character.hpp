@@ -419,7 +419,7 @@ namespace BloodSword::Character
         {
             auto has_all = true;
 
-            for (auto item : items)
+            for (auto &item : items)
             {
                 has_all &= this->Has(item);
             }

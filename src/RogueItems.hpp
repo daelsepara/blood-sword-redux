@@ -343,7 +343,7 @@ namespace BloodSword::Rogue
             auto &room = rogue.Rooms[party.Room];
 
             // check if there is a pre-existing loot bag
-            for (auto direction : Map::Directions)
+            for (auto &direction : Map::Directions)
             {
                 auto point = party.Origin() + direction;
 
@@ -362,7 +362,7 @@ namespace BloodSword::Rogue
             // select a new location
             if (available.IsNone())
             {
-                for (auto direction : Map::Directions)
+                for (auto &direction : Map::Directions)
                 {
                     auto point = party.Origin() + direction;
 

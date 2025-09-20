@@ -943,13 +943,7 @@ namespace BloodSword::Interface
     // clones character's attributes
     void CloneCharacters(Battle::Base &battle, Party::Base &party)
     {
-        std::vector<Battle::Condition> cloning = {
-            Battle::Condition::CLONE_WARRIOR,
-            Battle::Condition::CLONE_TRICKSTER,
-            Battle::Condition::CLONE_SAGE,
-            Battle::Condition::CLONE_ENCHANTER};
-
-        for (auto clone : cloning)
+        for (auto &clone : Battle::Cloning)
         {
             if (battle.Has(clone))
             {
@@ -995,7 +989,7 @@ namespace BloodSword::Interface
                         // clone attributes to all opponents
                         for (auto i = 0; i < battle.Opponents.Count(); i++)
                         {
-                            for (auto attribute : Attribute::All)
+                            for (auto &attribute : Attribute::All)
                             {
                                 // do not clone ARMOUR attribute
                                 if (attribute != Attribute::Type::ARMOUR)

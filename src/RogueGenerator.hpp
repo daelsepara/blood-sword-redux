@@ -279,7 +279,7 @@ namespace BloodSword::Rogue
 
         std::shuffle(rooms.begin(), rooms.end(), Engine::Random.Generator());
 
-        for (auto item : items)
+        for (auto &item : items)
         {
             auto random = Engine::Percentile.NextInt() % rooms.size();
 

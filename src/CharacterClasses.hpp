@@ -79,7 +79,7 @@ namespace BloodSword::Character
     {
         auto found = true;
 
-        for (auto normal : Character::All)
+        for (auto &normal : Character::All)
         {
             if (normal == character)
             {

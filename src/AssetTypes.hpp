@@ -56,7 +56,7 @@ namespace BloodSword::Asset
     {
         types.clear();
 
-        for (auto asset : assets)
+        for (auto &asset : assets)
         {
             types[asset.first] = Asset::Map(std::string(asset.second));
         }
@@ -67,7 +67,7 @@ namespace BloodSword::Asset
     {
         types.clear();
 
-        for (auto asset : assets)
+        for (auto &asset : assets)
         {
             auto asset_type = Asset::Map(asset);
 

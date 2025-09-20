@@ -735,7 +735,7 @@ namespace BloodSword::FieldOfView
         {
             Points lightMap = {origin};
 
-            for (auto delta : Map::Diagonals)
+            for (auto &delta : Map::Diagonals)
             {
                 CastLight(map, lightMap, origin, radius, 1, 1.0, 0.0, 0, delta.X, delta.Y, 0);
 

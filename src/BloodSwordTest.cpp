@@ -652,7 +652,7 @@ namespace BloodSword::Test
 
         auto height = BloodSword::DoubleTile;
 
-        for (auto name : Palette::Names)
+        for (auto &name : Palette::Names)
         {
             collection.push_back(Graphics::RichText(name.c_str(), Fonts::Normal, Color::S(fixed), TTF_STYLE_NORMAL, width));
         }

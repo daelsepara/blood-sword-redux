@@ -365,7 +365,7 @@ namespace BloodSword::Conditions
                         {
                             auto item_string = std::string();
 
-                            for (auto item : items)
+                            for (auto &item : items)
                             {
                                 if (!item_string.empty())
                                 {
@@ -1323,7 +1323,7 @@ namespace BloodSword::Conditions
                                 {
                                     discarded.push_back(Item::TypeMapping[item]);
 
-                                    for (auto player : characters)
+                                    for (auto &player : characters)
                                     {
                                         party[player].Remove(item);
                                     }
@@ -3700,7 +3700,7 @@ namespace BloodSword::Conditions
                             characters = {character};
                         }
 
-                        for (auto character_class : characters)
+                        for (auto &character_class : characters)
                         {
                             auto items = Items::Inventory();
 
@@ -3772,7 +3772,7 @@ namespace BloodSword::Conditions
                             characters = {character};
                         }
 
-                        for (auto character_class : characters)
+                        for (auto &character_class : characters)
                         {
                             auto items = Items::Inventory();
 
@@ -3844,7 +3844,7 @@ namespace BloodSword::Conditions
                             characters = {character};
                         }
 
-                        for (auto character_class : characters)
+                        for (auto &character_class : characters)
                         {
                             auto items = Items::Inventory();
 
@@ -4300,7 +4300,7 @@ namespace BloodSword::Conditions
                             characters.push_back(party[character].Class);
                         }
 
-                        for (auto character : characters)
+                        for (auto &character : characters)
                         {
                             if (Engine::IsAlive(party[character]) && party[character].Items.size() > 0)
                             {
@@ -4376,7 +4376,7 @@ namespace BloodSword::Conditions
                 {
                     result = true;
 
-                    for (auto character : characters)
+                    for (auto &character : characters)
                     {
                         result &= Interface::Test(graphics, background, party[character], Attribute::Type::PSYCHIC_ABILITY);
 
@@ -4573,7 +4573,7 @@ namespace BloodSword::Conditions
 
                     if (characters.size() > 0)
                     {
-                        for (auto character : characters)
+                        for (auto &character : characters)
                         {
                             party[character].DelayedEffects[status] = item;
                         }

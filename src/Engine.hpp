@@ -1079,13 +1079,13 @@ namespace BloodSword::Engine
             auto status_types = std::vector<Character::Status>();
 
             // get all status
-            for (auto status : character.Status)
+            for (auto &status : character.Status)
             {
                 status_types.push_back(status.first);
             }
 
             // cooldown each status
-            for (auto status : status_types)
+            for (auto &status : status_types)
             {
                 if (!BloodSword::In(Character::GlobalStatus, status))
                 {
@@ -1199,7 +1199,7 @@ namespace BloodSword::Engine
     // remove select statuses from character
     void Cancel(Character::Base &character, std::vector<Character::Status> statuses)
     {
-        for (auto status : statuses)
+        for (auto &status : statuses)
         {
             Engine::Cancel(character, status);
         }
@@ -1686,7 +1686,7 @@ namespace BloodSword::Engine
 
         auto space = std::string(" ");
 
-        for (auto token : tokens)
+        for (auto &token : tokens)
         {
             auto front = token.substr(0, 1) == " ";
 

@@ -247,7 +247,7 @@ namespace BloodSword::Party
         {
             auto result = true;
 
-            for (auto item : items)
+            for (auto &item : items)
             {
                 result &= this->Has(item);
 
@@ -415,7 +415,7 @@ namespace BloodSword::Party
         {
             for (auto i = 0; i < this->Count(); i++)
             {
-                for (auto status : statuses)
+                for (auto &status : statuses)
                 {
                     this->Members[i].Add(status);
                 }
@@ -436,7 +436,7 @@ namespace BloodSword::Party
         {
             for (auto i = 0; i < this->Count(); i++)
             {
-                for (auto status : statuses)
+                for (auto &status : statuses)
                 {
                     this->Members[i].Remove(status);
                 }

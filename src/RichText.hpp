@@ -67,7 +67,7 @@ namespace BloodSword::Graphics
     {
         auto text_list = Graphics::TextList();
 
-        for (auto text : collection)
+        for (auto &text : collection)
         {
             text_list.push_back(Graphics::RichText(text.c_str(), font, Color::S(color), TTF_STYLE_NORMAL, wrap));
         }

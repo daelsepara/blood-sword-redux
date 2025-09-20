@@ -6,7 +6,7 @@ namespace BloodSword::MapRenderer
     // render points
     void RenderPoints(SDL_Surface *surface, Points &points, SDL_Rect &rect, int offset, Asset::Type asset, bool blur = false)
     {
-        for (auto point : points)
+        for (auto &point : points)
         {
             rect.x = point.X * BloodSword::TileSize + offset;
 

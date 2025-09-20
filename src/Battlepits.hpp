@@ -251,7 +251,7 @@ namespace BloodSword::Battlepits
     {
         auto tunnel = Battlepits::CreateTunnels(room.Center(), last.Center());
 
-        for (auto point : tunnel)
+        for (auto &point : tunnel)
         {
             if (!Room::Inside(rooms, room, point))
             {

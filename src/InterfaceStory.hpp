@@ -1657,7 +1657,7 @@ namespace BloodSword::Interface
         Book::Location next = Book::Undefined;
 
         // check delayed effects and redirects
-        for (auto status : Character::StatusCooldowns)
+        for (auto &status : Character::StatusCooldowns)
         {
             if (party.Has(status))
             {
@@ -1700,7 +1700,7 @@ namespace BloodSword::Interface
             {
                 auto results = Interface::ProcessEvents(graphics, background, party);
 
-                for (auto result : results)
+                for (auto &result : results)
                 {
                     if ((result.Result || result.Failed) && !result.Text.empty())
                     {

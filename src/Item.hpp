@@ -211,7 +211,7 @@ namespace BloodSword::Item
         {
             auto has = true;
 
-            for (auto property : properties)
+            for (auto &property : properties)
             {
                 has &= this->Has(property);
             }
@@ -224,7 +224,7 @@ namespace BloodSword::Item
         {
             auto has = false;
 
-            for (auto property : properties)
+            for (auto &property : properties)
             {
                 has |= this->Has(property);
             }
@@ -349,7 +349,7 @@ namespace BloodSword::Item
         {
             auto result = false;
 
-            for (auto property : properties)
+            for (auto &property : properties)
             {
                 result |= this->Add(property);
             }
@@ -814,7 +814,7 @@ namespace BloodSword::Items
             {
                 nlohmann::json battle_descriptions;
 
-                for (auto battle_item : item.BattleDescriptions)
+                for (auto &battle_item : item.BattleDescriptions)
                 {
                     if (Book::IsDefined(battle_item.Battle) && Book::IsDefined(battle_item.Description))
                     {

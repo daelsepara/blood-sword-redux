@@ -84,6 +84,13 @@ namespace BloodSword::Battle
     // list of battle conditions
     typedef std::vector<Battle::Condition> Conditions;
 
+    // list of all cloning battle conditions
+    Battle::Conditions Cloning = {
+        Battle::Condition::CLONE_WARRIOR,
+        Battle::Condition::CLONE_TRICKSTER,
+        Battle::Condition::CLONE_SAGE,
+        Battle::Condition::CLONE_ENCHANTER};
+
     // fleeing damage
     struct FleeDamage
     {
