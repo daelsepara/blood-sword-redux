@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
-    <ProjectConfiguration Include="Debug|Win32">
+    <ProjectConfiguration include="..\src\Debug|Win32">
       <Configuration>Debug</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|Win32">
+    <ProjectConfiguration include="..\src\Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Debug|x64">
+    <ProjectConfiguration include="..\src\Debug|x64">
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
-    <ProjectConfiguration Include="Release|x64">
+    <ProjectConfiguration include="..\src\Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
@@ -156,83 +156,83 @@ XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Animation.hpp" />
-    <ClInclude Include="Asset.hpp" />
-    <ClInclude Include="AssetTypes.hpp" />
-    <ClInclude Include="Attribute.hpp" />
-    <ClInclude Include="Battle.hpp" />
-    <ClInclude Include="Battlepits.hpp" />
-    <ClInclude Include="BattleResults.hpp" />
-    <ClInclude Include="Book.hpp" />
-    <ClInclude Include="Character.hpp" />
-    <ClInclude Include="CharacterClasses.hpp" />
-    <ClInclude Include="CharacterStatus.hpp" />
-    <ClInclude Include="Choice.hpp" />
-    <ClInclude Include="Color.hpp" />
-    <ClInclude Include="Conditions.hpp" />
-    <ClInclude Include="ConditionsEvaluate.hpp" />
-    <ClInclude Include="ConditionTypes.hpp" />
-    <ClInclude Include="Controls.hpp" />
-    <ClInclude Include="ControlTypes.hpp" />
-    <ClInclude Include="Engine.hpp" />
-    <ClInclude Include="Feature.hpp" />
-    <ClInclude Include="FieldOfView.hpp" />
-    <ClInclude Include="Fonts.hpp" />
-    <ClInclude Include="Generator.hpp" />
-    <ClInclude Include="Graphics.hpp" />
-    <ClInclude Include="Help.hpp" />
-    <ClInclude Include="Input.hpp" />
-    <ClInclude Include="Interface.hpp" />
-    <ClInclude Include="InterfaceBattle.hpp" />
-    <ClInclude Include="InterfaceBattleItems.hpp" />
-    <ClInclude Include="InterfaceBattleScene.hpp" />
-    <ClInclude Include="InterfaceFiles.hpp" />
-    <ClInclude Include="InterfaceInventory.hpp" />
-    <ClInclude Include="InterfaceItemEffects.hpp" />
-    <ClInclude Include="InterfaceItems.hpp" />
-    <ClInclude Include="InterfaceStory.hpp" />
-    <ClInclude Include="Item.hpp" />
-    <ClInclude Include="ItemProperties.hpp" />
-    <ClInclude Include="ItemTargetEffects.hpp" />
-    <ClInclude Include="ItemTypes.hpp" />
-    <ClInclude Include="Logger.hpp" />
-    <ClInclude Include="Map.hpp" />
-    <ClInclude Include="MapObjects.hpp" />
-    <ClInclude Include="Maze.hpp" />
-    <ClInclude Include="Messages.hpp" />
-    <ClInclude Include="Move.hpp" />
-    <ClInclude Include="Palette.hpp" />
-    <ClInclude Include="Party.hpp" />
-    <ClInclude Include="Position.hpp" />
-    <ClInclude Include="Primitives.hpp" />
-    <ClInclude Include="Random.hpp" />
-    <ClInclude Include="RichText.hpp" />
-    <ClInclude Include="Rogue.hpp" />
-    <ClInclude Include="RogueBase.hpp" />
-    <ClInclude Include="RogueBattle.hpp" />
-    <ClInclude Include="RogueClasses.hpp" />
-    <ClInclude Include="RogueGenerator.hpp" />
-    <ClInclude Include="RogueItems.hpp" />
-    <ClInclude Include="RogueMethods.hpp" />
-    <ClInclude Include="Scene.hpp" />
-    <ClInclude Include="Section.hpp" />
-    <ClInclude Include="Skills.hpp" />
-    <ClInclude Include="Sound.hpp" />
-    <ClInclude Include="Spells.hpp" />
-    <ClInclude Include="System.hpp" />
-    <ClInclude Include="Target.hpp" />
-    <ClInclude Include="Task.hpp" />
-    <ClInclude Include="Templates.hpp" />
-    <ClInclude Include="Version.hpp" />
+    <ClInclude include="..\src\Animation.hpp" />
+    <ClInclude include="..\src\Asset.hpp" />
+    <ClInclude include="..\src\AssetTypes.hpp" />
+    <ClInclude include="..\src\Attribute.hpp" />
+    <ClInclude include="..\src\Battle.hpp" />
+    <ClInclude include="..\src\Battlepits.hpp" />
+    <ClInclude include="..\src\BattleResults.hpp" />
+    <ClInclude include="..\src\Book.hpp" />
+    <ClInclude include="..\src\Character.hpp" />
+    <ClInclude include="..\src\CharacterClasses.hpp" />
+    <ClInclude include="..\src\CharacterStatus.hpp" />
+    <ClInclude include="..\src\Choice.hpp" />
+    <ClInclude include="..\src\Color.hpp" />
+    <ClInclude include="..\src\Conditions.hpp" />
+    <ClInclude include="..\src\ConditionsEvaluate.hpp" />
+    <ClInclude include="..\src\ConditionTypes.hpp" />
+    <ClInclude include="..\src\Controls.hpp" />
+    <ClInclude include="..\src\ControlTypes.hpp" />
+    <ClInclude include="..\src\Engine.hpp" />
+    <ClInclude include="..\src\Feature.hpp" />
+    <ClInclude include="..\src\FieldOfView.hpp" />
+    <ClInclude include="..\src\Fonts.hpp" />
+    <ClInclude include="..\src\Generator.hpp" />
+    <ClInclude include="..\src\Graphics.hpp" />
+    <ClInclude include="..\src\Help.hpp" />
+    <ClInclude include="..\src\Input.hpp" />
+    <ClInclude include="..\src\Interface.hpp" />
+    <ClInclude include="..\src\InterfaceBattle.hpp" />
+    <ClInclude include="..\src\InterfaceBattleItems.hpp" />
+    <ClInclude include="..\src\InterfaceBattleScene.hpp" />
+    <ClInclude include="..\src\InterfaceFiles.hpp" />
+    <ClInclude include="..\src\InterfaceInventory.hpp" />
+    <ClInclude include="..\src\InterfaceItemEffects.hpp" />
+    <ClInclude include="..\src\InterfaceItems.hpp" />
+    <ClInclude include="..\src\InterfaceStory.hpp" />
+    <ClInclude include="..\src\Item.hpp" />
+    <ClInclude include="..\src\ItemProperties.hpp" />
+    <ClInclude include="..\src\ItemTargetEffects.hpp" />
+    <ClInclude include="..\src\ItemTypes.hpp" />
+    <ClInclude include="..\src\Logger.hpp" />
+    <ClInclude include="..\src\Map.hpp" />
+    <ClInclude include="..\src\MapObjects.hpp" />
+    <ClInclude include="..\src\Maze.hpp" />
+    <ClInclude include="..\src\Messages.hpp" />
+    <ClInclude include="..\src\Move.hpp" />
+    <ClInclude include="..\src\Palette.hpp" />
+    <ClInclude include="..\src\Party.hpp" />
+    <ClInclude include="..\src\Position.hpp" />
+    <ClInclude include="..\src\Primitives.hpp" />
+    <ClInclude include="..\src\Random.hpp" />
+    <ClInclude include="..\src\RichText.hpp" />
+    <ClInclude include="..\src\Rogue.hpp" />
+    <ClInclude include="..\src\RogueBase.hpp" />
+    <ClInclude include="..\src\RogueBattle.hpp" />
+    <ClInclude include="..\src\RogueClasses.hpp" />
+    <ClInclude include="..\src\RogueGenerator.hpp" />
+    <ClInclude include="..\src\RogueItems.hpp" />
+    <ClInclude include="..\src\RogueMethods.hpp" />
+    <ClInclude include="..\src\Scene.hpp" />
+    <ClInclude include="..\src\Section.hpp" />
+    <ClInclude include="..\src\Skills.hpp" />
+    <ClInclude include="..\src\Sound.hpp" />
+    <ClInclude include="..\src\Spells.hpp" />
+    <ClInclude include="..\src\System.hpp" />
+    <ClInclude include="..\src\Target.hpp" />
+    <ClInclude include="..\src\Task.hpp" />
+    <ClInclude include="..\src\Templates.hpp" />
+    <ClInclude include="..\src\Version.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BloodSwordRogue.cpp" />
+    <ClCompile include="..\src\BloodSwordRogue.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="locations" />
-    <None Include="Makefile" />
-    <None Include="missing" />
-    <None Include="sections" />
+    <None include="..\src\locations" />
+    <None include="..\src\Makefile" />
+    <None include="..\src\missing" />
+    <None include="..\src\sections" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

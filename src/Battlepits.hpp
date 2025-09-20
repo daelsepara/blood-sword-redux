@@ -64,7 +64,7 @@ namespace BloodSword::Room
         {
             auto result = false;
 
-            for (auto room : rooms)
+            for (auto &room : rooms)
             {
                 result |= this->Intersects(room);
 
@@ -88,7 +88,7 @@ namespace BloodSword::Room
     {
         auto result = room.Inside(point);
 
-        for (auto room : rooms)
+        for (auto &room : rooms)
         {
             result |= room.Inside(point);
         }
@@ -287,7 +287,7 @@ namespace BloodSword::Battlepits
 
                 auto place = true;
 
-                for (auto room : rooms)
+                for (auto &room : rooms)
                 {
                     place &= !room.Intersects(point, w, h, 0);
 
