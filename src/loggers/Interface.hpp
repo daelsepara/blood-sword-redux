@@ -1,26 +1,7 @@
 #ifndef __INTERFACE_LOGGER_HPP__
 #define __INTERFACE_LOGGER_HPP__
 
-#include <algorithm>
-#include <ctime>
-#include <filesystem>
-#include <fstream>
-#include <numeric>
-#include <string>
-#include <utility>
-
-#include "../nlohmann/json.hpp"
-#include "../Animation.hpp"
-#include "../Asset.hpp"
-#include "../Engine.hpp"
-#include "../Input.hpp"
-#include "../InterfaceFiles.hpp"
-#include "../Maze.hpp"
-#include "../Messages.hpp"
-#include "../Palette.hpp"
-#include "../Section.hpp"
-#include "../Sound.hpp"
-#include "../Help.hpp"
+#include "../Character.hpp"
 
 namespace BloodSword::InterfaceLogger
 {

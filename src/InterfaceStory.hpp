@@ -1,6 +1,8 @@
 #ifndef __INTERFACE_STORY_HPP__
 #define __INTERFACE_STORY_HPP__
 
+#include "InterfaceBattle.hpp"
+#include "ConditionsEvaluate.hpp"
 #include "loggers/Story.hpp"
 
 // story interface functions

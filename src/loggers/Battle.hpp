@@ -1,7 +1,8 @@
 #ifndef __BATTLE_LOGGER_HPP__
 #define __BATTLE_LOGGER_HPP__
 
-#include "../InterfaceInventory.hpp"
+#include "../Battle.hpp"
+#include "../Party.hpp"
 
 namespace BloodSword::BattleLogger
 {

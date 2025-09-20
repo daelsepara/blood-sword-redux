@@ -1,6 +1,7 @@
 #ifndef __INTERFACE_BATTLE_SCENE_HPP__
 #define __INTERFACE_BATTLE_SCENE_HPP__
 
+#include "InterfaceInventory.hpp"
 #include "loggers/Battle.hpp"
 
 // battle interface functions

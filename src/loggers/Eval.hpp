@@ -1,13 +1,6 @@
 #ifndef __EVAL_LOGGER_HPP__
 #define __EVAL_LOGGER_HPP__
 
-#include <algorithm>
-
-#include "../Book.hpp"
-#include "../Item.hpp"
-#include "../Party.hpp"
-#include "../Templates.hpp"
-#include "../InterfaceItemEffects.hpp"
 #include "../Conditions.hpp"
 
 namespace BloodSword::EvalLogger

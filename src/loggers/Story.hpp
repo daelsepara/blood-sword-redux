@@ -1,8 +1,7 @@
 #ifndef __STORY_LOGGER_HPP__
 #define __STORY_LOGGER_HPP__
 
-#include "../InterfaceBattle.hpp"
-#include "../ConditionsEvaluate.hpp"
+#include "../Book.hpp"
 
 namespace BloodSword::StoryLogger
 {

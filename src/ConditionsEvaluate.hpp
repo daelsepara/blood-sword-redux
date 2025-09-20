@@ -1,6 +1,14 @@
 #ifndef __CONDITIONS_EVALUATE_HPP__
 #define __CONDITIONS_EVALUATE_HPP__
 
+#include <algorithm>
+
+#include "Book.hpp"
+#include "Item.hpp"
+#include "Party.hpp"
+#include "Templates.hpp"
+#include "InterfaceItemEffects.hpp"
+#include "Conditions.hpp"
 #include "loggers/Eval.hpp"
 
 // evaluate conditions

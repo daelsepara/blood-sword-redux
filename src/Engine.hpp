@@ -4,7 +4,6 @@
 #include "Attribute.hpp"
 #include "Book.hpp"
 #include "Character.hpp"
-#include "loggers/Engine.hpp"
 #include "Item.hpp"
 #include "FieldOfView.hpp"
 #include "Move.hpp"
@@ -13,6 +12,7 @@
 #include "Spells.hpp"
 #include "Generator.hpp"
 #include "Task.hpp"
+#include "loggers/Engine.hpp"
 
 // functions and classes for handling gameplay logic
 namespace BloodSword::Engine
