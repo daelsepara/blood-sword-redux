@@ -21,7 +21,7 @@
 #include "Section.hpp"
 #include "Sound.hpp"
 #include "Help.hpp"
-#include "loggers/Interface.hpp"
+#include "Logger.hpp"
 
 namespace fs = std::filesystem;
 

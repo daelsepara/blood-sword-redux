@@ -193,6 +193,7 @@ XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="ItemProperties.hpp" />
     <ClInclude Include="ItemTargetEffects.hpp" />
     <ClInclude Include="ItemTypes.hpp" />
+    <ClInclude Include="Logger.hpp" />
     <ClInclude Include="Map.hpp" />
     <ClInclude Include="MapObjects.hpp" />
     <ClInclude Include="Maze.hpp" />

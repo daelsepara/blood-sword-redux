@@ -2,7 +2,7 @@
 #define __INTERFACE_BATTLE_SCENE_HPP__
 
 #include "InterfaceInventory.hpp"
-#include "loggers/Battle.hpp"
+#include "Logger.hpp"
 
 // battle interface functions
 namespace BloodSword::Interface

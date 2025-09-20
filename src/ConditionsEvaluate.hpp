@@ -9,7 +9,7 @@
 #include "Templates.hpp"
 #include "InterfaceItemEffects.hpp"
 #include "Conditions.hpp"
-#include "loggers/Eval.hpp"
+#include "Logger.hpp"
 
 // evaluate conditions
 namespace BloodSword::Conditions

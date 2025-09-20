@@ -3,7 +3,7 @@
 
 #include "InterfaceBattle.hpp"
 #include "ConditionsEvaluate.hpp"
-#include "loggers/Story.hpp"
+#include "Logger.hpp"
 
 // story interface functions
 namespace BloodSword::Interface

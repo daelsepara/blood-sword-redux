@@ -12,7 +12,7 @@
 #include "Spells.hpp"
 #include "Generator.hpp"
 #include "Task.hpp"
-#include "loggers/Engine.hpp"
+#include "Logger.hpp"
 
 // functions and classes for handling gameplay logic
 namespace BloodSword::Engine
@@ -294,7 +294,7 @@ namespace BloodSword::Engine
     }
 
     // check if there is at least one character in the party still alive
-    bool IsAlive(Party::Base &party, Character::ControlType control_type = Character::ControlType::PLAYER)
+    bool IsAlive(Party::Base &party, Character::ControlType control_type)
     {
         auto live = Engine::Count(party);
 

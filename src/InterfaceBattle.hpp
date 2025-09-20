@@ -723,7 +723,7 @@ namespace BloodSword::Interface
             battle.Casters = subset;
         }
 
-        BattleLogger::LogCasters(battle);
+        BattleLogger::LogCasters(battle.Opponents, battle.Casters);
     }
 
     // enemy casts spells
@@ -2715,7 +2715,7 @@ namespace BloodSword::Interface
         }
 
         // log battle results
-        BattleLogger::LogBattleResults(battle, party, initial_result, result);
+        BattleLogger::LogBattleResults(battle.Opponents, party, initial_result, result);
 
         return result;
     }
