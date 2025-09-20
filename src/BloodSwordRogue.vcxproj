@@ -224,6 +224,8 @@ XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_ttf.dll" "$(TargetDir)" /Y</Command>
     <ClInclude Include="..\src\Task.hpp" />
     <ClInclude Include="..\src\Templates.hpp" />
     <ClInclude Include="..\src\Version.hpp" />
+    <ClInclude Include="..\src\ZipFileLibrary.hpp" />
+    <ClInclude Include="..\src\Zipper.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\BloodSwordRogue.cpp" />
