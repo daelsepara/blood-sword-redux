@@ -36,12 +36,12 @@ namespace BloodSword::Fonts
     };
 
     // set up font types
-    void Initialize(const char *zipfile, const char *font_ttf, int caption, int normal, int fixed)
+    void Initialize(const char *zip_file, const char *font_ttf, int caption, int normal, int fixed)
     {
         TTF_Init();
 
         // read file from zip archive
-        auto font = BloodSword::ZipFile::Read(zipfile, font_ttf);
+        auto font = ZipFile::Read(zip_file, font_ttf);
 
         // create a modifiable buffer
         auto buffer = font.data();
@@ -106,9 +106,9 @@ namespace BloodSword::Fonts
         TTF_Quit();
     }
 
-    void Load(nlohmann::json &data, const char *zipfile)
+    void Load(nlohmann::json &data, const char *zip_file)
     {
-        auto is_zip = (zipfile != nullptr);
+        auto is_zip = (zip_file != nullptr);
 
         if (!data["font-settings"].is_null())
         {
@@ -122,7 +122,7 @@ namespace BloodSword::Fonts
 
             if (is_zip)
             {
-                Fonts::Initialize(zipfile, font.c_str(), caption, normal, fixed);
+                Fonts::Initialize(zip_file, font.c_str(), caption, normal, fixed);
             }
             else
             {
@@ -147,21 +147,21 @@ namespace BloodSword::Fonts
     }
 
     // load font definitions from settings file in zip archive
-    void Load(const char *fonts, const char *zipfile)
+    void Load(const char *fonts, const char *zip_file)
     {
-        if (zipfile == nullptr)
+        if (zip_file == nullptr)
         {
             Fonts::Load(fonts);
         }
         else
         {
-            auto ifs = ZipFile::Read(zipfile, fonts);
+            auto ifs = ZipFile::Read(zip_file, fonts);
 
             if (!ifs.empty())
             {
                 auto data = nlohmann::json::parse(ifs);
 
-                Fonts::Load(data, zipfile);
+                Fonts::Load(data, zip_file);
 
                 ifs.clear();
             }
@@ -175,9 +175,9 @@ namespace BloodSword::Fonts
     }
 
     // load font definitions from settings file in zip archive
-    void Load(std::string fonts, std::string zipfile)
+    void Load(std::string fonts, std::string zip_file)
     {
-        Fonts::Load(fonts.c_str(), zipfile.c_str());
+        Fonts::Load(fonts.c_str(), zip_file.c_str());
     }
 
     // get font by ID

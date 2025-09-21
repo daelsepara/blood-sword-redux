@@ -328,15 +328,15 @@ namespace BloodSword::Interface
         }
     }
 
-    void Initialize(const char *settings, const char *zipfile)
+    void Initialize(const char *settings, const char *zip_file)
     {
-        if (zipfile == nullptr)
+        if (zip_file == nullptr)
         {
             Interface::Initialize(settings);
         }
         else
         {
-            auto ifs = ZipFile::Read(zipfile, settings);
+            auto ifs = ZipFile::Read(zip_file, settings);
 
             if (!ifs.empty())
             {
@@ -520,9 +520,9 @@ namespace BloodSword::Interface
     }
 
     // load settings from file
-    void LoadSettings(Graphics::Base &graphics, std::string settings_file, std::string zipfile)
+    void LoadSettings(Graphics::Base &graphics, std::string settings_file, std::string zip_file)
     {
-        if (zipfile.empty())
+        if (zip_file.empty())
         {
             // load settings from file
             Interface::LoadSettings(graphics, settings_file);
@@ -530,13 +530,13 @@ namespace BloodSword::Interface
         else
         {
             // game settings
-            Interface::Initialize(settings_file.c_str(), zipfile.c_str());
+            Interface::Initialize(settings_file.c_str(), zip_file.c_str());
 
             // load sound assets
-            Sound::Load(Interface::Settings["sounds"], zipfile);
+            Sound::Load(Interface::Settings["sounds"], zip_file);
 
             // load fonts
-            Fonts::Load(Interface::Settings["fonts"], zipfile);
+            Fonts::Load(Interface::Settings["fonts"], zip_file);
         }
     }
 
@@ -6984,7 +6984,7 @@ namespace BloodSword::Interface
 
                         module.SettingsFile = !data["modules"][i]["settings"].is_null() ? std::string(data["modules"][i]["settings"]) : std::string();
 
-                        module.ZipFile = !data["modules"][i]["zipfile"].is_null() ? std::string(data["modules"][i]["zipfile"]) : std::string();
+                        module.ZipFile = !data["modules"][i]["zip_file"].is_null() ? "modules/" + std::string(data["modules"][i]["zip_file"]) : std::string();
 
                         module.Zipped = !module.ZipFile.empty();
 

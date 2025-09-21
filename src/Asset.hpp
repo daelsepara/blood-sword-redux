@@ -127,7 +127,7 @@ namespace BloodSword::Asset
         SDL_Texture *texture = nullptr;
 
         // read file from zip archive
-        auto asset = BloodSword::ZipFile::Read(zip_file, path);
+        auto asset = ZipFile::Read(zip_file, path);
 
         // create a modifiable buffer
         auto buffer = asset.data();

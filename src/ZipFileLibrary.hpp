@@ -5,7 +5,7 @@
 
 namespace BloodSword::ZipFile
 {
-    std::string Read(zipper::UnZip &zip, const char *zipfile, const char *filename)
+    std::string Read(zipper::UnZip &zip, const char *zip_file, const char *filename)
     {
         auto buffer = std::string();
 
@@ -19,7 +19,7 @@ namespace BloodSword::ZipFile
         }
         catch (std::exception &e)
         {
-            std::string error = "Unable to load [" + std::string(filename) + "] from [" + std::string(zipfile) + "]";
+            std::string error = "Unable to load [" + std::string(filename) + "] from [" + std::string(zip_file) + "]";
 
             throw std::invalid_argument(error.c_str());
         }
@@ -28,11 +28,11 @@ namespace BloodSword::ZipFile
     }
 
     // read entire file from zip archive
-    std::string Read(const char *zipfile, const char *filename)
+    std::string Read(const char *zip_file, const char *filename)
     {
-        zipper::UnZip zip(zipfile);
+        zipper::UnZip zip(zip_file);
 
-        auto buffer = ZipFile::Read(zip, zipfile, filename);
+        auto buffer = ZipFile::Read(zip, zip_file, filename);
 
         zip.close();
 
@@ -40,9 +40,9 @@ namespace BloodSword::ZipFile
     }
 
     // read entire file from zip archive
-    std::string Read(std::string zipfile, std::string filename)
+    std::string Read(std::string zip_file, std::string filename)
     {
-        return ZipFile::Read(zipfile.c_str(), filename.c_str());
+        return ZipFile::Read(zip_file.c_str(), filename.c_str());
     }
 }
 

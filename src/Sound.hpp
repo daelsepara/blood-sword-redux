@@ -80,7 +80,7 @@ namespace BloodSword::Sound
     Mix_Chunk *Load(const char *zip_file, const char *path)
     {
         // read file from zip archive
-        auto sound = BloodSword::ZipFile::Read(zip_file, path);
+        auto sound = ZipFile::Read(zip_file, path);
 
         // create a modifiable buffer
         auto buffer = sound.data();
@@ -101,9 +101,9 @@ namespace BloodSword::Sound
         return chunk;
     }
 
-    void Load(nlohmann::json &data, const char *zipfile)
+    void Load(nlohmann::json &data, const char *zip_file)
     {
-        auto is_zip = (zipfile != nullptr);
+        auto is_zip = (zip_file != nullptr);
 
         if (!data["sounds"].is_null() && data["sounds"].is_array() && data["sounds"].size() > 0)
         {
@@ -115,7 +115,7 @@ namespace BloodSword::Sound
 
                 if (!path.empty() && asset != Sound::Type::NONE)
                 {
-                    auto sound = is_zip ? Sound::Load(zipfile, path.c_str()) : Mix_LoadWAV(path.c_str());
+                    auto sound = is_zip ? Sound::Load(zip_file, path.c_str()) : Mix_LoadWAV(path.c_str());
 
                     if (sound)
                     {
@@ -152,21 +152,21 @@ namespace BloodSword::Sound
         }
     }
 
-    void Load(std::string assets, std::string zipfile)
+    void Load(std::string assets, std::string zip_file)
     {
-        if (zipfile.empty())
+        if (zip_file.empty())
         {
             Sound::Load(assets);
         }
         else
         {
-            auto ifs = ZipFile::Read(zipfile.c_str(), assets.c_str());
+            auto ifs = ZipFile::Read(zip_file.c_str(), assets.c_str());
 
             if (!ifs.empty())
             {
                 auto data = nlohmann::json::parse(ifs);
 
-                Sound::Load(data, zipfile.c_str());
+                Sound::Load(data, zip_file.c_str());
 
                 ifs.clear();
             }
