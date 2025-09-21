@@ -8,6 +8,7 @@
 #include "BattleResults.hpp"
 #include "Book.hpp"
 #include "Character.hpp"
+#include "ZipFileLibrary.hpp"
 
 // functions for managing the party of characters
 namespace BloodSword::Party
@@ -1004,6 +1005,7 @@ namespace BloodSword::Party
             party = Party::Initialize(data[std::string(name)]);
 
             ifs.close();
+
 #if defined(DEBUG)
             std::cerr << "[LOADED] " << std::to_string(party.Count()) << " characters" << std::endl;
 #endif
@@ -1016,6 +1018,42 @@ namespace BloodSword::Party
     Party::Base Load(std::string filename, std::string name)
     {
         return Party::Load(filename.c_str(), name.c_str());
+    }
+
+    // load party from zip archive
+    Party::Base Load(const char *filename, const char *name, const char *zip_file)
+    {
+        auto party = Party::Base();
+
+        if (zip_file == nullptr)
+        {
+            Party::Load(filename, name);
+        }
+        else
+        {
+            auto ifs = ZipFile::Read(zip_file, filename);
+
+            if (!ifs.empty())
+            {
+                auto data = nlohmann::json::parse(ifs);
+
+                party = Party::Initialize(data[std::string(name)]);
+
+                ifs.clear();
+
+#if defined(DEBUG)
+                std::cerr << "[LOADED] " << std::to_string(party.Count()) << " characters" << std::endl;
+#endif
+            }
+        }
+
+        return party;
+    }
+
+    // load named party from zip archive
+    Party::Base Load(std::string filename, std::string name, std::string zip_file)
+    {
+        return Party::Load(filename.c_str(), name.c_str(), zip_file.c_str());
     }
 }
 

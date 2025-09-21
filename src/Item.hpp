@@ -9,6 +9,7 @@
 #include "ItemTargetEffects.hpp"
 #include "ItemProperties.hpp"
 #include "ItemTypes.hpp"
+#include "ZipFileLibrary.hpp"
 
 // item (classes and functions)
 namespace BloodSword::Item
@@ -919,6 +920,27 @@ namespace BloodSword::Items
         return deck_list;
     }
 
+    // load items from json data
+    void LoadDefaults(nlohmann::json &data)
+    {
+        if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+        {
+            for (auto i = 0; i < data["items"].size(); i++)
+            {
+                auto item = Item::Load(data["items"][i]);
+
+                if (item.Type != Item::Type::NONE)
+                {
+                    Items::Defaults[item.Type] = item;
+                }
+            }
+#if defined(DEBUG)
+
+            std::cerr << "[LOADED] " << Items::Defaults.size() << " items" << std::endl;
+#endif
+        }
+    }
+
     // loads defaults for items
     void LoadDefaults(const char *items)
     {
@@ -931,23 +953,31 @@ namespace BloodSword::Items
         {
             auto data = nlohmann::json::parse(ifs);
 
-            if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
-            {
-                for (auto i = 0; i < data["items"].size(); i++)
-                {
-                    auto item = Item::Load(data["items"][i]);
-
-                    if (item.Type != Item::Type::NONE)
-                    {
-                        Items::Defaults[item.Type] = item;
-                    }
-                }
-#if defined(DEBUG)
-                std::cerr << "[LOADED] " << Items::Defaults.size() << " items" << std::endl;
-#endif
-            }
+            Items::LoadDefaults(data);
 
             ifs.close();
+        }
+    }
+
+    // loads defaults for items from zip archive
+    void LoadDefaults(const char *items, const char *zip_file)
+    {
+        if (zip_file == nullptr)
+        {
+            Items::LoadDefaults(items);
+        }
+        else
+        {
+            auto ifs = ZipFile::Read(zip_file, items);
+
+            if (!ifs.empty())
+            {
+                auto data = nlohmann::json::parse(ifs);
+
+                Items::LoadDefaults(data);
+
+                ifs.clear();
+            }
         }
     }
 
@@ -955,6 +985,34 @@ namespace BloodSword::Items
     void LoadDefaults(std::string filename)
     {
         Items::LoadDefaults(filename.c_str());
+    }
+
+    // load items (defaults) from a zip file
+    void LoadDefaults(std::string filename, std::string zip_file)
+    {
+        Items::LoadDefaults(filename.c_str(), zip_file.c_str());
+    }
+
+    // load item descriptions from json data
+    void LoadDescriptions(nlohmann::json &data)
+    {
+        if (!data["descriptions"].is_null() && data["descriptions"].is_array() && data["descriptions"].size() > 0)
+        {
+            for (auto i = 0; i < data["descriptions"].size(); i++)
+            {
+                auto item = !data["descriptions"][i]["item"].is_null() ? Item::Map(data["descriptions"][i]["item"]) : Item::Type::NONE;
+
+                auto description = std::string(!data["descriptions"][i]["description"].is_null() ? data["descriptions"][i]["description"] : "");
+
+                if (item != Item::Type::NONE)
+                {
+                    Items::Descriptions[item] = description;
+                }
+            }
+#if defined(DEBUG)
+            std::cerr << "[LOADED] " << Items::Descriptions.size() << " descriptions" << std::endl;
+#endif
+        }
     }
 
     // load item descriptions from file
@@ -969,23 +1027,7 @@ namespace BloodSword::Items
         {
             auto data = nlohmann::json::parse(ifs);
 
-            if (!data["descriptions"].is_null() && data["descriptions"].is_array() && data["descriptions"].size() > 0)
-            {
-                for (auto i = 0; i < data["descriptions"].size(); i++)
-                {
-                    auto item = !data["descriptions"][i]["item"].is_null() ? Item::Map(data["descriptions"][i]["item"]) : Item::Type::NONE;
-
-                    auto description = std::string(!data["descriptions"][i]["description"].is_null() ? data["descriptions"][i]["description"] : "");
-
-                    if (item != Item::Type::NONE)
-                    {
-                        Items::Descriptions[item] = description;
-                    }
-                }
-#if defined(DEBUG)
-                std::cerr << "[LOADED] " << Items::Descriptions.size() << " descriptions" << std::endl;
-#endif
-            }
+            Items::LoadDescriptions(data);
 
             ifs.close();
         }
@@ -995,6 +1037,34 @@ namespace BloodSword::Items
     void LoadDescriptions(std::string items)
     {
         Items::LoadDescriptions(items.c_str());
+    }
+
+    // loads descriptions for items from zip archive
+    void LoadDescriptions(const char *items, const char *zip_file)
+    {
+        if (zip_file == nullptr)
+        {
+            Items::LoadDescriptions(items);
+        }
+        else
+        {
+            auto ifs = ZipFile::Read(zip_file, items);
+
+            if (!ifs.empty())
+            {
+                auto data = nlohmann::json::parse(ifs);
+
+                Items::LoadDescriptions(data);
+
+                ifs.clear();
+            }
+        }
+    }
+
+    // loads descriptions for items from zip archive
+    void LoadDescriptions(std::string filename, std::string zip_file)
+    {
+        Items::LoadDescriptions(filename.c_str(), zip_file.c_str());
     }
 
     // this item has a default settings

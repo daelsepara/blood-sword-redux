@@ -58,7 +58,7 @@ namespace BloodSword::Conditions
     // list of conditions
     typedef std::vector<Conditions::Base> List;
 
-    // parse condition from JSON data
+    // parse condition from json data
     Conditions::Base Parse(nlohmann::json &data)
     {
         auto condition = Conditions::Base();

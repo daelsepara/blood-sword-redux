@@ -10,6 +10,7 @@
 #include "nlohmann/json.hpp"
 #include "Color.hpp"
 #include "Templates.hpp"
+#include "ZipFileLibrary.hpp"
 
 // functions for switching color palette
 namespace BloodSword::Palette
@@ -43,71 +44,101 @@ namespace BloodSword::Palette
     // current palette set
     int Current = 0;
 
-    // load palettes from a JSON file
-    bool Load(const char *palettes)
+    // load palettes from json data
+    void Load(nlohmann::json &data)
     {
-        auto result = false;
+        auto names = std::vector<std::string>();
 
+        auto list = BloodSword::Array<Uint32>();
+
+        if (!data["palettes"].is_null() && data["palettes"].is_array() && data["palettes"].size() > 0)
+        {
+            for (auto i = 0; i < data["palettes"].size(); i++)
+            {
+                auto colors = std::vector<Uint32>();
+
+                if (!data["palettes"][i]["colors"].is_null() && data["palettes"][i]["colors"].is_array() && data["palettes"][i]["colors"].size() > 0)
+                {
+                    for (auto index = 0; index < data["palettes"][i]["colors"].size(); index++)
+                    {
+                        Uint32 color = std::stoul(std::string(data["palettes"][i]["colors"][index]), nullptr, 16);
+
+                        colors.push_back(color);
+                    }
+                }
+
+                if (colors.size() < 4)
+                {
+                    colors.push_back(0xFF000000);
+                }
+
+                if ((colors).size() >= 4)
+                {
+                    names.push_back(std::string(data["palettes"][i]["name"]));
+
+                    list.push_back(colors);
+                }
+            }
+        }
+
+        if (names.size() > 0 && list.size() > 0 && names.size() == list.size())
+        {
+#if defined(DEBUG)
+            std::cerr << "[LOADED] " << std::to_string(list.size()) << " palettes" << std::endl;
+#endif
+            Palette::List = list;
+
+            Palette::Names = names;
+        }
+    }
+
+    // load palettes from a json file
+    void Load(const char *palettes)
+    {
         std::ifstream ifs(palettes);
 
         if (ifs.good())
         {
             auto data = nlohmann::json::parse(ifs);
 
-            auto names = std::vector<std::string>();
-
-            auto list = BloodSword::Array<Uint32>();
-
-            if (!data["palettes"].is_null() && data["palettes"].is_array() && data["palettes"].size() > 0)
-            {
-                for (auto i = 0; i < data["palettes"].size(); i++)
-                {
-                    auto colors = std::vector<Uint32>();
-
-                    if (!data["palettes"][i]["colors"].is_null() && data["palettes"][i]["colors"].is_array() && data["palettes"][i]["colors"].size() > 0)
-                    {
-                        for (auto index = 0; index < data["palettes"][i]["colors"].size(); index++)
-                        {
-                            Uint32 color = std::stoul(std::string(data["palettes"][i]["colors"][index]), nullptr, 16);
-
-                            colors.push_back(color);
-                        }
-                    }
-
-                    if (colors.size() < 4)
-                    {
-                        colors.push_back(0xFF000000);
-                    }
-
-                    if ((colors).size() >= 4)
-                    {
-                        names.push_back(std::string(data["palettes"][i]["name"]));
-
-                        list.push_back(colors);
-                    }
-                }
-            }
-
-            if (names.size() > 0 && list.size() > 0 && names.size() == list.size())
-            {
-#if defined(DEBUG)
-                std::cerr << "[LOADED] " << std::to_string(list.size()) << " palettes" << std::endl;
-#endif
-                Palette::List = list;
-
-                Palette::Names = names;
-            }
+            Palette::Load(data);
 
             ifs.close();
         }
-
-        return result;
     }
 
-    // load palettes from a JSON file
-    bool Load(std::string palettes)
+    // load palettes from a json file
+    void Load(std::string palettes)
     {
-        return Palette::Load(palettes.c_str());
+        Palette::Load(palettes.c_str());
+    }
+
+    // load palettes from a zip archive
+    void Load(const char *palettes, const char *zip_file)
+    {
+        if (zip_file == nullptr)
+        {
+            Palette::Load(palettes);
+        }
+        else
+        {
+            auto ifs = ZipFile::Read(zip_file, palettes);
+
+            if (!ifs.empty())
+            {
+                auto data = nlohmann::json::parse(ifs);
+
+                Palette::Load(data);
+
+                ifs.clear();
+            }
+        }
+    }
+
+    // load palettes from a json file in a zip archive
+    void Load(std::string palettes, std::string zip_file)
+    {
+        Palette::Load(palettes.c_str(), zip_file.c_str());
     }
 
     // switch palette

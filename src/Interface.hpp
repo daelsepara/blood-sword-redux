@@ -537,6 +537,27 @@ namespace BloodSword::Interface
 
             // load fonts
             Fonts::Load(Interface::Settings["fonts"], zip_file);
+
+            // palette definitions
+            Palette::Load(Interface::Settings["palettes"], zip_file);
+
+            // set default palette
+            Palette::Switch(int(Interface::Settings["palette"]));
+
+            // load textures
+            Interface::LoadTextures(graphics);
+
+            // initialize gamepads
+            Input::InitializeGamePads();
+
+            // load item defaults
+            Items::LoadDefaults(Interface::Settings["items"], zip_file);
+
+            // load item descriptions
+            Items::LoadDescriptions(Interface::Settings["item_descriptions"], zip_file);
+
+            // load characters
+            Party::Characters = Party::Load(Interface::Settings["characters"], "characters", zip_file);
         }
     }
 
@@ -561,6 +582,16 @@ namespace BloodSword::Interface
 
         // reload all setings
         Interface::LoadSettings(graphics, settings_file);
+    }
+
+    // reload settings
+    void ReloadSettings(Graphics::Base &graphics, std::string settings_file, std::string zip_file)
+    {
+        // unload all assets (texture, sound, fonts)
+        Interface::UnloadAssets();
+
+        // reload all setings
+        Interface::LoadSettings(graphics, settings_file, zip_file);
     }
 
     // render texture inside a box background

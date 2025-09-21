@@ -27,7 +27,14 @@ namespace BloodSword
             this->graphics = Graphics::Initialize(session_name);
 
             // load settings of current module
-            Interface::LoadSettings(this->graphics, Interface::SettingsFile);
+            if (Interface::Zipped)
+            {
+                Interface::LoadSettings(this->graphics, Interface::SettingsFile, Interface::ZipFile);
+            }
+            else
+            {
+                Interface::LoadSettings(this->graphics, Interface::SettingsFile);
+            }
 
             // initialize save games list
             Interface::InitializeGamesList();
