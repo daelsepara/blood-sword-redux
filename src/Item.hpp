@@ -990,7 +990,7 @@ namespace BloodSword::Items
     // load items (defaults) from a zip file
     void LoadDefaults(std::string filename, std::string zip_file)
     {
-        Items::LoadDefaults(filename.c_str(), zip_file.c_str());
+        Items::LoadDefaults(filename.c_str(), zip_file.empty() ? nullptr : zip_file.c_str());
     }
 
     // load item descriptions from json data

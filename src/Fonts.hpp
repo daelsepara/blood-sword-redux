@@ -177,7 +177,7 @@ namespace BloodSword::Fonts
     // load font definitions from settings file in zip archive
     void Load(std::string fonts, std::string zip_file)
     {
-        Fonts::Load(fonts.c_str(), zip_file.c_str());
+        Fonts::Load(fonts.c_str(), zip_file.empty() ? nullptr : zip_file.c_str());
     }
 
     // get font by ID

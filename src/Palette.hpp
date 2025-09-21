@@ -138,7 +138,7 @@ namespace BloodSword::Palette
     // load palettes from a json file in a zip archive
     void Load(std::string palettes, std::string zip_file)
     {
-        Palette::Load(palettes.c_str(), zip_file.c_str());
+        Palette::Load(palettes.c_str(), zip_file.empty() ? nullptr : zip_file.c_str());
     }
 
     // switch palette

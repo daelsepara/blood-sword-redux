@@ -228,22 +228,28 @@ namespace BloodSword::Asset
     {
         auto result = false;
 
-        auto json_file = BloodSword::ZipFile::Read(zip_file, assets);
-
-        if (!json_file.empty())
+        if (zip_file == nullptr)
         {
-            result = Asset::Load(renderer, json_file, zip_file);
-
-            json_file.clear();
+            result = Asset::Load(renderer, assets);
         }
+        else
+        {
+            auto json_file = BloodSword::ZipFile::Read(zip_file, assets);
 
+            if (!json_file.empty())
+            {
+                result = Asset::Load(renderer, json_file, zip_file);
+
+                json_file.clear();
+            }
+        }
         return result;
     }
 
     // load all assets from zip file and create textures
     bool Load(SDL_Renderer *renderer, std::string zip_file, std::string assets)
     {
-        return Asset::Load(renderer, zip_file.c_str(), assets.c_str());
+        return Asset::Load(renderer, zip_file.empty() ? nullptr : zip_file.c_str(), assets.c_str());
     }
 
     // load asset locations

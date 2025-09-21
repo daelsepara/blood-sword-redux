@@ -1053,7 +1053,7 @@ namespace BloodSword::Party
     // load named party from zip archive
     Party::Base Load(std::string filename, std::string name, std::string zip_file)
     {
-        return Party::Load(filename.c_str(), name.c_str(), zip_file.c_str());
+        return Party::Load(filename.c_str(), name.c_str(), zip_file.empty() ? nullptr : zip_file.c_str());
     }
 }
 

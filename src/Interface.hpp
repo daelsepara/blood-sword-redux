@@ -530,7 +530,7 @@ namespace BloodSword::Interface
         else
         {
             // game settings
-            Interface::Initialize(settings_file.c_str(), zip_file.c_str());
+            Interface::Initialize(settings_file.c_str(), zip_file.empty() ? nullptr : zip_file.c_str());
 
             // load sound assets
             Sound::Load(Interface::Settings["sounds"], zip_file);
