@@ -4,6 +4,7 @@
 #include "nlohmann/json.hpp"
 #include "BattleResults.hpp"
 #include "Engine.hpp"
+#include "ZipFileLibrary.hpp"
 
 // classes for describing battle (combatants, map, conditions)
 namespace BloodSword::Battle
@@ -236,9 +237,11 @@ namespace BloodSword::Battle
             this->RoundParty = party;
         }
 
-        // initialize battle from data
-        void Initialize(nlohmann::json &data)
+        // initialize battle from data (and zip archive)
+        void Initialize(nlohmann::json &data, const char *zip_file)
         {
+            auto is_zip = (zip_file == nullptr);
+
             if (!data.is_null())
             {
                 if (!data["location"].is_null())
@@ -282,7 +285,14 @@ namespace BloodSword::Battle
 
                         if (map.size() > 0)
                         {
-                            this->Map.Load(map.c_str());
+                            if (is_zip)
+                            {
+                                this->Map.Load(map.c_str(), zip_file);
+                            }
+                            else
+                            {
+                                this->Map.Load(map.c_str());
+                            }
                         }
                     }
                 }
@@ -335,7 +345,31 @@ namespace BloodSword::Battle
                 }
             }
         }
+
+        // initialize battle from json data
+        void Initialize(nlohmann::json &data)
+        {
+            this->Initialize(data, nullptr);
+        }
     };
+
+    // load battle from json data
+    void Load(Battle::Base &battle, nlohmann::json &data)
+    {
+        if (!data["battle"].is_null())
+        {
+            battle.Initialize(data["battle"]);
+        }
+    }
+
+    // load battle from json data (and zip archive)
+    void Load(Battle::Base &battle, nlohmann::json &data, const char *zip_file)
+    {
+        if (!data["battle"].is_null())
+        {
+            battle.Initialize(data["battle"], zip_file);
+        }
+    }
 
     // load battle from file
     Battle::Base Load(const char *filename)
@@ -348,12 +382,35 @@ namespace BloodSword::Battle
         {
             auto data = nlohmann::json::parse(ifs);
 
-            if (!data["battle"].is_null())
-            {
-                battle.Initialize(data["battle"]);
-            }
+            Battle::Load(battle, data);
 
             ifs.close();
+        }
+
+        return battle;
+    }
+
+    // load battle from zip archive
+    Battle::Base Load(const char *filename, const char *zip_file)
+    {
+        Battle::Base battle;
+
+        if (zip_file == nullptr)
+        {
+            battle = Battle::Load(filename);
+        }
+        else
+        {
+            auto ifs = ZipFile::Read(zip_file, filename);
+
+            if (!ifs.empty())
+            {
+                auto data = nlohmann::json::parse(ifs);
+
+                Battle::Load(battle, data, zip_file);
+
+                ifs.clear();
+            }
         }
 
         return battle;

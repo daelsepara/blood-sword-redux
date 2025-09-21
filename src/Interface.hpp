@@ -7646,9 +7646,18 @@ namespace BloodSword::Interface
     {
         Interface::LoadModule(party.Module);
 
-        Interface::ReloadSettings(graphics, Interface::SettingsFile);
+        if (Interface::Zipped)
+        {
+            Interface::ReloadSettings(graphics, Interface::SettingsFile, Interface::ZipFile);
 
-        Story::Load(Interface::Settings["adventure"]);
+            Story::Load(Interface::Settings["adventure"], Interface::ZipFile);
+        }
+        else
+        {
+            Interface::ReloadSettings(graphics, Interface::SettingsFile);
+
+            Story::Load(Interface::Settings["adventure"]);
+        }
     }
 
     // render topic

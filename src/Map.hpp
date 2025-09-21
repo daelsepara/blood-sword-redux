@@ -7,6 +7,7 @@
 #include "AssetTypes.hpp"
 #include "MapObjects.hpp"
 #include "Primitives.hpp"
+#include "ZipFileLibrary.hpp"
 
 // map handling
 namespace BloodSword::Map
@@ -440,6 +441,29 @@ namespace BloodSword::Map
             }
 
             return load_error;
+        }
+
+        // load map from json file in zip archive
+        bool Load(const char *map, const char *zip_file)
+        {
+            auto LoadError = false;
+
+            auto ifs = ZipFile::Read(zip_file, map);
+
+            if (!ifs.empty())
+            {
+                auto data = nlohmann::json::parse(ifs);
+
+                LoadError = this->Setup(data);
+
+                ifs.clear();
+            }
+            else
+            {
+                LoadError = true;
+            }
+
+            return !LoadError;
         }
 
         // load map from json file
