@@ -407,6 +407,7 @@ namespace BloodSword::Story
         Story::Load(story.c_str(), zip_file.empty() ? nullptr : zip_file.c_str());
     }
 
+    // load ranks from json data
     std::vector<int> LoadRanks(nlohmann::json &data)
     {
         auto result = std::vector<int>();

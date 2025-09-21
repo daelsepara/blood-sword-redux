@@ -104,38 +104,12 @@ namespace BloodSword::Asset
         }
     }
 
-    // create surface from buffer
-    SDL_Surface *Surface(char *buffer, size_t size)
-    {
-        auto rw = SDL_RWFromMem((void *)buffer, size);
-
-        if (!rw)
-        {
-            // handle error
-            return nullptr;
-        }
-
-        // create surface and close SDL_RWops
-        auto surface = IMG_Load_RW(rw, 1);
-
-        return surface;
-    }
-
     // create texture from a file
-    SDL_Texture *ZipCreate(SDL_Renderer *renderer, const char *zip_file, const char *path)
+    SDL_Texture *Create(SDL_Renderer *renderer, const char *path, const char *zip_file)
     {
         SDL_Texture *texture = nullptr;
 
-        // read file from zip archive
-        auto asset = ZipFile::Read(zip_file, path);
-
-        // create a modifiable buffer
-        auto buffer = asset.data();
-
-        // create surface from memory buffer
-        auto surface = Asset::Surface(buffer, asset.size());
-
-        asset.clear();
+        auto surface = BloodSword::Load(path, zip_file);
 
         if (surface)
         {
@@ -180,7 +154,7 @@ namespace BloodSword::Asset
 
                 if (!path.empty() && !object.empty())
                 {
-                    auto texture = is_zip ? Asset::ZipCreate(renderer, zip_file, path.c_str()) : Asset::Create(renderer, path.c_str());
+                    auto texture = is_zip ? Asset::Create(renderer, path.c_str(), zip_file) : Asset::Create(renderer, path.c_str());
 
                     if (texture)
                     {

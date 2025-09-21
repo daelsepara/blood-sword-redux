@@ -49,8 +49,6 @@ namespace BloodSword::Fonts
         // create chunk from memory buffer
         auto rw = SDL_RWFromMem((void *)buffer, font.size());
 
-        font.clear();
-
         if (rw)
         {
             Fonts::Caption = TTF_OpenFontRW(rw, 0, caption);
@@ -63,6 +61,8 @@ namespace BloodSword::Fonts
 
             SDL_RWclose(rw);
         }
+
+        font.clear();
     }
 
     // set up font types

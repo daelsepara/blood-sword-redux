@@ -1243,8 +1243,15 @@ namespace BloodSword::Interface
 
         if (!section.ImageAsset.empty())
         {
-            image = Graphics::ScaledImage(graphics, section.ImageAsset, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
-
+            if (Interface::Zipped)
+            {
+                image = Graphics::ScaledImage(graphics, section.ImageAsset, Interface::ZipFile, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+            }
+            else
+            {
+                image = Graphics::ScaledImage(graphics, section.ImageAsset, panel_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+            }
+            
             image_location = origin + Point(panel_w - BloodSword::Width(image), panel_h - BloodSword::Height(image)) / 2;
         }
         else

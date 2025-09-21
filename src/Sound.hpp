@@ -85,22 +85,15 @@ namespace BloodSword::Sound
         // create a modifiable buffer
         auto buffer = sound.data();
 
-        // create empty chunk
-        Mix_Chunk *chunk = nullptr;
-
-        // create chunk from memory buffer
-        auto rw = SDL_RWFromMem((void *)buffer, sound.size());
-
-        if (rw)
-        {
-            chunk = Mix_LoadWAV_RW(rw, 1);
-        }
+        // load chunk
+        auto chunk = Sound::Load(buffer, sound.size());
 
         sound.clear();
 
         return chunk;
     }
 
+    // load sound from json data (and zip archive)
     void Load(nlohmann::json &data, const char *zip_file)
     {
         auto is_zip = (zip_file != nullptr);

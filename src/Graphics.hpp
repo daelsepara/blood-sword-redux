@@ -168,12 +168,12 @@ namespace BloodSword::Graphics
     }
 
     // create a scaled texture from loaded image
-    SDL_Texture *ScaledImage(Graphics::Base &graphics, std::string filename, int target_w, int target_h)
+    SDL_Texture *ScaledImage(Graphics::Base &graphics, std::string filename, std::string zip_file, int target_w, int target_h)
     {
         SDL_Texture *image = nullptr;
 
         // load image from a file as a surface
-        auto original = BloodSword::Load(filename.c_str());
+        auto original = !zip_file.empty() ? BloodSword::Load(filename.c_str(), zip_file.c_str()) : BloodSword::Load(filename.c_str());
 
         // render in current palette
         if (original)
@@ -230,6 +230,12 @@ namespace BloodSword::Graphics
         }
 
         return image;
+    }
+
+    // create a scaled texture from loaded image
+    SDL_Texture *ScaledImage(Graphics::Base &graphics, std::string filename, int target_w, int target_h)
+    {
+        return Graphics::ScaledImage(graphics, filename, std::string(), target_w, target_h);
     }
 
     // draw a filled rectangle on screen

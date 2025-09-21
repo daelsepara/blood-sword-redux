@@ -7697,7 +7697,15 @@ namespace BloodSword::Interface
 
             if (has_image)
             {
-                image = Graphics::ScaledImage(graphics, section.Image, panel_image_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                if (Interface::Zipped)
+                {
+                    image = Graphics::ScaledImage(graphics, section.Image, Interface::ZipFile, panel_image_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                }
+                else
+                {
+                    image = Graphics::ScaledImage(graphics, section.Image, panel_image_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
+                }
+                
 
                 image_location = origin + Point(panel_image_w - BloodSword::Width(image), panel_h - BloodSword::Height(image)) / 2;
             }

@@ -22,6 +22,7 @@
 #include <SDL_ttf.h>
 
 #include "Version.hpp"
+#include "ZipFileLibrary.hpp"
 
 // primitive classes, functions, and constants used throughout the program
 namespace BloodSword
@@ -227,6 +228,32 @@ namespace BloodSword
         {
             std::cerr << "Unable to load image " << image << "! SDL Error: " << SDL_GetError() << std::endl;
         }
+
+        return surface;
+    }
+
+    // load an image in a zip file as an SDL surface
+    SDL_Surface *Load(const char *image, const char *zip_file)
+    {
+        // read file from zip archive
+        auto asset = ZipFile::Read(zip_file, image);
+
+        // create a modifiable buffer
+        auto buffer = asset.data();
+
+        // create surface from memory buffer
+        auto rw = SDL_RWFromMem((void *)buffer, asset.size());
+
+        if (!rw)
+        {
+            // handle error
+            return nullptr;
+        }
+
+        // create surface and close SDL_RWops
+        auto surface = IMG_Load_RW(rw, 1);
+
+        asset.clear();
 
         return surface;
     }
