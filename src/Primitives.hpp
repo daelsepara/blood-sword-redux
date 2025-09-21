@@ -246,7 +246,6 @@ namespace BloodSword
 
         if (!rw)
         {
-            // handle error
             return nullptr;
         }
 

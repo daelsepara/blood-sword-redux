@@ -66,7 +66,6 @@ namespace BloodSword::Sound
 
         if (!rw)
         {
-            // handle error
             return nullptr;
         }
 
