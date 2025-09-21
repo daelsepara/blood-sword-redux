@@ -5,6 +5,21 @@
 
 namespace BloodSword::ZipFile
 {
+    // open zip archive
+    zipper::UnZip Open(const char *zip_file)
+    {
+        zipper::UnZip zip(zip_file);
+
+        return zip;
+    }
+
+    // close zip archive
+    void Close(zipper::UnZip &zip)
+    {
+        zip.close();
+    }
+
+    // read filename from open zip archive
     std::string Read(zipper::UnZip &zip, const char *zip_file, const char *filename)
     {
         auto buffer = std::string();
