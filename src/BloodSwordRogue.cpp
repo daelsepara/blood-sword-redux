@@ -20,7 +20,7 @@ namespace BloodSword::BloodSwordRogue
         catch (std::exception &e)
         {
             std::cerr << std::endl
-                      << "BLOODSWORD ("
+                      << "BLOODSWORD ROGUE ("
                       << Version()
                       << ") EXCEPTION: "
                       << e.what()

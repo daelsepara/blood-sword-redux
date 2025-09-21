@@ -128,6 +128,7 @@ namespace BloodSword::Asset
         return texture;
     }
 
+    // load assets from a zip archive
     bool Load(SDL_Renderer *renderer, std::string json_file, const char *zip_file)
     {
         auto is_zip = (zip_file != nullptr);

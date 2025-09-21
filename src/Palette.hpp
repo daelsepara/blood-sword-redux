@@ -45,7 +45,7 @@ namespace BloodSword::Palette
     int Current = 0;
 
     // load palettes from json data
-    void Load(nlohmann::json &data)
+    void Initialize(nlohmann::json &data)
     {
         auto names = std::vector<std::string>();
 
@@ -101,7 +101,7 @@ namespace BloodSword::Palette
         {
             auto data = nlohmann::json::parse(ifs);
 
-            Palette::Load(data);
+            Palette::Initialize(data);
 
             ifs.close();
         }
@@ -128,7 +128,7 @@ namespace BloodSword::Palette
             {
                 auto data = nlohmann::json::parse(ifs);
 
-                Palette::Load(data);
+                Palette::Initialize(data);
 
                 ifs.clear();
             }

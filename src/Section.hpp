@@ -62,9 +62,9 @@ namespace BloodSword::Section
     };
 
     // load section from json data
-    Section::Base Load(nlohmann::json &data, const char *zip_file)
+    Section::Base InitializeSections(nlohmann::json &data, const char *zip_file)
     {
-        auto is_zip = (zip_file == nullptr);
+        auto is_zip = (zip_file != nullptr);
 
         // initialize section
         auto section = Section::Base();
@@ -203,9 +203,9 @@ namespace BloodSword::Section
         return section;
     }
 
-    Section::Base Load(nlohmann::json &data)
+    Section::Base InitializeSections(nlohmann::json &data)
     {
-        return Section::Load(data, nullptr);
+        return Section::InitializeSections(data, nullptr);
     }
 
     // load section from file
@@ -221,7 +221,7 @@ namespace BloodSword::Section
 
             if (!data.is_null())
             {
-                section = Section::Load(data);
+                section = Section::InitializeSections(data);
             }
 
             ifs.close();
@@ -241,7 +241,7 @@ namespace BloodSword::Section
         {
             auto data = nlohmann::json::parse(ifs);
 
-            Section::Load(data, zip_file);
+            Section::InitializeSections(data, zip_file);
 
             ifs.clear();
         }
@@ -294,9 +294,9 @@ namespace BloodSword::Story
     Story::Base CurrentBook = Story::Base();
 
     // load data from json data (and zip file)
-    void Load(nlohmann::json &data, const char *zip_file)
+    void InitializeStory(nlohmann::json &data, const char *zip_file)
     {
-        auto is_zip = (zip_file == nullptr);
+        auto is_zip = (zip_file != nullptr);
 
         // re-initalize
         Story::CurrentBook = Story::Base();
@@ -320,7 +320,7 @@ namespace BloodSword::Story
 
                     if (!data["sections"][i].is_null() && data["sections"][i].is_object())
                     {
-                        section = Section::Load(data["sections"][i]);
+                        section = Section::InitializeSections(data["sections"][i]);
                     }
                     else if (!data["sections"][i].is_null() && data["sections"][i].is_string())
                     {
@@ -353,9 +353,9 @@ namespace BloodSword::Story
     }
 
     // load story from json data
-    void Load(nlohmann::json &data)
+    void InitializeStory(nlohmann::json &data)
     {
-        Story::Load(data, nullptr);
+        Story::InitializeStory(data, nullptr);
     }
 
     // load story from file
@@ -367,7 +367,7 @@ namespace BloodSword::Story
         {
             auto data = nlohmann::json::parse(ifs);
 
-            Story::Load(data);
+            Story::InitializeStory(data);
 
             ifs.close();
         }
@@ -394,7 +394,7 @@ namespace BloodSword::Story
             {
                 auto data = nlohmann::json::parse(ifs);
 
-                Story::Load(data, zip_file);
+                Story::InitializeStory(data, zip_file);
 
                 ifs.clear();
             }
@@ -408,7 +408,7 @@ namespace BloodSword::Story
     }
 
     // load ranks from json data
-    std::vector<int> LoadRanks(nlohmann::json &data)
+    std::vector<int> InitializeRanks(nlohmann::json &data)
     {
         auto result = std::vector<int>();
 
@@ -437,7 +437,7 @@ namespace BloodSword::Story
         {
             auto data = nlohmann::json::parse(ifs);
 
-            result = Story::LoadRanks(data);
+            result = Story::InitializeRanks(data);
 
             ifs.close();
         }
@@ -468,7 +468,7 @@ namespace BloodSword::Story
             {
                 auto data = nlohmann::json::parse(ifs);
 
-                result = Story::LoadRanks(data);
+                result = Story::InitializeRanks(data);
 
                 ifs.clear();
             }

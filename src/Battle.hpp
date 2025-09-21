@@ -240,7 +240,7 @@ namespace BloodSword::Battle
         // initialize battle from data (and zip archive)
         void Initialize(nlohmann::json &data, const char *zip_file)
         {
-            auto is_zip = (zip_file == nullptr);
+            auto is_zip = (zip_file != nullptr);
 
             if (!data.is_null())
             {

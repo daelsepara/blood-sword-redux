@@ -921,7 +921,7 @@ namespace BloodSword::Items
     }
 
     // load items from json data
-    void LoadDefaults(nlohmann::json &data)
+    void InitializeDefaults(nlohmann::json &data)
     {
         if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
         {
@@ -953,7 +953,7 @@ namespace BloodSword::Items
         {
             auto data = nlohmann::json::parse(ifs);
 
-            Items::LoadDefaults(data);
+            Items::InitializeDefaults(data);
 
             ifs.close();
         }
@@ -974,7 +974,7 @@ namespace BloodSword::Items
             {
                 auto data = nlohmann::json::parse(ifs);
 
-                Items::LoadDefaults(data);
+                Items::InitializeDefaults(data);
 
                 ifs.clear();
             }
@@ -994,7 +994,7 @@ namespace BloodSword::Items
     }
 
     // load item descriptions from json data
-    void LoadDescriptions(nlohmann::json &data)
+    void InitializeDescriptions(nlohmann::json &data)
     {
         if (!data["descriptions"].is_null() && data["descriptions"].is_array() && data["descriptions"].size() > 0)
         {
@@ -1027,7 +1027,7 @@ namespace BloodSword::Items
         {
             auto data = nlohmann::json::parse(ifs);
 
-            Items::LoadDescriptions(data);
+            Items::InitializeDescriptions(data);
 
             ifs.close();
         }
@@ -1054,7 +1054,7 @@ namespace BloodSword::Items
             {
                 auto data = nlohmann::json::parse(ifs);
 
-                Items::LoadDescriptions(data);
+                Items::InitializeDescriptions(data);
 
                 ifs.clear();
             }

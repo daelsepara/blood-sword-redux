@@ -7705,7 +7705,7 @@ namespace BloodSword::Interface
                 {
                     image = Graphics::ScaledImage(graphics, section.Image, panel_image_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                 }
-                
+
 
                 image_location = origin + Point(panel_image_w - BloodSword::Width(image), panel_h - BloodSword::Height(image)) / 2;
             }
