@@ -224,7 +224,7 @@ namespace BloodSword::Asset
     }
 
     // load all assets from zip file and create textures
-    bool Load(SDL_Renderer *renderer, const char *zip_file, const char *assets)
+    bool Load(SDL_Renderer *renderer, const char *assets, const char *zip_file)
     {
         auto result = false;
 
@@ -247,9 +247,9 @@ namespace BloodSword::Asset
     }
 
     // load all assets from zip file and create textures
-    bool Load(SDL_Renderer *renderer, std::string zip_file, std::string assets)
+    bool Load(SDL_Renderer *renderer, std::string assets, std::string zip_file)
     {
-        return Asset::Load(renderer, zip_file.empty() ? nullptr : zip_file.c_str(), assets.c_str());
+        return Asset::Load(renderer, assets.c_str(), zip_file.empty() ? nullptr : zip_file.c_str());
     }
 
     // load asset locations

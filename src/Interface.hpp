@@ -431,7 +431,7 @@ namespace BloodSword::Interface
         // load all assets, initialize asset type ids
         if (Interface::Zipped)
         {
-            Asset::Load(graphics.Renderer, Interface::ZipFile, Interface::Settings["assets"]);
+            Asset::Load(graphics.Renderer, Interface::Settings["assets"], Interface::ZipFile);
         }
         else
         {
