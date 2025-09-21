@@ -346,6 +346,10 @@ namespace BloodSword::Story
                 }
             }
         }
+
+#if defined(DEBUG)
+        std::cerr << "[LOADED] " << book.Sections.size() << " SECTIONS" << std::endl;
+#endif
     }
 
     // load story from json data
@@ -367,10 +371,6 @@ namespace BloodSword::Story
 
             ifs.close();
         }
-
-#if defined(DEBUG)
-        std::cerr << "[LOADED] " << book.Sections.size() << " SECTIONS" << std::endl;
-#endif
     }
 
     // load story from file
@@ -399,10 +399,6 @@ namespace BloodSword::Story
                 ifs.clear();
             }
         }
-
-#if defined(DEBUG)
-        std::cerr << "[LOADED] " << book.Sections.size() << " SECTIONS" << std::endl;
-#endif
     }
 
     // load story from file
