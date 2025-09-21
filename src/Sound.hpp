@@ -8,6 +8,7 @@
 
 #include "nlohmann/json.hpp"
 #include "Templates.hpp"
+#include "ZipFileLibrary.hpp"
 
 // functions for managing sound effects
 namespace BloodSword::Sound
@@ -58,6 +59,73 @@ namespace BloodSword::Sound
         return Sound::Map(sound.c_str());
     }
 
+    // create surface from buffer
+    Mix_Chunk *Load(char *buffer, size_t size)
+    {
+        auto rw = SDL_RWFromMem((void *)buffer, size);
+
+        if (!rw)
+        {
+            // handle error
+            return nullptr;
+        }
+
+        // create surface and close SDL_RWops
+        auto chunk = Mix_LoadWAV_RW(rw, 1);
+
+        return chunk;
+    }
+
+    // load sound from a file in zip
+    Mix_Chunk *Load(const char *zip_file, const char *path)
+    {
+        // read file from zip archive
+        auto sound = BloodSword::ZipFile::Read(zip_file, path);
+
+        // create a modifiable buffer
+        auto buffer = sound.data();
+
+        // create empty chunk
+        Mix_Chunk *chunk = nullptr;
+
+        // create chunk from memory buffer
+        auto rw = SDL_RWFromMem((void *)buffer, sound.size());
+
+        if (rw)
+        {
+            chunk = Mix_LoadWAV_RW(rw, 1);
+        }
+
+        sound.clear();
+
+        return chunk;
+    }
+
+    void Load(nlohmann::json &data, const char *zipfile)
+    {
+        auto is_zip = (zipfile != nullptr);
+
+        if (!data["sounds"].is_null() && data["sounds"].is_array() && data["sounds"].size() > 0)
+        {
+            for (auto i = 0; i < data["sounds"].size(); i++)
+            {
+                auto asset = !data["sounds"][i]["id"].is_null() ? Sound::Map(std::string(data["sounds"][i]["id"])) : Sound::Type::NONE;
+
+                auto path = !data["sounds"][i]["path"].is_null() ? std::string(data["sounds"][i]["path"]) : "";
+
+                if (!path.empty() && asset != Sound::Type::NONE)
+                {
+                    auto sound = is_zip ? Sound::Load(zipfile, path.c_str()) : Mix_LoadWAV(path.c_str());
+
+                    if (sound)
+                    {
+                        Sound::Assets[asset] = sound;
+                    }
+                }
+            }
+        }
+    }
+
     // initialize mixer and load all sound assets
     void Load(std::string assets)
     {
@@ -78,24 +146,29 @@ namespace BloodSword::Sound
         {
             auto data = nlohmann::json::parse(ifs);
 
-            if (!data["sounds"].is_null() && data["sounds"].is_array() && data["sounds"].size() > 0)
+            Sound::Load(data, nullptr);
+
+            ifs.close();
+        }
+    }
+
+    void Load(std::string assets, std::string zipfile)
+    {
+        if (zipfile.empty())
+        {
+            Sound::Load(assets);
+        }
+        else
+        {
+            auto ifs = ZipFile::Read(zipfile.c_str(), assets.c_str());
+
+            if (!ifs.empty())
             {
-                for (auto i = 0; i < data["sounds"].size(); i++)
-                {
-                    auto asset = !data["sounds"][i]["id"].is_null() ? Sound::Map(std::string(data["sounds"][i]["id"])) : Sound::Type::NONE;
+                auto data = nlohmann::json::parse(ifs);
 
-                    auto path = !data["sounds"][i]["path"].is_null() ? std::string(data["sounds"][i]["path"]) : "";
+                Sound::Load(data, zipfile.c_str());
 
-                    if (!path.empty() && asset != Sound::Type::NONE)
-                    {
-                        auto sound = Mix_LoadWAV(path.c_str());
-
-                        if (sound)
-                        {
-                            Sound::Assets[asset] = sound;
-                        }
-                    }
-                }
+                ifs.clear();
             }
         }
     }

@@ -154,8 +154,10 @@ namespace BloodSword::Asset
         return texture;
     }
 
-    bool Load(SDL_Renderer *renderer, std::string json_file, const char *zip_file, bool is_zip)
+    bool Load(SDL_Renderer *renderer, std::string json_file, const char *zip_file)
     {
+        auto is_zip = (zip_file != nullptr);
+
         Asset::Unload();
 
         Asset::Locations.clear();
@@ -207,7 +209,7 @@ namespace BloodSword::Asset
 
         if (!json_file.empty())
         {
-            result = Asset::Load(renderer, json_file, nullptr, false);
+            result = Asset::Load(renderer, json_file, nullptr);
 
             json_file.clear();
         }
@@ -230,7 +232,7 @@ namespace BloodSword::Asset
 
         if (!json_file.empty())
         {
-            result = Asset::Load(renderer, json_file, zip_file, true);
+            result = Asset::Load(renderer, json_file, zip_file);
 
             json_file.clear();
         }

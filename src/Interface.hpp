@@ -22,6 +22,7 @@
 #include "Sound.hpp"
 #include "Help.hpp"
 #include "Logger.hpp"
+#include "ZipFileLibrary.hpp"
 
 namespace fs = std::filesystem;
 
@@ -30,6 +31,12 @@ namespace BloodSword::Interface
 {
     // path to settings file
     std::string SettingsFile = std::string();
+
+    // zip archive
+    std::string ZipFile = std::string();
+
+    // module is a zipped archive
+    bool Zipped = false;
 
     // game settings (json object)
     nlohmann::json Settings;
@@ -282,10 +289,25 @@ namespace BloodSword::Interface
 
         // settings file
         std::string SettingsFile = std::string();
+
+        // zip archive
+        std::string ZipFile = std::string();
+
+        // module is in a zipped archive
+        bool Zipped = false;
     };
 
     // list of available modules
     std::vector<Interface::Module> Modules = {};
+
+    // initialize settings from json
+    void Initialize(nlohmann::json &data)
+    {
+        if (!data["settings"].is_null() && data["settings"].is_object() && data["settings"].size() > 0)
+        {
+            Interface::Settings = data["settings"];
+        }
+    }
 
     // initialize settings from file
     void Initialize(const char *settings)
@@ -296,16 +318,34 @@ namespace BloodSword::Interface
         {
             auto data = nlohmann::json::parse(ifs);
 
-            if (!data["settings"].is_null() && data["settings"].is_object() && data["settings"].size() > 0)
-            {
-                Interface::Settings = data["settings"];
-            }
+            Interface::Initialize(data);
 
             ifs.close();
         }
         else
         {
             throw std::invalid_argument("Unable to load settings!");
+        }
+    }
+
+    void Initialize(const char *settings, const char *zipfile)
+    {
+        if (zipfile == nullptr)
+        {
+            Interface::Initialize(settings);
+        }
+        else
+        {
+            auto ifs = ZipFile::Read(zipfile, settings);
+
+            if (!ifs.empty())
+            {
+                auto data = nlohmann::json::parse(ifs);
+
+                Interface::Initialize(data);
+
+                ifs.clear();
+            }
         }
     }
 
@@ -389,9 +429,14 @@ namespace BloodSword::Interface
     void LoadTextures(Graphics::Base &graphics)
     {
         // load all assets, initialize asset type ids
-        Asset::Load(graphics.Renderer, Interface::Settings["assets"]);
-
-        // TODO: Asset::Load(graphics.Renderer, "modules/default.zip", "assets.json");
+        if (Interface::Zipped)
+        {
+            Asset::Load(graphics.Renderer, Interface::ZipFile, Interface::Settings["assets"]);
+        }
+        else
+        {
+            Asset::Load(graphics.Renderer, Interface::Settings["assets"]);
+        }
 
         // initialize attribute to asset mapping
         Attribute::MapAssets();
@@ -472,6 +517,27 @@ namespace BloodSword::Interface
 
         // load characters
         Party::Characters = Party::Load(Interface::Settings["characters"], "characters");
+    }
+
+    // load settings from file
+    void LoadSettings(Graphics::Base &graphics, std::string settings_file, std::string zipfile)
+    {
+        if (zipfile.empty())
+        {
+            // load settings from file
+            Interface::LoadSettings(graphics, settings_file);
+        }
+        else
+        {
+            // game settings
+            Interface::Initialize(settings_file.c_str(), zipfile.c_str());
+
+            // load sound assets
+            Sound::Load(Interface::Settings["sounds"], zipfile);
+
+            // load fonts
+            Fonts::Load(Interface::Settings["fonts"], zipfile);
+        }
     }
 
     // unload sound, fonts, texture assets
@@ -6847,6 +6913,10 @@ namespace BloodSword::Interface
     {
         Interface::SettingsFile = std::string();
 
+        Interface::ZipFile = std::string();
+
+        Interface::Zipped = false;
+
         if (Interface::Modules.size() == 0 || load.empty())
         {
             throw std::invalid_argument("No modules loaded!");
@@ -6861,6 +6931,10 @@ namespace BloodSword::Interface
                 if (module.Id == load)
                 {
                     Interface::SettingsFile = module.SettingsFile;
+
+                    Interface::ZipFile = module.ZipFile;
+
+                    Interface::Zipped = module.Zipped;
 
                     break;
                 }
@@ -6909,6 +6983,10 @@ namespace BloodSword::Interface
                         module.Title = !data["modules"][i]["title"].is_null() ? std::string(data["modules"][i]["title"]) : std::string();
 
                         module.SettingsFile = !data["modules"][i]["settings"].is_null() ? std::string(data["modules"][i]["settings"]) : std::string();
+
+                        module.ZipFile = !data["modules"][i]["zipfile"].is_null() ? std::string(data["modules"][i]["zipfile"]) : std::string();
+
+                        module.Zipped = !module.ZipFile.empty();
 
                         if (!module.Id.empty() && !module.Title.empty() && !module.SettingsFile.empty())
                         {
