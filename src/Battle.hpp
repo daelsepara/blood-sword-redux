@@ -353,22 +353,23 @@ namespace BloodSword::Battle
         }
     };
 
-    // load battle from json data
-    void Load(Battle::Base &battle, nlohmann::json &data)
-    {
-        if (!data["battle"].is_null())
-        {
-            battle.Initialize(data["battle"]);
-        }
-    }
-
     // load battle from json data (and zip archive)
     void Load(Battle::Base &battle, nlohmann::json &data, const char *zip_file)
     {
-        if (!data["battle"].is_null())
+        if (zip_file == nullptr)
+        {
+            battle.Initialize(data["battle"]);
+        }
+        else if (!data["battle"].is_null())
         {
             battle.Initialize(data["battle"], zip_file);
         }
+    }
+
+    // load battle from json data
+    void Load(Battle::Base &battle, nlohmann::json &data)
+    {
+        Battle::Load(battle, data, nullptr);
     }
 
     // load battle from file
