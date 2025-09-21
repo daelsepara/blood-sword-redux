@@ -29,7 +29,6 @@ namespace zipper
     class Zip
     {
     public:
-
         Zip() = default;
 
         Zip(const std::string &zipname) { open(zipname); }
@@ -102,14 +101,12 @@ namespace zipper
         operator zipFile() { return zfile_; }
 
     private:
-
         zipFile zfile_ = nullptr;
     };
 
     class UnZip
     {
     public:
-
         UnZip() = default;
 
         UnZip(const std::string &zipname) { open(zipname); }
@@ -162,7 +159,8 @@ namespace zipper
 
         bool read(std::string &buf) const
         {
-            return read([&](const char *data, size_t len) { buf.append(data, len); });
+            return read([&](const char *data, size_t len)
+                        { buf.append(data, len); });
         }
 
         std::string file_path() const
@@ -243,15 +241,13 @@ namespace zipper
                 do
                 {
                     callback(*this);
-                }
-                while (next());
+                } while (next());
             }
         }
 
         operator unzFile() { return uzfile_; }
 
     private:
-
         unzFile uzfile_ = nullptr;
     };
 
