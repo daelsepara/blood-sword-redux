@@ -42,8 +42,17 @@ namespace BloodSword::Rogue
         // message to display (when trigger fails)
         std::string FailMessage = std::string();
 
+        // message to display (trigger has been activated but not completed)
+        std::string ActiveMessage = std::string();
+
         // trigger variables
         std::vector<std::string> Variables = {};
+
+        // trigger has been activated (encountered for the first time)
+        bool Activated = false;
+
+        // trigger cannot be completed
+        bool Failed = false;
 
         Point Location()
         {

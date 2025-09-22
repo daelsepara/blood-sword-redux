@@ -243,6 +243,34 @@ namespace BloodSword::Rogue
         else if (tile.Type == Map::Object::TRIGGER)
         {
             // handle trigger
+            auto trigger = Rogue::FindTrigger(rogue, point);
+
+            if (trigger >= 0 && trigger < rogue.Triggers.size())
+            {
+                if (!rogue.Triggers[trigger].Activated)
+                {
+                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].EncounterMessage, Color::Active);
+
+                    rogue.Triggers[trigger].Activated = true;
+                }
+                else if (!rogue.Triggers[trigger].ActiveMessage.empty())
+                {
+                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].ActiveMessage, Color::Active);
+                }
+
+                if (Rogue::CheckTrigger(rogue, trigger))
+                {
+                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].TriggerMessage, Color::Inactive);
+
+                    Rogue::ClearTrigger(rogue, trigger);
+                }
+                else if (rogue.Triggers[trigger].Failed)
+                {
+                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].FailMessage, Color::Highlight);
+
+                    Rogue::ClearTrigger(rogue, trigger);
+                }
+            }
         }
         else
         {
