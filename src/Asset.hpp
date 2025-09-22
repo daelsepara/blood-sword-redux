@@ -61,7 +61,7 @@ namespace BloodSword::Asset
 
         if (asset != Asset::NONE)
         {
-            surface = BloodSword::Load(Asset::Locations[asset].c_str());
+            surface = BloodSword::Surface(Asset::Locations[asset].c_str());
 
             if (surface)
             {

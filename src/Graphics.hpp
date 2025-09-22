@@ -84,7 +84,7 @@ namespace BloodSword::Graphics
     // set window/screen icon
     void SetWindowIcon(Base &graphics, const char *icon)
     {
-        auto surface = BloodSword::Load(icon);
+        auto surface = BloodSword::Surface(icon);
 
         if (graphics.Window && surface)
         {
@@ -173,7 +173,7 @@ namespace BloodSword::Graphics
         SDL_Texture *image = nullptr;
 
         // load image from a file as a surface
-        auto original = !zip_file.empty() ? BloodSword::Load(filename.c_str(), zip_file.c_str()) : BloodSword::Load(filename.c_str());
+        auto original = !zip_file.empty() ? BloodSword::Surface(filename.c_str(), zip_file.c_str()) : BloodSword::Surface(filename.c_str());
 
         // render in current palette
         if (original)

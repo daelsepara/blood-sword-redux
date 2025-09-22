@@ -220,7 +220,7 @@ namespace BloodSword
     }
 
     // load an image as an SDL surface
-    SDL_Surface *Load(const char *image)
+    SDL_Surface *Surface(const char *image)
     {
         auto surface = IMG_Load(image);
 
@@ -233,7 +233,7 @@ namespace BloodSword
     }
 
     // load an image in a zip file as an SDL surface
-    SDL_Surface *Load(const char *image, const char *zip_file)
+    SDL_Surface *Surface(const char *image, const char *zip_file)
     {
         // read file from zip archive
         auto asset = ZipFile::Read(zip_file, image);
