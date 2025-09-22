@@ -10,8 +10,8 @@
 
 #pragma once
 
-#include <minizip/unzip.h>
-#include <minizip/zip.h>
+#include <unzip.h>
+#include <zip.h>
 
 #include <cassert>
 #include <fstream>
