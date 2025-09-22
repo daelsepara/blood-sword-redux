@@ -19,7 +19,7 @@ This file contains information about the current module as well as references to
 ## [Book](#book)
 
 - **implementation** [book.json](../src/modules/default/book.json)
-- **documentation** [settings](book/book.md)
+- **documentation** [book](book/book.md)
 
 ## [Assets](#assets)
 
