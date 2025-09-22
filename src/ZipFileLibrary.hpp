@@ -8,7 +8,7 @@ namespace BloodSword::ZipFile
     // open zip archive
     zipper::UnZip Open(const char *zip_file)
     {
-        zipper::UnZip zip(zip_file);
+        auto zip = zipper::UnZip(zip_file);
 
         return zip;
     }
@@ -45,7 +45,7 @@ namespace BloodSword::ZipFile
     // read entire file from zip archive
     std::string Read(const char *zip_file, const char *filename)
     {
-        zipper::UnZip zip(zip_file);
+        auto zip = zipper::UnZip(zip_file);
 
         auto buffer = ZipFile::Read(zip, zip_file, filename);
 
