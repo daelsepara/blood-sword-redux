@@ -27,22 +27,28 @@ namespace BloodSword::Asset
     // create texture from a file
     SDL_Texture *Create(SDL_Renderer *renderer, const char *path)
     {
-        SDL_Texture *texture = nullptr;
+        auto texture = IMG_LoadTexture(renderer, path);
 
-        auto surface = BloodSword::Load(path);
-
-        if (surface)
+        if (texture)
         {
-            texture = SDL_CreateTextureFromSurface(renderer, surface);
+            SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
 
-            if (texture)
-            {
-                SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+            SDL_SetTextureColorMod(texture, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
+        }
 
-                SDL_SetTextureColorMod(texture, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
-            }
+        return texture;
+    }
 
-            BloodSword::Free(&surface);
+    // create texture from a file in zip archive
+    SDL_Texture *Create(SDL_Renderer *renderer, const char *path, const char *zip_file)
+    {
+        auto texture = BloodSword::Texture(renderer, path, zip_file);
+
+        if (texture)
+        {
+            SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
+
+            SDL_SetTextureColorMod(texture, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
         }
 
         return texture;
@@ -102,30 +108,6 @@ namespace BloodSword::Asset
 
             Asset::Locations.clear();
         }
-    }
-
-    // create texture from a file
-    SDL_Texture *Create(SDL_Renderer *renderer, const char *path, const char *zip_file)
-    {
-        SDL_Texture *texture = nullptr;
-
-        auto surface = BloodSword::Load(path, zip_file);
-
-        if (surface)
-        {
-            texture = SDL_CreateTextureFromSurface(renderer, surface);
-
-            if (texture)
-            {
-                SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND);
-
-                SDL_SetTextureColorMod(texture, Color::R(Color::Active), Color::G(Color::Active), Color::B(Color::Active));
-            }
-
-            BloodSword::Free(&surface);
-        }
-
-        return texture;
     }
 
     // load assets from a zip archive

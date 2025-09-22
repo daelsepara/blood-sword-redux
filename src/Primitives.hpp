@@ -257,6 +257,31 @@ namespace BloodSword
         return surface;
     }
 
+    // load an image in a zip file as an SDL texture
+    SDL_Texture *Texture(SDL_Renderer *renderer, const char *image, const char *zip_file)
+    {
+        // read file from zip archive
+        auto asset = ZipFile::Read(zip_file, image);
+
+        // create a modifiable buffer
+        auto buffer = asset.data();
+
+        // create surface from memory buffer
+        auto rw = SDL_RWFromMem((void *)buffer, asset.size());
+
+        if (!rw)
+        {
+            return nullptr;
+        }
+
+        // create surface and close SDL_RWops
+        auto texture = IMG_LoadTexture_RW(renderer, rw, 1);
+
+        asset.clear();
+
+        return texture;
+    }
+
     // free surface
     void Free(SDL_Surface **surface)
     {
