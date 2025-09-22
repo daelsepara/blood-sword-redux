@@ -104,7 +104,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\SDL2\include;$(ProjectDir)..\..\minizip\include;$(ProjectDir)..\..\zlib</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -134,8 +134,8 @@ XCOPY "$(ProjectDir)..\..\minizip\lib\x64\zlibwapi.dll" "$(TargetDir)" /Y</Comma
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SDL2\include;$(ProjectDir)..\..\minizip\include;$(ProjectDir)..\..\zlib</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SDL2\include;$(ProjectDir)..\..\minizip\include;$(ProjectDir)..\..\zlib</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
