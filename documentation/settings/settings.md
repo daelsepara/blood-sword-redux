@@ -20,15 +20,19 @@
 }
 ```
 
+This is the main json file from which other json files are loaded and parsed by the engine. It is the first json file parsed.
+
+**see** [settings.json](../../src/modules/default/settings.json)
+
 ## Format
 
-## [assets](#assets) 
+## [assets](#assets)
 
 JSON file which lists the sprites/icons used in the game. Path to file must be relative to the game executable's location, usually inside the module's directory. For the **default** module, this file (**assets.json** in the above example) is inside the **default** module's directory at */modules/default*.
 
 **see** [assets](../assets/assets.md)
 
-## [fonts](#fonts) 
+## [fonts](#fonts)
 
 JSON file which determines the font file used in the game as well as sizes for *normal*, *fixed* and *caption* text. It is inside the **default** module's directory at */modules/default*.
 
