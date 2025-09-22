@@ -13,16 +13,16 @@ The BloodSword gamebook engine uses many different types of json files, which ar
 
 This file contains information about the current module as well as references to other json files that drive the game's other core systems (help, story, starting ranks, item defaults).
 
-**implementation** [settings.json](../src/modules/default/settings.json)
-**documentation** [settings](settings/settings.md)
+- **implementation** [settings.json](../src/modules/default/settings.json)
+- **documentation** [settings](settings/settings.md)
 
 ## Book
 
-**implementation** [book.json](../src/modules/default/book.json)
+- **implementation** [book.json](../src/modules/default/book.json)
 
 ## Assets
 
 List of images used in the game, e.g. button icons, map sprites.
 
-**implementation** [assets.json](../src/modules/default/assets.json)
-**documentation** [assets](assets/assets.md)
+- **implementation** [assets.json](../src/modules/default/assets.json)
+- **documentation** [assets](assets/assets.md)
