@@ -28,7 +28,7 @@ ifeq ($(UNAME_S),Darwin)
 	LLVM=$(shell brew --prefix llvm)
 	CC=$(LLVM)/bin/clang++
 	LIBS += -stdlib=libc++ -Wl,-dead_strip -fdata-sections -ffunction-sections -L$(LLVM)/lib/c++ -L/usr/local/lib
-	INCLUDES += -I/usr/local/include/SDL2 -I/usr/local/include
+	INCLUDES += -I/usr/local/include/SDL2 -I/usr/local/include/minizip
 else ifeq ($(UNAME_M),aarch64)
 	DEBIAN_ARCH=arm64
 	DEBIAN=blood-sword.$(DEBIAN_ARCH)
