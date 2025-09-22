@@ -1,3 +1,3 @@
 # Assets
 
-[go back](../index.md)
+[go back](../README.md#assets)

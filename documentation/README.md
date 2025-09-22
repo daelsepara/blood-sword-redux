@@ -9,20 +9,21 @@ In this section, we document the format and functions of these json files for an
 
 The BloodSword gamebook engine uses many different types of json files, which are documented in its own section. Sometimes these json files refer to other json files.
 
-## Settings
+## [Settings](#settings)
 
 This file contains information about the current module as well as references to other json files that drive the game's other core systems (help, story, starting ranks, item defaults).
 
 - **implementation** [settings.json](../src/modules/default/settings.json)
 - **documentation** [settings](settings/settings.md)
 
-## Book
+## [Book](#book)
 
 - **implementation** [book.json](../src/modules/default/book.json)
+- **documentation** [settings](book/book.md)
 
-## Assets
+## [Assets](#assets)
 
-List of images used in the game, e.g. button icons, map sprites.
+List of icons used in the game, e.g. button icons, map sprites.
 
 - **implementation** [assets.json](../src/modules/default/assets.json)
 - **documentation** [assets](assets/assets.md)

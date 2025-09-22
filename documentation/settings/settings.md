@@ -22,12 +22,16 @@
 
 ## Format
 
-The **settings** json object has the following keys
+## [assets](#assets) 
 
-### [assets]
-
-Refers to the json file which lists the sprites/icons used throughout the game.
+JSON file which lists the sprites/icons used in the game. Path to file must be relative to the game executable's location, usually inside the module's directory. For the **default** module, this file (**assets.json** in the above example) is inside the **default** module's directory at */modules/default*.
 
 **see** [assets](../assets/assets.md)
 
-[go back](../index.md)
+## [fonts](#fonts) 
+
+JSON file which determines the font file used in the game as well as sizes for *normal*, *fixed* and *caption* text. It is inside the **default** module's directory at */modules/default*.
+
+**see** [fonts](../fonts/fonts.md)
+
+[go back](../README.md#settings)
