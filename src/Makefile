@@ -16,7 +16,7 @@ BSWORD_ROGUE=BloodSwordRogue.cpp
 BSWORD_ROGUE_OUTPUT=BloodSwordRogue.exe
 DEBUG=-g -O0
 LIBS=-O3 -std=c++17 -lSDL2 -lSDL2_image -lSDL2_ttf -lSDL2_mixer -lminizip
-INCLUDES=-I/usr/include/SDL2
+INCLUDES=-I/usr/include/SDL2 -I/usr/include/minizip
 UNAME_S=$(shell uname -s)
 UNAME_M=$(shell uname -m)
 DEBIAN_ARCH=amd64

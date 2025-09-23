@@ -1,8 +1,8 @@
 Package: battlepits-of-krarth
-Version: 0.2.66
+Version: 0.2.70
 Maintainer: Dael Separa <dael.separa@gmail.com>
 Architecture: arm64
 Description: BloodSword: Battlepits of Krarth (SDL)
-Depends: libstdc++6 (>= 12.2.0), libc6 (>= 2.36), libgcc-s1 (>= 12.2.0), libsdl2-2.0-0 (>= 2.26.5), libsdl2-image-2.0-0 (>= 2.6.3), libsdl2-ttf-2.0-0 (>= 2.20.1), libsdl2-mixer-2.0-0 (>= 2.6.2)
+Depends: libstdc++6 (>= 12.2.0), libc6 (>= 2.36), libgcc-s1 (>= 12.2.0), libsdl2-2.0-0 (>= 2.26.5), libsdl2-image-2.0-0 (>= 2.6.3), libsdl2-ttf-2.0-0 (>= 2.20.1), libsdl2-mixer-2.0-0 (>= 2.6.2), libminizip1t64 (>=1:1.3), zlib1g (>= 1:1.1.4)
 Priority: optional
 Section: games
