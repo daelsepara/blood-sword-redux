@@ -36,8 +36,8 @@ namespace BloodSword::Rogue
         // message to display (upon encountering)
         std::string EncounterMessage = std::string();
 
-        // message to display (when successfully triggered)
-        std::string TriggerMessage = std::string();
+        // message to display (when successfully completed)
+        std::string CompletedMessage = std::string();
 
         // message to display (when trigger fails)
         std::string FailMessage = std::string();

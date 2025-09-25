@@ -516,9 +516,48 @@ namespace BloodSword::Rogue
     }
 
     // check if trigger has been activated
-    bool CheckTrigger(Rogue::Base &rogue, int trigger)
+    bool CheckTrigger(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int trigger)
     {
         auto result = false;
+
+        auto fail = false;
+
+        if (trigger >= 0 && trigger < rogue.Triggers.size())
+        {
+            if (rogue.Triggers[trigger].Type == TriggerType::NONE)
+            {
+                // automatically completed
+                result = true;
+            }
+            else if (rogue.Triggers[trigger].Type == TriggerType::CHARACTER)
+            {
+                fail = true;
+
+                // variables:
+                // 0 - character
+                if (rogue.Triggers[trigger].Variables.size() > 0)
+                {
+                    auto &variables = rogue.Triggers[trigger].Variables;
+
+                    auto &party = rogue.Party;
+
+                    auto character = Interface::SelectCharacter(graphics, background, party, variables[0]);
+
+                    if (character != Character::Class::NONE)
+                    {
+                        result = rogue.Has(character) && Engine::IsAlive(party[character]);
+
+                        fail = !result;
+                    }
+                }
+            }
+
+            // set to fail
+            if (fail)
+            {
+                rogue.Triggers[trigger].Failed = true;
+            }
+        }
 
         return result;
     }

@@ -258,9 +258,9 @@ namespace BloodSword::Rogue
                     Interface::MessageBox(graphics, background, rogue.Triggers[trigger].ActiveMessage, Color::Active);
                 }
 
-                if (Rogue::CheckTrigger(rogue, trigger))
+                if (Rogue::CheckTrigger(graphics, background, rogue, trigger))
                 {
-                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].TriggerMessage, Color::Inactive);
+                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].CompletedMessage, Color::Inactive);
 
                     Rogue::ClearTrigger(rogue, trigger);
                 }
