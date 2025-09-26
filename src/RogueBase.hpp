@@ -532,6 +532,8 @@ namespace BloodSword::Rogue
 
             auto &variables = trigger.Variables;
 
+            auto &party = rogue.Party;
+
             if (trigger.Type == TriggerType::NONE)
             {
                 // automatically completed
@@ -545,13 +547,11 @@ namespace BloodSword::Rogue
                 // 0 - character
                 if (variables.size() > 0)
                 {
-                    auto &party = rogue.Party;
-
                     auto character = Interface::SelectCharacter(graphics, background, party, variables[0]);
 
                     if (character != Character::Class::NONE)
                     {
-                        result = rogue.Has(character) && Engine::IsAlive(party[character]);
+                        result = party.Has(character) && Engine::IsAlive(party[character]);
 
                         fail = !result;
                     }
@@ -567,7 +567,7 @@ namespace BloodSword::Rogue
 
                     if (item != Item::Type::NONE)
                     {
-                        result = rogue.Party.Has(item);
+                        result = party.Has(item);
                     }
                 }
             }
