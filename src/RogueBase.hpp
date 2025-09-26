@@ -11,13 +11,13 @@ namespace BloodSword::Rogue
     {
         auto found = Rogue::None;
 
-        auto &Loot = rogue.Loot;
+        auto &loot = rogue.Loot;
 
-        for (auto loot = 0; loot < Loot.size(); loot++)
+        for (auto id = 0; id < loot.size(); id++)
         {
-            if (Loot[loot].Location() == point)
+            if (loot[id].Location() == point)
             {
-                found = loot;
+                found = id;
 
                 break;
             }
@@ -31,11 +31,13 @@ namespace BloodSword::Rogue
     {
         auto found = Rogue::None;
 
-        for (auto opponent = 0; opponent < rogue.Opponents.size(); opponent++)
+        auto &opponents = rogue.Opponents;
+
+        for (auto id = 0; id < opponents.size(); id++)
         {
-            if (rogue.Opponents[opponent].Origin() == point)
+            if (opponents[id].Origin() == point)
             {
-                found = opponent;
+                found = id;
 
                 break;
             }
@@ -49,11 +51,13 @@ namespace BloodSword::Rogue
     {
         auto found = Rogue::None;
 
-        for (auto opponent = 0; opponent < rogue.Opponents.size(); opponent++)
+        auto &opponents = rogue.Opponents;
+
+        for (auto id = 0; id < opponents.size(); id++)
         {
-            if (rogue.Opponents[opponent].Room == room)
+            if (opponents[id].Room == room)
             {
-                found = opponent;
+                found = id;
 
                 break;
             }
@@ -69,11 +73,11 @@ namespace BloodSword::Rogue
 
         auto &triggers = rogue.Triggers;
 
-        for (auto trigger = 0; trigger < triggers.size(); trigger++)
+        for (auto id = 0; id < triggers.size(); id++)
         {
-            if (triggers[trigger].Location() == point)
+            if (triggers[id].Location() == point)
             {
-                found = trigger;
+                found = id;
 
                 break;
             }
@@ -516,29 +520,31 @@ namespace BloodSword::Rogue
     }
 
     // check if trigger has been activated
-    bool CheckTrigger(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int trigger)
+    bool CheckTrigger(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, int id)
     {
         auto result = false;
 
         auto fail = false;
 
-        if (trigger >= 0 && trigger < rogue.Triggers.size())
+        if (id >= 0 && id < rogue.Triggers.size())
         {
-            if (rogue.Triggers[trigger].Type == TriggerType::NONE)
+            auto &trigger = rogue.Triggers[id];
+
+            auto &variables = trigger.Variables;
+
+            if (trigger.Type == TriggerType::NONE)
             {
                 // automatically completed
                 result = true;
             }
-            else if (rogue.Triggers[trigger].Type == TriggerType::CHARACTER)
+            else if (trigger.Type == TriggerType::CHARACTER)
             {
                 fail = true;
 
                 // variables:
                 // 0 - character
-                if (rogue.Triggers[trigger].Variables.size() > 0)
+                if (variables.size() > 0)
                 {
-                    auto &variables = rogue.Triggers[trigger].Variables;
-
                     auto &party = rogue.Party;
 
                     auto character = Interface::SelectCharacter(graphics, background, party, variables[0]);
@@ -551,11 +557,25 @@ namespace BloodSword::Rogue
                     }
                 }
             }
+            else if (trigger.Type == TriggerType::ITEM)
+            {
+                // variables:
+                // 0 - item
+                if (variables.size() > 0)
+                {
+                    auto item = Item::Map(variables[0]);
+
+                    if (item != Item::Type::NONE)
+                    {
+                        result = rogue.Party.Has(item);
+                    }
+                }
+            }
 
             // set to fail
             if (fail)
             {
-                rogue.Triggers[trigger].Failed = true;
+                trigger.Failed = true;
             }
         }
 
