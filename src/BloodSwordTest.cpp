@@ -217,6 +217,12 @@ namespace BloodSword::Test
 
         BloodSword::Size(backgrounds[background], &texture_w, &texture_h);
 
+        auto texture_exit = Asset::Get("EXIT");
+
+        auto texture_up = Asset::Get("UP");
+
+        auto texture_down = Asset::Get("DOWN");
+
         while (true)
         {
             auto scene = Interface::Map(map, party, enemies, 1);
@@ -231,16 +237,16 @@ namespace BloodSword::Test
 
             auto arrow_down = background_h < texture_h && offset < (texture_h - background_h);
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), x, y));
+            scene.VerifyAndAdd(Scene::Element(texture_exit, x, y));
 
             if (arrow_up)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get("UP"), scroll_x, map.DrawY));
+                scene.VerifyAndAdd(Scene::Element(texture_up, scroll_x, map.DrawY));
             }
 
             if (arrow_down)
             {
-                scene.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), scroll_x, scroll_y));
+                scene.VerifyAndAdd(Scene::Element(texture_down, scroll_x, scroll_y));
             }
 
             if (arrow_up || arrow_down)
@@ -695,6 +701,8 @@ namespace BloodSword::Test
 
         auto palette_offset_x = origin_x + width + dim + pad / 2;
 
+        auto texture_exit = Asset::Get("EXIT");
+
         while (!done)
         {
             auto scene = Interface::Menu(menu, origin_x, origin_y1, width, height, start, last, limit, 0, fixed, highlight, true);
@@ -709,7 +717,7 @@ namespace BloodSword::Test
 
             auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), x_adjust, bottom_y));
+            scene.VerifyAndAdd(Scene::Element(texture_exit, x_adjust, bottom_y));
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, highlight));
 
@@ -1235,6 +1243,8 @@ namespace BloodSword::Test
 
             auto title_y = frame_y - BloodSword::HalfTile - BloodSword::Pad;
 
+            auto texture_back = Asset::Get("BACK");
+
             while (!done)
             {
                 // render menu
@@ -1254,7 +1264,7 @@ namespace BloodSword::Test
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(texture_back, x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -1606,6 +1616,8 @@ namespace BloodSword::Test
 
         auto done = false;
 
+        auto texture_exit = Asset::Get("EXIT");
+
         while (!done)
         {
             auto scene = Interface::Menu(menu, origin, origin, width, height, start, last, limit, Color::Transparent, Color::Inactive, Color::Highlight, true);
@@ -1620,7 +1632,7 @@ namespace BloodSword::Test
 
             auto bottom_y = scene.Controls[first + limit - 1].Y + height + pad;
 
-            scene.VerifyAndAdd(Scene::Element(Asset::Get("EXIT"), x_adjust, bottom_y));
+            scene.VerifyAndAdd(Scene::Element(texture_exit, x_adjust, bottom_y));
 
             scene.Add(Controls::Base(Controls::Type::EXIT, id, id, id, first + limit - 1, id, x_adjust, bottom_y, dim, dim, Color::Highlight));
 

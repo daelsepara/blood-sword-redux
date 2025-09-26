@@ -636,6 +636,8 @@ namespace BloodSword::Interface
 
             auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::OddPad;
 
+            auto texture_back = Asset::Get("BACK");
+
             while (!done)
             {
                 auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
@@ -651,7 +653,7 @@ namespace BloodSword::Interface
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(texture_back, x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -767,6 +769,8 @@ namespace BloodSword::Interface
 
             auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::OddPad;
 
+            auto texture_back = Asset::Get("BACK");
+
             while (!done)
             {
                 auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
@@ -782,7 +786,7 @@ namespace BloodSword::Interface
 
                 auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(texture_back, x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -950,13 +954,15 @@ namespace BloodSword::Interface
 
         auto psy = Engine::Score(character, Attribute::Type::PSYCHIC_ABILITY);
 
+        auto call_to_mind = Asset::Get("CALL TO MIND");
+
         while (!done)
         {
             auto overlay = Interface::Spells(graphics, character, Color::Background, Color::Active, BloodSword::Border);
 
             auto &popup = overlay.Elements[0];
 
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("CALL TO MIND"), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+            overlay.VerifyAndAdd(Scene::Element(call_to_mind, popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
             if (Input::IsValid(overlay, input) && Engine::IsSpell(input.Type))
             {

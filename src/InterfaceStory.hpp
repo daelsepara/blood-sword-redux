@@ -58,6 +58,8 @@ namespace BloodSword::Interface
 
         auto frame_h = (limit * h) + (BloodSword::HalfTile * (!after_battle ? 5 : 3)) + BloodSword::OddPad;
 
+        auto texture_back = Asset::Get("BACK");
+
         while (!done)
         {
             auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
@@ -75,7 +77,7 @@ namespace BloodSword::Interface
 
             if (!after_battle)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
+                overlay.VerifyAndAdd(Scene::Element(texture_back, x - BloodSword::SmallPad, bottom));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
             }

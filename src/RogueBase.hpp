@@ -390,6 +390,10 @@ namespace BloodSword::Rogue
 
         auto done = false;
 
+        auto texture_up = Asset::Get("UP");
+
+        auto texture_down = Asset::Get("DOWN");
+
         while (!done)
         {
             auto scene = Scene::Base();
@@ -414,13 +418,13 @@ namespace BloodSword::Rogue
             {
                 auto pointer_y = window_y - (BloodSword::TileSize + BloodSword::Pad);
 
-                scene.VerifyAndAdd(Scene::Element(Asset::Get("UP"), pointer_x, pointer_y));
+                scene.VerifyAndAdd(Scene::Element(texture_up, pointer_x, pointer_y));
             }
             else
             {
                 auto pointer_y = window_y + window_h + BloodSword::Pad;
 
-                scene.VerifyAndAdd(Scene::Element(Asset::Get("DOWN"), pointer_x, pointer_y));
+                scene.VerifyAndAdd(Scene::Element(texture_down, pointer_x, pointer_y));
             }
 
             auto input = Input::RogueInput(graphics, {scene});

@@ -1287,6 +1287,11 @@ namespace BloodSword::Interface
                 battle.Duration = Battle::Unlimited;
             }
 
+            // prepare textures
+            auto texture_cast = Asset::Get("CAST SPELL");
+
+            auto texture_call = Asset::Get("CALL TO MIND");
+
             while ((battle.Round < battle.Duration || battle.Duration == Battle::Unlimited) && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && (Engine::InBattle(party) > 0) && !battle.ExitBattle)
             {
                 // activate SLOW MURDER before building the queue
@@ -1700,7 +1705,7 @@ namespace BloodSword::Interface
 
                                                 if (character.HasCalledToMind(spell_caption.Type) && spell_caption.IsBattle && !spell_caption.IsBasic())
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get("CAST SPELL"), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(texture_cast, popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell_caption.Type], control.X, control.Y + control.H + pad));
 
@@ -1708,7 +1713,7 @@ namespace BloodSword::Interface
                                                 }
                                                 else if (!spell_caption.IsBasic() && spell_caption.IsBattle)
                                                 {
-                                                    overlay.VerifyAndAdd(Scene::Element(Asset::Get("CALL TO MIND"), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                                                    overlay.VerifyAndAdd(Scene::Element(texture_call, popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                                                     overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell_caption.Type], control.X, control.Y + control.H + pad));
 

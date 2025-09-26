@@ -2430,6 +2430,12 @@ namespace BloodSword::Interface
 
         auto done = false;
 
+        auto asset = in_battle ? Asset::Map("CAST SPELL") : Asset::Map("CALL TO MIND");
+
+        auto cast_or_call = Asset::Get(asset);
+
+        auto call_to_mind = Asset::Get("CALL TO MIND");
+
         while (!done)
         {
             // spells popup
@@ -2447,9 +2453,7 @@ namespace BloodSword::Interface
 
                     if (character.HasCalledToMind(spell.Type) && spell.IsBattle && !spell.IsBasic())
                     {
-                        auto asset = in_battle ? Asset::Map("CAST SPELL") : Asset::Map("CALL TO MIND");
-
-                        overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                        overlay.VerifyAndAdd(Scene::Element(cast_or_call, popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                         overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsActive[spell.Type], control.X, control.Y + control.H + pad));
 
@@ -2459,7 +2463,7 @@ namespace BloodSword::Interface
                     }
                     else if (spell.IsBattle && !spell.IsBasic())
                     {
-                        overlay.VerifyAndAdd(Scene::Element(Asset::Get("CALL TO MIND"), popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
+                        overlay.VerifyAndAdd(Scene::Element(call_to_mind, popup.X + popup.W - (BloodSword::TileSize + BloodSword::Pad), popup.Y + BloodSword::Pad));
 
                         overlay.VerifyAndAdd(Scene::Element(Interface::SpellCaptionsInactive[spell.Type], control.X, control.Y + control.H + pad));
 
@@ -4819,6 +4823,16 @@ namespace BloodSword::Interface
             controls.push_back(Controls::Base(Controls::Type::CANCEL, id + 3, id + 2, id + 3, id + 3, id + 3, button.X + offset * 3, button.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
         }
 
+        auto texture_confirm = Asset::Get("CONFIRM");
+
+        auto texture_cancel = Asset::Get("CANCEL");
+
+        auto texture_increase = Asset::Get(increase);
+
+        auto texture_decrease = Asset::Get(decrease);
+
+        auto texture_target = target != Asset::NONE ? Asset::Get(target) : nullptr;
+
         while (!done)
         {
             // initialize overlay
@@ -4835,7 +4849,7 @@ namespace BloodSword::Interface
 
             if (target != Asset::NONE)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), asset));
+                overlay.VerifyAndAdd(Scene::Element(texture_target, asset));
 
                 line += BloodSword::TileSize + pad;
             }
@@ -4860,18 +4874,18 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(current, origin + Point(texture_x, line + texture_height * 2)));
 
             // increase number (icon)
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(increase), button));
+            overlay.VerifyAndAdd(Scene::Element(texture_increase, button));
 
             // decrease number (icon)
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(decrease), Point(button.X + offset, button.Y)));
+            overlay.VerifyAndAdd(Scene::Element(texture_decrease, Point(button.X + offset, button.Y)));
 
             // confirm (icon)
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("CONFIRM"), Point(button.X + offset * 2, button.Y)));
+            overlay.VerifyAndAdd(Scene::Element(texture_confirm, Point(button.X + offset * 2, button.Y)));
 
             if (cancel)
             {
                 // cancel (icon)
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get("CANCEL"), Point(button.X + offset * 3, button.Y)));
+                overlay.VerifyAndAdd(Scene::Element(texture_cancel, Point(button.X + offset * 3, button.Y)));
             }
 
             // add boxes
@@ -6173,6 +6187,8 @@ namespace BloodSword::Interface
 
         auto frame_h = (limit * h) + (BloodSword::FrameHeight) + BloodSword::OddPad;
 
+        auto texture_back = Asset::Get("BACK");
+
         while (!done)
         {
             auto overlay = Interface::Menu(menu, x, y, w, h, start, last, limit, Color::Background, Color::Background, Color::Active, true);
@@ -6188,7 +6204,7 @@ namespace BloodSword::Interface
 
             auto bottom = overlay.Controls[first + limit - 1].Y + h + BloodSword::LargePad;
 
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), x - BloodSword::SmallPad, bottom));
+            overlay.VerifyAndAdd(Scene::Element(texture_back, x - BloodSword::SmallPad, bottom));
 
             overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, x - BloodSword::SmallPad, bottom, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -7221,6 +7237,10 @@ namespace BloodSword::Interface
 
         auto done = false;
 
+        auto texture_trophy = Asset::Get("TROPHY");
+
+        auto texture_confirm = Asset::Get("CONFIRM");
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -7229,13 +7249,13 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
 
             // render trophy icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("TROPHY"), Point(iconx, panely + BloodSword::LargePad)));
+            overlay.VerifyAndAdd(Scene::Element(texture_trophy, Point(iconx, panely + BloodSword::LargePad)));
 
             // render completion text
             overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::TriplePad)));
 
             // render confirmation button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("CONFIRM"), Point(iconx, confirmy)));
+            overlay.VerifyAndAdd(Scene::Element(texture_confirm, Point(iconx, confirmy)));
 
             overlay.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, iconx, confirmy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -7319,6 +7339,14 @@ namespace BloodSword::Interface
 
         auto GameMode = Graphics::CreateText(graphics, mode_string.c_str(), Fonts::Fixed, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
+        auto texture_right = Asset::Get("RIGHT");
+
+        auto texture_character = Asset::Get("CHARACTER");
+
+        auto texture_back = Asset::Get("BACK");
+
+        auto asset_trophy = Asset::Map("TROPHY");
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -7364,7 +7392,7 @@ namespace BloodSword::Interface
                     {
                         auto characterx = boxx + BloodSword::Pad + 5 * space;
 
-                        overlay.VerifyAndAdd(Scene::Element(Asset::Get("RIGHT"), Point(characterx, charactery)));
+                        overlay.VerifyAndAdd(Scene::Element(texture_right, Point(characterx, charactery)));
                     }
                 }
                 else
@@ -7372,7 +7400,7 @@ namespace BloodSword::Interface
                     // add dummy icon
                     auto characterx = boxx + BloodSword::Pad;
 
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get("CHARACTER"), Point(characterx, charactery)));
+                    overlay.VerifyAndAdd(Scene::Element(texture_character, Point(characterx, charactery)));
                 }
 
                 // game mode button
@@ -7381,7 +7409,7 @@ namespace BloodSword::Interface
                 auto dn = id + 1;
 
                 // check if game has been completed
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::GamesList[game].Completed ? Asset::Map("TROPHY") : asset), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
+                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::GamesList[game].Completed ? asset_trophy : asset), Point(boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery)));
 
                 overlay.Add(Controls::Base(Controls::Type::CHOICE, id, id, id, up, dn, boxx + boxw - (BloodSword::TileSize + BloodSword::Pad), charactery, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -7392,7 +7420,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(GameMode, Point(boxx + boxw - (BloodSword::Width(GameMode) - BloodSword::Pixel), controlsy + BloodSword::Pad)));
 
             // add back button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), Point(boxx - BloodSword::MidPad + 1, controlsy)));
+            overlay.VerifyAndAdd(Scene::Element(texture_back, Point(boxx - BloodSword::MidPad + 1, controlsy)));
 
             overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, id - 1, id, boxx - BloodSword::MidPad + 1, controlsy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -7594,6 +7622,10 @@ namespace BloodSword::Interface
 
         auto done = false;
 
+        auto texture_trophy = Asset::Get("TROPHY");
+
+        auto texture_confirm = Asset::Get("CONFIRM");
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -7602,7 +7634,7 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(panelx, panely, panelw, panelh, Color::Background, Color::Active, BloodSword::Pixel));
 
             // render trophy icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("TROPHY"), Point(iconx, panely + BloodSword::LargePad)));
+            overlay.VerifyAndAdd(Scene::Element(texture_trophy, Point(iconx, panely + BloodSword::LargePad)));
 
             // render rankings text
             overlay.VerifyAndAdd(Scene::Element(texture, Point(texturex, panely + BloodSword::TileSize + BloodSword::TriplePad)));
@@ -7611,7 +7643,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(stats, Point(statsx, panely + BloodSword::TileSize + BloodSword::HugePad + BloodSword::Height(texture))));
 
             // render confirmation button
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get("CONFIRM"), Point(iconx, confirmy)));
+            overlay.VerifyAndAdd(Scene::Element(texture_confirm, Point(iconx, confirmy)));
 
             overlay.Add(Controls::Base(Controls::Type::CONFIRM, 0, 0, 0, 0, 0, iconx, confirmy, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
@@ -7705,7 +7737,6 @@ namespace BloodSword::Interface
                 {
                     image = Graphics::ScaledImage(graphics, section.Image, panel_image_w - BloodSword::LargePad, panel_h - BloodSword::LargePad);
                 }
-
 
                 image_location = origin + Point(panel_image_w - BloodSword::Width(image), panel_h - BloodSword::Height(image)) / 2;
             }
