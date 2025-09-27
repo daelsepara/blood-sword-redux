@@ -563,9 +563,9 @@ namespace BloodSword::Party
             // SEE: https://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
             auto result = !variable.empty() && std::find_if(variable.begin() + offset, variable.end(), [](unsigned char c)
                                                             { return !std::isdigit(c); }) == variable.end();
-#if defined(DEBUG)
-            std::cerr << "[VARIABLE " << variable << "] IS " << (!result ? "NOT" : "") << " A NUMBER" << std::endl;
-#endif
+
+            SDL_Log("[VARIABLE %s] IS %s A NUMBER", variable.c_str(), (!result ? "NOT" : ""));
+
             return result;
         }
 
@@ -573,9 +573,9 @@ namespace BloodSword::Party
         bool IsPresent(std::string variable)
         {
             auto result = !variable.empty() && BloodSword::Has(this->Variables, variable);
-#if defined(DEBUG)
-            std::cerr << "[VARIABLE " << variable << "] IS " << (result ? "PRE" : "AB") << "SENT" << std::endl;
-#endif
+
+            SDL_Log("[VARIABLE %s] IS %sSENT", variable.c_str(), (!result ? "PRE" : "AB"));
+
             return result;
         }
 
@@ -589,30 +589,26 @@ namespace BloodSword::Party
                 if (variable == "PARTY")
                 {
                     value = std::to_string(this->Count());
-#if defined(DEBUG)
-                    std::cerr << "[PARTY] ---> " << value << std::endl;
-#endif
+
+                    SDL_Log("[PARTY] ---> %s", value.c_str());
                 }
                 else if (variable == "CHOSEN")
                 {
                     value = std::to_string(this->ChosenNumber);
-#if defined(DEBUG)
-                    std::cerr << "[CHOSEN NUMBER] ---> " << value << std::endl;
-#endif
+
+                    SDL_Log("[CHOSEN NUMBER] ---> %s", value.c_str());
                 }
                 else if (this->IsPresent(variable))
                 {
                     value = this->Variables[variable];
-#if defined(DEBUG)
-                    std::cerr << "[VARIABLE " << variable << "] ---> " << value << std::endl;
-#endif
+
+                    SDL_Log("[VARIABLE %s] ---> %s", variable.c_str(), value.c_str());
                 }
                 else
                 {
-#if defined(DEBUG)
-                    std::cerr << "[LITERAL] " << variable << std::endl;
-#endif
-                    // may be a number of a string literal
+                    SDL_Log("[LITERAL] %s", variable.c_str());
+
+                    // may be a number or a string literal
                     value = variable;
                 }
             }
@@ -630,9 +626,8 @@ namespace BloodSword::Party
                     if (this->IsANumber(value))
                     {
                         this->ChosenNumber = std::stoi(value, nullptr, 10);
-#if defined(DEBUG)
-                        std::cerr << "[CHOSEN NUMBER] <--- " << value << std::endl;
-#endif
+
+                        SDL_Log("[CHOSEN NUMBER] <--- %s", value.c_str());
                     }
                 }
                 else if (variable == "PLAYER")
@@ -644,17 +639,15 @@ namespace BloodSword::Party
                         value = this->Members[index].Name;
 
                         this->Variables[variable] = value;
-#if defined(DEBUG)
-                        std::cerr << "[VARIABLE PLAYER] <--- " << value << std::endl;
-#endif
+
+                        SDL_Log("[VARIABLE PLAYER] <--- %s", value.c_str());
                     }
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = value;
-#if defined(DEBUG)
-                    std::cerr << "[VARIABLE " << variable << "] <--- " << value << std::endl;
-#endif
+
+                    SDL_Log("[VARIABLE %s] <--- %s", variable.c_str(), value.c_str());
                 }
             }
         }
@@ -667,16 +660,14 @@ namespace BloodSword::Party
                 if (variable == "CHOSEN")
                 {
                     this->ChosenNumber = value;
-#if defined(DEBUG)
-                    std::cerr << "[CHOSEN NUMBER] <--- " << value << std::endl;
-#endif
+
+                    SDL_Log("[CHOSEN NUMBER] <--- %d", value);
                 }
                 else if (!this->IsANumber(variable))
                 {
                     this->Variables[variable] = std::to_string(value);
-#if defined(DEBUG)
-                    std::cerr << "[VARIABLE " << variable << "] <--- " << value << std::endl;
-#endif
+
+                    SDL_Log("[VARIABLE %s] <--- %d", variable.c_str(), value);
                 }
             }
         }
@@ -710,9 +701,9 @@ namespace BloodSword::Party
                     value = this->ChosenNumber;
                 }
             }
-#if defined(DEBUG)
-            std::cerr << "[NUMBER " << variable << "] ---> " << value << std::endl;
-#endif
+
+            SDL_Log("[NUMBER %s] ---> %d", variable.c_str(), value);
+
             return value;
         }
 
@@ -720,9 +711,9 @@ namespace BloodSword::Party
         bool IsValid(std::vector<std::string> list, std::string item)
         {
             auto result = BloodSword::Has(list, item);
-#if defined(DEBUG)
-            std::cerr << "[CHECK " << item << "] IS " << (result ? "VALID" : "INVALID") << std::endl;
-#endif
+
+            SDL_Log("[CHECK %s] IS %s", item.c_str(), (result ? "VALID" : "INVALID"));
+
             return result;
         }
 
@@ -761,9 +752,9 @@ namespace BloodSword::Party
                         }
 
                         value_first = clamp ? std::max(0, value_first) : value_first;
-#if defined(DEBUG)
-                        std::cerr << "[MATH] " << first << " " << operation << " " << second << " = " << value_first << std::endl;
-#endif
+
+                        SDL_Log("[MATH] %s %s %s = %d", first.c_str(), operation.c_str(), second.c_str(), value_first);
+
                         // set variable
                         this->Set(first, value_first);
                     }
@@ -794,9 +785,8 @@ namespace BloodSword::Party
                     {
                         result = (value_first != value_second);
                     }
-#if defined(DEBUG)
-                    std::cerr << "[IF] " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
-#endif
+
+                    SDL_Log("[IF] %s %s %s IS %s", first.c_str(), operation.c_str(), second.c_str(), (result ? "TRUE" : "FALSE"));
                 }
             }
 
@@ -848,9 +838,8 @@ namespace BloodSword::Party
                     {
                         result = (value_first > value_second);
                     }
-#if defined(DEBUG)
-                    std::cerr << "[IF] " << first << " " << operation << " " << second << " IS " << (result ? "TRUE" : "FALSE") << std::endl;
-#endif
+
+                    SDL_Log("[IF] %s %s %s IS %s", first.c_str(), operation.c_str(), second.c_str(), (result ? "TRUE" : "FALSE"));
                 }
             }
 
@@ -863,12 +852,11 @@ namespace BloodSword::Party
             if (this->IsPresent(variable))
             {
                 this->Variables.erase(variable);
-#if defined(DEBUG)
+
                 if (!this->IsPresent(variable))
                 {
-                    std::cerr << "[" << variable << "] REMOVED" << std::endl;
+                    SDL_Log("[VARIABLE %s] REMOVED", variable.c_str());
                 }
-#endif
             }
         }
     };
@@ -1006,9 +994,7 @@ namespace BloodSword::Party
 
             ifs.close();
 
-#if defined(DEBUG)
-            std::cerr << "[LOADED] " << std::to_string(party.Count()) << " characters" << std::endl;
-#endif
+            SDL_Log("[LOADED] %d characters", party.Count());
         }
 
         return party;
@@ -1041,9 +1027,7 @@ namespace BloodSword::Party
 
                 ifs.clear();
 
-#if defined(DEBUG)
-                std::cerr << "[LOADED] " << std::to_string(party.Count()) << " characters" << std::endl;
-#endif
+                SDL_Log("[LOADED] %d characters", party.Count());
             }
         }
 

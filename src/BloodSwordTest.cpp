@@ -1837,10 +1837,10 @@ namespace BloodSword::Test
 
         auto system = BloodSword::System();
 
-        system.Initialize("BloodSword: Test Suite");
-
         try
         {
+            system.Initialize("BloodSword: Test Suite");
+
             Test::Menu(system.graphics);
         }
         catch (std::exception &e)

@@ -1,9 +1,23 @@
 #ifndef __LOGGER_HPP__
 #define __LOGGER_HPP__
 
+#include <SDL_hints.h>
+#include <SDL_log.h>
+
 #include "BattleResults.hpp"
 #include "Conditions.hpp"
 #include "Party.hpp"
+
+namespace BloodSword::Logger
+{
+    // disable logger
+    void Disable()
+    {
+        SDL_SetHint(SDL_HINT_LOGGING, "app=quiet,error=quiet,*=quiet");
+
+        SDL_SetHint(SDL_HINT_EVENT_LOGGING, "0");
+    }
+}
 
 namespace BloodSword::Engine
 {
@@ -21,235 +35,166 @@ namespace BloodSword::Engine
 
 namespace BloodSword::BattleLogger
 {
+    // log opponent spell strategy
     void LogSpellStrategy(Spells::Type spell, int spells_cast, bool cast)
     {
-#if defined(DEBUG)
-        std::cerr << "[SPELLS CAST] ";
+        std::string log_string = "[SPELLS CAST] ";
 
         if (spell != Spells::Type::NONE)
         {
-            std::cerr << "[" << Spells::TypeMapping[spell] << "] ";
+            log_string += "[" + Spells::TypeMapping[spell] + "]";
         }
 
-        std::cerr << std::to_string(spells_cast) << " [CAST] " << (cast ? "TRUE" : "FALSE") << std::endl;
-#endif
+        SDL_Log("%s [CAST] %s", log_string.c_str(), (cast ? "TRUE" : "FALSE"));
     }
 
+    // log spell caster
     void LogCaster(Character::Base &caster, int caster_id)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << Target::Mapping[caster.Target]
-                  << " " << std::to_string(caster_id)
-                  << "] ";
+        std::string log_string = "[" + Target::Mapping[caster.Target] + " " + std::to_string(caster_id) + "] ";
 
         if (!Engine::IsAlive(caster))
         {
-            std::cerr << "IS DEAD" << std::endl;
+            log_string += "IS DEAD";
         }
         else if (!caster.Has(Skills::Type::SPELLS))
         {
-            std::cerr << "CANNOT CAST SPELLS" << std::endl;
+            log_string += "CANNOT CAST SPELLS";
         }
         else
         {
-            std::cerr << "CANNOT CAST SPELLS THIS ROUND" << std::endl;
+            log_string += "CANNOT CAST SPELLS THIS ROUND";
         }
-#endif
+
+        SDL_Log("%s", log_string.c_str());
     }
 
+    // log spell casters
     void LogCasters(Party::Base &party, std::vector<int> &casters)
     {
-#if defined(DEBUG)
         if (casters.size() > 0)
         {
-            std::cerr << "[SPELL CASTERS] (";
+            std::string casters = "[SPELL CASTERS] (";
 
             for (auto i = 0; i < casters.size(); i++)
             {
                 if (i > 0)
                 {
-                    std::cerr << ", ";
+                    casters += ", ";
                 }
 
-                std::cerr << "[" << Target::Mapping[party[casters[i]].Target] << " " << std::to_string(casters[i]) << "]";
+                casters += "[" + Target::Mapping[party[casters[i]].Target] + " " + std::to_string(casters[i]) + "]";
             }
 
-            std::cerr << ")" << std::endl;
+            SDL_Log("%s", casters.c_str());
         }
-#endif
     }
 
+    // log attacker targets
     void LogTargets(const char *target_type, Target::Type attacker, int id, int count)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << Target::Mapping[attacker]
-                  << " "
-                  << id
-                  << "] ["
-                  << target_type
-                  << " TARGETS] "
-                  << count
-                  << std::endl;
-#endif
+        SDL_Log("[%s %d] [%s TARGETS] %d", Target::Mapping[attacker].c_str(), id, target_type, count);
     }
 
+    // log if there are no valid spell targets
     void LogNoSpellTargets(Spells::Type spell)
     {
-#if defined(DEBUG)
-        std::cerr << "[SPELL] [" << Spells::TypeMapping[spell] << "] NO VALID TARGETS" << std::endl;
-#endif
+        SDL_Log("[SPELL] [%s] NO VALID TARGETS", Spells::TypeMapping[spell].c_str());
     }
 
+    // log if spell is not in grimoire
     void LogSpellMissing(Spells::Type spell)
     {
-#if defined(DEBUG)
-        std::cerr << "[SPELL] [" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE!" << std::endl;
-#endif
+        SDL_Log("[SPELL] [%s] NOT IN GRIMOIRE!", Spells::TypeMapping[spell].c_str());
     }
 
+    // log if spell is not usable
     void LogSpellUnusable(Spells::Type spell)
     {
-#if defined(DEBUG)
-        std::cerr << "[SPELL] [" << Spells::TypeMapping[spell] << "] CANNOT BE USED IN BATTLE!" << std::endl;
-#endif
+        SDL_Log("[SPELL] [%s] CANNOT BE USED IN BATTLE!", Spells::TypeMapping[spell].c_str());
     }
 
+    // log action, attacker and target
     void LogAction(const char *action, Target::Type attacker, int id, Target::Type target, int target_id)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << Target::Mapping[attacker]
-                  << " "
-                  << id
-                  << "] ["
-                  << action
-                  << "] ["
-                  << Target::Mapping[target]
-                  << " "
-                  << target_id
-                  << "]"
-                  << std::endl;
-#endif
+        SDL_Log("[%s %d] [%s] [%s %d]", Target::Mapping[attacker].c_str(), id, action, Target::Mapping[target].c_str(), target_id);
     }
 
+    // log spell casting
     void LogSpellCasting(Target::Type caster, int caster_id, Spells::Type spell)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << Target::Mapping[caster]
-                  << " "
-                  << std::to_string(caster_id)
-                  << "] [CASTS "
-                  << Spells::TypeMapping[spell]
-                  << "]"
-                  << std::endl;
-#endif
+        SDL_Log("[%s %d] [CASTS %s]", Target::Mapping[caster].c_str(), caster_id, Spells::TypeMapping[spell].c_str());
     }
 
+    // log combatants
     void LogCombatants(Party::Base &party, const char *group)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << group
-                  << "] "
-                  << std::to_string(party.Count())
-                  << " [LIVE] "
-                  << std::to_string(Engine::Count(party))
-                  << std::endl;
-#endif
+        SDL_Log("[%s] %d [LIVE] %d", group, party.Count(), Engine::Count(party));
     }
 
+    // log party groups
     void LogGroup(Book::Location location, const char *first, const char *second, int count_first, int count_second)
     {
-#if defined(DEBUG)
-        std::cerr << Book::String(location)
-                  << " ["
-                  << first
-                  << "] "
-                  << std::to_string(count_first)
-                  << " ["
-                  << second
-                  << "] "
-                  << std::to_string(count_second)
-                  << std::endl;
-#endif
+        SDL_Log("%s [%s] %d [%s] %d", Book::String(location).c_str(), first, count_first, second, count_second);
     }
 
+    // log survivors
     void LogSurvivors(Book::Location location, const char *first, const char *second, int count_first, int count_second)
     {
-#if defined(DEBUG)
         auto group_first = std::string(first) + " SURVIVORS";
 
         auto group_second = std::string(second) + " SURVIVORS";
 
         BattleLogger::LogGroup(location, group_first.c_str(), group_second.c_str(), count_first, count_second);
-#endif
     }
 
+    // log group action
     void LogGroupAction(const char *group, const char *action, Target::Type actor, int id)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << group
-                  << "] ["
-                  << action
-                  << "] ["
-                  << Target::Mapping[actor]
-                  << " "
-                  << std::to_string(id)
-                  << "]"
-                  << std::endl;
-#endif
+        SDL_Log("[%s] [%s] [%s %d]", group, action, Target::Mapping[actor].c_str(), id);
     }
 
+    // log battle results
     void LogBattleResults(Party::Base &opponents, Party::Base &party, Battle::Result initial, Battle::Result result)
     {
-#if defined(DEBUG)
-        std::cerr << "[BATTLE RESULTS] " << Battle::ResultMapping[initial] << std::endl
-                  << "[PARTY] " << (Engine::IsAlive(party) ? "ALIVE" : "INCAPACITATED") << std::endl
-                  << "[OPPONENTS] " << (Engine::IsAlive(opponents, Character::ControlType::NPC) ? "ALIVE" : "INCAPACITATED") << std::endl
-                  << "[FLEEING] " << (Engine::IsFleeing(party) ? "YES" : "NO") << std::endl
-                  << "[FINAL RESULTS] " << Battle::ResultMapping[result] << std::endl;
-#endif
+        SDL_Log("[BATTLE RESULTS] %s [PARTY] %s [OPPONENTS] %s [FLEEING] %s [FINAL RESULTS] %s", Battle::ResultMapping[initial].c_str(), (Engine::IsAlive(party) ? "ALIVE" : "INCAPACITATED"), (Engine::IsAlive(opponents, Character::ControlType::NPC) ? "ALIVE" : "INCAPACITATED"), (Engine::IsFleeing(party) ? "YES" : "NO"), Battle::ResultMapping[result].c_str());
+    }
+
+    // log if character is in combat
+    void LogInCombat(Character::Class character)
+    {
+        if (character != Character::Class::NONE)
+        {
+            SDL_Log("[IN COMBAT] [%s]", Character::ClassMapping[character].c_str());
+        }
     }
 }
 
 namespace BloodSword::EngineLogger
 {
-    // BloodSword Engine "Simple Intelligence Logger"
+    // "Simple Intelligence Logger"
     void Log(const char *action, const char *attacker, const char *target, int dist, int path = -1, int vuln = -1, int prob = -1, int threshold = -1)
     {
-#if defined(DEBUG)
-        std::cerr << "[" << attacker << "]"
-                  << " [" << action << "]"
-                  << " [" << target << "]";
+        std::string log_string = "[" + std::string(attacker) + "] [" + std::string(action) + "] [" + std::string(target) + "]";
 
         if (path != -1)
         {
-            std::cerr << " [PATH] " << std::to_string(path);
+            log_string += " [PATH] " + std::to_string(path);
         }
 
-        std::cerr << " [DIST] " << std::to_string(dist);
+        log_string += " [DIST] " + std::to_string(dist);
 
         if (vuln != -1)
         {
-            std::cerr << " [VULN] " << std::to_string(vuln);
+            log_string += " [VULN] " + std::to_string(vuln);
         }
 
         if (prob != -1 && threshold != -1)
         {
-            std::cerr << " [PROB] "
-                      << std::to_string(prob)
-                      << " "
-                      << (prob <= threshold ? "<=" : ">")
-                      << " "
-                      << std::to_string(threshold);
+            log_string += " [PROB] " + std::to_string(prob) + " " + (prob <= threshold ? "<=" : ">") + " " + std::to_string(threshold);
         }
 
-        std::cerr << std::endl;
-#endif
+        SDL_Log("%s", log_string.c_str());
     }
 
     // log enemy action and target
@@ -275,57 +220,55 @@ namespace BloodSword::EngineLogger
 
         EngineLogger::Log(action_string.c_str(), attacker_string.c_str(), target_string.c_str(), dist, path, vuln);
     }
+
+    // log killed / paralyzed
+    void Log(Party::Base &party, int i)
+    {
+        SDL_Log("[KILLED/PARALYZED %s]", Character::ClassMapping[party[i].Class].c_str());
+    }
 }
 
 namespace BloodSword::EvalLogger
 {
+    // log story / choice conditions
     void Log(Conditions::Base &condition, bool result, bool failed, std::string text)
     {
-#if defined(DEBUG)
-        // debug info
-        std::cerr << "[CONDITION] "
-                  << std::string(Conditions::TypeMapping[condition.Type])
-                  << " ([RESULT] "
-                  << (result ? "TRUE" : "FALSE")
-                  << ", [FAILED] "
-                  << (failed ? "TRUE" : "FALSE");
+        std::string log_string = "[CONDITION] " + std::string(Conditions::TypeMapping[condition.Type]) + "([RESULT] " + (result ? "TRUE" : "FALSE") + "[FAILED] " + (failed ? "TRUE" : "FALSE");
 
         if (text.size() > 0)
         {
-            std::cerr << ", [TEXT] " << text;
+            log_string += ", [TEXT] " + text;
         }
 
-        std::cerr << ")";
+        log_string += ")";
 
         if (condition.Invert)
         {
-            std::cerr << " [INVERTED]";
+            log_string += " [INVERTED]";
         }
 
-        std::cerr << std::endl;
-#endif
+        SDL_Log("%s", log_string.c_str());
     }
 }
 
 namespace BloodSword::InterfaceLogger
 {
+    // log failure to cast / call to mind
     void LogSpellFailure(Character::Base &caster, Spells::Type spell)
     {
-#if defined(DEBUG)
         if (!caster.HasCalledToMind(spell))
         {
-            std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT CALLED TO MIND" << std::endl;
+            SDL_Log("[%s] NOT CALLED TO MIND\n", Spells::TypeMapping[spell].c_str());
         }
         else
         {
-            std::cerr << "[" << Spells::TypeMapping[spell] << "] NOT IN GRIMOIRE" << std::endl;
+            SDL_Log("[%s] NOT IN GRIMOIRE\n", Spells::TypeMapping[spell].c_str());
         }
-#endif
     }
 
+    // log choice / menu options
     void LogOptions(Asset::List &assets, std::vector<int> &selection, std::string selected)
     {
-#if defined(DEBUG)
         if (selection.size() > 0)
         {
             selected += " (";
@@ -342,61 +285,26 @@ namespace BloodSword::InterfaceLogger
 
             selected += ")";
 
-            std::cerr << selected << std::endl;
+            SDL_Log("%s\n", selected.c_str());
         }
-#endif
     }
 
+    // log choices
     void LogChoice(const char *message, Asset::Type asset, int selected, int size)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << message
-                  << " "
-                  << selected
-                  << "] ["
-                  << Asset::TypeMapping[asset]
-                  << "] [SIZE] "
-                  << size
-                  << std::endl;
-#endif
+        SDL_Log("[%s %d] [%s] [SIZE] %d\n", message, selected, Asset::TypeMapping[asset].c_str(), size);
     }
 
+    // log path to target
     void LogPathToTarget(Point target, int path, int distance)
     {
-#if defined(DEBUG)
-        std::cerr << "[TARGET ("
-                  << target.X
-                  << ", "
-                  << target.Y
-                  << ")] [PATH] "
-                  << path
-                  << " [DIST] "
-                  << distance
-                  << std::endl;
-#endif
+        SDL_Log("[TARGET (%d, %d)] [PATH] %d [DIST] %d\n", target.X, target.Y, path, distance);
     }
 
+    // log targets for move action
     void LogMoveTargets(const char *type, Target::Type character, int src_id, int dst_id, int path, int valid, int avail)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << Target::Mapping[character]
-                  << " "
-                  << src_id
-                  << "] [MOVE] "
-                  << "[TARGET "
-                  << type
-                  << " "
-                  << dst_id
-                  << "] [PATH] "
-                  << path
-                  << " [DIST] "
-                  << valid
-                  << " [VULN] "
-                  << avail
-                  << std::endl;
-#endif
+        SDL_Log("[%s %d] [MOVE] [TARGET %s %d] [PATH] %d [DIST] %d [VULN] %d\n", Target::Mapping[character].c_str(), src_id, type, dst_id, path, valid, avail);
     }
 }
 
@@ -405,27 +313,20 @@ namespace BloodSword::StoryLogger
     // log major story events
     void LogSectionHeader(const char *header, Book::Location location, bool newline = true)
     {
-#if defined(DEBUG)
-        std::cerr << "["
-                  << header
-                  << "] "
-                  << Book::String(location);
+        SDL_Log("[%s] %s", header, Book::String(location).c_str());
 
         if (newline)
         {
-            std::cerr << std::endl;
+            SDL_Log("\n");
         }
-#endif
     }
 
     // log story search results
     void LogSearch(Book::Location location, int current)
     {
-#if defined(DEBUG)
         StoryLogger::LogSectionHeader("FIND", location, false);
 
-        std::cerr << " == " << (current != -1 ? "FOUND" : "NOT FOUND") << std::endl;
-#endif
+        SDL_Log(" == %s\n", (current != -1 ? "FOUND" : "NOT FOUND"));
     }
 }
 

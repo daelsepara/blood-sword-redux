@@ -249,7 +249,10 @@ namespace BloodSword::Rogue
             {
                 if (!rogue.Triggers[trigger].Activated)
                 {
-                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].EncounterMessage, Color::Active);
+                    if (!rogue.Triggers[trigger].EncounterMessage.empty())
+                    {
+                        Interface::MessageBox(graphics, background, rogue.Triggers[trigger].EncounterMessage, Color::Active);
+                    }
 
                     rogue.Triggers[trigger].Activated = true;
                 }
@@ -260,13 +263,19 @@ namespace BloodSword::Rogue
 
                 if (Rogue::CheckTrigger(graphics, background, rogue, trigger))
                 {
-                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].CompletedMessage, Color::Inactive);
+                    if (!rogue.Triggers[trigger].CompletedMessage.empty())
+                    {
+                        Interface::MessageBox(graphics, background, rogue.Triggers[trigger].CompletedMessage, Color::Inactive);
+                    }
 
                     Rogue::ClearTrigger(rogue, trigger);
                 }
                 else if (rogue.Triggers[trigger].Failed)
                 {
-                    Interface::MessageBox(graphics, background, rogue.Triggers[trigger].FailMessage, Color::Highlight);
+                    if (!rogue.Triggers[trigger].FailMessage.empty())
+                    {
+                        Interface::MessageBox(graphics, background, rogue.Triggers[trigger].FailMessage, Color::Highlight);
+                    }
 
                     Rogue::ClearTrigger(rogue, trigger);
                 }

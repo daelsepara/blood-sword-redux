@@ -73,12 +73,8 @@ namespace BloodSword::Interface
                 }
             }
         }
-#if defined(DEBUG)
-        if (battle.InCombatTarget != Character::Class::NONE)
-        {
-            std::cerr << "[IN COMBAT] [" << Character::ClassMapping[battle.InCombatTarget] << "]" << std::endl;
-        }
-#endif
+
+        BattleLogger::LogInCombat(battle.InCombatTarget);
     }
 
     // generate textures of party status

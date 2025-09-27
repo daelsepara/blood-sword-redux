@@ -100,6 +100,9 @@ namespace BloodSword::BattleBoard
 
         try
         {
+            // disable logger
+            Logger::Disable();
+
             system.Initialize("BloodSword: Battle Board");
 
             BattleBoard::Menu(system.graphics, battle_file);

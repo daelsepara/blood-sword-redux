@@ -13,6 +13,9 @@ namespace BloodSword::BloodSwordRogue
 
         try
         {
+            // disable logger
+            Logger::Disable();
+
             system.Initialize("BloodSword: Rogue");
 
             Rogue::Game(system.graphics);

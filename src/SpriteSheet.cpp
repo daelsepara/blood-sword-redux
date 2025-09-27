@@ -6,6 +6,9 @@ namespace BloodSword::SpriteSheet
     // generate sprite sheet image file
     void Generate(const char *module, const char *image_file, int width, bool reverse)
     {
+        // disable logger
+        Logger::Disable();
+
         // get all available modules
         Interface::LoadModules();
 

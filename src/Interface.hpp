@@ -6994,12 +6994,10 @@ namespace BloodSword::Interface
 
             throw std::invalid_argument(error_message.c_str());
         }
-#if defined(DEBUG)
         else
         {
-            std::cerr << "[LOADED] [MODULE: " << load << "]" << std::endl;
+            SDL_Log("[LOADED] [MODULE %s]\n", load.c_str());
         }
-#endif
     }
 
     // load modules list and select default
@@ -7144,9 +7142,8 @@ namespace BloodSword::Interface
                 Interface::GamesList.push_back(saveGame);
             }
         }
-#if defined(DEBUG)
-        std::cerr << "[ INIT ] [MAX " << Interface::GamesList.size() << " GAMES]" << std::endl;
-#endif
+
+        SDL_Log("[ INIT ] [MAX %zu GAMES]\n", Interface::GamesList.size());
     }
 
     // generate textures of book locations from games list

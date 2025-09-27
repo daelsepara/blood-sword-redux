@@ -187,12 +187,15 @@ namespace BloodSword::Game
 
         auto system = BloodSword::System();
 
-        auto session_name = "BloodSword " + BloodSword::Version();
-
-        system.Initialize(session_name.c_str());
-
         try
         {
+            // disable logger
+            Logger::Disable();
+
+            auto session_name = "BloodSword " + BloodSword::Version();
+
+            system.Initialize(session_name.c_str());
+
             Game::Menu(system.graphics);
         }
         catch (std::exception &e)

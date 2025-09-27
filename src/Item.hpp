@@ -923,6 +923,9 @@ namespace BloodSword::Items
     // load items from json data
     void InitializeDefaults(nlohmann::json &data)
     {
+        // clear global map
+        Items::Defaults.clear();
+
         if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
         {
             for (auto i = 0; i < data["items"].size(); i++)
@@ -934,19 +937,14 @@ namespace BloodSword::Items
                     Items::Defaults[item.Type] = item;
                 }
             }
-#if defined(DEBUG)
 
-            std::cerr << "[LOADED] " << Items::Defaults.size() << " items" << std::endl;
-#endif
+            SDL_Log("[LOADED] %zu items\n", Items::Defaults.size());
         }
     }
 
     // loads defaults for items
     void LoadDefaults(const char *items)
     {
-        // clear global map
-        Items::Defaults.clear();
-
         std::ifstream ifs(items);
 
         if (ifs.good())
@@ -972,6 +970,8 @@ namespace BloodSword::Items
 
             if (!ifs.empty())
             {
+                Items::Defaults.clear();
+
                 auto data = nlohmann::json::parse(ifs);
 
                 Items::InitializeDefaults(data);
@@ -996,6 +996,9 @@ namespace BloodSword::Items
     // load item descriptions from json data
     void InitializeDescriptions(nlohmann::json &data)
     {
+        // clear global map
+        Items::Descriptions.clear();
+
         if (!data["descriptions"].is_null() && data["descriptions"].is_array() && data["descriptions"].size() > 0)
         {
             for (auto i = 0; i < data["descriptions"].size(); i++)
@@ -1009,18 +1012,14 @@ namespace BloodSword::Items
                     Items::Descriptions[item] = description;
                 }
             }
-#if defined(DEBUG)
-            std::cerr << "[LOADED] " << Items::Descriptions.size() << " descriptions" << std::endl;
-#endif
+
+            SDL_Log("[LOADED] %zu descriptions\n", Items::Descriptions.size());
         }
     }
 
     // load item descriptions from file
     void LoadDescriptions(const char *items)
     {
-        // clear global map
-        Items::Descriptions.clear();
-
         std::ifstream ifs(items);
 
         if (ifs.good())

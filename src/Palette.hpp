@@ -83,9 +83,8 @@ namespace BloodSword::Palette
 
         if (names.size() > 0 && list.size() > 0 && names.size() == list.size())
         {
-#if defined(DEBUG)
-            std::cerr << "[LOADED] " << std::to_string(list.size()) << " palettes" << std::endl;
-#endif
+            SDL_Log("[ INIT ] %zu palettes\n", list.size());
+
             Palette::List = list;
 
             Palette::Names = names;

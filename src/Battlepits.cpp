@@ -6,6 +6,9 @@ namespace BloodSword::BattlepitsRenderer
     // main render function
     void Render(const char *module, int width, int height, int max_rooms, int min_size, int max_size, Battlepits::Connection connection, bool inner_tunnel, int gap_size, const char *image_file)
     {
+        // disable logger
+        Logger::Disable();
+
         // get all available modules
         Interface::LoadModules();
 

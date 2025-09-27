@@ -21,6 +21,9 @@ namespace BloodSword::MapRenderer
     // render map to a png file
     void Render(const char *module, const char *battle_file, const char *image_file)
     {
+        // disable logger
+        Logger::Disable();
+
         // get all available modules
         Interface::LoadModules();
 
