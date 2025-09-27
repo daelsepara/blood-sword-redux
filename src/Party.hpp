@@ -574,7 +574,7 @@ namespace BloodSword::Party
         {
             auto result = !variable.empty() && BloodSword::Has(this->Variables, variable);
 
-            SDL_Log("[VARIABLE %s] IS %sSENT", variable.c_str(), (!result ? "PRE" : "AB"));
+            SDL_Log("[VARIABLE %s] IS %sSENT", variable.c_str(), (result ? "PRE" : "AB"));
 
             return result;
         }
