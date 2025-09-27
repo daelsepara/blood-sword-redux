@@ -1,9 +1,6 @@
 #ifndef __LOGGER_HPP__
 #define __LOGGER_HPP__
 
-#include <SDL_hints.h>
-#include <SDL_log.h>
-
 #include "BattleResults.hpp"
 #include "Conditions.hpp"
 #include "Party.hpp"
