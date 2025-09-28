@@ -209,13 +209,7 @@ namespace BloodSword::MapRenderer
         }
         catch (std::exception &e)
         {
-            std::cerr << std::endl
-                      << "BLOODSWORD ("
-                      << Version()
-                      << ") EXCEPTION: "
-                      << e.what()
-                      << std::endl
-                      << std::endl;
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "BLOODSWORD MAP RENDERER (%s) EXCEPTION: %s", Version().c_str(), e.what());
 
             return_code = 1;
         }

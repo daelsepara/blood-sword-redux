@@ -124,12 +124,12 @@ namespace BloodSword::Sound
         // Initialize SDL_mixer
         if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, Sound::CHANNELS, 2048) < 0)
         {
-            std::cerr << "SDL_mixer could not initialize! SDL_mixer Error: " << Mix_GetError() << std::endl;
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer could not initialize! SDL_mixer Error: %s", Mix_GetError());
         }
 
         if (Mix_AllocateChannels(Sound::CHANNELS) < 0)
         {
-            std::cerr << "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: " << Mix_GetError() << std::endl;
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: %s", Mix_GetError());
         }
 
         std::ifstream ifs(assets.c_str());

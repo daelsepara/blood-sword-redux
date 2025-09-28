@@ -23,7 +23,7 @@ namespace BloodSword::Input
         {
             if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) != 0)
             {
-                std::cerr << "SDL could not initialize gamecontroller! SDL_Error: " << SDL_GetError() << std::endl;
+                SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL could not initialize gamecontroller! SDL_Error: %s", SDL_GetError());
             }
         }
 
@@ -50,7 +50,7 @@ namespace BloodSword::Input
 
                 if (SDL_GameControllerGetAttached(pad) != SDL_TRUE)
                 {
-                    std::cerr << "Game pad not attached! SDL_Error: " << SDL_GetError() << std::endl;
+                    SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Game pad not attached! SDL_Error: %s", SDL_GetError());
                 }
             }
 

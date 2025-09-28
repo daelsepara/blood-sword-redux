@@ -47,7 +47,7 @@ namespace BloodSword::SpriteSheet
 
                         if (surface_asset == nullptr)
                         {
-                            std::cerr << "Asset: [" << name << "] not found!" << std::endl;
+                            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Asset [%s] not found!", name.c_str());
                         }
 
                         rect.x = (reverse ? width - x - 1 : x) * BloodSword::TileSize;
@@ -87,13 +87,7 @@ namespace BloodSword::SpriteSheet
         }
         catch (std::exception &e)
         {
-            std::cerr << std::endl
-                      << "BLOODSWORD ("
-                      << Version()
-                      << ") EXCEPTION: "
-                      << e.what()
-                      << std::endl
-                      << std::endl;
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "BLOODSWORD SPRITE SHEET (%s) EXCEPTION: %s", Version().c_str(), e.what());
 
             return_code = 1;
         }

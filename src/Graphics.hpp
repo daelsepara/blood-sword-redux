@@ -51,7 +51,7 @@ namespace BloodSword::Graphics
 
         if (SDL_Init(flags) < 0)
         {
-            std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL could not initialize! SDL_Error: %s", SDL_GetError());
         }
         else
         {
@@ -72,7 +72,7 @@ namespace BloodSword::Graphics
 
             if (!graphics.Window || !graphics.Renderer)
             {
-                std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
+                SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Window could not be created! SDL_Error: %s", SDL_GetError());
             }
             else if (graphics.Window)
             {

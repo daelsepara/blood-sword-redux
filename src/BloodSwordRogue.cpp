@@ -22,13 +22,7 @@ namespace BloodSword::BloodSwordRogue
         }
         catch (std::exception &e)
         {
-            std::cerr << std::endl
-                      << "BLOODSWORD ROGUE ("
-                      << Version()
-                      << ") EXCEPTION: "
-                      << e.what()
-                      << std::endl
-                      << std::endl;
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "BLOODSWORD ROGUE (%s) EXCEPTION: %s", Version().c_str(), e.what());
 
             return_code = 1;
         }

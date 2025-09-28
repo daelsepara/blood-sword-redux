@@ -226,7 +226,7 @@ namespace BloodSword
 
         if (!surface)
         {
-            std::cerr << "Unable to load image " << image << "! SDL Error: " << SDL_GetError() << std::endl;
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Unable to load image %s! SDL_Error: %s", image, SDL_GetError());
         }
 
         return surface;
