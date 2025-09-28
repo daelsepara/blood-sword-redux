@@ -26,16 +26,70 @@ This is the main json file from which other json files are loaded and parsed by 
 
 ## Format
 
+Path to file(s) must be relative to the game executable's location. The files are usually inside the module's directory, e.g. for the default module, they are inside the **default** module's directory at */modules/default*.
+
 ## [assets](#assets)
 
-JSON file which lists the sprites/icons used in the game. Path to file must be relative to the game executable's location, usually inside the module's directory. For the **default** module, this file (**assets.json** in the above example) is inside the **default** module's directory at */modules/default*.
+JSON file which lists the sprites/icons used in the game.
 
 **see** [assets](../assets/assets.md)
 
 ## [fonts](#fonts)
 
-JSON file which determines the font file used in the game as well as sizes for *normal*, *fixed* and *caption* text. It is inside the **default** module's directory at */modules/default*.
+JSON file which determines the font file used in the game as well as sizes for *normal*, *fixed* and *caption* text.
 
 **see** [fonts](../fonts/fonts.md)
+
+## [sounds](#sounds)
+
+JSON file which lists the sound effects used for in game events, e.g. **DICE ROLL**, **BUTTON CLICK**, etc.
+
+**see** [sounds](../sounds/sounds.md)
+
+## [palettes](#palettes)
+
+JSON file which lists available 4-color palettes. Each palette in the list contains color definitions for **NORMAL**, **HIGHLIGHT**, **INACTIVE**, and **BACKGROUND**. This list is used with the [**palette**](#palette) setting below.
+
+**see** [palettes](../palettes/palettes.md)
+
+## [palette](#palette)
+
+Index to the current color palette used. Default is *0*. Used with the [**palettes**](#palettes) list above.
+
+**see** [palettes](../palettes/palettes.md)
+
+## [items](#items)
+
+JSON file for the default definitions for common items found in the current module.
+
+**see** [items](../items/items.md)
+
+## [item_descriptions](#item-descriptions)
+
+JSON file for the default descriptions for common items found in the current module.
+
+**see** [item descriptions](../items/descriptions.md)
+
+## [adventure](#adventure)
+
+JSON file for the current module's gamebook. It contains the current module/book's title, description, as well as a list to all of the book's sections.
+
+**see** [adventure](../adventure/adventure.md)
+
+## [characters](#characters)
+
+JSON file for the extra characters in the current module, i.e. player-controllable characters not included in the default characters (**WARRIOR**, **TRICKSTER**, **SAGE**, **ENCHANTER**).
+
+**see** [characters](../characters/characters.md)
+
+## [ranks](#ranks)
+
+Starting character ranks based on the size of the party, e.g. Character ranks start at 8 if there are is only one (1) in the party, rank 4 for a two (2) character party, 3 for a three (3) character party, and 2 for a full party of four (4).
+
+**see** [ranks](../ranks/ranks.md)
+
+## [about](#about)
+
+Miscellaneous information about the current module. This section is usually for copyright and trademark information.
 
 [go back](../README.md#settings)

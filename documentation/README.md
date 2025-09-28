@@ -16,12 +16,12 @@ This file contains information about the current module as well as references to
 - **implementation** [settings.json](../src/modules/default/settings.json)
 - **documentation** [settings](settings/settings.md)
 
-## [Book](#book)
+## [Adventure](#adventure)
 
 Book title, description and list of gamebook sections.
 
 - **implementation** [book.json](../src/modules/default/book.json)
-- **documentation** [book](book/book.md)
+- **documentation** [book](adventure/adventure.md)
 
 ## [Characters](#characters)
 

@@ -1,4 +1,4 @@
-# Book
+# Adventure
 
 ```json
 {
@@ -30,7 +30,7 @@ This is the json file which contains all of the gamebook's sections.
 
 ## [description](#description)
 
-## [sections](#description)
+## [sections](#sections)
 
 [go back](../README.md)
 
