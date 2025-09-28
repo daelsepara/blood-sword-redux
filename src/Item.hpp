@@ -970,8 +970,6 @@ namespace BloodSword::Items
 
             if (!ifs.empty())
             {
-                Items::Defaults.clear();
-
                 auto data = nlohmann::json::parse(ifs);
 
                 Items::InitializeDefaults(data);
