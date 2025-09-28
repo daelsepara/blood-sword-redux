@@ -83,7 +83,7 @@ namespace BloodSword::Palette
 
         if (names.size() > 0 && list.size() > 0 && names.size() == list.size())
         {
-            SDL_Log("[ INIT ] %zu palettes\n", list.size());
+            SDL_Log("[ INIT ] %zu palettes", list.size());
 
             Palette::List = list;
 

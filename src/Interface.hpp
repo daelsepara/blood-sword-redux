@@ -6996,7 +6996,7 @@ namespace BloodSword::Interface
         }
         else
         {
-            SDL_Log("[LOADED] [MODULE %s]\n", load.c_str());
+            SDL_Log("[LOADED] [MODULE %s]", load.c_str());
         }
     }
 
@@ -7143,7 +7143,7 @@ namespace BloodSword::Interface
             }
         }
 
-        SDL_Log("[ INIT ] [MAX %zu GAMES]\n", Interface::GamesList.size());
+        SDL_Log("[ INIT ] [MAX %zu GAMES]", Interface::GamesList.size());
     }
 
     // generate textures of book locations from games list

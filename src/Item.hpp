@@ -938,7 +938,7 @@ namespace BloodSword::Items
                 }
             }
 
-            SDL_Log("[LOADED] %zu items\n", Items::Defaults.size());
+            SDL_Log("[LOADED] %zu items", Items::Defaults.size());
         }
     }
 
@@ -1011,7 +1011,7 @@ namespace BloodSword::Items
                 }
             }
 
-            SDL_Log("[LOADED] %zu descriptions\n", Items::Descriptions.size());
+            SDL_Log("[LOADED] %zu descriptions", Items::Descriptions.size());
         }
     }
 

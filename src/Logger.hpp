@@ -255,11 +255,11 @@ namespace BloodSword::InterfaceLogger
     {
         if (!caster.HasCalledToMind(spell))
         {
-            SDL_Log("[%s] NOT CALLED TO MIND\n", Spells::TypeMapping[spell].c_str());
+            SDL_Log("[%s] NOT CALLED TO MIND", Spells::TypeMapping[spell].c_str());
         }
         else
         {
-            SDL_Log("[%s] NOT IN GRIMOIRE\n", Spells::TypeMapping[spell].c_str());
+            SDL_Log("[%s] NOT IN GRIMOIRE", Spells::TypeMapping[spell].c_str());
         }
     }
 
@@ -282,48 +282,41 @@ namespace BloodSword::InterfaceLogger
 
             selected += ")";
 
-            SDL_Log("%s\n", selected.c_str());
+            SDL_Log("%s", selected.c_str());
         }
     }
 
     // log choices
     void LogChoice(const char *message, Asset::Type asset, int selected, int size)
     {
-        SDL_Log("[%s %d] [%s] [SIZE] %d\n", message, selected, Asset::TypeMapping[asset].c_str(), size);
+        SDL_Log("[%s %d] [%s] [SIZE] %d", message, selected, Asset::TypeMapping[asset].c_str(), size);
     }
 
     // log path to target
     void LogPathToTarget(Point target, int path, int distance)
     {
-        SDL_Log("[TARGET (%d, %d)] [PATH] %d [DIST] %d\n", target.X, target.Y, path, distance);
+        SDL_Log("[TARGET (%d, %d)] [PATH] %d [DIST] %d", target.X, target.Y, path, distance);
     }
 
     // log targets for move action
     void LogMoveTargets(const char *type, Target::Type character, int src_id, int dst_id, int path, int valid, int avail)
     {
-        SDL_Log("[%s %d] [MOVE] [TARGET %s %d] [PATH] %d [DIST] %d [VULN] %d\n", Target::Mapping[character].c_str(), src_id, type, dst_id, path, valid, avail);
+        SDL_Log("[%s %d] [MOVE] [TARGET %s %d] [PATH] %d [DIST] %d [VULN] %d", Target::Mapping[character].c_str(), src_id, type, dst_id, path, valid, avail);
     }
 }
 
 namespace BloodSword::StoryLogger
 {
     // log major story events
-    void LogSectionHeader(const char *header, Book::Location location, bool newline = true)
+    void LogSectionHeader(const char *header, Book::Location location)
     {
         SDL_Log("[%s] %s", header, Book::String(location).c_str());
-
-        if (newline)
-        {
-            SDL_Log("\n");
-        }
     }
 
     // log story search results
     void LogSearch(Book::Location location, int current)
     {
-        StoryLogger::LogSectionHeader("FIND", location, false);
-
-        SDL_Log(" == %s\n", (current != -1 ? "FOUND" : "NOT FOUND"));
+        SDL_Log("[FIND] %s == %s", Book::String(location).c_str(), (current != -1 ? "FOUND" : "NOT FOUND"));
     }
 }
 

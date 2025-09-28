@@ -347,7 +347,7 @@ namespace BloodSword::Story
             }
         }
 
-        SDL_Log("[LOADED] %zu SECTIONS\n", book.Sections.size());
+        SDL_Log("[LOADED] %zu SECTIONS", book.Sections.size());
     }
 
     // load story from json data
