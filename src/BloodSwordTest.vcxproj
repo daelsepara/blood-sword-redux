@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{14d53db2-078f-4e68-a2b4-27490a560b0c}</ProjectGuid>
-    <RootNamespace>BloodSwordRogue</RootNamespace>
+    <ProjectGuid>{031229d3-97d4-4f9c-9c4f-e74f52ace59e}</ProjectGuid>
+    <RootNamespace>BloodSwordTest</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -102,8 +102,8 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SDL2\include;$(ProjectDir)..\..\minizip\include;$(ProjectDir)..\..\zlib</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\SDL2\include;$(ProjectDir)..\..\minizip\include;$(ProjectDir)..\..\zlib</AdditionalIncludeDirectories>
       <AdditionalOptions>/bigobj</AdditionalOptions>
     </ClCompile>
     <Link>
@@ -114,10 +114,13 @@
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(ProjectDir)fonts\" "$(TargetDir)fonts\" /S /Y
+      <Command>XCOPY "$(ProjectDir)battles\" "$(TargetDir)battles\" /S /Y
+XCOPY "$(ProjectDir)fonts\" "$(TargetDir)fonts\" /S /Y
 XCOPY "$(ProjectDir)help\" "$(TargetDir)help\" /S /Y
 XCOPY "$(ProjectDir)images\" "$(TargetDir)images\" /S /Y
+XCOPY "$(ProjectDir)maps\" "$(TargetDir)maps\" /S /Y
 XCOPY "$(ProjectDir)modules\" "$(TargetDir)modules\" /S /Y
+XCOPY "$(ProjectDir)party\" "$(TargetDir)party\" /S /Y
 XCOPY "$(ProjectDir)sounds\" "$(TargetDir)sounds\" /S /Y
 XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2.dll" "$(TargetDir)" /Y
 XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_image.dll" "$(TargetDir)" /Y
@@ -145,10 +148,13 @@ XCOPY "$(ProjectDir)..\..\minizip\lib\x64\zlibwapi.dll" "$(TargetDir)" /Y</Comma
       <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
     <PostBuildEvent>
-      <Command>XCOPY "$(ProjectDir)fonts\" "$(TargetDir)fonts\" /S /Y
+      <Command>XCOPY "$(ProjectDir)battles\" "$(TargetDir)battles\" /S /Y
+XCOPY "$(ProjectDir)fonts\" "$(TargetDir)fonts\" /S /Y
 XCOPY "$(ProjectDir)help\" "$(TargetDir)help\" /S /Y
 XCOPY "$(ProjectDir)images\" "$(TargetDir)images\" /S /Y
+XCOPY "$(ProjectDir)maps\" "$(TargetDir)maps\" /S /Y
 XCOPY "$(ProjectDir)modules\" "$(TargetDir)modules\" /S /Y
+XCOPY "$(ProjectDir)party\" "$(TargetDir)party\" /S /Y
 XCOPY "$(ProjectDir)sounds\" "$(TargetDir)sounds\" /S /Y
 XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2.dll" "$(TargetDir)" /Y
 XCOPY "$(ProjectDir)..\..\SDL2\lib\x64\SDL2_image.dll" "$(TargetDir)" /Y
@@ -163,7 +169,6 @@ XCOPY "$(ProjectDir)..\..\minizip\lib\x64\zlibwapi.dll" "$(TargetDir)" /Y</Comma
     <ClInclude Include="AssetTypes.hpp" />
     <ClInclude Include="Attribute.hpp" />
     <ClInclude Include="Battle.hpp" />
-    <ClInclude Include="Battlepits.hpp" />
     <ClInclude Include="BattleResults.hpp" />
     <ClInclude Include="Book.hpp" />
     <ClInclude Include="Character.hpp" />
@@ -178,7 +183,6 @@ XCOPY "$(ProjectDir)..\..\minizip\lib\x64\zlibwapi.dll" "$(TargetDir)" /Y</Comma
     <ClInclude Include="ControlTypes.hpp" />
     <ClInclude Include="Engine.hpp" />
     <ClInclude Include="Feature.hpp" />
-    <ClInclude Include="FieldOfView.hpp" />
     <ClInclude Include="Fonts.hpp" />
     <ClInclude Include="Generator.hpp" />
     <ClInclude Include="Graphics.hpp" />
@@ -209,13 +213,6 @@ XCOPY "$(ProjectDir)..\..\minizip\lib\x64\zlibwapi.dll" "$(TargetDir)" /Y</Comma
     <ClInclude Include="Primitives.hpp" />
     <ClInclude Include="Random.hpp" />
     <ClInclude Include="RichText.hpp" />
-    <ClInclude Include="Rogue.hpp" />
-    <ClInclude Include="RogueBase.hpp" />
-    <ClInclude Include="RogueBattle.hpp" />
-    <ClInclude Include="RogueClasses.hpp" />
-    <ClInclude Include="RogueGenerator.hpp" />
-    <ClInclude Include="RogueItems.hpp" />
-    <ClInclude Include="RogueMethods.hpp" />
     <ClInclude Include="Scene.hpp" />
     <ClInclude Include="Section.hpp" />
     <ClInclude Include="Skills.hpp" />
@@ -230,7 +227,7 @@ XCOPY "$(ProjectDir)..\..\minizip\lib\x64\zlibwapi.dll" "$(TargetDir)" /Y</Comma
     <ClInclude Include="Zipper.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="BloodSwordRogue.cpp" />
+    <ClCompile Include="BloodSwordTest.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

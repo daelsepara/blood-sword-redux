@@ -223,12 +223,6 @@ XCOPY "$(ProjectDir)..\..\minizip\lib\x64\zlibwapi.dll" "$(TargetDir)" /Y</Comma
   <ItemGroup>
     <ClCompile Include="BloodSword.cpp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="locations" />
-    <None Include="Makefile" />
-    <None Include="missing" />
-    <None Include="sections" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
