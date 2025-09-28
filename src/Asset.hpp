@@ -9,6 +9,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mouse.h>
 
 #include "nlohmann/json.hpp"
 #include "AssetTypes.hpp"

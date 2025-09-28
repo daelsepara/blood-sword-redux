@@ -186,6 +186,11 @@ namespace BloodSword::Interface
     // texture of "no spells" text
     SDL_Texture *NoSpells = nullptr;
 
+    // cursor definition
+    SDL_Cursor *Cursor = nullptr;
+
+    SDL_Cursor *SystemCursor = nullptr;
+
     // dice asset ids
     Asset::List Dice = {};
 
@@ -415,6 +420,70 @@ namespace BloodSword::Interface
         Interface::FreeMessages();
     }
 
+    // initializes graphics cursor
+    void InitCursor()
+    {
+        Interface::SystemCursor = SDL_GetDefaultCursor();
+
+        // initialize cursor
+        auto surface_cursor = Asset::Surface(std::string(Interface::Settings["cursor"]), Color::Highlight);
+
+        // create blank surface
+        auto surface = Graphics::CreateSurface(surface_cursor->w, surface_cursor->h);
+
+        if (surface_cursor && surface)
+        {
+            SDL_Rect rect;
+
+            rect.w = surface->w;
+
+            rect.h = surface->h;
+
+            rect.x = 0;
+
+            rect.y = 0;
+
+            Graphics::RenderAsset(surface, surface_cursor, rect);
+
+            // set cursor
+            Interface::Cursor = SDL_CreateColorCursor(surface, int(Interface::Settings["hot_x"]), int(Interface::Settings["hot_y"]));
+
+            if (Interface::Cursor)
+            {
+                SDL_SetCursor(Interface::Cursor);
+
+                // redraw cursor
+                SDL_SetCursor(nullptr);
+            }
+            else
+            {
+                SDL_SetCursor(Interface::SystemCursor);
+            }
+
+            BloodSword::Free(&surface_cursor);
+
+            BloodSword::Free(&surface);
+        }
+    }
+
+    void FreeCursor()
+    {
+        if (Interface::Cursor)
+        {
+            if (Interface::SystemCursor)
+            {
+                SDL_SetCursor(Interface::SystemCursor);
+
+                // redraw cursor
+                SDL_SetCursor(nullptr);
+            }
+
+            SDL_FreeCursor(Interface::Cursor);
+
+            Interface::Cursor = nullptr;
+        }
+    }
+
     // unload all textures and assets
     void UnloadTextures()
     {
@@ -423,6 +492,8 @@ namespace BloodSword::Interface
         Graphics::FreeTextures();
 
         Asset::Unload();
+
+        Interface::FreeCursor();
     }
 
     // load all textures
@@ -467,6 +538,9 @@ namespace BloodSword::Interface
 
         // initialize interface textures
         Interface::InitializeTextures(graphics);
+
+        // initialize cursor
+        Interface::InitCursor();
     }
 
     // switch texture and reload all textures

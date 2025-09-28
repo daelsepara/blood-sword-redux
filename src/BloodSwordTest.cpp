@@ -1813,6 +1813,9 @@ namespace BloodSword::Test
                     }
 
                     input.Clear();
+
+                    // reload button
+                    texture_exit = Asset::Get("EXIT");
                 }
                 else if (Input::IsUp(input))
                 {

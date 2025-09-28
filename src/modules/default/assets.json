@@ -883,6 +883,10 @@
         {
             "id": "SILVER ARMOUR",
             "path": "images/items/chest-armor.png"
+        },
+        {
+            "id": "CURSOR",
+            "path": "images/system/relic-blade.png"
         }
     ]
 }
