@@ -27,7 +27,7 @@ ifeq ($(UNAME_S),Darwin)
 	DEBIAN=
 	LLVM=$(shell brew --prefix llvm)
 	CC=$(LLVM)/bin/clang++
-	LIBS += -stdlib=libc++ -Wl,-dead_strip -fdata-sections -ffunction-sections -L$(LLVM)/lib/c++ -L/usr/local/lib
+	LIBS += -stdlib=libc++ -L$(LLVM)/lib/c++ -L/usr/local/lib -Wl,-dead_strip -fdata-sections -ffunction-sections
 	INCLUDES += -I/usr/local/include/SDL2 -I/usr/local/include/minizip
 else ifeq ($(UNAME_M),aarch64)
 	DEBIAN_ARCH=arm64
@@ -49,28 +49,28 @@ endif
 all: clean blood-sword-test battle-board map-template map-renderer sprite-sheet blood-sword battlepits rogue
 
 map-template:
-	$(CC) -Wall $(BSWORD_MAP) $(LIBS) $(INCLUDES) -o $(BSWORD_MAP_OUTPUT)
+	$(CC) -Wall $(BSWORD_MAP) $(INCLUDES) $(LIBS) -o $(BSWORD_MAP_OUTPUT)
 
 map-renderer:
-	$(CC) -Wall $(BSWORD_MAP_RENDERER) $(LIBS) $(INCLUDES) -o $(BSWORD_MAP_RENDERER_OUTPUT)
+	$(CC) -Wall $(BSWORD_MAP_RENDERER) $(INCLUDES) $(LIBS) -o $(BSWORD_MAP_RENDERER_OUTPUT)
 
 sprite-sheet:
-	$(CC) -Wall $(BSWORD_SPRITE_SHEET) $(LIBS) $(INCLUDES) -o $(BSWORD_SPRITE_SHEET_OUTPUT)
+	$(CC) -Wall $(BSWORD_SPRITE_SHEET) $(INCLUDES) $(LIBS) -o $(BSWORD_SPRITE_SHEET_OUTPUT)
 
 blood-sword-test:
-	$(CC) -Wall $(BSWORD_TEST) $(LIBS) $(INCLUDES) -o $(BSWORD_TEST_OUTPUT) -DDEBUG
+	$(CC) -Wall $(BSWORD_TEST) $(INCLUDES) $(LIBS) -DDEBUG -o $(BSWORD_TEST_OUTPUT)
 
 battle-board:
-	$(CC) -Wall $(BSWORD_BATTLES) $(LIBS) $(INCLUDES) -o $(BSWORD_BATTLES_OUTPUT) -DDEBUG
+	$(CC) -Wall $(BSWORD_BATTLES) $(INCLUDES) $(LIBS) -DDEBUG -o $(BSWORD_BATTLES_OUTPUT)
 
 blood-sword:
-	$(CC) -Wall $(BSWORD) $(LIBS) $(INCLUDES) -o $(BSWORD_OUTPUT)
+	$(CC) -Wall $(BSWORD) $(INCLUDES) $(LIBS) -o $(BSWORD_OUTPUT)
 
 battlepits:
-	$(CC) -Wall $(BSWORD_BATTLEPITS) $(LIBS) $(INCLUDES) -o $(BSWORD_BATTLEPITS_OUTPUT)
+	$(CC) -Wall $(BSWORD_BATTLEPITS) $(INCLUDES) $(LIBS) -o $(BSWORD_BATTLEPITS_OUTPUT)
 
 rogue:
-	$(CC) -Wall $(BSWORD_ROGUE) $(LIBS) $(INCLUDES) -o $(BSWORD_ROGUE_OUTPUT)
+	$(CC) -Wall $(BSWORD_ROGUE) $(INCLUDES) $(LIBS) -o $(BSWORD_ROGUE_OUTPUT)
 
 clean-blood-sword-test:
 	rm -f $(BSWORD_TEST_OUTPUT) *.o
