@@ -191,13 +191,13 @@ namespace BloodSword::Graphics
 
             if (ratio_w > ratio_h)
             {
-                new_h = std::round((double)original->h / ratio_w);
+                new_h = SafeCast(std::round((double)original->h / ratio_w));
 
                 new_w = target_w;
             }
             else
             {
-                new_w = std::round((double)original->w / ratio_h);
+                new_w = SafeCast(std::round((double)original->w / ratio_h));
 
                 new_h = target_h;
             }

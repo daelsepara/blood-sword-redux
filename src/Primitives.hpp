@@ -96,8 +96,9 @@ namespace BloodSword
     // scroll speed (pixels)
     const int ScrollSpeed = 50;
 
-    // convert size_t to int
-    int SafeCast(size_t size)
+    // convert to int
+    template <typename T>
+    int SafeCast(T size)
     {
         return static_cast<int>(size);
     }
