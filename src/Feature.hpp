@@ -59,7 +59,7 @@ namespace BloodSword::Features
     {
         auto features = Features::List();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto feature = !data[i].is_null() ? Feature::Map(std::string(data[i])) : Feature::Type::NONE;
 

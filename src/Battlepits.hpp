@@ -310,7 +310,7 @@ namespace BloodSword::Battlepits
     // create room with random dimensions
     Room::Base CreateRoom(Random::Base &random, Map::Base &map, Points &available, int width, int height)
     {
-        auto point = available[random.NextInt(0, available.size() - 1)];
+        auto point = available[random.NextInt(0, SafeCast(available.size()) - 1)];
 
         return Room::Base(point.X, point.Y, width, height);
     }
@@ -672,12 +672,12 @@ namespace BloodSword::Battlepits
 
                 std::shuffle(available.begin(), available.end(), random.Generator());
 
-                if (available.size() > 0)
+                if (SafeCast(available.size()) > 0)
                 {
                     auto room = Battlepits::CreateRoom(random, map, available, width, height);
 
                     // place room
-                    Battlepits::Place(map, room, int(rooms.size()));
+                    Battlepits::Place(map, room, SafeCast(rooms.size()));
 
                     rooms.push_back(room);
                 }
@@ -685,7 +685,7 @@ namespace BloodSword::Battlepits
         }
 
         // connect rooms
-        for (auto room_id = 1; room_id < rooms.size(); room_id++)
+        for (auto room_id = 1; room_id < SafeCast(rooms.size()); room_id++)
         {
             Battlepits::ConnectRooms(map, rooms, rooms[room_id], rooms[room_id - 1]);
         }

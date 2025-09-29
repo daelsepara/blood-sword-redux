@@ -214,7 +214,7 @@ namespace BloodSword::Battle
         // check if battle action can be cancelled
         bool Has(Controls::Type action)
         {
-            auto actions = (this->ActionCancels.size() > 0);
+            auto actions = (SafeCast(this->ActionCancels.size()) > 0);
 
             auto cancel = BloodSword::Has(this->ActionCancels, action);
 
@@ -249,11 +249,11 @@ namespace BloodSword::Battle
                     this->Location = Book::Load(data["location"]);
                 }
 
-                if (!data["conditions"].is_null() && data["conditions"].is_array() && data["conditions"].size() > 0)
+                if (!data["conditions"].is_null() && data["conditions"].is_array() && SafeCast(data["conditions"].size()) > 0)
                 {
                     auto conditions = Battle::Conditions();
 
-                    for (auto i = 0; i < data["conditions"].size(); i++)
+                    for (auto i = 0; i < SafeCast(data["conditions"].size()); i++)
                     {
                         auto condition = !data["conditions"][i].is_null() ? Battle::MapCondition(std::string(data["conditions"][i])) : Battle::Condition::NONE;
 
@@ -283,7 +283,7 @@ namespace BloodSword::Battle
                     {
                         auto map = std::string(data["map"]);
 
-                        if (map.size() > 0)
+                        if (SafeCast(map.size()) > 0)
                         {
                             if (is_zip)
                             {
@@ -297,7 +297,7 @@ namespace BloodSword::Battle
                     }
                 }
 
-                if (!data["opponents"].is_null() && data["opponents"].is_object() && data["opponents"].size() > 0)
+                if (!data["opponents"].is_null() && data["opponents"].is_object() && SafeCast(data["opponents"].size()) > 0)
                 {
                     this->Opponents = Party::Initialize(data["opponents"]);
                 }

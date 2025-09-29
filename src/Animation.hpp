@@ -245,11 +245,11 @@ namespace BloodSword::Animation
 
         if (update)
         {
-            if (!animation.Frames.empty() && animation.Frame >= 0 && animation.Frame < animation.Frames.size())
+            if (!animation.Frames.empty() && animation.Frame >= 0 && animation.Frame < SafeCast(animation.Frames.size()))
             {
                 done = false;
 
-                if (animation.Frame < animation.Frames.size() - 1)
+                if (animation.Frame < SafeCast(animation.Frames.size()) - 1)
                 {
                     animation.Frame++;
                 }
@@ -288,7 +288,7 @@ namespace BloodSword::Animation
 
         auto done = true;
 
-        if (!animation.Path.empty() && animation.Move >= 0 && animation.Move < animation.Path.size() - 1)
+        if (!animation.Path.empty() && animation.Move >= 0 && animation.Move < SafeCast(animation.Path.size()) - 1)
         {
             auto delta = (animation.Current - animation.Path[animation.Move + 1]) * animation.Scale + animation.Offset;
 
@@ -333,12 +333,12 @@ namespace BloodSword::Animation
             done = Animation::Show(scene, animation, update);
         }
 
-        if (animation.Frame >= 0 && animation.Frame < animation.Frames.size())
+        if (animation.Frame >= 0 && animation.Frame < SafeCast(animation.Frames.size()))
         {
             // add trail to movement
             if (trail && animation.Is(Type::MOVE))
             {
-                for (auto i = animation.Move + 1; i < animation.Path.size() - 1; i++)
+                for (auto i = animation.Move + 1; i < SafeCast(animation.Path.size()) - 1; i++)
                 {
                     auto trails = animation.Origin + animation.Path[i] * animation.Scale;
 
@@ -408,7 +408,7 @@ namespace BloodSword::Animations
         // setup clipping area based on all animations
         void SetupClipping()
         {
-            for (auto i = 0; i < this->List.size(); i++)
+            for (auto i = 0; i < SafeCast(this->List.size()); i++)
             {
                 if (!this->List[i].Clip.IsNone())
                 {

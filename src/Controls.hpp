@@ -215,7 +215,7 @@ namespace BloodSword::Controls
     {
         auto result = -1;
 
-        for (auto id = 0; id < controls.size(); id++)
+        for (auto id = 0; id < SafeCast(controls.size()); id++)
         {
             if (controls[id] == type)
             {

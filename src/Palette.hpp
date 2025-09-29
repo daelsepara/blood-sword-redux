@@ -51,15 +51,15 @@ namespace BloodSword::Palette
 
         auto list = BloodSword::Array<Uint32>();
 
-        if (!data["palettes"].is_null() && data["palettes"].is_array() && data["palettes"].size() > 0)
+        if (!data["palettes"].is_null() && data["palettes"].is_array() && SafeCast(data["palettes"].size()) > 0)
         {
-            for (auto i = 0; i < data["palettes"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["palettes"].size()); i++)
             {
                 auto colors = std::vector<Uint32>();
 
-                if (!data["palettes"][i]["colors"].is_null() && data["palettes"][i]["colors"].is_array() && data["palettes"][i]["colors"].size() > 0)
+                if (!data["palettes"][i]["colors"].is_null() && data["palettes"][i]["colors"].is_array() && SafeCast(data["palettes"][i]["colors"].size()) > 0)
                 {
-                    for (auto index = 0; index < data["palettes"][i]["colors"].size(); index++)
+                    for (auto index = 0; index < SafeCast(data["palettes"][i]["colors"].size()); index++)
                     {
                         Uint32 color = std::stoul(std::string(data["palettes"][i]["colors"][index]), nullptr, 16);
 
@@ -67,12 +67,12 @@ namespace BloodSword::Palette
                     }
                 }
 
-                if (colors.size() < 4)
+                if (SafeCast(colors.size()) < 4)
                 {
                     colors.push_back(0xFF000000);
                 }
 
-                if ((colors).size() >= 4)
+                if (SafeCast(colors.size()) >= 4)
                 {
                     names.push_back(std::string(data["palettes"][i]["name"]));
 
@@ -81,9 +81,9 @@ namespace BloodSword::Palette
             }
         }
 
-        if (names.size() > 0 && list.size() > 0 && names.size() == list.size())
+        if (SafeCast(names.size()) > 0 && SafeCast(list.size()) > 0 && SafeCast(names.size()) == SafeCast(list.size()))
         {
-            SDL_Log("[ INIT ] %zu palettes", list.size());
+            SDL_Log("[ INIT ] %d palettes", SafeCast(list.size()));
 
             Palette::List = list;
 
@@ -143,7 +143,7 @@ namespace BloodSword::Palette
     // switch palette
     void Switch(int palette = 0, bool override = true)
     {
-        if (palette >= 0 && palette < List.size())
+        if (palette >= 0 && palette < SafeCast(List.size()))
         {
             Color::Active = List[palette][0];
 

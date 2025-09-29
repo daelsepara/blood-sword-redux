@@ -25,9 +25,9 @@ namespace BloodSword::Rogue
         {
             auto loot = Rogue::FindLoot(rogue, point);
 
-            if (loot >= 0 && loot < rogue.Loot.size())
+            if (loot >= 0 && loot < SafeCast(rogue.Loot.size()))
             {
-                items &= (rogue.Loot[loot].Items.size() > 0);
+                items &= (SafeCast(rogue.Loot[loot].Items.size()) > 0);
             }
             else
             {
@@ -55,7 +55,7 @@ namespace BloodSword::Rogue
 
         auto closer = false;
 
-        if (path.Points.size() == 0)
+        if (SafeCast(path.Points.size()) == 0)
         {
             // move closer to target
             path = Move::FindPath(map, start, path.Closest);
@@ -75,7 +75,7 @@ namespace BloodSword::Rogue
             // add destination to the count
             auto moves = std::min(valid, 1000);
 
-            if (enemy >= 0 && enemy < rogue.Opponents.size())
+            if (enemy >= 0 && enemy < SafeCast(rogue.Opponents.size()))
             {
                 auto &opponents = rogue.Opponents[enemy];
 
@@ -138,7 +138,7 @@ namespace BloodSword::Rogue
 
             done = true;
         }
-        else if (enemy >= 0 && enemy < rogue.Opponents.size() && !Engine::IsAlive(rogue.Opponents[enemy]))
+        else if (enemy >= 0 && enemy < SafeCast(rogue.Opponents.size()) && !Engine::IsAlive(rogue.Opponents[enemy]))
         {
             Interface::FlashMessage(graphics, background, "YOUR PARTY IS VICTORIUS", Color::Active);
 
@@ -215,7 +215,7 @@ namespace BloodSword::Rogue
             {
                 auto enemy = Rogue::FindOpponents(rogue, point);
 
-                if (enemy >= 0 && enemy < rogue.Opponents.size())
+                if (enemy >= 0 && enemy < SafeCast(rogue.Opponents.size()))
                 {
                     // commence battle
                     Rogue::Battle(graphics, background, rogue, enemy);
@@ -245,7 +245,7 @@ namespace BloodSword::Rogue
             // handle trigger
             auto trigger = Rogue::FindTrigger(rogue, point);
 
-            if (trigger >= 0 && trigger < rogue.Triggers.size())
+            if (trigger >= 0 && trigger < SafeCast(rogue.Triggers.size()))
             {
                 if (!rogue.Triggers[trigger].Activated)
                 {
@@ -379,7 +379,7 @@ namespace BloodSword::Rogue
 
                             opponent_id = Rogue::FindOpponents(rogue, Point(x, y));
 
-                            if (opponent_id >= 0 && opponent_id < rogue.Opponents.size() && rogue.Opponents.size() > 0)
+                            if (opponent_id >= 0 && opponent_id < SafeCast(rogue.Opponents.size()) && SafeCast(rogue.Opponents.size()) > 0)
                             {
                                 if (Engine::IsAlive(rogue.Opponents[opponent_id]))
                                 {
@@ -413,11 +413,11 @@ namespace BloodSword::Rogue
 
                             loot_id = Rogue::FindLoot(rogue, Point(x, y));
 
-                            if (loot_id >= 0 && loot_id < rogue.Loot.size() && rogue.Loot.size() > 0)
+                            if (loot_id >= 0 && loot_id < SafeCast(rogue.Loot.size()) && SafeCast(rogue.Loot.size()) > 0)
                             {
                                 auto &loot = rogue.Loot[loot_id];
 
-                                if (loot.Items.size() > 0)
+                                if (SafeCast(loot.Items.size()) > 0)
                                 {
                                     auto first = Engine::FirstAsset(loot.Items);
 
@@ -763,7 +763,7 @@ namespace BloodSword::Rogue
             // generate panel controls
             auto id = 0;
 
-            for (auto control = 0; control < controls.size(); control++)
+            for (auto control = 0; control < SafeCast(controls.size()); control++)
             {
                 auto lt = id > 0 ? id - 1 : id;
 
@@ -962,7 +962,7 @@ namespace BloodSword::Rogue
             "QUIT",
             "BACK"};
 
-        auto values = std::vector<int>(controls.size());
+        auto values = std::vector<int>(SafeCast(controls.size()));
 
         std::iota(values.begin(), values.end(), 0);
 
@@ -974,7 +974,7 @@ namespace BloodSword::Rogue
         {
             auto selection = Interface::SelectIcons(graphics, background, message, assets, values, captions, 1, 1, Asset::NONE, false, true);
 
-            if (selection.size() == 1)
+            if (SafeCast(selection.size()) == 1)
             {
                 auto input = controls[selection[0]];
 
@@ -1126,7 +1126,7 @@ namespace BloodSword::Rogue
             {
                 enemy = Rogue::FindOpponents(rogue, rogue.Room());
 
-                if (enemy >= 0 && enemy < rogue.Opponents.size())
+                if (enemy >= 0 && enemy < SafeCast(rogue.Opponents.size()))
                 {
                     auto &opponent = rogue.Opponents[enemy];
 
@@ -1283,16 +1283,16 @@ namespace BloodSword::Rogue
         // create party
         rogue.Party = Interface::CreateParty(graphics, {8, 4, 3, 2}, false);
 
-        if (rogue.Rooms.size() > 0 && rogue.Count() > 0)
+        if (SafeCast(rogue.Rooms.size()) > 0 && rogue.Count() > 0)
         {
             // 50% rooms has monsters
-            Rogue::PlaceMonsters(rogue, rogue.Rooms.size() / 2);
+            Rogue::PlaceMonsters(rogue, SafeCast(rogue.Rooms.size()) / 2);
 
             // place boss
             Rogue::PlaceBoss(rogue);
 
             // place loot
-            Rogue::PlaceLoot(rogue, rogue.Rooms.size() / 4, 10, 50);
+            Rogue::PlaceLoot(rogue, SafeCast(rogue.Rooms.size()) / 4, 10, 50);
 
             // place party at the center of the starting room
             auto center = rogue.Rooms[0].Center();

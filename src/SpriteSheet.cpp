@@ -21,11 +21,11 @@ namespace BloodSword::SpriteSheet
         // load asset location mappings
         Asset::Load(std::string(Interface::Settings["assets"]).c_str());
 
-        if (Asset::Locations.size() > 0)
+        if (SafeCast(Asset::Locations.size()) > 0)
         {
             SDL_Rect rect;
 
-            auto height = Asset::Locations.size() % width == 0 ? int(Asset::Locations.size() / width) : int(std::nearbyint((double)Asset::Locations.size() / (double)width + 0.5));
+            auto height = SafeCast(Asset::Locations.size()) % width == 0 ? (SafeCast(Asset::Locations.size()) / width) : int(std::nearbyint((double)SafeCast(Asset::Locations.size()) / (double)width + 0.5));
 
             rect.w = width * BloodSword::TileSize;
 

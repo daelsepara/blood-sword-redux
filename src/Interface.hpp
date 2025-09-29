@@ -308,7 +308,7 @@ namespace BloodSword::Interface
     // initialize settings from json
     void Initialize(nlohmann::json &data)
     {
-        if (!data["settings"].is_null() && data["settings"].is_object() && data["settings"].size() > 0)
+        if (!data["settings"].is_null() && data["settings"].is_object() && SafeCast(data["settings"].size()) > 0)
         {
             Interface::Settings = data["settings"];
         }
@@ -994,7 +994,7 @@ namespace BloodSword::Interface
     // add scrollable texture (inside a box background) to scene
     void AddScrollableTextureBox(Scene::Base &scene, int x, int y, int width, int height, Uint32 bg_color, Uint32 border, int border_size, SDL_Texture *texture, int texture_h, int text_x, int text_y, int text_h, int offset, int controls_x, int controls_y, Asset::Type asset, Asset::Type left, Asset::Type right, int scroll_speed)
     {
-        auto id = int(scene.Controls.size());
+        auto id = SafeCast(scene.Controls.size());
 
         // texture box panel
         scene.Add(Scene::Element(Point(x, y), width, height, bg_color, border, border_size));
@@ -1638,7 +1638,7 @@ namespace BloodSword::Interface
     {
         auto skills = std::string();
 
-        if (character.Skills.size() > 0)
+        if (SafeCast(character.Skills.size()) > 0)
         {
             for (auto &skill : character.Skills)
             {
@@ -1734,9 +1734,9 @@ namespace BloodSword::Interface
 
                 list += Skills::TypeMapping[skill];
 
-                if (skill == Skills::Type::SPELLS && character.CalledToMind.size() > 0)
+                if (skill == Skills::Type::SPELLS && SafeCast(character.CalledToMind.size()) > 0)
                 {
-                    list += " (" + std::to_string(character.CalledToMind.size()) + ')';
+                    list += " (" + std::to_string(SafeCast(character.CalledToMind.size())) + ')';
                 }
             }
         }
@@ -1919,11 +1919,11 @@ namespace BloodSword::Interface
                 auto four = std::string(4, ' ');
 
                 // format attribute values
-                auto stats_1 = four + rnk + std::string(3 - rnk.size(), ' ') + four + fpr + std::string(7 - fpr.size(), ' ') + four + end + '\n';
+                auto stats_1 = four + rnk + std::string(3 - SafeCast(rnk.size()), ' ') + four + fpr + std::string(7 - SafeCast(fpr.size()), ' ') + four + end + '\n';
 
-                auto stats_2 = std::string(11, ' ') + awr + std::string(7 - awr.size(), ' ') + four + dmg + std::string(7 - dmg.size(), ' ') + exp + '\n';
+                auto stats_2 = std::string(11, ' ') + awr + std::string(7 - SafeCast(awr.size()), ' ') + four + dmg + std::string(7 - SafeCast(dmg.size()), ' ') + exp + '\n';
 
-                auto stats_3 = gold + std::string(11 - gold.size(), ' ') + psy + std::string(7 - psy.size(), ' ') + four + arm;
+                auto stats_3 = gold + std::string(11 - SafeCast(gold.size()), ' ') + psy + std::string(7 - SafeCast(psy.size()), ' ') + four + arm;
 
                 auto stats = stats_1 + stats_2 + stats_3;
 
@@ -2119,7 +2119,7 @@ namespace BloodSword::Interface
     {
         auto items = std::string();
 
-        if (character.Items.size() > 0)
+        if (SafeCast(character.Items.size()) > 0)
         {
             for (auto &item : character.Items)
             {
@@ -2172,7 +2172,7 @@ namespace BloodSword::Interface
 
             auto end = last - start;
 
-            auto options = int(choices.size());
+            auto options = SafeCast(choices.size());
 
             auto more = options - last > 0;
 
@@ -2283,7 +2283,7 @@ namespace BloodSword::Interface
     // add horizontal text menu to existing overlay
     void HorizontalMenu(Scene::Base &overlay, Asset::TextureList &choices, Controls::List controls, int x, int y, Uint32 background, Uint32 border, Uint32 highlight)
     {
-        if (!choices.empty() && !controls.empty() && choices.size() == controls.size())
+        if (!choices.empty() && !controls.empty() && SafeCast(choices.size()) == SafeCast(controls.size()))
         {
             auto pixels = BloodSword::Pixel;
 
@@ -2293,9 +2293,9 @@ namespace BloodSword::Interface
 
             auto pad = pixels * 6;
 
-            auto items = int(choices.size());
+            auto items = SafeCast(choices.size());
 
-            auto start_id = int(overlay.Controls.size());
+            auto start_id = SafeCast(overlay.Controls.size());
 
             for (auto item = 0; item < items; item++)
             {
@@ -2332,7 +2332,7 @@ namespace BloodSword::Interface
     {
         auto overlay = Scene::Base();
 
-        auto popup_w = (std::max(int(character.Skills.size()), 2) + (BloodSword::SmallPad / 2)) * BloodSword::TileSize;
+        auto popup_w = (std::max(SafeCast(character.Skills.size()), 2) + (BloodSword::SmallPad / 2)) * BloodSword::TileSize;
 
         auto popup_h = BloodSword::FrameHeight;
 
@@ -2342,9 +2342,9 @@ namespace BloodSword::Interface
 
         auto pad = BloodSword::QuarterTile;
 
-        if (character.Skills.size() > 0)
+        if (SafeCast(character.Skills.size()) > 0)
         {
-            for (auto i = 0; i < character.Skills.size(); i++)
+            for (auto i = 0; i < SafeCast(character.Skills.size()); i++)
             {
                 SDL_Texture *texture = nullptr;
 
@@ -2377,7 +2377,7 @@ namespace BloodSword::Interface
 
                     auto lt = i > 0 ? i - 1 : i;
 
-                    auto rt = i < character.Skills.size() ? i + 1 : i;
+                    auto rt = i < SafeCast(character.Skills.size()) ? i + 1 : i;
 
                     overlay.Add(Controls::Base(Interface::SkillControls[character.Skills[i]], i, lt, rt, i, i, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -2390,9 +2390,9 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(NoSkills, screen + Point(pad, pad / 2)));
         }
 
-        auto id = int(character.Skills.size());
+        auto id = SafeCast(character.Skills.size());
 
-        overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), screen.X + character.Skills.size() * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
+        overlay.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), screen.X + SafeCast(character.Skills.size()) * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile));
 
         overlay.Add(Controls::Base(Controls::Type::BACK, id, id > 0 ? id - 1 : id, id, id, id, screen.X + id * BloodSword::TileSize + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -2402,7 +2402,7 @@ namespace BloodSword::Interface
     // spells overlay menu
     Scene::Base Spells(Point origin, int w, int h, Character::Base &character, Uint32 background, Uint32 border, int border_size, bool in_battle = false)
     {
-        auto spells = int(character.Spells.size());
+        auto spells = SafeCast(character.Spells.size());
 
         auto overlay = Scene::Base();
 
@@ -2424,7 +2424,7 @@ namespace BloodSword::Interface
 
         if (spells > 0)
         {
-            for (auto i = 0; i < character.Spells.size(); i++)
+            for (auto i = 0; i < SafeCast(character.Spells.size()); i++)
             {
                 auto &spell = character.Spells[i];
 
@@ -2475,7 +2475,7 @@ namespace BloodSword::Interface
             overlay.VerifyAndAdd(Scene::Element(NoSpells, screen + Point(pad, pad / 2)));
         }
 
-        auto id = int(character.Spells.size());
+        auto id = SafeCast(character.Spells.size());
 
         auto x = screen.X + col * BloodSword::TileSize + pad;
 
@@ -2630,14 +2630,14 @@ namespace BloodSword::Interface
         auto center = (popup_w - buttons * (BloodSword::TileSize + pad)) / 2;
 
         // skip the popup window border
-        for (auto i = 0; i < overlay.Elements.size(); i++)
+        for (auto i = 0; i < SafeCast(overlay.Elements.size()); i++)
         {
             if (i > 0)
             {
                 overlay.Elements[i].X += center;
             }
 
-            if (i < overlay.Controls.size())
+            if (i < SafeCast(overlay.Controls.size()))
             {
                 overlay.Controls[i].X += center;
             }
@@ -2730,14 +2730,14 @@ namespace BloodSword::Interface
 
         auto closer = false;
 
-        if (path.Points.size() == 0 && enemy)
+        if (SafeCast(path.Points.size()) == 0 && enemy)
         {
             auto target = path.Closest;
 
             // move closer to target
             path = Move::FindPath(map, start, path.Closest);
 
-            InterfaceLogger::LogPathToTarget(target, path.Points.size(), map.Distance(start, target));
+            InterfaceLogger::LogPathToTarget(target, SafeCast(path.Points.size()), map.Distance(start, target));
 
             closer = true;
         }
@@ -2749,7 +2749,7 @@ namespace BloodSword::Interface
         {
             if (map.IsValid(end))
             {
-                InterfaceLogger::LogMoveTargets((map[end].IsEnemy() ? "ENEMY" : "PLAYER"), character.Target, map[start].Id, map[end].Id, path.Points.size(), valid, map.Free(end));
+                InterfaceLogger::LogMoveTargets((map[end].IsEnemy() ? "ENEMY" : "PLAYER"), character.Target, map[start].Id, map[end].Id, SafeCast(path.Points.size()), valid, map.Free(end));
             }
         }
 
@@ -2795,7 +2795,7 @@ namespace BloodSword::Interface
 
                 auto trajectory = Points(first, first + moves);
 
-                for (auto i = 0; i < path.Points.size() - 1; i++)
+                for (auto i = 0; i < SafeCast(path.Points.size()) - 1; i++)
                 {
                     auto &point = path.Points[i];
 
@@ -3230,14 +3230,14 @@ namespace BloodSword::Interface
             }
             else if (weapon != Item::Property::NONE)
             {
-                check = (current >= 0 && current < attacker.Items.size() && attacker.Items[current].Has(Item::Property::RUSTY));
+                check = (current >= 0 && current < SafeCast(attacker.Items.size()) && attacker.Items[current].Has(Item::Property::RUSTY));
             }
 
             if (check)
             {
                 auto sum = 0;
 
-                for (auto i = 0; i < rolls.Rolls.size(); i++)
+                for (auto i = 0; i < SafeCast(rolls.Rolls.size()); i++)
                 {
                     sum += (rolls.Rolls[i] == 6 ? rolls.Rolls[i] : 0);
                 }
@@ -3566,7 +3566,7 @@ namespace BloodSword::Interface
         {
             auto weapon = attacker.EquippedWeapon(Item::Property::PRIMARY);
 
-            if (weapon >= 0 && weapon < attacker.Items.size() && attacker.Items[weapon].HasDamageModifier(defender.Target))
+            if (weapon >= 0 && weapon < SafeCast(attacker.Items.size()) && attacker.Items[weapon].HasDamageModifier(defender.Target))
             {
                 roll += attacker.Items[weapon].DamageModifiers[defender.Target].Value;
 
@@ -3604,7 +3604,7 @@ namespace BloodSword::Interface
 
         auto popup_w = std::max((party.Count() + 1) * (BloodSword::TileSize + popup_pad), BloodSword::Width(select) + popup_pad * 2);
 
-        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+        auto popup_h = SafeCast(stats.size()) > 0 ? BloodSword::Height(stats[0]) : 0;
 
         auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
@@ -3756,7 +3756,7 @@ namespace BloodSword::Interface
 
         auto popup_h = BloodSword::DoubleTile + BloodSword::HalfTile;
 
-        for (auto i = 0; i < textures.size(); i++)
+        for (auto i = 0; i < SafeCast(textures.size()); i++)
         {
             if (BloodSword::Height(textures[i]) > popup_h)
             {
@@ -3840,7 +3840,7 @@ namespace BloodSword::Interface
     {
         auto description = Story::CurrentBook.Find(location);
 
-        if (description >= 0 && description < Story::CurrentBook.Sections.size() && !Story::CurrentBook.Sections[description].Text.empty())
+        if (description >= 0 && description < SafeCast(Story::CurrentBook.Sections.size()) && !Story::CurrentBook.Sections[description].Text.empty())
         {
             auto text_description = Story::CurrentBook.Sections[description].Text;
 
@@ -4090,7 +4090,7 @@ namespace BloodSword::Interface
     {
         auto menu = Graphics::CreateText(graphics, choices);
 
-        auto options = int(choices.size());
+        auto options = SafeCast(choices.size());
 
         auto input = Controls::User();
 
@@ -4168,7 +4168,7 @@ namespace BloodSword::Interface
 
         auto popup_w = (party.Count() + 1) * (BloodSword::TileSize + popup_pad);
 
-        auto popup_h = stats.size() > 0 ? BloodSword::Height(stats[0]) : 0;
+        auto popup_h = SafeCast(stats.size()) > 0 ? BloodSword::Height(stats[0]) : 0;
 
         auto popup = Point(graphics.Width - popup_w, graphics.Height - popup_h) / 2;
 
@@ -4426,7 +4426,7 @@ namespace BloodSword::Interface
             // generate panel controls
             auto id = 0;
 
-            for (auto control = 0; control < controls.size(); control++)
+            for (auto control = 0; control < SafeCast(controls.size()); control++)
             {
                 auto lt = id > 0 ? id - 1 : id;
 
@@ -4562,7 +4562,7 @@ namespace BloodSword::Interface
     // create party with custom starting ranks depending on size of party
     Party::Base CreateParty(Graphics::Base &graphics, std::vector<int> ranks, bool blur = true)
     {
-        if (ranks.size() != 4)
+        if (SafeCast(ranks.size()) != 4)
         {
             throw std::invalid_argument("Invalid starting ranks definition");
         }
@@ -4616,7 +4616,7 @@ namespace BloodSword::Interface
 
         auto current = Graphics::CreateText(graphics, "CURRENT PARTY", Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto party_size = Interface::Choice(graphics, menu, party_sizes, origin, width, base_height, int(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, false) + 1;
+        auto party_size = Interface::Choice(graphics, menu, party_sizes, origin, width, base_height, SafeCast(party_sizes.size()), Color::Background, Color::Background, Color::Highlight, false) + 1;
 
         if (party_size > 0 && party_size <= 4)
         {
@@ -4692,9 +4692,9 @@ namespace BloodSword::Interface
 
             input.SetText(start_text);
 
-            input.RefreshText = (input.TextInput.size() > 0);
+            input.RefreshText = (SafeCast(input.TextInput.size()) > 0);
 
-            if (input.TextInput.size() > 0)
+            if (SafeCast(input.TextInput.size()) > 0)
             {
                 texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
             }
@@ -4722,7 +4722,7 @@ namespace BloodSword::Interface
                 }
 
                 // add blinking cursor
-                if (blink && input.TextInput.size() < input.TextLimit)
+                if (blink && SafeCast(input.TextInput.size()) < input.TextLimit)
                 {
                     auto pad_cursor = texture ? BloodSword::Width(texture) : 0;
 
@@ -4737,12 +4737,12 @@ namespace BloodSword::Interface
                 {
                     BloodSword::Free(&texture);
 
-                    if (input.TextInput.size() > 0)
+                    if (SafeCast(input.TextInput.size()) > 0)
                     {
                         texture = Graphics::CreateText(graphics, input.TextInput.c_str(), Fonts::Normal, Color::S(input_color), TTF_STYLE_NORMAL, 0);
                     }
                 }
-                else if (input.Selected && input.TextInput.size() > 0)
+                else if (input.Selected && SafeCast(input.TextInput.size()) > 0)
                 {
                     break;
                 }
@@ -4780,7 +4780,7 @@ namespace BloodSword::Interface
     // get text from user input (popup interface)
     std::string TextInput(Graphics::Base &graphics, Scene::Base &background, std::string question, bool blur = true)
     {
-        auto box_w = (int(question.size()) > BloodSword::QuarterTile) ? (int(question.size()) * BloodSword::QuarterTile) : (BloodSword::PentaTile);
+        auto box_w = (SafeCast(question.size()) > BloodSword::QuarterTile) ? (SafeCast(question.size()) * BloodSword::QuarterTile) : (BloodSword::PentaTile);
 
         return Interface::TextInput(graphics, background, question, box_w, (BloodSword::DoubleTile - BloodSword::Pad), blur);
     }
@@ -4798,7 +4798,7 @@ namespace BloodSword::Interface
     {
         auto text = std::string();
 
-        if (message >= 0 && message < Interface::Text.size())
+        if (message >= 0 && message < SafeCast(Interface::Text.size()))
         {
             text = Interface::Text[message].Text;
         }
@@ -5224,9 +5224,9 @@ namespace BloodSword::Interface
             // title
             overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
 
-            for (auto i = 0; i < selection.size(); i++)
+            for (auto i = 0; i < SafeCast(selection.size()); i++)
             {
-                if (selection[i] && Input::IsValid(overlay, i, selection.size()))
+                if (selection[i] && Input::IsValid(overlay, i, SafeCast(selection.size())))
                 {
                     auto &control = overlay.Controls[i];
 
@@ -5275,7 +5275,7 @@ namespace BloodSword::Interface
         }
 
         // update party status
-        for (auto i = 0; i < selection.size(); i++)
+        for (auto i = 0; i < SafeCast(selection.size()); i++)
         {
             if (selection[i])
             {
@@ -5332,9 +5332,9 @@ namespace BloodSword::Interface
                 // title
                 overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
 
-                for (auto i = 0; i < selection.size(); i++)
+                for (auto i = 0; i < SafeCast(selection.size()); i++)
                 {
-                    if (selection[i] && Input::IsValid(overlay, i, selection.size()))
+                    if (selection[i] && Input::IsValid(overlay, i, SafeCast(selection.size())))
                     {
                         auto &control = overlay.Controls[i];
 
@@ -5383,7 +5383,7 @@ namespace BloodSword::Interface
             }
 
             // update party status
-            for (auto i = 0; i < selection.size(); i++)
+            for (auto i = 0; i < SafeCast(selection.size()); i++)
             {
                 if (Engine::IsAlive(party[i]) && selection[i])
                 {
@@ -5408,11 +5408,11 @@ namespace BloodSword::Interface
 
         overlay.Add(Scene::Element(screen, popup_w, popup_h, background, border, border_size));
 
-        auto size_icons = (assets.size() + ((button != Controls::Type::NONE && asset != Asset::NONE) ? 1 : 0)) * (BloodSword::TileSize + pad) - pad;
+        auto size_icons = (SafeCast(assets.size()) + ((button != Controls::Type::NONE && asset != Asset::NONE) ? 1 : 0)) * (BloodSword::TileSize + pad) - pad;
 
         auto offset = popup_w > size_icons ? (popup_w - size_icons) / 2 : 0;
 
-        for (auto i = 0; i < assets.size(); i++)
+        for (auto i = 0; i < SafeCast(assets.size()); i++)
         {
             auto texture = Asset::Get(assets[i]);
 
@@ -5426,11 +5426,11 @@ namespace BloodSword::Interface
 
                 if (button != Controls::Type::NONE && asset != Asset::NONE)
                 {
-                    rt = i < assets.size() ? i + 1 : i;
+                    rt = i < SafeCast(assets.size()) ? i + 1 : i;
                 }
                 else
                 {
-                    rt = i < assets.size() - 1 ? i + 1 : i;
+                    rt = i < SafeCast(assets.size()) - 1 ? i + 1 : i;
                 }
 
                 auto icon_x = screen.X + i * (texture_w + pad) + offset;
@@ -5444,7 +5444,7 @@ namespace BloodSword::Interface
         // add last button if requested
         if (button != Controls::Type::NONE && asset != Asset::NONE)
         {
-            auto id = assets.size();
+            auto id = SafeCast(assets.size());
 
             overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), screen.X + id * (BloodSword::TileSize + pad) + offset, screen.Y + pad + BloodSword::HalfTile));
 
@@ -5459,19 +5459,19 @@ namespace BloodSword::Interface
     {
         auto selected_symbols = std::vector<int>();
 
-        auto selection = std::vector<bool>(assets.size());
+        auto selection = std::vector<bool>(SafeCast(assets.size()));
 
-        auto controls = Controls::List(selection.size(), Controls::Type::SELECT);
+        auto controls = Controls::List(SafeCast(selection.size()), Controls::Type::SELECT);
 
         auto texture = Graphics::CreateText(graphics, message, Fonts::Normal, Color::S(Color::Active), TTF_STYLE_NORMAL, 0);
 
-        auto has_captions = (captions.size() > 0 && captions.size() <= assets.size());
+        auto has_captions = (SafeCast(captions.size()) > 0 && SafeCast(captions.size()) <= SafeCast(assets.size()));
 
         auto texture_captions = has_captions ? Graphics::CreateText(graphics, Graphics::GenerateTextList(captions, Fonts::Caption, Color::Active, 0)) : Asset::TextureList();
 
         auto ordering_captions = std::vector<std::string>();
 
-        for (auto i = 0; i < assets.size(); i++)
+        for (auto i = 0; i < SafeCast(assets.size()); i++)
         {
             ordering_captions.push_back(std::to_string(i + 1));
         }
@@ -5484,7 +5484,7 @@ namespace BloodSword::Interface
 
         auto popup_pad = BloodSword::QuarterTile;
 
-        auto num_icons = int(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
+        auto num_icons = SafeCast(assets.size()) + ((min_select == 1 && max_select == 1) ? 0 : 1);
 
         auto min_icons = std::max(4, num_icons);
 
@@ -5501,7 +5501,7 @@ namespace BloodSword::Interface
         if (hidden)
         {
             // shuffle values
-            for (auto i = 0; i < assets.size(); i++)
+            for (auto i = 0; i < SafeCast(assets.size()); i++)
             {
                 final_assets[i] = asset_hidden;
 
@@ -5524,9 +5524,9 @@ namespace BloodSword::Interface
 
             overlay.VerifyAndAdd(Scene::Element(texture, popup.X + center_title, popup.Y + BloodSword::Pad));
 
-            for (auto i = 0; i < selection.size(); i++)
+            for (auto i = 0; i < SafeCast(selection.size()); i++)
             {
-                if (selection[i] && Input::IsValid(overlay, i, selection.size()))
+                if (selection[i] && Input::IsValid(overlay, i, SafeCast(selection.size())))
                 {
                     auto &control = overlay.Controls[i];
 
@@ -5535,7 +5535,7 @@ namespace BloodSword::Interface
 
                     if (!has_captions && max_select > 1)
                     {
-                        for (auto j = 0; j < selected_symbols.size(); j++)
+                        for (auto j = 0; j < SafeCast(selected_symbols.size()); j++)
                         {
                             if (values[i] == selected_symbols[j])
                             {
@@ -5562,7 +5562,7 @@ namespace BloodSword::Interface
             if (Input::IsValid(overlay, input) && !hidden)
             {
                 // captions
-                if (input.Type != Controls::Type::CONFIRM && Input::IsValid(overlay, input, texture_captions.size()))
+                if (input.Type != Controls::Type::CONFIRM && Input::IsValid(overlay, input, SafeCast(texture_captions.size())))
                 {
                     auto &control = overlay.Controls[input.Current];
 
@@ -5593,12 +5593,12 @@ namespace BloodSword::Interface
             {
                 if (input.Type == Controls::Type::CONFIRM)
                 {
-                    if (selected_symbols.size() >= min_select && selected_symbols.size() <= max_select)
+                    if (SafeCast(selected_symbols.size()) >= min_select && SafeCast(selected_symbols.size()) <= max_select)
                     {
                         done = Interface::Confirm(graphics, background, "PROCEED?", Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
                     }
                 }
-                else if (input.Type == Controls::Type::SELECT && input.Current >= 0 && input.Current < assets.size())
+                else if (input.Type == Controls::Type::SELECT && input.Current >= 0 && input.Current < SafeCast(assets.size()))
                 {
                     if (min_select == 1 && max_select == 1)
                     {
@@ -5609,7 +5609,7 @@ namespace BloodSword::Interface
                     }
                     else
                     {
-                        if ((!selection[input.Current] && selected_symbols.size() < max_select) || selection[input.Current])
+                        if ((!selection[input.Current] && SafeCast(selected_symbols.size()) < max_select) || selection[input.Current])
                         {
                             selection[input.Current] = !selection[input.Current];
 
@@ -5617,13 +5617,13 @@ namespace BloodSword::Interface
                             {
                                 selected_symbols.push_back(values[input.Current]);
 
-                                InterfaceLogger::LogChoice("SELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                                InterfaceLogger::LogChoice("SELECTED", assets[values[input.Current]], input.Current, SafeCast(selected_symbols.size()));
                             }
                             else
                             {
                                 selected_symbols.erase(std::find(selected_symbols.begin(), selected_symbols.end(), values[input.Current]));
 
-                                InterfaceLogger::LogChoice("DESELECTED", assets[values[input.Current]], input.Current, selected_symbols.size());
+                                InterfaceLogger::LogChoice("DESELECTED", assets[values[input.Current]], input.Current, SafeCast(selected_symbols.size()));
                             }
                         }
                     }
@@ -5886,18 +5886,18 @@ namespace BloodSword::Interface
         {
             auto selection = Interface::SelectIcons(graphics, background, "SET BATTLE ORDER", assets, values, {}, party.Count(), party.Count(), Asset::NONE, false, true);
 
-            if (selection.size() == party.Count())
+            if (SafeCast(selection.size()) == party.Count())
             {
                 auto characters = Party::List();
 
-                for (auto i = 0; i < selection.size(); i++)
+                for (auto i = 0; i < SafeCast(selection.size()); i++)
                 {
                     characters.push_back(party[selection[i]]);
                 }
 
                 party.Clear();
 
-                for (auto i = 0; i < characters.size(); i++)
+                for (auto i = 0; i < SafeCast(characters.size()); i++)
                 {
                     party.Add(characters[i]);
                 }
@@ -5941,13 +5941,13 @@ namespace BloodSword::Interface
 
         auto captions = std::vector<std::string>();
 
-        auto values = std::vector<int>(attribute_list.size());
+        auto values = std::vector<int>(SafeCast(attribute_list.size()));
 
         std::iota(values.begin(), values.end(), 0);
 
         auto assets = Asset::List();
 
-        for (auto i = 0; i < attribute_list.size(); i++)
+        for (auto i = 0; i < SafeCast(attribute_list.size()); i++)
         {
             auto attribute = attribute_list[i];
 
@@ -5968,7 +5968,7 @@ namespace BloodSword::Interface
 
                     auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true);
 
-                    if (selection.size() == 1)
+                    if (SafeCast(selection.size()) == 1)
                     {
                         auto attribute = attribute_list[selection[0]];
 
@@ -6197,11 +6197,11 @@ namespace BloodSword::Interface
     // take / read items. each item has an infinite amount of supply, similar to take food, take item
     void TakeFromInfiniteList(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, Character::Class character, std::vector<Item::Type> items, bool blur = true)
     {
-        if (character == Character::Class::NONE || items.size() == 0 || !party.Has(character) || !Engine::IsAlive(party[character]))
+        if (character == Character::Class::NONE || SafeCast(items.size()) == 0 || !party.Has(character) || !Engine::IsAlive(party[character]))
         {
             auto message = std::string();
 
-            if (character == Character::Class::NONE || items.size() == 0)
+            if (character == Character::Class::NONE || SafeCast(items.size()) == 0)
             {
                 Interface::InternalError(graphics, background, std::string("Internal Error: TakeFromInfiniteList"));
             }
@@ -6219,13 +6219,13 @@ namespace BloodSword::Interface
             return;
         }
 
-        auto limit = std::min(4, int(items.size()));
+        auto limit = std::min(4, SafeCast(items.size()));
 
         auto start = 0;
 
         auto last = start + limit;
 
-        auto options = int(items.size());
+        auto options = SafeCast(items.size());
 
         auto text_list = Graphics::TextList();
 
@@ -6245,7 +6245,7 @@ namespace BloodSword::Interface
         // default height
         auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
-        auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+        auto x = (graphics.Width - w) / 2 - (SafeCast(items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
         auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -6306,7 +6306,7 @@ namespace BloodSword::Interface
 
                     auto choice = start + (input.Current - list);
 
-                    if (choice >= 0 && choice < items.size())
+                    if (choice >= 0 && choice < SafeCast(items.size()))
                     {
                         // Take / Info
                         if (Items::FoundDescription(items[choice]) && Items::Found(items[choice]))
@@ -6416,7 +6416,7 @@ namespace BloodSword::Interface
             }
         }
 
-        num_targets = std::min(num_targets, int(targets.size()));
+        num_targets = std::min(num_targets, SafeCast(targets.size()));
 
         for (auto i = 0; i < (num_targets * num_targets); i++)
         {
@@ -6425,7 +6425,7 @@ namespace BloodSword::Interface
 
         for (auto i = 0; i < rounds; i++)
         {
-            if (targets.size() > 0)
+            if (SafeCast(targets.size()) > 0)
             {
                 for (auto target = 0; target < num_targets; target++)
                 {
@@ -6448,7 +6448,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            num_targets = std::min(num_targets, int(targets.size()));
+            num_targets = std::min(num_targets, SafeCast(targets.size()));
 
             // shuffle
             std::shuffle(targets.begin(), targets.end(), Engine::Random.Generator());
@@ -6482,11 +6482,11 @@ namespace BloodSword::Interface
         {
             auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, {}, number, number, Asset::NONE, false, false);
 
-            if (selection.size() == number)
+            if (SafeCast(selection.size()) == number)
             {
-                for (auto i = 0; i < selection.size(); i++)
+                for (auto i = 0; i < SafeCast(selection.size()); i++)
                 {
-                    if (selection[i] >= 0 && selection[i] < values.size())
+                    if (selection[i] >= 0 && selection[i] < SafeCast(values.size()))
                     {
                         result.Sum += (values[selection[i]] + 1);
 
@@ -6604,7 +6604,7 @@ namespace BloodSword::Interface
 
             auto popup_h = (BloodSword::TileSize + BloodSword::QuarterTile) * 2;
 
-            for (auto i = 0; i < items.size(); i++)
+            for (auto i = 0; i < SafeCast(items.size()); i++)
             {
                 popup_h = std::max(popup_h, BloodSword::Height(items[i]));
             }
@@ -6620,9 +6620,9 @@ namespace BloodSword::Interface
                 // title
                 overlay.VerifyAndAdd(Scene::Element(select, popup.X + BloodSword::QuarterTile, popup.Y + BloodSword::Pad));
 
-                for (auto i = 0; i < selection.size(); i++)
+                for (auto i = 0; i < SafeCast(selection.size()); i++)
                 {
-                    if (selection[i] && Input::IsValid(overlay, i, selection.size()))
+                    if (selection[i] && Input::IsValid(overlay, i, SafeCast(selection.size())))
                     {
                         auto &control = overlay.Controls[i];
 
@@ -6752,18 +6752,18 @@ namespace BloodSword::Interface
     // (character) show inventory while in story mode
     void DropItem(Graphics::Base &graphics, Scene::Base &background, Character::Base &character)
     {
-        if (character.Items.size() == 0)
+        if (SafeCast(character.Items.size()) == 0)
         {
             return;
         }
 
-        auto limit = std::min(4, int(character.Items.size()));
+        auto limit = std::min(4, SafeCast(character.Items.size()));
 
         auto start = 0;
 
         auto last = start + limit;
 
-        auto options = int(character.Items.size());
+        auto options = SafeCast(character.Items.size());
 
         auto text_list = Graphics::TextList();
 
@@ -6783,7 +6783,7 @@ namespace BloodSword::Interface
         // default height
         auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
-        auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+        auto x = (graphics.Width - w) / 2 - (SafeCast(character.Items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
         auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -6826,7 +6826,7 @@ namespace BloodSword::Interface
 
                     auto choice = start + (input.Current - list);
 
-                    if (choice >= 0 && choice < character.Items.size())
+                    if (choice >= 0 && choice < SafeCast(character.Items.size()))
                     {
                         if (!character.Items[choice].Has(Item::Property::CANNOT_DROP))
                         {
@@ -6846,7 +6846,7 @@ namespace BloodSword::Interface
                         }
                     }
 
-                    if (character.Items.size() == 0 || character.Items.size() != options)
+                    if (SafeCast(character.Items.size()) == 0 || SafeCast(character.Items.size()) != options)
                     {
                         done = true;
                     }
@@ -6945,7 +6945,7 @@ namespace BloodSword::Interface
         // default height
         auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
-        auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+        auto x = (graphics.Width - w) / 2 - (SafeCast(character.Items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
         auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -6988,7 +6988,7 @@ namespace BloodSword::Interface
 
                     auto choice = start + (input.Current - list);
 
-                    if (choice >= 0 && choice < text_list.size())
+                    if (choice >= 0 && choice < SafeCast(text_list.size()))
                     {
                         if (choice == 0)
                         {
@@ -7038,7 +7038,7 @@ namespace BloodSword::Interface
 
         Interface::Zipped = false;
 
-        if (Interface::Modules.size() == 0 || load.empty())
+        if (SafeCast(Interface::Modules.size()) == 0 || load.empty())
         {
             throw std::invalid_argument("No modules loaded!");
         }
@@ -7091,7 +7091,7 @@ namespace BloodSword::Interface
 
             if (!data["modules"].is_null() && data["modules"].is_array())
             {
-                for (auto i = 0; i < data["modules"].size(); i++)
+                for (auto i = 0; i < SafeCast(data["modules"].size()); i++)
                 {
                     auto module = Interface::Module();
 
@@ -7118,7 +7118,7 @@ namespace BloodSword::Interface
             ifs.close();
         }
 
-        if (Interface::Modules.size() == 0)
+        if (SafeCast(Interface::Modules.size()) == 0)
         {
             throw std::invalid_argument("No modules loaded!");
         }
@@ -7135,7 +7135,7 @@ namespace BloodSword::Interface
     {
         auto current = std::string();
 
-        if (Interface::Modules.size() == 0 || Interface::SettingsFile.empty())
+        if (SafeCast(Interface::Modules.size()) == 0 || Interface::SettingsFile.empty())
         {
             Interface::LoadModules();
         }
@@ -7150,7 +7150,7 @@ namespace BloodSword::Interface
             }
         }
 
-        if (Interface::Modules.size() == 0 || Interface::SettingsFile.empty() || current.empty())
+        if (SafeCast(Interface::Modules.size()) == 0 || Interface::SettingsFile.empty() || current.empty())
         {
             throw std::invalid_argument("No modules loaded!");
         }
@@ -7165,7 +7165,7 @@ namespace BloodSword::Interface
 
         auto GamesPath = Interface::GetGamesPath();
 
-        if (Interface::GamesList.size() != Interface::MaxGameFiles)
+        if (SafeCast(Interface::GamesList.size()) != Interface::MaxGameFiles)
         {
             Interface::GamesList.clear();
 
@@ -7217,7 +7217,7 @@ namespace BloodSword::Interface
             }
         }
 
-        SDL_Log("[ INIT ] [MAX %zu GAMES]", Interface::GamesList.size());
+        SDL_Log("[ INIT ] [MAX %d GAMES]", SafeCast(Interface::GamesList.size()));
     }
 
     // generate textures of book locations from games list
@@ -7251,7 +7251,7 @@ namespace BloodSword::Interface
 
         Interface::InitializeGamesList();
 
-        for (auto game = 0; game < Interface::GamesList.size(); game++)
+        for (auto game = 0; game < SafeCast(Interface::GamesList.size()); game++)
         {
             locations.push_back(Interface::GamesList[game].Location);
         }
@@ -7264,7 +7264,7 @@ namespace BloodSword::Interface
     {
         auto timestamps = Asset::TextureList();
 
-        for (auto time = 0; time < Interface::GamesList.size(); time++)
+        for (auto time = 0; time < SafeCast(Interface::GamesList.size()); time++)
         {
             SDL_Texture *texture = nullptr;
 
@@ -7353,7 +7353,7 @@ namespace BloodSword::Interface
 
         Interface::InitializeGamesList();
 
-        auto max_games = Interface::GamesList.size();
+        auto max_games = SafeCast(Interface::GamesList.size());
 
         auto GamesPath = Interface::GetGamesPath();
 
@@ -7432,7 +7432,7 @@ namespace BloodSword::Interface
                 auto currenty = panely + game * (boxh + BloodSword::LargePad) + BloodSword::TriplePad;
 
                 // render subpanel
-                auto has_game = (Book::IsDefined(Interface::GamesList[game].Location) && Interface::GamesList[game].Players.size() > 0);
+                auto has_game = (Book::IsDefined(Interface::GamesList[game].Location) && SafeCast(Interface::GamesList[game].Players.size()) > 0);
 
                 auto color = has_game ? Color::Active : Color::Inactive;
 
@@ -7449,7 +7449,7 @@ namespace BloodSword::Interface
                     overlay.VerifyAndAdd(Scene::Element(timestamps[game], Point(boxx + boxw - (BloodSword::Width(timestamps[game]) + BloodSword::Pad), currenty + BloodSword::Pad)));
 
                     // character icons
-                    for (auto character = 0; character < Interface::GamesList[game].Players.size(); character++)
+                    for (auto character = 0; character < SafeCast(Interface::GamesList[game].Players.size()); character++)
                     {
                         if (character < 5)
                         {
@@ -7459,7 +7459,7 @@ namespace BloodSword::Interface
                         }
                     }
 
-                    if (Interface::GamesList[game].Players.size() > 5)
+                    if (SafeCast(Interface::GamesList[game].Players.size()) > 5)
                     {
                         auto characterx = boxx + BloodSword::Pad + 5 * space;
 
@@ -7768,7 +7768,7 @@ namespace BloodSword::Interface
     {
         auto background = Scene::Base();
 
-        if (section.Items.size() > 0)
+        if (SafeCast(section.Items.size()) > 0)
         {
             auto has_image = !section.Image.empty();
 
@@ -7890,17 +7890,17 @@ namespace BloodSword::Interface
     {
         auto background = Scene::Base();
 
-        if (topics.size() > 0)
+        if (SafeCast(topics.size()) > 0)
         {
             auto max_limit = 6;
 
             auto start = 0;
 
-            auto limit = std::min(max_limit, int(topics.size()));
+            auto limit = std::min(max_limit, SafeCast(topics.size()));
 
             auto last = start + limit;
 
-            auto options = int(topics.size());
+            auto options = SafeCast(topics.size());
 
             auto wrap = BloodSword::Wrap;
 
@@ -8051,7 +8051,7 @@ namespace BloodSword::Interface
             "HELP",
             "BACK"};
 
-        auto values = std::vector<int>(controls.size());
+        auto values = std::vector<int>(SafeCast(controls.size()));
 
         std::iota(values.begin(), values.end(), 0);
 
@@ -8063,7 +8063,7 @@ namespace BloodSword::Interface
         {
             auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true);
 
-            if (selection.size() == 1)
+            if (SafeCast(selection.size()) == 1)
             {
                 auto input = controls[selection[0]];
 
@@ -8077,7 +8077,7 @@ namespace BloodSword::Interface
                     {
                         auto current = Story::CurrentBook.Find(party.Location);
 
-                        if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                        if (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size()))
                         {
                             if (Story::CurrentBook.Sections[current].Has(Feature::Type::BAD_ENDING))
                             {

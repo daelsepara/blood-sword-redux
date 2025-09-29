@@ -22,7 +22,7 @@ namespace BloodSword::Interface
             auto current = Story::CurrentBook.Find(party.Location);
 
             // select destination for dropped items
-            auto &destination = (current != -1 && current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current].Items : ether;
+            auto &destination = (current != -1 && current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current].Items : ether;
 
             auto assets = Asset::List();
 
@@ -166,7 +166,7 @@ namespace BloodSword::Interface
 
             controls.push_back(Controls::Type::BACK);
 
-            auto values = std::vector<int>(controls.size());
+            auto values = std::vector<int>(SafeCast(controls.size()));
 
             std::iota(values.begin(), values.end(), 0);
 
@@ -176,7 +176,7 @@ namespace BloodSword::Interface
             {
                 auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
-                if (selection.size() == 1)
+                if (SafeCast(selection.size()) == 1)
                 {
                     auto input = controls[selection[0]];
 
@@ -209,7 +209,7 @@ namespace BloodSword::Interface
 
                         auto equipped = is_weapon ? character.EquippedWeapon(weapon_type) : (is_armour ? character.EquippedArmour() : -1);
 
-                        if ((equipped != 1 && equipped >= 0 && equipped < items.size()) && (is_weapon || is_armour) && !is_accessory)
+                        if ((equipped != 1 && equipped >= 0 && equipped < SafeCast(items.size())) && (is_weapon || is_armour) && !is_accessory)
                         {
                             // un-equip
                             items[equipped].Remove(Item::Property::EQUIPPED);
@@ -536,7 +536,7 @@ namespace BloodSword::Interface
 
         controls.push_back(Controls::Type::BACK);
 
-        auto values = std::vector<int>(controls.size());
+        auto values = std::vector<int>(SafeCast(controls.size()));
 
         std::iota(values.begin(), values.end(), 0);
 
@@ -546,7 +546,7 @@ namespace BloodSword::Interface
         {
             auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
-            if (selection.size() == 1)
+            if (SafeCast(selection.size()) == 1)
             {
                 auto input = controls[selection[0]];
 
@@ -591,13 +591,13 @@ namespace BloodSword::Interface
 
         while (!exit)
         {
-            auto limit = std::min(4, int(character.Items.size()));
+            auto limit = std::min(4, SafeCast(character.Items.size()));
 
             auto start = 0;
 
             auto last = start + limit;
 
-            auto options = int(character.Items.size());
+            auto options = SafeCast(character.Items.size());
 
             // wrap length
             auto wrap = BloodSword::Wrap;
@@ -620,7 +620,7 @@ namespace BloodSword::Interface
             // default height
             auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
-            auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+            auto x = (graphics.Width - w) / 2 - (SafeCast(character.Items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
             auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -683,7 +683,7 @@ namespace BloodSword::Interface
 
                         auto choice = start + (input.Current - list);
 
-                        if (choice >= 0 && choice < character.Items.size())
+                        if (choice >= 0 && choice < SafeCast(character.Items.size()))
                         {
                             update = Interface::ManageItem(graphics, background, party, character, character.Items, choice);
 
@@ -695,13 +695,13 @@ namespace BloodSword::Interface
                             }
                         }
 
-                        if (character.Items.size() == 0)
+                        if (SafeCast(character.Items.size()) == 0)
                         {
                             done = true;
 
                             exit = true;
                         }
-                        else if (character.Items.size() != options)
+                        else if (SafeCast(character.Items.size()) != options)
                         {
                             done = true;
                         }
@@ -724,13 +724,13 @@ namespace BloodSword::Interface
 
         while (!exit)
         {
-            auto limit = std::min(4, int(items.size()));
+            auto limit = std::min(4, SafeCast(items.size()));
 
             auto start = 0;
 
             auto last = start + limit;
 
-            auto options = int(items.size());
+            auto options = (SafeCast(items.size()));
 
             // wrap length
             auto wrap = BloodSword::Wrap;
@@ -753,7 +753,7 @@ namespace BloodSword::Interface
             // default height
             auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
-            auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+            auto x = (graphics.Width - w) / 2 - (SafeCast(items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
             auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -816,19 +816,19 @@ namespace BloodSword::Interface
 
                         auto choice = start + (input.Current - list);
 
-                        if (choice >= 0 && choice < items.size())
+                        if (choice >= 0 && choice < SafeCast(items.size()))
                         {
                             update = Interface::ManageItem(graphics, background, party, items, choice);
                         }
 
                         // check if item list is unchanged
-                        if (items.size() == 0)
+                        if (SafeCast(items.size()) == 0)
                         {
                             done = true;
 
                             exit = true;
                         }
-                        else if (items.size() != options)
+                        else if (SafeCast(items.size()) != options)
                         {
                             done = true;
                         }
@@ -851,7 +851,7 @@ namespace BloodSword::Interface
         {
             Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
         }
-        else if (character.Items.size() > 0)
+        else if (SafeCast(character.Items.size()) > 0)
         {
             update = Interface::ShowInventory(graphics, background, party, character);
         }
@@ -972,7 +972,7 @@ namespace BloodSword::Interface
                 // assumes that spell controls are listed first in the pop-up window
                 auto spell_id = control.Id;
 
-                if (spell_id >= 0 && spell_id < character.Spells.size())
+                if (spell_id >= 0 && spell_id < SafeCast(character.Spells.size()))
                 {
                     auto &spell = character.Spells[spell_id];
 
@@ -1190,7 +1190,7 @@ namespace BloodSword::Interface
             // generate panel controls
             auto id = 0;
 
-            for (auto control = 0; control < controls.size(); control++)
+            for (auto control = 0; control < SafeCast(controls.size()); control++)
             {
                 auto lt = id > 0 ? id - 1 : id;
 

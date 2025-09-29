@@ -29,7 +29,7 @@ namespace BloodSword::Rogue
 
         controls.push_back(Controls::Type::BACK);
 
-        auto values = std::vector<int>(controls.size());
+        auto values = std::vector<int>(SafeCast(controls.size()));
 
         std::iota(values.begin(), values.end(), 0);
 
@@ -39,7 +39,7 @@ namespace BloodSword::Rogue
         {
             auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true);
 
-            if (selection.size() == 1)
+            if (SafeCast(selection.size()) == 1)
             {
                 auto input = controls[selection[0]];
 
@@ -72,23 +72,23 @@ namespace BloodSword::Rogue
     {
         auto loot = Rogue::FindLoot(rogue, point);
 
-        if (loot >= 0 && loot < rogue.Loot.size())
+        if (loot >= 0 && loot < SafeCast(rogue.Loot.size()))
         {
             auto &items = rogue.Loot[loot].Items;
 
             auto exit = false;
 
-            if (items.size() > 0)
+            if (SafeCast(items.size()) > 0)
             {
                 while (!exit)
                 {
-                    auto limit = std::min(4, int(items.size()));
+                    auto limit = std::min(4, SafeCast(items.size()));
 
                     auto start = 0;
 
                     auto last = start + limit;
 
-                    auto options = int(items.size());
+                    auto options = SafeCast(items.size());
 
                     // wrap length
                     auto wrap = BloodSword::TripleTile;
@@ -111,7 +111,7 @@ namespace BloodSword::Rogue
                     // default height
                     auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
-                    auto x = (graphics.Width - w) / 2 - (items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+                    auto x = (graphics.Width - w) / 2 - (SafeCast(items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
                     auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -174,19 +174,19 @@ namespace BloodSword::Rogue
 
                                 auto choice = start + (input.Current - list);
 
-                                if (choice >= 0 && choice < items.size())
+                                if (choice >= 0 && choice < SafeCast(items.size()))
                                 {
                                     Rogue::TakeItem(graphics, background, rogue, items, choice);
                                 }
 
                                 // check if item list is unchanged
-                                if (items.size() == 0)
+                                if (SafeCast(items.size()) == 0)
                                 {
                                     done = true;
 
                                     exit = true;
                                 }
-                                else if (items.size() != options)
+                                else if (SafeCast(items.size()) != options)
                                 {
                                     done = true;
                                 }
@@ -198,7 +198,7 @@ namespace BloodSword::Rogue
                 }
             }
 
-            if (items.size() == 0)
+            if (SafeCast(items.size()) == 0)
             {
                 rogue.Battlepits[point].Id = Map::NotFound;
 
@@ -272,7 +272,7 @@ namespace BloodSword::Rogue
                 auto cannot_flee = rogue.CannotFlee;
 
                 // create enemy party (SMEABORG)
-                auto enemy_id = rogue.Opponents.size();
+                auto enemy_id = SafeCast(rogue.Opponents.size());
 
                 auto enemies = Party::Base();
 
@@ -351,7 +351,7 @@ namespace BloodSword::Rogue
 
                 auto loot_id = FindLoot(rogue, point);
 
-                if (loot_id >= 0 && loot_id < rogue.Loot.size())
+                if (loot_id >= 0 && loot_id < SafeCast(rogue.Loot.size()))
                 {
                     destination = &rogue.Loot[loot_id].Items;
 
@@ -514,7 +514,7 @@ namespace BloodSword::Rogue
 
             controls.push_back(Controls::Type::BACK);
 
-            auto values = std::vector<int>(controls.size());
+            auto values = std::vector<int>(SafeCast(controls.size()));
 
             std::iota(values.begin(), values.end(), 0);
 
@@ -524,7 +524,7 @@ namespace BloodSword::Rogue
             {
                 auto selection = Interface::SelectIcons(graphics, background, items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
-                if (selection.size() == 1)
+                if (SafeCast(selection.size()) == 1)
                 {
                     auto input = controls[selection[0]];
 
@@ -557,7 +557,7 @@ namespace BloodSword::Rogue
 
                         auto equipped = is_weapon ? character.EquippedWeapon(weapon_type) : (is_armour ? character.EquippedArmour() : -1);
 
-                        if ((equipped != 1 && equipped >= 0 && equipped < items.size()) && (is_weapon || is_armour) && !is_accessory)
+                        if ((equipped != 1 && equipped >= 0 && equipped < SafeCast(items.size())) && (is_weapon || is_armour) && !is_accessory)
                         {
                             // un-equip
                             items[equipped].Remove(Item::Property::EQUIPPED);
@@ -754,13 +754,13 @@ namespace BloodSword::Rogue
 
         while (!exit)
         {
-            auto limit = std::min(4, int(character.Items.size()));
+            auto limit = std::min(4, SafeCast(character.Items.size()));
 
             auto start = 0;
 
             auto last = start + limit;
 
-            auto options = int(character.Items.size());
+            auto options = SafeCast(character.Items.size());
 
             // wrap length
             auto wrap = BloodSword::TripleTile;
@@ -783,7 +783,7 @@ namespace BloodSword::Rogue
             // default height
             auto h = std::max(BloodSword::TileSize, BloodSword::Height(menu) + pads);
 
-            auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+            auto x = (graphics.Width - w) / 2 - (SafeCast(character.Items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
             auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -846,7 +846,7 @@ namespace BloodSword::Rogue
 
                         auto choice = start + (input.Current - list);
 
-                        if (choice >= 0 && choice < character.Items.size())
+                        if (choice >= 0 && choice < SafeCast(character.Items.size()))
                         {
                             update = Rogue::ManageItem(graphics, background, rogue, character.Class, choice);
 
@@ -858,13 +858,13 @@ namespace BloodSword::Rogue
                             }
                         }
 
-                        if (character.Items.size() == 0)
+                        if (SafeCast(character.Items.size()) == 0)
                         {
                             done = true;
 
                             exit = true;
                         }
-                        else if (character.Items.size() != options)
+                        else if (SafeCast(character.Items.size()) != options)
                         {
                             done = true;
                         }
@@ -885,7 +885,7 @@ namespace BloodSword::Rogue
         {
             Interface::MessageBox(graphics, background, Engine::IsDead(character), Color::Highlight);
         }
-        else if (character.Items.size() > 0)
+        else if (SafeCast(character.Items.size()) > 0)
         {
             Rogue::ShowInventory(graphics, background, rogue, character);
         }

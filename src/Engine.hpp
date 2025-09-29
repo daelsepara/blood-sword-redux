@@ -555,7 +555,7 @@ namespace BloodSword::Engine
 
         item++;
 
-        if (item >= queue.size())
+        if (item >= SafeCast(queue.size()))
         {
             item = 0;
 
@@ -572,7 +572,7 @@ namespace BloodSword::Engine
 
         if (item < 0)
         {
-            item = queue.size() - 1;
+            item = SafeCast(queue.size()) - 1;
         }
     }
 
@@ -590,7 +590,7 @@ namespace BloodSword::Engine
     // move item to end of the queue
     void MoveToEnd(Engine::Queue &queue, int id)
     {
-        if (id >= 0 && id < queue.size() - 1)
+        if (id >= 0 && id < SafeCast(queue.size()) - 1)
         {
             auto search = queue.begin() + id;
 
@@ -640,7 +640,7 @@ namespace BloodSword::Engine
 
                     distance = Move::Count(map, path, map[src].IsEnemy());
 
-                    if (path.Points.size() == 0)
+                    if (SafeCast(path.Points.size()) == 0)
                     {
                         // path to target is blocked, set arbitrarily large distance
                         distance = 9999;
@@ -650,10 +650,10 @@ namespace BloodSword::Engine
                     {
                         auto vulnerability = map.Free(location);
 
-                        EngineLogger::Log("MOVE", party[i].Target, map[src].Id, i, distance, path.Points.size(), vulnerability);
+                        EngineLogger::Log("MOVE", party[i].Target, map[src].Id, i, distance, SafeCast(path.Points.size()), vulnerability);
 
                         // add vulnerability score (more empty spaces, more vulnerable)
-                        distance += (Map::Directions.size() - vulnerability) * VulnerabilityScaler;
+                        distance += (SafeCast(Map::Directions.size()) - vulnerability) * VulnerabilityScaler;
                     }
                 }
                 else
@@ -777,7 +777,7 @@ namespace BloodSword::Engine
 
                                 distance = Move::Count(map, path, is_enemy, (in_party ? i : Map::Unlimited));
 
-                                if (path.Points.size() == 0)
+                                if (SafeCast(path.Points.size()) == 0)
                                 {
                                     // path to target is blocked, set arbitrarily large distance
                                     distance = 9999;
@@ -787,10 +787,10 @@ namespace BloodSword::Engine
                                 {
                                     auto vulnerability = map.Free(location);
 
-                                    EngineLogger::Log("MOVE", character.Target, id, opponents[i].Target, i, distance, path.Points.size(), vulnerability);
+                                    EngineLogger::Log("MOVE", character.Target, id, opponents[i].Target, i, distance, SafeCast(path.Points.size()), vulnerability);
 
                                     // add vulnerability score (more empty spaces, more vulnerable)
-                                    distance += (Map::Directions.size() - vulnerability) * VulnerabilityScaler;
+                                    distance += (SafeCast(Map::Directions.size()) - vulnerability) * VulnerabilityScaler;
                                 }
                             }
                             else
@@ -1068,7 +1068,7 @@ namespace BloodSword::Engine
     {
         auto update = false;
 
-        auto active = character.Status.size();
+        auto active = SafeCast(character.Status.size());
 
         if (character.Is(Character::Status::DEFENDING))
         {
@@ -1093,7 +1093,7 @@ namespace BloodSword::Engine
                 }
             }
 
-            if (active != character.Status.size())
+            if (active != SafeCast(character.Status.size()))
             {
                 update = true;
             }
@@ -1516,7 +1516,7 @@ namespace BloodSword::Engine
     {
         auto first = -1;
 
-        for (auto item = 0; item < items.size(); item++)
+        for (auto item = 0; item < SafeCast(items.size()); item++)
         {
             if (items[item].Asset != Asset::NONE)
             {

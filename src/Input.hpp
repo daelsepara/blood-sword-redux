@@ -171,7 +171,7 @@ namespace BloodSword::Input
 
         if (result.type == SDL_KEYDOWN)
         {
-            if (result.key.keysym.sym == SDLK_BACKSPACE && input.TextInput.size() > 0)
+            if (result.key.keysym.sym == SDLK_BACKSPACE && SafeCast(input.TextInput.size()) > 0)
             {
                 input.TextInput.pop_back();
 
@@ -185,7 +185,7 @@ namespace BloodSword::Input
             }
             else if (result.key.keysym.sym == SDLK_c && SDL_GetModState() & CMD_BUTTON)
             {
-                if (input.TextInput.size() > 0)
+                if (SafeCast(input.TextInput.size()) > 0)
                 {
                     // copy text to clipboard
                     SDL_SetClipboardText(input.TextInput.c_str());
@@ -214,7 +214,7 @@ namespace BloodSword::Input
             if (!(SDL_GetModState() & CMD_BUTTON && (result.text.text[0] == 'c' || result.text.text[0] == 'C' || result.text.text[0] == 'v' || result.text.text[0] == 'V')))
             {
                 // Append character
-                if (input.TextInput.size() < input.TextLimit)
+                if (SafeCast(input.TextInput.size()) < input.TextLimit)
                 {
                     input.TextInput += result.text.text;
 
@@ -301,16 +301,16 @@ namespace BloodSword::Input
                 {
                     input.Current = controls[0].Id;
                 }
-                else if (input.Current == controls.size() - 1)
+                else if (input.Current == SafeCast(controls.size()) - 1)
                 {
                     input.Current = controls[0].Id;
                 }
-                else if (input.Current >= 0 && input.Current < controls.size() - 1)
+                else if (input.Current >= 0 && input.Current < SafeCast(controls.size()) - 1)
                 {
                     input.Current = controls[input.Current + 1].Id;
                 }
             }
-            else if (input.Current >= 0 && input.Current < controls.size())
+            else if (input.Current >= 0 && input.Current < SafeCast(controls.size()))
             {
                 if (result.key.keysym.sym == SDLK_LEFT || result.key.keysym.sym == SDLK_KP_4)
                 {
@@ -391,14 +391,14 @@ namespace BloodSword::Input
                 }
                 else if (result.caxis.value < -sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < controls.size())
+                    if (input.Current >= 0 && input.Current < SafeCast(controls.size()))
                     {
                         input.Current = controls[input.Current].Left;
                     }
                 }
                 else if (result.caxis.value > sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < controls.size())
+                    if (input.Current >= 0 && input.Current < SafeCast(controls.size()))
                     {
                         input.Current = controls[input.Current].Right;
                     }
@@ -412,14 +412,14 @@ namespace BloodSword::Input
                 }
                 else if (result.caxis.value < -sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < controls.size())
+                    if (input.Current >= 0 && input.Current < SafeCast(controls.size()))
                     {
                         input.Current = controls[input.Current].Up;
                     }
                 }
                 else if (result.caxis.value > sensitivity)
                 {
-                    if (input.Current >= 0 && input.Current < controls.size())
+                    if (input.Current >= 0 && input.Current < SafeCast(controls.size()))
                     {
                         input.Current = controls[input.Current].Down;
                     }
@@ -430,7 +430,7 @@ namespace BloodSword::Input
         {
             input.Hold = true;
 
-            if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
+            if (input.Current >= 0 && input.Current < SafeCast(controls.size()) && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
                 input.Selected = true;
             }
@@ -445,7 +445,7 @@ namespace BloodSword::Input
             {
                 input.Current = controls[0].Id;
             }
-            else if (input.Current >= 0 && input.Current < controls.size())
+            else if (input.Current >= 0 && input.Current < SafeCast(controls.size()))
             {
                 if (result.cbutton.button == SDL_CONTROLLER_BUTTON_DPAD_LEFT)
                 {
@@ -493,7 +493,7 @@ namespace BloodSword::Input
         {
             input.Hold = true;
 
-            if (input.Current >= 0 && input.Current < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
+            if (input.Current >= 0 && input.Current < SafeCast(controls.size()) && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
                 input.Selected = true;
             }
@@ -504,7 +504,7 @@ namespace BloodSword::Input
             {
                 input.Hold = false;
 
-                if (input.Current >= 0 && input.Current < controls.size())
+                if (input.Current >= 0 && input.Current < SafeCast(controls.size()))
                 {
                     Sound::Play(Sound::Type::BUTTON_CLICK);
 
@@ -533,7 +533,7 @@ namespace BloodSword::Input
         }
         else if (input.Hold)
         {
-            if (input.Current >= 0 && input.Hold < controls.size() && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
+            if (input.Current >= 0 && input.Current < SafeCast(controls.size()) && (controls[input.Current].Type == Controls::Type::SCROLL_UP || controls[input.Current].Type == Controls::Type::SCROLL_DOWN))
             {
                 if (controls[input.Current].Type == Controls::Type::SCROLL_UP)
                 {
@@ -548,7 +548,7 @@ namespace BloodSword::Input
             }
         }
 
-        if (input.Current >= 0 && input.Current < controls.size() && !input.Up && !input.Down)
+        if (input.Current >= 0 && input.Current < SafeCast(controls.size()) && !input.Up && !input.Down)
         {
             input.Type = controls[input.Current].Type;
         }
@@ -727,7 +727,7 @@ namespace BloodSword::Input
     // check if user input is valid
     bool IsValid(Controls::Collection &controls, int input)
     {
-        return (input >= 0 && input < controls.size());
+        return (input >= 0 && input < SafeCast(controls.size()));
     }
 
     // check if user input is valid
@@ -757,7 +757,7 @@ namespace BloodSword::Input
     // check if user input is valid
     bool IsValid(Scene::Base &scene, int input)
     {
-        return (input >= 0 && input < scene.Controls.size());
+        return (input >= 0 && input < SafeCast(scene.Controls.size()));
     }
 
     // check if user input is valid

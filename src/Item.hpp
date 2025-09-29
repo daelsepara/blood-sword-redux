@@ -407,13 +407,13 @@ namespace BloodSword::Item
                     visible += !Item::IsInvisible(property) ? 1 : 0;
                 }
 
-                if (this->Attributes.size() > 0 || (this->Properties.size() > 0 && visible > 0) || this->Quantity > 1 || this->Encumbrance > 1)
+                if (SafeCast(this->Attributes.size()) > 0 || (SafeCast(this->Properties.size()) > 0 && visible > 0) || this->Quantity > 1 || this->Encumbrance > 1)
                 {
                     auto stats = 0;
 
                     item_string += "(";
 
-                    if (this->Properties.size() > 0)
+                    if (SafeCast(this->Properties.size()) > 0)
                     {
                         for (auto &property : this->Properties)
                         {
@@ -443,7 +443,7 @@ namespace BloodSword::Item
                         stats++;
                     }
 
-                    if (this->Attributes.size() > 0)
+                    if (SafeCast(this->Attributes.size()) > 0)
                     {
                         for (auto &attribute : this->Attributes)
                         {
@@ -458,7 +458,7 @@ namespace BloodSword::Item
                         }
                     }
 
-                    if ((this->Properties.size() == 0 || !this->Has(Item::Property::CONTAINER)) && this->Quantity > 1)
+                    if ((SafeCast(this->Properties.size()) == 0 || !this->Has(Item::Property::CONTAINER)) && this->Quantity > 1)
                     {
                         if (stats > 0)
                         {
@@ -539,7 +539,7 @@ namespace BloodSword::Item
     {
         auto properties = Item::Properties();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             properties.push_back(Item::MapProperty(std::string(data[i])));
         }
@@ -557,7 +557,7 @@ namespace BloodSword::Item
             item.Attributes = Item::LoadAttributes(data["attributes"]);
         }
 
-        if (!data["properties"].is_null() && data["properties"].is_array() && data["properties"].size() > 0)
+        if (!data["properties"].is_null() && data["properties"].is_array() && SafeCast(data["properties"].size()) > 0)
         {
             item.Properties = Item::LoadProperties(data["properties"]);
         }
@@ -591,11 +591,11 @@ namespace BloodSword::Item
             item.DelayedEffect = Book::Load(data["delayed_effect"]);
         }
 
-        if (!data["battle_descriptions"].is_null() && data["battle_descriptions"].is_array() && data["battle_descriptions"].size() > 0)
+        if (!data["battle_descriptions"].is_null() && data["battle_descriptions"].is_array() && SafeCast(data["battle_descriptions"].size()) > 0)
         {
             item.BattleDescriptions.clear();
 
-            for (auto i = 0; i < data["battle_descriptions"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["battle_descriptions"].size()); i++)
             {
                 auto battle = Book::Load(data["battle_descriptions"][i]["battle"]);
 
@@ -736,11 +736,11 @@ namespace BloodSword::Items
     {
         auto items = Items::Inventory();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto item = Item::Load(data[i]);
 
-            if (item.Name.size() > 0)
+            if (SafeCast(item.Name.size()) > 0)
             {
                 items.push_back(item);
             }
@@ -758,7 +758,7 @@ namespace BloodSword::Items
         {
             nlohmann::json row;
 
-            if (item.Attributes.size() > 0)
+            if (SafeCast(item.Attributes.size()) > 0)
             {
                 nlohmann::json attributes;
 
@@ -772,7 +772,7 @@ namespace BloodSword::Items
                 row["attributes"] = attributes;
             }
 
-            if (item.Properties.size() > 0)
+            if (SafeCast(item.Properties.size()) > 0)
             {
                 nlohmann::json properties;
 
@@ -811,7 +811,7 @@ namespace BloodSword::Items
                 data["delayed_effect"] = Book::Data(item.DelayedEffect);
             }
 
-            if (item.BattleDescriptions.size() > 0)
+            if (SafeCast(item.BattleDescriptions.size()) > 0)
             {
                 nlohmann::json battle_descriptions;
 
@@ -829,13 +829,13 @@ namespace BloodSword::Items
                     }
                 }
 
-                if (battle_descriptions.size() > 0)
+                if (SafeCast(battle_descriptions.size()) > 0)
                 {
                     data["battle_descriptions"] = battle_descriptions;
                 }
             }
 
-            if (item.DamageTypes.size() > 0)
+            if (SafeCast(item.DamageTypes.size()) > 0)
             {
                 nlohmann::json damage_types;
 
@@ -859,7 +859,7 @@ namespace BloodSword::Items
                 row["damage_types"] = damage_types;
             }
 
-            if (item.TargetEffects.size() > 0)
+            if (SafeCast(item.TargetEffects.size()) > 0)
             {
                 nlohmann::json target_effects;
 
@@ -874,7 +874,7 @@ namespace BloodSword::Items
                     target_effects.emplace(target, effect);
                 }
 
-                if (target_effects.size() > 0)
+                if (SafeCast(target_effects.size()) > 0)
                 {
                     row["target_effects"] = target_effects;
                 }
@@ -891,7 +891,7 @@ namespace BloodSword::Items
     {
         auto deck = Items::Deck();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto card = !data[i].is_null() ? Item::MapCard(std::string(data[i])) : Item::CardType::NONE;
 
@@ -909,7 +909,7 @@ namespace BloodSword::Items
     {
         nlohmann::json deck_list;
 
-        if (deck.size() > 0)
+        if (SafeCast(deck.size()) > 0)
         {
             for (auto &card : deck)
             {
@@ -926,9 +926,9 @@ namespace BloodSword::Items
         // clear global map
         Items::Defaults.clear();
 
-        if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+        if (!data["items"].is_null() && data["items"].is_array() && SafeCast(data["items"].size()) > 0)
         {
-            for (auto i = 0; i < data["items"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["items"].size()); i++)
             {
                 auto item = Item::Load(data["items"][i]);
 
@@ -938,7 +938,7 @@ namespace BloodSword::Items
                 }
             }
 
-            SDL_Log("[LOADED] %zu items", Items::Defaults.size());
+            SDL_Log("[LOADED] %d items", SafeCast(Items::Defaults.size()));
         }
     }
 
@@ -997,9 +997,9 @@ namespace BloodSword::Items
         // clear global map
         Items::Descriptions.clear();
 
-        if (!data["descriptions"].is_null() && data["descriptions"].is_array() && data["descriptions"].size() > 0)
+        if (!data["descriptions"].is_null() && data["descriptions"].is_array() && SafeCast(data["descriptions"].size()) > 0)
         {
-            for (auto i = 0; i < data["descriptions"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["descriptions"].size()); i++)
             {
                 auto item = !data["descriptions"][i]["item"].is_null() ? Item::Map(data["descriptions"][i]["item"]) : Item::Type::NONE;
 
@@ -1011,7 +1011,7 @@ namespace BloodSword::Items
                 }
             }
 
-            SDL_Log("[LOADED] %zu descriptions", Items::Descriptions.size());
+            SDL_Log("[LOADED] %d descriptions", SafeCast(Items::Descriptions.size()));
         }
     }
 
@@ -1137,14 +1137,14 @@ namespace BloodSword::Items
     // add item to inventory
     void Add(Items::Inventory &items, Item::Base item)
     {
-        if (item.Type != Item::Type::NONE && item.Name.size() > 0)
+        if (item.Type != Item::Type::NONE && SafeCast(item.Name.size()) > 0)
         {
             auto is_container = false;
 
             auto container = Item::Type::NONE;
 
             // check if container
-            for (auto i = 0; i < items.size(); i++)
+            for (auto i = 0; i < SafeCast(items.size()); i++)
             {
                 if (items[i].Has(Item::Property::CONTAINER) && items[i].Contains == item.Type)
                 {
@@ -1186,7 +1186,7 @@ namespace BloodSword::Items
 
         if (item != Item::Type::NONE)
         {
-            for (auto i = 0; i < list.size(); i++)
+            for (auto i = 0; i < SafeCast(list.size()); i++)
             {
                 if (list[i] == item)
                 {

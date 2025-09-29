@@ -42,7 +42,7 @@ namespace BloodSword::Interface
     {
         auto index = Controls::Find(scene.Controls, control);
 
-        if (Input::IsValid(scene, index, scene.Controls.size()))
+        if (Input::IsValid(scene, index, SafeCast(scene.Controls.size())))
         {
             auto &element = scene.Controls[index];
 
@@ -58,7 +58,7 @@ namespace BloodSword::Interface
         {
             battle.InCombatTarget = Character::Class::NONE;
 
-            for (auto i = 0; i < order.size(); i++)
+            for (auto i = 0; i < SafeCast(order.size()); i++)
             {
                 if (order[i].Id >= 0 && order[i].Id < party.Count())
                 {
@@ -197,7 +197,7 @@ namespace BloodSword::Interface
                     controls.push_back(Controls::Type::FLEE);
                 }
 
-                if (is_player && character.Items.size() > 0 && !ranged)
+                if (is_player && SafeCast(character.Items.size()) > 0 && !ranged)
                 {
                     controls.push_back(Controls::Type::ITEMS);
                 }
@@ -206,7 +206,7 @@ namespace BloodSword::Interface
 
         controls.push_back(Controls::Type::BACK);
 
-        auto popup_w = (std::max(int(controls.size()), 2) + (BloodSword::SmallPad / 2)) * BloodSword::TileSize;
+        auto popup_w = (std::max(SafeCast(controls.size()), 2) + (BloodSword::SmallPad / 2)) * BloodSword::TileSize;
 
         auto popup_h = BloodSword::FrameHeight;
 
@@ -216,7 +216,7 @@ namespace BloodSword::Interface
 
         auto pad = BloodSword::QuarterTile;
 
-        for (auto i = 0; i < controls.size(); i++)
+        for (auto i = 0; i < SafeCast(controls.size()); i++)
         {
             auto texture = Asset::Get(Interface::BattleControls[controls[i]]);
 
@@ -230,7 +230,7 @@ namespace BloodSword::Interface
 
                 auto lt = i > 0 ? i - 1 : i;
 
-                auto rt = i < controls.size() - 1 ? i + 1 : i;
+                auto rt = i < SafeCast(controls.size()) - 1 ? i + 1 : i;
 
                 overlay.Add(Controls::Base(controls[i], i, lt, rt, i, i, screen.X + i * texture_w + pad, screen.Y + pad + BloodSword::HalfTile, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight));
 
@@ -256,7 +256,7 @@ namespace BloodSword::Interface
 
         auto bottom_y = battle.Map.DrawY + battle.Map.ViewY * BloodSword::TileSize + BloodSword::Pad;
 
-        auto id = scene.Controls.size();
+        auto id = SafeCast(scene.Controls.size());
 
         auto left = (battle.Map.X > 0);
 
@@ -278,7 +278,7 @@ namespace BloodSword::Interface
             {
                 auto control = i * (battle.Map.ViewX);
 
-                if (control >= 0 && control < scene.Controls.size())
+                if (control >= 0 && control < SafeCast(scene.Controls.size()))
                 {
                     scene.Controls[control].Left = id;
                 }
@@ -313,7 +313,7 @@ namespace BloodSword::Interface
             {
                 auto control = i * (battle.Map.ViewX) + (battle.Map.ViewX - 1);
 
-                if (control >= 0 && control < scene.Controls.size())
+                if (control >= 0 && control < SafeCast(scene.Controls.size()))
                 {
                     scene.Controls[control].Right = id;
                 }
@@ -331,7 +331,7 @@ namespace BloodSword::Interface
             // focus on SCROLL DOWN
             auto control = (battle.Map.ViewY - 1) * battle.Map.ViewX + (battle.Map.ViewX / 2) - (battle.Map.ViewX & 1 ? 0 : 1);
 
-            if (control >= 0 && control < scene.Controls.size())
+            if (control >= 0 && control < SafeCast(scene.Controls.size()))
             {
                 scene.Controls[control].Down = id;
 
@@ -405,7 +405,7 @@ namespace BloodSword::Interface
     // setup battle scene
     Scene::Base BattleScene(Battle::Base &battle, Party::Base &party, Scene::Elements &assets, Controls::Collection &controls, Point location)
     {
-        auto num = int(assets.size() == controls.size() ? controls.size() : 0);
+        auto num = (SafeCast(assets.size()) == SafeCast(controls.size()) ? SafeCast(controls.size()) : 0);
 
         auto scene = Interface::Map(battle.Map, party, battle.Opponents, num);
 
@@ -567,7 +567,7 @@ namespace BloodSword::Interface
                     controls_list.push_back(Controls::Type::FLEE);
                 }
 
-                if (is_player && character.Items.size() > 0 && !ranged)
+                if (is_player && SafeCast(character.Items.size()) > 0 && !ranged)
                 {
                     asset_list.push_back(Asset::Map("ITEMS"));
 
@@ -580,7 +580,7 @@ namespace BloodSword::Interface
 
         auto controls = Controls::Collection();
 
-        for (auto i = 0; i < controls_list.size(); i++)
+        for (auto i = 0; i < SafeCast(controls_list.size()); i++)
         {
             auto texture = Asset::Get(asset_list[i]);
 
@@ -590,7 +590,7 @@ namespace BloodSword::Interface
 
                 auto lt = i > 0 ? (control - 1) : (control);
 
-                auto rt = i < controls_list.size() - 1 ? (control + 1) : control;
+                auto rt = i < SafeCast(controls_list.size()) - 1 ? (control + 1) : control;
 
                 auto up = i < battle.Map.ViewX ? control - battle.Map.ViewX : control;
 
@@ -614,7 +614,7 @@ namespace BloodSword::Interface
     {
         if (!Engine::IsAlive(character))
         {
-            for (auto item = 0; item < character.Items.size(); item++)
+            for (auto item = 0; item < SafeCast(character.Items.size()); item++)
             {
                 if (character.Items[item].Drops)
                 {
@@ -631,7 +631,7 @@ namespace BloodSword::Interface
 
         auto origin = 0;
 
-        if (battle.Map.Origins.size() > 0)
+        if (SafeCast(battle.Map.Origins.size()) > 0)
         {
             // set party starting locations
             for (auto i = 0; i < party.Count(); i++)
@@ -640,7 +640,7 @@ namespace BloodSword::Interface
                 {
                     if (!party[i].Is(Character::Status::AWAY) && !party[i].Is(Character::Status::EXCLUDED))
                     {
-                        if (origin < battle.Map.Origins.size())
+                        if (origin < SafeCast(battle.Map.Origins.size()))
                         {
                             battle.Map.Put(battle.Map.Origins[origin], Map::Object::PLAYER, i);
 
@@ -653,7 +653,7 @@ namespace BloodSword::Interface
                     }
                     else if (party[i].Status[Character::Status::AWAY] > 0 || party[i].Is(Character::Status::EXCLUDED))
                     {
-                        if (player_away < battle.Map.AwayPlayers.size())
+                        if (player_away < SafeCast(battle.Map.AwayPlayers.size()))
                         {
                             battle.Map.Put(battle.Map.AwayPlayers[player_away], Map::Object::PLAYER, i);
 
@@ -702,7 +702,7 @@ namespace BloodSword::Interface
                 battle.Opponents.Set(party.Location);
             }
 
-            if (battle.Map.Spawn.size() >= battle.Opponents.Count())
+            if (SafeCast(battle.Map.Spawn.size()) >= battle.Opponents.Count())
             {
                 // set opponents starting locations
                 for (auto i = 0; i < battle.Opponents.Count(); i++)
@@ -711,7 +711,7 @@ namespace BloodSword::Interface
                     {
                         if (!battle.Opponents[i].Is(Character::Status::AWAY))
                         {
-                            if (spawn < battle.Map.Spawn.size())
+                            if (spawn < SafeCast(battle.Map.Spawn.size()))
                             {
                                 battle.Map.Put(battle.Map.Spawn[spawn], Map::Object::ENEMY, i);
 
@@ -725,7 +725,7 @@ namespace BloodSword::Interface
                         else if (battle.Opponents[i].Status[Character::Status::AWAY] > 0)
                         {
                             // place opponents that arrive at later rounds
-                            if (enemy_away < battle.Map.AwayOpponents.size())
+                            if (enemy_away < SafeCast(battle.Map.AwayOpponents.size()))
                             {
                                 battle.Map.Put(battle.Map.AwayOpponents[enemy_away], Map::Object::ENEMY, i);
 
@@ -750,7 +750,7 @@ namespace BloodSword::Interface
         {
             auto source = (battle.Has(Battle::Condition::LAST_BATTLE) && Book::IsDefined(party.BattleLocation)) ? party.BattleLocation : battle.Survivors;
 
-            if (battle.Map.Survivors.size() > 0)
+            if (SafeCast(battle.Map.Survivors.size()) > 0)
             {
                 // gather list of survivors
                 auto survivors = Party::Base();
@@ -758,7 +758,7 @@ namespace BloodSword::Interface
                 auto remove = std::vector<int>();
 
                 // look for the survivors in the previous battle
-                for (auto i = 0; i < party.Survivors.size(); i++)
+                for (auto i = 0; i < SafeCast(party.Survivors.size()); i++)
                 {
                     if (Book::IsDefined(party.Survivors[i].Location) && Engine::IsAlive(party.Survivors[i]) && Book::Equal(party.Survivors[i].Location, source) && survivors.Count() < battle.SurvivorLimit)
                     {
@@ -771,12 +771,12 @@ namespace BloodSword::Interface
                     }
                 }
 
-                if (remove.size() > 0)
+                if (SafeCast(remove.size()) > 0)
                 {
                     // reverse index to survivor list
                     std::reverse(remove.begin(), remove.end());
 
-                    for (auto i = 0; i < remove.size(); i++)
+                    for (auto i = 0; i < SafeCast(remove.size()); i++)
                     {
                         BattleLogger::LogGroupAction("PARTY SURVIVOR", "DELETE", party.Survivors[remove[i]].Target, remove[i]);
 
@@ -785,9 +785,9 @@ namespace BloodSword::Interface
                     }
                 }
 
-                BattleLogger::LogGroup(source, "REINFORCEMENTS", "PARTY SURVIVORS", survivors.Count(), party.Survivors.size());
+                BattleLogger::LogGroup(source, "REINFORCEMENTS", "PARTY SURVIVORS", survivors.Count(), SafeCast(party.Survivors.size()));
 
-                if (battle.Map.Survivors.size() >= survivors.Count())
+                if (SafeCast(battle.Map.Survivors.size()) >= survivors.Count())
                 {
                     auto id = battle.Opponents.Count();
 
@@ -820,7 +820,7 @@ namespace BloodSword::Interface
 
                         if (!survivors[i].Is(Character::Status::AWAY))
                         {
-                            if (reinforce < battle.Map.Survivors.size())
+                            if (reinforce < SafeCast(battle.Map.Survivors.size()))
                             {
                                 // add to map
                                 battle.Map.Put(battle.Map.Survivors[reinforce], Map::Object::ENEMY, id + i);
@@ -835,7 +835,7 @@ namespace BloodSword::Interface
                         else if (survivors[i].Status[Character::Status::AWAY] > 0)
                         {
                             // place opponents that arrive at later rounds
-                            if (enemy_away < battle.Map.AwayOpponents.size())
+                            if (enemy_away < SafeCast(battle.Map.AwayOpponents.size()))
                             {
                                 battle.Map.Put(battle.Map.AwayOpponents[enemy_away], Map::Object::ENEMY, id + i);
 
@@ -1160,7 +1160,7 @@ namespace BloodSword::Interface
                         auto remove = -1;
 
                         // check if this has been added already
-                        for (auto i = 0; i < origins.size(); i++)
+                        for (auto i = 0; i < SafeCast(origins.size()); i++)
                         {
                             if (origins[i] == control.Map)
                             {
@@ -1204,7 +1204,7 @@ namespace BloodSword::Interface
                     }
                     else if (input.Type == Controls::Type::CONFIRM)
                     {
-                        if (origins.size() != party.Count())
+                        if (SafeCast(origins.size()) != party.Count())
                         {
                             Interface::MessageBox(graphics, map, "NUMBER OF LOCATIONS INSUFFICIENT", Color::Highlight);
                         }
@@ -1221,7 +1221,7 @@ namespace BloodSword::Interface
                     }
                     else if (input.Type == Controls::Type::BACK)
                     {
-                        for (auto i = 0; i < origins.size(); i++)
+                        for (auto i = 0; i < SafeCast(origins.size()); i++)
                         {
                             if (battle.Map.IsValid(origins[i]))
                             {

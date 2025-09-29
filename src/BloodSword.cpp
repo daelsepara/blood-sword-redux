@@ -33,7 +33,7 @@ namespace BloodSword::Game
 
             auto current = Story::CurrentBook.Find(party.SaveLocation);
 
-            if (current >= 0 && current < Story::CurrentBook.Sections.size())
+            if (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size()))
             {
                 Interface::Notify(graphics, background, Interface::MSG_LOADED);
 
@@ -92,7 +92,7 @@ namespace BloodSword::Game
 
         height = std::max(height, BloodSword::Height(menu));
 
-        auto options = int(menu.size());
+        auto options = SafeCast(menu.size());
 
         auto input = Controls::User();
 

@@ -192,7 +192,7 @@ namespace BloodSword::Interface
 
             auto random = Story::CurrentBook.Find(location);
 
-            if (random >= 0 && random < Story::CurrentBook.Sections.size())
+            if (random >= 0 && random < SafeCast(Story::CurrentBook.Sections.size()))
             {
                 auto &section = Story::CurrentBook.Sections[random];
 
@@ -220,7 +220,7 @@ namespace BloodSword::Interface
                 auto item_id = -1;
 
                 // search for id in inventory
-                for (auto i = 0; i < character.Items.size(); i++)
+                for (auto i = 0; i < SafeCast(character.Items.size()); i++)
                 {
                     if (character.Items[i].Type == item)
                     {

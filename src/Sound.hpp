@@ -85,7 +85,7 @@ namespace BloodSword::Sound
         auto buffer = sound.data();
 
         // load chunk
-        auto chunk = Sound::Load(buffer, sound.size());
+        auto chunk = Sound::Load(buffer, SafeCast(sound.size()));
 
         sound.clear();
 
@@ -97,9 +97,9 @@ namespace BloodSword::Sound
     {
         auto is_zip = (zip_file != nullptr);
 
-        if (!data["sounds"].is_null() && data["sounds"].is_array() && data["sounds"].size() > 0)
+        if (!data["sounds"].is_null() && data["sounds"].is_array() && SafeCast(data["sounds"].size()) > 0)
         {
-            for (auto i = 0; i < data["sounds"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["sounds"].size()); i++)
             {
                 auto asset = !data["sounds"][i]["id"].is_null() ? Sound::Map(std::string(data["sounds"][i]["id"])) : Sound::Type::NONE;
 

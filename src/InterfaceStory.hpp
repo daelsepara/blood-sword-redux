@@ -13,13 +13,13 @@ namespace BloodSword::Interface
     {
         Book::Location next = Book::Undefined;
 
-        auto limit = std::min(4, int(choices.size()));
+        auto limit = std::min(4, SafeCast(choices.size()));
 
         auto start = 0;
 
         auto last = start + limit;
 
-        auto options = int(choices.size());
+        auto options = SafeCast(choices.size());
 
         // wrap length
         auto wrap = BloodSword::Wrap;
@@ -106,7 +106,7 @@ namespace BloodSword::Interface
 
                     auto choice = start + (input.Current - list);
 
-                    if (choice >= 0 && choice < choices.size())
+                    if (choice >= 0 && choice < SafeCast(choices.size()))
                     {
                         auto eval = Conditions::Process(graphics, background, party, choices[choice].Condition);
 
@@ -148,7 +148,7 @@ namespace BloodSword::Interface
     // set variable based on results of last evaluated condition
     void SetVariable(Party::Base &party, Conditions::Base &condition, bool result)
     {
-        if (((condition.Type == Conditions::Type::IF_TRUE_SET && result) || (condition.Type == Conditions::Type::IF_FALSE_SET && !result)) && condition.Variables.size() > 1)
+        if (((condition.Type == Conditions::Type::IF_TRUE_SET && result) || (condition.Type == Conditions::Type::IF_FALSE_SET && !result)) && SafeCast(condition.Variables.size()) > 1)
         {
             auto dst = Engine::MapTokens(party, condition.Variables[0]);
 
@@ -163,11 +163,11 @@ namespace BloodSword::Interface
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
         Book::Location next = Book::Undefined;
 
-        if (section.Background.size() > 0)
+        if (SafeCast(section.Background.size()) > 0)
         {
             StoryLogger::LogSectionHeader("BACKGROUND", section.Location);
 
@@ -217,11 +217,11 @@ namespace BloodSword::Interface
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
         auto results = std::vector<Conditions::Evaluation>();
 
-        if (section.Events.size() > 0)
+        if (SafeCast(section.Events.size()) > 0)
         {
             StoryLogger::LogSectionHeader("EVENT", section.Location);
 
@@ -258,9 +258,9 @@ namespace BloodSword::Interface
 
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        if (section.BattleEvents.size() > 0)
+        if (SafeCast(section.BattleEvents.size()) > 0)
         {
             StoryLogger::LogSectionHeader("PRE-BATTLE", section.Location);
 
@@ -305,7 +305,7 @@ namespace BloodSword::Interface
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
         Book::Location next = Book::Undefined;
 
@@ -318,7 +318,7 @@ namespace BloodSword::Interface
 
         auto copy_party = party;
 
-        if (section.BattleEvents.size() > 0)
+        if (SafeCast(section.BattleEvents.size()) > 0)
         {
             StoryLogger::LogSectionHeader("PRE-BATTLE EVENTS", section.Location);
 
@@ -357,7 +357,7 @@ namespace BloodSword::Interface
 
         if (Engine::IsAlive(party) && !exit_battle && Book::IsUndefined(next))
         {
-            if (section.Next.size() > 0)
+            if (SafeCast(section.Next.size()) > 0)
             {
                 StoryLogger::LogSectionHeader("NEXT", section.Location);
 
@@ -412,7 +412,7 @@ namespace BloodSword::Interface
                 }
             }
 
-            if (Engine::IsAlive(party) && !Book::IsDefined(next) && section.Choices.size() > 0)
+            if (Engine::IsAlive(party) && !Book::IsDefined(next) && SafeCast(section.Choices.size()) > 0)
             {
                 // process through any choices
                 while (true)
@@ -437,11 +437,11 @@ namespace BloodSword::Interface
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        auto elements = overlay.Elements.size();
+        auto elements = SafeCast(overlay.Elements.size());
 
-        auto controls = overlay.Controls.size();
+        auto controls = SafeCast(overlay.Controls.size());
 
         auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
 
@@ -591,11 +591,11 @@ namespace BloodSword::Interface
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        auto elements = overlay.Elements.size();
+        auto elements = SafeCast(overlay.Elements.size());
 
-        auto controls = overlay.Controls.size();
+        auto controls = SafeCast(overlay.Controls.size());
 
         auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
 
@@ -607,7 +607,7 @@ namespace BloodSword::Interface
 
         auto spells = party.Has(Character::Class::ENCHANTER);
 
-        auto items = section.Items.size() > 0;
+        auto items = SafeCast(section.Items.size()) > 0;
 
         // add button textures
         if (section.Battle.IsDefined())
@@ -757,7 +757,7 @@ namespace BloodSword::Interface
     // generate character inventory controls when no image is rendered on the left pane
     void InventoryControls(Scene::Base &overlay, Party::Base &party, SDL_Texture *image, Point origin)
     {
-        auto id = overlay.Controls.size();
+        auto id = SafeCast(overlay.Controls.size());
 
         auto next_control = Controls::Find(overlay.Controls, Controls::Type::NEXT);
 
@@ -790,11 +790,11 @@ namespace BloodSword::Interface
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
-        auto elements = overlay.Elements.size();
+        auto elements = SafeCast(overlay.Elements.size());
 
-        auto controls = overlay.Controls.size();
+        auto controls = SafeCast(overlay.Controls.size());
 
         auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
 
@@ -905,9 +905,9 @@ namespace BloodSword::Interface
     // generate story controls when at a story ending
     void EndingControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
-        auto elements = overlay.Elements.size();
+        auto elements = SafeCast(overlay.Elements.size());
 
-        auto controls = overlay.Controls.size();
+        auto controls = SafeCast(overlay.Controls.size());
 
         auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
 
@@ -998,9 +998,9 @@ namespace BloodSword::Interface
     // generate story controls when at a bad story ending and / or party is incapacitated
     void DoomControls(Party::Base &party, Scene::Base &overlay, Point buttons, Point scroll_top, Point scroll_bot, bool arrow_up, bool arrow_dn)
     {
-        auto elements = overlay.Elements.size();
+        auto elements = SafeCast(overlay.Elements.size());
 
-        auto controls = overlay.Controls.size();
+        auto controls = SafeCast(overlay.Controls.size());
 
         auto button_spacing = BloodSword::TileSize + BloodSword::Pad;
 
@@ -1181,10 +1181,10 @@ namespace BloodSword::Interface
         while (pos != std::string::npos)
         {
             // replace the substring with the specified string
-            text.replace(pos, chosen.size(), Character::ClassMapping[party.ChosenCharacter]);
+            text.replace(pos, SafeCast(chosen.size()), Character::ClassMapping[party.ChosenCharacter]);
 
             // find the next occurrence of the substring
-            pos = text.find(chosen, pos + replacement.size());
+            pos = text.find(chosen, pos + SafeCast(replacement.size()));
         }
     }
 
@@ -1193,7 +1193,7 @@ namespace BloodSword::Interface
     {
         auto current = Story::CurrentBook.Find(party.Location);
 
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
         Book::Location next = Book::Undefined;
 
@@ -1342,7 +1342,7 @@ namespace BloodSword::Interface
 
             auto caption_id = Controls::Find(caption_controls, input.Type);
 
-            if (caption_id >= 0 && caption_id < captions.size())
+            if (caption_id >= 0 && caption_id < SafeCast(captions.size()))
             {
                 if (Input::IsValid(overlay, input))
                 {
@@ -1632,7 +1632,7 @@ namespace BloodSword::Interface
     // play current story section
     Book::Location ProcessSection(Graphics::Base &graphics, Scene::Base &background, Party::Base &party, int current)
     {
-        auto &section = (current >= 0 && current < Story::CurrentBook.Sections.size()) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
+        auto &section = (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size())) ? Story::CurrentBook.Sections[current] : Story::CurrentBook.Sections[0];
 
         StoryLogger::LogSectionHeader("SECTION", section.Location);
 
@@ -1737,7 +1737,7 @@ namespace BloodSword::Interface
     {
         auto &story = Story::CurrentBook;
 
-        if (story.Title.size() > 0 && story.Description.size() > 0)
+        if (SafeCast(story.Title.size()) > 0 && SafeCast(story.Description.size()) > 0)
         {
             auto message = story.Title + "\n\n" + story.Description;
 

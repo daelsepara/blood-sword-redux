@@ -13,7 +13,7 @@ namespace BloodSword::Rogue
 
         auto &loot = rogue.Loot;
 
-        for (auto id = 0; id < loot.size(); id++)
+        for (auto id = 0; id < SafeCast(loot.size()); id++)
         {
             if (loot[id].Location() == point)
             {
@@ -33,7 +33,7 @@ namespace BloodSword::Rogue
 
         auto &opponents = rogue.Opponents;
 
-        for (auto id = 0; id < opponents.size(); id++)
+        for (auto id = 0; id < SafeCast(opponents.size()); id++)
         {
             if (opponents[id].Origin() == point)
             {
@@ -53,7 +53,7 @@ namespace BloodSword::Rogue
 
         auto &opponents = rogue.Opponents;
 
-        for (auto id = 0; id < opponents.size(); id++)
+        for (auto id = 0; id < SafeCast(opponents.size()); id++)
         {
             if (opponents[id].Room == room)
             {
@@ -73,7 +73,7 @@ namespace BloodSword::Rogue
 
         auto &triggers = rogue.Triggers;
 
-        for (auto id = 0; id < triggers.size(); id++)
+        for (auto id = 0; id < SafeCast(triggers.size()); id++)
         {
             if (triggers[id].Location() == point)
             {
@@ -133,11 +133,11 @@ namespace BloodSword::Rogue
                 auto four = std::string(4, ' ');
 
                 // format attribute values
-                auto stats_1 = four + fpr + std::string(5 - fpr.size(), ' ') + four + end + '\n';
+                auto stats_1 = four + fpr + std::string(5 - SafeCast(fpr.size()), ' ') + four + end + '\n';
 
-                auto stats_2 = four + awr + std::string(5 - awr.size(), ' ') + four + dmg + '\n';
+                auto stats_2 = four + awr + std::string(5 - SafeCast(awr.size()), ' ') + four + dmg + '\n';
 
-                auto stats_3 = four + psy + std::string(5 - psy.size(), ' ') + four + arm;
+                auto stats_3 = four + psy + std::string(5 - SafeCast(psy.size()), ' ') + four + arm;
 
                 auto stats = stats_1 + stats_2 + stats_3;
 
@@ -481,7 +481,7 @@ namespace BloodSword::Rogue
     {
         auto target = Rogue::None;
 
-        if (rogue.Enemy >= 0 && rogue.Enemy < rogue.Opponents.size())
+        if (rogue.Enemy >= 0 && rogue.Enemy < SafeCast(rogue.Opponents.size()))
         {
             auto &enemies = rogue.Opponents[rogue.Enemy];
 
@@ -506,7 +506,7 @@ namespace BloodSword::Rogue
     {
         auto &battlepits = rogue.Battlepits;
 
-        if (trigger >= 0 && trigger < rogue.Triggers.size())
+        if (trigger >= 0 && trigger < SafeCast(rogue.Triggers.size()))
         {
             auto location = rogue.Triggers[trigger].Location();
 
@@ -530,7 +530,7 @@ namespace BloodSword::Rogue
 
         auto fail = false;
 
-        if (id >= 0 && id < rogue.Triggers.size())
+        if (id >= 0 && id < SafeCast(rogue.Triggers.size()))
         {
             auto &trigger = rogue.Triggers[id];
 
@@ -549,7 +549,7 @@ namespace BloodSword::Rogue
 
                 // variables:
                 // 0 - character
-                if (variables.size() > 0)
+                if (SafeCast(variables.size()) > 0)
                 {
                     auto character = Interface::SelectCharacter(graphics, background, party, variables[0]);
 
@@ -565,7 +565,7 @@ namespace BloodSword::Rogue
             {
                 // variables:
                 // 0 - item
-                if (variables.size() > 0)
+                if (SafeCast(variables.size()) > 0)
                 {
                     auto item = Item::Map(variables[0]);
 

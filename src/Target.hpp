@@ -79,7 +79,7 @@ namespace BloodSword::Target
     {
         auto targets = Target::List();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto target = !data[i].is_null() ? Target::Map(std::string(data[i])) : Target::Type::NONE;
 

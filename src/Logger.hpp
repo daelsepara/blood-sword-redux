@@ -69,11 +69,11 @@ namespace BloodSword::BattleLogger
     // log spell casters
     void LogCasters(Party::Base &party, std::vector<int> &casters)
     {
-        if (casters.size() > 0)
+        if (SafeCast(casters.size()) > 0)
         {
             std::string casters = "[SPELL CASTERS] (";
 
-            for (auto i = 0; i < casters.size(); i++)
+            for (auto i = 0; i < SafeCast(casters.size()); i++)
             {
                 if (i > 0)
                 {
@@ -232,7 +232,7 @@ namespace BloodSword::EvalLogger
     {
         std::string log_string = "[CONDITION] " + std::string(Conditions::TypeMapping[condition.Type]) + "([RESULT] " + (result ? "TRUE" : "FALSE") + "[FAILED] " + (failed ? "TRUE" : "FALSE");
 
-        if (text.size() > 0)
+        if (SafeCast(text.size()) > 0)
         {
             log_string += ", [TEXT] " + text;
         }
@@ -266,11 +266,11 @@ namespace BloodSword::InterfaceLogger
     // log choice / menu options
     void LogOptions(Asset::List &assets, std::vector<int> &selection, std::string selected)
     {
-        if (selection.size() > 0)
+        if (SafeCast(selection.size()) > 0)
         {
             selected += " (";
 
-            for (auto i = 0; i < selection.size(); i++)
+            for (auto i = 0; i < SafeCast(selection.size()); i++)
             {
                 if (i > 0)
                 {

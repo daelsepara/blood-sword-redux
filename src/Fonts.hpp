@@ -47,7 +47,7 @@ namespace BloodSword::Fonts
         auto buffer = font.data();
 
         // create chunk from memory buffer
-        auto rw = SDL_RWFromMem((void *)buffer, font.size());
+        auto rw = SDL_RWFromMem((void *)buffer, SafeCast(font.size()));
 
         if (rw)
         {

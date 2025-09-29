@@ -492,7 +492,7 @@ namespace BloodSword::Graphics
     // render scenes
     void Render(Base &graphics, Graphics::Scenery scenes)
     {
-        if (graphics.Renderer && scenes.size() > 0)
+        if (graphics.Renderer && SafeCast(scenes.size()) > 0)
         {
             Graphics::FillWindow(graphics, scenes.front().get().Background);
 
@@ -529,7 +529,7 @@ namespace BloodSword::Graphics
     // render scenes and highlight the control currently in focus (if any)
     void Render(Base &graphics, Graphics::Scenery scenes, Controls::Collection &controls, Controls::User input)
     {
-        if (graphics.Renderer && scenes.size() > 0)
+        if (graphics.Renderer && SafeCast(scenes.size()) > 0)
         {
             Graphics::Render(graphics, scenes);
 
@@ -566,7 +566,7 @@ namespace BloodSword::Graphics
     // render scenes and highlight the control currently in focus (if any)
     void Dialog(Base &graphics, Graphics::Scenery scenes, bool blur = true)
     {
-        if (graphics.Renderer && scenes.size() > 0)
+        if (graphics.Renderer && SafeCast(scenes.size()) > 0)
         {
             Graphics::FillWindow(graphics, scenes.front().get().Background);
 
@@ -587,7 +587,7 @@ namespace BloodSword::Graphics
     // render scene and highlight the control currently in focus (if any)
     void Dialog(Base &graphics, Graphics::Scenery scenes, Controls::User input, bool blur = true)
     {
-        if (graphics.Renderer && scenes.size() > 0)
+        if (graphics.Renderer && SafeCast(scenes.size()) > 0)
         {
             Graphics::Dialog(graphics, scenes, blur);
 

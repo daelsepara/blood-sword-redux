@@ -83,7 +83,7 @@ namespace BloodSword::Party
         // number of characters in the party
         int Count()
         {
-            return int(this->Members.size());
+            return SafeCast(this->Members.size());
         }
 
         // access party member by index
@@ -128,7 +128,7 @@ namespace BloodSword::Party
         {
             auto found = false;
 
-            for (auto character = 0; character < this->Members.size(); character++)
+            for (auto character = 0; character < SafeCast(this->Members.size()); character++)
             {
                 found |= Character::OtherClass(this->Members[character].Class);
 
@@ -146,7 +146,7 @@ namespace BloodSword::Party
         {
             auto index = -1;
 
-            for (auto i = 0; i < this->Members.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Members.size()); i++)
             {
                 if (this->Members[i].Class == character_class)
                 {
@@ -164,7 +164,7 @@ namespace BloodSword::Party
         {
             auto found = -1;
 
-            for (auto i = 0; i < this->Members.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Members.size()); i++)
             {
                 if (this->Members[i].Target == target)
                 {
@@ -182,7 +182,7 @@ namespace BloodSword::Party
         {
             auto found = -1;
 
-            for (auto i = 0; i < this->Members.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Members.size()); i++)
             {
                 if (this->Members[i].Has(status))
                 {
@@ -206,7 +206,7 @@ namespace BloodSword::Party
         {
             auto found = -1;
 
-            for (auto i = 0; i < this->Members.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Members.size()); i++)
             {
                 if (this->Members[i].Name == name)
                 {
@@ -353,7 +353,7 @@ namespace BloodSword::Party
         // clear party of all status
         void ClearStatus()
         {
-            for (auto i = 0; i < this->Members.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Members.size()); i++)
             {
                 this->Members[i].Status.clear();
             }
@@ -500,9 +500,9 @@ namespace BloodSword::Party
             // load party members
             this->Clear();
 
-            if (!data["members"].is_null() && data["members"].is_array() && data["members"].size() > 0)
+            if (!data["members"].is_null() && data["members"].is_array() && SafeCast(data["members"].size()) > 0)
             {
-                for (auto i = 0; i < data["members"].size(); i++)
+                for (auto i = 0; i < SafeCast(data["members"].size()); i++)
                 {
                     auto character = Character::Load(data["members"][i]);
 
@@ -513,9 +513,9 @@ namespace BloodSword::Party
             // load survivors
             this->Survivors.clear();
 
-            if (!data["survivors"].is_null() && data["survivors"].is_array() && data["survivors"].size() > 0)
+            if (!data["survivors"].is_null() && data["survivors"].is_array() && SafeCast(data["survivors"].size()) > 0)
             {
-                for (auto i = 0; i < data["survivors"].size(); i++)
+                for (auto i = 0; i < SafeCast(data["survivors"].size()); i++)
                 {
                     auto character = Character::Load(data["survivors"][i]);
 
@@ -526,7 +526,7 @@ namespace BloodSword::Party
             // load deck of cards
             this->Cards.clear();
 
-            if (!data["cards"].is_null() && data["cards"].is_array() && data["cards"].size() > 0)
+            if (!data["cards"].is_null() && data["cards"].is_array() && SafeCast(data["cards"].size()) > 0)
             {
                 this->Cards = Items::LoadHand(data["cards"]);
             }
@@ -558,7 +558,7 @@ namespace BloodSword::Party
         bool IsANumber(const std::string &variable)
         {
             // check if first character is a sign (-/+)
-            auto offset = (variable.size() > 1 && (variable[0] == '-' || variable[0] == '+') ? 1 : 0);
+            auto offset = (SafeCast(variable.size()) > 1 && (variable[0] == '-' || variable[0] == '+') ? 1 : 0);
 
             // SEE: https://stackoverflow.com/questions/4654636/how-to-determine-if-a-string-is-a-number-with-c
             auto result = !variable.empty() && std::find_if(variable.begin() + offset, variable.end(), [](unsigned char c)
@@ -933,12 +933,12 @@ namespace BloodSword::Party
             data["members"] = members;
         }
 
-        if (party.Cards.size() > 0)
+        if (SafeCast(party.Cards.size()) > 0)
         {
             data["cards"] = Items::HandData(party.Cards);
         }
 
-        if (party.Variables.size() > 0)
+        if (SafeCast(party.Variables.size()) > 0)
         {
             nlohmann::json variables;
 

@@ -98,7 +98,7 @@ namespace BloodSword::Asset
     // unload all assets
     void Unload()
     {
-        if (Asset::Textures.size() > 0)
+        if (SafeCast(Asset::Textures.size()) > 0)
         {
             for (auto &texture : Asset::Textures)
             {
@@ -126,11 +126,11 @@ namespace BloodSword::Asset
 
         auto data = nlohmann::json::parse(json_file);
 
-        if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
+        if (!data["assets"].is_null() && data["assets"].is_array() && SafeCast(data["assets"].size()) > 0)
         {
             auto asset_type = 0;
 
-            for (auto i = 0; i < data["assets"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["assets"].size()); i++)
             {
                 auto object = !data["assets"][i]["id"].is_null() ? std::string(data["assets"][i]["id"]) : std::string();
 
@@ -155,7 +155,7 @@ namespace BloodSword::Asset
             }
         }
 
-        return (!Asset::Locations.empty() && !Asset::Textures.empty() && (Asset::Textures.size() == Asset::Locations.size()));
+        return (!Asset::Locations.empty() && !Asset::Textures.empty() && (SafeCast(Asset::Textures.size()) == Asset::Locations.size()));
     }
 
     // load all assets and create textures
@@ -229,11 +229,11 @@ namespace BloodSword::Asset
         {
             auto data = nlohmann::json::parse(json_file);
 
-            if (!data["assets"].is_null() && data["assets"].is_array() && data["assets"].size() > 0)
+            if (!data["assets"].is_null() && data["assets"].is_array() && SafeCast(data["assets"].size()) > 0)
             {
                 auto asset_type = 0;
 
-                for (auto i = 0; i < data["assets"].size(); i++)
+                for (auto i = 0; i < SafeCast(data["assets"].size()); i++)
                 {
                     auto object = !data["assets"][i]["id"].is_null() ? std::string(data["assets"][i]["id"]) : std::string();
 

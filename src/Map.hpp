@@ -208,7 +208,7 @@ namespace BloodSword::Map
         // check if map is valid
         bool IsValid()
         {
-            return this->Width > 0 && this->Height > 0 && this->Tiles.size() > 0;
+            return this->Width > 0 && this->Height > 0 && SafeCast(this->Tiles.size()) > 0;
         }
 
         // check if a location is within map boundaries
@@ -321,10 +321,10 @@ namespace BloodSword::Map
         {
             auto points = BloodSword::Points();
 
-            if (!data.is_null() && data.is_array() && data.size() > 0)
+            if (!data.is_null() && data.is_array() && SafeCast(data.size()) > 0)
             {
 
-                for (auto i = 0; i < data.size(); i++)
+                for (auto i = 0; i < SafeCast(data.size()); i++)
                 {
                     auto x = !data[i]["x"].is_null() ? int(data[i]["x"]) : -1;
 
@@ -372,11 +372,11 @@ namespace BloodSword::Map
             {
                 this->Initialize(this->Width, this->Height);
 
-                if (!data["tiles"].is_null() && data["tiles"].is_array() && data["tiles"].size() == this->Height)
+                if (!data["tiles"].is_null() && data["tiles"].is_array() && SafeCast(data["tiles"].size()) == this->Height)
                 {
                     for (auto y = 0; y < this->Height; y++)
                     {
-                        if (!data["tiles"][y].is_null() && data["tiles"][y].is_array() && data["tiles"][y].size() == this->Width)
+                        if (!data["tiles"][y].is_null() && data["tiles"][y].is_array() && SafeCast(data["tiles"][y].size()) == this->Width)
                         {
                             for (auto x = 0; x < this->Width; x++)
                             {
@@ -410,27 +410,27 @@ namespace BloodSword::Map
                     load_error = true;
                 }
 
-                if (!data["origins"].is_null() && data["origins"].is_array() && data["origins"].size() > 0)
+                if (!data["origins"].is_null() && data["origins"].is_array() && SafeCast(data["origins"].size()) > 0)
                 {
                     this->Origins = this->LoadPoints(data["origins"]);
                 }
 
-                if (!data["spawn"].is_null() && data["spawn"].is_array() && data["spawn"].size() > 0)
+                if (!data["spawn"].is_null() && data["spawn"].is_array() && SafeCast(data["spawn"].size()) > 0)
                 {
                     this->Spawn = this->LoadPoints(data["spawn"]);
                 }
 
-                if (!data["survivors"].is_null() && data["survivors"].is_array() && data["survivors"].size() > 0)
+                if (!data["survivors"].is_null() && data["survivors"].is_array() && SafeCast(data["survivors"].size()) > 0)
                 {
                     this->Survivors = this->LoadPoints(data["survivors"]);
                 }
 
-                if (!data["away_players"].is_null() && data["away_players"].is_array() && data["away_players"].size() > 0)
+                if (!data["away_players"].is_null() && data["away_players"].is_array() && SafeCast(data["away_players"].size()) > 0)
                 {
                     this->AwayPlayers = this->LoadPoints(data["away_players"]);
                 }
 
-                if (!data["away_opponents"].is_null() && data["away_opponents"].is_array() && data["away_opponents"].size() > 0)
+                if (!data["away_opponents"].is_null() && data["away_opponents"].is_array() && SafeCast(data["away_opponents"].size()) > 0)
                 {
                     this->AwayOpponents = this->LoadPoints(data["away_opponents"]);
                 }
@@ -559,27 +559,27 @@ namespace BloodSword::Map
                 map["tiles"].push_back(row);
             }
 
-            if (this->Origins.size() > 0)
+            if (SafeCast(this->Origins.size()) > 0)
             {
                 map["origins"] = this->Points(this->Origins);
             }
 
-            if (this->Spawn.size() > 0)
+            if (SafeCast(this->Spawn.size()) > 0)
             {
                 map["spawn"] = this->Points(this->Spawn);
             }
 
-            if (this->Survivors.size() > 0)
+            if (SafeCast(this->Survivors.size()) > 0)
             {
                 map["survivors"] = this->Points(this->Survivors);
             }
 
-            if (this->AwayPlayers.size() > 0)
+            if (SafeCast(this->AwayPlayers.size()) > 0)
             {
                 map["away_players"] = this->Points(this->AwayPlayers);
             }
 
-            if (this->AwayOpponents.size() > 0)
+            if (SafeCast(this->AwayOpponents.size()) > 0)
             {
                 map["away_opponents"] = this->Points(this->AwayOpponents);
             }

@@ -85,7 +85,7 @@ namespace BloodSword::Rogue
             captions.push_back("SPELLS");
         }
 
-        if (character.Items.size() > 0)
+        if (SafeCast(character.Items.size()) > 0)
         {
             assets.push_back(Asset::Map("ITEMS"));
 
@@ -100,7 +100,7 @@ namespace BloodSword::Rogue
 
         captions.push_back("FLEE");
 
-        auto values = std::vector<int>(controls.size());
+        auto values = std::vector<int>(SafeCast(controls.size()));
 
         std::iota(values.begin(), values.end(), 0);
 
@@ -108,7 +108,7 @@ namespace BloodSword::Rogue
 
         auto selection = Interface::SelectIcons(graphics, background, action.c_str(), assets, values, captions, 1, 1, Asset::NONE, false, true, false);
 
-        if (selection.size() == 1)
+        if (SafeCast(selection.size()) == 1)
         {
             selected = controls[selection[0]];
         }
@@ -726,18 +726,18 @@ namespace BloodSword::Rogue
                             {
                                 auto targets = Engine::Build(party, Attribute::Type::ENDURANCE, Character::Status::MELEE, true, true);
 
-                                if (targets.size() == 0)
+                                if (SafeCast(targets.size()) == 0)
                                 {
                                     targets = Engine::Build(party, Attribute::Type::ENDURANCE, true, true);
                                 }
 
-                                if (targets.size() > 0)
+                                if (SafeCast(targets.size()) > 0)
                                 {
                                     auto target = 0;
 
-                                    if (Engine::Percentile.NextInt() < 50 && targets.size() > 1)
+                                    if (Engine::Percentile.NextInt() < 50 && SafeCast(targets.size()) > 1)
                                     {
-                                        target = Engine::Percentile.NextInt(0, targets.size() - 1);
+                                        target = Engine::Percentile.NextInt(0, SafeCast(targets.size()) - 1);
                                     }
 
                                     auto defender_id = targets[target].Id;
@@ -764,13 +764,13 @@ namespace BloodSword::Rogue
                             {
                                 auto targets = Engine::Build(party, Attribute::Type::ENDURANCE, true, true);
 
-                                if (targets.size() > 0)
+                                if (SafeCast(targets.size()) > 0)
                                 {
                                     auto target = 0;
 
-                                    if (Engine::Percentile.NextInt() < 50 && targets.size() > 1)
+                                    if (Engine::Percentile.NextInt() < 50 && SafeCast(targets.size()) > 1)
                                     {
-                                        target = Engine::Percentile.NextInt(0, targets.size() - 1);
+                                        target = Engine::Percentile.NextInt(0, SafeCast(targets.size()) - 1);
                                     }
 
                                     auto defender_id = targets[target].Id;

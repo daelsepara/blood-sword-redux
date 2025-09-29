@@ -60,7 +60,7 @@ namespace BloodSword::Maze
             }
         }
 
-        return unvisited[random.NextInt() % unvisited.size()];
+        return unvisited[random.NextInt() % SafeCast(unvisited.size())];
     }
 
     // remove object between the two points, make it traversable
@@ -126,7 +126,7 @@ namespace BloodSword::Maze
         map.Put(current, Map::Object::PASSABLE, Asset::NONE, -1);
 
         // generate maze
-        while (unvisited.size() != 0)
+        while (SafeCast(unvisited.size()) != 0)
         {
             if (Maze::Unvisited(map, current))
             {
@@ -143,7 +143,7 @@ namespace BloodSword::Maze
 
                 current = neighbor;
             }
-            else if (visited.size() != 0)
+            else if (SafeCast(visited.size()) != 0)
             {
                 current = visited.back();
 

@@ -76,11 +76,11 @@ namespace BloodSword::Section
         }
 
         // set features
-        if (!data["features"].is_null() && data["features"].is_array() && data["features"].size() > 0)
+        if (!data["features"].is_null() && data["features"].is_array() && SafeCast(data["features"].size()) > 0)
         {
             auto features = Features::List();
 
-            for (auto i = 0; i < data["features"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["features"].size()); i++)
             {
                 auto feature = !data["features"][i].is_null() ? Feature::Map(std::string(data["features"][i])) : Feature::Type::NONE;
 
@@ -91,11 +91,11 @@ namespace BloodSword::Section
         }
 
         // read choices
-        if (!data["choices"].is_null() && data["choices"].is_array() && data["choices"].size() > 0)
+        if (!data["choices"].is_null() && data["choices"].is_array() && SafeCast(data["choices"].size()) > 0)
         {
             auto choices = Choice::List();
 
-            for (auto i = 0; i < data["choices"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["choices"].size()); i++)
             {
                 auto choice = Choice::Parse(data["choices"][i]);
 
@@ -135,11 +135,11 @@ namespace BloodSword::Section
         section.Text = !data["text"].is_null() ? std::string(data["text"]) : std::string();
 
         // load background events conditions
-        if (!data["background"].is_null() && data["background"].is_array() && data["background"].size() > 0)
+        if (!data["background"].is_null() && data["background"].is_array() && SafeCast(data["background"].size()) > 0)
         {
             auto background = Conditions::List();
 
-            for (auto i = 0; i < data["background"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["background"].size()); i++)
             {
                 auto condition = Conditions::Parse(data["background"][i]);
 
@@ -150,11 +150,11 @@ namespace BloodSword::Section
         }
 
         // load real-time/run-once events conditions
-        if (!data["events"].is_null() && data["events"].is_array() && data["events"].size() > 0)
+        if (!data["events"].is_null() && data["events"].is_array() && SafeCast(data["events"].size()) > 0)
         {
             auto events = Conditions::List();
 
-            for (auto i = 0; i < data["events"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["events"].size()); i++)
             {
                 auto condition = Conditions::Parse(data["events"][i]);
 
@@ -165,11 +165,11 @@ namespace BloodSword::Section
         }
 
         // events happening before battle
-        if (!data["battle_events"].is_null() && data["battle_events"].is_array() && data["battle_events"].size() > 0)
+        if (!data["battle_events"].is_null() && data["battle_events"].is_array() && SafeCast(data["battle_events"].size()) > 0)
         {
             auto battle_events = Conditions::List();
 
-            for (auto i = 0; i < data["battle_events"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["battle_events"].size()); i++)
             {
                 auto condition = Conditions::Parse(data["battle_events"][i]);
 
@@ -180,11 +180,11 @@ namespace BloodSword::Section
         }
 
         // load "next section" conditions
-        if (!data["next"].is_null() && data["next"].is_array() && data["next"].size() > 0)
+        if (!data["next"].is_null() && data["next"].is_array() && SafeCast(data["next"].size()) > 0)
         {
             auto conditions = Conditions::List();
 
-            for (auto i = 0; i < data["next"].size(); i++)
+            for (auto i = 0; i < SafeCast(data["next"].size()); i++)
             {
                 auto condition = Conditions::Parse(data["next"][i]);
 
@@ -195,7 +195,7 @@ namespace BloodSword::Section
         }
 
         // load items found in section
-        if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+        if (!data["items"].is_null() && data["items"].is_array() && SafeCast(data["items"].size()) > 0)
         {
             section.Items = Items::Load(data["items"]);
         }
@@ -276,7 +276,7 @@ namespace BloodSword::Story
         {
             auto section = -1;
 
-            for (auto i = 0; i < this->Sections.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Sections.size()); i++)
             {
                 if (Book::Equal(location, this->Sections[i].Location))
                 {
@@ -310,11 +310,11 @@ namespace BloodSword::Story
 
             book.Description = !data["description"].is_null() ? std::string(data["description"]) : "Blood Sword gamebook";
 
-            if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
+            if (!data["sections"].is_null() && data["sections"].is_array() && SafeCast(data["sections"].size()) > 0)
             {
                 auto sections = Story::Sections();
 
-                for (auto i = 0; i < data["sections"].size(); i++)
+                for (auto i = 0; i < SafeCast(data["sections"].size()); i++)
                 {
                     auto section = Section::Base();
 
@@ -340,14 +340,14 @@ namespace BloodSword::Story
                     }
                 }
 
-                if (sections.size() > 0)
+                if (SafeCast(sections.size()) > 0)
                 {
                     book.Sections = sections;
                 }
             }
         }
 
-        SDL_Log("[LOADED] %zu SECTIONS", book.Sections.size());
+        SDL_Log("[LOADED] %d SECTIONS", SafeCast(book.Sections.size()));
     }
 
     // load story from json data
@@ -412,9 +412,9 @@ namespace BloodSword::Story
 
         if (!data.is_null() && data.is_object())
         {
-            if (!data["ranks"].is_null() && data["ranks"].is_array() && data["ranks"].size() > 0)
+            if (!data["ranks"].is_null() && data["ranks"].is_array() && SafeCast(data["ranks"].size()) > 0)
             {
-                for (auto rank = 0; rank < data["ranks"].size(); rank++)
+                for (auto rank = 0; rank < SafeCast(data["ranks"].size()); rank++)
                 {
                     result.push_back(int(data["ranks"][rank]));
                 }

@@ -304,7 +304,7 @@ namespace BloodSword::Move
     {
         auto count = 0;
 
-        if (path.Points.size() > 1)
+        if (SafeCast(path.Points.size()) > 1)
         {
             // skip source and destination
             for (auto current = path.Points.begin(); current != --path.Points.end(); current++)

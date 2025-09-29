@@ -11,7 +11,7 @@ namespace BloodSword::Interface
     {
         auto &item = character.Items[id];
 
-        if (item.BattleDescriptions.size() > 0)
+        if (SafeCast(item.BattleDescriptions.size()) > 0)
         {
             for (auto &descriptions : item.BattleDescriptions)
             {
@@ -343,7 +343,7 @@ namespace BloodSword::Interface
 
         controls.push_back(Controls::Type::BACK);
 
-        auto values = std::vector<int>(controls.size());
+        auto values = std::vector<int>(SafeCast(controls.size()));
 
         std::iota(values.begin(), values.end(), 0);
 
@@ -355,7 +355,7 @@ namespace BloodSword::Interface
         {
             auto selection = Interface::SelectIcons(graphics, background, character.Items[id].Name.c_str(), assets, values, captions, 1, 1, Asset::NONE, false);
 
-            if (selection.size() == 1)
+            if (SafeCast(selection.size()) == 1)
             {
                 auto input = controls[selection[0]];
 
@@ -382,11 +382,11 @@ namespace BloodSword::Interface
                     }
                     else if (!item.Has(Item::Property::REQUIRES_TARGET))
                     {
-                        auto items = character.Items.size();
+                        auto items = SafeCast(character.Items.size());
 
                         Interface::BattleItemEffects(graphics, background, battle, party, character, id);
 
-                        update = character.Items.size() != items;
+                        update = SafeCast(character.Items.size()) != items;
                     }
                     else
                     {
@@ -402,18 +402,18 @@ namespace BloodSword::Interface
                         {
                             auto targets = all_ranges ? Engine::AllTargets(battle.Map, battle.Opponents, src, true, false) : Engine::RangedTargets(battle.Map, battle.Opponents, src, true, false);
 
-                            if (opponents.size() > 0 && !all_ranges)
+                            if (SafeCast(opponents.size()) > 0 && !all_ranges)
                             {
                                 Interface::MessageBox(graphics, background, Interface::GetText(Interface::MSG_NEARBY), Color::Highlight);
                             }
-                            else if (targets.size() > 0)
+                            else if (SafeCast(targets.size()) > 0)
                             {
                                 auto asset = item.Asset != Asset::NONE ? item.Asset : Asset::Map("SHOOT");
 
                                 auto target = Point(-1, -1);
 
                                 // do something
-                                if (targets.size() > 1)
+                                if (SafeCast(targets.size()) > 1)
                                 {
                                     target = Interface::SelectTarget(graphics, battle, party, item.Name, asset, Controls::Type::ENEMY);
                                 }
@@ -434,7 +434,7 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            if (opponents.size() == 0)
+                            if (SafeCast(opponents.size()) == 0)
                             {
                                 Interface::MessageBox(graphics, background, Interface::GetText(Interface::MSG_ENEMIES), Color::Highlight);
                             }
@@ -449,7 +449,7 @@ namespace BloodSword::Interface
 
                                 auto target = Point(-1, -1);
 
-                                if (opponents.size() > 1)
+                                if (SafeCast(opponents.size()) > 1)
                                 {
                                     target = Interface::SelectTarget(graphics, battle, party, item.Name, asset, Controls::Type::ENEMY);
                                 }
@@ -490,13 +490,13 @@ namespace BloodSword::Interface
 
         while (!exit)
         {
-            auto limit = std::min(4, int(character.Items.size()));
+            auto limit = std::min(4, SafeCast(character.Items.size()));
 
             auto start = 0;
 
             auto last = start + limit;
 
-            auto options = int(character.Items.size());
+            auto options = SafeCast(character.Items.size());
 
             // wrap length
             auto wrap = BloodSword::Wrap;
@@ -519,7 +519,7 @@ namespace BloodSword::Interface
             // default height
             auto h = std::max(BloodSword::Height(menu) + pads, BloodSword::TileSize);
 
-            auto x = (graphics.Width - w) / 2 - (character.Items.size() > limit ? (BloodSword::HalfTile + 1) : 0);
+            auto x = (graphics.Width - w) / 2 - (SafeCast(character.Items.size()) > limit ? (BloodSword::HalfTile + 1) : 0);
 
             auto y = (graphics.Height - h * (limit + 1)) / 2 - BloodSword::HalfTile + BloodSword::Pad;
 
@@ -582,13 +582,13 @@ namespace BloodSword::Interface
 
                         auto choice = start + (input.Current - list);
 
-                        if (choice >= 0 && choice < character.Items.size())
+                        if (choice >= 0 && choice < SafeCast(character.Items.size()))
                         {
                             update = Interface::ManageItem(graphics, background, battle, party, character, src, choice);
                         }
 
                         // check if item list is unchanged
-                        if (character.Items.size() == 0 || character.Items.size() != options || update)
+                        if (SafeCast(character.Items.size()) == 0 || SafeCast(character.Items.size()) != options || update)
                         {
                             done = true;
 

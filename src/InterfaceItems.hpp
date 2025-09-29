@@ -9,7 +9,7 @@ namespace BloodSword::Interface
     // transfer (drop/give/take) item between inventories
     void TransferItem(Graphics::Base &graphics, Scene::Base &background, std::string message, Uint32 border, Items::Inventory &destination, Items::Inventory &source, int id)
     {
-        if (id >= 0 && id < source.size())
+        if (id >= 0 && id < SafeCast(source.size()))
         {
             Interface::MessageBox(graphics, background, message, Color::Active);
 
@@ -29,7 +29,7 @@ namespace BloodSword::Interface
     {
         auto result = false;
 
-        if (id >= 0 && id <= items.size())
+        if (id >= 0 && id < SafeCast(items.size()))
         {
             auto message = action + " THE " + items[id].Name;
 
@@ -98,7 +98,7 @@ namespace BloodSword::Interface
             Interface::TransferItem(graphics, background, message, Color::Active, receiver.Items, source, id);
 
             // process CURSED items
-            for (auto i = 0; i < receiver.Items.size(); i++)
+            for (auto i = 0; i < SafeCast(receiver.Items.size()); i++)
             {
                 if (receiver.Items[i].Has(Item::Property::CURSED))
                 {

@@ -96,6 +96,12 @@ namespace BloodSword
     // scroll speed (pixels)
     const int ScrollSpeed = 50;
 
+    // convert size_t to int
+    int SafeCast(size_t size)
+    {
+        return static_cast<int>(size);
+    }
+
     // cartesian coordinates
     class Point
     {
@@ -243,7 +249,7 @@ namespace BloodSword
         auto buffer = asset.data();
 
         // create surface from memory buffer
-        auto rw = SDL_RWFromMem((void *)buffer, asset.size());
+        auto rw = SDL_RWFromMem((void *)buffer, SafeCast(asset.size()));
 
         if (!rw)
         {
@@ -268,7 +274,7 @@ namespace BloodSword
         auto buffer = asset.data();
 
         // create surface from memory buffer
-        auto rw = SDL_RWFromMem((void *)buffer, asset.size());
+        auto rw = SDL_RWFromMem((void *)buffer, SafeCast(asset.size()));
 
         if (!rw)
         {
@@ -337,7 +343,7 @@ namespace BloodSword
     // left pad string
     std::string LeftPad(std::string &str, int n)
     {
-        if (str.size() < n)
+        if (SafeCast(str.size()) < n)
         {
             std::ostringstream oss;
 
@@ -386,7 +392,7 @@ namespace BloodSword
     {
         auto width = 0;
 
-        for (auto i = 0; i < textures.size(); i++)
+        for (auto i = 0; i < SafeCast(textures.size()); i++)
         {
             width = std::max(width, BloodSword::Width(textures[i]));
         }
@@ -409,7 +415,7 @@ namespace BloodSword
     {
         auto height = 0;
 
-        for (auto i = 0; i < textures.size(); i++)
+        for (auto i = 0; i < SafeCast(textures.size()); i++)
         {
             height = std::max(height, BloodSword::Height(textures[i]));
         }

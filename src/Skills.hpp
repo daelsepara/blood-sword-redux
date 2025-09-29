@@ -149,7 +149,7 @@ namespace BloodSword::Skills
     // is this skill in the list?
     bool In(Skills::List &list, Skills::Type skill)
     {
-        return list.size() > 0 && BloodSword::Has(list, skill);
+        return SafeCast(list.size()) > 0 && BloodSword::Has(list, skill);
     }
 
     // is this skill a battle skill?
@@ -175,7 +175,7 @@ namespace BloodSword::Skills
     {
         auto skills = Skills::List();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto skill = !data[i].is_null() ? Skills::Map(std::string(data[i])) : Skills::Type::NONE;
 

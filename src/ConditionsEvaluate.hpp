@@ -58,7 +58,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - text to display (when used in an event)
-            if (condition.Variables.size() > 0 && !condition.Variables[0].empty())
+            if (SafeCast(condition.Variables.size()) > 0 && !condition.Variables[0].empty())
             {
                 text = condition.Variables[0];
             }
@@ -69,7 +69,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -98,7 +98,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Character::Map(condition.Variables[0]);
 
@@ -124,7 +124,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -156,7 +156,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player to check if they were chosen
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -176,7 +176,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - number
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto number = party.Number(condition.Variables[0]);
 
@@ -196,7 +196,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -220,17 +220,17 @@ namespace BloodSword::Conditions
             // variables
             // 0 - item
             // 1 - message if found
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto current = Story::CurrentBook.Find(party.Location);
 
                 auto item = Item::Map(condition.Variables[0]);
 
-                if (item != Item::Type::NONE && current >= 0 && current < Story::CurrentBook.Sections.size())
+                if (item != Item::Type::NONE && current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size()))
                 {
                     auto &section = Story::CurrentBook.Sections[current];
 
-                    result = (section.Items.size() > 0 && Items::Find(section.Items, item) != section.Items.end());
+                    result = (SafeCast(section.Items.size()) > 0 && Items::Find(section.Items, item) != section.Items.end());
 
                     if (result)
                     {
@@ -248,7 +248,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player / ALL
             // 1 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -298,7 +298,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player / ALL
             // 1 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -337,7 +337,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player / ALL
             // 1 - N items
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -345,7 +345,7 @@ namespace BloodSword::Conditions
 
                 auto items = Items::List();
 
-                for (auto i = 1; i < condition.Variables.size(); i++)
+                for (auto i = 1; i < SafeCast(condition.Variables.size()); i++)
                 {
                     auto item = Item::Map(condition.Variables[i]);
 
@@ -355,7 +355,7 @@ namespace BloodSword::Conditions
                     }
                 }
 
-                if ((items.size() > 0 && items.size() == (condition.Variables.size() - 1)) && (is_party || character != Character::Class::NONE))
+                if ((SafeCast(items.size()) > 0 && SafeCast(items.size()) == (SafeCast(condition.Variables.size()) - 1)) && (is_party || character != Character::Class::NONE))
                 {
                     if (is_party || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
@@ -399,7 +399,7 @@ namespace BloodSword::Conditions
             // 0 - player / ALL
             // 1 - item
             // 2 - number required
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -437,7 +437,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -479,7 +479,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -517,7 +517,7 @@ namespace BloodSword::Conditions
             // 0 - player
             // 1 - attribute
             // 2 - failure message
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -560,7 +560,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -657,7 +657,7 @@ namespace BloodSword::Conditions
                 {
                     // variables (when used in an event):
                     // 0 - text to display on success
-                    if (condition.Variables.size() > 0)
+                    if (SafeCast(condition.Variables.size()) > 0)
                     {
                         text = condition.Variables[0];
                     }
@@ -679,7 +679,7 @@ namespace BloodSword::Conditions
                 {
                     // variables (when used in an event):
                     // 0 - text to display on success
-                    if (condition.Variables.size() > 0)
+                    if (SafeCast(condition.Variables.size()) > 0)
                     {
                         text = condition.Variables[0];
                     }
@@ -698,7 +698,7 @@ namespace BloodSword::Conditions
             // 0 - player (or ALL)
             // 1 - status
             // 2 - TRUE/FALSE hide message (optional)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto status = Character::MapStatus(condition.Variables[1]);
 
@@ -711,7 +711,7 @@ namespace BloodSword::Conditions
 
                         result = true;
 
-                        if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
+                        if (SafeCast(condition.Variables.size()) < 2 || (SafeCast(condition.Variables.size()) > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
                         {
                             if (Engine::Count(party) > 1)
                             {
@@ -748,7 +748,7 @@ namespace BloodSword::Conditions
                         {
                             party[character].Add(status);
 
-                            if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
+                            if (SafeCast(condition.Variables.size()) < 2 || (SafeCast(condition.Variables.size()) > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
                             {
                                 text = party[character].Name + " GAINS [" + Character::StatusMapping[status] + "]";
                             }
@@ -767,7 +767,7 @@ namespace BloodSword::Conditions
             // 0 - player (or ALL)
             // 1 - status
             // 2 - TRUE/FALSE hide message (optional)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto status = Character::MapStatus(condition.Variables[1]);
 
@@ -782,7 +782,7 @@ namespace BloodSword::Conditions
 
                             result = true;
 
-                            if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
+                            if (SafeCast(condition.Variables.size()) < 2 || (SafeCast(condition.Variables.size()) > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
                             {
                                 if (Engine::Count(party) > 1)
                                 {
@@ -820,7 +820,7 @@ namespace BloodSword::Conditions
                         {
                             party[character].Remove(status);
 
-                            if (condition.Variables.size() < 2 || (condition.Variables.size() > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
+                            if (SafeCast(condition.Variables.size()) < 2 || (SafeCast(condition.Variables.size()) > 2 && Engine::ToUpper(condition.Variables[2]) != "TRUE"))
                             {
                                 text = party[character].Name + " LOSES [" + Character::StatusMapping[status] + "]";
                             }
@@ -836,7 +836,7 @@ namespace BloodSword::Conditions
             internal_error = true;
 
             // variables
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -874,7 +874,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -915,7 +915,7 @@ namespace BloodSword::Conditions
             // 1 - attribute
             // 2 - status gain on success
             // 3 - status gain on failure
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 3)
             {
                 auto attribute = Attribute::Map(condition.Variables[1]);
 
@@ -991,7 +991,7 @@ namespace BloodSword::Conditions
             // 0 - status
             // 1 - min threshold
             // 2 - max threshold
-            if (condition.Variables.size() > 2)
+            if (SafeCast(condition.Variables.size()) > 2)
             {
                 auto status = Character::MapStatus(condition.Variables[0]);
 
@@ -1018,7 +1018,7 @@ namespace BloodSword::Conditions
             // 1 - status when selected
             // 2 - status when not selected
             // 3 - message to display
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 3)
             {
                 auto preselect = Character::MapStatus(condition.Variables[0]);
 
@@ -1043,7 +1043,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - spell
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -1085,7 +1085,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - spell
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -1132,7 +1132,7 @@ namespace BloodSword::Conditions
             // 4 - hidden (true/false)
             // 5 to 5+(1) - assets
             // last - asset (hidden)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 5)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 5)
             {
                 auto options = party.Number(condition.Variables[1]);
 
@@ -1144,7 +1144,7 @@ namespace BloodSword::Conditions
 
                 auto expected = 4 + options + (hidden ? 1 : 0);
 
-                if (options > 0 && min_select > 0 && min_select <= max_select && condition.Variables.size() > expected)
+                if (options > 0 && min_select > 0 && min_select <= max_select && SafeCast(condition.Variables.size()) > expected)
                 {
                     // contains assets
                     auto assets = Asset::List();
@@ -1168,7 +1168,7 @@ namespace BloodSword::Conditions
                         values.push_back(i);
                     }
 
-                    if (assets.size() == values.size())
+                    if (SafeCast(assets.size()) == SafeCast(values.size()))
                     {
                         // clear current selection
                         party.Cards.clear();
@@ -1176,15 +1176,15 @@ namespace BloodSword::Conditions
                         // select cards
                         auto selection = Interface::SelectIcons(graphics, background, condition.Variables[0].c_str(), assets, values, {}, min_select, max_select, asset_hidden, hidden);
 
-                        for (auto i = 0; i < selection.size(); i++)
+                        for (auto i = 0; i < SafeCast(selection.size()); i++)
                         {
-                            if (i >= 0 && i < Items::KalugenDeck.size())
+                            if (i >= 0 && i < SafeCast(Items::KalugenDeck.size()))
                             {
                                 party.Cards.push_back(Items::KalugenDeck[selection[i]]);
                             }
                         }
 
-                        if (party.Cards.size() >= min_select && party.Cards.size() <= max_select)
+                        if (SafeCast(party.Cards.size()) >= min_select && SafeCast(party.Cards.size()) <= max_select)
                         {
                             result = true;
 
@@ -1198,11 +1198,11 @@ namespace BloodSword::Conditions
         {
             if (Engine::IsAlive(party))
             {
-                if (party.Cards.size() > 0)
+                if (SafeCast(party.Cards.size()) > 0)
                 {
-                    text = "You have chosen " + std::string(party.Cards.size() > 1 ? "these cards" : "this card") + ": ";
+                    text = "You have chosen " + std::string(SafeCast(party.Cards.size()) > 1 ? "these cards" : "this card") + ": ";
 
-                    for (auto i = 0; i < party.Cards.size(); i++)
+                    for (auto i = 0; i < SafeCast(party.Cards.size()); i++)
                     {
                         if (i > 0)
                         {
@@ -1240,7 +1240,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - score to beat
-            if (condition.Variables.size() > 0)
+            if (SafeCast(condition.Variables.size()) > 0)
             {
                 auto beat = party.Number(condition.Variables[0]);
 
@@ -1272,7 +1272,7 @@ namespace BloodSword::Conditions
             // variables:
             // 0 - player / ALL
             // 1 .. N - items to discard (type)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -1286,7 +1286,7 @@ namespace BloodSword::Conditions
                 {
                     if ((is_party && Engine::IsAlive(party)) || (party.Has(character) && Engine::IsAlive(party[character])))
                     {
-                        for (auto i = 1; i < condition.Variables.size(); i++)
+                        for (auto i = 1; i < SafeCast(condition.Variables.size()); i++)
                         {
                             auto item = Item::Map(condition.Variables[i]);
 
@@ -1296,7 +1296,7 @@ namespace BloodSword::Conditions
                             }
                         }
 
-                        if (items.size() > 0)
+                        if (SafeCast(items.size()) > 0)
                         {
                             if (Engine::ToUpper(condition.Variables[0]) == "ALL")
                             {
@@ -1315,7 +1315,7 @@ namespace BloodSword::Conditions
 
                             auto discarded = std::vector<std::string>();
 
-                            for (auto i = 0; i < items.size(); i++)
+                            for (auto i = 0; i < SafeCast(items.size()); i++)
                             {
                                 auto item = items[i];
 
@@ -1334,14 +1334,14 @@ namespace BloodSword::Conditions
                             {
                                 text = (is_party ? "You" : party[character].Name) + " discard" + (is_party ? "" : "s") + " the ";
 
-                                for (auto i = 0; i < discarded.size(); i++)
+                                for (auto i = 0; i < SafeCast(discarded.size()); i++)
                                 {
-                                    if (i > 0 && discarded.size() > 2)
+                                    if (i > 0 && SafeCast(discarded.size()) > 2)
                                     {
                                         text += ", ";
                                     }
 
-                                    if ((discarded.size() > 1) && (i == discarded.size() - 1))
+                                    if ((SafeCast(discarded.size()) > 1) && (i == SafeCast(discarded.size()) - 1))
                                     {
                                         text += " and the ";
                                     }
@@ -1380,7 +1380,7 @@ namespace BloodSword::Conditions
             // 0 - ALL/FIRST/LAST/SELECT/CHOSEN or player
             // 1 - FALL-BACK recipient (NONE/FIRST/LAST/SELECT)
             // 2 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -1458,9 +1458,9 @@ namespace BloodSword::Conditions
                         characters.push_back(party[character].Class);
                     }
 
-                    if (characters.size() > 0)
+                    if (SafeCast(characters.size()) > 0)
                     {
-                        for (auto i = 0; i < characters.size(); i++)
+                        for (auto i = 0; i < SafeCast(characters.size()); i++)
                         {
                             if (party.Has(characters[i]) && Engine::IsAlive(party[characters[i]]))
                             {
@@ -1491,11 +1491,11 @@ namespace BloodSword::Conditions
             // variables
             // 0 - message to display
             // 1 - N items to be excluded (optional)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0 && !condition.Variables[0].empty())
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0 && !condition.Variables[0].empty())
             {
                 auto excluded = Items::List();
 
-                for (auto i = 1; i < condition.Variables.size(); i++)
+                for (auto i = 1; i < SafeCast(condition.Variables.size()); i++)
                 {
                     auto item = Item::Map(condition.Variables[i]);
 
@@ -1511,7 +1511,7 @@ namespace BloodSword::Conditions
                     {
                         auto inventory = Items::Inventory();
 
-                        for (auto item = 0; item < party[i].Items.size(); item++)
+                        for (auto item = 0; item < SafeCast(party[i].Items.size()); item++)
                         {
                             if (!party[i].Items[item].Is(Item::Property::WEAPON) || Items::Included(excluded, party[i].Items[item].Type))
                             {
@@ -1537,11 +1537,11 @@ namespace BloodSword::Conditions
             // variables
             // 0 - message to display
             // 1 - N items to be excluded (optional)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0 && !condition.Variables[0].empty())
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0 && !condition.Variables[0].empty())
             {
                 auto excluded = Items::List();
 
-                for (auto i = 1; i < condition.Variables.size(); i++)
+                for (auto i = 1; i < SafeCast(condition.Variables.size()); i++)
                 {
                     auto item = Item::Map(condition.Variables[i]);
 
@@ -1557,7 +1557,7 @@ namespace BloodSword::Conditions
                     {
                         auto inventory = Items::Inventory();
 
-                        for (auto item = 0; item < party[i].Items.size(); item++)
+                        for (auto item = 0; item < SafeCast(party[i].Items.size()); item++)
                         {
                             if (!party[i].Items[item].Is(Item::Property::ARMOUR) || Items::Included(excluded, party[i].Items[item].Type))
                             {
@@ -1582,11 +1582,11 @@ namespace BloodSword::Conditions
 
             // variables:
             // 0 - message to display
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 if (Engine::Count(party) > 1)
                 {
-                    auto message = condition.Variables[0].size() > 0 ? condition.Variables[0] : std::string(Conditions::TypeMapping[condition.Type]);
+                    auto message = SafeCast(condition.Variables[0].size()) > 0 ? condition.Variables[0] : std::string(Conditions::TypeMapping[condition.Type]);
 
                     party.ChosenCharacter = Interface::SelectCharacter(graphics, background, party, message.c_str(), true, false, false, false, true);
                 }
@@ -1608,7 +1608,7 @@ namespace BloodSword::Conditions
             // 0 - message to display
             // 1 - currency (currency, e.g. GOLD)
             // 2 - quantity (of the item above)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto chosen = Character::Class::NONE;
 
@@ -1658,7 +1658,7 @@ namespace BloodSword::Conditions
             // 1 - currency (currency, e.g. GOLD)
             // 2 - quantity (of the item above)
             // 3 - item to buy
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 3)
             {
                 auto chosen = Character::Class::NONE;
 
@@ -1726,7 +1726,7 @@ namespace BloodSword::Conditions
 
             // variables:
             // 0 - player to set as CHOSEN
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -1758,7 +1758,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - item to stake
             // 1 - asset (to item in #0)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -1776,7 +1776,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - destination variable
             // 1 - source variable / value
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto dst = Engine::MapTokens(party, condition.Variables[0]);
 
@@ -1807,7 +1807,7 @@ namespace BloodSword::Conditions
             // 0 - operation (+, -, *)
             // 1 - first variable (destination)
             // 2 - second variable / value (source)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto ops = condition.Variables[0];
 
@@ -1834,7 +1834,7 @@ namespace BloodSword::Conditions
             // 1 - message to display if CHOOSE in #0
             // 2 - min if CHOOSE in #0
             // 3 - max if CHOOSE in #0
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto number = (Engine::ToUpper(condition.Variables[0]) != "CHOOSE");
 
@@ -1844,7 +1844,7 @@ namespace BloodSword::Conditions
 
                     result = true;
                 }
-                else if (condition.Variables.size() > 3)
+                else if (SafeCast(condition.Variables.size()) > 3)
                 {
                     auto min_number = party.Number(condition.Variables[2]);
 
@@ -1868,7 +1868,7 @@ namespace BloodSword::Conditions
             // 2 - variable to save results to
             // 3 - asset (CHOSEN / asset name)
             // 4 - asset (action)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 4)
             {
                 auto roll = party.Number(condition.Variables[0]);
 
@@ -1903,7 +1903,7 @@ namespace BloodSword::Conditions
             // 0 - operation (=, !=, <>, >, <, >=. <=)
             // 1 - first variable / value
             // 2 - second variable / value
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto ops = condition.Variables[0];
 
@@ -1930,7 +1930,7 @@ namespace BloodSword::Conditions
             // 3 - math operation (*, +, -)
             // 4 - first variable (destination)
             // 5 - second variable / value (source)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 4)
             {
                 auto ops = condition.Variables[0];
 
@@ -1967,7 +1967,7 @@ namespace BloodSword::Conditions
             // 2 - second variable / value
             // 3 - message on return
             // 4 - border
-            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 4)
             {
                 auto ops = condition.Variables[0];
 
@@ -2010,11 +2010,11 @@ namespace BloodSword::Conditions
             // 3 - 2nd operation (=, !=, <>, >, <, >=. <=)
             // 4 - 2nd variable (first)
             // 5 - 2nd variable (second)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 5)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 5)
             {
                 auto empty = 0;
 
-                for (auto i = 0; i < condition.Variables.size(); i++)
+                for (auto i = 0; i < SafeCast(condition.Variables.size()); i++)
                 {
                     empty += (condition.Variables[i].empty() ? 1 : 0);
                 }
@@ -2058,7 +2058,7 @@ namespace BloodSword::Conditions
             // 0 - player
             // 1 - item
             // 2 - quantity or variable
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -2113,13 +2113,13 @@ namespace BloodSword::Conditions
             // variables:
             // 0 - border color
             // 1 - N variables to show
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto border = Engine::Color(condition.Variables[0]);
 
                 auto message = std::string();
 
-                for (auto i = 1; i < condition.Variables.size(); i++)
+                for (auto i = 1; i < SafeCast(condition.Variables.size()); i++)
                 {
                     auto value = party.Get(condition.Variables[i]);
 
@@ -2166,7 +2166,7 @@ namespace BloodSword::Conditions
                     }
                 }
 
-                if (message.size() > 0)
+                if (SafeCast(message.size()) > 0)
                 {
                     Interface::TextBox(graphics, background, message, border, BloodSword::Wrap);
                 }
@@ -2184,7 +2184,7 @@ namespace BloodSword::Conditions
             // 0 - item (type)
             // 1 - limit
             // 2 - asset
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -2210,7 +2210,7 @@ namespace BloodSword::Conditions
             // 0 - asset
             // 1 - gain (ENDURANCE)
             // 2 - limit
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto asset = Asset::Map(condition.Variables[0]);
 
@@ -2235,7 +2235,7 @@ namespace BloodSword::Conditions
             // variables:
             // 0 - message
             // 1 - border color (ACTIVE, HIGHLIGHT, INACTIVE, BACKGROUND, TRANSPARENT)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1 && !condition.Variables[0].empty())
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1 && !condition.Variables[0].empty())
             {
                 auto border = Engine::Color(condition.Variables[1]);
 
@@ -2261,7 +2261,7 @@ namespace BloodSword::Conditions
             // 0 - ALL / player
             // 1 - item
             // 2 - quantity
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -2311,7 +2311,7 @@ namespace BloodSword::Conditions
             // 6 - damage modifier (on failure)
             // 7 - ignore armour (TRUE/FALSE)
             // 8 - message (on failure)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 8)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 8)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -2399,7 +2399,7 @@ namespace BloodSword::Conditions
             // 4 - attribute
             // 5 - gain/loss
             // 6 - message (on failure)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 6)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 6)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -2460,7 +2460,7 @@ namespace BloodSword::Conditions
             // 1 - asset (to item in #0)
             // 2 - min collect
             // 3 - max collect
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 3)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -2493,7 +2493,7 @@ namespace BloodSword::Conditions
             // 0 - player / all
             // 1 - number of attributes to update
             // 2 - gain (+/-)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -2539,7 +2539,7 @@ namespace BloodSword::Conditions
             // 0 - item
             // 1 - charge (item)
             // 2 - charges (minimum)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -2579,7 +2579,7 @@ namespace BloodSword::Conditions
             // 0 - item
             // 1 - charge (item)
             // 2 - charges (minimum)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -2628,7 +2628,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -2669,7 +2669,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player (not killed)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -2707,7 +2707,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - status
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto status = Character::MapStatus(condition.Variables[0]);
 
@@ -2736,7 +2736,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -2772,7 +2772,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - item
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -2822,7 +2822,7 @@ namespace BloodSword::Conditions
             // 0 - player / ALL
             // 1 - attribute
             // 2 - points to gain/lose
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -2884,7 +2884,7 @@ namespace BloodSword::Conditions
             // 0 - status
             // 1 - attribute
             // 2 - points to gain/lose
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto status = Character::MapStatus(condition.Variables[0]);
 
@@ -2918,7 +2918,7 @@ namespace BloodSword::Conditions
             // 0 - status
             // 1 - attribute
             // 2 - points to modify
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto status = Character::MapStatus(condition.Variables[0]);
 
@@ -2950,7 +2950,7 @@ namespace BloodSword::Conditions
             // 0 - player / ALL
             // 1 - attribute
             // 2 - points to modify
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3001,7 +3001,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player / ALL
             // 1 - attribute
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3063,7 +3063,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - item (type)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -3123,7 +3123,7 @@ namespace BloodSword::Conditions
             // 2 - modifier
             // 3 - ignore armour
             // 4 - display
-            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 4)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -3195,7 +3195,7 @@ namespace BloodSword::Conditions
             // 3 - modifier
             // 4 - ignore armour
             // 5 - display
-            if (Engine::IsAlive(party) && condition.Variables.size() > 5)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 5)
             {
                 auto targets = party.Number(condition.Variables[0]);
 
@@ -3228,7 +3228,7 @@ namespace BloodSword::Conditions
             // 1 - modifier
             // 2 - ignore armour
             // 3 - display
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 3)
             {
                 auto roll = party.Number(condition.Variables[0]);
 
@@ -3262,7 +3262,7 @@ namespace BloodSword::Conditions
             // 0 - player
             // 1 - endurance
             // 2 - ignore armour
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -3324,7 +3324,7 @@ namespace BloodSword::Conditions
             // 0 - player
             // 1 - attribute
             // 2 - failure message
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3361,7 +3361,7 @@ namespace BloodSword::Conditions
                             }
                         }
 
-                        for (auto i = 0; i < characters.size(); i++)
+                        for (auto i = 0; i < SafeCast(characters.size()); i++)
                         {
                             auto test = Interface::Test(graphics, background, party[characters[i]], attribute);
 
@@ -3395,7 +3395,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - message
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -3428,7 +3428,7 @@ namespace BloodSword::Conditions
             // 0 - player
             // 1 - message
             // 2 - number of dice to select
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -3468,7 +3468,7 @@ namespace BloodSword::Conditions
             // 1 - message / text
             // 2 - display in textbox (TRUE / FALSE)
             // 3 - border color on display
-            if (condition.Variables.size() > 2)
+            if (SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3482,7 +3482,7 @@ namespace BloodSword::Conditions
                     {
                         result = is_party ? Engine::IsAlive(party) : Engine::IsAlive(party[character]);
 
-                        if (result && condition.Variables.size() > 2 && !condition.Variables[1].empty())
+                        if (result && SafeCast(condition.Variables.size()) > 2 && !condition.Variables[1].empty())
                         {
                             if (display)
                             {
@@ -3511,7 +3511,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - experience to gain
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto experience = std::stoi(condition.Variables[0], nullptr, 10);
 
@@ -3537,7 +3537,7 @@ namespace BloodSword::Conditions
             // 2 - amount to discharge (on failure)
             // 3 - message on success (not discharged)
             // 4 - message on failure
-            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 4)
             {
                 auto current = Story::CurrentBook.Find(party.Location);
 
@@ -3551,7 +3551,7 @@ namespace BloodSword::Conditions
 
                 if (item != Item::Type::NONE && charge != Item::Type::NONE && discharge > 0)
                 {
-                    if (current >= 0 && current < Story::CurrentBook.Sections.size() && Story::CurrentBook.Sections[current].Items.size() > 0)
+                    if (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size()) && SafeCast(Story::CurrentBook.Sections[current].Items.size()) > 0)
                     {
                         auto &section = Story::CurrentBook.Sections[current];
 
@@ -3585,7 +3585,7 @@ namespace BloodSword::Conditions
                             text = Item::TypeMapping[charge] + " EXHAUSTED";
                         }
                     }
-                    else if (current >= 0 && current < Story::CurrentBook.Sections.size())
+                    else if (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size()))
                     {
                         text = "NOTHING TO TEST HERE";
                     }
@@ -3604,7 +3604,7 @@ namespace BloodSword::Conditions
             // 2 - CHECK/SET
             // 3 - status
             // 4 - message on failure
-            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 4)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3673,7 +3673,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player / ALL
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3707,7 +3707,7 @@ namespace BloodSword::Conditions
                             auto &current = party[character_class];
 
                             // drop items that are either not equipped or can be dropped
-                            for (auto i = 0; i < current.Items.size(); i++)
+                            for (auto i = 0; i < SafeCast(current.Items.size()); i++)
                             {
                                 auto cannot_drop = current.Items[i].Is(Item::Property::CANNOT_DROP);
 
@@ -3745,7 +3745,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player / ALL
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3779,7 +3779,7 @@ namespace BloodSword::Conditions
                             auto &current = party[character_class];
 
                             // drop items that are either not equipped or can be dropped
-                            for (auto i = 0; i < current.Items.size(); i++)
+                            for (auto i = 0; i < SafeCast(current.Items.size()); i++)
                             {
                                 auto cannot_drop = current.Items[i].Is(Item::Property::CANNOT_DROP) && current.Items[i].Contains == Item::Type::GOLD;
 
@@ -3817,7 +3817,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player / ALL
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -3851,7 +3851,7 @@ namespace BloodSword::Conditions
                             auto &current = party[character_class];
 
                             // drop all items except weapons
-                            for (auto i = 0; i < current.Items.size(); i++)
+                            for (auto i = 0; i < SafeCast(current.Items.size()); i++)
                             {
                                 if (current.Items[i].HasAll({Item::Property::WEAPON, Item::Property::PRIMARY, Item::Property::EQUIPPED}))
                                 {
@@ -3884,7 +3884,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - N items
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -3894,7 +3894,7 @@ namespace BloodSword::Conditions
                     {
                         auto items = Items::List();
 
-                        for (auto i = 1; i < condition.Variables.size(); i++)
+                        for (auto i = 1; i < SafeCast(condition.Variables.size()); i++)
                         {
                             auto item = Item::Map(condition.Variables[i]);
 
@@ -3904,7 +3904,7 @@ namespace BloodSword::Conditions
                             }
                         }
 
-                        if (items.size() > 0)
+                        if (SafeCast(items.size()) > 0)
                         {
                             Interface::TakeFromInfiniteList(graphics, background, party, character, items, true);
 
@@ -3939,7 +3939,7 @@ namespace BloodSword::Conditions
             // 7 - damage prefix
             // 8 - success message
             // 9 - failure message
-            if (Engine::IsAlive(party) && condition.Variables.size() > 9)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 9)
             {
                 Interface::Gauntlet gauntlet;
 
@@ -3991,7 +3991,7 @@ namespace BloodSword::Conditions
         {
             internal_error = true;
 
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -4014,7 +4014,7 @@ namespace BloodSword::Conditions
 
                         party.Clear();
 
-                        for (auto i = 0; i < new_order.size(); i++)
+                        for (auto i = 0; i < SafeCast(new_order.size()); i++)
                         {
                             party.Add(new_order[i]);
                         }
@@ -4038,7 +4038,7 @@ namespace BloodSword::Conditions
         {
             internal_error = true;
 
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -4061,7 +4061,7 @@ namespace BloodSword::Conditions
 
                         party.Clear();
 
-                        for (auto i = 0; i < new_order.size(); i++)
+                        for (auto i = 0; i < SafeCast(new_order.size()); i++)
                         {
                             party.Add(new_order[i]);
                         }
@@ -4091,7 +4091,7 @@ namespace BloodSword::Conditions
             // 2 - damage
             // 3 - message on success
             // 4 - message on fail
-            if (Engine::IsAlive(party) && condition.Variables.size() > 4)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 4)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -4150,7 +4150,7 @@ namespace BloodSword::Conditions
             // 4 - message on success
             // 5 - message on fail
             // 6 - display
-            if (Engine::IsAlive(party) && condition.Variables.size() > 6)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 6)
             {
                 auto attribute = Attribute::Map(condition.Variables[0]);
 
@@ -4220,7 +4220,7 @@ namespace BloodSword::Conditions
             // 1 - limit (to number of players doing the task)
             // 2 - mission rounds
             // 3 - character selection prompt (message)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 3)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 3)
             {
                 auto status = Character::MapStatus(condition.Variables[0]);
 
@@ -4263,7 +4263,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - player
             // 1 - gain
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -4302,9 +4302,9 @@ namespace BloodSword::Conditions
 
                         for (auto &character : characters)
                         {
-                            if (Engine::IsAlive(party[character]) && party[character].Items.size() > 0)
+                            if (Engine::IsAlive(party[character]) && SafeCast(party[character].Items.size()) > 0)
                             {
-                                for (auto item = 0; item < party[character].Items.size(); item++)
+                                for (auto item = 0; item < SafeCast(party[character].Items.size()); item++)
                                 {
                                     if (party[character].Items[item].HasAll({Item::Property::ARMOUR, Item::Property::EQUIPPED}) && party[character].Items[item].Has(Attribute::Type::ARMOUR))
                                     {
@@ -4331,7 +4331,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto character = Interface::SelectCharacter(graphics, background, party, condition.Variables[0]);
 
@@ -4372,7 +4372,7 @@ namespace BloodSword::Conditions
                     }
                 }
 
-                if (characters.size() > 0)
+                if (SafeCast(characters.size()) > 0)
                 {
                     result = true;
 
@@ -4401,7 +4401,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - player / all
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -4447,7 +4447,7 @@ namespace BloodSword::Conditions
             // variables
             // 0 - item to take
             // 1 - item (if present, then must take item in #0)
-            if (Engine::IsAlive(party) && condition.Variables.size() > 1)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 1)
             {
                 auto item = Item::Map(condition.Variables[0]);
 
@@ -4534,7 +4534,7 @@ namespace BloodSword::Conditions
             // 0 - player / all
             // 1 - status
             // 2 - item type
-            if (Engine::IsAlive(party) && condition.Variables.size() > 2)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 2)
             {
                 auto is_party = (Engine::ToUpper(condition.Variables[0]) == "ALL");
 
@@ -4571,7 +4571,7 @@ namespace BloodSword::Conditions
                         characters = {character};
                     }
 
-                    if (characters.size() > 0)
+                    if (SafeCast(characters.size()) > 0)
                     {
                         for (auto &character : characters)
                         {
@@ -4589,7 +4589,7 @@ namespace BloodSword::Conditions
         {
             // variables
             // 0 - message to display
-            if (Engine::IsAlive(party) && condition.Variables.size() > 0)
+            if (Engine::IsAlive(party) && SafeCast(condition.Variables.size()) > 0)
             {
                 result = Interface::Confirm(graphics, background, condition.Variables[0], Color::Background, Color::Active, BloodSword::Border, Color::Active, true);
             }
@@ -4600,7 +4600,7 @@ namespace BloodSword::Conditions
 
             // variables
             // 0 - text to display (when used in an event)
-            if (condition.Variables.size() > 0 && !condition.Variables[0].empty())
+            if (SafeCast(condition.Variables.size()) > 0 && !condition.Variables[0].empty())
             {
                 text = condition.Variables[0];
             }

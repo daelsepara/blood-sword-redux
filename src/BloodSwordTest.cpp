@@ -227,7 +227,7 @@ namespace BloodSword::Test
         {
             auto scene = Interface::Map(map, party, enemies, 1);
 
-            auto id = int(scene.Controls.size());
+            auto id = SafeCast(scene.Controls.size());
 
             auto x = map.DrawX;
 
@@ -328,7 +328,7 @@ namespace BloodSword::Test
                         border = Color::Inactive;
                     }
 
-                    if (object >= 0 && object < textures.size())
+                    if (object >= 0 && object < SafeCast(textures.size()))
                     {
                         scene.Add(Scene::Element(object_x, object_y, object_w, map.TileSize, background, border, 4));
 
@@ -337,7 +337,7 @@ namespace BloodSword::Test
                 }
             }
 
-            if (background >= 0 && background < backgrounds.size())
+            if (background >= 0 && background < SafeCast(backgrounds.size()))
             {
                 scene.Add(Scene::Element(background_x, background_y, background_w, background_h, Color::Highlight, Color::Active, 4));
 
@@ -403,7 +403,7 @@ namespace BloodSword::Test
                     change = true;
                 }
 
-                if (background != prev_background && background >= 0 && background < backgrounds.size())
+                if (background != prev_background && background >= 0 && background < SafeCast(backgrounds.size()))
                 {
                     if (change)
                     {
@@ -469,7 +469,7 @@ namespace BloodSword::Test
         {
             auto scene = Interface::Map(map, party, enemies, 3);
 
-            auto id = int(scene.Controls.size());
+            auto id = SafeCast(scene.Controls.size());
 
             scene.VerifyAndAdd(Scene::Element(Asset::Get("BACK"), map.DrawX, map.DrawY + map.ViewY * map.TileSize + pad));
 
@@ -677,11 +677,11 @@ namespace BloodSword::Test
 
         auto start = 0;
 
-        auto limit = std::min(4, int(menu.size()));
+        auto limit = std::min(4, SafeCast(menu.size()));
 
         auto last = start + limit;
 
-        auto options = int(menu.size());
+        auto options = SafeCast(menu.size());
 
         auto x_adjust = BloodSword::TileSize - BloodSword::SmallPad;
 
@@ -727,7 +727,7 @@ namespace BloodSword::Test
 
                 auto color = start + (input.Current - choices);
 
-                if (color >= 0 && color < Palette::List.size())
+                if (color >= 0 && color < SafeCast(Palette::List.size()))
                 {
                     palette = color;
                 }
@@ -1185,22 +1185,22 @@ namespace BloodSword::Test
 
         auto &story = Story::CurrentBook;
 
-        if (story.Sections.size() > 0 && Book::IsDefined(story.Sections.front().Location))
+        if (SafeCast(story.Sections.size()) > 0 && Book::IsDefined(story.Sections.front().Location))
         {
             auto story_list = Graphics::TextList();
 
-            auto limit = std::min(6, int(story.Sections.size()));
+            auto limit = std::min(6, SafeCast(story.Sections.size()));
 
             auto start = 0;
 
             auto last = start + limit;
 
-            auto options = int(story.Sections.size());
+            auto options = SafeCast(story.Sections.size());
 
             // wrap length
             auto wrap = BloodSword::TripleTile;
 
-            for (auto i = 0; i < story.Sections.size(); i++)
+            for (auto i = 0; i < SafeCast(story.Sections.size()); i++)
             {
                 auto number = std::to_string(story.Sections[i].Location.second);
 
@@ -1292,7 +1292,7 @@ namespace BloodSword::Test
 
                         auto choice = start + (input.Current - list);
 
-                        if (choice >= 0 && choice < story.Sections.size())
+                        if (choice >= 0 && choice < SafeCast(story.Sections.size()))
                         {
                             Interface::ProcessStory(graphics, background, party, choice);
                         }
@@ -1351,11 +1351,11 @@ namespace BloodSword::Test
     // select icons print utility
     void PrintSelection(Graphics::Base &graphics, Scene::Base &background, Asset::List &assets, std::vector<int> &selection, int min_select, int max_select)
     {
-        if (selection.size() >= min_select && selection.size() <= max_select)
+        if (SafeCast(selection.size()) >= min_select && SafeCast(selection.size()) <= max_select)
         {
             auto selected = std::string("SELECTED: ");
 
-            for (auto i = 0; i < selection.size(); i++)
+            for (auto i = 0; i < SafeCast(selection.size()); i++)
             {
                 if (i > 0)
                 {
@@ -1516,7 +1516,7 @@ namespace BloodSword::Test
             // log missing items
             StoryLogger::LogSearch(party.SaveLocation, current);
 
-            if (current >= 0 && current < Story::CurrentBook.Sections.size())
+            if (current >= 0 && current < SafeCast(Story::CurrentBook.Sections.size()))
             {
                 Interface::Notify(graphics, background, Interface::MSG_LOADED);
 
@@ -1602,7 +1602,7 @@ namespace BloodSword::Test
 
         auto last = start + limit;
 
-        auto options = int(menu.size());
+        auto options = SafeCast(menu.size());
 
         auto x_adjust = BloodSword::TileSize - BloodSword::SmallPad;
 

@@ -116,7 +116,7 @@ namespace BloodSword::Attributes
     {
         auto characteristics = Attributes::List();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto attribute = Attribute::Base();
 

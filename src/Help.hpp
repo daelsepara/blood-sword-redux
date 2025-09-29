@@ -243,9 +243,9 @@ namespace BloodSword::Help
         {
             auto data = nlohmann::json::parse(ifs);
 
-            if (!data["sections"].is_null() && data["sections"].is_array() && data["sections"].size() > 0)
+            if (!data["sections"].is_null() && data["sections"].is_array() && SafeCast(data["sections"].size()) > 0)
             {
-                for (auto i = 0; i < data["sections"].size(); i++)
+                for (auto i = 0; i < SafeCast(data["sections"].size()); i++)
                 {
                     auto section = Help::Section();
 
@@ -253,20 +253,20 @@ namespace BloodSword::Help
 
                     section.Image = !data["sections"][i]["image"].is_null() ? std::string(data["sections"][i]["image"]) : std::string();
 
-                    if (!data["sections"][i]["items"].is_null() && data["sections"][i]["items"].is_array() && data["sections"][i]["items"].size() > 0)
+                    if (!data["sections"][i]["items"].is_null() && data["sections"][i]["items"].is_array() && SafeCast(data["sections"][i]["items"].size()) > 0)
                     {
-                        for (auto j = 0; j < data["sections"][i]["items"].size(); j++)
+                        for (auto j = 0; j < SafeCast(data["sections"][i]["items"].size()); j++)
                         {
                             auto item = Help::LoadItem(data["sections"][i]["items"][j]);
 
-                            if (item.Text.size() > 0 && item.Align != Help::Align::NONE && item.Face != Help::Face::NONE)
+                            if (SafeCast(item.Text.size()) > 0 && item.Align != Help::Align::NONE && item.Face != Help::Face::NONE)
                             {
                                 section.Items.push_back(item);
                             }
                         }
                     }
 
-                    if (section.Items.size() > 0)
+                    if (SafeCast(section.Items.size()) > 0)
                     {
                         sections.push_back(section);
                     }

@@ -55,19 +55,19 @@ namespace BloodSword::Rogue
     // generate NPC with random attributes from given ranges
     Character::Base NPC(const char *name, Skills::Type fight, Skills::Type shoot, Skills::List skills, std::vector<int> fpr, std::vector<int> psy, std::vector<int> awr, std::vector<int> end, std::vector<int> arm, std::vector<int> dmg_v, std::vector<int> dmg_m, Asset::Type asset)
     {
-        auto fpr_value = fpr.size() > 1 ? fpr[Engine::Percentile.NextInt() % fpr.size()] : fpr[0];
+        auto fpr_value = SafeCast(fpr.size()) > 1 ? fpr[Engine::Percentile.NextInt() % SafeCast(fpr.size())] : fpr[0];
 
-        auto psy_value = psy.size() > 1 ? psy[Engine::Percentile.NextInt() % psy.size()] : psy[0];
+        auto psy_value = SafeCast(psy.size()) > 1 ? psy[Engine::Percentile.NextInt() % SafeCast(psy.size())] : psy[0];
 
-        auto awr_value = awr.size() > 1 ? awr[Engine::Percentile.NextInt() % awr.size()] : awr[0];
+        auto awr_value = SafeCast(awr.size()) > 1 ? awr[Engine::Percentile.NextInt() % SafeCast(awr.size())] : awr[0];
 
-        auto end_value = end.size() > 1 ? end[Engine::Percentile.NextInt() % end.size()] : end[0];
+        auto end_value = SafeCast(end.size()) > 1 ? end[Engine::Percentile.NextInt() % SafeCast(end.size())] : end[0];
 
-        auto arm_value = arm.size() > 1 ? arm[Engine::Percentile.NextInt() % arm.size()] : arm[0];
+        auto arm_value = SafeCast(arm.size()) > 1 ? arm[Engine::Percentile.NextInt() % SafeCast(arm.size())] : arm[0];
 
-        auto dmg_v_value = dmg_v.size() > 1 ? dmg_v[Engine::Percentile.NextInt() % dmg_v.size()] : dmg_v[0];
+        auto dmg_v_value = SafeCast(dmg_v.size()) > 1 ? dmg_v[Engine::Percentile.NextInt() % SafeCast(dmg_v.size())] : dmg_v[0];
 
-        auto dmg_m_value = dmg_m.size() > 1 ? dmg_m[Engine::Percentile.NextInt() % dmg_m.size()] : dmg_m[0];
+        auto dmg_m_value = SafeCast(dmg_m.size()) > 1 ? dmg_m[Engine::Percentile.NextInt() % SafeCast(dmg_m.size())] : dmg_m[0];
 
         auto npc = Generate::NPC(name, fight, shoot, skills, fpr_value, psy_value, awr_value, end_value, arm_value, dmg_v_value, dmg_m_value, 1000, asset);
 
@@ -105,7 +105,7 @@ namespace BloodSword::Rogue
     // place ICON THE UNGODLY in last room
     void PlaceBoss(Rogue::Base &rogue)
     {
-        auto id = int(rogue.Rooms.size() - 1);
+        auto id = SafeCast(rogue.Rooms.size()) - 1;
 
         auto &room = rogue.Rooms[id];
 
@@ -127,7 +127,7 @@ namespace BloodSword::Rogue
     // place monsters in random rooms
     void PlaceMonsters(Rogue::Base &rogue, int number)
     {
-        auto options = std::vector<int>(rogue.Rooms.size() - 2);
+        auto options = std::vector<int>(SafeCast(rogue.Rooms.size()) - 2);
 
         std::iota(options.begin(), options.end(), 1);
 
@@ -144,7 +144,7 @@ namespace BloodSword::Rogue
             // look for un-occupied room
             while (center.IsNone() || room == Room::None || rogue.Battlepits[center].IsOccupied())
             {
-                target = Engine::Percentile.NextInt() % options.size();
+                target = Engine::Percentile.NextInt() % SafeCast(options.size());
 
                 room = options[target];
 
@@ -185,19 +185,19 @@ namespace BloodSword::Rogue
             rogue.Battlepits[center].Occupant = Map::Object::ENEMIES;
         }
 
-        rogue.Enemies = rogue.Opponents.size();
+        rogue.Enemies = SafeCast(rogue.Opponents.size());
     }
 
     // place item in specific room
     void PlaceItem(Rogue::Base &rogue, Item::Base item, int id)
     {
-        if (id >= 0 && id < rogue.Rooms.size())
+        if (id >= 0 && id < SafeCast(rogue.Rooms.size()))
         {
             auto &room = rogue.Rooms[id];
 
             auto available = Rogue::GoodSpots(rogue, room);
 
-            if (available.size() > 0)
+            if (SafeCast(available.size()) > 0)
             {
                 // find a good location
                 auto good = false;
@@ -208,12 +208,12 @@ namespace BloodSword::Rogue
 
                 while (!good)
                 {
-                    location = available[Engine::Percentile.NextInt() % available.size()];
+                    location = available[Engine::Percentile.NextInt() % SafeCast(available.size())];
 
                     loot = Rogue::FindLoot(rogue, location);
 
                     // add to existing loot bag if found
-                    if (loot >= 0 && loot < rogue.Loot.size())
+                    if (loot >= 0 && loot < SafeCast(rogue.Loot.size()))
                     {
                         break;
                     }
@@ -243,7 +243,7 @@ namespace BloodSword::Rogue
     void PlaceItem(Rogue::Base &rogue, Item::Base item)
     {
         // radomize room location
-        auto id = Engine::Percentile.NextInt(1, rogue.Rooms.size() - 1);
+        auto id = Engine::Percentile.NextInt(1, SafeCast(rogue.Rooms.size()) - 1);
 
         Rogue::PlaceItem(rogue, item, id);
     }
@@ -251,7 +251,7 @@ namespace BloodSword::Rogue
     // place items in a random room, ensuring only a single instance of the item is present
     void PlaceItems(Rogue::Base &rogue, Item::Base item, int number)
     {
-        auto rooms = std::vector<int>(rogue.Rooms.size() - 2);
+        auto rooms = std::vector<int>(SafeCast(rogue.Rooms.size()) - 2);
 
         std::iota(rooms.begin(), rooms.end(), 1);
 
@@ -260,7 +260,7 @@ namespace BloodSword::Rogue
         // radomize room location
         for (auto i = 0; i < number; i++)
         {
-            auto random = Engine::Percentile.NextInt() % rooms.size();
+            auto random = Engine::Percentile.NextInt() % SafeCast(rooms.size());
 
             auto id = rooms[random];
 
@@ -273,7 +273,7 @@ namespace BloodSword::Rogue
     // distribute items randomly across several rooms
     void PlaceItems(Rogue::Base &rogue, Items::Inventory items)
     {
-        auto rooms = std::vector<int>(rogue.Rooms.size() - 2);
+        auto rooms = std::vector<int>(SafeCast(rogue.Rooms.size()) - 2);
 
         std::iota(rooms.begin(), rooms.end(), 1);
 
@@ -281,7 +281,7 @@ namespace BloodSword::Rogue
 
         for (auto &item : items)
         {
-            auto random = Engine::Percentile.NextInt() % rooms.size();
+            auto random = Engine::Percentile.NextInt() % SafeCast(rooms.size());
 
             auto id = rooms[random];
 
@@ -294,19 +294,19 @@ namespace BloodSword::Rogue
     // generate items from a selection
     void PlaceItems(Rogue::Base &rogue, Items::Inventory items, int number)
     {
-        auto rooms = std::vector<int>(rogue.Rooms.size() - 2);
+        auto rooms = std::vector<int>(SafeCast(rogue.Rooms.size()) - 2);
 
         std::iota(rooms.begin(), rooms.end(), 1);
 
         std::shuffle(rooms.begin(), rooms.end(), Engine::Random.Generator());
 
-        auto options = items.size();
+        auto options = SafeCast(items.size());
 
         for (auto i = 0; i < number; i++)
         {
             auto item = items[Engine::Percentile.NextInt() % options];
 
-            auto random = Engine::Percentile.NextInt() % rooms.size();
+            auto random = Engine::Percentile.NextInt() % SafeCast(rooms.size());
 
             auto id = rooms[random];
 
@@ -366,7 +366,7 @@ namespace BloodSword::Rogue
         // place emblem of victory
         auto emblem = Item::Base("EMBLEM OF VICTORY", Item::Type::EMBLEM_OF_VICTORY, {Item::Property::CANNOT_DROP}, Item::Type::NONE, 1, 1, Asset::Map("SWORDTHRUST"));
 
-        Rogue::PlaceItem(rogue, emblem, int(rogue.Rooms.size()) - 1);
+        Rogue::PlaceItem(rogue, emblem, SafeCast(rogue.Rooms.size()) - 1);
     }
 
     void PlaceLoot(BloodSword::Rogue::Base &rogue, int number, int min_gold, int max_gold)
@@ -386,7 +386,7 @@ namespace BloodSword::Rogue
         // 25% rooms has arrows loot if TRICKSTER or SAGE present in party
         if (rogue.Has(Character::Class::TRICKSTER) || rogue.Has(Character::Class::SAGE))
         {
-            Rogue::PlaceArrows(rogue, rogue.Rooms.size() / 4, 4, 20);
+            Rogue::PlaceArrows(rogue, SafeCast(rogue.Rooms.size()) / 4, 4, 20);
         }
     }
 }

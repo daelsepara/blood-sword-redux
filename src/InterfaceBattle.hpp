@@ -576,7 +576,7 @@ namespace BloodSword::Interface
                     }
                 }
 
-                if (targets.size() > 0)
+                if (SafeCast(targets.size()) > 0)
                 {
                     // center map on attacker
                     Interface::Center(battle, Map::Object::ENEMY, i);
@@ -585,7 +585,7 @@ namespace BloodSword::Interface
                     auto scene = Interface::BattleScene(battle, party);
 
                     // select target
-                    auto selected = targets[random.NextInt() % targets.size()];
+                    auto selected = targets[random.NextInt() % SafeCast(targets.size())];
 
                     auto &defender = party[selected];
 
@@ -627,7 +627,7 @@ namespace BloodSword::Interface
 
         if (spell != Spells::Type::NONE)
         {
-            for (auto i = 0; i < spell_targets.size(); i++)
+            for (auto i = 0; i < SafeCast(spell_targets.size()); i++)
             {
                 auto target_id = spell_targets[i].Id;
 
@@ -656,7 +656,7 @@ namespace BloodSword::Interface
         auto opponents = caster.ControlType == Character::ControlType::NPC ? Engine::Count(party) : Engine::Count(battle.Opponents);
 
         // determine if this is the caster's turn to cast spells (also check if list is being generated)
-        auto my_turn = (BloodSword::Has(battle.Casters, caster_id) || battle.Casters.size() == 0);
+        auto my_turn = (BloodSword::Has(battle.Casters, caster_id) || SafeCast(battle.Casters.size()) == 0);
 
         if (Engine::IsAlive(caster) && caster.Has(Skills::Type::SPELLS) && my_turn)
         {
@@ -679,7 +679,7 @@ namespace BloodSword::Interface
                 }
             }
         }
-        else if (battle.Casters.size() > 0)
+        else if (SafeCast(battle.Casters.size()) > 0)
         {
             BattleLogger::LogCaster(caster, caster_id);
         }
@@ -709,14 +709,14 @@ namespace BloodSword::Interface
         battle.Casters = temp_casters;
 
         // create random subset
-        if (battle.MaxCasters != Battle::Unlimited && battle.Casters.size() > 1)
+        if (battle.MaxCasters != Battle::Unlimited && SafeCast(battle.Casters.size()) > 1)
         {
             for (auto i = 0; i < battle.Opponents.Count(); i++)
             {
                 std::shuffle(battle.Casters.begin(), battle.Casters.end(), Engine::Random.Generator());
             }
 
-            auto limit = std::min(battle.MaxCasters, int(battle.Casters.size()));
+            auto limit = std::min(battle.MaxCasters, SafeCast(battle.Casters.size()));
 
             std::vector<int> subset(battle.Casters.begin(), battle.Casters.begin() + limit);
 
@@ -736,7 +736,7 @@ namespace BloodSword::Interface
         auto draw = Point(battle.Map.DrawX, battle.Map.DrawY);
 
         // TODO: improve enemy casting strategy
-        if (character.CalledToMind.size() > 0)
+        if (SafeCast(character.CalledToMind.size()) > 0)
         {
             auto spell = character.CalledToMind[0];
 
@@ -753,7 +753,7 @@ namespace BloodSword::Interface
                 targets = Engine::FightTargets(battle.Map, party, src, true, false);
             }
 
-            BattleLogger::LogTargets("SPELL", character.Target, battle.Map[src].Id, targets.size());
+            BattleLogger::LogTargets("SPELL", character.Target, battle.Map[src].Id, SafeCast(targets.size()));
 
             // cast spell
             if (Interface::Cast(graphics, scene, draw, map_w, map_h, character, spell, true))
@@ -784,11 +784,11 @@ namespace BloodSword::Interface
                         }
                         else
                         {
-                            if (targets.size() > 0)
+                            if (SafeCast(targets.size()) > 0)
                             {
                                 auto target = Interface::SelectSpellTargets(battle, party, targets, spell);
 
-                                if (target >= 0 && target < targets.size())
+                                if (target >= 0 && target < SafeCast(targets.size()))
                                 {
                                     auto target_id = targets[target].Id;
 
@@ -827,7 +827,7 @@ namespace BloodSword::Interface
                 Interface::MessageBox(graphics, scene, Interface::GetText(Interface::MSG_CAST), Color::Highlight);
             }
         }
-        else if (character.Spells.size() > 0)
+        else if (SafeCast(character.Spells.size()) > 0)
         {
             // call to mind
             for (auto &strategy : character.SpellStrategy)
@@ -851,7 +851,7 @@ namespace BloodSword::Interface
     {
         Engine::Queue targets;
 
-        if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
+        if (SafeCast(character.Targets.size()) > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
             // PREFERRED TARGET
             targets = Engine::RangedTargets(battle.Map, battle.Opponents, party, src, true);
@@ -862,10 +862,10 @@ namespace BloodSword::Interface
             targets = Engine::RangedTargets(battle.Map, party, src, true, false);
         }
 
-        BattleLogger::LogTargets("SHOOT", character.Target, battle.Map[src].Id, targets.size());
+        BattleLogger::LogTargets("SHOOT", character.Target, battle.Map[src].Id, SafeCast(targets.size()));
 
         // shoot only when there are no nearby player enemies
-        if (targets.size() > 0 && opponents.size() == 0)
+        if (SafeCast(targets.size()) > 0 && SafeCast(opponents.size()) == 0)
         {
             for (auto &target : targets)
             {
@@ -891,7 +891,7 @@ namespace BloodSword::Interface
         Engine::Queue targets;
 
         // check if enemy can move towards the player-controlled characters
-        if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
+        if (SafeCast(character.Targets.size()) > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
             // preferred targetting
             targets = Engine::MoveTargets(battle.Map, battle.Opponents, party, src, true);
@@ -904,7 +904,7 @@ namespace BloodSword::Interface
 
         auto valid_target = false;
 
-        BattleLogger::LogTargets("MOVE", character.Target, battle.Map[src].Id, targets.size());
+        BattleLogger::LogTargets("MOVE", character.Target, battle.Map[src].Id, SafeCast(targets.size()));
 
         for (auto &target : targets)
         {
@@ -928,7 +928,7 @@ namespace BloodSword::Interface
     Engine::Queue EnemyFights(Battle::Base &battle, Party::Base &party, Character::Base &character, Point &src)
     {
         // check if enemy can move towards the player-controlled characters
-        if (character.Targets.size() > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
+        if (SafeCast(character.Targets.size()) > 0 && character.TargetProbability > 0 && character.TargetProbability < 100)
         {
             // preferred targetting
             return Engine::FightTargets(battle.Map, battle.Opponents, party, src, true);
@@ -1188,7 +1188,7 @@ namespace BloodSword::Interface
             // highlighted action icons
             Asset::TextureMap<Controls::Type> highlight = {};
 
-            for (auto i = 0; i < action_assets.size(); i++)
+            for (auto i = 0; i < SafeCast(action_assets.size()); i++)
             {
                 highlight[action_controls[i]] = Asset::Copy(graphics.Renderer, action_assets[i], Color::Highlight);
             }
@@ -1383,7 +1383,7 @@ namespace BloodSword::Interface
                 while (!battle.NextRound && Engine::IsAlive(party) && Engine::IsAlive(battle.Opponents, Character::ControlType::NPC) && !Engine::IsFleeing(party) && !battle.ExitBattle)
                 {
                     // move to next round
-                    if (battle.Order.size() <= 0)
+                    if (SafeCast(battle.Order.size()) <= 0)
                     {
                         break;
                     }
@@ -1474,7 +1474,7 @@ namespace BloodSword::Interface
                                                 }
                                             }
                                         }
-                                        else if (opponents.size() > 0 && character.HasChargedWeapon(Item::Type::CHARGE, 1, true) != Item::NotFound)
+                                        else if (SafeCast(opponents.size()) > 0 && character.HasChargedWeapon(Item::Type::CHARGE, 1, true) != Item::NotFound)
                                         {
                                             // enemy has charged melee weapon
                                             character.Add(Character::Status::IN_COMBAT);
@@ -1499,11 +1499,11 @@ namespace BloodSword::Interface
                                             // cast or call to mind spell
                                             Interface::EnemyCastSpells(graphics, scene, battle, party, character, src);
                                         }
-                                        else if (opponents.size() > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
+                                        else if (SafeCast(opponents.size()) > 0 && !battle.Has(Battle::Condition::NO_COMBAT))
                                         {
                                             character.Add(Character::Status::IN_COMBAT);
 
-                                            BattleLogger::LogTargets("FIGHT", character.Target, character_id, opponents.size());
+                                            BattleLogger::LogTargets("FIGHT", character.Target, character_id, SafeCast(opponents.size()));
 
                                             Engine::ResetSpells(character);
 
@@ -1518,7 +1518,7 @@ namespace BloodSword::Interface
                                         }
                                         else if (character.Has(Skills::Type::ATTACKS_ENGAGED) && !full_engage)
                                         {
-                                            if (Engine::CanShoot(character) && opponents.size() == 0)
+                                            if (Engine::CanShoot(character) && SafeCast(opponents.size()) == 0)
                                             {
                                                 auto target_id = party.Index(battle.InCombatTarget);
 
@@ -1669,9 +1669,9 @@ namespace BloodSword::Interface
 
                                                 auto caption_id = Controls::Find(caption_controls, control.Type);
 
-                                                if (caption_id >= 0 && caption_id < captions.size())
+                                                if (caption_id >= 0 && caption_id < SafeCast(captions.size()))
                                                 {
-                                                    if (input.Current >= 0 && input.Current < scene.Controls.size())
+                                                    if (input.Current >= 0 && input.Current < SafeCast(scene.Controls.size()))
                                                     {
                                                         if (captions[caption_id])
                                                         {
@@ -1836,11 +1836,11 @@ namespace BloodSword::Interface
 
                                                     auto &control = scene.Controls[input.Current];
 
-                                                    auto no_opponents = (opponents.size() == 0);
+                                                    auto no_opponents = (SafeCast(opponents.size()) == 0);
 
                                                     auto has_defended = (is_player && character.Is(Character::Status::DEFENDED));
 
-                                                    auto can_move = (opponents.size() > 0 && (is_enemy || has_defended || ambush));
+                                                    auto can_move = (SafeCast(opponents.size()) > 0 && (is_enemy || has_defended || ambush));
 
                                                     if (no_opponents || can_move || battle.Has(Battle::Condition::NO_COMBAT))
                                                     {
@@ -2127,7 +2127,7 @@ namespace BloodSword::Interface
                                             {
                                                 auto opponents = Engine::FightTargets(battle.Map, battle.Opponents, src, true, false);
 
-                                                if (opponents.size() == 1)
+                                                if (SafeCast(opponents.size()) == 1)
                                                 {
                                                     character.Add(Character::Status::IN_COMBAT);
 
@@ -2142,7 +2142,7 @@ namespace BloodSword::Interface
 
                                                     performed_action = true;
                                                 }
-                                                else if (opponents.size() > 1)
+                                                else if (SafeCast(opponents.size()) > 1)
                                                 {
                                                     if ((input.Type == Controls::Type::QUARTERSTAFF) && character.Has(Skills::Type::QUARTERSTAFF))
                                                     {
@@ -2186,7 +2186,7 @@ namespace BloodSword::Interface
 
                                                     auto target_id = targets[0].Id;
 
-                                                    if (targets.size() == 1)
+                                                    if (SafeCast(targets.size()) == 1)
                                                     {
                                                         if (!battle.Opponents[target_id].IsImmune(character.Shoot))
                                                         {
@@ -2211,7 +2211,7 @@ namespace BloodSword::Interface
                                                             regenerate_scene = true;
                                                         }
                                                     }
-                                                    else if (targets.size() > 1)
+                                                    else if (SafeCast(targets.size()) > 1)
                                                     {
                                                         shoot = true;
                                                     }
@@ -2304,7 +2304,7 @@ namespace BloodSword::Interface
                                                                 auto targets = Engine::SpellTargets(battle.Map, battle.Opponents, src, true, false);
 
                                                                 // cast immediate if there is only one target
-                                                                if (targets.size() == 1 && cast != Spells::Type::PILLAR_OF_SALT)
+                                                                if (SafeCast(targets.size()) == 1 && cast != Spells::Type::PILLAR_OF_SALT)
                                                                 {
                                                                     auto target = battle.Map.Find(Map::Object::ENEMY, targets[0].Id);
 
@@ -2666,7 +2666,7 @@ namespace BloodSword::Interface
             }
 
             // log battle survivors
-            BattleLogger::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, party.Survivors.size());
+            BattleLogger::LogSurvivors(battle.Opponents.Location, "BATTLE", "PARTY", survivors, SafeCast(party.Survivors.size()));
         }
 
         if ((result == Battle::Result::VICTORY || result == Battle::Result::ENTHRALLED))
@@ -2674,7 +2674,7 @@ namespace BloodSword::Interface
             // regnerate final scene
             auto scene = BattleScene(battle, party);
 
-            if (battle.Loot.size() > 0)
+            if (SafeCast(battle.Loot.size()) > 0)
             {
                 // pick up any loot
                 Interface::ShowInventory(graphics, scene, party, battle.Loot);

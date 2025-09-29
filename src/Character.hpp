@@ -147,7 +147,7 @@ namespace BloodSword::Character
         // does a character have this skill?
         bool Has(Skills::Type skill)
         {
-            return this->Skills.size() > 0 && BloodSword::Found(this->Skills, skill);
+            return SafeCast(this->Skills.size()) > 0 && BloodSword::Found(this->Skills, skill);
         }
 
         // does a character have any of these skills?
@@ -458,7 +458,7 @@ namespace BloodSword::Character
                 properties.push_back(Item::Property::RANGED);
             }
 
-            for (auto i = 0; i < this->Items.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Items.size()); i++)
             {
                 if (this->Items[i].HasAll(properties) && this->Items[i].Contains == charge && this->Items[i].Quantity >= quantity)
                 {
@@ -596,7 +596,7 @@ namespace BloodSword::Character
 
             if (attribute == Attribute::Type::PSYCHIC_ABILITY)
             {
-                modifiers -= this->CalledToMind.size();
+                modifiers -= SafeCast(this->CalledToMind.size());
             }
 
             return modifiers;
@@ -696,7 +696,7 @@ namespace BloodSword::Character
 
             if (weapon_type != Item::Property::NONE)
             {
-                for (auto i = 0; i < this->Items.size(); i++)
+                for (auto i = 0; i < SafeCast(this->Items.size()); i++)
                 {
                     if (this->Items[i].HasAll({Item::Property::WEAPON, weapon_type, Item::Property::EQUIPPED}))
                     {
@@ -734,7 +734,7 @@ namespace BloodSword::Character
         {
             auto equipped = -1;
 
-            for (auto i = 0; i < this->Items.size(); i++)
+            for (auto i = 0; i < SafeCast(this->Items.size()); i++)
             {
                 if (this->Items[i].HasAll({Item::Property::ARMOUR, Item::Property::EQUIPPED}))
                 {
@@ -762,13 +762,13 @@ namespace BloodSword::Character
         // is the character immune to this skill?
         bool IsImmune(Skills::Type skill)
         {
-            return this->SkillImmunity.size() > 0 && BloodSword::Found(this->SkillImmunity, skill);
+            return SafeCast(this->SkillImmunity.size()) > 0 && BloodSword::Found(this->SkillImmunity, skill);
         }
 
         // is the character immune to this spell?
         bool IsImmune(Spells::Type spell)
         {
-            return this->SpellImmunity.size() > 0 && BloodSword::Found(this->SpellImmunity, spell);
+            return SafeCast(this->SpellImmunity.size()) > 0 && BloodSword::Found(this->SpellImmunity, spell);
         }
 
         // recall the spell that was called to mind
@@ -804,7 +804,7 @@ namespace BloodSword::Character
         // check if spell was called to mind
         bool HasCalledToMind(Spells::Type spell)
         {
-            return this->CalledToMind.size() > 0 && BloodSword::Has(this->CalledToMind, spell);
+            return SafeCast(this->CalledToMind.size()) > 0 && BloodSword::Has(this->CalledToMind, spell);
         }
 
         // call a spell to mind
@@ -976,59 +976,59 @@ namespace BloodSword::Character
 
         character.Target = !data["target"].is_null() ? Target::Map(std::string(data["target"])) : Target::Type::NONE;
 
-        if (!data["attributes"].is_null() && data["attributes"].is_array() && data["attributes"].size() > 0)
+        if (!data["attributes"].is_null() && data["attributes"].is_array() && SafeCast(data["attributes"].size()) > 0)
         {
             character.Attributes = Attributes::Load(data["attributes"]);
         }
 
-        if (!data["skills"].is_null() && data["skills"].is_array() && data["skills"].size() > 0)
+        if (!data["skills"].is_null() && data["skills"].is_array() && SafeCast(data["skills"].size()) > 0)
         {
             character.Skills = Skills::Load(data["skills"]);
         }
 
-        if (!data["items"].is_null() && data["items"].is_array() && data["items"].size() > 0)
+        if (!data["items"].is_null() && data["items"].is_array() && SafeCast(data["items"].size()) > 0)
         {
             character.Items = Items::Load(data["items"]);
         }
 
-        if (!data["spells"].is_null() && data["spells"].is_array() && data["spells"].size() > 0)
+        if (!data["spells"].is_null() && data["spells"].is_array() && SafeCast(data["spells"].size()) > 0)
         {
             character.Spells = Spells::Load(data["spells"]);
         }
 
-        if (!data["called_to_mind"].is_null() && data["called_to_mind"].is_array() && data["called_to_mind"].size() > 0)
+        if (!data["called_to_mind"].is_null() && data["called_to_mind"].is_array() && SafeCast(data["called_to_mind"].size()) > 0)
         {
             character.CalledToMind = Spells::LoadList(data["called_to_mind"]);
         }
 
-        if (!data["status"].is_null() && data["status"].is_object() && data["status"].size() > 0)
+        if (!data["status"].is_null() && data["status"].is_object() && SafeCast(data["status"].size()) > 0)
         {
             character.Status = Character::LoadStatus(data["status"]);
         }
 
-        if (!data["delayed_effects"].is_null() && data["delayed_effects"].is_object() && data["delayed_effects"].size() > 0)
+        if (!data["delayed_effects"].is_null() && data["delayed_effects"].is_object() && SafeCast(data["delayed_effects"].size()) > 0)
         {
             character.DelayedEffects = Character::LoadDelayedEffects(data["delayed_effects"]);
         }
 
-        if (!data["spell_immunity"].is_null() && data["spell_immunity"].is_array() && data["spell_immunity"].size() > 0)
+        if (!data["spell_immunity"].is_null() && data["spell_immunity"].is_array() && SafeCast(data["spell_immunity"].size()) > 0)
         {
             character.SpellImmunity = Spells::LoadList(data["spell_immunity"]);
         }
 
-        if (!data["skill_immunity"].is_null() && data["skill_immunity"].is_array() && data["skill_immunity"].size() > 0)
+        if (!data["skill_immunity"].is_null() && data["skill_immunity"].is_array() && SafeCast(data["skill_immunity"].size()) > 0)
         {
             character.SkillImmunity = Skills::Load(data["skill_immunity"]);
         }
 
-        if (!data["targets"].is_null() && data["targets"].is_array() && data["targets"].size() > 0)
+        if (!data["targets"].is_null() && data["targets"].is_array() && SafeCast(data["targets"].size()) > 0)
         {
             character.Targets = Target::Load(data["targets"]);
         }
 
         character.TargetProbability = !data["target_probability"].is_null() ? int(data["target_probability"]) : 0;
 
-        if (!data["spell_strategy"].is_null() && data["spell_strategy"].is_array() && data["spell_strategy"].size() > 0)
+        if (!data["spell_strategy"].is_null() && data["spell_strategy"].is_array() && SafeCast(data["spell_strategy"].size()) > 0)
         {
             character.SpellStrategy = Spells::LoadStrategy(data["spell_strategy"]);
         }
@@ -1079,27 +1079,27 @@ namespace BloodSword::Character
             data["shoot"] = Skills::TypeMapping[character.Shoot];
         }
 
-        if (character.Skills.size() > 0)
+        if (SafeCast(character.Skills.size()) > 0)
         {
             data["skills"] = Skills::Data(character.Skills);
         }
 
-        if (character.Items.size() > 0)
+        if (SafeCast(character.Items.size()) > 0)
         {
             data["items"] = Items::Data(character.Items);
         }
 
-        if (character.Spells.size() > 0)
+        if (SafeCast(character.Spells.size()) > 0)
         {
             data["spells"] = Spells::Data(character.Spells);
         }
 
-        if (character.CalledToMind.size() > 0)
+        if (SafeCast(character.CalledToMind.size()) > 0)
         {
             data["called_to_mind"] = Spells::Data(character.CalledToMind);
         }
 
-        if (character.Status.size() > 0)
+        if (SafeCast(character.Status.size()) > 0)
         {
             nlohmann::json row;
 
@@ -1113,7 +1113,7 @@ namespace BloodSword::Character
             data["status"] = row;
         }
 
-        if (character.DelayedEffects.size() > 0)
+        if (SafeCast(character.DelayedEffects.size()) > 0)
         {
             nlohmann::json row;
 
@@ -1129,12 +1129,12 @@ namespace BloodSword::Character
             data["delayed_effects"] = row;
         }
 
-        if (character.SpellImmunity.size() > 0)
+        if (SafeCast(character.SpellImmunity.size()) > 0)
         {
             data["spell_immunity"] = Spells::Data(character.SpellImmunity);
         }
 
-        if (character.Targets.size() > 0)
+        if (SafeCast(character.Targets.size()) > 0)
         {
             data["targets"] = Target::Data(character.Targets);
         }
@@ -1146,7 +1146,7 @@ namespace BloodSword::Character
             data["location"] = Book::Data(character.Location);
         }
 
-        if (character.SpellStrategy.size() > 0)
+        if (SafeCast(character.SpellStrategy.size()) > 0)
         {
             data["spell_strategy"] = Spells::Data(character.SpellStrategy);
         }

@@ -86,11 +86,11 @@ namespace BloodSword::Conditions
             condition.Type = !data["type"].is_null() ? Conditions::Map(std::string(data["type"])) : Conditions::Type::NONE;
 
             // set variables
-            if (!data["variables"].is_null() && data["variables"].is_array() && data["variables"].size() > 0)
+            if (!data["variables"].is_null() && data["variables"].is_array() && SafeCast(data["variables"].size()) > 0)
             {
                 auto variables = std::vector<std::string>();
 
-                for (auto i = 0; i < data["variables"].size(); i++)
+                for (auto i = 0; i < SafeCast(data["variables"].size()); i++)
                 {
                     variables.push_back(std::string(data["variables"][i]));
                 }

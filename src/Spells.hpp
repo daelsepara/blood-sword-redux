@@ -248,7 +248,7 @@ namespace BloodSword::Spells
     // is this spell in the list?
     bool In(Spells::List &list, Spells::Type spell)
     {
-        return list.size() > 0 && BloodSword::Has(list, spell);
+        return SafeCast(list.size()) > 0 && BloodSword::Has(list, spell);
     }
 
     // spell base class
@@ -356,7 +356,7 @@ namespace BloodSword::Spells
     {
         auto spells = Spells::Grimoire();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto type = !data[i]["type"].is_null() ? Spells::Map(std::string(data[i]["type"])) : Spells::Type::NONE;
 
@@ -384,7 +384,7 @@ namespace BloodSword::Spells
     {
         auto spells = Spells::List();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto spell = !data[i].is_null() ? Spells::Map(std::string(data[i])) : Spells::Type::NONE;
 
@@ -402,7 +402,7 @@ namespace BloodSword::Spells
     {
         auto strategies = Spells::Strategy();
 
-        for (auto i = 0; i < data.size(); i++)
+        for (auto i = 0; i < SafeCast(data.size()); i++)
         {
             auto spell = !data[i]["spell"].is_null() ? Spells::Map(std::string(data[i]["spell"])) : Spells::Type::NONE;
 
@@ -495,7 +495,7 @@ namespace BloodSword::Spells
 
         if (spell == Spells::Type::NONE)
         {
-            count = spells.size();
+            count = SafeCast(spells.size());
         }
         else
         {
