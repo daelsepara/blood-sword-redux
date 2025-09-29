@@ -100,7 +100,7 @@ namespace BloodSword::Party
         }
 
         // check if a specific character class is present in party
-        Party::List::const_iterator Find(Character::Class character_class)
+        Party::List::iterator Find(Character::Class character_class)
         {
             auto found = this->Members.end();
 
@@ -317,7 +317,7 @@ namespace BloodSword::Party
                 throw std::invalid_argument(missing);
             }
 
-            return (*this)[std::distance(this->Members.begin(), this->Find(character_class))];
+            return (*this)[std::distance(this->Find(character_class), this->Members.begin())];
         }
 
         // remove character from party (based on index)
