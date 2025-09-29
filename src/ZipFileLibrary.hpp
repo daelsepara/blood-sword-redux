@@ -34,7 +34,7 @@ namespace BloodSword::ZipFile
         }
         catch (std::exception &e)
         {
-            std::string error = "Unable to load [" + std::string(filename) + "] from [" + std::string(zip_file) + "]";
+            std::string error = "Unable to load [" + std::string(filename) + "] from [" + std::string(zip_file) + "] : " + e.what();
 
             throw std::invalid_argument(error.c_str());
         }

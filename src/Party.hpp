@@ -317,7 +317,7 @@ namespace BloodSword::Party
                 throw std::invalid_argument(missing);
             }
 
-            return (*this)[this->Find(character_class) - this->Members.begin()];
+            return (*this)[std::distance(this->Members.begin(), this->Find(character_class))];
         }
 
         // remove character from party (based on index)

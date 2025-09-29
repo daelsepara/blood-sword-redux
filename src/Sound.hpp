@@ -62,7 +62,7 @@ namespace BloodSword::Sound
     // create surface from buffer
     Mix_Chunk *Load(char *buffer, size_t size)
     {
-        auto rw = SDL_RWFromMem((void *)buffer, size);
+        auto rw = SDL_RWFromMem((void *)buffer, SafeCast(size));
 
         if (!rw)
         {

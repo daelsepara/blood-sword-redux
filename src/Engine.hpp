@@ -530,7 +530,7 @@ namespace BloodSword::Engine
 
         if (found != queue.end())
         {
-            distance = found - queue.begin();
+            distance = std::distance(queue.begin(), found);
         }
 
         return distance;
