@@ -337,6 +337,9 @@ namespace BloodSword::Rogue
 
         auto items_default = Asset::Get("ITEMS");
 
+        // control id for map tiles
+        auto id = 0;
+
         for (auto y = map.Y; y < map.Y + map.ViewY; y++)
         {
             for (auto x = map.X; x < map.X + map.ViewX; x++)
@@ -467,6 +470,21 @@ namespace BloodSword::Rogue
                     // fog
                     scene.Add(Scene::Element(screen.X, screen.Y, BloodSword::TileSize, BloodSword::TileSize, fog));
                 }
+
+                auto type = Controls::Type::NONE;
+
+                if (tile.Explored && (tile.IsPassable() || tile.Type == Map::Object::TRIGGER || tile.Occupant == Map::Object::ITEMS || tile.Occupant == Map::Object::ENEMIES))
+                {
+                    type = Controls::Type::MOVE;
+                }
+                else if (rogue.Origin() == Point(x, y))
+                {
+                    type = Controls::Type::PARTY;
+                }
+
+                scene.Add(Controls::Base(type, id, id, id, id, id, screen.X, screen.Y, BloodSword::TileSize, BloodSword::TileSize, Color::Highlight, x, y));
+
+                id++;
             }
         }
     }
@@ -1016,6 +1034,66 @@ namespace BloodSword::Rogue
 
         return update;
     }
+    
+    // generate move list as a sequence of button presses
+    Controls::List GenerateMoves(Rogue::Base &rogue, Scene::Base &scene, Controls::User &input)
+    {
+        auto input_buffer = Controls::List();
+
+        // move to selected tile
+        if (input.Current >= 0 && input.Current < SafeCast(scene.Controls.size()))
+        {
+            auto start = rogue.Origin();
+
+            auto end = scene.Controls[input.Current].Map;
+
+            auto path = Move::FindPath(rogue.Battlepits, start, end);
+
+            // get to closest point if there is no path to destination
+            if (SafeCast(path.Points.size()) == 0)
+            {
+                path = Move::FindPath(rogue.Battlepits, start, path.Closest);
+            }
+
+            // generate move input buffer
+            if (SafeCast(path.Points.size()) > 1)
+            {
+                auto &points = path.Points;
+
+                auto prev = 0;
+
+                for (auto next = 1; next < SafeCast(points.size()); next++)
+                {
+                    if (points[next].X > points[prev].X)
+                    {
+                        input_buffer.push_back(Controls::Type::RIGHT);
+                    }
+                    else if (points[next].X < points[prev].X)
+                    {
+                        input_buffer.push_back(Controls::Type::LEFT);
+                    }
+                    else if (points[next].Y > points[prev].Y)
+                    {
+                        input_buffer.push_back(Controls::Type::DOWN);
+                    }
+                    else if (points[next].Y < points[prev].Y)
+                    {
+                        input_buffer.push_back(Controls::Type::UP);
+                    }
+                    else
+                    {
+                        // break out of loop when there is no movement
+                        break;
+                    }
+
+                    // check next location
+                    prev = next;
+                }
+            }
+        }
+
+        return input_buffer;
+    }
 
     // main game loop
     void Main(Graphics::Base &graphics, Rogue::Base &rogue)
@@ -1065,6 +1143,8 @@ namespace BloodSword::Rogue
         auto events = true;
 
         auto enemy = Rogue::None;
+
+        auto input_buffer = Controls::List();
 
         while (!done)
         {
@@ -1135,6 +1215,9 @@ namespace BloodSword::Rogue
 
                     if (BloodSword::In(enemy_view, rogue.Origin()))
                     {
+                        // clear input buffer
+                        input_buffer.clear();
+
                         auto distance = rogue.Battlepits.Distance(rogue.Origin(), opponent.Origin());
 
                         if (distance > 1)
@@ -1176,6 +1259,18 @@ namespace BloodSword::Rogue
                 auto input = Input::RogueInput(graphics, {scene});
 
                 auto prev = rogue.Origin();
+
+                // check for buffered input
+                if (input_buffer.size() > 0)
+                {
+                    input.Selected = true;
+
+                    input.Type = input_buffer.front();
+
+                    input_buffer.erase(input_buffer.begin());
+
+                    SDL_Delay(BloodSword::StandardDelay);
+                }
 
                 if (Input::Check(input))
                 {
@@ -1222,6 +1317,10 @@ namespace BloodSword::Rogue
 
                             update = Rogue::Actions(graphics, scene, rogue, point);
                         }
+                    }
+                    else if (input.Type == Controls::Type::MOVE)
+                    {
+                        input_buffer = Rogue::GenerateMoves(rogue, scene, input);
                     }
                     else if (input.Type == Controls::Type::MAP)
                     {

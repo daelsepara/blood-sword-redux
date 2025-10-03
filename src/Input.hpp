@@ -697,6 +697,28 @@ namespace BloodSword::Input
                 input.Type = Controls::Type::MENU;
             }
         }
+        else if (result.type == SDL_MOUSEBUTTONDOWN && result.button.button == SDL_BUTTON_LEFT)
+        {
+            auto &controls = scenes.back().get().Controls;
+
+            if (controls.size() > 0)
+            {
+                for (auto &control : controls)
+                {
+                    if ((result.button.x >= control.X && result.button.x <= control.X + control.W - 1 && result.button.y >= control.Y && result.button.y <= control.Y + control.H - 1))
+                    {
+                        if (control.OnMap && control.Type != Controls::Type::NONE)
+                        {
+                            input.Current = control.Id;
+
+                            input.Type = control.Type;
+
+                            break;
+                        }
+                    }
+                }
+            }
+        }
 
         if (input.Type != Controls::Type::NONE)
         {

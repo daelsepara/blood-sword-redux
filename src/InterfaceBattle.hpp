@@ -42,7 +42,7 @@ namespace BloodSword::Interface
 
         auto unarmed = (skill != Skills::Type::ARCHERY) && attacker.IsPlayer() && !attacker.IsArmed();
 
-        auto asset = Asset::NONE;
+        auto asset = Asset::Map("FIGHT");
 
         if (knockout)
         {
@@ -55,10 +55,6 @@ namespace BloodSword::Interface
         else if (skill != Skills::Type::NONE)
         {
             asset = Skills::Assets[skill];
-        }
-        else
-        {
-            asset = Asset::Map("FIGHT");
         }
 
         if (!attacker.Is(Character::Status::DEFENDING) && Engine::IsAlive(attacker))
