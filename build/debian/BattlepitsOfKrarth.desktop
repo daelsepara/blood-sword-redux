@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=BloodSword: Battlepits of Krarth
 Comment=BloodSword: Battlepits of Krarth
-Version=0.2.70
+Version=0.2.72
 TryExec=/usr/local/games/BattlepitsOfKrarth/BloodSword.exe
 Exec=/usr/local/games/BattlepitsOfKrarth/BloodSword.exe
 Icon=/usr/local/games/BattlepitsOfKrarth/images/icons/sword-wound.png
