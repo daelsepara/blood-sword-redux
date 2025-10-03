@@ -1034,7 +1034,7 @@ namespace BloodSword::Rogue
 
         return update;
     }
-    
+
     // generate move list as a sequence of button presses
     Controls::List GenerateMoves(Rogue::Base &rogue, Scene::Base &scene, Controls::User &input)
     {
