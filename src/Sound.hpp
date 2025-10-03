@@ -92,16 +92,18 @@ namespace BloodSword::Sound
         return chunk;
     }
 
+    // initialize sound device
     void Initialize()
     {
         Sound::Assets.clear();
 
-        // Initialize SDL_mixer
+        // initialize SDL_mixer (mono)
         if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 4096) < 0)
         {
             SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer could not initialize! SDL_mixer Error: %s", Mix_GetError());
         }
 
+        // allocate channels
         if (Mix_AllocateChannels(Sound::CHANNELS) < 0)
         {
             SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: %s", Mix_GetError());
