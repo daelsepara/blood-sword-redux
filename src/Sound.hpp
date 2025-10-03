@@ -94,8 +94,10 @@ namespace BloodSword::Sound
 
     void Initialize()
     {
+        Sound::Assets.clear();
+
         // Initialize SDL_mixer
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, Sound::CHANNELS, 4096) < 0)
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 4096) < 0)
         {
             SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer could not initialize! SDL_mixer Error: %s", Mix_GetError());
         }
