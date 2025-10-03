@@ -14,12 +14,28 @@
 #include <pwd.h>
 #endif
 
+
 // filesystem namespace alias
 namespace fs = std::filesystem;
 
 // file interface functions
 namespace BloodSword::Interface
 {
+    std::string ConvertString(std::wstring& wstr)
+    {
+        size_t len = wcstombs(nullptr, wstr.c_str(), 0) + 1; // Calculate required buffer size
+        
+        char* buffer = new char[len]; // Allocate buffer
+        
+        wcstombs(buffer, wstr.c_str(), len); // Perform conversion
+        
+        std::string str(buffer); // Create std::string
+        
+        delete[] buffer; // Clean up
+        
+        return str;
+    }
+
     // patform-dependent function for returning user document directory and save location
     std::string GetGamesPath()
     {
@@ -34,9 +50,7 @@ namespace BloodSword::Interface
 
         CoTaskMemFree(PathString);
 
-        std::string UserGamesPath(WindowsPath.length(), ' ');
-
-        std::copy(WindowsPath.begin(), WindowsPath.end(), UserGamesPath.begin());
+        auto UserGamesPath = Interface::ConvertString(WindowsPath);
 
         UserGamesPath += GamesPath;
 #else
