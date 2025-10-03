@@ -23,15 +23,20 @@ namespace BloodSword::Interface
 {
     std::string ConvertString(std::wstring& wstr)
     {
-        size_t len = wcstombs(nullptr, wstr.c_str(), 0) + 1; // Calculate required buffer size
+        // calculate required buffer size
+        size_t len = wcstombs(nullptr, wstr.c_str(), 0) + 1;
 
-        char* buffer = new char[len]; // Allocate buffer
+        // allocate buffer
+        char* buffer = new char[len];
 
-        wcstombs(buffer, wstr.c_str(), len); // Perform conversion
+        // perform conversion
+        wcstombs(buffer, wstr.c_str(), len);
 
-        std::string str(buffer); // Create std::string
+        // create std::string
+        std::string str(buffer);
 
-        delete[] buffer; // Clean up
+        // clean up
+        delete[] buffer;
 
         return str;
     }
