@@ -92,6 +92,20 @@ namespace BloodSword::Sound
         return chunk;
     }
 
+    void Initialize()
+    {
+        // Initialize SDL_mixer
+        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, Sound::CHANNELS, 4096) < 0)
+        {
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer could not initialize! SDL_mixer Error: %s", Mix_GetError());
+        }
+
+        if (Mix_AllocateChannels(Sound::CHANNELS) < 0)
+        {
+            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: %s", Mix_GetError());
+        }
+    }
+
     // load sound from json data (and zip archive)
     void Load(nlohmann::json &data, const char *zip_file)
     {
@@ -121,16 +135,8 @@ namespace BloodSword::Sound
     // initialize mixer and load all sound assets
     void Load(std::string assets)
     {
-        // Initialize SDL_mixer
-        if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, Sound::CHANNELS, 2048) < 0)
-        {
-            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer could not initialize! SDL_mixer Error: %s", Mix_GetError());
-        }
-
-        if (Mix_AllocateChannels(Sound::CHANNELS) < 0)
-        {
-            SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "SDL_mixer unable to allocate mixing channels! SDL_mixer Error: %s", Mix_GetError());
-        }
+        // initialize mixer
+        Sound::Initialize();
 
         std::ifstream ifs(assets.c_str());
 
@@ -144,6 +150,7 @@ namespace BloodSword::Sound
         }
     }
 
+    // initialize mixer and load all sound assets from zip archive
     void Load(std::string assets, std::string zip_file)
     {
         if (zip_file.empty())
@@ -152,6 +159,9 @@ namespace BloodSword::Sound
         }
         else
         {
+            // initialize mixer
+            Sound::Initialize();
+
             auto ifs = ZipFile::Read(zip_file.c_str(), assets.c_str());
 
             if (!ifs.empty())
