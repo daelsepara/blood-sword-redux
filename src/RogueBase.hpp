@@ -301,10 +301,16 @@ namespace BloodSword::Rogue
         return available;
     }
 
+    // render outline
+    void RenderOutline(Scene::Base &scene, int x, int y, int width, int height, Uint32 color)
+    {
+        scene.Add(Scene::Element(x, y, width, height, Color::Background, color, BloodSword::Border));
+    }
+
     // render combatant at (x, y) with border color
     void RenderCombatant(Scene::Base &scene, SDL_Texture *texture, int x, int y, Uint32 color)
     {
-        scene.Add(Scene::Element(x, y, BloodSword::Width(texture), BloodSword::Height(texture), Color::Background, color, BloodSword::Border));
+        Rogue::RenderOutline(scene, x, y, BloodSword::Width(texture), BloodSword::Height(texture), color);
 
         scene.VerifyAndAdd(Scene::Element(texture, Point(x, y)));
     }
