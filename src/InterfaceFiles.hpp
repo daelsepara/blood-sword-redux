@@ -14,20 +14,19 @@
 #include <pwd.h>
 #endif
 
-
 // filesystem namespace alias
 namespace fs = std::filesystem;
 
 // file interface functions
 namespace BloodSword::Interface
 {
-    std::string ConvertString(std::wstring& wstr)
+    std::string ConvertString(std::wstring &wstr)
     {
         // calculate required buffer size
         size_t len = wcstombs(nullptr, wstr.c_str(), 0) + 1;
 
         // allocate buffer
-        char* buffer = new char[len];
+        char *buffer = new char[len];
 
         // perform conversion
         wcstombs(buffer, wstr.c_str(), len);
