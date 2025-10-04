@@ -602,18 +602,18 @@ namespace BloodSword::Rogue
     void RenderTargetOutline(Graphics::Base &graphics, Scene::Base &scene, int stats_w, int stats_h, int count, int id)
     {
         auto window_h = BloodSword::WindowTile - BloodSword::Pad;
-        
+
         auto window_y = (graphics.Height - window_h) / 2;
 
         auto pad = BloodSword::SmallPad;
-        
+
         auto offset = (graphics.Width - (count * stats_w + (count - 1) * pad)) / 2;
-        
+
         auto y = window_y - (BloodSword::TileSize + stats_h + BloodSword::LargePad);
 
         auto x = offset + id * (stats_w + pad);
 
-        Rogue::RenderOutline(scene, x, y, stats_w, stats_h, Color::Highlight);
+        Rogue::RenderOutline(scene, x, y, stats_w, stats_h, Color::Highlight, false);
     }
 
     // main battle loop
@@ -900,7 +900,7 @@ namespace BloodSword::Rogue
                                         if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                         {
                                             Rogue::RenderTargetOutline(graphics, scene, stats_width, BloodSword::Height(enemy_stats), enemies.Count(), defender_id);
-                                            
+
                                             auto &defender = enemies[defender_id];
 
                                             Interface::FlashMessage(graphics, scene, character.Name + " SHOOTS AT " + defender.Name, Color::Active);
