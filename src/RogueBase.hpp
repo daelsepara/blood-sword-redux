@@ -365,7 +365,7 @@ namespace BloodSword::Rogue
     }
 
     // add controls to targets
-    void AddTargetControls(Graphics::Base &graphics, Scene::Base &scene, int count, int stats_w, int stats_h, bool is_player)
+    void AddTargetControls(Graphics::Base &graphics, Scene::Base &scene, int count, int stats_w, int stats_h, bool on_top)
     {
         // estimate positions from window
         auto window_h = BloodSword::WindowTile - BloodSword::Pad;
@@ -378,7 +378,7 @@ namespace BloodSword::Rogue
 
         auto y = window_y + window_h + BloodSword::TileSize + BloodSword::Pad;
 
-        if (is_player)
+        if (on_top)
         {
             y = window_y - (BloodSword::TileSize + stats_h + BloodSword::LargePad);
         }
