@@ -613,7 +613,7 @@ namespace BloodSword::Rogue
 
         auto x = offset + id * (stats_w + pad);
 
-        Rogue::RenderOutline(scene, x, y, stats_w, stats_h, Color::Highlight, false);
+        Rogue::RenderOutline(scene, x, y, stats_w, stats_h, Color::Highlight, Color::Transparent);
     }
 
     // main battle loop

@@ -302,17 +302,15 @@ namespace BloodSword::Rogue
     }
 
     // render outline
-    void RenderOutline(Scene::Base &scene, int x, int y, int width, int height, Uint32 color, bool background = true)
+    void RenderOutline(Scene::Base &scene, int x, int y, int width, int height, Uint32 color, Uint32 bg_color)
     {
-        auto bg_color = background ? Color::Background : Color::Transparent;
-
         scene.Add(Scene::Element(x, y, width, height, bg_color, color, BloodSword::Border));
     }
 
     // render combatant at (x, y) with border color
     void RenderCombatant(Scene::Base &scene, SDL_Texture *texture, int x, int y, Uint32 color)
     {
-        Rogue::RenderOutline(scene, x, y, BloodSword::Width(texture), BloodSword::Height(texture), color);
+        Rogue::RenderOutline(scene, x, y, BloodSword::Width(texture), BloodSword::Height(texture), color, Color::Background);
 
         scene.VerifyAndAdd(Scene::Element(texture, Point(x, y)));
     }
