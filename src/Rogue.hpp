@@ -290,7 +290,7 @@ namespace BloodSword::Rogue
     }
 
     // process party actions
-    Rogue::Update Actions(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point)
+    Rogue::Update Actions(Graphics::Base &graphics, Scene::Base &background, Rogue::Base &rogue, Point point, Controls::List &input_buffer)
     {
         Rogue::Update result = {false, false};
 
@@ -300,6 +300,9 @@ namespace BloodSword::Rogue
         }
         else if (Rogue::Blocked(rogue, point))
         {
+            // clear input buffer
+            input_buffer.clear();
+
             result = Rogue::Handle(graphics, background, rogue, point);
         }
         else if (Rogue::Move(rogue, point))
@@ -1055,6 +1058,12 @@ namespace BloodSword::Rogue
                 path = Move::FindPath(rogue.Battlepits, start, path.Closest);
             }
 
+            // add destination if not in path but is very close (distance to tile is 1)
+            if (!BloodSword::In(path.Points, end) && rogue.Battlepits.Distance(path.Points.back(), end) == 1)
+            {
+                path.Points.push_back(end);
+            }
+
             // generate move input buffer
             if (SafeCast(path.Points.size()) > 1)
             {
@@ -1288,7 +1297,7 @@ namespace BloodSword::Rogue
                         {
                             point.Y--;
 
-                            update = Rogue::Actions(graphics, scene, rogue, point);
+                            update = Rogue::Actions(graphics, scene, rogue, point, input_buffer);
                         }
                     }
                     else if (input.Type == Controls::Type::DOWN)
@@ -1297,7 +1306,7 @@ namespace BloodSword::Rogue
                         {
                             point.Y++;
 
-                            update = Rogue::Actions(graphics, scene, rogue, point);
+                            update = Rogue::Actions(graphics, scene, rogue, point, input_buffer);
                         }
                     }
                     else if (input.Type == Controls::Type::LEFT)
@@ -1306,7 +1315,7 @@ namespace BloodSword::Rogue
                         {
                             point.X--;
 
-                            update = Rogue::Actions(graphics, scene, rogue, point);
+                            update = Rogue::Actions(graphics, scene, rogue, point, input_buffer);
                         }
                     }
                     else if (input.Type == Controls::Type::RIGHT)
@@ -1315,7 +1324,7 @@ namespace BloodSword::Rogue
                         {
                             point.X++;
 
-                            update = Rogue::Actions(graphics, scene, rogue, point);
+                            update = Rogue::Actions(graphics, scene, rogue, point, input_buffer);
                         }
                     }
                     else if (input.Type == Controls::Type::MOVE)

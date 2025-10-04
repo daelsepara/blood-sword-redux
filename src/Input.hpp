@@ -486,6 +486,8 @@ namespace BloodSword::Input
                 if (result.motion.x >= control.X && result.motion.x <= control.X + control.W - 1 && result.motion.y >= control.Y && result.motion.y <= control.Y + control.H - 1)
                 {
                     input.Current = control.Id;
+
+                    break;
                 }
             }
         }
@@ -707,11 +709,13 @@ namespace BloodSword::Input
                 {
                     if ((result.button.x >= control.X && result.button.x <= control.X + control.W - 1 && result.button.y >= control.Y && result.button.y <= control.Y + control.H - 1))
                     {
-                        if (control.OnMap && control.Type != Controls::Type::NONE)
+                        if (control.Type != Controls::Type::NONE)
                         {
                             input.Current = control.Id;
 
                             input.Type = control.Type;
+
+                            Sound::Play(Sound::Type::BUTTON_CLICK);
 
                             break;
                         }

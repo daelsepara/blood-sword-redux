@@ -364,6 +364,35 @@ namespace BloodSword::Rogue
         }
     }
 
+    // add controls to targets
+    void AddTargetControls(Graphics::Base &graphics, Scene::Base &scene, int count, int stats_w, int stats_h, bool is_player)
+    {
+        // estimate positions from window
+        auto window_h = BloodSword::WindowTile - BloodSword::Pad;
+
+        auto window_y = (graphics.Height - window_h) / 2;
+
+        auto pad = BloodSword::SmallPad;
+
+        auto offset = (graphics.Width - (count * stats_w + (count - 1) * pad)) / 2;
+
+        auto y = window_y + window_h + BloodSword::TileSize + BloodSword::Pad;
+
+        if (is_player)
+        {
+            y = window_y - (BloodSword::TileSize + stats_h + BloodSword::LargePad);
+        }
+
+        for (auto id = 0; id < count; id++)
+        {
+            auto lt = id > 0 ? id - 1 : id;
+
+            auto rt = id < count - 1 ? id + 1 : id;
+
+            scene.Add(Controls::Base(Controls::Type::SELECT, id, lt, rt, id, id, offset + id * (stats_w + pad), y, stats_w, stats_h, Color::Highlight));
+        }
+    }
+
     // select target from party or enemies
     int SelectTarget(Graphics::Base &graphics, Party::Base &party, Asset::TextureList &party_stats, Party::Base &enemies, Asset::TextureList &enemy_stats, int stats_w, bool is_player, bool is_enemy, int id)
     {
@@ -400,6 +429,9 @@ namespace BloodSword::Rogue
 
             // render all combatants
             Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, stats_w, is_player, is_enemy, id, Color::Active);
+
+            // add target controls
+            Rogue::AddTargetControls(graphics, scene, max_selection, stats_w, stats_h, is_player);
 
             // render label
             Interface::Boxed(graphics, scene, texture, Color::Background, Color::Active, BloodSword::Border);
@@ -453,6 +485,21 @@ namespace BloodSword::Rogue
                 {
                     if (selection >= 0 && selection < max_selection)
                     {
+                        target = selection;
+
+                        done = true;
+                    }
+                    else
+                    {
+                        Sound::Play(Sound::Type::FAIL);
+                    }
+                }
+                else if (input.Type == Controls::Type::SELECT)
+                {
+                    if (input.Current >= 0 && input.Current < max_selection)
+                    {
+                        selection = input.Current;
+
                         target = selection;
 
                         done = true;
