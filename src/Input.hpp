@@ -723,6 +723,10 @@ namespace BloodSword::Input
                 }
             }
         }
+        else if (result.type == SDL_MOUSEBUTTONDOWN && result.button.button == SDL_BUTTON_RIGHT)
+        {
+            input.Type = Controls::Type::MENU;
+        }
 
         if (input.Type != Controls::Type::NONE)
         {
