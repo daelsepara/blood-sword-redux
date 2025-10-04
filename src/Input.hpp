@@ -16,9 +16,31 @@
 // functions for handling user input
 namespace BloodSword::Input
 {
+    std::vector<SDL_GameController *> Controllers = {};
+
+    void CloseGamePads()
+    {
+        auto controllers = SafeCast(Input::Controllers.size());
+
+        if (controllers > 0)
+        {
+            for (auto controller = 0; controller < controllers; controller++)
+            {
+                SDL_GameControllerClose(Input::Controllers[controller]);
+            }
+
+            Input::Controllers.clear();
+        }
+    }
+
     // initialize any connected gamepads
     int InitializeGamePads()
     {
+        if (SafeCast(Input::Controllers.size()) > 0)
+        {
+            Input::CloseGamePads();
+        }
+
         if (SDL_WasInit(SDL_INIT_GAMECONTROLLER) != 1)
         {
             if (SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER) != 0)
@@ -51,6 +73,10 @@ namespace BloodSword::Input
                 if (SDL_GameControllerGetAttached(pad) != SDL_TRUE)
                 {
                     SDL_LogCritical(SDL_LOG_CATEGORY_APPLICATION, "Game pad not attached! SDL_Error: %s", SDL_GetError());
+                }
+                else
+                {
+                    Input::Controllers.push_back(pad);
                 }
             }
 

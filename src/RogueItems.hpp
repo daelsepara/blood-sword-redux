@@ -241,6 +241,8 @@ namespace BloodSword::Rogue
 
                     if (target >= 0 && target < rogue.Opponents[rogue.Enemy].Count())
                     {
+                        Rogue::RenderTargetOutline(graphics, background, rogue.StatsWidth, rogue.StatsHeight, rogue.Opponents[rogue.Enemy].Count(), target);
+
                         auto &defender = rogue.Opponents[rogue.Enemy][target];
 
                         Interface::DamagePlayer(graphics, background, defender, 5, 0, false, true, true);

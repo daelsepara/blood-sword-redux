@@ -52,8 +52,10 @@ namespace BloodSword
         // shutdown all subsystems
         void Shutdown()
         {
+            // close all assets
             Interface::UnloadAssets();
 
+            // close subsystems
             Graphics::Quit(this->graphics);
         }
 

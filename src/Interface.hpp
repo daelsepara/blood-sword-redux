@@ -646,6 +646,9 @@ namespace BloodSword::Interface
 
         // unload all textures
         Interface::UnloadTextures();
+
+        // close all gamepads
+        Input::CloseGamePads();
     }
 
     // reload settings

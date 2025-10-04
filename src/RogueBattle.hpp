@@ -627,8 +627,6 @@ namespace BloodSword::Rogue
         // set current enemy
         rogue.Enemy = enemy;
 
-        rogue.StatsWidth = stats_width;
-
         auto &party = rogue.Party;
 
         auto &enemies = rogue.Opponents[enemy];
@@ -646,6 +644,11 @@ namespace BloodSword::Rogue
 
         auto flee = false;
 
+        // set stats card width and height
+        rogue.StatsWidth = stats_width;
+
+        rogue.StatsHeight = std::max(BloodSword::Height(enemy_stats), BloodSword::Height(party_stats));
+
         while (Engine::Count(party) > 0 && Engine::Count(enemies) > 0 && Engine::InBattle(party) > 0 && !flee)
         {
             // activate SLOW MURDER before building the queue
@@ -657,7 +660,7 @@ namespace BloodSword::Rogue
                 {
                     auto scene = Scene::Base();
 
-                    Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, stats_width, true, false, character_id, Color::Active);
+                    Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, rogue.StatsWidth, true, false, character_id, Color::Active);
 
                     auto slow_murder = character.Name + " LOSES 1 ENDURANCE TO THE SLOW MURDER SPELL!";
 
@@ -687,17 +690,17 @@ namespace BloodSword::Rogue
                 {
                     if (is_enemy)
                     {
-                        Rogue::RefreshStats(graphics, enemy_stats, character, character_id, stats_width);
+                        Rogue::RefreshStats(graphics, enemy_stats, character, character_id, rogue.StatsWidth);
                     }
                     else if (is_player)
                     {
-                        Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_width);
+                        Rogue::RefreshStats(graphics, party_stats, character, character_id, rogue.StatsWidth);
                     }
                 }
 
                 auto scene = Scene::Base();
 
-                Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, stats_width, is_player, is_enemy, character_id, Color::Active);
+                Rogue::RenderCombatants(graphics, scene, party, party_stats, enemies, enemy_stats, rogue.StatsWidth, is_player, is_enemy, character_id, Color::Active);
 
                 auto end_turn = false;
 
@@ -769,9 +772,9 @@ namespace BloodSword::Rogue
 
                                     Rogue::ResolveFight(graphics, scene, character, defender);
 
-                                    Rogue::RefreshStats(graphics, enemy_stats, character, character_id, stats_width);
+                                    Rogue::RefreshStats(graphics, enemy_stats, character, character_id, rogue.StatsWidth);
 
-                                    Rogue::RefreshStats(graphics, party_stats, defender, defender_id, stats_width);
+                                    Rogue::RefreshStats(graphics, party_stats, defender, defender_id, rogue.StatsWidth);
                                 }
                             }
                             else if (character.Has(Character::Status::RANGED) && Engine::CanShoot(character) && Engine::Count(party) > 0)
@@ -795,7 +798,7 @@ namespace BloodSword::Rogue
 
                                     Rogue::ResolveShoot(graphics, scene, character, defender, defender_id);
 
-                                    Rogue::RefreshStats(graphics, party_stats, defender, defender_id, stats_width);
+                                    Rogue::RefreshStats(graphics, party_stats, defender, defender_id, rogue.StatsWidth);
                                 }
                             }
                             else if (!character.Has(Character::Status::MELEE) && !Engine::CanShoot(character) && !character.Has(Skills::Type::SPELLS))
@@ -804,7 +807,7 @@ namespace BloodSword::Rogue
 
                                 Interface::FlashMessage(graphics, scene, character.Name + " MOVES TO MELEE RANGE", Color::Active);
 
-                                Rogue::RefreshStats(graphics, enemy_stats, character, character_id, stats_width);
+                                Rogue::RefreshStats(graphics, enemy_stats, character, character_id, rogue.StatsWidth);
                             }
                         }
 
@@ -838,7 +841,7 @@ namespace BloodSword::Rogue
                                 {
                                     Rogue::Move(character, character.Has(Character::Status::RANGED) ? Character::Status::MELEE : Character::Status::RANGED);
 
-                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_width);
+                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, rogue.StatsWidth);
 
                                     end_turn = true;
                                 }
@@ -848,7 +851,7 @@ namespace BloodSword::Rogue
 
                                     Engine::ResetStatusAndSpells(character);
 
-                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_width);
+                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, rogue.StatsWidth);
 
                                     end_turn = true;
                                 }
@@ -856,11 +859,11 @@ namespace BloodSword::Rogue
                                 {
                                     if (character.Has(Character::Status::MELEE))
                                     {
-                                        auto defender_id = Engine::Count(enemies) > 1 ? Rogue::SelectTarget(graphics, party, party_stats, enemies, enemy_stats, stats_width, is_player, is_enemy, character_id) : Engine::First(enemies);
+                                        auto defender_id = Engine::Count(enemies) > 1 ? Rogue::SelectTarget(graphics, party, party_stats, enemies, enemy_stats, rogue.StatsWidth, is_player, is_enemy, character_id) : Engine::First(enemies);
 
                                         if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                         {
-                                            Rogue::RenderTargetOutline(graphics, scene, stats_width, BloodSword::Height(enemy_stats), enemies.Count(), defender_id);
+                                            Rogue::RenderTargetOutline(graphics, scene, rogue.StatsWidth, rogue.StatsHeight, enemies.Count(), defender_id);
 
                                             auto &defender = enemies[defender_id];
 
@@ -875,9 +878,9 @@ namespace BloodSword::Rogue
 
                                             Rogue::ResolveFight(graphics, scene, character, defender);
 
-                                            Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_width);
+                                            Rogue::RefreshStats(graphics, party_stats, character, character_id, rogue.StatsWidth);
 
-                                            Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, stats_width);
+                                            Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, rogue.StatsWidth);
 
                                             end_turn = true;
                                         }
@@ -895,11 +898,11 @@ namespace BloodSword::Rogue
                                 {
                                     if (character.Has(Character::Status::RANGED))
                                     {
-                                        auto defender_id = Engine::Count(enemies) > 1 ? Rogue::SelectTarget(graphics, party, party_stats, enemies, enemy_stats, stats_width, is_player, is_enemy, character_id) : Engine::First(enemies);
+                                        auto defender_id = Engine::Count(enemies) > 1 ? Rogue::SelectTarget(graphics, party, party_stats, enemies, enemy_stats, rogue.StatsWidth, is_player, is_enemy, character_id) : Engine::First(enemies);
 
                                         if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                         {
-                                            Rogue::RenderTargetOutline(graphics, scene, stats_width, BloodSword::Height(enemy_stats), enemies.Count(), defender_id);
+                                            Rogue::RenderTargetOutline(graphics, scene, rogue.StatsWidth, rogue.StatsHeight, enemies.Count(), defender_id);
 
                                             auto &defender = enemies[defender_id];
 
@@ -907,9 +910,9 @@ namespace BloodSword::Rogue
 
                                             Rogue::ResolveShoot(graphics, scene, character, defender, defender_id);
 
-                                            Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_width);
+                                            Rogue::RefreshStats(graphics, party_stats, character, character_id, rogue.StatsWidth);
 
-                                            Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, stats_width);
+                                            Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, rogue.StatsWidth);
 
                                             end_turn = true;
                                         }
@@ -940,11 +943,11 @@ namespace BloodSword::Rogue
                                                 {
                                                     if (Spells::RequiresTarget(spell))
                                                     {
-                                                        auto defender_id = Engine::Count(enemies) > 1 ? Rogue::SelectTarget(graphics, party, party_stats, enemies, enemy_stats, stats_width, is_player, is_enemy, character_id) : Engine::First(enemies);
+                                                        auto defender_id = Engine::Count(enemies) > 1 ? Rogue::SelectTarget(graphics, party, party_stats, enemies, enemy_stats, rogue.StatsWidth, is_player, is_enemy, character_id) : Engine::First(enemies);
 
                                                         if (defender_id >= 0 && defender_id < enemies.Count() && Engine::IsAlive(enemies[defender_id]))
                                                         {
-                                                            Rogue::RenderTargetOutline(graphics, scene, stats_width, BloodSword::Height(enemy_stats), enemies.Count(), defender_id);
+                                                            Rogue::RenderTargetOutline(graphics, scene, rogue.StatsWidth, rogue.StatsHeight, enemies.Count(), defender_id);
 
                                                             auto &defender = enemies[defender_id];
 
@@ -966,9 +969,9 @@ namespace BloodSword::Rogue
                                                                     // resolve spell
                                                                     Rogue::ResolveSpell(graphics, scene, enemies, character, defender, defender_id, spell);
 
-                                                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_width);
+                                                                    Rogue::RefreshStats(graphics, party_stats, character, character_id, rogue.StatsWidth);
 
-                                                                    Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, stats_width);
+                                                                    Rogue::RefreshStats(graphics, enemy_stats, defender, defender_id, rogue.StatsWidth);
                                                                 }
                                                                 else
                                                                 {
@@ -998,13 +1001,13 @@ namespace BloodSword::Rogue
                                                             {
                                                                 BloodSword::Free(party_stats);
 
-                                                                party_stats = Rogue::Stats(graphics, party, stats_width);
+                                                                party_stats = Rogue::Stats(graphics, party, rogue.StatsWidth);
                                                             }
                                                             else
                                                             {
                                                                 BloodSword::Free(enemy_stats);
 
-                                                                enemy_stats = Rogue::Stats(graphics, enemies, stats_width);
+                                                                enemy_stats = Rogue::Stats(graphics, enemies, rogue.StatsWidth);
                                                             }
                                                         }
                                                         else
@@ -1023,7 +1026,7 @@ namespace BloodSword::Rogue
 
                                                 character.CallToMind(spell);
 
-                                                Rogue::RefreshStats(graphics, party_stats, character, character_id, stats_width);
+                                                Rogue::RefreshStats(graphics, party_stats, character, character_id, rogue.StatsWidth);
 
                                                 end_turn = true;
                                             }
@@ -1051,11 +1054,11 @@ namespace BloodSword::Rogue
                                     {
                                         BloodSword::Free(party_stats);
 
-                                        party_stats = Rogue::Stats(graphics, party, stats_width);
+                                        party_stats = Rogue::Stats(graphics, party, rogue.StatsWidth);
 
                                         BloodSword::Free(enemy_stats);
 
-                                        enemy_stats = Rogue::Stats(graphics, enemies, stats_width);
+                                        enemy_stats = Rogue::Stats(graphics, enemies, rogue.StatsWidth);
                                     }
                                 }
                             }

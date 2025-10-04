@@ -118,6 +118,9 @@ namespace BloodSword::Rogue
         // width (in pixels) of character stats card
         int StatsWidth = 0;
 
+        // height (in pixels) of character stats card
+        int StatsHeight = 0;
+
         Base() {}
 
         // number of characters in party

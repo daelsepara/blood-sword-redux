@@ -26,6 +26,8 @@ namespace BloodSword::Rogue
 
     void RefreshStats(Graphics::Base &graphics, Asset::TextureList &textures, Character::Base &character, int id, int stats_width);
 
+    void RenderTargetOutline(Graphics::Base &graphics, Scene::Base &scene, int stats_w, int stats_h, int count, int id);
+
     void ResolveFight(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender);
 
     void ResolveShoot(Graphics::Base &graphics, Scene::Base &background, Character::Base &attacker, Character::Base &defender, int defenderid);
