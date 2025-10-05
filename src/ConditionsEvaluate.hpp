@@ -1850,7 +1850,7 @@ namespace BloodSword::Conditions
 
                     auto max_number = party.Number(condition.Variables[3]);
 
-                    party.ChosenNumber = Interface::GetNumber(graphics, background, condition.Variables[1].c_str(), min_number, max_number, Asset::Map("DICE1"), Asset::Map("UP"), Asset::Map("DOWN"), false);
+                    party.ChosenNumber = Interface::GetNumber(graphics, background, condition.Variables[1].c_str(), min_number, max_number, Asset::Map("DICE GAME"), Asset::Map("UP"), Asset::Map("DOWN"), false);
 
                     result = true;
                 }

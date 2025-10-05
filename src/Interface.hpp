@@ -6504,21 +6504,13 @@ namespace BloodSword::Interface
     {
         auto result = Engine::RollResult();
 
-        Asset::List assets = {
-            Asset::Map("DICE1"),
-            Asset::Map("DICE2"),
-            Asset::Map("DICE3"),
-            Asset::Map("DICE4"),
-            Asset::Map("DICE5"),
-            Asset::Map("DICE6")};
-
         std::vector<int> values = {0, 1, 2, 3, 4, 5};
 
         auto done = false;
 
         while (!done)
         {
-            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), assets, values, {}, number, number, Asset::NONE, false, false);
+            auto selection = Interface::SelectIcons(graphics, background, message.c_str(), Interface::Dice, values, {}, number, number, Asset::NONE, false, false);
 
             if (SafeCast(selection.size()) == number)
             {
