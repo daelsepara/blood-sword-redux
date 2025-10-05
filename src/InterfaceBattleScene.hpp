@@ -943,6 +943,8 @@ namespace BloodSword::Interface
             return;
         }
 
+        auto player_asset = Asset::Get(party[player].Asset);
+
         while (!done)
         {
             auto regenerate_scene = false;
@@ -955,7 +957,7 @@ namespace BloodSword::Interface
             {
                 overlay.VerifyAndAdd(Scene::Element(texture, Point(info_x, info_y)));
 
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(party[player].Asset), Point(info_x, info_y + pad * 8)));
+                overlay.VerifyAndAdd(Scene::Element(player_asset, Point(info_x, info_y + pad * 8)));
             }
 
             input = Input::WaitForInput(graphics, {map, overlay}, map.Controls, input, false);

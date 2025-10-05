@@ -2878,6 +2878,10 @@ namespace BloodSword::Interface
 
         auto origin_pad = origin + pad;
 
+        auto actor_asset = Asset::Get(actor);
+
+        auto action_asset = Asset::Get(action);
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -2886,10 +2890,10 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
 
             // add actor icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(actor), origin_pad));
+            overlay.VerifyAndAdd(Scene::Element(actor_asset, origin_pad));
 
             // add action icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(action), origin_pad + Point(tile_pad, 0)));
+            overlay.VerifyAndAdd(Scene::Element(action_asset, origin_pad + Point(tile_pad, 0)));
 
             // add roll string
             overlay.VerifyAndAdd(Scene::Element(roll_texture, origin_pad + Point(0, tile_pad)));
@@ -3118,6 +3122,14 @@ namespace BloodSword::Interface
 
         auto origin_attribute = origin + Point(pad + BloodSword::SmallPad, pad);
 
+        auto target_asset = Asset::Get(target);
+
+        auto attacker_asset = Asset::Get(attacker.Asset);
+
+        auto attribute_asset = Asset::Get(Attribute::Assets[attribute]);
+
+        auto asset_texture = Asset::Get(asset);
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -3128,20 +3140,20 @@ namespace BloodSword::Interface
             if (target != Asset::NONE)
             {
                 // add target icon
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(target), origin_target));
+                overlay.VerifyAndAdd(Scene::Element(target_asset, origin_target));
             }
 
             // add character icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin_character));
+            overlay.VerifyAndAdd(Scene::Element(attacker_asset, origin_character));
 
             // set up icon
             if (asset == Asset::NONE)
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(Attribute::Assets[attribute]), origin_type));
+                overlay.VerifyAndAdd(Scene::Element(attribute_asset, origin_type));
             }
             else
             {
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_type));
+                overlay.VerifyAndAdd(Scene::Element(asset_texture, origin_type));
             }
 
             // attribute label
@@ -3394,6 +3406,12 @@ namespace BloodSword::Interface
         // width of damage value string
         auto value_w = 0;
 
+        auto damage_icon = Asset::Get(asset);
+
+        auto attacker_asset = Asset::Get(attacker.Asset);
+
+        auto defender_asset = Asset::Get(defender.Asset);
+
         while (!done)
         {
             auto overlay = Scene::Base();
@@ -3402,15 +3420,15 @@ namespace BloodSword::Interface
             overlay.Add(Scene::Element(origin, w, h, Color::Background, border, border_size));
 
             // add damage icon
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(asset), origin_icon));
+            overlay.VerifyAndAdd(Scene::Element(damage_icon, origin_icon));
 
             // add attacker icon and stats
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(attacker.Asset), origin_pad));
+            overlay.VerifyAndAdd(Scene::Element(attacker_asset, origin_pad));
 
             overlay.VerifyAndAdd(Scene::Element(damage_texture, origin_stats));
 
             // add defender icon and stats
-            overlay.VerifyAndAdd(Scene::Element(Asset::Get(defender.Asset), origin_defender));
+            overlay.VerifyAndAdd(Scene::Element(defender_asset, origin_defender));
 
             // add armour stats
             overlay.VerifyAndAdd(Scene::Element(armour_texture, origin_armour));
@@ -7950,6 +7968,8 @@ namespace BloodSword::Interface
 
             auto button_y = (y + box_h - BloodSword::TileSize - pad);
 
+            auto button_asset = Asset::Get(button);
+
             auto input = Controls::User();
 
             auto done = false;
@@ -7969,7 +7989,7 @@ namespace BloodSword::Interface
                 auto id = lastControl.Id + 1;
 
                 // add close button
-                overlay.VerifyAndAdd(Scene::Element(Asset::Get(button), button_x, button_y));
+                overlay.VerifyAndAdd(Scene::Element(button_asset, button_x, button_y));
 
                 overlay.Add(Controls::Base(Controls::Type::BACK, id, id, id, first + limit - 1, id, button_x, button_y, BloodSword::TileSize, BloodSword::TileSize, Color::Active));
 
