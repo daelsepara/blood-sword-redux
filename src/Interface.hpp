@@ -203,6 +203,8 @@ namespace BloodSword::Interface
         "DICE5",
         "DICE6"};
 
+    Asset::TextureList DiceTextures = {};
+
     // number assets ids
     Asset::List Numbers = {};
 
@@ -484,6 +486,21 @@ namespace BloodSword::Interface
         }
     }
 
+    void InitializeDice()
+    {
+        // initialize dice asset ids
+        Asset::MapTypes(Interface::Dice, Interface::DiceAssets);
+
+        // clear texture list
+        Interface::DiceTextures = Asset::TextureList(SafeCast(Interface::Dice.size()));
+
+        // generate texture list
+        for (auto dice = 0; dice < SafeCast(Interface::Dice.size()); dice++)
+        {
+            Interface::DiceTextures[dice] = Asset::Get(Interface::Dice[dice]);
+        }
+    }
+
     // unload all textures and assets
     void UnloadTextures()
     {
@@ -528,7 +545,7 @@ namespace BloodSword::Interface
         Asset::MapTypes(Interface::ClassAssets, Interface::ClassAssetsNames);
 
         // initialize dice assets
-        Asset::MapTypes(Interface::Dice, Interface::DiceAssets);
+        Interface::InitializeDice();
 
         // initialize number assets
         Asset::MapTypes(Interface::Numbers, Interface::NumbersNames);
@@ -2914,7 +2931,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Interface::DiceTextures[rolls.Rolls[dice] - 1], origin + Point(dice * tile_pad + pad, dice_y)));
                 }
             }
             else
@@ -2922,7 +2939,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Interface::DiceTextures[Engine::Random.NextInt() - 1], origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
                 }
             }
 
@@ -3175,7 +3192,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[rolls.Rolls[dice] - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Interface::DiceTextures[rolls.Rolls[dice] - 1], origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
                 }
 
                 if (result)
@@ -3194,7 +3211,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
+                    overlay.VerifyAndAdd(Scene::Element(Interface::DiceTextures[Engine::Random.NextInt() - 1], origin + Point(dice * (BloodSword::TileSize + pad) + pad, BloodSword::TileSize + pad)));
                 }
             }
 
@@ -3449,7 +3466,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // dice rolled
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[rolls.Rolls[dice] - 1]), origin + Point(dice * tile_pad + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Interface::DiceTextures[rolls.Rolls[dice] - 1], origin + Point(dice * tile_pad + pad, dice_y)));
                 }
 
                 if (damage > 0)
@@ -3472,7 +3489,7 @@ namespace BloodSword::Interface
                 for (auto dice = 0; dice < roll; dice++)
                 {
                     // random dice/rolling
-                    overlay.VerifyAndAdd(Scene::Element(Asset::Get(Interface::Dice[Engine::Random.NextInt() - 1]), origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
+                    overlay.VerifyAndAdd(Scene::Element(Interface::DiceTextures[Engine::Random.NextInt() - 1], origin + Point(dice * (BloodSword::TileSize + pad) + pad, dice_y)));
                 }
             }
 
