@@ -1568,6 +1568,8 @@ namespace BloodSword::Interface
 
                             Interface::MessageBox(graphics, overlay, message, Color::Highlight);
                         }
+
+                        Controls::Select(input, overlay.Controls, input.Type);
                     }
 
                     input.Selected = false;
@@ -1612,10 +1614,14 @@ namespace BloodSword::Interface
                 else if (Input::IsUp(input))
                 {
                     Interface::TextUp(overlay, input, Controls::Type::SCROLL_UP, scroll_up, offset, texture_h, text_h, scroll_speed);
+
+                    Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_UP);
                 }
                 else if (Input::IsDown(input))
                 {
                     Interface::TextDown(overlay, input, Controls::Type::SCROLL_DOWN, scroll_dn, offset, texture_h, text_h, scroll_speed);
+
+                    Controls::Select(input, overlay.Controls, Controls::Type::SCROLL_DOWN);
                 }
             }
         }
