@@ -13,6 +13,7 @@
 #include "Animation.hpp"
 #include "Asset.hpp"
 #include "Engine.hpp"
+#include "FontCache.hpp"
 #include "Input.hpp"
 #include "InterfaceFiles.hpp"
 #include "Maze.hpp"
@@ -8177,6 +8178,26 @@ namespace BloodSword::Interface
         }
 
         return update;
+    }
+
+    // adds text to scene using cache
+    void AddText(Scene::Base &scene, FontCache::Base &cache, std::string &text, int x, int y)
+    {
+        if (cache.Has(text))
+        {
+            scene.VerifyAndAdd(Scene::Element(cache[text].Texture, Point(x, y)));
+        }
+        else
+        {
+            for (auto c = 0; c < SafeCast(text.size()); c++)
+            {
+                auto glyph = cache[std::string(1, text[c])];
+
+                scene.VerifyAndAdd(Scene::Element(glyph.Texture, Point(x, y)));
+
+                x += glyph.Width;
+            }
+        }
     }
 }
 

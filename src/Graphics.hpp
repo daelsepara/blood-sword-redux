@@ -691,7 +691,7 @@ namespace BloodSword::Graphics
     }
 
     // create a SDL_Surface representation of a string
-    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color textColor, int style, int wrap)
+    SDL_Surface *CreateSurfaceText(const char *text, TTF_Font *font, SDL_Color text_color, int style, int wrap)
     {
         SDL_Surface *surface = nullptr;
 
@@ -701,7 +701,7 @@ namespace BloodSword::Graphics
 
             if (wrap == 0 && strchr(text, '\n') == nullptr)
             {
-                surface = TTF_RenderUTF8_Blended(font, text, textColor);
+                surface = TTF_RenderUTF8_Blended(font, text, text_color);
             }
             else
             {
@@ -744,7 +744,7 @@ namespace BloodSword::Graphics
                     }
                 }
 
-                surface = TTF_RenderUTF8_Blended_Wrapped(font, text, textColor, estimate);
+                surface = TTF_RenderUTF8_Blended_Wrapped(font, text, text_color, estimate);
             }
         }
 

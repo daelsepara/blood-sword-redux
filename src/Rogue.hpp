@@ -510,6 +510,9 @@ namespace BloodSword::Rogue
         Rogue::Center(rogue, src);
     }
 
+    // create text cache
+    FontCache::Base TextCache = FontCache::Base();
+
     // update scene for rogue mode
     Scene::Base UpdateScene(Rogue::Base &rogue, SDL_Texture *image, Point image_location, int panel_w, int panel_h, FieldOfView::Method method, bool animating)
     {
@@ -524,14 +527,24 @@ namespace BloodSword::Rogue
             scene.VerifyAndAdd(Scene::Element(image, image_location));
         }
 
+        // pre-calculate panel x-coordinate
+        auto bottom_x = BloodSword::TileSize + panel_w + BloodSword::TileSize;
+
         // map battlepits panel border
-        scene.Add(Scene::Element(BloodSword::TileSize + panel_w + BloodSword::TileSize, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
+        scene.Add(Scene::Element(bottom_x, BloodSword::TileSize, panel_w, panel_h, Color::Background, Color::Active, BloodSword::Border));
 
         // center battlepits to party's location
         Rogue::Center(rogue, Map::Object::PARTY, Map::Party);
 
         // add battlepits to scene
         Rogue::RenderBattlepits(scene, rogue, method, !animating);
+
+        // add coordinates
+        auto origin = rogue.Origin();
+
+        auto coordinates = "(" + std::to_string(origin.X) + "," + std::to_string(origin.Y) + ")";
+
+        Interface::AddText(scene, Rogue::TextCache, coordinates, bottom_x, BloodSword::TileSize + panel_h + BloodSword::Pad);
 
         return scene;
     }
@@ -1383,6 +1396,9 @@ namespace BloodSword::Rogue
     // entry point for rogue mode
     void Game(Graphics::Base &graphics)
     {
+        // initialize text cache
+        Rogue::TextCache.Create(graphics, Fonts::Normal, "0123456789(),", Color::S(Color::Active), TTF_STYLE_NORMAL);
+
         // set default control to the first
         Controls::Default = 0;
 
@@ -1412,6 +1428,8 @@ namespace BloodSword::Rogue
             // run main game loop
             Rogue::Main(graphics, rogue);
         }
+
+        Rogue::TextCache.Free();
     }
 }
 
