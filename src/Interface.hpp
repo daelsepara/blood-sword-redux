@@ -835,19 +835,6 @@ namespace BloodSword::Interface
     }
 
     // draws a message box over a scene
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point origin, int width, int height, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
-
-        if (texture)
-        {
-            Interface::MessageBox(graphics, scene, origin, width, height, texture, background, border, border_size, highlight, blur);
-
-            BloodSword::Free(&texture);
-        }
-    }
-
-    // draws a message box over a scene
     void MessageBox(Graphics::Base &graphics, Scene::Base &scene, SDL_Texture *message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
     {
         Interface::MessageBox(graphics, scene, Point(0, 0), graphics.Width, graphics.Height, message, background, border, border_size, highlight, blur);
@@ -877,27 +864,6 @@ namespace BloodSword::Interface
 
             BloodSword::Free(&texture);
         }
-    }
-
-    // draws a message box
-    void MessageBox(Graphics::Base &graphics, Graphics::RichText message, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        auto texture = Graphics::CreateText(graphics, message.Text.c_str(), message.Font, message.Color, message.Style);
-
-        if (texture)
-        {
-            auto scene = Scene::Base();
-
-            Interface::MessageBox(graphics, scene, texture, background, border, border_size, highlight, blur);
-
-            BloodSword::Free(&texture);
-        }
-    }
-
-    // draws a message box
-    void MessageBox(Graphics::Base &graphics, Scene::Base &scene, Point offset, int width, int height, const char *message, TTF_Font *font, SDL_Color color, int style, Uint32 background, Uint32 border, int border_size, Uint32 highlight, bool blur = true)
-    {
-        Interface::MessageBox(graphics, scene, offset, width, height, Graphics::RichText(std::string(message), font, color, style, 0), background, border, border_size, highlight, blur);
     }
 
     // scroll up on list of controls
@@ -4848,13 +4814,13 @@ namespace BloodSword::Interface
     // generic error message box
     void ErrorMessage(Graphics::Base &graphics, Scene::Base &background, int message)
     {
-        Interface::MessageBox(graphics, background, Point(0, 0), graphics.Width, graphics.Height, Interface::Text[message], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
+        Interface::MessageBox(graphics, background, Interface::Text[message], Color::Background, Color::Highlight, BloodSword::Border, Color::Active, true);
     }
 
     // generic notify message box
     void Notify(Graphics::Base &graphics, Scene::Base &background, int message)
     {
-        Interface::MessageBox(graphics, background, Point(0, 0), graphics.Width, graphics.Height, Interface::Text[message], Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
+        Interface::MessageBox(graphics, background, Interface::Text[message], Color::Background, Color::Active, BloodSword::Border, Color::Highlight, true);
     }
 
     // internal error
