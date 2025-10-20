@@ -1842,7 +1842,7 @@ namespace BloodSword::Test
 
         try
         {
-            system.Initialize("BloodSword: Test Suite");
+            system.Initialize("BloodSword: Test Suite", "default");
 
             Test::Menu(system.graphics);
         }

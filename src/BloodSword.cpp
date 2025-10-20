@@ -194,7 +194,7 @@ namespace BloodSword::Game
 
             auto session_name = "BloodSword " + BloodSword::Version();
 
-            system.Initialize(session_name.c_str());
+            system.Initialize(session_name.c_str(), "default");
 
             Game::Menu(system.graphics);
         }

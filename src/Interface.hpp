@@ -7106,11 +7106,11 @@ namespace BloodSword::Interface
     }
 
     // load modules list and select default
-    void LoadModules()
+    void LoadModules(const char *default_module = nullptr)
     {
         Interface::Modules.clear();
 
-        auto DefaultModule = std::string();
+        auto DefaultModule = default_module != nullptr ? std::string(default_module) : std::string();
 
         std::ifstream ifs("modules/index.json", std::ios::in);
 
@@ -7118,7 +7118,10 @@ namespace BloodSword::Interface
         {
             auto data = nlohmann::json::parse(ifs);
 
-            DefaultModule = !data["default"].is_null() ? std::string(data["default"]) : std::string();
+            if (DefaultModule.empty())
+            {
+                DefaultModule = !data["default"].is_null() ? std::string(data["default"]) : std::string();
+            }
 
             if (!data["modules"].is_null() && data["modules"].is_array())
             {

@@ -15,13 +15,13 @@ namespace BloodSword
         Graphics::Base graphics;
 
         // initialize all subsytems
-        void Initialize(const char *session_name)
+        void Initialize(const char *session_name, const char *default_module = nullptr)
         {
             // initialize random number generator
             Engine::InitializeRNG();
 
             // load default module
-            Interface::LoadModules();
+            Interface::LoadModules(default_module);
 
             // initialize graphics system
             this->graphics = Graphics::Initialize(session_name);
