@@ -1310,15 +1310,6 @@ namespace BloodSword::Interface
         return scene;
     }
 
-    // create map display
-    Scene::Base Map(Map::Base &map, Party::Base &party, int num_bottom_buttons)
-    {
-        auto enemies = Party::Base();
-
-        // num_bottom_buttons is the number of buttons below the map
-        return Interface::Map(map, party, enemies, num_bottom_buttons);
-    }
-
     // generate map overlay and reserve a number of buttons at the bottom
     Scene::Base Map(Map::Base &map, int num_bottom_buttons)
     {
