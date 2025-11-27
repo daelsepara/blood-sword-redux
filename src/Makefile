@@ -41,7 +41,7 @@ else ifeq ($(UNAME_M),aarch32)
 	CC=g++
 else
 	CC=clang++
-	LIBS += -fdata-sections -ffunction-sections -lstdc++fs -Wl,--gc-sections
+	LIBS += -stdlib=libc++ -fdata-sections -ffunction-sections -Wl,--gc-sections
 endif
 
 .PHONY: all clean
